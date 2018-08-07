@@ -15,7 +15,7 @@ module.exports = {
     browser: true,
   },
   rules: {
-
+    'no-extend-native':'off'
   }
 
 }

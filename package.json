@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run local",
-    "local": "cross-env NODE_ENV=local webpack-dev-server --config build/webpack.local.conf.js",
+    "local": "cross-env NODE_ENV=local BUILD_ENV=local webpack-dev-server --config build/webpack.local.conf.js",
     "dev": "cross-env NODE_ENV=development BUILD_ENV=dev node build/build.js",
     "test": "cross-env NODE_ENV=development BUILD_ENV=test node build/build.js",
     "prod": "cross-env NODE_ENV=production BUILD_ENV=prod node build/build.js",
@@ -56,6 +56,7 @@
     "postcss-loader": "^2.1.6",
     "pre-commit": "^1.2.2",
     "progress-bar-webpack-plugin": "^1.11.0",
+    "qs": "^6.5.2",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
