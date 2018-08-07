@@ -11,9 +11,11 @@
     "prod": "cross-env NODE_ENV=production BUILD_ENV=prod node build/build.js",
     "lint": "eslint --ext .js --ext .jsx --ext .vue src/",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
-    "precommit": "npm run lint-fix",
     "server": "http-server dist -g -a 0.0.0.0 -p 8088 -o "
   },
+  "pre-commit": [
+    "lint-fix"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -50,6 +52,7 @@
     "node-sass": "^4.9.2",
     "npm": "^6.3.0",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
+    "ora": "^3.0.0",
     "postcss-loader": "^2.1.6",
     "pre-commit": "^1.2.2",
     "progress-bar-webpack-plugin": "^1.11.0",
@@ -67,7 +70,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "ora": "^3.0.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
