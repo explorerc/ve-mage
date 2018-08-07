@@ -33,7 +33,8 @@ const webpackConfig = {
     externals: {
         'vue': 'Vue',
         'vue-router': 'VueRouter',
-        'vuex': 'Vuex'
+        'vuex': 'Vuex',
+        'element-ui': 'ELEMENT',
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
