@@ -9,7 +9,7 @@ import createRouter from './router'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
-Vue.config.debug = process.env.NODE_ENV !== 'production';
+Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = process.env.NODE_ENV !== 'production'
 
