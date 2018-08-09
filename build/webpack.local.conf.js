@@ -4,11 +4,9 @@ const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.conf')
 const config = require('./config');
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-
-console.log(config.local.proxyTable);
 
 const webpackConfig = merge(baseConfig, {
   devtool: '#cheap-module-eval-source-map',
