@@ -25,8 +25,20 @@ const webpackConfig = merge(baseConfig, {
           },
           'sass-loader'
         ],
-        include: resolve('src'),
-        exclude: /node_modules/
+        include: resolve('src')
+      },
+      {
+        test: /\.css/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader'
+            // options: {
+            //     sourceMap: true
+            // }
+          }
+        ]
       }
     ]
   },
