@@ -7,7 +7,6 @@
       <ve-input v-model="inputValue" placeholder="请输入手机号"/>
     </div>
     <div style="margin-top: 10px;">
-      <el-button type="primary" @click="addHtml">add HTML到编辑器</el-button>
       <ve-editer
         @blur="editerBlur"
         @focus="editerFocus"
@@ -64,9 +63,6 @@
         console.log('ready:编辑器准备完毕')
         console.log(e)
         this.editerContent = '<h1>Hello World!<h1>'
-      },
-      addHtml () {
-        console.log(this.editer)
       }
     }
   }
