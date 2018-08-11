@@ -3,7 +3,7 @@
     <!-- 图片上传组件辅助-->
     <el-upload
       class="avatar-uploader"
-      :action="serverUrl"
+      :action="imgUploadUrl"
       name="img"
       :show-file-list="false"
       :on-success="uploadSuccess"
@@ -13,10 +13,11 @@
     <!--富文本编辑器组件-->
     <el-row v-loading="quillUpdateImg">
       <quill-editor
-        v-model="detailContent"
         ref="myQuillEditor"
+        v-model="editerContent"
         :options="editorOption"
-        @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"
+        @blur="onEditorBlur($event)"
+        @focus="onEditorFocus($event)"
         @change="onEditorChange($event)"
         @ready="onEditorReady($event)"
       >
@@ -51,8 +52,7 @@
     data () {
       return {
         quillUpdateImg: false,
-        serverUrl: '',
-        detailContent: '', // 富文本内容
+        editerContent: '', // 富文本内容
         editorOption: {
           placeholder: '',
           theme: 'snow', // 'snow' or 'bubble'
@@ -75,9 +75,16 @@
     },
     components: {quillEditor},
     props: {
+      value: {
+        default: ''
+      },
       height: {
         type: String,
         default: '300px'
+      },
+      imgUploadUrl: {
+        type: String,
+        default: ''
       }
     },
     computed: {
@@ -85,20 +92,51 @@
         return {height: this.height.indexOf('%') !== -1 ? this.height : (this.height + 'px')}
       }
     },
+    watch: {
+      value (val) {
+        this.editerContent = val
+      },
+      editerContent (val) {
+        this.$emit('input', val)
+      }
+    },
     methods: {
-      onEditorBlur () { // 失去焦点事件
+      onEditorBlur (e) { // 失去焦点事件
+        this.$emit('blur', e)
       },
-      onEditorFocus () { // 获得焦点事件
+      onEditorFocus (e) { // 获得焦点事件
+        this.$emit('focus', e)
       },
-      onEditorChange () { // 内容改变事件
+      onEditorChange (e) { // 内容改变事件
+        // this.$emit('input', this.content)
+        this.$emit('change', e)
       },
-      onEditorReady () {
-      },
-      uploadSuccess () { // 上传图片成功
-      },
-      uploadError () { // 上传图片失败
+      onEditorReady (e) {
+        this.$emit('ready', e)
       },
       beforeUpload () { // 上传图片之前
+        this.quillUpdateImg = true
+      },
+      uploadSuccess (res) { // 上传图片成功// res为图片服务器返回的数据
+        // 获取富文本组件实例
+        let quill = this.$refs.myQuillEditor.quill
+        // 如果上传成功
+        if (res.code === '200' && res.info !== null) {
+          // 获取光标所在位置
+          let length = quill.getSelection().index
+          // 插入图片  res.info为服务器返回的图片地址
+          quill.insertEmbed(length, 'image', res.info)
+          // 调整光标到最后
+          quill.setSelection(length + 1)
+        } else {
+          this.$message.error('图片插入失败')
+        }
+        // loading动画消失
+        this.quillUpdateImg = false
+      },
+      uploadError () { // 上传图片失败
+        this.quillUpdateImg = false
+        this.$message.error('图片插入失败')
       }
     }
   }

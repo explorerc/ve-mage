@@ -4,7 +4,18 @@
       {{serverUrl}}<br>{{buildEnv}}
     </div>
     <div style="margin-top: 10px;">
-      <ve-editer height="200"></ve-editer>
+      <ve-input v-model="inputValue" placeholder="请输入手机号"/>
+    </div>
+    <div style="margin-top: 10px;">
+      <el-button type="primary" @click="addHtml">add HTML到编辑器</el-button>
+      <ve-editer
+        @blur="editerBlur"
+        @focus="editerFocus"
+        @change="editorChange"
+        @ready="editorReady"
+        :img-upload-url="uploadUrl"
+        height="200"
+        v-model="editerContent"></ve-editer>
     </div>
   </div>
 </template>
@@ -12,16 +23,20 @@
 <script>
   import testService from 'src/api/test'
   import veEditer from 'src/components/ve-editer'
+  import veInput from 'src/components/ve-input'
 
   export default {
     data () {
       return {
+        inputValue: '',
+        uploadUrl: 'https://jsonplaceholder.typicode.com/posts/',
+        editerContent: '',
         serverUrl: process.env.API_PATH,
         buildEnv: process.env.BUILD_ENV
       }
     },
     components: {
-      veEditer
+      veEditer, veInput
     },
     created () {
       testService
@@ -33,6 +48,26 @@
         .then(res => {
           console.log(res)
         })
+    },
+    methods: {
+      editerBlur (e) {
+        console.log('编辑器失焦')
+      },
+      editerFocus (e) {
+        console.log('编辑器聚焦')
+      },
+      editorChange (e) {
+        console.log('编辑器内容改变事件:')
+        console.log(e)
+      },
+      editorReady (e) {
+        console.log('ready:编辑器准备完毕')
+        console.log(e)
+        this.editerContent = '<h1>Hello World!<h1>'
+      },
+      addHtml () {
+        console.log(this.editer)
+      }
     }
   }
 </script>
