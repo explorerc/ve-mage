@@ -4,7 +4,7 @@
       {{serverUrl}}<br>{{buildEnv}}
     </div>
     <div style="margin-top: 10px;">
-      <ve-editer></ve-editer>
+      <ve-editer height="200"></ve-editer>
     </div>
   </div>
 </template>
