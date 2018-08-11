@@ -44,5 +44,8 @@ export const ajax = (options) => {
   let _options = Object.assign({}, defaultOptions, options)
   return axios(_options).then((res) => {
     return res.data
+  }).catch((error) => {
+    console.log('出错了',
+      error)
   })
 }
