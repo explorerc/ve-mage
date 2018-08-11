@@ -10,7 +10,7 @@
       :limit="1">
       <div class="tip-box">
         <i class="el-icon-plus avatar-uploader-icon"></i>
-        <span class="">分辨率最大1920x1080，支持jpg、jpeg、png格式，文件大小不超过2M</span>
+        <span>{{tips}}</span>
       </div>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
@@ -42,6 +42,16 @@
       imgUploadUrl: {
         type: String,
         default: ''
+      },
+      tips: {
+        type: String,
+        default: ''
+      }
+    },
+    computed: {
+      url () {
+        console.log('computed=' + this.imgUploadUrl)
+        return this.imgUploadUrl
       }
     },
     methods: {

@@ -3,47 +3,24 @@
     <div id="entry" class="container">
       {{serverUrl}}<br>{{buildEnv}}
     </div>
-    <div style="margin-top: 10px;">
-      <!--上传文件组件-->
-      <ve-upload
-        limit-type="jpg|jpeg|png"
-        :img-upload-url="uploadUrl"
-        :file-size="fileSize"
-        @success="upLoadSuccess"
-        @error="upLoadError"/>
-    </div>
-    <div style="margin-top: 10px;">
-      <!--富文本编辑器组件-->
-      <ve-editer
-        @blur="editerBlur"
-        @focus="editerFocus"
-        @change="editorChange"
-        @ready="editorReady"
-        :img-upload-url="uploadUrl"
-        height="200"
-        v-model="editerContent"></ve-editer>
-    </div>
+    <comps-example/>
   </div>
 </template>
 
 <script>
   import testService from 'src/api/test'
-  import veEditer from 'src/components/ve-editer'
-  import veUpload from 'src/components/ve-upload'
+  import compsExample from 'src/pages/comps-example' // 自定义组件使用例子
 
   export default {
+    name: 'entry',
     data () {
       return {
-        inputValue: '',
-        fileSize: 2048, // 文件大小，单位k
-        uploadUrl: 'https://jsonplaceholder.typicode.com/posts/',
-        editerContent: '',
         serverUrl: process.env.API_PATH,
         buildEnv: process.env.BUILD_ENV
       }
     },
     components: {
-      veEditer, veUpload
+      compsExample
     },
     created () {
       testService
@@ -55,32 +32,6 @@
         .then(res => {
           console.log(res)
         })
-    },
-    methods: {
-      upLoadSuccess (response, file) {
-        console.log('success')
-        console.log(response)
-        console.log(file)
-      },
-      upLoadError (e) {
-        console.log('error')
-        console.log(e)
-      },
-      editerBlur (e) {
-        console.log('编辑器失焦')
-      },
-      editerFocus (e) {
-        console.log('编辑器聚焦')
-      },
-      editorChange (e) {
-        console.log('编辑器内容改变事件:')
-        console.log(e)
-      },
-      editorReady (e) {
-        console.log('ready:编辑器准备完毕')
-        console.log(e)
-        this.editerContent = '<h1>Hello World!<h1>'
-      }
     }
   }
 </script>
