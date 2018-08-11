@@ -4,7 +4,7 @@ const aModules = {
     data: 'aData'
   },
   getters: {
-    aGetter: (state, getters, rootState) => `i am${rootState.num} ${rootState.b.data} ${state.data}`
+    aGetter: (state) => `i am ${state.data}`
   },
   mutations: {
     updateData (state, data) {

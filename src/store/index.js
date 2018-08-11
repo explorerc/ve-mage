@@ -1,12 +1,35 @@
 import Vuex from 'vuex'
+import aModules from './modules/a'
+import bModules from './modules/b'
 
-const isDev = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV !== 'production'
 
 export default () => {
   const store = new Vuex.Store({
     strict: isDev,
     state: {
-
+      num: 3
+    },
+    getters: {
+      isEven: (state) => state.num % 2 === 0
+    },
+    mutations: {
+      addNum (state, data) {
+        state.num += data.num
+      }
+    },
+    actions: {
+      addNumAsync ({
+        commit
+      }, data) {
+        setTimeout(() => {
+          commit('addNum', data)
+        }, 2000)
+      }
+    },
+    modules: {
+      a: aModules,
+      b: bModules
     }
     // mutations,
     // getters,
