@@ -4,17 +4,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const HappyPack = require('happypack')
 const os = require('os')
-const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+const happyThreadPool = HappyPack.ThreadPool({
+  size: os.cpus().length
+})
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const config = require('./config');
 
 const isProd = process.env.NODE_ENV === 'production'
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function subPath (_path) {
+function subPath(_path) {
   return path.posix.join(config[process.env.BUILD_ENV].SUB_DIR, _path);
 }
 
@@ -53,8 +55,7 @@ const webpackConfig = {
     }
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.(vue|js|jsx)$/,
         loader: 'eslint-loader',
         include: resolve('src'),
@@ -64,15 +65,14 @@ const webpackConfig = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        include: resolve('src'),
-        exclude: /node_modules/
+        include: resolve('src')
+        // exclude: /node_modules/
       },
       {
         test: /\.js[x]?$/,
         // loader: 'babel-loader',
         loader: 'happypack/loader?id=happy-babel-js',
-        include: resolve('src'),
-        exclude: /node_modules/
+        include: resolve('src')
       },
       // {
       //     test: /\.js$/,
@@ -89,8 +89,7 @@ const webpackConfig = {
             limit: 500 //单位是byte
           }
         }],
-        include: resolve('src'),
-        exclude: /node_modules/
+        include: resolve('src')
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
@@ -101,8 +100,7 @@ const webpackConfig = {
             name: subPath('fonts/[name].[hash:7].[ext]')
           }
         }],
-        include: resolve('src'),
-        exclude: /node_modules/
+        include: resolve('src')
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -113,8 +111,7 @@ const webpackConfig = {
             name: subPath('media/[name].[hash:7].[ext]')
           }
         }],
-        include: resolve('src'),
-        exclude: /node_modules/
+        include: resolve('src')
       }
     ]
   },
@@ -158,13 +155,11 @@ const webpackConfig = {
         PUBLIC_PATH: JSON.stringify(config[process.env.BUILD_ENV].PUBLIC_PATH)
       }
     }),
-    new CopyWebpackPlugin([
-      {
-        from: resolve('src/static'),
-        to: resolve(`dist/${config[process.env.BUILD_ENV].SUB_DIR}`),
-        ignore: ['.*']
-      }
-    ])
+    new CopyWebpackPlugin([{
+      from: resolve('src/static'),
+      to: resolve(`dist/${config[process.env.BUILD_ENV].SUB_DIR}`),
+      ignore: ['.*']
+    }])
   ]
 };
 
