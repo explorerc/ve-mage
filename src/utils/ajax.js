@@ -45,7 +45,7 @@ export const ajax = (options) => {
   return axios(_options).then((res) => {
     return res.data
   }).catch((error) => {
-    console.log('出错了',
-      error)
+    console.log('出错了', error)
+    return new Promise(() => {})
   })
 }
