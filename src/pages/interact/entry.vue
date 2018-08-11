@@ -4,9 +4,16 @@
       {{serverUrl}}<br>{{buildEnv}}
     </div>
     <div style="margin-top: 10px;">
-      <ve-input v-model="inputValue" placeholder="请输入手机号"/>
+      <!--上传文件组件-->
+      <ve-upload
+        limit-type="jpg|jpeg|png"
+        :img-upload-url="uploadUrl"
+        :file-size="fileSize"
+        @success="upLoadSuccess"
+        @error="upLoadError"/>
     </div>
     <div style="margin-top: 10px;">
+      <!--富文本编辑器组件-->
       <ve-editer
         @blur="editerBlur"
         @focus="editerFocus"
@@ -22,12 +29,13 @@
 <script>
   import testService from 'src/api/test'
   import veEditer from 'src/components/ve-editer'
-  import veInput from 'src/components/ve-input'
+  import veUpload from 'src/components/ve-upload'
 
   export default {
     data () {
       return {
         inputValue: '',
+        fileSize: 2048, // 文件大小，单位k
         uploadUrl: 'https://jsonplaceholder.typicode.com/posts/',
         editerContent: '',
         serverUrl: process.env.API_PATH,
@@ -35,7 +43,7 @@
       }
     },
     components: {
-      veEditer, veInput
+      veEditer, veUpload
     },
     created () {
       testService
@@ -49,6 +57,15 @@
         })
     },
     methods: {
+      upLoadSuccess (response, file) {
+        console.log('success')
+        console.log(response)
+        console.log(file)
+      },
+      upLoadError (e) {
+        console.log('error')
+        console.log(e)
+      },
       editerBlur (e) {
         console.log('编辑器失焦')
       },

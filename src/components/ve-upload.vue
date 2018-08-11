@@ -1,14 +1,12 @@
 <template>
   <div class="avatar-uploader">
     <el-upload
-      action="https://jsonplaceholder.typicode.com/posts"
-      accept="jpg/png"
+      :action="imgUploadUrl"
       list-type="picture-card"
       :on-preview="handlePictureCardPreview"
       :before-upload="beforeUpload"
       :on-success="upLoadSuccess"
       :on-error="upLoadError"
-      :data="{'user_id':16417756}"
       :limit="1">
       <div class="tip-box">
         <i class="el-icon-plus avatar-uploader-icon"></i>
@@ -32,40 +30,49 @@
         fileList: []
       }
     },
+    props: {
+      limitType: {
+        type: String,
+        default: ''
+      },
+      fileSize: {
+        type: Number,
+        default: 0
+      },
+      imgUploadUrl: {
+        type: String,
+        default: ''
+      }
+    },
     methods: {
       handlePictureCardPreview (file) {
         this.dialogImageUrl = file.url
         this.dialogVisible = true
       },
       beforeUpload (file) {
-        console.log('beforeUpload')
-        console.log(file)
-        // const isJPG = file.type === 'image/jpeg'
-        // const isLt2M = file.size / 1024 / 1024 < 2
-        // if (!isJPG) {
-        //   this.$message.error('上传头像图片只能是 JPG 格式!')
-        // }
-        // if (!isLt2M) {
-        //   this.$message.error('上传头像图片大小不能超过 2MB!')
-        // }
-        // return isJPG && isLt2M
+        const suffix = file.name.split('.')
+        const nameSuffix = suffix[suffix.length - 1].toLowerCase()
+        if (this.limitType && this.limitType.toLowerCase().indexOf(nameSuffix) === -1) {
+          this.$message.error(`上传文件只能是${this.limitType}格式!`)
+          return false
+        }
+        if (!this.fileSize) return true
+        const isLt = file.size / 1024 > this.fileSize
+        if (isLt) {
+          const size = this.fileSize / 1024
+          this.$message.error(`上传文件大小不能超过 ${size}MB!`)
+          return false
+        }
         return true
       },
-      upLoadSuccess (response, file, fileList) {
-        console.log('success')
-        console.log(response)
-        console.log(file)
+      upLoadSuccess (response, file) {
+        this.$emit('success', response, file)
       },
-      upLoadError (file) {
-        console.log('error')
-        console.log(file)
+      upLoadError (e) {
+        this.$message.error(`上传失败!`)
+        e.detail = '上传失败!'
+        this.$emit('error', e)
       }
-      // upLoadProgress (event, file, fileList) {
-      //   console.log('upLoadProgress')
-      //   console.log(event)
-      //   console.log(file)
-      //   console.log(fileList)
-      // }
     }
   }
 </script>
@@ -100,7 +107,7 @@
       }
       span {
         display: inline-block;
-        margin: 10px;
+        margin: 8px;
       }
     }
   }
