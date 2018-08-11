@@ -15,7 +15,10 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'no-extend-native':'off'
+    'no-extend-native':'off',
+    "no-alert": 0,
+    "no-spaced-func": 2,
+    "no-var": 0,
   }
 
 }

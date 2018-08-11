@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import 'assets/css/base.scss'
-
 export default {
 
 }
