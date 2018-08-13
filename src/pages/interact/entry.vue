@@ -3,7 +3,7 @@
     <div id="entry" class="container">
       {{serverUrl}}<br>{{buildEnv}}
     </div>
-    <comps-example/>
+    <!-- <comps-example/> -->
   </div>
 </template>
 

@@ -1,10 +1,10 @@
 import Router from 'vue-router'
 
-import interactRoutes from './interact'
+import routes from './routes'
 
 export default () => {
   return new Router({
-    routes: [...interactRoutes],
+    routes,
     mode: 'hash'
   })
 }

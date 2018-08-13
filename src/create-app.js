@@ -5,9 +5,13 @@ import Vuex from 'vuex'
 import App from './app.vue'
 import createStore from './store'
 import createRouter from './router'
+import 'assets/fonts/iconfont.css'
+
+import Notification from './components/common/notification'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(Notification)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
@@ -23,5 +27,9 @@ export default () => {
     render: h => h(App)
   })
 
-  return { app, router, store }
+  return {
+    app,
+    router,
+    store
+  }
 }

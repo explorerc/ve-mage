@@ -103,7 +103,7 @@ const webpackConfig = {
         include: resolve('src')
       },
       {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        test: /\.(woff2?|eot|ttf|otf|svg)(\?.*)?$/,
         use: [{
           loader: 'url-loader',
           options: {
