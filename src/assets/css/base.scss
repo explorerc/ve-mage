@@ -4,8 +4,7 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #333333;
@@ -17,21 +16,39 @@ body {
   padding: 0;
   outline: none;
 }
+
 table {
   border-collapse: collapse;
   text-align: left;
   padding: 0;
 }
+
 i {
   font-style: normal;
 }
+
 em {
   font-style: normal;
 }
+
 textarea {
   resize: none;
 }
+
 ul,
 ol {
   list-style: none;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active below version 2.1.8 */
+
+  {
+  opacity: 0;
 }
