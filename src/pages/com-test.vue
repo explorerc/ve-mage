@@ -3,6 +3,8 @@
     <button @click="testCom">test1</button>
     <button @click="testFun">test2</button>
     <com-notification v-show="show" :header="header" :content="content">
+        <div slot="header">我是header</div>
+        <p>我是content</p>
     </com-notification>
   </div>
 </template>

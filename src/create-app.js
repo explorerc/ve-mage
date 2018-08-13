@@ -5,7 +5,7 @@ import Vuex from 'vuex'
 import App from './app.vue'
 import createStore from './store'
 import createRouter from './router'
-import 'assets/fonts/iconfont.css'
+import 'assets/fonts/iconfont.scss'
 
 import Notification from './components/common/notification'
 
