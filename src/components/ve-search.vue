@@ -5,12 +5,14 @@
       prefix-icon="el-icon-search"
       @focus.stop="focus"
       @blur.stop="blur"
-      @change.stop="blur"
+      @keyup.native.13="enter($event)"
       v-model="val">
     </el-input>
-    <i class="iconfont icon-delete"
-       @click.stop="clear"
-       v-show="delShow"></i>
+    <transition name="fade">
+      <i class="iconfont icon-delete"
+         @click="clear"
+         v-show="delShow"></i>
+    </transition>
   </div>
 </template>
 <script>
@@ -49,10 +51,16 @@
         this.isfocus = true
       },
       blur () {
-        this.isfocus = false
+        const st = setTimeout(() => {
+          this.isfocus = false
+          clearTimeout(st)
+        }, 500)
       },
       clear () {
         this.val = ''
+      },
+      enter (e) {
+        this.$emit('enter', e)
       }
     }
   }
@@ -69,6 +77,18 @@
       right: 7px;
       font-size: 16px;
       color: #666;
+      opacity: 0.8;
+      transition: opacity .3s;
+      &:hover {
+        cursor: pointer;
+        opacity: 1;
+      }
+    }
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .3s;
+    }
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
     }
   }
 </style>

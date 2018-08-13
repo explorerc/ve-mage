@@ -21,7 +21,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <ve-search v-model="searchParams.searchValue"/>
+        <ve-search v-model="searchParams.searchValue" @enter="searchEnter"/>
       </div>
       <live-table :tableList="tableList"/>
     </div>
@@ -79,6 +79,11 @@
           {id: '8', title: 'title8', time: '2016-10-12', imgUrl: ''},
           {id: '9', title: 'title9', time: '2016-10-12', imgUrl: ''}
         ]
+      }
+    },
+    methods: {
+      searchEnter () {
+        console.log('回车键')
       }
     }
   }
