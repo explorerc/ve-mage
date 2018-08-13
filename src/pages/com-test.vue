@@ -12,9 +12,10 @@
 export default {
   data () {
     return {
-      show: true,
+      show: false,
       header: 'Notification Title',
-      content: 'I will never close automatically. I will be close automatically. I will never close automatically.'
+      content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
+      id: 1
     }
   },
   methods: {
@@ -23,8 +24,7 @@ export default {
     },
     testFun () {
       this.$toast({
-        autoClose: 10000,
-        header: 'Notification Title',
+        header: `Notification Title${this.id++}`,
         content: 'I will never close automatically. I will be close automatically. I will never close automatically.'
       })
     }
