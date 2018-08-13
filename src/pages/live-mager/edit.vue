@@ -1,7 +1,7 @@
 <!--新建/编辑活动-->
 <template>
   <div>
-    <p>直播标题：<input type="text" placeholder="请输入直播标题"></p>
+    <p>直播标题：<input type="text" placeholder="请输入直播标题" v-model='title'></p>
     <p>直播时间：
       <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" default-time="12:00:00">
       </el-date-picker>
@@ -25,6 +25,7 @@
     data () {
       return {
         date: new Date(),
+        title: '',
         uploadData: {
           size: 2048,
           type: 'jpg、jpeg、png',
@@ -38,7 +39,10 @@
       }
     },
     created () {
-
+      if (this.id) {
+        this.title = '默认标题'
+        this.date = '2018-07-25'
+      }
     },
     methods: {
       uploadSuccess (res) {
