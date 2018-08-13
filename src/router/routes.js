@@ -1,6 +1,6 @@
 // const entry=() => import(/* webpackChunkName: "todo-view" */ '../views/todo/todo.vue')
 const Entry = () =>
-  import('src/pages/interact/entry/entry')
+  import('src/pages/interact/entry')
 const Test = () =>
   import('src/pages/com-test')
 const LiveMager = () => import('src/pages/live-mager')
