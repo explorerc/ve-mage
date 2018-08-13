@@ -3,6 +3,8 @@
     <button @click="testCom">test1</button>
     <button @click="testFun">test2</button>
     <com-notification v-show="show" :header="header" :content="content">
+        <div slot="header">我是header</div>
+        <p>我是content</p>
     </com-notification>
   </div>
 </template>
@@ -12,9 +14,10 @@
 export default {
   data () {
     return {
-      show: true,
+      show: false,
       header: 'Notification Title',
-      content: 'I will never close automatically. I will be close automatically. I will never close automatically.'
+      content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
+      id: 1
     }
   },
   methods: {
@@ -23,8 +26,7 @@ export default {
     },
     testFun () {
       this.$toast({
-        autoClose: 10000,
-        header: 'Notification Title',
+        header: `Notification Title${this.id++}`,
         content: 'I will never close automatically. I will be close automatically. I will never close automatically.'
       })
     }

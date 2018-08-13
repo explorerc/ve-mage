@@ -4,7 +4,10 @@
     class="notification"
     :class="customClass"
     :style="style"
-    v-show="visible">
+    v-show="visible"
+    @mouseenter="clearTask"
+    @mouseleave="createTask"
+    >
       <div class="header">
         <span class="title" v-if="!this.$slots.header&&header">{{header}}</span>
         <slot name="header"></slot>
@@ -44,7 +47,9 @@ export default {
     afterEnter () {},
     afterLeave () {
       this.$emit('closed')
-    }
+    },
+    createTask () {},
+    clearTask () {}
   },
   computed: {
     style () {

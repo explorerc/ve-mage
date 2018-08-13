@@ -3,8 +3,10 @@ import Extend from './extend'
 
 const ComConstructor = Vue.extend(Extend)
 const instances = []
+const queue = []
 const spacing = 16
 let id = 1
+let workState = false
 
 const removeInstance = (instance) => {
   const len = instances.length
@@ -18,7 +20,20 @@ const removeInstance = (instance) => {
     }
   }
 }
-
+const sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+const doWork = async () => {
+  const instance = queue.shift()
+  if (instance) {
+    workState = true
+    instance.vm.visible = false
+    await sleep(500)
+    doWork()
+  } else {
+    workState = false
+  }
+}
 export default (options) => {
   const {
     autoClose,
@@ -29,7 +44,7 @@ export default (options) => {
       ...rest
     },
     data: {
-      autoClose: autoClose === undefined ? 3000 : autoClose
+      autoClose: autoClose === undefined ? 30000 : autoClose
     }
   })
 
@@ -46,7 +61,10 @@ export default (options) => {
   instance.verticalOffset = verticalOffset
   instances.push(instance)
   instance.vm.$on('close', () => {
-    instance.vm.visible = false
+    queue.push(instance)
+    if (!workState) {
+      doWork()
+    }
   })
   instance.vm.$on('closed', () => {
     removeInstance(instance)
