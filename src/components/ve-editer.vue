@@ -143,19 +143,19 @@
 </script>
 
 <style lang="scss">
-  #quill-upload {
-    height: 300px;
-    .el-row {
+#quill-upload {
+  height: 300px;
+  .el-row {
+    height: 100%;
+    .quill-editor {
       height: 100%;
-      .quill-editor {
-        height: 100%;
-      }
-      .ql-toolbar {
-        text-align: left;
-      }
-      .ql-toolbar.ql-snow .ql-formats {
-        margin-right: 0px;
-      }
+    }
+    .ql-toolbar {
+      text-align: left;
+    }
+    .ql-toolbar.ql-snow .ql-formats {
+      margin-right: 0px;
     }
   }
+}
 </style>

@@ -37,7 +37,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .container {
-    padding: 10px;
-  }
+.container {
+  padding: 10px;
+}
 </style>
