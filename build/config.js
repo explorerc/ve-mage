@@ -19,7 +19,8 @@ const config = {
     BUILD_ENV: 'dev',
     API_PATH: '//dev-api-class.e.vhall.com',
     SUB_DIR: 'static',
-    PUBLIC_PATH: '//dev-static01-class.e.vhall.com/vhallclass/'
+    // PUBLIC_PATH: '//dev-static01-class.e.vhall.com/vhallclass/'
+    PUBLIC_PATH: '//127.0.0.1:8088/'
   },
   test: {
     BUILD_ENV: 'test',

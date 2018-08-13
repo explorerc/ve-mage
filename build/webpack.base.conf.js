@@ -97,7 +97,7 @@ const webpackConfig = {
           loader: 'url-loader',
           options: {
             limit: 5000,
-            name: subPath('fonts/[name].[hash:7].[ext]')
+            name: subPath('media/[name].[hash:7].[ext]')
           }
         }],
         include: resolve('src')
@@ -107,8 +107,8 @@ const webpackConfig = {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 5000,
-            name: subPath('media/[name].[hash:7].[ext]')
+            limit: 50,
+            name: subPath('fonts/[name].[hash:7].[ext]')
           }
         }],
         include: resolve('src')
