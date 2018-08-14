@@ -3,15 +3,15 @@
   <div>
     <div class="desc">
       <div class="left">
-        <p>{{title}} <span class='state' :class='stateClass'>{{state}}</span> </p>
+        <p>{{title}} <span class="state" :class="stateClass">{{state}}</span> </p>
         <p>开播时间:{{startTime}}</p>
-        <p>互动标签:<span class='tag' v-for='item in tagList'>{{item}}</span></p>
+        <p>互动标签:<span class="tag" v-for="item in tagList">{{item}}</span></p>
       </div>
       <div class="right">
-        <span>活动官网</span>
-        <span>直播观看页</span>
+        <span><a href="">活动官网</a></span>
+        <span><a href="">直播观看页</a></span>
         <span>发布/下线活动</span>
-        <span>进入直播间</span>
+        <span><a href="">进入直播间</a></span>
       </div>
     </div>
   </div>
@@ -65,6 +65,8 @@
 </script>
 
 <style lang='scss' scoped>
+@import '~assets/css/variable';
+@import '~assets/css/base';
 .state {
   padding: 3px;
   border: 1px solid #ccc;
