@@ -1,6 +1,5 @@
 <template>
   <div class="live-mager">
-    <!--<Share v-if="show" :shareLink="shareLink" @close="closeShare"/>-->
     <div class="live-title">
       <span>直播列表</span>
     </div>
@@ -44,11 +43,10 @@
 <script>
   import LiveTable from './live/live-table'
   import VePagination from 'src/components/ve-pagination'
-  import Share from 'src/components/common/share/com'
 
   export default {
     name: 'index',
-    components: {LiveTable, VePagination, Share},
+    components: {LiveTable, VePagination},
     data () {
       return {
         show: false,
@@ -111,12 +109,7 @@
             }
           })
         } else if (event.type === 'share') { // 分享观看页
-          this.$share({
-            liveLink: 'www.baidu.com',
-            weibo: 'https://www.baidu.com',
-            wxchart: 'http://aliqr.e.vhall.com/qr.png?t=https%3A%2F%2Ft.e.vhall.com%2F458577184%3FshareId%3Du-16420545-3',
-            qq: 'https://www.baidu.com'
-          })
+          this.$share(this.shareLink)
         }
       },
       changePage (currentPage) {
