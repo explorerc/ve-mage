@@ -22,23 +22,34 @@
           </el-option>
         </el-select>
         <div class="search-box">
-          <ve-search v-model="searchParams.searchValue" @enter="searchEnter"/>
+          <com-input
+            type="search"
+            :value.sync="searchParams.searchValue"
+            @keyup.native.enter="searchEnter"
+            placeholder="输入直播名称"></com-input>
         </div>
       </div>
-      <live-table :tableList="tableList"/>
+      <live-table :tableList="tableList" @handleClick="handleClick"/>
     </div>
+    <!--<com v-if="show"-->
+    <!--header="提示11"-->
+    <!--content="活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？"-->
+    <!--confirmText='仍要删除'-->
+    <!--@handleClick="btnClick">-->
+    <!--</com>-->
   </div>
 </template>
 
 <script>
-  import VeSearch from 'src/components/ve-search'
   import LiveTable from './live/live-table'
+  // import com from 'src/components/common/message-box/com'
 
   export default {
     name: 'index',
-    components: {LiveTable, VeSearch},
+    components: {LiveTable},
     data () {
       return {
+        show: false,
         optionsStates: [
           {value: 0, label: '全部'},
           {value: 1, label: '预告'},
@@ -62,6 +73,24 @@
       this.queryList()
     },
     methods: {
+      btnClick (event) {
+        console.log(event)
+        this.show = false
+      },
+      handleClick (action) {
+        if (action.type === 'delete') {
+          this.show = true
+          this.$messageBox({
+            header: '删除活动',
+            content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
+            cancelText: '暂不删除',
+            confirmText: '仍要删除',
+            action: (e) => {
+              console.log(e)
+            }
+          })
+        }
+      },
       changeSearch () {
         console.log(`this.searchParams:${JSON.stringify(this.searchParams)}`)
       },
