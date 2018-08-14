@@ -30,19 +30,28 @@
         </div>
       </div>
       <live-table :tableList="tableList" @handleClick="handleClick"/>
+      <div class="page-pagination">
+        <ve-pagination
+          :total="total"
+          :pageSize="pageSize"
+          @changePage="changePage"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import LiveTable from './live/live-table'
+  import VePagination from 'src/components/ve-pagination'
 
   export default {
     name: 'index',
-    components: {LiveTable},
+    components: {LiveTable, VePagination},
     data () {
       return {
         show: false,
+        pageSize: 8,
+        total: 10,
         optionsStates: [
           {value: 0, label: '全部'},
           {value: 1, label: '预告'},
@@ -57,7 +66,8 @@
         searchParams: {
           status: 0,
           orderTime: 0,
-          searchValue: ''
+          searchValue: '',
+          page: 0
         },
         tableList: []
       }
@@ -66,10 +76,6 @@
       this.queryList()
     },
     methods: {
-      btnClick (event) {
-        console.log(event)
-        this.show = false
-      },
       handleClick (action) {
         if (action.type === 'delete') {
           this.show = true
@@ -88,6 +94,10 @@
             }
           })
         }
+      },
+      changePage (currentPage) {
+        this.searchParams.page = currentPage
+        console.log(`点击了第${currentPage}页`)
       },
       changeSearch () {
         console.log(`this.searchParams:${JSON.stringify(this.searchParams)}`)
@@ -151,10 +161,13 @@
         .el-select:nth-child(2) {
           margin-left: 10px;
         }
-        .search-box {
-          width: 220px;
+        .search-box{
           float: right;
         }
+      }
+      .page-pagination {
+        float: right;
+        margin: 10px 10px 20px 0;
       }
     }
   }

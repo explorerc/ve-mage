@@ -62,7 +62,7 @@
       },
       height: {
         type: String,
-        default: '260'
+        default: '218'
       }
     },
     computed: {
