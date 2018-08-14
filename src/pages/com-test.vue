@@ -36,7 +36,13 @@ export default {
     testFun () {
       this.$toast({
         header: `Notification Title${this.id++}`,
-        content: 'I will never close automatically. I will be close automatically. I will never close automatically.'
+        content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
+        close: () => {
+          console.log('close')
+        },
+        closed: () => {
+          console.log('closed')
+        }
       })
     }
   }

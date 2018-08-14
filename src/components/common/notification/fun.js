@@ -37,6 +37,8 @@ const doWork = async () => {
 export default (options) => {
   const {
     autoClose,
+    close,
+    closed,
     ...rest
   } = options
   const instance = new ComConstructor({
@@ -61,12 +63,14 @@ export default (options) => {
   instance.verticalOffset = verticalOffset
   instances.push(instance)
   instance.vm.$on('close', () => {
+    close && close()
     queue.push(instance)
     if (!workState) {
       doWork()
     }
   })
   instance.vm.$on('closed', () => {
+    closed && closed()
     removeInstance(instance)
     document.body.removeChild(instance.vm.$el)
     instance.vm.$destroy()
