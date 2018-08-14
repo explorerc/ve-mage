@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" @after-enter="afterEnter" @after-leave="afterLeave">
     <div
-    class="notification"
+    class="com-notification"
     :class="customClass"
     :style="style"
     v-show="visible"
@@ -70,7 +70,7 @@ export default {
   opacity: 0;
 }
 
-.notification /deep/ {
+.com-notification /deep/ {
   display: inline-block;
   position: relative;
   line-height: 1.5;
