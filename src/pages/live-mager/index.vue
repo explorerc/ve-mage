@@ -5,7 +5,7 @@
     </div>
     <div class="mager-box">
       <div class="live-search">
-        <el-select v-model="searchParams.status" placeholder="请选择">
+        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="请选择">
           <el-option
             v-for="item in optionsStates"
             :key="item.value"
@@ -13,7 +13,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="searchParams.orderTime" placeholder="请选择">
+        <el-select v-model="searchParams.orderTime" @change="changeSearch" placeholder="请选择">
           <el-option
             v-for="item in optionsOrder"
             :key="item.value"
@@ -21,7 +21,9 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <ve-search v-model="searchParams.searchValue" @enter="searchEnter"/>
+        <div class="search-box">
+          <ve-search v-model="searchParams.searchValue" @enter="searchEnter"/>
+        </div>
       </div>
       <live-table :tableList="tableList"/>
     </div>
@@ -53,9 +55,25 @@
           orderTime: 0,
           searchValue: ''
         },
-        tableList: [
+        tableList: []
+      }
+    },
+    created () {
+      this.queryList()
+    },
+    methods: {
+      changeSearch () {
+        console.log(`this.searchParams:${JSON.stringify(this.searchParams)}`)
+      },
+      searchEnter () {
+        console.log('回车键')
+        console.log(`this.searchParams=${JSON.stringify(this.searchParams)}`)
+        this.queryList()
+      },
+      queryList () {
+        this.tableList = [
           {
-            id: '1',
+            id: Math.random(),
             title: 'title1',
             time: '2016-10-12',
             imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
@@ -79,11 +97,6 @@
           {id: '8', title: 'title8', time: '2016-10-12', imgUrl: ''},
           {id: '9', title: 'title9', time: '2016-10-12', imgUrl: ''}
         ]
-      }
-    },
-    methods: {
-      searchEnter () {
-        console.log('回车键')
       }
     }
   }
@@ -110,6 +123,10 @@
         margin: 20px 20px 10px 20px;
         .el-select:nth-child(2) {
           margin-left: 10px;
+        }
+        .search-box {
+          width: 220px;
+          float: right;
         }
       }
     }

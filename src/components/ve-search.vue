@@ -65,16 +65,20 @@
     }
   }
 </script>
+<style lang="scss">
+  .search-box .el-input__inner{
+      padding-right: 28px;
+  }
+</style>
 <style lang="scss" scoped>
   .search-box {
     position: relative;
-    float: right;
-    width: 200px;
+    width: 100%;
     .iconfont {
       display: block;
       position: absolute;
       top: 12px;
-      right: 7px;
+      right: 8px;
       font-size: 16px;
       color: #666;
       opacity: 0.8;
@@ -89,6 +93,9 @@
     }
     .fade-enter, .fade-leave-to {
       opacity: 0;
+    }
+    .el-input__inner{
+      padding-right: 30px;
     }
   }
 </style>
