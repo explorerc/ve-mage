@@ -9,6 +9,8 @@ const Login = () =>
   import('src/pages/login')
 const SetPassword = () =>
   import('src/pages/login/set-password')
+const Register = () =>
+  import('src/pages/login/register')
 
 export default [{
   path: '/',
@@ -38,5 +40,10 @@ export default [{
   path: '/setPassword',
   name: 'setPassword',
   component: SetPassword
+},
+{
+  path: '/register',
+  name: 'register',
+  component: Register
 }
 ]
