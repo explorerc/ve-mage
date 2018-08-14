@@ -9,12 +9,12 @@
     type="text"
     :style="style"
     :placeholder="placeholder"
-    v-model="value"
+    v-model="innerValue"
     @focus="showDelete=true"
     @blur="hideDelete"
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
-    <span class="limit" v-if="maxLength&&type!=='search'"><i class="length" v-text="value.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="limit" v-if="maxLength&&type!=='search'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
   <div v-else>
     <textarea name="" id="" cols="30" rows="10"></textarea>
@@ -27,6 +27,7 @@ export default {
   props: {
     placeholder: String,
     customClass: String,
+    value: String,
     type: {
       type: String,
       default: 'input'
@@ -35,13 +36,16 @@ export default {
   },
   data () {
     return {
-      value: '',
+      innerValue: '',
       showDelete: false
     }
   },
+  created () {
+    this.innerValue = this.value
+  },
   methods: {
     empty () {
-      this.value = ''
+      this.innerValue = ''
     },
     hideDelete () {
       console.log('bbbb')
@@ -51,10 +55,11 @@ export default {
     }
   },
   watch: {
-    value (value) {
+    innerValue (value) {
       if (this.maxLength && value.gbLength() > this.maxLength) {
-        this.value = value.substring(0, value.gbIndex(this.maxLength) + 1)
+        this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
+      this.$emit('update:value', this.innerValue)
     }
   },
   computed: {

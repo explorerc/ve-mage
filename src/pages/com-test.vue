@@ -9,7 +9,7 @@
         <p>我是content</p>
     </com-notification>
     <div class="test-wrap">
-      <com-input type="search" placeholder="请输入公司名称" :max-length="50"></com-input>
+      <com-input type="search" :value.sync="outValue" placeholder="请输入公司名称" :max-length="50" ></com-input>
     </div>
   </div>
 </template>
@@ -22,10 +22,14 @@ export default {
       show: false,
       header: 'Notification Title',
       content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
-      id: 1
+      id: 1,
+      outValue: 'asd'
     }
   },
   methods: {
+    submit () {
+      alert(111)
+    },
     testCom () {
       this.show = !this.show
     },
