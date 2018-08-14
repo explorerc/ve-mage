@@ -73,7 +73,7 @@ export default {
     },
     count: {
       type: Number,
-      default: 0
+      default: 10
     },
     fileSize: {
       type: Number,
@@ -107,7 +107,7 @@ export default {
         })
         this.queue.push(item)
       })
-      if (this.multiple && this.cofileCountunt > 0 && this.queue.length > this.fileCount) {
+      if (this.multiple && this.count > 0 && this.queue.length > this.fileCount) {
         this.$emit('error', {code: 501})
         return
       }
