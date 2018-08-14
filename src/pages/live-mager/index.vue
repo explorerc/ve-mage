@@ -31,18 +31,11 @@
       </div>
       <live-table :tableList="tableList" @handleClick="handleClick"/>
     </div>
-    <!--<com v-if="show"-->
-    <!--header="提示11"-->
-    <!--content="活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？"-->
-    <!--confirmText='仍要删除'-->
-    <!--@handleClick="btnClick">-->
-    <!--</com>-->
   </div>
 </template>
 
 <script>
   import LiveTable from './live/live-table'
-  // import com from 'src/components/common/message-box/com'
 
   export default {
     name: 'index',
@@ -85,8 +78,13 @@
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
             cancelText: '暂不删除',
             confirmText: '仍要删除',
-            action: (e) => {
+            handleClick: (e) => {
               console.log(e)
+              if (e.action === 'cancel') {
+                console.log('取消或者关闭按钮')
+              } else if (e.action === 'confirm') {
+                console.log('点击了确定按钮')
+              }
             }
           })
         }
