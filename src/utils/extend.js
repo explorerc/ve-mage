@@ -10,7 +10,9 @@ Date.prototype.format = function (fmt) {
     'S': this.getMilliseconds()
   }
   if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length))
-  for (var k in o) { if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length))) }
+  for (var k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+  }
   return fmt
 }
 
@@ -21,20 +23,36 @@ String.prototype.formatDate = function (fmt) {
   return result.format(fmt)
 }
 
-String.prototype.gblength = function () {
+String.prototype.gbLength = function () {
   var l = this.length
   var blen = 0
   for (let i = 0; i < l; i++) {
     if ((this.charCodeAt(i) & 0xff00) !== 0) {
-      blen += 1
+      blen += 2
     } else {
-      blen += 0.5
+      blen += 1
     }
   }
-  if (blen < 1) {
-    blen = Math.floor(blen)
-  } else {
-    blen = Math.ceil(blen)
-  }
   return blen
+}
+
+String.prototype.gbIndex = function (length) {
+  let l = this.length
+  let blen = 0
+  let index = 0
+  for (let i = 0; i < l; i++) {
+    if ((this.charCodeAt(i) & 0xff00) !== 0) {
+      blen += 2
+    } else {
+      blen += 1
+    }
+    if (blen === length) {
+      index = i
+      break
+    } else if (blen > length) {
+      index = i - 1
+      break
+    }
+  }
+  return index
 }
