@@ -65,9 +65,12 @@ export default {
   computed: {
     style () {
       const ret = {}
+
       if (this.type === 'search') {
         ret.paddingLeft = '30px'
         ret.paddingRight = '30px'
+      } else if (this.maxLength) {
+        ret.paddingRight = '45px'
       }
       return ret
     }
@@ -78,6 +81,7 @@ export default {
 <style lang="scss" scoped>
 .com-input /deep/ {
   position: relative;
+  display: inline-block;
   width: 200px;
   input {
     display: inline-block;
