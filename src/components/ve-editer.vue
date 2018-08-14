@@ -1,5 +1,5 @@
 <template>
-  <div id="quill-upload" :style="editHeight">
+  <div id="quill-upload" >
     <!-- 图片上传组件辅助-->
     <el-upload
       class="avatar-uploader"
@@ -11,7 +11,7 @@
       :before-upload="beforeUpload">
     </el-upload>
     <!--富文本编辑器组件-->
-    <el-row v-loading="quillUpdateImg">
+    <el-row v-loading="quillUpdateImg" :style="editHeight">
       <quill-editor
         ref="myQuillEditor"
         v-model="editerContent"
@@ -89,7 +89,7 @@
     },
     computed: {
       editHeight () {
-        return {height: this.height.indexOf('%') !== -1 ? this.height : (this.height + 'px')}
+        return {height: this.height.indexOf('%') !== -1 ? this.height : (this.height - 21 + 'px')}
       }
     },
     watch: {
@@ -144,7 +144,7 @@
 
 <style lang="scss">
 #quill-upload {
-  height: 300px;
+  // height: 300px;
   .el-row {
     height: 100%;
     .quill-editor {
@@ -156,6 +156,9 @@
     .ql-toolbar.ql-snow .ql-formats {
       margin-right: 0px;
     }
+  }
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    height: calc(100% - 42px);
   }
 }
 </style>

@@ -6,6 +6,7 @@ const Test = () =>
 const LiveMager = () => import('src/pages/live-mager')
 
 const edit = () => import('src/pages/live-mager/edit')
+const detail = () => import('src/pages/live-mager/detail')
 
 export default [
   {
@@ -36,5 +37,15 @@ export default [
     path: '/liveMager/edit/:id',
     name: 'liveMager',
     component: edit
+  },
+  {
+    path: '/liveMager/detail',
+    name: 'liveMager',
+    component: detail
+  },
+  {
+    path: '/liveMager/detail/:id',
+    name: 'liveMager',
+    component: detail
   }
 ]
