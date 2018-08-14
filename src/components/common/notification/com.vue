@@ -1,10 +1,13 @@
 <template>
   <transition name="fade" @after-enter="afterEnter" @after-leave="afterLeave">
     <div
-    class="notification"
+    class="com-notification"
     :class="customClass"
     :style="style"
-    v-show="visible">
+    v-show="visible"
+    @mouseenter="clearTask"
+    @mouseleave="createTask"
+    >
       <div class="header">
         <span class="title" v-if="!this.$slots.header&&header">{{header}}</span>
         <slot name="header"></slot>
@@ -44,7 +47,9 @@ export default {
     afterEnter () {},
     afterLeave () {
       this.$emit('closed')
-    }
+    },
+    createTask () {},
+    clearTask () {}
   },
   computed: {
     style () {
@@ -65,7 +70,7 @@ export default {
   opacity: 0;
 }
 
-.notification /deep/ {
+.com-notification /deep/ {
   display: inline-block;
   position: relative;
   line-height: 1.5;
