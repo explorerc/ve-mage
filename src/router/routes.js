@@ -39,11 +39,6 @@ export default [
     component: edit
   },
   {
-    path: '/liveMager/detail',
-    name: 'liveMager',
-    component: detail
-  },
-  {
     path: '/liveMager/detail/:id',
     name: 'liveMager',
     component: detail
