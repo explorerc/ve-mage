@@ -48,7 +48,6 @@ export default {
       this.innerValue = ''
     },
     hideDelete () {
-      console.log('bbbb')
       setTimeout(() => {
         this.showDelete = false
       }, 200)

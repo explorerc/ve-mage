@@ -3,26 +3,54 @@ const Entry = () =>
   import('src/pages/interact/entry')
 const Test = () =>
   import('src/pages/com-test')
-const LiveMager = () => import('src/pages/live-mager')
+const LiveMager = () =>
+  import('src/pages/live-mager')
+const Login = () =>
+  import('src/pages/login')
+const SetPassword = () =>
+  import('src/pages/login/set-password')
+const Register = () =>
+  import('src/pages/login/register')
+const Barrage = () =>
+  import('src/pages/barrage/index')
 
-export default [
-  {
-    path: '/',
-    redirect: '/entry'
-  },
-  {
-    path: '/entry',
-    name: 'Entry',
-    component: Entry
-  },
-  {
-    path: '/test',
-    name: 'Test',
-    component: Test
-  },
-  {
-    path: '/liveMager',
-    name: 'liveMager',
-    component: LiveMager
-  }
+export default [{
+  path: '/',
+  redirect: '/entry'
+},
+{
+  path: '/entry',
+  name: 'Entry',
+  component: Entry
+},
+{
+  path: '/test',
+  name: 'Test',
+  component: Test
+},
+{
+  path: '/liveMager',
+  name: 'liveMager',
+  component: LiveMager
+},
+{
+  path: '/login',
+  name: 'login',
+  component: Login
+},
+{
+  path: '/setPassword',
+  name: 'setPassword',
+  component: SetPassword
+},
+{
+  path: '/register',
+  name: 'register',
+  component: Register
+},
+{
+  path: '/barrage',
+  name: 'Barrage',
+  component: Barrage
+}
 ]
