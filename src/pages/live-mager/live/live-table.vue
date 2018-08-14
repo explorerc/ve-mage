@@ -31,7 +31,6 @@
 <style lang="scss" scoped>
   .live-list {
     margin: 10px;
-    overflow: hidden;
     .live-item {
       float: left;
       margin: 10px;

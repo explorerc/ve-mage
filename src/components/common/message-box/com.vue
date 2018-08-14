@@ -32,7 +32,7 @@
     name: 'message-box',
     data () {
       return {
-        visible: false,
+        visible: true,
         action: {
           cancel: 'cancel',
           confirm: 'confirm'

@@ -1,5 +1,9 @@
 <template>
   <div class="live-item" :style="{height: this.height+'px'}">
+    <span v-if='liveData.type=="preview"' class="live-state" style="background-color: #5ea6ec;">预告</span>
+    <span v-if='liveData.type=="live"' class="live-state" style="background-color: #fc5659;">直播</span>
+    <span v-if='liveData.type=="playBack"' class="live-state" style="background-color: #2ab804;">回放</span>
+    <span v-if='liveData.type=="liveEnd"' class="live-state" style="background-color: #999;">结束</span>
     <div class="live-img" :style="imgStyle"></div>
     <div class="live-md">
       <span>{{liveData.title}}</span>
@@ -21,7 +25,6 @@
 
   </div>
 </template>
-
 <script>
   const action = {
     roleInfo: {
@@ -56,6 +59,7 @@
         default: {
           id: 0,
           title: '-',
+          type: '-',
           imgUrl: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           time: '0000-00-00 00-00'
         }
@@ -75,7 +79,7 @@
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', {...action, ...this.liveData.id})
+        this.$emit('handleClick', {...action, id: this.liveData.id})
       }
     }
   }
@@ -85,6 +89,7 @@
   @import "~assets/css/mixin";
 
   .live-item {
+    position: relative;
     min-width: 228px;
     border-radius: 2px;
     font-size: 14px;
@@ -94,6 +99,14 @@
       transition: box-shadow .3s;
       box-shadow: none;
       cursor: pointer;
+    }
+    .live-state {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #fff;
+      padding: 2px 4px;
+      font-size: 12px;
     }
     .live-img {
       height: calc(100% - 84px);
@@ -145,6 +158,7 @@
           background-color: #fff;
           border: solid 1px #e5e5e5;
           box-sizing: content-box;
+          z-index: 2;
           span {
             display: block;
             text-align: center;
