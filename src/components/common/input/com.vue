@@ -48,7 +48,6 @@ export default {
       this.innerValue = ''
     },
     hideDelete () {
-      console.log('bbbb')
       setTimeout(() => {
         this.showDelete = false
       }, 200)
@@ -96,11 +95,6 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    &.padding-left {
-    }
-    &.padding-right {
-      padding-right: 45px;
-    }
     &:hover {
       border-color: #40a9ff;
     }

@@ -12,11 +12,13 @@ import 'assets/fonts/iconfont.scss'
 
 import Notification from './components/common/notification'
 import Input from './components/common/input'
+import Upload from './components/common/upload'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(Notification)
 Vue.use(Input)
+Vue.use(Upload)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
