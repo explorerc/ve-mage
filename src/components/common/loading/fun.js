@@ -6,26 +6,37 @@ let instance = null
 export default (options = {}) => {
   let state = true
   let loadingText
+  let target
   if (options === false) {
     state = false
   } else {
     ({
-      loadingText
+      loadingText,
+      target
     } = options)
   }
 
   if (!instance && state) {
     instance = new ComConstructor({
       propsData: {
-        loadingText: loadingText === undefined ? 'Loading' : loadingText
+        loadingText: loadingText === undefined ? 'Loading' : loadingText,
+        relative: !!target
       }
     })
 
     instance.vm = instance.$mount()
-    document.body.appendChild(instance.vm.$el)
+    let root = document.body
+    setTimeout(() => {
+      if (target && document.querySelector(target)) {
+        root = document.querySelector(target)
+      }
+      root.appendChild(instance.vm.$el)
+    }, 0)
   } else {
-    instance.vm.visible = state
+    if (instance) {
+      instance.vm.visible = state
+    }
   }
 
-  return instance.vm
+  return instance ? instance.vm : null
 }
