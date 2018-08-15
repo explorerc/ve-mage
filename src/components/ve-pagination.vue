@@ -28,9 +28,6 @@
         default: 1
       }
     },
-    created () {
-      this.changePage(1)
-    },
     methods: {
       changePage (num) {
         this.$emit('changePage', num)

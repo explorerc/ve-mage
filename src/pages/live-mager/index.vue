@@ -13,7 +13,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="searchParams.orderBy" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.sortBy" @change="changeSearch" placeholder="请选择">
           <el-option
             v-for="item in optionsOrder"
             :key="item.value"
@@ -30,11 +30,13 @@
         </div>
       </div>
       <live-table :tableList="tableList" @handleClick="handleClick"/>
-      <div class="page-pagination">
-        <ve-pagination
-          :total="total"
-          :pageSize="pageSize"
-          @changePage="changePage"/>
+      <div class="pagination-box">
+        <div class="page-pagination">
+          <ve-pagination
+            :total="total"
+            :pageSize="pageSize"
+            @changePage="changePage"/>
+        </div>
       </div>
     </div>
   </div>
@@ -61,12 +63,12 @@
           {value: 'PLAYBACK', label: '回放'}
         ],
         optionsOrder: [
-          {value: 'created_at', label: '按创建时间排序'},
-          {value: 'start_time', label: '按直播开始时间排序'}
+          {value: 'createTime', label: '按创建时间排序'},
+          {value: 'startTime', label: '按直播开始时间排序'}
         ],
         searchParams: {
           status: '',
-          orderBy: 'start_time',
+          sortBy: 'createTime',
           keyword: '',
           page: 1,
           pageSize: 8
@@ -168,9 +170,13 @@
           float: right;
         }
       }
+      .pagination-box{
+        width: 100%;
+        overflow: hidden;
+      }
       .page-pagination {
-        float: right;
         margin: 10px 10px 20px 0;
+        float: right;
       }
     }
   }
