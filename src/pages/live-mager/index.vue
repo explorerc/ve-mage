@@ -1,5 +1,5 @@
 <template>
-  <div class="live-mager">
+  <div class="live-mager" v-loading="loading">
     <div class="live-title">
       <span>直播列表</span>
     </div>
@@ -52,6 +52,7 @@
       return {
         show: false,
         pageSize: 8,
+        loading: false,
         optionsStates: [
           {value: '', label: '全部'},
           {value: 'PREPARE', label: '预告'},
@@ -60,12 +61,12 @@
           {value: 'PLAYBACK', label: '回放'}
         ],
         optionsOrder: [
-          {value: 'createAt', label: '按创建时间排序'},
-          {value: 'startTime', label: '按照直播开始时间排序'}
+          {value: 'created_at', label: '按创建时间排序'},
+          {value: 'start_time', label: '按直播开始时间排序'}
         ],
         searchParams: {
           status: '',
-          orderBy: 'createAt',
+          orderBy: 'start_time',
           keyword: '',
           page: 1,
           pageSize: 8
@@ -76,7 +77,8 @@
           wxchart: '',
           qq: ''
         },
-        tableList: []
+        tableList: [],
+        total: 0
       }
     },
     created () {
@@ -98,8 +100,7 @@
           this.$messageBox({
             header: '删除活动',
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
-            // cancelText: '暂不删除',
-            autoClose: 60,
+            cancelText: '暂不删除',
             confirmText: '仍要删除',
             handleClick: (e) => {
               console.log(e)
@@ -116,48 +117,26 @@
       },
       changePage (currentPage) {
         this.searchParams.page = currentPage
-        console.log(`点击了第${currentPage}页`)
+        this.queryList()
       },
       changeSearch () {
-        console.log(`this.searchParams:${JSON.stringify(this.searchParams)}`)
+        this.queryList()
       },
       searchEnter () {
-        console.log('回车键')
-        console.log(`this.searchParams=${JSON.stringify(this.searchParams)}`)
         this.queryList()
       },
       queryList () {
+        this.loading = true
         liveHttp.queryList(this.searchParams).then((res) => {
-
+          console.log(res)
+          this.loading = false
+          if (res.code === 200) {
+            this.tableList = res.data.list
+            this.total = res.data.total
+          }
+        }).catch(() => {
+          this.loading = false
         })
-        this.tableList = [
-          {
-            id: Math.random(),
-            title: 'title1',
-            time: '2016-10-12',
-            type: 'live',
-            imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
-          },
-          {
-            id: '2',
-            title: 'title2',
-            time: '2016-10-12',
-            type: 'live',
-            imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
-          },
-          {
-            id: '4',
-            title: 'title4',
-            time: '2016-10-12',
-            type: 'playBack',
-            imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
-          },
-          {id: '5', title: 'title5', time: '2016-10-12', type: 'liveEnd', imgUrl: ''},
-          {id: '6', title: 'title6', time: '2016-10-12', type: 'playBack', imgUrl: ''},
-          {id: '7', title: 'title7', time: '2016-10-12', type: 'playBack', imgUrl: ''},
-          {id: '8', title: 'title8', time: '2016-10-12', type: 'preview', imgUrl: ''},
-          {id: '9', title: 'title9', time: '2016-10-12', type: 'playBack', imgUrl: ''}
-        ]
       }
     }
   }
@@ -170,6 +149,7 @@
     border: 1px solid $color-bd;
     background-color: $color-bg;
     border-radius: 5px;
+    overflow: hidden;
     .live-title {
       line-height: 50px;
       border-bottom: 1px solid $color-bd;

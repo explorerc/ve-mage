@@ -1,13 +1,13 @@
 <template>
   <div class="live-item" :style="{height: this.height+'px'}">
-    <span v-if='liveData.type=="preview"' class="live-state" style="background-color: #5ea6ec;">预告</span>
-    <span v-if='liveData.type=="live"' class="live-state" style="background-color: #fc5659;">直播</span>
-    <span v-if='liveData.type=="playBack"' class="live-state" style="background-color: #2ab804;">回放</span>
-    <span v-if='liveData.type=="liveEnd"' class="live-state" style="background-color: #999;">结束</span>
+    <span v-if='liveData.status=="PREPARE"' class="live-state" style="background-color: #5ea6ec;">预告</span>
+    <span v-if='liveData.status=="LIVING"' class="live-state" style="background-color: #fc5659;">直播</span>
+    <span v-if='liveData.status=="PLAYBACK"' class="live-state" style="background-color: #2ab804;">回放</span>
+    <span v-if='liveData.status=="FINISH"' class="live-state" style="background-color: #999;">结束</span>
     <div class="live-img" :style="imgStyle"></div>
     <div class="live-md">
       <span>{{liveData.title}}</span>
-      <span class="time">{{liveData.time}}</span>
+      <span class="time">{{time}}</span>
     </div>
     <div class="live-bottom">
       <span class="item" @click.stop="handleClick(action.roleInfo)">角色信息</span>
@@ -59,14 +59,14 @@
         default: {
           id: 0,
           title: '-',
-          type: '-',
+          status: '-',
           imgUrl: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          time: '0000-00-00 00-00'
+          startTime: '0000-00-00 00-00'
         }
       },
       height: {
         type: String,
-        default: '218'
+        default: '220'
       }
     },
     computed: {
@@ -75,11 +75,14 @@
         return {
           backgroundImage: 'url(' + imgUrl + ')'
         }
+      },
+      time () {
+        return this.liveData.startTime.substring(0, 16)
       }
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', {...action, id: this.liveData.id})
+        this.$emit('handleClick', {...action, userId: this.liveData.userId, id: this.liveData.id})
       }
     }
   }
@@ -110,6 +113,7 @@
     .live-img {
       height: calc(100% - 84px);
       background-size: cover;
+      border-bottom: 1px solid $color-bd;
       background-position: center center;
     }
     .live-md {

@@ -7,8 +7,8 @@ import createStore from './store'
 import createRouter from './router'
 import './utils/extend'
 
-// import 'assets/css/base.scss'
-// import 'assets/fonts/iconfont.scss'
+import 'assets/css/base.scss'
+import 'assets/fonts/iconfont.scss'
 
 import Notification from './components/common/notification'
 import Input from './components/common/input'
