@@ -98,7 +98,8 @@
           this.$messageBox({
             header: '删除活动',
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
-            cancelText: '暂不删除',
+            // cancelText: '暂不删除',
+            autoClose: 60,
             confirmText: '仍要删除',
             handleClick: (e) => {
               console.log(e)

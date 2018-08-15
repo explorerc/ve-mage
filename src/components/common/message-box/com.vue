@@ -34,6 +34,7 @@
       return {
         visible: true,
         closeTime: 0,
+        intervalTime: 0,
         action: {
           cancel: 'cancel',
           confirm: 'confirm'
@@ -67,9 +68,11 @@
         handler (newVal) {
           if (!newVal) return
           this.closeTime = newVal
-          const st = setInterval(() => {
+          clearInterval(this.intervalTime)
+          this.intervalTime = setInterval(() => {
+            console.log('-------')
             if (!this.closeTime--) {
-              clearInterval(st)
+              clearInterval(this.intervalTime)
               this.$emit('handleClick', {
                 action: 'cancel'
               })
@@ -78,6 +81,9 @@
         },
         immediate: true
       }
+    },
+    destroyed () {
+      clearInterval(this.intervalTime)
     },
     methods: {
       handleClick (action) {
