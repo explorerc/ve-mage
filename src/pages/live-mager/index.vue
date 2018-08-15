@@ -75,12 +75,6 @@
           page: 1,
           pageSize: 8
         },
-        shareLink: {
-          liveLink: '',
-          weibo: '',
-          wxchart: '',
-          qq: ''
-        },
         tableList: [],
         total: 0
       }
@@ -136,7 +130,7 @@
         })
       },
       share (item) {
-        this.shareLink = {
+        this.$share({
           link: 'https://live.vhall.com/261678795',
           data: {
             title: item.title,
@@ -144,8 +138,7 @@
             summary: 'summary',
             pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
           }
-        }
-        this.$share(this.shareLink)
+        })
       }
     }
   }
