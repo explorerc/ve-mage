@@ -33,7 +33,7 @@
 </template>
 
 <script>
-// import testService from 'src/api/test'
+import testService from 'src/api/test'
 import {Toast} from 'components/common/notification'
 
 export default {
@@ -51,15 +51,15 @@ export default {
     }
   },
   created () {
-    this.$loading({target: '.test-wrap'})
-    // testService.login({
-    //   username: 18513848725,
-    //   password: 'm123123',
-    //   type: 1,
-    //   remeber: 1
-    // }).then((res) => {
-    //   console.log('登陆成功')
-    // })
+    // this.$loading({target: '.test-wrap'})
+    testService.login({
+      username: 18513848725,
+      password: 'm123123',
+      type: 1,
+      remeber: 1
+    }).then((res) => {
+      console.log('登陆成功')
+    })
   },
   methods: {
     uploadSelected (data) {
