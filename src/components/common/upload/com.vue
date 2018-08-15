@@ -77,7 +77,7 @@ export default {
     },
     totalCount: {
       type: Number,
-      default: 0
+      default: 1
     },
     fileSize: {
       type: Number,
@@ -102,12 +102,20 @@ export default {
       this.list = []
       this.queue = []
       this.error = []
+
       let fileSize = this.fileSize * 1000
       Array.prototype.forEach.call(this.$refs.upload.files, (item, index) => {
         if (item.size > fileSize) {
           this.error.push({
+            state: 'size-limit',
             name: item.name,
             size: item.size
+          })
+        } else if (this.acceptStr.indexOf(item.type) === -1) {
+          this.error.push({
+            state: 'type-limit',
+            name: item.name,
+            type: item.type
           })
         } else {
           this.list.push({
@@ -117,12 +125,12 @@ export default {
           this.queue.push(item)
         }
       })
-      if (this.currentCount + this.list.length > this.totalCount) {
-        this.$emit('error', {code: 501})
+      if (this.error.length > 0) {
+        this.$emit('error', {code: 503, data: this.error})
         return
       }
-      if (this.error.length > 0) {
-        this.$emit('error', {code: 502, data: this.error})
+      if (this.currentCount + this.list.length > this.totalCount) {
+        this.$emit('error', {code: 502})
         return
       }
       this.$emit('selected', {data: this.list})
@@ -163,7 +171,7 @@ export default {
         this.doWork()
       }
       xhr.onerror = (e) => {
-        this.$emit('error', {name: this.current, code: 503, error: e})
+        this.$emit('error', {name: this.current, code: 501, error: e})
       }
       xhr.send(formData)
     }
