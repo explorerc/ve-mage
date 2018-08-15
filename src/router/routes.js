@@ -3,44 +3,71 @@ const Entry = () =>
   import('src/pages/interact/entry')
 const Test = () =>
   import('src/pages/com-test')
-const LiveMager = () => import('src/pages/live-mager')
-
+const LiveMager = () =>
+  import('src/pages/live-mager')
+const Login = () =>
+  import('src/pages/login')
+const SetPassword = () =>
+  import('src/pages/login/set-password')
+const Register = () =>
+  import('src/pages/login/register')
+const Barrage = () =>
+  import('src/pages/barrage/index')
 const edit = () => import('src/pages/live-mager/edit')
 const detail = () => import('src/pages/live-mager/detail')
 
-export default [
-  {
-    path: '/',
-    redirect: '/entry'
-  },
-  {
-    path: '/entry',
-    name: 'Entry',
-    component: Entry
-  },
-  {
-    path: '/test',
-    name: 'Test',
-    component: Test
-  },
-  {
-    path: '/liveMager',
-    name: 'liveMager',
-    component: LiveMager
-  },
-  {
-    path: '/liveMager/edit',
-    name: 'liveMager3',
-    component: edit
-  },
-  {
-    path: '/liveMager/edit/:id',
-    name: 'liveMager1',
-    component: edit
-  },
-  {
-    path: '/liveMager/detail/:id',
-    name: 'liveMager2',
-    component: detail
-  }
+export default [{
+  path: '/',
+  redirect: '/entry'
+},
+{
+  path: '/entry',
+  name: 'Entry',
+  component: Entry
+},
+{
+  path: '/test',
+  name: 'Test',
+  component: Test
+},
+{
+  path: '/liveMager',
+  name: 'liveMager',
+  component: LiveMager
+},
+{
+  path: '/login',
+  name: 'login',
+  component: Login
+},
+{
+  path: '/setPassword',
+  name: 'setPassword',
+  component: SetPassword
+},
+{
+  path: '/register',
+  name: 'register',
+  component: Register
+},
+{
+  path: '/barrage',
+  name: 'Barrage',
+  component: Barrage
+},
+{
+  path: '/liveMager/edit',
+  name: 'create',
+  component: edit
+},
+{
+  path: '/liveMager/edit/:id',
+  name: 'edit',
+  component: edit
+},
+{
+  path: '/liveMager/detail/:id',
+  name: 'liveMadetailger2',
+  component: detail
+}
 ]

@@ -13,7 +13,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="searchParams.orderTime" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.orderBy" @change="changeSearch" placeholder="请选择">
           <el-option
             v-for="item in optionsOrder"
             :key="item.value"
@@ -22,46 +22,102 @@
           </el-option>
         </el-select>
         <div class="search-box">
-          <ve-search v-model="searchParams.searchValue" @enter="searchEnter"/>
+          <com-input
+            type="search"
+            :value.sync="searchParams.keyword"
+            @keyup.native.enter="searchEnter"
+            placeholder="输入直播名称"></com-input>
         </div>
       </div>
-      <live-table :tableList="tableList"/>
+      <live-table :tableList="tableList" @handleClick="handleClick"/>
+      <div class="page-pagination">
+        <ve-pagination
+          :total="total"
+          :pageSize="pageSize"
+          @changePage="changePage"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import VeSearch from 'src/components/ve-search'
+  import liveHttp from 'src/api/live-manger'
   import LiveTable from './live/live-table'
+  import VePagination from 'src/components/ve-pagination'
 
   export default {
     name: 'index',
-    components: {LiveTable, VeSearch},
+    components: {LiveTable, VePagination},
     data () {
       return {
+        show: false,
+        pageSize: 8,
         optionsStates: [
-          {value: 0, label: '全部'},
-          {value: 1, label: '预告'},
-          {value: 2, label: '直播中'},
-          {value: 3, label: '已结束'},
-          {value: 4, label: '回放'}
+          {value: '', label: '全部'},
+          {value: 'PREPARE', label: '预告'},
+          {value: 'LIVING', label: '直播中'},
+          {value: 'FINISH', label: '已结束'},
+          {value: 'PLAYBACK', label: '回放'}
         ],
         optionsOrder: [
-          {value: 0, label: '按创建时间排序'},
-          {value: 1, label: '按照时间直播时间排序'}
+          {value: 'createAt', label: '按创建时间排序'},
+          {value: 'startTime', label: '按照直播开始时间排序'}
         ],
         searchParams: {
-          status: 0,
-          orderTime: 0,
-          searchValue: ''
+          status: '',
+          orderBy: 'createAt',
+          keyword: '',
+          page: 1,
+          pageSize: 8
+        },
+        shareLink: {
+          liveLink: '',
+          weibo: '',
+          wxchart: '',
+          qq: ''
         },
         tableList: []
       }
     },
     created () {
       this.queryList()
+      this.shareLink = {
+        liveLink: 'www.baidu.com',
+        weibo: 'https://www.baidu.com',
+        wxchart: 'http://aliqr.e.vhall.com/qr.png?t=https%3A%2F%2Ft.e.vhall.com%2F458577184%3FshareId%3Du-16420545-3',
+        qq: 'https://www.baidu.com'
+      }
     },
     methods: {
+      closeShare () {
+        this.show = false
+      },
+      handleClick (event) {
+        console.log(event)
+        if (event.type === 'delete') { // 编辑删除
+          this.$messageBox({
+            header: '删除活动',
+            content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
+            // cancelText: '暂不删除',
+            autoClose: 60,
+            confirmText: '仍要删除',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+                console.log('取消或者关闭按钮')
+              } else if (e.action === 'confirm') {
+                console.log('点击了确定按钮')
+              }
+            }
+          })
+        } else if (event.type === 'share') { // 分享观看页
+          this.$share(this.shareLink)
+        }
+      },
+      changePage (currentPage) {
+        this.searchParams.page = currentPage
+        console.log(`点击了第${currentPage}页`)
+      },
       changeSearch () {
         console.log(`this.searchParams:${JSON.stringify(this.searchParams)}`)
       },
@@ -71,31 +127,36 @@
         this.queryList()
       },
       queryList () {
+        liveHttp.queryList(this.searchParams).then((res) => {
+
+        })
         this.tableList = [
           {
             id: Math.random(),
             title: 'title1',
             time: '2016-10-12',
+            type: 'live',
             imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
           },
           {
             id: '2',
             title: 'title2',
             time: '2016-10-12',
+            type: 'live',
             imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
           },
-          {id: '3', title: 'title3', time: '2016-10-12', imgUrl: ''},
           {
             id: '4',
             title: 'title4',
             time: '2016-10-12',
+            type: 'playBack',
             imgUrl: 'http://pic.qiantucdn.com/58pic/25/56/39/583981a13bc61_1024.jpg'
           },
-          {id: '5', title: 'title5', time: '2016-10-12', imgUrl: ''},
-          {id: '6', title: 'title6', time: '2016-10-12', imgUrl: ''},
-          {id: '7', title: 'title7', time: '2016-10-12', imgUrl: ''},
-          {id: '8', title: 'title8', time: '2016-10-12', imgUrl: ''},
-          {id: '9', title: 'title9', time: '2016-10-12', imgUrl: ''}
+          {id: '5', title: 'title5', time: '2016-10-12', type: 'liveEnd', imgUrl: ''},
+          {id: '6', title: 'title6', time: '2016-10-12', type: 'playBack', imgUrl: ''},
+          {id: '7', title: 'title7', time: '2016-10-12', type: 'playBack', imgUrl: ''},
+          {id: '8', title: 'title8', time: '2016-10-12', type: 'preview', imgUrl: ''},
+          {id: '9', title: 'title9', time: '2016-10-12', type: 'playBack', imgUrl: ''}
         ]
       }
     }
@@ -109,7 +170,6 @@
     border: 1px solid $color-bd;
     background-color: $color-bg;
     border-radius: 5px;
-    overflow: hidden;
     .live-title {
       line-height: 50px;
       border-bottom: 1px solid $color-bd;
@@ -125,9 +185,12 @@
           margin-left: 10px;
         }
         .search-box {
-          width: 220px;
           float: right;
         }
+      }
+      .page-pagination {
+        float: right;
+        margin: 10px 10px 20px 0;
       }
     }
   }

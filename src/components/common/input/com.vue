@@ -6,7 +6,7 @@
   >
     <i v-if="type==='search'" class="iconfont icon-search"></i>
     <input
-    type="text"
+    :type="inputType"
     :style="style"
     :placeholder="placeholder"
     v-model="innerValue"
@@ -14,7 +14,8 @@
     @blur="hideDelete"
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
-    <span class="limit" v-if="maxLength&&type!=='search'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
+    <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
   <div v-else>
     <textarea name="" id="" cols="30" rows="10"></textarea>
@@ -37,21 +38,41 @@ export default {
   data () {
     return {
       innerValue: '',
-      showDelete: false
+      showDelete: false,
+      inputType: ''
     }
   },
   created () {
     this.innerValue = this.value
+    this.inputType = this.getType()
   },
   methods: {
     empty () {
       this.innerValue = ''
     },
+    toggleShow () {
+      if (this.inputType === 'password') {
+        this.inputType = 'text'
+      } else {
+        this.inputType = 'password'
+      }
+    },
     hideDelete () {
-      console.log('bbbb')
       setTimeout(() => {
         this.showDelete = false
       }, 200)
+    },
+    getType () {
+      let type = ''
+      switch (this.type) {
+        case 'password':
+          type = 'password'
+          break
+        default:
+          type = 'text'
+          break
+      }
+      return type
     }
   },
   watch: {
@@ -96,11 +117,6 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    &.padding-left {
-    }
-    &.padding-right {
-      padding-right: 45px;
-    }
     &:hover {
       border-color: #40a9ff;
     }
@@ -136,13 +152,22 @@ export default {
     transform: translateY(-50%);
     left: 8px;
   }
-  .icon-delete {
+  .icon-right-center {
     color: #999999;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     right: 8px;
     cursor: pointer;
+  }
+  .icon-delete {
+    @extend .icon-right-center;
+  }
+  .icon-guanbi-yanjing {
+    @extend .icon-right-center;
+  }
+  .icon-faxian-yanjing {
+    @extend .icon-right-center;
   }
 }
 </style>

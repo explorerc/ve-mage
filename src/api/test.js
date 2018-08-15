@@ -1,14 +1,11 @@
 import utils from 'src/utils'
 
 const test = {
-  login ({ account, password }) {
+  login (data) {
     return utils.ajax({
       method: 'post',
-      url: '/edu/user/login',
-      params: {
-        account,
-        password
-      }
+      url: '/edu/user/captcha-login',
+      params: data
     })
   },
   getCode (params) {
