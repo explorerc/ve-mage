@@ -14,7 +14,7 @@
     @blur="hideDelete"
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
-    <i v-if="type==='password'||inputType==='text'" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
+    <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
     <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
   <div v-else>

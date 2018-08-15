@@ -45,7 +45,7 @@ export default {
       exParams: {
         joinID: '123123'
       },
-      fileSize: 100
+      fileSize: 10000
     }
   },
   created () {
