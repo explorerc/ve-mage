@@ -71,9 +71,13 @@ export default {
       type: Boolean,
       default: false
     },
-    count: {
+    currentCount: {
       type: Number,
-      default: 10
+      default: 0
+    },
+    totalCount: {
+      type: Number,
+      default: 0
     },
     fileSize: {
       type: Number,
@@ -83,9 +87,9 @@ export default {
   data () {
     return {
       current: '',
-      total: 0,
       queue: [],
-      list: []
+      list: [],
+      error: []
     }
   },
   methods: {
@@ -95,27 +99,33 @@ export default {
     },
     startUpload (e) {
       this.current = ''
-      this.total = 0
       this.list = []
       this.queue = []
+      this.error = []
       let fileSize = this.fileSize * 1000
       Array.prototype.forEach.call(this.$refs.upload.files, (item, index) => {
-        this.total += item.size
-        this.list.push({
-          name: item.name,
-          size: item.size
-        })
-        this.queue.push(item)
+        if (item.size > fileSize) {
+          this.error.push({
+            name: item.name,
+            size: item.size
+          })
+        } else {
+          this.list.push({
+            name: item.name,
+            size: item.size
+          })
+          this.queue.push(item)
+        }
       })
-      if (this.multiple && this.count > 0 && this.queue.length > this.fileCount) {
+      if (this.currentCount + this.list.length > this.totalCount) {
         this.$emit('error', {code: 501})
         return
       }
-      if (this.total > fileSize) {
-        this.$emit('error', {code: 502})
+      if (this.error.length > 0) {
+        this.$emit('error', {code: 502, data: this.error})
         return
       }
-      this.$emit('selected', this.list)
+      this.$emit('selected', {data: this.list})
       if (this.queue.length > 0) {
         this.doWork()
       }
