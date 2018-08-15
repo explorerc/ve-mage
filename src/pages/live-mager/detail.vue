@@ -8,9 +8,9 @@
         <p>互动标签:<span class="tag" v-for="item in desc.tagList">{{item}}</span></p>
       </div>
       <div class="right">
-        <span><a href="">活动官网</a></span>
-        <span><a href="">直播观看页</a></span>
-        <span @click='update'>发布/下线活动</span>
+        <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">活动官网</a></span>
+        <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">直播观看页</a></span>
+        <span @click='update'>{{state == 1 ? '发布活动' : '下线活动'}}</span>
         <span><a href="">进入直播间</a></span>
       </div>
     </div>
@@ -87,13 +87,14 @@
         </div>
       </div>
     </div>
-    <message-box v-if="msgShow" header="提示" content="活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？" cancelText="取消" confirmText='删除' @handleClick="btnClick">
+    <message-box v-if="msgShow" header="" content="" cancelText="" confirmText='' @handleClick="btnClick">
     </message-box>
   </div>
 </template>
 
 <script>
   import processCard from 'components/process-card'
+  import messageBox from 'components/common/message-box'
   export default {
     data () {
       return {
@@ -102,9 +103,9 @@
           id: '',
           tagList: [],
           startTime: '',
-          state: '',
           stateClass: ''
         },
+        state: '',
         cardData: {},
         msgShow: false
       }
@@ -112,10 +113,11 @@
     created () {
       // 假数据
       this.desc.title = '2018GIMIC互联网大会'
-      this.desc.id = '123456'
+      this.desc.id = this.$route.params.id
       this.desc.tagList = ['科技', '发布会', '标签三']
       this.desc.startTime = '2018-07-09 09:30:00'
       this.desc.state = 1
+      this.state = 1
       switch (this.desc.state) {
         case (1):
           this.desc.state = '直播'
@@ -329,10 +331,35 @@
     methods: {
       update () {
         // debugger // eslint-disable-line
-        this.msgShow = true
-      },
-      btnClick () {
-        console.log(666)
+        if (this.state === 1) {
+          this.$messageBox({
+            header: '提示',
+            content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
+            cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
+            confirmText: '立即发布',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+                this.state = 0
+              }
+            }
+          })
+        } else {
+          this.$messageBox({
+            header: '提示',
+            content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
+            cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
+            confirmText: '立即下线',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+                this.state = 1
+              }
+            }
+          })
+        }
       },
       switchBack (res) {
         //  debugger // eslint-disable-line
@@ -348,8 +375,8 @@
       }
     },
     components: {
-      processCard
-
+      processCard,
+      messageBox
     }
 
   }
