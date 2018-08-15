@@ -13,7 +13,7 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <el-select v-model="searchParams.orderTime" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.orderBy" @change="changeSearch" placeholder="请选择">
           <el-option
             v-for="item in optionsOrder"
             :key="item.value"
@@ -24,7 +24,7 @@
         <div class="search-box">
           <com-input
             type="search"
-            :value.sync="searchParams.searchValue"
+            :value.sync="searchParams.keyword"
             @keyup.native.enter="searchEnter"
             placeholder="输入直播名称"></com-input>
         </div>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+  import liveHttp from 'src/api/live-manger'
   import LiveTable from './live/live-table'
   import VePagination from 'src/components/ve-pagination'
 
@@ -51,23 +52,23 @@
       return {
         show: false,
         pageSize: 8,
-        total: 10,
         optionsStates: [
-          {value: 0, label: '全部'},
-          {value: 1, label: '预告'},
-          {value: 2, label: '直播中'},
-          {value: 3, label: '已结束'},
-          {value: 4, label: '回放'}
+          {value: '', label: '全部'},
+          {value: 'PREPARE', label: '预告'},
+          {value: 'LIVING', label: '直播中'},
+          {value: 'FINISH', label: '已结束'},
+          {value: 'PLAYBACK', label: '回放'}
         ],
         optionsOrder: [
-          {value: 0, label: '按创建时间排序'},
-          {value: 1, label: '按照时间直播时间排序'}
+          {value: 'createAt', label: '按创建时间排序'},
+          {value: 'startTime', label: '按照直播开始时间排序'}
         ],
         searchParams: {
-          status: 0,
-          orderTime: 0,
-          searchValue: '',
-          page: 0
+          status: '',
+          orderBy: 'createAt',
+          keyword: '',
+          page: 1,
+          pageSize: 8
         },
         shareLink: {
           liveLink: '',
@@ -125,6 +126,9 @@
         this.queryList()
       },
       queryList () {
+        liveHttp.queryList(this.searchParams).then((res) => {
+
+        })
         this.tableList = [
           {
             id: Math.random(),
@@ -165,7 +169,6 @@
     border: 1px solid $color-bd;
     background-color: $color-bg;
     border-radius: 5px;
-    overflow: hidden;
     .live-title {
       line-height: 50px;
       border-bottom: 1px solid $color-bd;

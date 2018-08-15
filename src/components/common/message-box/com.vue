@@ -18,7 +18,7 @@
             <span>{{cancelText}}</span>
           </button>
           <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
-            <span>{{confirmText}}</span>
+            <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
           </button>
         </div>
       </div>
@@ -33,6 +33,7 @@
     data () {
       return {
         visible: true,
+        closeTime: 0,
         action: {
           cancel: 'cancel',
           confirm: 'confirm'
@@ -55,6 +56,27 @@
       cancelText: {
         type: String,
         default: ''
+      },
+      autoClose: {
+        type: Number,
+        default: 0
+      }
+    },
+    watch: {
+      autoClose: {
+        handler (newVal) {
+          if (!newVal) return
+          this.closeTime = newVal
+          const st = setInterval(() => {
+            if (!this.closeTime--) {
+              clearInterval(st)
+              this.$emit('handleClick', {
+                action: 'cancel'
+              })
+            }
+          }, 1000)
+        },
+        immediate: true
       }
     },
     methods: {
@@ -136,6 +158,9 @@
       }
       .ve-message-box__btns {
         margin: 10px 0;
+        .auto-close {
+          padding-left: 6px;
+        }
         button {
           display: inline-block;
           line-height: 1;
