@@ -96,9 +96,8 @@
     color: $color-font;
     @include border;
     &:hover {
-      transition: box-shadow .3s;
-      box-shadow: none;
       cursor: pointer;
+      border-color: #ff3333;
     }
     .live-state {
       position: absolute;

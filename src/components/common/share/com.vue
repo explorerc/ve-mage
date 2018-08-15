@@ -10,7 +10,12 @@
           </button>
         </div>
         <div class="ve-message-box__content">
-          <p>分享链接给朋友</p>
+          <p style="position: relative;">
+            分享链接给朋友
+            <transition name="success">
+              <i class="iconfont icon-successful" v-if="isSuccess"></i>
+            </transition>
+          </p>
           <p>
             <input v-model="link" ref="linkInput">
             <button type="button" class="copy-link" @click="copyLink">复制</button>
@@ -42,6 +47,7 @@
     data () {
       return {
         visible: true,
+        isSuccess: false,
         link: '',
         qrCode: ''
       }
@@ -75,6 +81,11 @@
         if (document.execCommand('copy')) {
           document.execCommand('copy')
           this.$refs.linkInput.blur()
+          this.isSuccess = true
+          let st = setTimeout(() => {
+            this.isSuccess = false
+            clearTimeout(st)
+          }, 500)
         }
       },
       shareWx () {
@@ -91,9 +102,26 @@
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.5s;
   }
+
   .fade-enter, .fade-leave-to {
     opacity: 0;
   }
+
+  @keyframes mysuccess {
+    from {
+      opacity: .5;
+    }
+    30% {
+      opacity: 1;
+    }
+    60% {
+      top: -20px;
+    }
+    100% {
+      top: -12px;
+    }
+  }
+
   .ve-message-box__wrapper {
     position: fixed;
     top: 0;
@@ -152,6 +180,16 @@
         text-align: left;
         p {
           padding: 5px 0;
+          .icon-successful {
+            position: absolute;
+            top: 0px;
+            left: 98px;
+            display: inline-block;
+            margin-left: 72px;
+            font-size: 34px;
+            color: #00dd00;
+            animation: mysuccess .8s linear;
+          }
           input {
             -webkit-appearance: none;
             background-color: #fff;
