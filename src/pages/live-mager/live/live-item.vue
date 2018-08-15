@@ -82,7 +82,7 @@
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', {...action, userId: this.liveData.userId, id: this.liveData.id})
+        this.$emit('handleClick', {...action, ...this.liveData})
       }
     }
   }
