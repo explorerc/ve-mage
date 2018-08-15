@@ -29,13 +29,12 @@
 </script>
 
 <style lang="scss" scoped>
-  .live-list {
+.live-list {
+  margin: 10px;
+  .live-item {
+    float: left;
     margin: 10px;
-    .live-item {
-      float: left;
-      margin: 10px;
-      width: calc((100% - 80px) / 4);
-    }
-
+    width: calc((100% - 80px) / 4);
   }
+}
 </style>

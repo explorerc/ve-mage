@@ -1,24 +1,14 @@
 <template>
   <div class='item'>
     <div class="card">
-      <div class='pic'><img :src="propImgUrl"></div>
+      <div class='pic'><img :src="propImg"></div>
       <div class='desc'>
         <span>{{propTitle}}</span>
-        <span class='des' v-for='item in propDesc'>{{item}}</span>
+        <span class='des' v-for='item in propDesc' :key='item'>{{item}}</span>
       </div>
     </div>
     <div class="btm">
-      <el-switch class='switch' v-model="checked" active-color="#13ce66" inactive-color="#ff4949" @change='change' :title='title'></el-switch>
-      <span class='more' @click='more'>
-                                        更多
-                                      <ul class='show-more' v-show='showMore'>
-                                        <li>选择</li>
-                                        <li>新建</li>
-                                      </ul>
-                                    </span>
-      <span class='preview'>预览</span>
-      <span class='link'>链接</span>
-      <span class='data'>数据</span>
+      <el-switch class='switch' v-model="checked" active-color="#13ce66" inactive-color="#ff4949" @change='change' :title='title' v-show='showSwitch'></el-switch>
       <span class='set'>设置</span>
     </div>
   </div>
@@ -29,11 +19,13 @@
     name: 'process-card',
     data () {
       return {
+        img: '',
         idx: '',
         title: '',
         part: '',
         checked: false,
-        showMore: false
+        showMore: false,
+        showSwitch: true
       }
     },
     created () {
@@ -41,6 +33,8 @@
       this.title = this.propTitle
       this.checked = this.propChecked
       this.part = this.propPart
+      this.img = this.propImg
+      this.showSwitch = this.propSwitch
     },
     props: {
       propTitle: {
@@ -53,7 +47,7 @@
           return ['默认描述1', '默认描述2']
         }
       },
-      propImgUrl: {
+      propImg: {
         type: String,
         default: '../img/asd.png'
       },
@@ -68,12 +62,16 @@
       propIdx: {
         type: Number,
         default: 0
+      },
+      propSwitch: {
+        type: Boolean,
+        default: true
       }
     },
     methods: {
-      more () {
-        this.showMore = this.showMore === false ? this.showMore = true : this.showMore = false
-      },
+      // more () {
+      //   this.showMore = this.showMore === false ? this.showMore = true : this.showMore = false
+      // },
       change () {
         this.$emit('update:checked', {
           idx: this.idx,
