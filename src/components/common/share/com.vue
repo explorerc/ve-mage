@@ -32,7 +32,10 @@
             </button>
           </p>
           <transition name="fade">
-            <img v-if="qrCode" :src="qrCode" alt="二维码" style="display: block;margin: 10px auto;">
+            <div v-if="qrCode" >
+              <img :src="qrCode" alt="二维码" style="display: block;margin: 10px auto;">
+              <p>打开微信，点击底部的“发现”，使用 “扫一扫” 即可将网页分享到我的朋友圈</p>
+            </div>
           </transition>
         </div>
       </div>
@@ -72,8 +75,8 @@
       shareLink: {
         handler (newVal) {
           this.linkSrc = newVal.link
-          this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.liveLink + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary + '&desc=' + newVal.data.desc + '&pic=' + newVal.data.pic
-          this.weiboLink = 'http://service.weibo.com/share/share.php?url=' + newVal.liveLink + '&title=' + newVal.data.desc + '&pic=' + newVal.data.pic + '&appkey=&searchPic=false'
+          this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.link + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary + '&desc=' + newVal.data.desc + '&pic=' + newVal.data.pic
+          this.weiboLink = 'http://service.weibo.com/share/share.php?url=' + newVal.link + '&title=' + newVal.data.desc + '&pic=' + newVal.data.pic + '&appkey=&searchPic=false'
         },
         immediate: true,
         deep: true
@@ -99,6 +102,7 @@
         this.qrCode = '//aliqr.e.vhall.com/qr.png?t=' + this.shareLink.link
       },
       openLink (url) {
+        console.log(url)
         window.open(url)
       }
     }
