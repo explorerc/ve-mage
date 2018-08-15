@@ -18,37 +18,37 @@
       <div>
         <span>准备</span>
         <ol>
-          <li v-for='item in processData.prepare' :key='item.title'>{{item}}</li>
+          <li v-for='item in processData.prepare' :key='item.title' v-show="item.show">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>营销</span>
         <ol>
-          <li v-for='item in processData.marketing' :key='item.title'>{{item}}</li>
+          <li v-for='item in processData.marketing' :key='item.title' v-show="item.show">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>形象</span>
         <ol>
-          <li v-for='item in processData.promote' :key='item.title'>{{item}}</li>
+          <li v-for='item in processData.promote' :key='item.title' v-show="item.show">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>直播</span>
         <ol>
-          <li v-for='item in processData.webinar' :key='item.title'>{{item}}</li>
+          <li v-for='item in processData.webinar' :key='item.title' v-show="item.show">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>回放</span>
         <ol>
-          <li v-for='item in processData.record' :key='item.title'>{{item}}</li>
+          <li v-for='item in processData.record' :key='item.title' v-show="item.show">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>数据</span>
         <ol>
-          <li v-for='item in processData.data' :key='item.title'>{{item}}</li>
+          <li v-for='item in processData.data' :key='item.title' v-show="item.show">{{item.title}}</li>
         </ol>
         </ol>
       </div>
@@ -57,25 +57,25 @@
       <div class="item prepare">
         <span>准备</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="item in cardData['prepare']" :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['prepare']" :prop-idx='index' :key='index' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"' :prop-imgUrl='item.img'></process-card>
         </div>
       </div>
       <div class="item marketing">
         <span>营销</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="item in cardData['marketing']" :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['marketing']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"' :prop-imgUrl='item.img'></process-card>
         </div>
       </div>
       <div class="item promote">
         <span>形象</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="item in cardData['promote']" :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['promote']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"' :prop-imgUrl='item.img'></process-card>
         </div>
       </div>
       <div class="item setting">
         <span>高级设置</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="item in cardData['setting']" :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['setting']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-imgUrl='item.img'></process-card>
         </div>
       </div>
     </div>
@@ -103,17 +103,17 @@
           'record': [],
           'data': []
         },
-        cardData: {},
-        remove (arr, item) { // 删除数组指定元素
-          for (var i = 0; i < arr.length; i++) {
-            if (arr[i] === item) {
-              // splice方法会改变数组长度，当减掉一个元素后，后面的元素都会前移，因此需要相应减少i的值
-              arr.splice(i, 1)
-              i--
-            }
-          }
-          return arr
-        }
+        cardData: {}
+        // remove (arr, item) { // 删除数组指定元素
+        //   for (var i = 0; i < arr.length; i++) {
+        //     if (arr[i] === item) {
+        //       // splice方法会改变数组长度，当减掉一个元素后，后面的元素都会前移，因此需要相应减少i的值
+        //       arr.splice(i, 1)
+        //       i--
+        //     }
+        //   }
+        //   return arr
+        // }
 
       }
     },
@@ -144,12 +144,112 @@
       }
       // 假数据
       this.processData = {
-        'prepare': ['基本信息', '观看限制', '角色设置', '暖场设置', '预约报名', '通知提醒'],
-        'marketing': ['邀请卡', '抽奖', '红包', '分享有礼', '直播朋友圈', '瓜分大礼', '活动报名', '排行榜', '有奖答题'],
-        'promote': ['活动官网', '观看页', '广告设置', '播放器', '分享设置'],
-        'webinar': ['直播监控', '聊天审核'],
-        'record': ['设置回放'],
-        'data': ['数据报表', '详细数据导出']
+        'prepare': [{
+          title: '基本信息',
+          show: true
+        },
+        {
+          title: '观看限制',
+          show: true
+        },
+        {
+          title: '角色设置',
+          show: true
+        },
+        {
+          title: '暖场设置',
+          show: true
+        },
+        {
+          title: '预约报名',
+          show: true
+        },
+        {
+          title: '通知提醒',
+          show: true
+        }
+        ],
+        'marketing': [{
+          title: '邀请卡',
+          show: true
+        },
+        {
+          title: '抽奖',
+          show: true
+        },
+        {
+          title: '红包',
+          show: true
+        },
+        {
+          title: '分享有礼',
+          show: true
+        },
+        {
+          title: '直播朋友圈',
+          show: true
+        },
+        {
+          title: '瓜分大礼',
+          show: true
+        },
+        {
+          title: '活动报名',
+          show: true
+        },
+        {
+          title: '排行榜',
+          show: true
+        },
+        {
+          title: '有奖答题',
+          show: true
+        }
+        ],
+        'promote': [{
+          title: '活动官网',
+          show: true
+        },
+        {
+          title: '观看页',
+          show: true
+        },
+        {
+          title: '广告设置',
+          show: true
+        },
+        {
+          title: '播放器',
+          show: true
+        },
+        {
+          title: '分享设置',
+          show: true
+        }
+        ],
+
+        'webinar': [{
+          title: '直播监控',
+          show: true
+        },
+        {
+          title: '聊天审核',
+          show: true
+        }
+        ],
+        'record': [{
+          title: '设置回放',
+          show: true
+        }],
+        'data': [{
+          title: '数据报表',
+          show: true
+        },
+        {
+          title: '详细数据导出',
+          show: true
+        }
+        ]
       }
       // 假数据 返回的card 数据
       this.cardData = {
@@ -339,17 +439,17 @@
     methods: {
       update () {
         // debugger // eslint-disable-line
-        this.processData['record'].push('阿斯顿')
+        // this.processData['record'].push('阿斯顿')
       },
       switchBack (res) {
         //  debugger // eslint-disable-line
         console.log(res)
         if (res.type) {
           // 添加显示相关项目
-          this.processData[res.part].push(res.title)
+          this.processData[res.part][res.idx]['show'] = true
         } else {
           // 隐藏相关项目
-          this.remove(this.processData[res.part], res.title)
+          this.processData[res.part][res.idx]['show'] = false
         }
       }
     },

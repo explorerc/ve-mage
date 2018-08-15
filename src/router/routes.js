@@ -30,17 +30,17 @@ export default [
   },
   {
     path: '/liveMager/edit',
-    name: 'liveMager',
+    name: 'liveMager3',
     component: edit
   },
   {
     path: '/liveMager/edit/:id',
-    name: 'liveMager',
+    name: 'liveMager1',
     component: edit
   },
   {
     path: '/liveMager/detail/:id',
-    name: 'liveMager',
+    name: 'liveMager2',
     component: detail
   }
 ]

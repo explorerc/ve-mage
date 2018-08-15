@@ -10,12 +10,12 @@
     <div class="btm">
       <el-switch class='switch' v-model="checked" active-color="#13ce66" inactive-color="#ff4949" @change='change' :title='title'></el-switch>
       <span class='more' @click='more'>
-                              更多
-                            <ul class='show-more' v-show='showMore'>
-                              <li>选择</li>
-                              <li>新建</li>
-                            </ul>
-                          </span>
+                                        更多
+                                      <ul class='show-more' v-show='showMore'>
+                                        <li>选择</li>
+                                        <li>新建</li>
+                                      </ul>
+                                    </span>
       <span class='preview'>预览</span>
       <span class='link'>链接</span>
       <span class='data'>数据</span>
@@ -29,6 +29,7 @@
     name: 'process-card',
     data () {
       return {
+        idx: '',
         title: '',
         part: '',
         checked: false,
@@ -36,6 +37,7 @@
       }
     },
     created () {
+      this.idx = this.propIdx
       this.title = this.propTitle
       this.checked = this.propChecked
       this.part = this.propPart
@@ -62,6 +64,10 @@
       propPart: {
         type: String,
         default: ''
+      },
+      propIdx: {
+        type: Number,
+        default: 0
       }
     },
     methods: {
@@ -69,7 +75,12 @@
         this.showMore = this.showMore === false ? this.showMore = true : this.showMore = false
       },
       change () {
-        this.$emit('update:checked', {part: this.part, type: this.checked, title: this.title})
+        this.$emit('update:checked', {
+          idx: this.idx,
+          part: this.part,
+          type: this.checked,
+          title: this.title
+        })
       }
     },
     watch: {
