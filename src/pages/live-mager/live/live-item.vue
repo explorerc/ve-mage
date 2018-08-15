@@ -18,6 +18,8 @@
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <span @click.stop="handleClick(action.role)">角色</span>
+            <span class="disabled" @click.stop="handleClick(action.viewer)">观众</span>
+            <span class="disabled" @click.stop="handleClick(action.data)">数据</span>
             <span @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -43,6 +45,14 @@
     role: {
       type: 'role',
       text: '角色'
+    },
+    viewer: {
+      type: 'viewer',
+      text: '观众'
+    },
+    data: {
+      type: 'data',
+      text: '数据'
     },
     edit: {
       type: 'edit',

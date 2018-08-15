@@ -7,7 +7,7 @@ const config = {
     PUBLIC_PATH: '',
     proxyTable: {
       '/api': {
-        target: 'http://643c9da3.ngrok.io',
+        target: 'http://09b973d5.ngrok.io',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

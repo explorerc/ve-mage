@@ -64,3 +64,9 @@ ol {
 .clearfix {
   display: inline-block;
 }
+
+.disabled,.disabled:hover {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
