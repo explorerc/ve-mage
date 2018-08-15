@@ -27,9 +27,9 @@
 </template>
 
 <script>
-  import 'quill/dist/quill.core.css'
-  import 'quill/dist/quill.snow.css'
-  import 'quill/dist/quill.bubble.css'
+  // import 'quill/dist/quill.core.css'
+  // import 'quill/dist/quill.snow.css'
+  // import 'quill/dist/quill.bubble.css'
   import {quillEditor} from 'vue-quill-editor'
   // 工具栏配置
   const toolbarOptions = [
@@ -143,6 +143,9 @@
 </script>
 
 <style lang="scss">
+@import '../../node_modules/quill/dist/quill.core.css';
+@import '../../node_modules/quill/dist/quill.snow.css';
+@import '../../node_modules/quill/dist/quill.bubble.css';
 #quill-upload {
   // height: 300px;
   .el-row {
