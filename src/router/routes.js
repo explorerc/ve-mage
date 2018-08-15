@@ -13,6 +13,8 @@ const Register = () =>
   import('src/pages/login/register')
 const Barrage = () =>
   import('src/pages/barrage/index')
+const edit = () => import('src/pages/live-mager/edit')
+const detail = () => import('src/pages/live-mager/detail')
 
 export default [{
   path: '/',
@@ -52,5 +54,20 @@ export default [{
   path: '/barrage',
   name: 'Barrage',
   component: Barrage
+},
+{
+  path: '/liveMager/edit',
+  name: 'create',
+  component: edit
+},
+{
+  path: '/liveMager/edit/:id',
+  name: 'edit',
+  component: edit
+},
+{
+  path: '/liveMager/detail/:id',
+  name: 'liveMadetailger2',
+  component: detail
 }
 ]
