@@ -137,10 +137,10 @@
       },
       share (item) {
         this.shareLink = {
-          link: 'www.baidu.com',
+          link: 'https://live.vhall.com/261678795',
           data: {
-            title: 'title',
-            desc: 'desc',
+            title: item.title,
+            desc: item.description,
             summary: 'summary',
             pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
           }
