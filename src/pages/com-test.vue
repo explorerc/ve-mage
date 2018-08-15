@@ -9,7 +9,7 @@
         <p>我是content</p>
     </com-notification>
     <div class="test-wrap">
-      <com-input :value.sync="outValue" placeholder="请输入公司名称" :max-length="50" ></com-input>
+      <com-input :value.sync="outValue" placeholder="请输入公司名称" type="password" ></com-input>
     </div>
     <div class="test-wrap">
       <com-upload
