@@ -170,6 +170,9 @@ export default {
         this.$emit('load', {name: this.current, data: xhr.responseText})
         this.doWork()
       }
+      xhr.ontimeout = (e) => {
+        this.$emit('error', {name: this.current, code: 501, error: e})
+      }
       xhr.onerror = (e) => {
         this.$emit('error', {name: this.current, code: 501, error: e})
       }

@@ -15,6 +15,7 @@ import Input from './components/common/input'
 import MessageBox from './components/common/message-box'
 import Share from './components/common/share'
 import Upload from './components/common/upload'
+import Loading from './components/common/loading'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -23,6 +24,7 @@ Vue.use(Input)
 Vue.use(MessageBox)
 Vue.use(Share)
 Vue.use(Upload)
+Vue.use(Loading)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'

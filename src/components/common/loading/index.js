@@ -3,7 +3,7 @@ import fun from './fun'
 
 export default (Vue) => {
   Vue.component(Com.name, Com)
-  Vue.prototype.$toast = fun
+  Vue.prototype.$loading = fun
 }
 
-export const Toast = fun
+export const Loading = fun

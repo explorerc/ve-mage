@@ -34,6 +34,8 @@
 
 <script>
 import testService from 'src/api/test'
+import {Toast} from 'components/common/notification'
+
 export default {
   data () {
     return {
@@ -53,7 +55,8 @@ export default {
       username: 18513848725,
       password: 'm123123',
       type: 1,
-      remeber: 1
+      remeber: 1,
+      __loading: true
     }).then((res) => {
       console.log('登陆成功')
     })
@@ -78,7 +81,7 @@ export default {
       this.show = !this.show
     },
     testFun () {
-      this.$toast({
+      Toast({
         header: `Notification Title${this.id++}`,
         content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
         close: () => {
