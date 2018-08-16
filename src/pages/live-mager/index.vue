@@ -1,5 +1,5 @@
 <template>
-  <div class="live-mager" v-loading="loading">
+  <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
       <span>直播列表</span>
       <el-button style="float: right;margin-right: 20px;" type="primary" plain>创建直播</el-button>

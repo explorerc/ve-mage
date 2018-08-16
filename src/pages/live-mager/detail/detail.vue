@@ -87,8 +87,6 @@
         </div>
       </div>
     </div>
-    <message-box v-if="msgShow" header="" content="" cancelText="" confirmText='' @handleClick="btnClick">
-    </message-box>
   </div>
 </template>
 
