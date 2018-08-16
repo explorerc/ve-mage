@@ -1,7 +1,8 @@
 <template>
   <div>
-   <div class="test-wrap">
-      <button @click="testCom">test1</button>
+    <button @click="testCom">test1</button>
+   <div class="test-wrap" v-ComLoading="show1" com-loading-text="拼命加载中">
+
     <button @click="testFun">test2</button>
    </div>
     <com-notification v-show="show" :header="header" :content="content">
@@ -39,6 +40,7 @@ import {Toast} from 'components/common/notification'
 export default {
   data () {
     return {
+      show1: true,
       show: false,
       header: 'Notification Title',
       content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
@@ -78,7 +80,7 @@ export default {
       console.log('上传完毕')
     },
     testCom () {
-      this.show = !this.show
+      this.show1 = !this.show1
     },
     testFun () {
       Toast({
