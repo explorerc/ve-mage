@@ -7,7 +7,7 @@ const config = {
     PUBLIC_PATH: '',
     proxyTable: {
       '/api': {
-        target: 'http://09b973d5.ngrok.io',
+        target: 'http://dev-api-zhike.vhall.domain',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

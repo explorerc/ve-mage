@@ -1,12 +1,12 @@
 <template>
-  <div class="live-mager" v-loading="loading">
+  <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
       <span>直播列表</span>
       <el-button style="float: right;margin-right: 20px;" type="primary" plain>创建直播</el-button>
     </div>
     <div class="mager-box">
       <div class="live-search">
-        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="直播状态">
           <el-option
             v-for="item in optionsStates"
             :key="item.value"
