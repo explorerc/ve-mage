@@ -45,19 +45,19 @@ export default {
       this.barrageSystem.registRenderer('normal', this.$refs.cvs, {})
     },
     addBarrage () {
-      // let color = ["#ffffff", "#ff0000", "#00ff00", "#0000ff"];
+      // let color = ['#ffffff', '#ff0000', '#00ff00', '#0000ff']
       // this.intervalId = setInterval(() => {
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal", { 'fillStyle': color[Math.random() * color.length >> 0] });
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.barrageSystem.add(Math.random().toFixed(2), "normal");
-      //   this.fps = this.barrageSystem.fps;
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal', { 'fillStyle': color[Math.random() * color.length >> 0] })
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+      //   this.fps = this.barrageSystem.fps
       // }, 50)
-      this.barrageSystem.add(this.content, 'normal')
+      // this.barrageSystem.add(this.content, 'normal')
     },
     pauseBarrage () {
       this.barrageSystem.pause()

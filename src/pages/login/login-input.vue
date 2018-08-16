@@ -35,14 +35,14 @@ export default {
   methods: {
     onFocus (value) {
       this.focusState = 'focus-state'
+      this.float = ''
+    },
+    onBlur (value) {
       if (value === '') {
         this.float = 'float'
       } else {
         this.float = ''
       }
-    },
-    onBlur (value) {
-      this.onFocus(value)
       this.focusState = ''
     },
     isShow () {

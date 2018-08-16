@@ -147,12 +147,17 @@
 </script>
 <style lang="scss">
 @import '~assets/css/base';
-html,
-body,
 #app,
 .v-div {
   height: 100%;
+  min-height: 660px;
+}
+#app,
+.v-div {
   width: 100%;
+  min-width: 1200px;
+  overflow: auto;
+  overflow-y: hidden;
 }
 .v-left {
   float: left;
