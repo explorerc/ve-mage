@@ -24,7 +24,7 @@
     </p>
     <p><button @click='comfirm'>创建</button></p>
     <transition name='fade'>
-      <div class="modal-cover" v-show='createdSuccess' @click="closeModal">
+      <div class="modal-cover" v-if='createdSuccess' @click="closeModal">
         <div class='created-modal'>
           <p>直播已创建成功，您可以</p>
           <div class="btm">
@@ -92,7 +92,7 @@
         this.createdSuccess = true
       },
       closeModal (e) {
-        if (e.target.className !== 'created-modal') {
+        if (e.target.className === 'modal-cover') {
           this.createdSuccess = false
         }
       },
