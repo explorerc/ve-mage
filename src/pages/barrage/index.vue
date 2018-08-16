@@ -1,9 +1,13 @@
 <template>
   <section>
-    <canvas ref="cvs" class="cvs" width="800px" height="400px"></canvas>
+    <canvas ref="cvs"
+            class="cvs"
+            width="800px"
+            height="400px"></canvas>
     <!-- width="800px" height="400px" -->
     <div>
-      <el-input clearable v-model="content"></el-input>
+      <el-input clearable
+                v-model="content"></el-input>
       <el-button @click="addBarrage">添加</el-button>
       <span>{{fps}}</span>
     </div>
@@ -45,18 +49,18 @@ export default {
       this.barrageSystem.registRenderer('normal', this.$refs.cvs, {})
     },
     addBarrage () {
-      // let color = ['#ffffff', '#ff0000', '#00ff00', '#0000ff']
-      // this.intervalId = setInterval(() => {
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal', { 'fillStyle': color[Math.random() * color.length >> 0] })
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-      //   this.fps = this.barrageSystem.fps
-      // }, 50)
+      let color = ['#ffffff', '#ff0000', '#00ff00', '#0000ff']
+      this.intervalId = setInterval(() => {
+        this.barrageSystem.add(Math.random().toFixed(2), 'normal', { 'fillStyle': color[Math.random() * color.length >> 0] })
+        this.barrageSystem.add(Math.random().toFixed(2), 'normal')
+        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
+        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
+        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
+        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
+        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
+        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
+        this.fps = this.barrageSystem.fps
+      }, 50)
       // this.barrageSystem.add(this.content, 'normal')
     },
     pauseBarrage () {

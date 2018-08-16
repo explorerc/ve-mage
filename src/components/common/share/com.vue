@@ -17,22 +17,25 @@
             </transition>
           </p>
           <p>
-            <input v-model="link" ref="linkInput">
+            <input v-model="linkSrc" ref="linkInput">
             <button type="button" class="copy-link" @click="copyLink">复制</button>
           </p>
           <p>
-            <button type="button" class="share-btn weibo" @click.stop="openLink(shareLink.weibo)">
+            <button type="button" class="share-btn weibo" @click.stop="openLink(weiboLink)">
               <i class="iconfont icon-weibo"></i>
             </button>
             <button type="button" class="share-btn wxchart" @click.stop="shareWx">
               <i class="iconfont icon-weixin"></i>
             </button>
-            <button type="button" class="share-btn qq" @click.stop="openLink(shareLink.qq)">
+            <button type="button" class="share-btn qq" @click.stop="openLink(qqLink)">
               <i class="iconfont icon-10"></i>
             </button>
           </p>
           <transition name="fade">
-            <img v-if="qrCode" :src="qrCode" alt="二维码" style="display: block;margin: 10px auto;">
+            <div v-if="qrCode" >
+              <img :src="qrCode" alt="二维码" style="display: block;margin: 10px auto;">
+              <p>打开微信，点击底部的“发现”，使用 “扫一扫” 即可将网页分享到我的朋友圈</p>
+            </div>
           </transition>
         </div>
       </div>
@@ -48,25 +51,32 @@
       return {
         visible: true,
         isSuccess: false,
-        link: '',
-        qrCode: ''
+        linkSrc: '',
+        qrCode: '',
+        qqLink: '',
+        weiboLink: ''
       }
     },
     props: {
       shareLink: {
         type: Object,
         default: {
-          liveLink: '',
-          weibo: '',
-          wxchart: '',
-          qq: ''
+          link: '',
+          data: {
+            title: '-',
+            summary: '-',
+            desc: '-',
+            pic: '-'
+          }
         }
       }
     },
     watch: {
       shareLink: {
         handler (newVal) {
-          this.link = newVal.liveLink
+          this.linkSrc = newVal.link
+          this.qqLink = 'https://connect.qq.com/widget/shareqq/index.html?url=' + newVal.link + '&title=' + newVal.data.title + '&summary=' + newVal.data.summary + '&desc=' + newVal.data.desc + '&pic=' + newVal.data.pic
+          this.weiboLink = 'http://service.weibo.com/share/share.php?url=' + newVal.link + '&title=' + newVal.data.desc + '&pic=' + newVal.data.pic + '&appkey=&searchPic=false'
         },
         immediate: true,
         deep: true
@@ -89,9 +99,10 @@
         }
       },
       shareWx () {
-        this.qrCode = this.shareLink.wxchart
+        this.qrCode = '//aliqr.e.vhall.com/qr.png?t=' + this.shareLink.link
       },
       openLink (url) {
+        console.log(url)
         window.open(url)
       }
     }

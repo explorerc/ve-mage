@@ -1,5 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
+import {
+  Loading
+} from 'components/common/loading'
 
 const BASE_URL = process.env.API_PATH
 
@@ -14,21 +17,27 @@ const defaultOptions = {
 
 axios.interceptors.request.use(
   config => {
+    if (config.params.__loading) {
+      Loading(true)
+    }
     if (config.method === 'post') {
       config.data = qs.stringify(config.params)
       delete config.params
     }
+
     // jwt
     // config.headers.Authorization = localStorage.token
     return config
   },
   error => {
+    Loading(false)
     return Promise.reject(error)
   }
 )
 
 axios.interceptors.response.use(
   res => {
+    Loading(false)
     if (res.data.code !== 200) {
       // 错误处理
       return Promise.reject(res.data.message)
@@ -45,6 +54,7 @@ export const ajax = (options) => {
   return axios(_options).then((res) => {
     return res.data
   }).catch((error) => {
+    Loading(false)
     console.log('出错了', error)
     return new Promise(() => {})
   })

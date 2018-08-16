@@ -2,10 +2,11 @@
   <div class="live-mager" v-loading="loading">
     <div class="live-title">
       <span>直播列表</span>
+      <el-button style="float: right;margin-right: 20px;" type="primary" plain>创建直播</el-button>
     </div>
     <div class="mager-box">
       <div class="live-search">
-        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="直播状态">
           <el-option
             v-for="item in optionsStates"
             :key="item.value"
@@ -35,6 +36,7 @@
           <ve-pagination
             :total="total"
             :pageSize="pageSize"
+            :currentPage="searchParams.page"
             @changePage="changePage"/>
         </div>
       </div>
@@ -43,7 +45,7 @@
 </template>
 
 <script>
-  import liveHttp from 'src/api/live-manger'
+  import liveHttp from 'src/api/activity-manger'
   import LiveTable from './live/live-table'
   import VePagination from 'src/components/ve-pagination'
 
@@ -73,29 +75,14 @@
           page: 1,
           pageSize: 8
         },
-        shareLink: {
-          liveLink: '',
-          weibo: '',
-          wxchart: '',
-          qq: ''
-        },
         tableList: [],
         total: 0
       }
     },
     created () {
       this.queryList()
-      this.shareLink = {
-        liveLink: 'www.baidu.com',
-        weibo: 'https://www.baidu.com',
-        wxchart: 'http://aliqr.e.vhall.com/qr.png?t=https%3A%2F%2Ft.e.vhall.com%2F458577184%3FshareId%3Du-16420545-3',
-        qq: 'https://www.baidu.com'
-      }
     },
     methods: {
-      closeShare () {
-        this.show = false
-      },
       handleClick (event) {
         console.log(event)
         if (event.type === 'delete') { // 编辑删除
@@ -105,16 +92,12 @@
             cancelText: '暂不删除',
             confirmText: '仍要删除',
             handleClick: (e) => {
-              console.log(e)
-              if (e.action === 'cancel') {
-                console.log('取消或者关闭按钮')
-              } else if (e.action === 'confirm') {
-                console.log('点击了确定按钮')
-              }
+              if (e.action !== 'confirm') return
+              this.deleteLive(event.id)
             }
           })
         } else if (event.type === 'share') { // 分享观看页
-          this.$share(this.shareLink)
+          this.share(event)
         }
       },
       changePage (currentPage) {
@@ -122,15 +105,21 @@
         this.queryList()
       },
       changeSearch () {
+        this.searchParams.page = 1
         this.queryList()
       },
       searchEnter () {
         this.queryList()
       },
+      deleteLive (activityId) {
+        liveHttp.deleteById(activityId).then((res) => {
+          if (res.code !== 200) return
+          this.queryList()
+        })
+      },
       queryList () {
         this.loading = true
         liveHttp.queryList(this.searchParams).then((res) => {
-          console.log(res)
           this.loading = false
           if (res.code === 200) {
             this.tableList = res.data.list
@@ -138,6 +127,17 @@
           }
         }).catch(() => {
           this.loading = false
+        })
+      },
+      share (item) {
+        this.$share({
+          link: 'https://live.vhall.com/261678795',
+          data: {
+            title: item.title,
+            desc: item.description,
+            summary: 'summary',
+            pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
+          }
         })
       }
     }
@@ -170,7 +170,7 @@
           float: right;
         }
       }
-      .pagination-box{
+      .pagination-box {
         width: 100%;
         overflow: hidden;
       }

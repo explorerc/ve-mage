@@ -71,7 +71,7 @@ export default [{
 },
 {
   path: '/liveMager/detail/:id',
-  name: 'liveMadetailger2',
+  name: 'detail',
   component: detail
 },
 {

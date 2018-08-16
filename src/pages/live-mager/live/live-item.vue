@@ -1,22 +1,25 @@
 <template>
   <div class="live-item" :style="{height: this.height+'px'}">
     <span v-if='liveData.status=="PREPARE"' class="live-state" style="background-color: #5ea6ec;">预告</span>
-    <span v-if='liveData.status=="LIVING"' class="live-state" style="background-color: #fc5659;">直播</span>
+    <span v-if='liveData.status=="LIVING"' class="live-state" style="background-color: #fc5659;">直播中</span>
     <span v-if='liveData.status=="PLAYBACK"' class="live-state" style="background-color: #2ab804;">回放</span>
     <span v-if='liveData.status=="FINISH"' class="live-state" style="background-color: #999;">结束</span>
     <div class="live-img" :style="imgStyle"></div>
     <div class="live-md">
       <span>{{liveData.title}}</span>
-      <span class="time">{{time}}</span>
+      <span class="time">{{liveData.startTime}}</span>
     </div>
     <div class="live-bottom">
-      <span class="item" @click.stop="handleClick(action.roleInfo)">角色信息</span>
-      <span class="item" @click.stop="handleClick(action.share)">分享观看页</span>
+      <span class="item" @click.stop="handleClick(action.play)">开播</span>
+      <span class="item" @click.stop="handleClick(action.share)">推广</span>
+      <span class="item" @click.stop="handleClick(action.info)">详情</span>
       <span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">
         更多
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
-            <span @click.stop="handleClick(action.edit)">编辑</span>
+            <span @click.stop="handleClick(action.role)">角色</span>
+            <span class="disabled" @click.stop="handleClick(action.viewer)">观众</span>
+            <span class="disabled" @click.stop="handleClick(action.data)">数据</span>
             <span @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -27,13 +30,29 @@
 </template>
 <script>
   const action = {
-    roleInfo: {
-      type: 'roleInfo',
-      text: '角色信息'
+    play: {
+      type: 'play',
+      text: '开播'
     },
     share: {
       type: 'share',
-      text: '分享观看页'
+      text: '推广'
+    },
+    info: {
+      type: 'info',
+      text: '详情'
+    },
+    role: {
+      type: 'role',
+      text: '角色'
+    },
+    viewer: {
+      type: 'viewer',
+      text: '观众'
+    },
+    data: {
+      type: 'data',
+      text: '数据'
     },
     edit: {
       type: 'edit',
@@ -75,14 +94,11 @@
         return {
           backgroundImage: 'url(' + imgUrl + ')'
         }
-      },
-      time () {
-        return this.liveData.startTime.substring(0, 16)
       }
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', {...action, userId: this.liveData.userId, id: this.liveData.id})
+        this.$emit('handleClick', {...action, ...this.liveData})
       }
     }
   }
@@ -140,7 +156,7 @@
       span.item {
         display: block;
         float: left;
-        width: 33.33333333%;
+        width: 25%;
         text-align: center;
         &:hover {
           color: $color-font-hover;
@@ -153,11 +169,15 @@
           border-right: solid 1px $color-bd;
           box-sizing: border-box;
         }
+        &:nth-child(3){
+          border-right: solid 1px $color-bd;
+          box-sizing: border-box;
+        }
         .live-more {
           position: absolute;
           top: 33px;
           right: -1px;
-          width: 33.3333333%;
+          width: 25%;
           background-color: #fff;
           border: solid 1px #e5e5e5;
           box-sizing: content-box;
