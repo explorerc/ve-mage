@@ -81,6 +81,11 @@ export default {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
       this.$emit('update:value', this.innerValue)
+    },
+    value (value) {
+      if (!value) {
+        this.innerValue = ''
+      }
     }
   },
   computed: {
