@@ -4,7 +4,7 @@ const config = {
     BUILD_ENV: 'local',
     API_PATH: '/api',
     SUB_DIR: '',
-    PUBLIC_PATH: '',
+    PUBLIC_PATH: '/',
     proxyTable: {
       '/api': {
         target: 'http://dev-api-zhike.vhall.domain',
