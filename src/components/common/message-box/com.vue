@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" v-if="visible">
     <div class="ve-message-box__wrapper">
-      <div class="ve-message-box">
+      <div class="ve-message-box" :style="{width: width}">
         <div class="ve-message-box__header">
           <div class="ve-message-box__title" v-if="!this.$slots.header&&header">{{header}}</div>
           <slot name="header"></slot>
@@ -61,6 +61,10 @@
       autoClose: {
         type: Number,
         default: 0
+      },
+      width: {
+        type: String,
+        default: '300px'
       }
     },
     watch: {
@@ -129,7 +133,6 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 300px;
       padding-bottom: 10px;
       background-color: #fff;
       border-radius: 4px;

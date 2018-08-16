@@ -1,13 +1,13 @@
 <template>
   <div class="live-item" :style="{height: this.height+'px'}">
     <span v-if='liveData.status=="PREPARE"' class="live-state" style="background-color: #5ea6ec;">预告</span>
-    <span v-if='liveData.status=="LIVING"' class="live-state" style="background-color: #fc5659;">直播</span>
+    <span v-if='liveData.status=="LIVING"' class="live-state" style="background-color: #fc5659;">直播中</span>
     <span v-if='liveData.status=="PLAYBACK"' class="live-state" style="background-color: #2ab804;">回放</span>
     <span v-if='liveData.status=="FINISH"' class="live-state" style="background-color: #999;">结束</span>
     <div class="live-img" :style="imgStyle"></div>
     <div class="live-md">
       <span>{{liveData.title}}</span>
-      <span class="time">{{time}}</span>
+      <span class="time">{{liveData.startTime}}</span>
     </div>
     <div class="live-bottom">
       <span class="item" @click.stop="handleClick(action.play)">开播</span>
@@ -94,9 +94,6 @@
         return {
           backgroundImage: 'url(' + imgUrl + ')'
         }
-      },
-      time () {
-        return this.liveData.startTime.substring(0, 16)
       }
     },
     methods: {

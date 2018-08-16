@@ -6,7 +6,7 @@
     </div>
     <div class="mager-box">
       <div class="live-search">
-        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="直播状态">
           <el-option
             v-for="item in optionsStates"
             :key="item.value"
