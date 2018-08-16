@@ -36,6 +36,7 @@ export default {
     onFocus (value) {
       this.focusState = 'focus-state'
       this.float = ''
+      this.$emit('inputFocus', value)
     },
     onBlur (value) {
       if (value === '') {
@@ -55,7 +56,7 @@ export default {
   },
   watch: {
     value: function (e) {
-      this.$emit('changePhone', e)
+      this.$emit('changeInput', e)
       this.onFocus(e)
     }
   }

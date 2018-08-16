@@ -8,14 +8,17 @@
             <p class="v-title">
                 免费试用
             </p>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="先生/女士" :maxLength="20"></com-input>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPosition" placeholder="输入您的职务" :maxLength="20"></com-input>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userCompany" placeholder="输入公司名称" :maxLength="40"></com-input>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPhone" @changePhone="checkPhone" placeholder="输入手机号" :maxLength="11"></com-input>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="先生/女士" :maxLength="20" @inputFocus="inputFocus()"></com-input>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPosition" placeholder="输入您的职务" :maxLength="20" @inputFocus="inputFocus()"></com-input>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userCompany" placeholder="输入公司名称" :maxLength="40" @inputFocus="inputFocus()"></com-input>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
             <div id="captcha"></div>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6">
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
               <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
             </com-input>
+            <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:opacity}">
+					  	<p class="v-error">{{error}}</p>
+					  </div>
             <el-button @click="submit">wo</el-button>
         </div>
     </div>
@@ -40,7 +43,9 @@
         timerr: '',
         phoneKey: '',
         isImg: false,
-        cap: null
+        cap: null,
+        opacity: 0,
+        error: ''
       }
     },
     components: {
@@ -122,11 +127,53 @@
         }, 1000)
       },
       submit () {
+        this.checkForm()
         console.log(this.userName)
         console.log(this.userPosition)
         console.log(this.userCompany)
         console.log(this.userPhone)
         console.log(this.code)
+      },
+      checkForm: function (e) {
+        if (!this.userName) {
+          this.error = '请输入名称'
+          this.opacity = 1
+          return false
+        }
+        if (!this.userPosition) {
+          this.error = '请输入您的职务'
+          this.opacity = 1
+          return false
+        }
+        if (!this.userCompany) {
+          this.error = '请输入公司名称'
+          this.opacity = 1
+          return false
+        }
+        if (!this.userPhone) {
+          this.error = '请输入手机号'
+          this.opacity = 1
+          return false
+        } else if (!this.validPhone(this.userPhone)) {
+          this.error = '请输入正确的手机号'
+          this.opacity = 1
+          return false
+        }
+        if (!this.code) {
+          this.error = '请输入验证码'
+          this.opacity = 1
+          return false
+        }
+        this.error = ''
+        this.opacity = 0
+      },
+      validPhone: function (phone) {
+        var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+        return re.test(phone)
+      },
+      inputFocus: function () {
+        this.error = ''
+        this.opacity = 0
       }
     }
   }
@@ -190,6 +237,14 @@ body,
   }
   .input-form {
     position: relative;
+    .v-error {
+      display: block;
+      height: 40px;
+      line-height: 40px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #e62e2e;
+    }
   }
   .v-getcode {
     background-color: #fc5659;
