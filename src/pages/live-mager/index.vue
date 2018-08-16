@@ -6,7 +6,7 @@
     </div>
     <div class="mager-box">
       <div class="live-search">
-        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="请选择">
+        <el-select v-model="searchParams.status" @change="changeSearch" placeholder="直播状态">
           <el-option
             v-for="item in optionsStates"
             :key="item.value"
@@ -75,12 +75,6 @@
           page: 1,
           pageSize: 8
         },
-        shareLink: {
-          liveLink: '',
-          weibo: '',
-          wxchart: '',
-          qq: ''
-        },
         tableList: [],
         total: 0
       }
@@ -136,7 +130,7 @@
         })
       },
       share (item) {
-        this.shareLink = {
+        this.$share({
           link: 'https://live.vhall.com/261678795',
           data: {
             title: item.title,
@@ -144,8 +138,7 @@
             summary: 'summary',
             pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
           }
-        }
-        this.$share(this.shareLink)
+        })
       }
     }
   }

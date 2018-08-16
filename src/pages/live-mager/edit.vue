@@ -7,9 +7,18 @@
       </el-date-picker>
     </p>
     <p>直播封面：
-      <ve-upload :limitType="uploadData.type" :fileSize="uploadData.size" :tips="uploadData.uploadTips" @success="uploadSuccess" @error="uploadError"></ve-upload>
+      <com-upload
+      accept="png|jpg|jpeg"
+      actionUrl="/api/edu/database/doc-upload"
+      inputName="resfile"
+      :fileSize="uploadData.fileSize"
+      @load="uploadLoad"
+      @error="uploadError"
+      @over="uploadOver"
+      >
+      <div class="upload-section">分辨率最大1920x1080，支持jpg、jpeg、png格式，文件大小不超过2M</div>
+      </com-upload>
     </p>
-    <!-- :imgUploadUrl="" -->
     <p class='clearfix'>直播介绍：
       <ve-editer :height="editorData.height" @ready="editorReady" v-model='editorData.editorContent' @change='editorChange'></ve-editer>
     </p>
@@ -30,7 +39,6 @@
 </template>
 
 <script>
-  import veUpload from 'components/ve-upload'
   import veEditer from 'components/ve-editer'
   export default {
     name: 'edit',
@@ -38,12 +46,6 @@
       return {
         date: new Date(),
         title: '',
-        uploadData: {
-          imgUploadUrl: '', // 直播封面地址,
-          size: 2048,
-          type: 'jpg、jpeg、png',
-          uploadTips: '分辨率最大1920x1080，支持jpg、jpeg、png格式，文件大小不超过2M'
-        },
         editorData: {
           height: '200',
           editorContent: ''
@@ -54,7 +56,9 @@
             return time.getTime() < Date.now() - 8.64e7
           }
         },
-        createdSuccess: false
+        createdSuccess: false,
+        uploadData: {
+        }
       }
     },
     created () {
@@ -62,14 +66,11 @@
         this.title = `${this.id}的标题`
         this.date = '2018-07-25 10:00'
       }
+      this.uploadData = {
+        fileSize: 2048
+      }
     },
     methods: {
-      uploadSuccess (res) {
-        console.log(res)
-      },
-      uploadError (res) {
-        console.log(res)
-      },
       editorChange (res) {
         console.log(`长度${res.text.length}`)
       },
@@ -84,7 +85,7 @@
         let data = {
           date: this.date,
           title: this.title,
-          img: this.uploadData.imgUploadUrl,
+          img: '',
           desc: this.editorData.editorContent
         }
         console.log(data)
@@ -94,10 +95,23 @@
         if (e.target.className !== 'created-modal') {
           this.createdSuccess = false
         }
+      },
+      uploadLoad (e) {
+        console.log(e)
+      },
+      uploadError (e) {
+        console.log(e)
+        if (e.code === 503 && e.data[0].state === 'type-limit') {
+          console.log('上传文件类型不匹配')
+        } else {
+          console.log('上传文件大小超出限制')
+        }
+      },
+      uploadOver (e) {
+        console.log(e)
       }
     },
     components: {
-      veUpload,
       veEditer
     }
   }
@@ -136,5 +150,14 @@
     display: inline-block;
     width: 150px;
   }
+}
+.upload-section {
+  width: 150px;
+  height: 150px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px;
 }
 </style>

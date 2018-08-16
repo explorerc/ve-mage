@@ -8,9 +8,9 @@
         <p>互动标签:<span class="tag" v-for="item in desc.tagList">{{item}}</span></p>
       </div>
       <div class="right">
-        <span><a href="">活动官网</a></span>
-        <span><a href="">直播观看页</a></span>
-        <span @click='update'>发布/下线活动</span>
+        <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">活动官网</a></span>
+        <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">直播观看页</a></span>
+        <span @click='update'>{{state == 1 ? '发布活动' : '下线活动'}}</span>
         <span><a href="">进入直播间</a></span>
       </div>
     </div>
@@ -18,37 +18,42 @@
       <div>
         <span>准备</span>
         <ol>
-          <li v-for='item in processData.prepare' :key='item.title' v-show="item.show">{{item.title}}</li>
+          <li v-for='item in cardData.prepare' :key='item.title' v-show="item.checked">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>营销</span>
         <ol>
-          <li v-for='item in processData.marketing' :key='item.title' v-show="item.show">{{item.title}}</li>
+          <li v-for='item in cardData.marketing' :key='item.title' v-show="item.checked">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>形象</span>
         <ol>
-          <li v-for='item in processData.promote' :key='item.title' v-show="item.show">{{item.title}}</li>
+          <li v-for='item in cardData.promote' :key='item.title' v-show="item.checked">{{item.title}}</li>
         </ol>
       </div>
       <div>
         <span>直播</span>
         <ol>
-          <li v-for='item in processData.webinar' :key='item.title' v-show="item.show">{{item.title}}</li>
+          <!-- <li v-for='item in cardData.webinar' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+          <li>直播监控</li>
+          <li>聊天审核</li>
         </ol>
       </div>
       <div>
         <span>回放</span>
         <ol>
-          <li v-for='item in processData.record' :key='item.title' v-show="item.show">{{item.title}}</li>
+          <!-- <li v-for='item in cardData.record' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+          <li>设置回放</li>
         </ol>
       </div>
       <div>
         <span>数据</span>
         <ol>
-          <li v-for='item in processData.data' :key='item.title' v-show="item.show">{{item.title}}</li>
+          <!-- <li v-for='item in processData.data' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+          <li>数据报表</li>
+          <li>详细数据导出</li>
         </ol>
         </ol>
       </div>
@@ -57,33 +62,39 @@
       <div class="item prepare">
         <span>准备</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['prepare']" :prop-idx='index' :key='index' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
+            :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item marketing">
         <span>营销</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['marketing']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.marketing" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"'
+            :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item promote">
         <span>形象</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['promote']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"' :prop-imgUrl='item.img'></process-card>
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.promote" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
+            :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item setting">
         <span>高级设置</span>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData['setting']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-imgUrl='item.img'></process-card>
+          <!-- <process-card @update:checked='switchBack' v-for="(item,index) in cardData['setting']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-img='item.img'></process-card> -->
         </div>
       </div>
     </div>
+    <message-box v-if="msgShow" header="" content="" cancelText="" confirmText='' @handleClick="btnClick">
+    </message-box>
   </div>
 </template>
 
 <script>
   import processCard from 'components/process-card'
+  import messageBox from 'components/common/message-box'
   export default {
     data () {
       return {
@@ -92,38 +103,21 @@
           id: '',
           tagList: [],
           startTime: '',
-          state: '',
           stateClass: ''
         },
-        processData: {
-          'prepare': [],
-          'marketing': [],
-          'promote': [],
-          'webinar': [],
-          'record': [],
-          'data': []
-        },
-        cardData: {}
-        // remove (arr, item) { // 删除数组指定元素
-        //   for (var i = 0; i < arr.length; i++) {
-        //     if (arr[i] === item) {
-        //       // splice方法会改变数组长度，当减掉一个元素后，后面的元素都会前移，因此需要相应减少i的值
-        //       arr.splice(i, 1)
-        //       i--
-        //     }
-        //   }
-        //   return arr
-        // }
-
+        state: '',
+        cardData: {},
+        msgShow: false
       }
     },
     created () {
       // 假数据
       this.desc.title = '2018GIMIC互联网大会'
-      this.desc.id = '123456'
+      this.desc.id = this.$route.params.id
       this.desc.tagList = ['科技', '发布会', '标签三']
       this.desc.startTime = '2018-07-09 09:30:00'
       this.desc.state = 1
+      this.state = 1
       switch (this.desc.state) {
         case (1):
           this.desc.state = '直播'
@@ -142,120 +136,12 @@
           this.desc.stateClass = 'preview'
           break
       }
-      // 假数据
-      this.processData = {
-        'prepare': [{
-          title: '基本信息',
-          show: true
-        },
-        {
-          title: '观看限制',
-          show: true
-        },
-        {
-          title: '角色设置',
-          show: true
-        },
-        {
-          title: '暖场设置',
-          show: true
-        },
-        {
-          title: '预约报名',
-          show: true
-        },
-        {
-          title: '通知提醒',
-          show: true
-        }
-        ],
-        'marketing': [{
-          title: '邀请卡',
-          show: true
-        },
-        {
-          title: '抽奖',
-          show: true
-        },
-        {
-          title: '红包',
-          show: true
-        },
-        {
-          title: '分享有礼',
-          show: true
-        },
-        {
-          title: '直播朋友圈',
-          show: true
-        },
-        {
-          title: '瓜分大礼',
-          show: true
-        },
-        {
-          title: '活动报名',
-          show: true
-        },
-        {
-          title: '排行榜',
-          show: true
-        },
-        {
-          title: '有奖答题',
-          show: true
-        }
-        ],
-        'promote': [{
-          title: '活动官网',
-          show: true
-        },
-        {
-          title: '观看页',
-          show: true
-        },
-        {
-          title: '广告设置',
-          show: true
-        },
-        {
-          title: '播放器',
-          show: true
-        },
-        {
-          title: '分享设置',
-          show: true
-        }
-        ],
-
-        'webinar': [{
-          title: '直播监控',
-          show: true
-        },
-        {
-          title: '聊天审核',
-          show: true
-        }
-        ],
-        'record': [{
-          title: '设置回放',
-          show: true
-        }],
-        'data': [{
-          title: '数据报表',
-          show: true
-        },
-        {
-          title: '详细数据导出',
-          show: true
-        }
-        ]
-      }
       // 假数据 返回的card 数据
       this.cardData = {
         'prepare': [{
           title: '基本信息',
           img: '',
+          switch: false,
           checked: true,
           desc: [
             '基本信息内容1',
@@ -265,7 +151,8 @@
         {
           title: '观看限制',
           img: '',
-          checked: false,
+          switch: false,
+          checked: true,
           desc: [
             '观看限制内容1',
             '观看限制内容2'
@@ -275,6 +162,7 @@
           title: '角色设置',
           img: '',
           checked: true,
+          switch: false,
           desc: [
             '角色设置内容1',
             '角色设置内容2'
@@ -283,7 +171,8 @@
         {
           title: '暖场设置',
           img: '',
-          checked: false,
+          switch: true,
+          checked: true,
           desc: [
             '暖场设置内容1',
             '暖场设置内容2'
@@ -292,7 +181,8 @@
         {
           title: '预约报名',
           img: '',
-          checked: false,
+          switch: false,
+          checked: true,
           desc: [
             '预约报名内容1',
             '预约报名内容2'
@@ -301,7 +191,8 @@
         {
           title: '通知提醒',
           img: '',
-          checked: false,
+          switch: true,
+          checked: true,
           desc: [
             '通知提醒内容1',
             '通知提醒内容2'
@@ -320,7 +211,7 @@
         {
           title: '红包雨',
           img: '',
-          checked: false,
+          checked: true,
           desc: [
             '红包雨内容1'
           ]
@@ -346,7 +237,7 @@
         {
           title: '观看奖励',
           img: '',
-          checked: false,
+          checked: true,
           desc: [
             '观看奖励内容1',
             '观看奖励内容2'
@@ -366,6 +257,7 @@
           title: '活动官网',
           img: '',
           checked: true,
+          switch: false,
           desc: [
             '活动官网内容1',
             '活动官网内容2'
@@ -391,7 +283,7 @@
         {
           title: '播放器',
           img: '',
-          checked: false,
+          checked: true,
           desc: [
             '播放器内容1',
             '播放器内容2'
@@ -400,7 +292,7 @@
         {
           title: '分享设置',
           img: '',
-          checked: false,
+          checked: true,
           desc: [
             '分享设置内容1',
             '分享设置内容2'
@@ -419,7 +311,7 @@
         {
           title: '直播工具配置',
           img: '',
-          checked: false,
+          checked: true,
           desc: [
             '直播工具配置内容1'
           ]
@@ -439,22 +331,52 @@
     methods: {
       update () {
         // debugger // eslint-disable-line
-        // this.processData['record'].push('阿斯顿')
+        if (this.state === 1) {
+          this.$messageBox({
+            header: '提示',
+            content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
+            cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
+            confirmText: '立即发布',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+                this.state = 0
+              }
+            }
+          })
+        } else {
+          this.$messageBox({
+            header: '提示',
+            content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
+            cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
+            confirmText: '立即下线',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+                this.state = 1
+              }
+            }
+          })
+        }
       },
       switchBack (res) {
         //  debugger // eslint-disable-line
         console.log(res)
         if (res.type) {
           // 添加显示相关项目
-          this.processData[res.part][res.idx]['show'] = true
+          // debugger // eslint-disable-line
+          this.cardData[res.part][res.idx]['checked'] = true
         } else {
           // 隐藏相关项目
-          this.processData[res.part][res.idx]['show'] = false
+          this.cardData[res.part][res.idx]['checked'] = false
         }
       }
     },
     components: {
-      processCard
+      processCard,
+      messageBox
     }
 
   }

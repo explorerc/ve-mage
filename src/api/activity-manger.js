@@ -4,14 +4,14 @@ const ActivityManger = {
   queryList (data) {
     return utils.ajax({
       method: 'post',
-      url: '/activityManager/base-manager/list-activity',
+      url: '/manage/base-manage/list-activity',
       params: data
     })
   },
   deleteById (id) {
     return utils.ajax({
       method: 'post',
-      url: '/activityManager/base-manager/del-activity',
+      url: '/manage/base-manage/del-activity',
       params: {id: id}
     })
   }
