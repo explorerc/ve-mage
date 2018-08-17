@@ -9,7 +9,6 @@ function resolve(dir) {
 }
 
 const webpackConfig = merge(baseConfig, {
-  devtool: '#cheap-module-eval-source-map',
   module: {
     rules: [{
         test: /\.scss/,

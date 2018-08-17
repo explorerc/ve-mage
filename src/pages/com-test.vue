@@ -27,9 +27,9 @@
     </div>
     <div class="test-wrap">
       <com-upload
-      accept="png|jpg|jpeg|bmp|gif"
+      accept="png|jpg|jpeg|bmp|gif|mp4"
       uploadTxt="xxx"
-      actionUrl="/api/edu/database/doc-upload"
+      actionUrl="/api/upload/do-upload"
       inputName="resfile"
       :fileSize="fileSize"
       :exParams="exParams"
@@ -63,7 +63,7 @@ export default {
       exParams: {
         joinID: '123123'
       },
-      fileSize: 10000
+      fileSize: 200000
     }
   },
   created () {
