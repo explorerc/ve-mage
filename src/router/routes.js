@@ -13,10 +13,16 @@ const Register = () =>
   import('src/pages/login/register')
 const Barrage = () =>
   import('src/pages/barrage/index')
-const edit = () => import('src/pages/live-mager/edit')
-const detail = () => import('src/pages/live-mager/detail/detail')
-const role = () => import('src/pages/live-mager/prepare/role')
-const WarmField = () => import('src/pages/live-mager/warm-field')
+const edit = () =>
+  import('src/pages/live-mager/edit')
+const detail = () =>
+  import('src/pages/live-mager/detail/detail')
+const role = () =>
+  import('src/pages/live-mager/prepare/role')
+const WarmField = () =>
+  import('src/pages/live-mager/warm-field')
+const Forgot = () =>
+  import('src/pages/login/forgot')
 
 export default [{
   path: '/',
@@ -81,5 +87,10 @@ export default [{
   path: '/liveMager/warmField/:id',
   name: 'warmField',
   component: WarmField
+},
+{
+  path: '/forgot',
+  name: 'forgot',
+  component: Forgot
 }
 ]
