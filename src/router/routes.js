@@ -14,7 +14,8 @@ const Register = () =>
 const Barrage = () =>
   import('src/pages/barrage/index')
 const edit = () => import('src/pages/live-mager/edit')
-const detail = () => import('src/pages/live-mager/detail')
+const detail = () => import('src/pages/live-mager/detail/detail')
+const WarmField = () => import('src/pages/live-mager/warm-field')
 
 export default [{
   path: '/',
@@ -69,5 +70,10 @@ export default [{
   path: '/liveMager/detail/:id',
   name: 'detail',
   component: detail
+},
+{
+  path: '/liveMager/warmField/:id',
+  name: 'warmField',
+  component: WarmField
 }
 ]
