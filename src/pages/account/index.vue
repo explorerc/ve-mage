@@ -15,7 +15,7 @@
           :fileSize="5000"
           @selected="uploadSelected"
         >
-        <div class="test-upload">+++</div>
+        <div class="test-upload"><img src="avatar" alt=""></div>
         </com-upload>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
@@ -31,7 +31,7 @@
       </p>
       <com-editor :value.sync="userName" type="input" @saveInfo="save(userName)" clickType="save" :max-length="20"><span class="v-explain">姓名</span></com-editor>
       <com-editor :value.sync="userPost" type="input" @saveInfo="save" clickType="save" :max-length="20"><span class="v-explain">职务</span></com-editor>
-      <com-editor :value.sync="userPhone" type="input" @clickSaveBtn="clickSave(userPhone,'popup','mobliePhone')" clickType="popup" :max-length="11"><span class="v-explain">手机</span></com-editor>
+      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone)" clickType="save" :max-length="11"><span class="v-explain">手机</span></com-editor>
       <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo)" clickType="save" :max-length="12"><span class="v-explain">办公电话</span></com-editor>
       <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail)" clickType="save"><span class="v-explain">邮箱</span></com-editor>
       <com-editor :value.sync="userWechat" type="input" @clickSaveBtn="saveInfo(userWechat)" clickType="save" :max-length="40"><span class="v-explain">微信</span></com-editor>
@@ -76,14 +76,14 @@
       </template>
       <template v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
-          <span class="v-label">公司名称</span><span class="v-information">微吼时代科技有限公司</span>
+          <span class="v-label">公司名称</span><span class="v-information">{{companyName}}</span>
         </p>
         <p class="v-state-info">
-          <span class="v-label">营业执照编号</span><span class="v-information">XXXXXXXXXX</span>
+          <span class="v-label">营业执照编号</span><span class="v-information">{{licenseCode}}</span>
         </p>
         <p class="v-state-info">
-          <span class="v-label">营业执照编号</span>
-        <img src="" alt="123">
+          <span class="v-label">营业执照照片</span>
+          <img src="licensePic" alt="123">
         </p>
       </template>
     </message-box>
@@ -91,14 +91,16 @@
 </template>
 <script>
   import Editor from './info-editor'
+  import account from 'src/api/account-manage'
+  import identifyingcodeManage from 'src/api/identifyingcode-manage'
   export default {
     data () {
       return {
         account: '',
         accountName: '',
         selectIndustry: '',
-        accountPhone: '1521111111',
-        accountPassword: '666',
+        accountPhone: '',
+        accountPassword: '',
         companyName: '',
         state: '',
         industry: [{
@@ -146,8 +148,36 @@
         phoneCode: '', // 原有手机验证码
         oldPassword: '',
         newPassword: '',
-        reNewPassword: ''
+        reNewPassword: '',
+        licenseCode: '', // 营业执照编号
+        licensePic: '', // 营业执照照片
+        avatar: ''// 账户头像
       }
+    },
+    mounted () {
+      let data = {
+        'account': this.userName,
+        'password': this.passWord,
+        'remember': 0
+      }
+      account.getAccount(data).then((res) => {
+        if (res.code !== 200) {
+          console.log(res.msg)
+        } else {
+          let resData = res.data
+          this.account = resData.userName
+          this.accountName = resData.name
+          this.avatar = resData.avatar
+          this.accountPhone = resData.mobile
+          this.accountPassword = resData.hasPassword === 0 ? '' : '已设置'
+          this.companyName = resData.company
+          this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
+          this.selectIndustry = resData.industry
+          this.companyWebsite = res.website
+          this.licenseCode = res.licenseCode
+          this.licensePic = res.licensePic
+        }
+      })
     },
     components: {
       'com-editor': Editor
@@ -228,7 +258,6 @@
             }, function onload (instance) {
               _self.cap = instance
             })
-
             this.confirmText = '提交'
             this.messageBoxTitle = '更换手机'
             clearInterval(this.timerr)
@@ -276,6 +305,29 @@
               this.phonePlaceholder = '输入原有注册手机号'
               this.step = 'initialPhone'
             }
+          } else if (this.messageBoxType === 'changePassword') {
+            if (this.newPassword !== this.reNewPassword) {
+              alert('新密码与重新输入密码错误')
+              return false
+            }
+            let data = {
+              'mobile': this.accountPhone,
+              'newPassword': this.newPassword,
+              'oldPassword': this.oldPassword
+            }
+            account.changePassword(data).then((res) => {
+              if (res.code !== 200) {
+                alert(res.msg)
+              } else {
+                alert('success')
+                this.oldPassword = ''
+                this.newPassword = ''
+                this.reNewPassword = ''
+              }
+            })
+            this.messageBoxShow = false
+          } else if (this.messageBoxType === 'seeState') {
+            this.messageBoxShow = false
           }
         }
       },
@@ -301,12 +353,17 @@
         if (this.isProhibit) {
           return false
         }
-        this.isSend = true
-        this.isProhibit = true
-        clearInterval(this.timerr)
-        this.timerr = setInterval(() => {
-          this.second--
-          if (this.second <= 0) {
+        let data = {
+          'mobile': this.phone,
+          'type': 'BUSINESS_USER_VERIFY_MOBILE'
+        }
+        if (this.step === 'BUSINESS_USER_UPDATE_MOBILE') {
+          data.type = ''
+        }
+        identifyingcodeManage.getCode(data).then((res) => {
+          if (res.code !== 200) {
+            this.error = res.msg
+            this.opacity = 1
             clearInterval(this.timerr)
             this.isSend = false
             this.isProhibit = true
@@ -314,8 +371,24 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
+          } else {
+            this.isSend = true
+            this.isProhibit = true
+            clearInterval(this.timerr)
+            this.timerr = setInterval(() => {
+              this.second--
+              if (this.second <= 0) {
+                clearInterval(this.timerr)
+                this.isSend = false
+                this.isProhibit = true
+                this.second = 60
+                this.isImg = false
+                this.phoneKey = ''
+                this.cap.refresh()
+              }
+            }, 1000)
           }
-        }, 1000)
+        })
       }
     }
   }
