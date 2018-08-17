@@ -23,6 +23,8 @@ const WarmField = () =>
   import('src/pages/live-mager/warm-field')
 const Forgot = () =>
   import('src/pages/login/forgot')
+const SetAccount = () =>
+  import('src/pages/account')
 
 export default [{
   path: '/',
@@ -92,5 +94,10 @@ export default [{
   path: '/forgot',
   name: 'forgot',
   component: Forgot
+},
+{
+  path: '/setAccount',
+  name: 'setAccount',
+  component: SetAccount
 }
 ]
