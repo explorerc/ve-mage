@@ -26,6 +26,8 @@
 </template>
 <script>
   import MyInput from './login-input'
+  import loginManage from 'src/api/login-manage'
+  import identifyingcodeManage from 'src/api/identifyingcode-manage'
   export default {
     data () {
       return {
@@ -110,12 +112,14 @@
         if (this.isProhibit) {
           return false
         }
-        this.isSend = true
-        this.isProhibit = true
-        clearInterval(this.timerr)
-        this.timerr = setInterval(() => {
-          this.second--
-          if (this.second <= 0) {
+        let data = {
+          'mobile': this.userPhone,
+          'type': 'BUSINESS_USER_REG'
+        }
+        identifyingcodeManage.getCode(data).then((res) => {
+          if (res.code !== 200) {
+            this.error = res.msg
+            this.opacity = 1
             clearInterval(this.timerr)
             this.isSend = false
             this.isProhibit = true
@@ -123,16 +127,57 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
+          } else {
+            this.isSend = true
+            this.isProhibit = true
+            clearInterval(this.timerr)
+            this.timerr = setInterval(() => {
+              this.second--
+              if (this.second <= 0) {
+                clearInterval(this.timerr)
+                this.isSend = false
+                this.isProhibit = true
+                this.second = 60
+                this.isImg = false
+                this.phoneKey = ''
+                this.cap.refresh()
+              }
+            }, 1000)
           }
-        }, 1000)
+        })
       },
       submit () {
         this.checkForm()
-        console.log(this.userName)
-        console.log(this.userPosition)
-        console.log(this.userCompany)
-        console.log(this.userPhone)
-        console.log(this.code)
+        if (this.error) {
+          return false
+        }
+        let data = {
+          'mobile': this.userPhone,
+          'name': this.userName,
+          'position': this.userPosition,
+          'company': this.userCompany,
+          'code': this.code
+        }
+        loginManage.register(data).then((res) => {
+          if (res.code !== 200) {
+            this.error = res.msg
+            this.opacity = 1
+          } else {
+            this.$messageBox({
+              header: '免费试用',
+              content: '感谢您提供的重要信息，我们会立即安排专业人员跟您联系，为您提供试用账号。您也可以拨打我们的专属服务热线400-888-9970获取更多信息。',
+              confirmText: '我知道了',
+              autoClose: 60, // 60秒
+              handleClick: (e) => {
+                if (e.action === 'cancel') {
+                  console.log('取消或者关闭按钮')
+                } else if (e.action === 'confirm') {
+                  console.log('点击了确定按钮')
+                }
+              }
+            })
+          }
+        })
       },
       checkForm: function (e) {
         if (!this.userName) {

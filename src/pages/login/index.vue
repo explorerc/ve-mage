@@ -18,6 +18,12 @@
                 <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:accountOpacity}">
 					      	<p class="v-error">{{accountError}}</p>
 					      </div>
+                <div class="input-form v-forget" style="margin-top: 5px;">
+                  <a href="/pw" class="fr clickTag">忘记密码</a>
+                    <template>
+                      <el-checkbox v-model="remember">自动登录</el-checkbox>
+                    </template>
+                </div>
                 <el-button @click="accountSubmit">wo</el-button>
             </div>
             <div class="v-mobile" v-show="!isAccount">
@@ -37,11 +43,13 @@
 </template>
 <script>
   import MyInput from './login-input'
+  import loginManage from 'src/api/login-manage'
+  import identifyingcodeManage from 'src/api/identifyingcode-manage'
   export default {
     data () {
       return {
         items: ['account', 'mobile'],
-        isAccount: true,
+        isAccount: false,
         userName: '',
         passWord: '',
         phone: '',
@@ -59,7 +67,8 @@
         accountOpacity: 0,
         mobileOpacity: 0,
         accountError: '',
-        mobileError: ''
+        mobileError: '',
+        remember: false
       }
     },
     components: {
@@ -110,25 +119,91 @@
       },
       accountSubmit () {
         this.checkAccountForm()
-        console.log(this.userName)
-        console.log(this.passWord)
+        if (this.accountError) {
+          return false
+        }
+        let data = {
+          'account': this.userName,
+          'password': this.passWord,
+          'remember': this.remember ? 1 : 0
+        }
+        loginManage.loginByAccount(data).then((res) => {
+          if (res.code !== 200) {
+            this.isSend = true
+            this.isProhibit = true
+            clearInterval(this.timerr)
+            this.timerr = setInterval(() => {
+              this.second--
+              if (this.second <= 0) {
+                clearInterval(this.timerr)
+                this.isSend = false
+                this.isProhibit = true
+                this.second = 60
+                this.isImg = false
+                this.phoneKey = ''
+                this.cap.refresh()
+              }
+            }, 1000)
+            this.accountError = res.msg
+            this.accountOpacity = 1
+          } else {
+            console.log('账号登录成功')
+          }
+        })
       },
       phoneSubmit () {
         this.checkMobileForm()
-        console.log(this.phone)
-        console.log(this.code)
+        if (this.mobileError) {
+          return false
+        }
+        let data = {
+          'mobile': this.phone,
+          'code': this.code,
+          'remember': 0
+        }
+        loginManage.loginByPhone(data).then((res) => {
+          if (res.code !== 200) {
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+            this.mobileError = res.msg
+            this.mobileOpacity = 1
+          } else {
+            this.isSend = true
+            this.isProhibit = true
+            clearInterval(this.timerr)
+            this.timerr = setInterval(() => {
+              this.second--
+              if (this.second <= 0) {
+                clearInterval(this.timerr)
+                this.isSend = false
+                this.isProhibit = true
+                this.second = 60
+                this.isImg = false
+                this.phoneKey = ''
+                this.cap.refresh()
+              }
+            }, 1000)
+          }
+        })
       },
       getCode () {
         // 获取验证码
         if (this.isProhibit) {
           return false
         }
-        this.isSend = true
-        this.isProhibit = true
-        clearInterval(this.timerr)
-        this.timerr = setInterval(() => {
-          this.second--
-          if (this.second <= 0) {
+
+        let data = {
+          'mobile': this.phone,
+          'type': 'BUSINESS_USER_LOGIN'
+        }
+        identifyingcodeManage.getCode(data).then((res) => {
+          if (res.code !== 200) {
+            this.mobileError = res.msg
+            this.mobileOpacity = 1
             clearInterval(this.timerr)
             this.isSend = false
             this.isProhibit = true
@@ -136,8 +211,24 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
+          } else {
+            this.isSend = true
+            this.isProhibit = true
+            clearInterval(this.timerr)
+            this.timerr = setInterval(() => {
+              this.second--
+              if (this.second <= 0) {
+                clearInterval(this.timerr)
+                this.isSend = false
+                this.isProhibit = true
+                this.second = 60
+                this.isImg = false
+                this.phoneKey = ''
+                this.cap.refresh()
+              }
+            }, 1000)
           }
-        }, 1000)
+        })
       },
       isGetCodePermission () {
         if (this.isImg && this.phoneStatus) {
@@ -285,6 +376,18 @@
       font-size: 12px;
       color: #e62e2e;
     }
+    &.v-forget {
+      margin-top: 8px;
+      font-size: 13px;
+      .clickTag {
+        font-size: 13px;
+        color: #999;
+        vertical-align: middle;
+      }
+      .fr {
+        float: right;
+      }
+    }
   }
   .v-getcode {
     background-color: #fc5659;
@@ -306,6 +409,9 @@
         background-color: #dedede;
       }
     }
+  }
+  .el-button {
+    margin-top: 10px;
   }
 }
 </style>
