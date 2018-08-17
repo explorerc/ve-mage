@@ -23,6 +23,9 @@
         prop="role"
         label="角色"
         width="150">
+        <template slot-scope="scope">
+          <span >{{scope.row.role === "HOST" ? "主持人" : "助理"}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="关联活动账号"
@@ -47,9 +50,9 @@
           <el-button type="text" size="small">进入直播</el-button>
           <el-button type="text" size="small">复制链接</el-button>
           <el-button type="text" size="small">复制邀请信息</el-button>
-          <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleKick(scope.row)" :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
-          <el-button type="text" size="small" @click="handleDelete(scope.row)" v-show='scope.row.role != "主持人"'>删除角色</el-button>
+          <el-button type="text" size="small" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
+          <el-button type="text" size="small" @click="handleKick(scope.$index,scope.row)" :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
+          <el-button type="text" size="small" @click="handleDelete(scope.$index,scope.row)" v-if='scope.row.role != "HOST"'>删除角色</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,7 +70,7 @@
               <label>头像:</label>
               <com-upload
               accept="png|jpg|jpeg"
-              actionUrl="/api/edu/database/doc-upload"
+              actionUrl="/upload/do-upload"
               inputName="resfile"
               :fileSize="modalData.fileSize"
               @load="uploadLoad"
@@ -89,72 +92,82 @@
               <com-input :value.sync="modalData.password" placeholder="请输入口令" :max-length="6" ></com-input>
             </div>
           </div>
-          <p><button @click='saveSetting'>确定</button></p>
+          <p><button @click='saveSetting(activityId)'>确定</button></p>
         </div>
       </div>
     </transition>
   </div>
 </template>
 <script>
-import liveHttp from 'src/api/activity-manger'
+import prepareHttp from 'src/api/activity-manger'
 export default {
   data () {
     return {
       tableData: [
         {
+          id: '',
           activityId: '',
-          avatar: '../asdsd/aa.png',
-          nickname: '张三',
-          role: '主持人',
-          password: '66666',
+          avatar: '',
+          nickname: '',
+          role: '',
+          password: '',
           online: true
         },
         {
+          id: '',
           activityId: '',
-          avatar: '../asdsd/aa.png',
-          nickname: '李四',
-          role: '助理',
-          password: '33333',
+          avatar: '',
+          nickname: '',
+          role: '',
+          password: '',
           online: false
         }
       ],
-      id: '',
-      msgKick: false,
-      msgDelete: false,
       modalData: {
         isShow: false,
         title: '添加角色',
         fileSize: 1024,
         nickname: '',
         password: '',
-        portrait: ''
+        portrait: '',
+        id: '',
+        idx: ''
       },
+      activityId: '',
+      msgKick: false,
+      msgDelete: false,
       loading: false
     }
   },
   created () {
     // debugger // eslint-disable-line
-    this.id = this.$route.params.id
+    this.activityId = this.$route.params.id
     this.getRolelist()
   },
   methods: {
     handleClick (e) {
       console.log(e)
     },
-    handleEdit (res) {
+    handleEdit (idx, res) {
       this.modalData = {
         isShow: true,
         title: '编辑角色',
         nickname: res.nickname,
         password: res.password,
-        portrait: res.avatar
+        portrait: res.avatar,
+        id: res.id,
+        idx: idx
       }
     },
-    handleKick (e) {
+    handleKick (idx, res) {
       this.msgKick = true
     },
-    handleDelete (e) {
+    handleDelete (idx, res) {
+      console.log(idx)
+      // console.log(res)
       this.msgDelete = true
+      this.modalData.id = res.id
+      this.modalData.idx = idx
     },
     kickConfirm (e) {
       if (e.action === 'confirm') {
@@ -166,6 +179,33 @@ export default {
     deleteConfirm (e) {
       if (e.action === 'confirm') {
         // 请求删除接口
+        let data = {
+          id: this.modalData.id
+        }
+        prepareHttp.delAss(data).then((res) => {
+          this.msgDelete = false
+          if (res.code === 200) {
+            console.log(res)
+            this.$toast({
+              header: `提示`,
+              customClass: 'msgError',
+              content: '删除成功',
+              autoClose: 2000,
+              position: 'center'
+            })
+            // 更新data
+            this.tableData.splice([this.modalData.idx], 1)
+          }
+        }).catch((res) => {
+          this.$toast({
+            header: `提示`,
+            customClass: 'msgError',
+            content: res.msg,
+            autoClose: 2000,
+            position: 'center'
+          })
+          this.msgDelete = false
+        })
       } else {
         this.msgDelete = false
       }
@@ -190,39 +230,93 @@ export default {
         title: '创建角色',
         nickname: '',
         password: '',
-        avatar: ''
+        avatar: '',
+        id: ''
       }
     },
     saveSetting () {
-      if (this.modalData.nickname.length === 0) {
-        this.$toast({
-          header: ``,
-          customClass: 'msgError',
-          content: '请输入角色昵称',
-          autoClose: 3000,
-          position: 'center'
-        })
-      } else if (this.modalData.password.length === 0) {
-        this.$toast({
-          header: ``,
-          customClass: 'msgError',
-          content: '请输入口令',
-          autoClose: 3000,
-          position: 'center'
-        })
-      } else if (this.modalData.avatar.length === 0) {
-        this.$toast({
-          header: ``,
-          customClass: 'msgError',
-          content: '请上传角色头像',
-          autoClose: 3000,
-          position: 'center'
-        })
+      // if (this.modalData.nickname.length === 0) {
+      //   this.$toast({
+      //     header: ``,
+      //     customClass: 'msgError',
+      //     content: '请输入角色昵称',
+      //     autoClose: 3000,
+      //     position: 'center'
+      //   })
+      //   return false
+      // } else if (this.modalData.password.length === 0) {
+      //   this.$toast({
+      //     header: ``,
+      //     customClass: 'msgError',
+      //     content: '请输入口令',
+      //     autoClose: 3000,
+      //     position: 'center'
+      //   })
+      //   return false
+      // } else if (this.modalData.avatar.length === 0) {
+      //   this.$toast({
+      //     header: ``,
+      //     customClass: 'msgError',
+      //     content: '请上传角色头像',
+      //     autoClose: 3000,
+      //     position: 'center'
+      //   })
+      //   return false
+      // }
+      // 判断是否是编辑
+      let saveData = {
+        // id: this.modalData.id,
+        activityId: this.activityId,
+        password: this.modalData.password,
+        nickname: this.modalData.nickname,
+        avatar: this.modalData.avatar
       }
+      let isNew = this.modalData.title.search('编辑') >= 0
+      prepareHttp.handleAss(isNew, saveData).then((res) => {
+        if (res.code === 200) {
+          console.log(res)
+          this.$toast({
+            header: `提示`,
+            customClass: 'msgError',
+            content: isNew ? '编辑成功' : '创建成功',
+            autoClose: 2000,
+            position: 'center'
+          })
+          // update data
+          if (!isNew) { // new
+            // debugger // eslint-disable-line
+            let pushData = {
+              id: res.data.id,
+              activityId: saveData.activityId,
+              avatar: saveData.avatar,
+              nickname: saveData.nickname,
+              role: 'ASSISTANT',
+              password: saveData.password,
+              online: true
+            }
+            this.tableData.push(pushData)
+          } else { // update
+            this.tableData[this.modalData.idx].avatar = saveData.avatar
+            this.tableData[this.modalData.idx].nickname = saveData.nickname
+            this.tableData[this.modalData.idx].password = saveData.password
+          }
+        } else {
+          this.$toast({
+            header: `提示`,
+            customClass: 'msgError',
+            content: res.msg,
+            autoClose: 2000,
+            position: 'center'
+          })
+        }
+        this.modalData.isShow = false
+      }).catch((e) => {
+        console.log(e)
+      })
     },
     getRolelist () {
       this.loading = true
-      liveHttp.roleList(this.id).then((res) => {
+      prepareHttp.roleList(this.activityId).then((res) => {
         this.loading = false
         if (res.code === 200) {
           console.log(res)
