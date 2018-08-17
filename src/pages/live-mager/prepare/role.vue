@@ -47,9 +47,16 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small">进入直播</el-button>
-          <el-button type="text" size="small">复制链接</el-button>
-          <el-button type="text" size="small">复制邀请信息</el-button>
+          <el-button type="text" size="small"><a href=''>进入直播</a></el-button>
+          <el-button type="text" size="small" @click="copyLink(scope.$index,scope.row)">复制链接</el-button>
+          <el-button type="text" size="small" @click="copyInfo(scope.$index,scope.row)"><textarea>
+您好，《实打实地方打工》的直播，以下为直播的详细信息及参会信息，请准时参加，谢谢<br>
+直播名称：{{activityName}}<br>
+直播ID：{{activityId}}<br>
+开始时间：{{time}}<br>
+嘉宾口令：{{password}}<br>
+加入链接：http://t.e.vhall.com/mywebinar/login/{{activityId}}
+            </textarea><input type='text' :value="copyInfoval" class='copy-info'>复制邀请信息</el-button>
           <el-button type="text" size="small" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
           <el-button type="text" size="small" @click="handleKick(scope.$index,scope.row)" :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
           <el-button type="text" size="small" @click="handleDelete(scope.$index,scope.row)" v-if='scope.row.role != "HOST"'>删除角色</el-button>
@@ -133,10 +140,17 @@ export default {
         id: '',
         idx: ''
       },
+      webinar: {
+        name: 'asdasd的活动',
+        time: '2018-07-15 23:20:00',
+        password: ''
+      },
       activityId: '',
       msgKick: false,
       msgDelete: false,
-      loading: false
+      loading: false,
+      copyDataval: 'www.baidu.com',
+      copyInfoval: ''
     }
   },
   created () {
@@ -187,10 +201,7 @@ export default {
           if (res.code === 200) {
             console.log(res)
             this.$toast({
-              header: `提示`,
-              customClass: 'msgError',
               content: '删除成功',
-              autoClose: 2000,
               position: 'center'
             })
             // 更新data
@@ -198,10 +209,7 @@ export default {
           }
         }).catch((res) => {
           this.$toast({
-            header: `提示`,
-            customClass: 'msgError',
             content: res.msg,
-            autoClose: 2000,
             position: 'center'
           })
           this.msgDelete = false
@@ -235,34 +243,25 @@ export default {
       }
     },
     saveSetting () {
-      // if (this.modalData.nickname.length === 0) {
-      //   this.$toast({
-      //     header: ``,
-      //     customClass: 'msgError',
-      //     content: '请输入角色昵称',
-      //     autoClose: 3000,
-      //     position: 'center'
-      //   })
-      //   return false
-      // } else if (this.modalData.password.length === 0) {
-      //   this.$toast({
-      //     header: ``,
-      //     customClass: 'msgError',
-      //     content: '请输入口令',
-      //     autoClose: 3000,
-      //     position: 'center'
-      //   })
-      //   return false
-      // } else if (this.modalData.avatar.length === 0) {
-      //   this.$toast({
-      //     header: ``,
-      //     customClass: 'msgError',
-      //     content: '请上传角色头像',
-      //     autoClose: 3000,
-      //     position: 'center'
-      //   })
-      //   return false
-      // }
+      if (this.modalData.nickname.length === 0) {
+        this.$toast({
+          content: '请输入角色昵称',
+          position: 'center'
+        })
+        return false
+      } else if (this.modalData.password.length === 0) {
+        this.$toast({
+          content: '请输入口令',
+          position: 'center'
+        })
+        return false
+      } else if (this.modalData.avatar.length === 0) {
+        this.$toast({
+          content: '请上传角色头像',
+          position: 'center'
+        })
+        return false
+      }
       // 判断是否是编辑
       let saveData = {
         // id: this.modalData.id,
@@ -274,12 +273,8 @@ export default {
       let isNew = this.modalData.title.search('编辑') >= 0
       prepareHttp.handleAss(isNew, saveData).then((res) => {
         if (res.code === 200) {
-          console.log(res)
           this.$toast({
-            header: `提示`,
-            customClass: 'msgError',
             content: isNew ? '编辑成功' : '创建成功',
-            autoClose: 2000,
             position: 'center'
           })
           // update data
@@ -302,10 +297,7 @@ export default {
           }
         } else {
           this.$toast({
-            header: `提示`,
-            customClass: 'msgError',
             content: res.msg,
-            autoClose: 2000,
             position: 'center'
           })
         }
@@ -325,6 +317,19 @@ export default {
       }).catch(() => {
         this.loading = false
       })
+    },
+    copyLink (res) {
+      // document.getElementsByClassName('copy-link')[0].select()
+      // document.execCommand('Copy')
+      // this.$toast({
+      //   content: '复制成功',
+      //   position: 'center'
+      // })
+      // const str = 'www.baic.com'
+      // str.copyClipboard
+    },
+    copyInfo (res) {
+
     }
   }
 }
@@ -341,7 +346,12 @@ export default {
   height: 100%;
   background: rgba($color: #000000, $alpha: 0.5);
 }
-
+.copy-info,
+.copy-link {
+  opacity: 0;
+  height: 1px;
+  position: absolute;
+}
 .created-modal {
   width: 400px;
   height: 300px;
