@@ -16,6 +16,7 @@ const Barrage = () =>
 const edit = () => import('src/pages/live-mager/edit')
 const detail = () => import('src/pages/live-mager/detail/detail')
 const role = () => import('src/pages/live-mager/prepare/role')
+const WarmField = () => import('src/pages/live-mager/warm-field')
 
 export default [{
   path: '/',
@@ -75,5 +76,10 @@ export default [{
   path: '/liveMager/prepare/role/:id',
   name: 'role',
   component: role
+},
+{
+  path: '/liveMager/warmField/:id',
+  name: 'warmField',
+  component: WarmField
 }
 ]
