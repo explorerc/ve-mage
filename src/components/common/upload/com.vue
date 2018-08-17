@@ -31,7 +31,13 @@ const MIME_TYPES = {
   'xls': 'application/vnd.ms-excel',
   'xlsx': 'application/vnd.ms-excel',
   'pdf': 'application/pdf',
-  'ppt': 'application/mspowerpoint'
+  'ppt': 'application/mspowerpoint',
+  'mp4': 'video/mp4',
+  'flv': 'video/x-flv',
+  'm3u8': 'application/x-mpegURL',
+  'mov': 'video/quicktime',
+  'avi': 'video/x-msvideo',
+  'wmv': 'video/x-ms-wmv'
 }
 export default {
   name: 'ComUpload',
@@ -98,6 +104,7 @@ export default {
       this.$refs.upload.click()
     },
     startUpload (e) {
+      debugger //eslint-disable-line
       this.current = ''
       this.list = []
       this.queue = []
