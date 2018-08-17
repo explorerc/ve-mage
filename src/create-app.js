@@ -18,6 +18,7 @@ import Upload from './components/common/upload'
 import Loading from './components/common/loading'
 import Dialog from './components/common/dialog'
 import Button from './components/common/button'
+import Tabs from './components/common/tabs'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -29,6 +30,7 @@ Vue.use(Upload)
 Vue.use(Loading)
 Vue.use(Dialog)
 Vue.use(Button)
+Vue.use(Tabs)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
