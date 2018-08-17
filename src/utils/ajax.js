@@ -3,6 +3,7 @@ import qs from 'qs'
 import {
   Loading
 } from 'components/common/loading'
+import {MessageBox} from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -40,7 +41,7 @@ axios.interceptors.response.use(
     Loading(false)
     if (res.data.code !== 200) {
       // 错误处理
-      return Promise.reject(res.data.message)
+      return Promise.reject(res.data.msg)
     }
     return res
   }, error => {
@@ -56,6 +57,11 @@ export const ajax = (options) => {
   }).catch((error) => {
     Loading(false)
     console.log('出错了', error)
+    MessageBox({
+      header: error,
+      handleClick: (e) => {
+      }
+    })
     return new Promise(() => {})
   })
 }
