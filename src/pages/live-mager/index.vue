@@ -2,7 +2,7 @@
   <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
       <span>直播列表</span>
-      <el-button class="live-btn" type="primary" plain>创建直播</el-button>
+      <el-button class="live-btn fr" type="primary" plain>创建直播</el-button>
     </div>
     <div class="mager-box">
       <div class="live-search">
@@ -23,14 +23,16 @@
           </el-option>
         </el-select>
         <div class="search-box">
-          <com-input
+          <com-input class="fr"
             type="search"
             :value.sync="searchParams.keyword"
             @keyup.native.enter="searchEnter"
             placeholder="输入直播名称"></com-input>
         </div>
       </div>
-      <live-table :tableList="tableList" @handleClick="handleClick"/>
+      <!--<div class="clearfix">-->
+        <live-table  :tableList="tableList" @handleClick="handleClick"/>
+      <!--</div>-->
       <div class="pagination-box">
         <div class="page-pagination">
           <ve-pagination
@@ -145,15 +147,4 @@
 </script>
 
 <style lang="scss" scoped src="./css/live.scss">
-  @import "~assets/css/variable";
-  .live-mager {
-      .pagination-box {
-        width: 100%;
-        overflow: hidden;
-      }
-      .page-pagination {
-        margin: 10px 10px 20px 0;
-        float: right;
-      }
-  }
 </style>

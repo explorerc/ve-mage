@@ -5,6 +5,7 @@
   background-color: $color-bg;
   border-radius: 5px;
   overflow: hidden;
+  padding-bottom: 30px;
   .live-title {
     border-bottom: 1px solid $color-bd;
     line-height: 50px;
@@ -17,8 +18,26 @@
       top: 5px;
     }
   }
+  .search-box{
+    width: 300px;
+    float: right;
+  }
   .live-btn{
     margin-right: 20px;
+  }
+  .live-search{
+    padding: 30px 20px 20px 20px;
+    .el-select:nth-child(2){
+      margin-left: 10px;
+    }
+  }
+  .pagination-box {
+    width: 100%;
+    overflow: hidden;
+  }
+  .page-pagination {
+    margin: 30px 10px 20px 0;
+    float: right;
   }
   .mager-box{
     font-size: 14px;
