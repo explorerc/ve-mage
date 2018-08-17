@@ -1,6 +1,6 @@
 <!--角色设置-->
 <template>
-  <div>
+  <div v-ComLoading="loading" com-loading-text="拼命加载中">
     <p>角色设置<i>？</i><span @click="add">添加助理</span></p>
     <div class="content">
       <el-table
@@ -11,11 +11,11 @@
         label="头像"
         width="150">
       <template slot-scope="scope">
-        <img src="scope.portrait" class='protrait'>
+        <img :src="scope.row.avatar" class='protrait'>
       </template>
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="nickname"
         label="昵称"
         width="150">
       </el-table-column>
@@ -26,18 +26,20 @@
       </el-table-column>
       <el-table-column
         label="关联活动账号"
-        width="150">
-        <template slot-scope="scope">{{id}}</template>
+        width="150"
+        prop='activityId'>
       </el-table-column>
       <el-table-column
-        prop="psw"
+        prop="password"
         label="口令"
         width="150">
       </el-table-column>
       <el-table-column
-        prop="status"
         label="状态"
         width="150">
+        <template slot-scope="scope">
+          <span>{{scope.row.online === true ? "在线" : "离线"}}</span>
+        </template>
       </el-table-column>
       <el-table-column
         label="操作">
@@ -46,7 +48,7 @@
           <el-button type="text" size="small">复制链接</el-button>
           <el-button type="text" size="small">复制邀请信息</el-button>
           <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleKick(scope.row)" :class='scope.row.status!="在线" ? "disabled" : ""'>踢出</el-button>
+          <el-button type="text" size="small" @click="handleKick(scope.row)" :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
           <el-button type="text" size="small" @click="handleDelete(scope.row)" v-show='scope.row.role != "主持人"'>删除角色</el-button>
         </template>
       </el-table-column>
@@ -73,14 +75,14 @@
               @over="uploadOver"
               >
               <div class="upload-section">
-                <img class='img' src="modalData.portrait" v-if='modalData.portrait'>
+                <img class='img' src="modalData.avatar" v-if='modalData.avatar'>
                 <div class='img' v-else>图片尺寸建议上传50*50，大小不超过1M</div>
               </div>
               </com-upload>
             </div>
             <div>
               <label>昵称:</label>
-              <com-input :value.sync="modalData.name" placeholder="请输入昵称" :max-length="10" ></com-input>
+              <com-input :value.sync="modalData.nickname" placeholder="请输入昵称" :max-length="10" ></com-input>
             </div>
             <div>
               <label>口令:</label>
@@ -94,23 +96,26 @@
   </div>
 </template>
 <script>
+import liveHttp from 'src/api/activity-manger'
 export default {
   data () {
     return {
       tableData: [
         {
-          portrait: '../asdsd/aa.png',
-          name: '张三',
+          activityId: '',
+          avatar: '../asdsd/aa.png',
+          nickname: '张三',
           role: '主持人',
-          psw: '66666',
-          status: '在线'
+          password: '66666',
+          online: true
         },
         {
-          portrait: '../asdsd/aa.png',
-          name: '李四',
+          activityId: '',
+          avatar: '../asdsd/aa.png',
+          nickname: '李四',
           role: '助理',
-          psw: '33333',
-          status: '离线'
+          password: '33333',
+          online: false
         }
       ],
       id: '',
@@ -120,15 +125,17 @@ export default {
         isShow: false,
         title: '添加角色',
         fileSize: 1024,
-        name: '',
+        nickname: '',
         password: '',
         portrait: ''
-      }
+      },
+      loading: false
     }
   },
   created () {
     // debugger // eslint-disable-line
     this.id = this.$route.params.id
+    this.getRolelist()
   },
   methods: {
     handleClick (e) {
@@ -138,11 +145,10 @@ export default {
       this.modalData = {
         isShow: true,
         title: '编辑角色',
-        name: res.name,
-        password: res.psw,
-        portrait: res.portrait
+        nickname: res.nickname,
+        password: res.password,
+        portrait: res.avatar
       }
-      console.log(res)
     },
     handleKick (e) {
       this.msgKick = true
@@ -174,7 +180,6 @@ export default {
 
     },
     closeModal (e) {
-      console.log(e)
       if (e.target.className === 'modal-cover') {
         this.modalData.isShow = false
       }
@@ -183,13 +188,13 @@ export default {
       this.modalData = {
         isShow: true,
         title: '创建角色',
-        name: '',
+        nickname: '',
         password: '',
-        portrait: ''
+        avatar: ''
       }
     },
     saveSetting () {
-      if (this.modalData.name.length === 0) {
+      if (this.modalData.nickname.length === 0) {
         this.$toast({
           header: ``,
           customClass: 'msgError',
@@ -205,7 +210,7 @@ export default {
           autoClose: 3000,
           position: 'center'
         })
-      } else if (this.modalData.portrait.length === 0) {
+      } else if (this.modalData.avatar.length === 0) {
         this.$toast({
           header: ``,
           customClass: 'msgError',
@@ -214,6 +219,18 @@ export default {
           position: 'center'
         })
       }
+    },
+    getRolelist () {
+      this.loading = true
+      liveHttp.roleList(this.id).then((res) => {
+        this.loading = false
+        if (res.code === 200) {
+          console.log(res)
+          this.tableData = res.data.list
+        }
+      }).catch(() => {
+        this.loading = false
+      })
     }
   }
 }

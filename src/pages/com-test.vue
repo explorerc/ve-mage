@@ -1,8 +1,21 @@
 <template>
   <div>
+    <com-dialog
+    :visible.sync="show1"
+    header="提示"
+    content="需要注意的是内容是默认不居中的"
+    center
+    :beforeClose="beforeClose"
+    @close="close"
+    @closed="closed"
+    >
+      <div class="test-footer" slot="footer">
+        <com-button>取消</com-button>
+        <com-button type="primary" :loading="true" @click="ttt">确定</com-button>
+      </div>
+    </com-dialog>
     <button @click="testCom">test1</button>
    <div class="test-wrap" v-ComLoading="show1" com-loading-text="拼命加载中">
-
     <button @click="testFun">test2</button>
    </div>
     <com-notification v-show="show" :header="header" :content="content">
@@ -40,7 +53,8 @@ import {Toast} from 'components/common/notification'
 export default {
   data () {
     return {
-      show1: true,
+      dialogVisible: true,
+      show1: false,
       show: false,
       header: 'Notification Title',
       content: 'I will never close automatically. I will be close automatically. I will never close automatically.',
@@ -64,6 +78,19 @@ export default {
     })
   },
   methods: {
+    beforeClose (aa) {
+      console.log('xxxxxxxxxxxxxx')
+      aa()
+    },
+    close () {
+      console.log('close')
+    },
+    closed () {
+      console.log('closed')
+    },
+    ttt () {
+      alert(11)
+    },
     uploadSelected (data) {
       console.log('选中文件', data)
     },
@@ -101,6 +128,9 @@ export default {
 <style>
 .test-wrap {
   padding: 20px;
+}
+.test-footer {
+  padding: 10px 0;
 }
 .test-upload {
   width: 200px;
