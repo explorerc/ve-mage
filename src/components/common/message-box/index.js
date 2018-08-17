@@ -5,3 +5,5 @@ export default (Vue) => {
   Vue.component(Com.name, Com)
   Vue.prototype.$messageBox = fun
 }
+
+export const MessageBox = fun

@@ -2,7 +2,7 @@
   <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
       <span>直播列表</span>
-      <el-button style="float: right;margin-right: 20px;" type="primary" plain>创建直播</el-button>
+      <el-button class="live-btn" type="primary" plain>创建直播</el-button>
     </div>
     <div class="mager-box">
       <div class="live-search">
@@ -144,32 +144,9 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped src="./css/live.scss">
   @import "~assets/css/variable";
-
   .live-mager {
-    border: 1px solid $color-bd;
-    background-color: $color-bg;
-    border-radius: 5px;
-    overflow: hidden;
-    .live-title {
-      line-height: 50px;
-      border-bottom: 1px solid $color-bd;
-      span {
-        display: inline-block;
-        margin-left: 20px;
-      }
-    }
-    .mager-box {
-      .live-search {
-        margin: 20px 20px 10px 20px;
-        .el-select:nth-child(2) {
-          margin-left: 10px;
-        }
-        .search-box {
-          float: right;
-        }
-      }
       .pagination-box {
         width: 100%;
         overflow: hidden;
@@ -178,6 +155,5 @@
         margin: 10px 10px 20px 0;
         float: right;
       }
-    }
   }
 </style>

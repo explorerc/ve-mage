@@ -15,12 +15,16 @@ const Barrage = () =>
   import('src/pages/barrage/index')
 const edit = () =>
   import('src/pages/live-mager/edit')
-const SetAccount = () =>
-  import('src/pages/account')
 const detail = () =>
   import('src/pages/live-mager/detail/detail')
 const role = () =>
   import('src/pages/live-mager/prepare/role')
+const WarmField = () =>
+  import('src/pages/live-mager/warm-field')
+const Forgot = () =>
+  import('src/pages/login/forgot')
+const SetAccount = () =>
+  import('src/pages/account')
 
 export default [{
   path: '/',
@@ -77,13 +81,23 @@ export default [{
   component: detail
 },
 {
-  path: '/setAccount',
-  name: 'setAccount',
-  component: SetAccount
-},
-{
   path: '/liveMager/prepare/role/:id',
   name: 'role',
   component: role
+},
+{
+  path: '/liveMager/warmField/:id',
+  name: 'warmField',
+  component: WarmField
+},
+{
+  path: '/forgot',
+  name: 'forgot',
+  component: Forgot
+},
+{
+  path: '/setAccount',
+  name: 'setAccount',
+  component: SetAccount
 }
 ]
