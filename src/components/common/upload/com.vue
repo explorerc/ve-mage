@@ -104,7 +104,6 @@ export default {
       this.$refs.upload.click()
     },
     startUpload (e) {
-      debugger //eslint-disable-line
       this.current = ''
       this.list = []
       this.queue = []
