@@ -13,16 +13,22 @@
             </ul>
             <div class="v-account" v-show="isAccount">
                 我是账号登录
-                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="用户名/邮箱/手机号" :maxLength="30"></com-input>
-                <com-input :inputType="type" :isPassword="true" :inputValue.sync="passWord" v-model="passWord" @changePassword="change($event)" placeholder="密码" :maxLength="30"></com-input>
+                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="用户名/邮箱/手机号" :maxLength="30" @inputFocus="inputFocus()"></com-input>
+                <com-input :inputType="type" :isPassword="true" :inputValue.sync="passWord" v-model="passWord" @changePassword="change($event)" placeholder="密码" :maxLength="30" @inputFocus="inputFocus()"></com-input>
+                <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:accountOpacity}">
+					      	<p class="v-error">{{accountError}}</p>
+					      </div>
                 <el-button @click="accountSubmit">wo</el-button>
             </div>
             <div class="v-mobile" v-show="!isAccount">
-                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changePhone="checkPhone" :maxLength="11"></com-input>
+                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
                 <div id="captcha"></div>
-                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6">
+                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
                   <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
                 </com-input>
+                <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
+					      	<p class="v-error">{{mobileError}}</p>
+					      </div>
                 <el-button @click="phoneSubmit">wo</el-button>
             </div>
         </div>
@@ -49,7 +55,11 @@
         timerr: '',
         phoneKey: '',
         isImg: false,
-        cap: null
+        cap: null,
+        accountOpacity: 0,
+        mobileOpacity: 0,
+        accountError: '',
+        mobileError: ''
       }
     },
     components: {
@@ -99,10 +109,12 @@
         this.type = type
       },
       accountSubmit () {
+        this.checkAccountForm()
         console.log(this.userName)
         console.log(this.passWord)
       },
       phoneSubmit () {
+        this.checkMobileForm()
         console.log(this.phone)
         console.log(this.code)
       },
@@ -141,18 +153,73 @@
         } else {
           this.phoneStatus = false
         }
+      },
+      checkAccountForm: function (e) {
+        if (!this.userName) {
+          this.accountError = '请输入用户名/手机号/邮箱'
+          this.accountOpacity = 1
+          return false
+        }
+        if (!this.passWord) {
+          this.accountError = '请输入密码'
+          this.accountOpacity = 1
+          return false
+        }
+        this.accountError = ''
+        this.accountOpacity = 0
+
+        // else if (!this.validEmail(this.email)) {
+        //   this.errors.push('Valid email required.')
+        // }
+      },
+      checkMobileForm: function (e) {
+        if (!this.phone) {
+          this.mobileError = '请输入手机号'
+          this.mobileOpacity = 1
+          return false
+        } else if (!this.validPhone(this.phone)) {
+          this.mobileError = '请输入正确的手机号'
+          this.mobileOpacity = 1
+          return false
+        }
+        if (!this.code) {
+          this.mobileError = '请输入验证码'
+          this.mobileOpacity = 1
+          return false
+        }
+        this.mobileError = ''
+        this.mobileOpacity = 0
+      },
+      inputFocus: function () {
+        this.accountError = ''
+        this.accountOpacity = 0
+        this.mobileError = ''
+        this.mobileOpacity = 0
+      },
+      validEmail: function (email) {
+        var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        return re.test(email)
+      },
+      validPhone: function (phone) {
+        var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+        return re.test(phone)
       }
     }
   }
 </script>
 <style lang="scss">
 @import '~assets/css/base';
-html,
-body,
 #app,
 .v-div {
   height: 100%;
+  min-height: 660px;
+}
+#app,
+.v-div {
   width: 100%;
+  min-width: 1200px;
+  overflow: auto;
+  overflow-y: hidden;
 }
 .v-left {
   float: left;
@@ -210,6 +277,14 @@ body,
   }
   .input-form {
     position: relative;
+    .v-error {
+      display: block;
+      height: 40px;
+      line-height: 40px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #e62e2e;
+    }
   }
   .v-getcode {
     background-color: #fc5659;

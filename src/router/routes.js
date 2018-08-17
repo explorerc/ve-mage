@@ -13,9 +13,14 @@ const Register = () =>
   import('src/pages/login/register')
 const Barrage = () =>
   import('src/pages/barrage/index')
-const edit = () => import('src/pages/live-mager/edit')
-const detail = () => import('src/pages/live-mager/detail/detail')
-const role = () => import('src/pages/live-mager/prepare/role')
+const edit = () =>
+  import('src/pages/live-mager/edit')
+const SetAccount = () =>
+  import('src/pages/account')
+const detail = () =>
+  import('src/pages/live-mager/detail/detail')
+const role = () =>
+  import('src/pages/live-mager/prepare/role')
 
 export default [{
   path: '/',
@@ -70,6 +75,11 @@ export default [{
   path: '/liveMager/detail/detail/:id',
   name: 'detail',
   component: detail
+},
+{
+  path: '/setAccount',
+  name: 'setAccount',
+  component: SetAccount
 },
 {
   path: '/liveMager/prepare/role/:id',

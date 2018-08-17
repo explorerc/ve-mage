@@ -46,6 +46,9 @@ export default {
     this.innerValue = this.value
     this.inputType = this.getType()
   },
+  mounted () {
+    console.log(1)
+  },
   methods: {
     empty () {
       this.innerValue = ''

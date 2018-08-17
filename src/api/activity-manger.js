@@ -14,6 +14,13 @@ const ActivityManger = {
       url: '/manage/base-manage/del-activity',
       params: {id: id}
     })
+  },
+  roleList (id) {
+    return utils.ajax({
+      method: 'GET',
+      url: '/manage/role-manage/list-role',
+      params: {activityId: id}
+    })
   }
 }
 export default ActivityManger
