@@ -17,22 +17,24 @@
           <div class="from-title"><i class="star">*</i>暖场视频：</div>
           <div class="from-content">
             <div class="upload-video">
-              <div class="upload-video-box" v-ComLoading="loading" com-loading-text="准备中..." @click="uploadVideo">
+              <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
+                   @click="uploadVideo">
+                <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
                 <i class="iconfont icon-jiahao"></i>
                 <span>上传视频</span>
                 <div class="hide">
                   <input type="file" id="upload"/>
                   <input type="text" id='rename'>
-                  <button id="confirmUpload" class="saveBtn"></button>  <!--上传成功后用于保存文件的按钮 -->
+                  <button id="confirmUpload" class="saveBtn"></button>
                 </div>
               </div>
               <div class="upload-tips">
                 <span>视频仅支持mp4格式，文件大小不超过200M</span>
                 <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
               </div>
-              <div style="width: 500px;margin-top: 10px;">
-                <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage"></el-progress>
-              </div>
+              <!--<div style="width: 500px;margin-top: 10px;">-->
+              <!--<el-progress :text-inside="true" :stroke-width="18" :percentage="percentVideo"></el-progress>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -49,14 +51,20 @@
             <div class="from-content">
               <com-upload
                 accept="png|jpg|jpeg|bmp|gif"
-                :actionUrl="imageServer"
-                inputName="resfile"
+                actionUrl="/api/upload/do-upload"
+                inputName="file"
                 :fileSize="1024"
-                @selected="uploadSelected"
+                @error="uploadError"
                 @progress="uploadProgress"
-                @over="uploadOver"
-              >
-                <div class="test-upload">我是插槽自定义区域</div>
+                @load="uploadImgSuccess">
+                <div class="upload-file-box" title="点击上传">
+                  <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
+                  <i class="iconfont icon-jiahao"></i>
+                  <span>上传封面</span>
+                  <div v-if="warm.playCover" class="upload-file-botton" @click.stop="deleteImage">删除</div>
+                  <div class="temp-img" v-if="warm.playCover"
+                       :style="{backgroundImage:'url('+imgHost+'/'+warm.playCover+')'}"></div>
+                </div>
               </com-upload>
             </div>
           </div>
@@ -65,8 +73,8 @@
           <div class="from-title">视频预览：</div>
           <div class="from-content">
             <div class="play-box">
-              <span v-if="!warm.videoSrc">暂无视频</span>
-              <video v-else :src="warm.videoSrc" controls="controls"></video>
+              <span v-if="!vhallParams.recordId">暂无视频</span>
+              <div id="myVideo" v-else style="width:100%; height:100%;"></div>
             </div>
           </div>
         </div>
@@ -95,13 +103,35 @@
           videoSrc: '',
           playMode: '1',
           playCover: '',
-          id: 'lss_d7cb42d5'
+          record_id: '',
+          id: 'lss_fcf39dc5'
         },
+        vhallParams: {
+          sign: '41256133923f50e3ae298e5f89b784b5', // 生成的鉴权信息
+          signed_at: '1534486369', // 鉴权信息生成的时间戳
+          app_id: 'e909e583',
+          access_token: 'access:e909e583:85615832f2d648f7',
+          recordId: '',
+          accountId: 'v770'
+        },
+        imgHost: '', // 图片地址
         loading: false,
-        percentage: 0, // 上传进度
-        uploadErrorMsg: '', // 上传错误信息
-        imageServer: '/api/upload/do-upload',
-        access_token: 'access:e909e583:957ff04333f9fda8'
+        percentVideo: 0, // 上传进度
+        percentImg: 0, // 图片上传进度
+        uploadErrorMsg: '' // 上传错误信息
+      }
+    },
+    watch: {
+      vhallParams: {
+        handler (newVal) {
+          if (newVal.recordId) {
+            this.$nextTick(() => {
+              this.videosSuccess()
+            })
+          }
+        },
+        immediate: true,
+        deep: true
       }
     },
     created () {
@@ -117,52 +147,9 @@
       goBack () {
         this.$router.go(-1)
       },
-      initVhallUpload () {
-        this.$nextTick(() => {
-          window.vhallCloudDemandSDK('#upload', {
-            params: {
-              confirmBtn: '#confirmUpload', // 保存按钮的ID
-              name: '#rename', // 用于修改文件名称的input的ID
-              sign: '9901efcad4bf31747434d0317f105cf0', // 生成的鉴权信息
-              signed_at: '1534416582', // 鉴权信息生成的时间戳
-              app_id: 'e909e583'
-            },
-            beforeUpload: () => {
-              this.loading = true
-              this.percentage = 0
-            },
-            progress: (percent) => {
-              this.percentage = parseFloat(percent.replace('%', ''))
-            },
-            uploadSuccess () {
-              document.getElementById('confirmUpload').click()
-            },
-            saveSuccess: (res) => {
-              this.warm.videoSrc = res.record_id
-              this.loading = false
-            },
-            error: (msg, file, e) => {
-              this.loading = false
-              this.uploadErrorMsg = msg
-            }
-          })
-        })
-      },
-      uploadSelected (data) {
-        console.log('选中文件', data)
-      },
-      uploadProgress (data) {
-        console.log('上传进度:', data)
-        console.log(data)
-      },
-      uploadLoad (data) {
-        console.log('上传成功:', data)
-      },
-      uploadError (data) {
-        console.log('上传失败:', data)
-      },
-      uploadOver () {
-        console.log('上传完毕')
+      deleteImage () {
+        console.log('delete')
+        this.warm.playCover = ''
       },
       queryWarmInfo () {
         console.log('查询暖场信息')
@@ -172,11 +159,77 @@
       },
       saveWarm () {
         alert(JSON.stringify(this.warm))
+      },
+      uploadProgress (data) {
+        console.log('上传进度:', data)
+        console.log(data)
+        this.percentImg = parseFloat(data.percent.replace('%', ''))
+        if (this.percentImg === 100) {
+          this.percentImg = 0
+        }
+      },
+      uploadImgSuccess (data) {
+        console.log('上传成功:', data)
+        const fildObj = JSON.parse(data.data)
+        this.warm.playCover = fildObj.data.name
+        this.imgHost = fildObj.data.host
+      },
+      uploadError (data) {
+        console.log('上传失败:', data)
+      },
+      initVhallUpload () {
+        this.$nextTick(() => {
+          window.vhallCloudDemandSDK('#upload', {
+            params: {
+              confirmBtn: '#confirmUpload', // 保存按钮的ID
+              name: '#rename', // 用于修改文件名称的input的ID
+              sign: this.vhallParams.sign, // 生成的鉴权信息
+              signed_at: this.vhallParams.signed_at, // 鉴权信息生成的时间戳
+              app_id: this.vhallParams.app_id
+            },
+            beforeUpload: () => {
+              this.loading = true
+              this.percentVideo = 0
+            },
+            progress: (percent) => {
+              this.percentVideo = parseFloat(percent.replace('%', ''))
+            },
+            uploadSuccess () {
+              document.getElementById('confirmUpload').click()
+            },
+            saveSuccess: (res) => {
+              this.warm.record_id = res.record_id
+              this.vhallParams.recordId = this.warm.record_id
+              this.loading = false
+            },
+            error: (msg, file, e) => {
+              this.loading = false
+              this.uploadErrorMsg = msg
+            }
+          })
+        })
+      },
+      videosSuccess () {
+        window.Vhall.ready(() => {
+          window.VhallPlayer.init({
+            recordId: this.vhallParams.recordId, // 回放Id，点播必填，直播不写
+            type: 'vod', // 播放类型,必填，live 直播, vod 为点播
+            videoNode: 'myVideo', // 推流视频回显节点id，必填
+            complete: function () {
+              window.VhallPlayer.play()
+            }
+          })
+        })
+        /* 初始化配置 */
+        window.Vhall.config({
+          appId: this.vhallParams.app_id, // 应用 ID ,必填
+          accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
+          token: this.vhallParams.access_token // token必填
+        })
       }
     }
   }
 </script>
 
 <style lang="scss" scoped src="./css/live.scss">
-
 </style>
