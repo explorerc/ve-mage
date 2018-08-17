@@ -74,5 +74,5 @@ String.prototype.copyClipboard = function (callBack) {
   var lt = setTimeout(function () {
     clearTimeout(lt)
     document.body.removeChild(input)
-  }, 1000)
+  }, 500)
 }
