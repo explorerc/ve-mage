@@ -49,14 +49,7 @@
         <template slot-scope="scope">
           <el-button type="text" size="small"><a href=''>进入直播</a></el-button>
           <el-button type="text" size="small" @click="copyLink(scope.$index,scope.row)">复制链接</el-button>
-          <el-button type="text" size="small" @click="copyInfo(scope.$index,scope.row)"><textarea>
-您好，《实打实地方打工》的直播，以下为直播的详细信息及参会信息，请准时参加，谢谢<br>
-直播名称：{{activityName}}<br>
-直播ID：{{activityId}}<br>
-开始时间：{{time}}<br>
-嘉宾口令：{{password}}<br>
-加入链接：http://t.e.vhall.com/mywebinar/login/{{activityId}}
-            </textarea><input type='text' :value="copyInfoval" class='copy-info'>复制邀请信息</el-button>
+          <el-button type="text" size="small" @click="copyInfo(scope.$index,scope.row)">复制邀请信息</el-button>
           <el-button type="text" size="small" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
           <el-button type="text" size="small" @click="handleKick(scope.$index,scope.row)" :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
           <el-button type="text" size="small" @click="handleDelete(scope.$index,scope.row)" v-if='scope.row.role != "HOST"'>删除角色</el-button>
@@ -141,16 +134,15 @@ export default {
         idx: ''
       },
       webinar: {
-        name: 'asdasd的活动',
-        time: '2018-07-15 23:20:00',
-        password: ''
+        name: '张三',
+        title: '什么什么什么直播',
+        time: '2018-07-15 23:20:00'
       },
       activityId: '',
       msgKick: false,
       msgDelete: false,
       loading: false,
-      copyDataval: 'www.baidu.com',
-      copyInfoval: ''
+      copyDataval: 'www.baidu.com'
     }
   },
   created () {
@@ -318,18 +310,35 @@ export default {
         this.loading = false
       })
     },
-    copyLink (res) {
-      // document.getElementsByClassName('copy-link')[0].select()
-      // document.execCommand('Copy')
-      // this.$toast({
-      //   content: '复制成功',
-      //   position: 'center'
-      // })
-      // const str = 'www.baic.com'
-      // str.copyClipboard
+    copyLink (idx, res) {
+      const str = this.copyDataval
+      str.copyClipboard((e) => {
+        let str
+        if (e === 'success') {
+          str = '复制成功'
+        } else {
+          str = '复制失败'
+        }
+        this.$toast({
+          content: str,
+          position: 'center'
+        })
+      })
     },
-    copyInfo (res) {
-
+    copyInfo (idx, res) {
+      const str = `您好，《${this.webinar.name}》的直播，以下为直播的详细信息及参会信息，请准时参加，谢谢\n直播名称：${this.webinar.title}\n直播ID：${this.activityId}\n开始时间：${this.webinar.name}\n嘉宾口令：${this.tableData[idx].password}\n加入链接：http://t.e.vhall.com/mywebinar/login/${this.activityId}`
+      str.copyClipboard((e) => {
+        let str
+        if (e === 'success') {
+          str = '复制成功'
+        } else {
+          str = '复制失败'
+        }
+        this.$toast({
+          content: str,
+          position: 'center'
+        })
+      })
     }
   }
 }
