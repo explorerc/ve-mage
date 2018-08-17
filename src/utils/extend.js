@@ -58,21 +58,21 @@ String.prototype.gbIndex = function (length) {
 }
 
 String.prototype.copyClipboard = function (callBack) {
-  var input = document.createElement('input')
-  input.setAttribute('value', this)
-  input.style.position = 'fixed'
-  input.style.top = '1000000000px'
-  document.body.appendChild(input)
-  input.select()
+  var textarea = document.createElement('textarea')
+  textarea.innerHTML = this
+  textarea.style.position = 'fixed'
+  textarea.style.top = '1000000000px'
+  document.body.appendChild(textarea)
+  textarea.select()
   if (document.execCommand('copy')) {
     document.execCommand('copy')
-    input.blur()
+    textarea.blur()
     if (callBack) callBack('success')
   } else {
     if (callBack) callBack('error')
   }
   var lt = setTimeout(function () {
     clearTimeout(lt)
-    document.body.removeChild(input)
+    document.body.removeChild(textarea)
   }, 500)
 }

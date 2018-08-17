@@ -163,7 +163,7 @@
       uploadProgress (data) {
         console.log('上传进度:', data)
         console.log(data)
-        this.percentImg = parseFloat(data.percent.replace('%', ''))
+        this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
         if (this.percentImg === 100) {
           this.percentImg = 0
         }
