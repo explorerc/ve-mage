@@ -71,8 +71,8 @@
               <com-upload
               accept="png|jpg|jpeg"
               actionUrl="/upload/do-upload"
-              inputName="resfile"
-              :fileSize="modalData.fileSize"
+              inputName="file"
+              :fileSize="1024"
               @load="uploadLoad"
               @error="uploadError"
               @over="uploadOver"
@@ -126,7 +126,6 @@ export default {
       modalData: {
         isShow: false,
         title: '添加角色',
-        fileSize: 1024,
         nickname: '',
         password: '',
         portrait: '',
@@ -218,6 +217,9 @@ export default {
     },
     uploadOver () {
 
+    },
+    uploadImgSuccess (data) {
+      console.log('上传成功:', data)
     },
     closeModal (e) {
       if (e.target.className === 'modal-cover') {
