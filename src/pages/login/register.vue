@@ -38,7 +38,7 @@
         code: '',
         phoneStatus: false,
         type: 'password',
-        key: 'b7982ef659d64141b7120a6af27e19a0',
+        key: '',
         isProhibit: true,
         isSend: false,
         second: 60,
@@ -75,6 +75,16 @@
         }
       }, function onload (instance) {
         _self.cap = instance
+      })
+    },
+    mounted () {
+      let data = {}
+      identifyingcodeManage.getCodeId(data).then((res) => {
+        if (res.code !== 200) {
+          console.log(res.msg)
+        } else {
+          this.key = res.data
+        }
       })
     },
     watch: {

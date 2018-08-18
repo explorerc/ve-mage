@@ -5,7 +5,7 @@
         基本信息
       </p>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
-      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName)" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
+      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
       <div class="v-editor">
         <span class="v-explain">账户头像</span>
         <com-upload
@@ -15,28 +15,28 @@
           :fileSize="5000"
           @selected="uploadSelected"
         >
-        <div class="test-upload"><img src="avatar" alt=""></div>
+        <div class="test-upload"><img src="avatar" alt="">666</div>
         </com-upload>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
       <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称</span></com-editor>
       <com-editor :value.sync="state" type="input" @clickSaveBtn="clickSave(state,'popup','state')" clickType="popup" btnName="查看"><span class="v-explain">认证状态</span></com-editor>
-      <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry)" clickType="save"><span class="v-explain">所属行业</span></com-editor>
-      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite)" clickType="save" :max-length="40"><span class="v-explain">公司网址</span></com-editor>
+      <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry,'industry','company')" clickType="save"><span class="v-explain">所属行业</span></com-editor>
+      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"><span class="v-explain">公司网址</span></com-editor>
     </div>
     <div class="v-info">
       <p class="v-title">
         指定联系人
       </p>
-      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName)" clickType="save" :max-length="20"><span class="v-explain">姓名</span></com-editor>
-      <com-editor :value.sync="userPost" type="input" @saveInfo="save" clickType="save" :max-length="20"><span class="v-explain">职务</span></com-editor>
-      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone)" clickType="save" :max-length="11"><span class="v-explain">手机</span></com-editor>
-      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo)" clickType="save" :max-length="12"><span class="v-explain">办公电话</span></com-editor>
-      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail)" clickType="save"><span class="v-explain">邮箱</span></com-editor>
-      <com-editor :value.sync="userWechat" type="input" @clickSaveBtn="saveInfo(userWechat)" clickType="save" :max-length="40"><span class="v-explain">微信</span></com-editor>
-      <com-editor :value.sync="userQQ" type="input" @clickSaveBtn="saveInfo(userQQ)" clickType="save" :max-length="20"><span class="v-explain">QQ</span></com-editor>
-      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks)" clickType="save" :max-length="60"><span class="v-explain">备注</span></com-editor>
+      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"><span class="v-explain">姓名</span></com-editor>
+      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20"><span class="v-explain">职务</span></com-editor>
+      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11"><span class="v-explain">手机</span></com-editor>
+      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"><span class="v-explain">办公电话</span></com-editor>
+      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save"><span class="v-explain">邮箱</span></com-editor>
+      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40"><span class="v-explain">微信</span></com-editor>
+      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20"><span class="v-explain">QQ</span></com-editor>
+      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60"><span class="v-explain">备注</span></com-editor>
     </div>
     <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="480px" class="message-box" :confirmText="confirmText">
       <div slot="header">{{messageBoxTitle}}</div>
@@ -135,7 +135,7 @@
         phonePlaceholder: '',
         messageBoxType: 'changeMobile', // 弹窗类型 更换手机（changeMobile）、修改密码（changePassword）、查看认证信息（seeState）
         step: 'initialPhone', // 更改手机步骤验证原有手机（initialPhone）、验证新手机（newPhone）、更换成功（phoneSuccess）
-        key: 'b7982ef659d64141b7120a6af27e19a0',
+        key: '',
         isProhibit: true,
         isSend: false,
         second: 60,
@@ -156,9 +156,6 @@
     },
     mounted () {
       let data = {
-        'account': this.userName,
-        'password': this.passWord,
-        'remember': 0
       }
       account.getAccount(data).then((res) => {
         if (res.code !== 200) {
@@ -176,6 +173,28 @@
           this.companyWebsite = res.website
           this.licenseCode = res.licenseCode
           this.licensePic = res.licensePic
+        }
+      })
+      account.getUserInfo(data).then((res) => {
+        if (res.code !== 200) {
+          console.log(res.msg)
+        } else {
+          let resData = res.data
+          this.userName = resData.name
+          this.userPost = resData.position
+          this.userPhone = resData.mobile
+          this.officeNo = resData.tel
+          this.userEmail = resData.email
+          this.userWechat = resData.wechat
+          this.userQQ = resData.qq
+          this.userRemarks = resData.remark
+        }
+      })
+      identifyingcodeManage.getCodeId(data).then((res) => {
+        if (res.code !== 200) {
+          console.log(res.msg)
+        } else {
+          this.key = res.data
         }
       })
     },
@@ -201,15 +220,28 @@
       uploadSelected () {
         console.log('图片上传完成')
       },
-      save (val, saveType) {
+      save (val, type, saveType) {
         // 修改选项后点击保存、
-        console.log(this.$store)
-        if (saveType === 'save') {
-          console.log('save' + saveType)
-        } else if (saveType === 'popup') {
-          console.log('save' + saveType)
-        } else if (saveType === 'link') {
-          console.log('save' + saveType)
+        let valType = type
+        let data = {
+        }
+        data[valType] = val
+        if (saveType === 'company') {
+          account.setCompanyInfo(data).then((res) => {
+            if (res.code !== 200) {
+              alert(res.msg)
+            } else {
+              alert('更新成功')
+            }
+          })
+        } else if (saveType === 'user') {
+          account.setUserInfo(data).then((res) => {
+            if (res.code !== 200) {
+              alert(res.msg)
+            } else {
+              alert('更新成功')
+            }
+          })
         }
       },
       seeState () {
