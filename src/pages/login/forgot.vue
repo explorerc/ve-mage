@@ -1,19 +1,26 @@
 <template>
   <div class="clearfix v-div">
+    <img src="" alt="logo">
     <p class="v-title">
       找回密码
     </p>
-    <div class="v-get-password">
-      <com-input inputType="text" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
-      <div id="captcha"></div>
-      <com-input inputType="text" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
-      </com-input>
-      <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-      <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:opacity}">
-				<p class="v-error">{{error}}</p>
-			</div>
-      <el-button @click="submit">wo</el-button>
-    </div>
+    <com-tabs :value.sync="tabValue" :disabled="true">
+       <com-tab label="验证用户身份" :index="1">
+          <div class="v-get-password">
+            <com-input inputType="text" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
+            <div id="captcha"></div>
+            <com-input inputType="text" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
+            </com-input>
+            <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+            <div class="input-form v-label" :style="{opacity:opacity}">
+		      		<p class="v-error">{{error}}</p>
+		      	</div>
+            <el-button @click="submit">wo</el-button>
+          </div>
+       </com-tab>
+       <com-tab label="设置新密码" :index="2"><com-input :value.sync="outValue"></com-input></com-tab>
+       <com-tab label="完成" :index="3"><span>{{outValue}}</span></com-tab>
+    </com-tabs>
   </div>
 </template>
 <script>
@@ -22,6 +29,8 @@
   export default {
     data () {
       return {
+        tabValue: 1,
+        outValue: '123',
         userPhone: '',
         code: '',
         isWarning: false,
@@ -53,7 +62,7 @@
             captchaId: _self.key,
             element: '#captcha',
             mode: 'float',
-            width: 260,
+            width: 300,
             onReady: function (instance) {
             },
             onVerify: function (err, data) {
@@ -223,6 +232,30 @@
 </script>
 <style lang="scss">
 @import '~assets/css/base';
+.v-div {
+  display: block;
+  width: 1200px;
+  margin: 85px auto 0;
+  padding: 35px 55px;
+  .v-get-password {
+    display: block;
+    width: 500px;
+    margin: 30px auto 0;
+    .v-label {
+      margin-top: -12px;
+      height: 18px;
+      line-height: 18px;
+    }
+    .com-input {
+      width: 300px;
+      margin-bottom: 15px;
+    }
+    #captcha {
+      width: 300px;
+      margin-bottom: 15px;
+    }
+  }
+}
 .v-get-password {
   margin-top: 200px;
   .el-button {
