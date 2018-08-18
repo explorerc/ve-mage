@@ -45,19 +45,17 @@
     </div>
     <div class="test-wrap" style="width:600px;">
       <com-tabs :value.sync="tabValue" >
-        <com-tab label="tab1" :index="1">
-          <p slot="label">用户管理</p>
-        </com-tab>
-        <com-tab label="配置管理" :index="2"></com-tab>
-        <com-tab label="角色管理" :index="3"></com-tab>
-        <com-tab label="定时任务补偿" :index="4"></com-tab>
+        <com-tab label="用户管理" :index="1">用户管理的内容详情</com-tab>
+        <com-tab label="配置管理" :index="2"><com-input :value.sync="outValue"></com-input></com-tab>
+        <com-tab label="角色管理" :index="3"><span>{{outValue}}</span></com-tab>
+        <com-tab label="定时任务补偿" :index="4">定时任务补偿的内容详情</com-tab>
       </com-tabs>
     </div>
   </div>
 </template>
 
 <script>
-import testService from 'src/api/test'
+// import testService from 'src/api/test'
 import {Toast} from 'components/common/notification'
 
 export default {
@@ -79,14 +77,14 @@ export default {
   },
   created () {
     // this.$loading({target: '.test-wrap'})
-    testService.login({
-      username: 18513848725,
-      password: 'm123123',
-      type: 1,
-      remeber: 1
-    }).then((res) => {
-      console.log('登陆成功')
-    })
+    // testService.login({
+    //   username: 18513848725,
+    //   password: 'm123123',
+    //   type: 1,
+    //   remeber: 1
+    // }).then((res) => {
+    //   console.log('登陆成功')
+    // })
   },
   methods: {
     beforeClose (aa) {

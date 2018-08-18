@@ -59,6 +59,9 @@
         }
         .from-content{
           flex: 1;
+          .input-box{
+            width: 400px;
+          }
         }
       }
     }

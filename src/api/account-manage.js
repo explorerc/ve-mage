@@ -21,6 +21,41 @@ const Account = {
       url: '/user/business-user/first-set-password',
       params: data
     })
+  },
+  setCompanyInfo (data) { // 设置账户信息
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/update',
+      params: data
+    })
+  },
+  setUserInfo (data) { // 设置指定联系人信息
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/update-linkman',
+      params: data
+    })
+  },
+  getUserInfo (data) { // 设置指定联系人信息
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/linkman-info',
+      params: data
+    })
+  },
+  verifyMobile (data) { // 验证旧手机号
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/verify-mobile',
+      params: data
+    })
+  },
+  updateMobile (data) { // 更换手机号
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/update-mobile',
+      params: data
+    })
   }
 }
 export default Account

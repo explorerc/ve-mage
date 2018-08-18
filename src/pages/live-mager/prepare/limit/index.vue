@@ -1,40 +1,50 @@
 <template>
-  <div class='limit-page'>
+  <div class='limit-page '>
     <div>
       <label>选择观看条件</label>
-      <div class="choose">
-        <el-radio v-model="radio" label="1" @click='radio=0'>无限制</el-radio>
-        <el-radio v-model="radio" label="2" @click='radio=1'>邀请观看</el-radio>
-        <el-radio v-model="radio" label="3" @click='radio=2'>报名观看</el-radio>
+      <div class="choose live-mager">
+        <com-tabs :value="radio">
+          <com-tab :index="1">
+            <el-radio v-model="radio" :label="1" slot="label">无限制</el-radio>
+            <com-none></com-none>
+          </com-tab>
+          <com-tab :index="2">
+            <el-radio v-model="radio" :label="2" slot="label">邀请观看</el-radio>
+            <com-invited></com-invited>
+          </com-tab>
+          <com-tab :index="3">
+            <el-radio v-model="radio" :label="3" slot="label">报名观看</el-radio>
+            <com-apply></com-apply>
+          </com-tab>
+        </com-tabs>
       </div>
-      <transition name='slide'>
-        <none v-if="radio == '1' "></none>
-        <invited v-if="radio == '2'"></invited>
-        <apply v-if="radio == '3' "></apply>
-      </transition>
+      <el-button>保存</el-button>
     </div>
   </div>
 </template>
 
 <script>
-  import none from './none'
-  import invited from './invited'
-  import apply from './apply'
+  import comNone from './com-none'
+  import comInvited from './com-invited'
+  import comApply from './com-apply'
   export default {
     data () {
       return {
-        radio: '1',
+        radio: 1,
         tab: 0
       }
     },
     components: {
-      none,
-      invited,
-      apply
+      comNone,
+      comInvited,
+      comApply
     }
 
   }
 </script>
 
-<style>
+<style lang='scss'>
+@import '~assets/css/variable';
+@import '~assets/css/base';
+@import '../../css/live';
 </style>

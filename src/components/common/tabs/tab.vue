@@ -3,6 +3,7 @@
     <span v-if="!$slots.label">{{label}}</span>
     <slot name="label"></slot>
   </li>
+
 </template>
 
 <script>
@@ -15,14 +16,30 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      width: 0,
+      offsetLeft: 0
+    }
+  },
+  mounted () {
+    this.width = this.$el.children[0].offsetWidth
+    this.offsetLeft = this.$el.children[0].offsetLeft
+    this.$parent.panels.push(this)
+  },
   computed: {
     isActive () {
-      return this.$parent.value === this.index
+      if (this.$parent.value === this.index) {
+        this.$parent.lineWidth = this.width
+        this.$parent.lineLeft = this.offsetLeft
+        return true
+      }
+      return false
     }
   },
   methods: {
     handleClick () {
-      this.$parent.change(this.index)
+      this.$parent.change(this.index, this)
     }
   }
 }
