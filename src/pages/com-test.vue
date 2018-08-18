@@ -1,5 +1,6 @@
 <template>
   <div>
+    <router-link to="/entry">bbbbb</router-link>
     <com-dialog
     :visible.sync="show1"
     header="提示"
@@ -53,16 +54,7 @@
         <com-tab label="定时任务补偿" :index="4">定时任务补偿的内容详情</com-tab>
       </com-tabs>
     </div>
-    <div class="test-wrap" style="width:600px;">
-      <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
-    <el-tab-pane label="配置管理" name="second">
-      <div><com-input :value.sync="outValue"></com-input><span>{{this.outValue}}</span></div>
-    </el-tab-pane>
-    <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
-    <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
-  </el-tabs>
-    </div>
+
   </div>
 </template>
 

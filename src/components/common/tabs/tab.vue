@@ -2,6 +2,10 @@
   <li class="tab-item" :class="{active:isActive}" @click="handleClick">
     <span v-if="!$slots.label">{{label}}</span>
     <slot name="label"></slot>
+    <!-- 先用临时办法解决bug -->
+    <div class="fix-bug">
+      <slot></slot>
+    </div>
   </li>
 
 </template>
@@ -49,6 +53,9 @@ export default {
 
 <style lang="scss" scoped>
 .tab-item {
+  .fix-bug {
+    display: none !important;
+  }
   display: inline-block;
   padding: 0 20px;
   height: 40px;
