@@ -9,13 +9,15 @@
       <div class="v-editor">
         <span class="v-explain">账户头像</span>
         <com-upload
-          accept="png|jpg|jpeg|bmp|gif"
+          accept="png|jpg|jpeg"
           actionUrl="/api/edu/database/doc-upload"
           inputName="resfile"
-          :fileSize="5000"
-          @selected="uploadSelected"
+          :fileSize="2048"
+          @load="uploadLoad"
+          @error="uploadError"
+          @over="uploadOver"
         >
-        <div class="test-upload"><img src="avatar" alt="">666</div>
+        <div class="test-upload"><img src="avatar" alt=""><span>666</span></div>
         </com-upload>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
@@ -65,12 +67,12 @@
         </p>
       </template>
       <template v-else-if="messageBoxType === 'changePassword'">
-        <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="input" :max-length="30"></com-input>
-        <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="input" :max-length="30"></com-input>
+        <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30"></com-input>
+        <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"></com-input>
         <p class="v-passordExplain">
           支持6~30位的大小写英文和数字
         </p>
-        <com-input :value.sync="reNewPassword" placeholder="请再次输入新密码" class="v-input" type="input" :max-length="30"></com-input>
+        <com-input :value.sync="reNewPassword" placeholder="请再次输入新密码" class="v-input" type="password" :max-length="30"></com-input>
         <p class="v-passordExplain">
           支持6~30位的大小写英文和数字
         </p>
@@ -147,6 +149,7 @@
         isOldphone: true,
         newPhone: '',
         token: '',
+        codeToken: '',
         phoneStatus: false,
         phoneCode: '', // 原有手机验证码
         oldPassword: '',
@@ -169,7 +172,7 @@
           this.accountName = resData.name
           this.avatar = resData.avatar
           this.accountPhone = resData.mobile
-          this.accountPassword = resData.hasPassword === 0 ? '' : '已设置'
+          this.accountPassword = resData.hasPassword ? '已设置' : ''
           this.companyName = resData.company
           this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
           this.selectIndustry = resData.industry
@@ -220,8 +223,19 @@
       }
     },
     methods: {
-      uploadSelected () {
-        console.log('图片上传完成')
+      uploadLoad (e) {
+        console.log(e)
+      },
+      uploadError (e) {
+        console.log(e)
+        if (e.code === 503 && e.data[0].state === 'type-limit') {
+          console.log('上传文件类型不匹配')
+        } else {
+          console.log('上传文件大小超出限制')
+        }
+      },
+      uploadOver (e) {
+        console.log(e)
       },
       save (val, type, saveType) {
         // 修改选项后点击保存、
@@ -246,18 +260,6 @@
             }
           })
         }
-      },
-      seeState () {
-
-      },
-      modifyPassword () {
-        console.log('修改密码')
-      },
-      modifyAccountPhone () {
-        console.log('修改注册手机')
-      },
-      modifyUserPhone () {
-        console.log('修改用户手机')
       },
       clickSave (val, type, boxType) {
         console.log(val + '...' + type)
@@ -322,13 +324,14 @@
             if (this.step === 'initialPhone') {
               let data = {
                 mobile: this.phone,
-                code: this.code
+                code: this.phoneCode,
+                type: 'BUSINESS_USER_UPDATE_MOBILE'
               }
               account.verifyMobile(data).then((res) => {
                 if (res.code !== 200) {
                   console.log(res.msg)
                 } else {
-                  this.token = res.data.token
+                  this.token = res.data.codeToken
                   this.phone = ''
                   this.messageBoxExplain = '验证成功，请输入新的手机号'
                   this.isOldphone = false
@@ -410,10 +413,8 @@
         }
         let data = {
           'mobile': this.phone,
-          'type': 'BUSINESS_USER_VERIFY_MOBILE'
-        }
-        if (this.step === 'BUSINESS_USER_UPDATE_MOBILE') {
-          data.type = ''
+          'type': 'BUSINESS_USER_UPDATE_MOBILE',
+          captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
@@ -470,6 +471,11 @@
       margin-right: 45px;
       overflow: hidden;
       vertical-align: middle;
+    }
+    .test-upload {
+      width: 65px;
+      height: 65px;
+      border: 1px solid #333;
     }
   }
   .v-title {
