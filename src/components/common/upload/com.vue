@@ -104,6 +104,7 @@ export default {
       this.$refs.upload.click()
     },
     startUpload (e) {
+      console.log('11')
       this.current = ''
       this.list = []
       this.queue = []
@@ -131,6 +132,7 @@ export default {
           this.queue.push(item)
         }
       })
+      console.log('22')
       if (this.error.length > 0) {
         this.$emit('error', {code: 503, data: this.error})
         return
@@ -145,6 +147,7 @@ export default {
       }
     },
     doWork () {
+      console.log('33')
       const file = this.queue.shift()
       if (file) {
         this.current = file.name
