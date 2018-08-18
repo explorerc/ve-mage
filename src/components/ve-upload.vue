@@ -10,7 +10,7 @@
     <div class="upload-file-box" title="点击上传">
       <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
       <i class="iconfont icon-jiahao"></i>
-      <span>{{title}}</span>
+      <span>{{tipTxt}}</span>
       <div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
@@ -33,7 +33,8 @@
         imgHost: '',
         fileSrc: '',
         coverImg: '',
-        percentImg: 0 // 图片上传进度
+        tipTxt: '',
+        percentImg: 0
       }
     },
     props: {
@@ -60,6 +61,12 @@
           this.coverImg = val
         },
         immediate: true
+      },
+      title: {
+        handler (val) {
+          this.tipTxt = val
+        },
+        immediate: true
       }
     },
     methods: {
@@ -78,10 +85,10 @@
         }
       },
       uploadImgSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        this.imgHost = fildObj.data.host
-        this.fileSrc = fildObj.data.name
-        this.$emit('success', fildObj.data)
+        const fildObj = JSON.parse(data.data).data
+        if (fildObj.host) this.imgHost = fildObj.host
+        if (fildObj.name) this.fileSrc = fildObj.name
+        this.$emit('success', fildObj)
       },
       uploadError (data) {
         this.fileSrc = ''
@@ -95,13 +102,16 @@
   .fade-enter-active {
     transition: all .3s ease;
   }
+
   .fade-leave-active {
     transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
   }
+
   .fade-enter, .fade-leave-to {
     transform: translateY(100%);
     opacity: 0;
   }
+
   .upload-file-box {
     position: relative;
     display: inline-block;
@@ -142,6 +152,7 @@
       }
     }
   }
+
   .upload-file-box {
     .temp-img {
       position: absolute;
