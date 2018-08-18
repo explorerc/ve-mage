@@ -1,28 +1,28 @@
 <template>
   <div class="clearfix v-div">
     <div class="v-left">
-        <img src="" alt="" class="v-logo">
+      <img src="" alt="" class="v-logo">
     </div>
     <div class="v-right">
-        <div class="v-content">
-            <p class="v-title">
-                欢迎登录微吼直播
-            </p>
-            <ul class="v-tabs clearfix">
-                <li v-for="(item, index) in items" v-bind:key="index" v-on:click="changeFunction(item)">{{item}}</li>
-            </ul>
-            <div class="v-account" v-show="isAccount">
-                我是账号登录
-                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="用户名/邮箱/手机号" :maxLength="30" @inputFocus="inputFocus()"></com-input>
-                <com-input :inputType="type" :isPassword="true" :inputValue.sync="passWord" v-model="passWord" @changePassword="change($event)" placeholder="密码" :maxLength="30" @inputFocus="inputFocus()"></com-input>
-                <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:accountOpacity}">
-					      	<p class="v-error">{{accountError}}</p>
-					      </div>
-                <div class="input-form v-forget" style="margin-top: 5px;">
-                  <a href="/pw" class="fr clickTag">忘记密码</a>
-                    <template>
-                      <el-checkbox v-model="remember">自动登录</el-checkbox>
-                    </template>
+      <div class="v-content">
+        <p class="v-title">
+          欢迎登录微吼直播
+        </p>
+        <ul class="v-tabs clearfix">
+          <li v-for="(item, index) in items" v-bind:key="index" v-on:click="changeFunction(item)">{{item}}</li>
+        </ul>
+        <div class="v-account" v-show="isAccount">
+          我是账号登录
+          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="用户名/邮箱/手机号" :maxLength="30" @inputFocus="inputFocus()"></com-input>
+          <com-input :inputType="type" :isPassword="true" :inputValue.sync="passWord" v-model="passWord" @changePassword="change($event)" placeholder="密码" :maxLength="30" @inputFocus="inputFocus()"></com-input>
+          <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:accountOpacity}">
+            <p class="v-error">{{accountError}}</p>
+          </div>
+          <div class="input-form v-forget" style="margin-top: 5px;">
+            <a href="/pw" class="fr clickTag">忘记密码</a>
+            <template>
+                        <el-checkbox v-model="remember">自动登录</el-checkbox>
+</template>
                 </div>
                 <el-button @click="accountSubmit">wo</el-button>
             </div>
@@ -41,6 +41,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import MyInput from './login-input'
   import loginManage from 'src/api/login-manage'
@@ -87,8 +88,7 @@
             element: '#captcha',
             mode: 'float',
             width: 260,
-            onReady: function (instance) {
-            },
+            onReady: function (instance) {},
             onVerify: function (err, data) {
               if (data) {
                 _self.phoneKey = data.validate
@@ -98,16 +98,14 @@
                 console.log(err)
               }
             },
-            onError: function () {
-            }
+            onError: function () {}
           }, function onload (instance) {
             _self.cap = instance
           })
         }
       })
     },
-    mounted () {
-    },
+    mounted () {},
     watch: {
       phoneStatus: function (val) {
         this.isGetCodePermission()
@@ -208,7 +206,8 @@
 
         let data = {
           'mobile': this.phone,
-          'type': 'BUSINESS_USER_LOGIN'
+          'type': 'BUSINESS_USER_LOGIN',
+          captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
@@ -308,6 +307,7 @@
     }
   }
 </script>
+
 <style lang="scss">
 @import '~assets/css/base';
 #app,
@@ -315,6 +315,7 @@
   height: 100%;
   min-height: 660px;
 }
+
 #app,
 .v-div {
   width: 100%;
@@ -322,6 +323,7 @@
   overflow: auto;
   overflow-y: hidden;
 }
+
 .v-left {
   float: left;
   width: 50%;
@@ -339,6 +341,7 @@
     color: #333333;
   }
 }
+
 .v-right {
   float: right;
   width: 50%;

@@ -7,15 +7,15 @@
     <com-tabs :value.sync="tabValue" :disabled="true">
        <com-tab label="验证用户身份" :index="1">
           <div class="v-get-password">
-            <com-input inputType="text" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
+            <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
             <div id="captcha"></div>
-            <com-input inputType="text" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
+            <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()" :class="{warning:isWarning}">
             </com-input>
-            <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
             <div class="input-form v-label" :style="{opacity:opacity}">
 		      		<p class="v-error">{{error}}</p>
 		      	</div>
-            <el-button @click="submit">wo</el-button>
+            <el-button @click="verifyUser">wo</el-button>
           </div>
        </com-tab>
        <com-tab label="设置新密码" :index="2"><com-input :value.sync="outValue"></com-input></com-tab>
@@ -32,7 +32,7 @@
         tabValue: 1,
         outValue: '123',
         userPhone: '',
-        code: '',
+        phoneCode: '',
         isWarning: false,
         phoneStatus: false,
         type: 'password',
@@ -85,8 +85,9 @@
     mounted () {
     },
     watch: {
-      outValue: function () {
-        console.log(1)
+      userPhone: function () {
+        this.checkPhone(this.userPhone)
+        this.isGetCodePermission()
       },
       phoneStatus: function (val) {
         this.isGetCodePermission()
@@ -121,7 +122,8 @@
         }
         let data = {
           'mobile': this.userPhone,
-          'type': 'BUSINESS_USER_REG'
+          'type': 'BUSINESS_USER_UPDADE_PASSWORD',
+          captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
@@ -153,71 +155,35 @@
           }
         })
       },
-      submit () {
-        this.checkForm()
-        if (this.error) {
+      verifyUser () {
+        if (!this.phoneStatus) {
           return false
         }
         let data = {
-          'mobile': this.userPhone,
-          'name': this.userName,
-          'position': this.userPosition,
-          'company': this.userCompany,
-          'code': this.code
+          mobile: this.userPhone,
+          code: this.phoneCode,
+          type: 'BUSINESS_USER_UPDADE_PASSWORD'
         }
-        account.register(data).then((res) => {
+        account.verifyMobile(data).then((res) => {
           if (res.code !== 200) {
             this.error = res.msg
             this.opacity = 1
           } else {
-            this.$messageBox({
-              header: '免费试用',
-              content: '感谢您提供的重要信息，我们会立即安排专业人员跟您联系，为您提供试用账号。您也可以拨打我们的专属服务热线400-888-9970获取更多信息。',
-              confirmText: '我知道了',
-              autoClose: 60, // 60秒
-              handleClick: (e) => {
-                if (e.action === 'cancel') {
-                  console.log('取消或者关闭按钮')
-                } else if (e.action === 'confirm') {
-                  console.log('点击了确定按钮')
-                }
-              }
-            })
+            this.tabValue = 2
+            this.token = res.data.codeToken
+            this.phone = ''
+            this.messageBoxExplain = '验证成功，请输入新的手机号'
+            this.isOldphone = false
+            this.step = 'newPhone'
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
           }
         })
-      },
-      checkForm: function (e) {
-        if (!this.userName) {
-          this.error = '请输入名称'
-          this.opacity = 1
-          return false
-        }
-        if (!this.userPosition) {
-          this.error = '请输入您的职务'
-          this.opacity = 1
-          return false
-        }
-        if (!this.userCompany) {
-          this.error = '请输入公司名称'
-          this.opacity = 1
-          return false
-        }
-        if (!this.userPhone) {
-          this.error = '请输入手机号'
-          this.opacity = 1
-          return false
-        } else if (!this.validPhone(this.userPhone)) {
-          this.error = '请输入正确的手机号'
-          this.opacity = 1
-          return false
-        }
-        if (!this.code) {
-          this.error = '请输入验证码'
-          this.opacity = 1
-          return false
-        }
-        this.error = ''
-        this.opacity = 0
       },
       validPhone: function (phone) {
         var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
@@ -263,33 +229,30 @@
   }
   .com-input {
     &.v-input {
-      width: 435px;
+      width: 300px;
       margin-bottom: 10px;
       input {
-        width: 435px;
+        width: 300px;
         height: 40px;
         line-height: 40px;
       }
       &.phone-code {
-        width: 300px;
+        width: 180px;
         input {
-          width: 300px;
+          width: 180px;
         }
       }
     }
   }
   .v-getcode {
     background-color: #fc5659;
-    display: block;
+    display: inline-block;
     width: 115px;
     height: 34px;
     line-height: 34px;
     text-align: center;
     font-size: 13px;
     color: #fff;
-    position: absolute;
-    bottom: 22px;
-    right: 0;
     border-radius: 2px;
     text-decoration: none;
     &.prohibit {

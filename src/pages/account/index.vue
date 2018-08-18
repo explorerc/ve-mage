@@ -149,6 +149,7 @@
         isOldphone: true,
         newPhone: '',
         token: '',
+        codeToken: '',
         phoneStatus: false,
         phoneCode: '', // 原有手机验证码
         oldPassword: '',
@@ -323,13 +324,14 @@
             if (this.step === 'initialPhone') {
               let data = {
                 mobile: this.phone,
-                code: this.code
+                code: this.phoneCode,
+                type: 'BUSINESS_USER_UPDATE_MOBILE'
               }
               account.verifyMobile(data).then((res) => {
                 if (res.code !== 200) {
                   console.log(res.msg)
                 } else {
-                  this.token = res.data.token
+                  this.token = res.data.codeToken
                   this.phone = ''
                   this.messageBoxExplain = '验证成功，请输入新的手机号'
                   this.isOldphone = false
@@ -411,10 +413,8 @@
         }
         let data = {
           'mobile': this.phone,
-          'type': 'BUSINESS_USER_VERIFY_MOBILE'
-        }
-        if (this.step === 'BUSINESS_USER_UPDATE_MOBILE') {
-          data.type = ''
+          'type': 'BUSINESS_USER_UPDATE_MOBILE',
+          captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
