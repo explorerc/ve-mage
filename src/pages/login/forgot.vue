@@ -58,27 +58,30 @@
         } else {
           let _self = this
           this.key = res.data
-          window.initNECaptcha({
-            captchaId: _self.key,
-            element: '#captcha',
-            mode: 'float',
-            width: 300,
-            onReady: function (instance) {
-            },
-            onVerify: function (err, data) {
-              if (data) {
-                _self.phoneKey = data.validate
-                _self.isImg = true
+          setTimeout(() => {
+            console.log('sssssssssssssssss')
+            window.initNECaptcha({
+              captchaId: _self.key,
+              element: '#captcha',
+              mode: 'float',
+              width: 300,
+              onReady: function (instance) {
+              },
+              onVerify: function (err, data) {
+                if (data) {
+                  _self.phoneKey = data.validate
+                  _self.isImg = true
+                }
+                if (err) {
+                  console.log(err)
+                }
+              },
+              onError: function () {
               }
-              if (err) {
-                console.log(err)
-              }
-            },
-            onError: function () {
-            }
-          }, function onload (instance) {
-            _self.cap = instance
-          })
+            }, function onload (instance) {
+              _self.cap = instance
+            })
+          }, 5000)
         }
       })
     },
