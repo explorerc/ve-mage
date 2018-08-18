@@ -116,17 +116,17 @@ const webpackConfig = {
     ]
   },
   optimization: {
-    namedModules: true,
     splitChunks: {
       chunks: "initial",
       cacheGroups: {
         vendor: {
-          test: /node_modules/,
+          test: /node_modules\//,
           name: "vendor",
           priority: 10
         },
         commons: {
           name: "common",
+          test: /src\//,
           minChunks: 1,
           minSize: 30000
         }
