@@ -43,10 +43,14 @@ export default {
     }
   },
   created () {
+    console.log('init value2', this.value)
     this.innerValue = this.value
     this.inputType = this.getType()
   },
   mounted () {
+    console.log('init value3', this.value)
+    this.innerValue = this.value
+    this.inputType = this.getType()
   },
   methods: {
     empty () {
@@ -66,6 +70,7 @@ export default {
     },
     getType () {
       let type = ''
+      console.log('init', this.type)
       switch (this.type) {
         case 'password':
           type = 'password'
@@ -85,9 +90,7 @@ export default {
       this.$emit('update:value', this.innerValue)
     },
     value (value) {
-      if (!value) {
-        this.innerValue = ''
-      }
+      this.innerValue = value
     }
   },
   computed: {

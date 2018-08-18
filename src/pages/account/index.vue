@@ -42,7 +42,7 @@
     </div>
     <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="480px" class="message-box" :confirmText="confirmText">
       <div slot="header">{{messageBoxTitle}}</div>
-      <template v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
+      <div v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
         <p class="v-explain">
           {{messageBoxExplain}}
         </p>
@@ -54,8 +54,8 @@
         <div id="captcha"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6"></com-input>
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-      </template>
-      <template v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
+      </div>
+      <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
         <p class="v-explain">
           修改成功
         </p>
@@ -65,8 +65,8 @@
         <p class="v-mobile">
           {{newPhone}}
         </p>
-      </template>
-      <template v-else-if="messageBoxType === 'changePassword'">
+      </div>
+      <div v-else-if="messageBoxType === 'changePassword'">
         <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30"></com-input>
         <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"></com-input>
         <p class="v-passordExplain">
@@ -76,8 +76,8 @@
         <p class="v-passordExplain">
           支持6~30位的大小写英文和数字
         </p>
-      </template>
-      <template v-else-if="messageBoxType === 'seeState'">
+      </div>
+      <div v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
           <span class="v-label">公司名称</span><span class="v-information">{{companyName}}</span>
         </p>
@@ -88,7 +88,7 @@
           <span class="v-label">营业执照照片</span>
           <img src="licensePic" alt="123">
         </p>
-      </template>
+      </div>
     </message-box>
   </div>
 </template>
@@ -306,6 +306,9 @@
             this.phoneKey = ''
             break
           case 'password' : this.messageBoxType = 'changePassword'
+            this.oldPassword = ''
+            this.newPassword = ''
+            this.reNewPassword = ''
             this.confirmText = '提交'
             this.messageBoxTitle = '修改密码'
             break

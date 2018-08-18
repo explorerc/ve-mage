@@ -3,7 +3,7 @@
     <p>
       感谢您选择微吼，在开始前请先设置登录密码
     </p>
-    <com-input :value.sync="password" placeholder="" class="v-input" :class="{warning:isWarning}" type="password"></com-input>
+    <com-input :value.sync="password" placeholder="" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30"></com-input>
     <p class="v-requirement">密码创建要求</p>
     <a href="javascript:;" class="v-confirm" @click="setPassword()">确定</a>
     <p class="v-explain">请勿将密码泄露给第三者，避免造成不必要的损失</p>

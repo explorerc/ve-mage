@@ -56,6 +56,13 @@ const Account = {
       url: '/user/business-user/update-mobile',
       params: data
     })
+  },
+  updateMobileByToken (data) { // 找回密码
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/update-password-by-code-token',
+      params: data
+    })
   }
 }
 export default Account
