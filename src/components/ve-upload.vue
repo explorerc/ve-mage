@@ -12,10 +12,12 @@
       <i class="iconfont icon-jiahao"></i>
       <span>上传封面</span>
       <div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>
-      <div class="temp-img" v-if="fileSrc"
-           :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
-      <div class="temp-img" v-if="!fileSrc && coverImg"
-           :style="{backgroundImage:'url('+coverImg+')'}"></div>
+      <transition name="fade">
+        <div class="temp-img" v-if="fileSrc"
+             :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
+        <div class="temp-img" v-if="!fileSrc && coverImg"
+             :style="{backgroundImage:'url('+coverImg+')'}"></div>
+      </transition>
     </div>
   </com-upload>
 </template>
@@ -86,6 +88,16 @@
 </script>
 
 <style lang="scss" lang="scss">
+  .fade-enter-active {
+    transition: all .3s ease;
+  }
+  .fade-leave-active {
+    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .fade-enter, .fade-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
   .upload-file-box {
     position: relative;
     display: inline-block;
@@ -125,9 +137,7 @@
         bottom: 0;
       }
     }
-
   }
-
   .upload-file-box {
     .temp-img {
       position: absolute;
