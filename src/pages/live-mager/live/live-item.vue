@@ -85,7 +85,7 @@
       },
       height: {
         type: String,
-        default: '220'
+        default: '260'
       }
     },
     computed: {
@@ -182,6 +182,7 @@
           border: solid 1px #e5e5e5;
           box-sizing: content-box;
           z-index: 2;
+          line-height: 30px;
           span {
             display: block;
             text-align: center;

@@ -43,6 +43,16 @@
       <div class="test-upload">我是自定义区域</div>
       </com-upload>
     </div>
+    <div class="test-wrap" style="width:600px;">
+      <com-tabs :value.sync="tabValue" >
+        <com-tab label="tab1" :index="1">
+          <p slot="label">用户管理</p>
+        </com-tab>
+        <com-tab label="配置管理" :index="2"></com-tab>
+        <com-tab label="角色管理" :index="3"></com-tab>
+        <com-tab label="定时任务补偿" :index="4"></com-tab>
+      </com-tabs>
+    </div>
   </div>
 </template>
 
@@ -53,6 +63,7 @@ import {Toast} from 'components/common/notification'
 export default {
   data () {
     return {
+      tabValue: 2,
       dialogVisible: true,
       show1: false,
       show: false,

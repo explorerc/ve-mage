@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination-box" v-if="total">
+  <div class="pagination-box">
     <el-pagination
       background
       layout="prev, pager, next"

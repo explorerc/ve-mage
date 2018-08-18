@@ -5,6 +5,7 @@
   background-color: $color-bg;
   border-radius: 5px;
   overflow: hidden;
+  padding-bottom: 30px;
   .live-title {
     border-bottom: 1px solid $color-bd;
     line-height: 50px;
@@ -17,8 +18,26 @@
       top: 5px;
     }
   }
+  .search-box{
+    width: 300px;
+    float: right;
+  }
   .live-btn{
     margin-right: 20px;
+  }
+  .live-search{
+    padding: 30px 20px 20px 20px;
+    .el-select:nth-child(2){
+      margin-left: 10px;
+    }
+  }
+  .pagination-box {
+    width: 100%;
+    overflow: hidden;
+  }
+  .page-pagination {
+    margin: 30px 10px 20px 0;
+    float: right;
   }
   .mager-box{
     font-size: 14px;
@@ -53,29 +72,6 @@
   }
   .upload-video{
     position: relative;
-    .upload-video-box{
-      display: inline-block;
-      width: 150px;
-      height: 150px;
-      border: 1px dashed #d9d9d9;
-      text-align: center;
-      cursor: pointer;
-      color: #999;
-      border-radius: 6px;
-      transition: border .3s;
-      i{
-        display: inline-block;
-        margin-top: 30px;
-        font-size: 30px;
-      }
-      span{
-        display: block;
-      }
-      &.hover{
-        opacity: .8;
-        border-color: #409EFF;
-      }
-    }
     .upload-tips{
       display: inline-block;
       width: 400px;
@@ -97,9 +93,60 @@
     height: 337.5px;
     line-height: 300px;
     text-align: center;
-    video{
+  }
+  .upload-file-box{
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #999;
+    text-align: center;
+    overflow: hidden;
+    .iconfont{
+      display: inline-block;
+      margin-top: 44px;
+      font-size: 30px;
+    }
+    span{
+      display: block;
+    }
+    .upload-file-botton{
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      height: 30px;
+      width: 100%;
+      line-height: 30px;
+      background-color: rgba(0,0,0,0.5);
+      color: #fff;
+      transition: bottom .5s;
+      z-index: 10;
+    }
+    &:hover{
+      transition: border .3s;
+      opacity: .8;
+      border-style: solid;
+      .upload-file-botton{
+        bottom: 0;
+      }
+    }
+
+  }
+  .upload-file-box{
+    .temp-img{
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
+      background-size: cover;
+      background-position: center center;
+    }
+    .el-progress--circle {
+      margin-top: 12px;
     }
   }
 }
