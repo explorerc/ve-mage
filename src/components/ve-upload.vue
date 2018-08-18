@@ -85,10 +85,10 @@
         }
       },
       uploadImgSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        this.imgHost = fildObj.data.host
-        this.fileSrc = fildObj.data.name
-        this.$emit('success', fildObj.data)
+        const fildObj = JSON.parse(data.data).data
+        if (fildObj.host) this.imgHost = fildObj.host
+        if (fildObj.name) this.fileSrc = fildObj.name
+        this.$emit('success', fildObj)
       },
       uploadError (data) {
         this.fileSrc = ''
