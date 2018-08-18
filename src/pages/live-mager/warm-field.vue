@@ -49,23 +49,12 @@
           <div class="from-title">视频封面：</div>
           <div class="from-content">
             <div class="from-content">
-              <com-upload
+              <ve-upload
                 accept="png|jpg|jpeg|bmp|gif"
-                actionUrl="/api/upload/do-upload"
-                inputName="file"
+                defaultImg="http://dev-zhike.oss-cn-beijing.aliyuncs.com/mp-dev/07/91/0791e38567d9423a0795de0332b52023.jpg"
                 :fileSize="1024"
                 @error="uploadError"
-                @progress="uploadProgress"
-                @load="uploadImgSuccess">
-                <div class="upload-file-box" title="点击上传">
-                  <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
-                  <i class="iconfont icon-jiahao"></i>
-                  <span>上传封面</span>
-                  <div v-if="warm.playCover" class="upload-file-botton" @click.stop="deleteImage">删除</div>
-                  <div class="temp-img" v-if="warm.playCover"
-                       :style="{backgroundImage:'url('+imgHost+'/'+warm.playCover+')'}"></div>
-                </div>
-              </com-upload>
+                @success="uploadImgSuccess"/>
             </div>
           </div>
         </div>
@@ -90,13 +79,12 @@
 </template>
 
 <script>
-  import ComUpload from 'src/components/common/upload/com'
   import VeUpload from 'src/components/ve-upload'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: {ComUpload, VeUpload},
+    components: {VeUpload},
     data () {
       return {
         warm: {
@@ -165,17 +153,9 @@
         alert(JSON.stringify(this.warm))
         this.saveWarmInfo(this.warm)
       },
-      uploadProgress (data) {
-        this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
-        if (this.percentImg === 100) {
-          this.percentImg = 0
-        }
-      },
       uploadImgSuccess (data) {
-        console.log('上传成功:', data)
-        const fildObj = JSON.parse(data.data)
-        this.warm.playCover = fildObj.data.name
-        this.imgHost = fildObj.data.host
+        this.warm.playCover = data.name
+        this.imgHost = data.host
       },
       uploadError (data) {
         console.log('上传失败:', data)
