@@ -10,7 +10,7 @@
     <div class="upload-file-box" title="点击上传">
       <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
       <i class="iconfont icon-jiahao"></i>
-      <span>上传封面</span>
+      <span>{{title}}</span>
       <div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
@@ -48,6 +48,10 @@
       defaultImg: {
         type: String,
         default: ''
+      },
+      title: {
+        type: String,
+        default: '上传文件'
       }
     },
     watch: {
