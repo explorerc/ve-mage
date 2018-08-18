@@ -11,7 +11,7 @@
         label="头像"
         width="150">
       <template slot-scope="scope">
-        <img :src="scope.row.avatar" class='protrait'>
+        <img :src="imgHost + scope.row.avatar" class='protrait'>
       </template>
       </el-table-column>
       <el-table-column
@@ -70,17 +70,20 @@
               <label>头像:</label>
               <com-upload
               accept="png|jpg|jpeg"
-              actionUrl="/upload/do-upload"
+              actionUrl="/api/upload/do-upload"
               inputName="file"
               :fileSize="1024"
-              @load="uploadLoad"
               @error="uploadError"
-              @over="uploadOver"
-              >
-              <div class="upload-section">
-                <img class='img' src="modalData.avatar" v-if='modalData.avatar'>
-                <div class='img' v-else>图片尺寸建议上传50*50，大小不超过1M</div>
-              </div>
+              @progress="uploadProgress"
+              @load="uploadImgSuccess">
+               <div class="upload-file-box" title="点击上传">
+                  <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
+                  <i class="iconfont icon-jiahao"></i>
+                  <span>上传头像</span>
+                  <div v-if="modalData.avatar" class="upload-file-botton" >编辑</div>
+                  <div class="temp-img" v-if="modalData.avatar"
+                       :style="{backgroundImage:'url('+imgHost+'/'+modalData.avatar+')'}"></div>
+                </div>
               </com-upload>
             </div>
             <div>
@@ -128,7 +131,7 @@ export default {
         title: '添加角色',
         nickname: '',
         password: '',
-        portrait: '',
+        avatar: '',
         id: '',
         idx: ''
       },
@@ -141,7 +144,9 @@ export default {
       msgKick: false,
       msgDelete: false,
       loading: false,
-      copyDataval: 'www.baidu.com'
+      copyDataval: 'www.baidu.com',
+      imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+      percentImg: 0 // 图片上传进度
     }
   },
   created () {
@@ -159,7 +164,7 @@ export default {
         title: '编辑角色',
         nickname: res.nickname,
         password: res.password,
-        portrait: res.avatar,
+        avatar: res.avatar,
         id: res.id,
         idx: idx
       }
@@ -209,17 +214,22 @@ export default {
         this.msgDelete = false
       }
     },
-    uploadLoad () {
-
+    uploadError (data) {
+      console.log('上传失败:', data)
     },
-    uploadError () {
-
-    },
-    uploadOver () {
-
+    uploadProgress (data) {
+      // console.log('上传进度:', data)
+      // console.log(data)
+      this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
+      if (this.percentImg === 100) {
+        this.percentImg = 0
+      }
     },
     uploadImgSuccess (data) {
-      console.log('上传成功:', data)
+      // console.log('上传成功:', data)
+      const fildObj = JSON.parse(data.data)
+      this.modalData.avatar = fildObj.data.name
+      // this.imgHost = fildObj.data.host
     },
     closeModal (e) {
       if (e.target.className === 'modal-cover') {
@@ -258,7 +268,7 @@ export default {
       }
       // 判断是否是编辑
       let saveData = {
-        // id: this.modalData.id,
+        id: this.modalData.id,
         activityId: this.activityId,
         password: this.modalData.password,
         nickname: this.modalData.nickname,
@@ -273,7 +283,6 @@ export default {
           })
           // update data
           if (!isNew) { // new
-            // debugger // eslint-disable-line
             let pushData = {
               id: res.data.id,
               activityId: saveData.activityId,
@@ -398,5 +407,59 @@ export default {
 }
 .msgError {
   color: red;
+}
+.upload-file-box {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #999;
+  text-align: center;
+  overflow: hidden;
+  .iconfont {
+    display: inline-block;
+    margin-top: 44px;
+    font-size: 30px;
+  }
+  span {
+    display: block;
+  }
+  .upload-file-botton {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    height: 30px;
+    width: 100%;
+    line-height: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    transition: bottom 0.5s;
+    z-index: 10;
+  }
+  &:hover {
+    transition: border 0.3s;
+    opacity: 0.8;
+    border-style: solid;
+    .upload-file-botton {
+      bottom: 0;
+    }
+  }
+}
+.upload-file-box {
+  .temp-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+  }
+  .el-progress--circle {
+    margin-top: 12px;
+  }
 }
 </style>
