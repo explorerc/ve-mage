@@ -1,9 +1,10 @@
 <template>
-  <div class="com-tabs" :class="customClass">
+  <div class="com-tabs" :class="{card:type==='card',customClass}">
     <ul class="tab-header">
       <slot></slot>
     </ul>
-    <div class="tab-line">
+    <div v-if="type==='card'" class="bottom-boader"></div>
+    <div v-if="type==='slider'" class="tab-line">
       <div class="line-slider" :style="sliderStyle"></div>
     </div>
     <com-container :panels="panels"></com-container>
@@ -21,6 +22,10 @@ export default {
   props: {
     customClass: String,
     disabled: Boolean,
+    type: {
+      type: String,
+      default: ''
+    },
     value: {
       type: [String, Number],
       required: true
@@ -40,14 +45,6 @@ export default {
       this.$emit('change', index)
     }
   },
-  watch: {
-    value: {
-      handler (n) {
-
-      },
-      immediate: true
-    }
-  },
   computed: {
     sliderStyle () {
       return {
@@ -60,8 +57,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.com-tabs /deep/ {
+.com-tabs {
   position: relative;
+  &.card {
+    border: 1px solid #dcdfe6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+    .tab-header {
+      background-color: #f5f7fa;
+      margin-bottom: -1px;
+    }
+    .bottom-boader {
+      border-bottom: 1px solid #e4e7ed;
+    }
+    .tab-item.active {
+      color: #409eff;
+      background-color: #fff;
+      border-right: 1px solid #dcdfe6;
+      border-left: 1px solid #dcdfe6;
+    }
+    .tab-content {
+      padding: 15px;
+    }
+  }
   .tab-header {
     font-size: 0;
     white-space: nowrap;
@@ -72,6 +89,7 @@ export default {
     height: 2px;
     background-color: #e4e7ed;
     position: relative;
+    margin-bottom: 15px;
     .line-slider {
       transition: all 0.3s;
       position: absolute;
@@ -80,6 +98,9 @@ export default {
       height: 2px;
       background-color: #409eff;
     }
+  }
+  .tab-content {
+    position: relative;
   }
 }
 </style>
