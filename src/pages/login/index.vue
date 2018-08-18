@@ -6,7 +6,7 @@
     <div class="v-right">
         <div class="v-content">
             <p class="v-title">
-                欢迎登陆微吼直播
+                欢迎登录微吼直播
             </p>
             <ul class="v-tabs clearfix">
                 <li v-for="(item, index) in items" v-bind:key="index" v-on:click="changeFunction(item)">{{item}}</li>
