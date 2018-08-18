@@ -25,6 +25,8 @@ const Forgot = () =>
   import('src/pages/login/forgot')
 const SetAccount = () =>
   import('src/pages/account')
+const limit = () =>
+  import('src/pages/live-mager/prepare/limit/index')
 
 export default [{
   path: '/',
@@ -99,5 +101,27 @@ export default [{
   path: '/setAccount',
   name: 'setAccount',
   component: SetAccount
+},
+{
+  path: '/liveMager/prepare/limit',
+  name: 'limit',
+  component: limit
+  // children: [
+  //   {
+  //     path: 'none/:id',
+  //     name: 'none',
+  //     component: none
+  //   },
+  //   {
+  //     path: 'invite/:id',
+  //     name: 'invite',
+  //     component: invite
+  //   },
+  //   {
+  //     path: 'apply/:id',
+  //     name: 'apply',
+  //     component: apply
+  //   }
+  // ]
 }
 ]
