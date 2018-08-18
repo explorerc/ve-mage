@@ -46,10 +46,22 @@
     <div class="test-wrap" style="width:600px;">
       <com-tabs :value.sync="tabValue" >
         <com-tab label="用户管理" :index="1">用户管理的内容详情</com-tab>
-        <com-tab label="配置管理" :index="2"><com-input :value.sync="outValue"></com-input></com-tab>
+        <com-tab label="配置管理" :index="2">
+          <div><com-input :value.sync="outValue"></com-input><span>{{outValue}}</span></div>
+        </com-tab>
         <com-tab label="角色管理" :index="3"><span>{{outValue}}</span></com-tab>
         <com-tab label="定时任务补偿" :index="4">定时任务补偿的内容详情</com-tab>
       </com-tabs>
+    </div>
+    <div class="test-wrap" style="width:600px;">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+    <el-tab-pane label="配置管理" name="second">
+      <div><com-input :value.sync="outValue"></com-input><span>{{this.outValue}}</span></div>
+    </el-tab-pane>
+    <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+    <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+  </el-tabs>
     </div>
   </div>
 </template>

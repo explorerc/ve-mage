@@ -2,7 +2,7 @@
   <button
   class="com-button"
   :disabled="loading"
-  :class="{primary:type==='primary',loading:loading,customClass}"
+  :class="[{primary:type==='primary',loading:loading},customClass]"
   @click="handleClick"
   >
     <i v-if="loading" class="iconfont icon-Loading"></i>

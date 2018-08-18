@@ -24,14 +24,16 @@ export default {
   },
   mounted () {
     this.width = this.$el.children[0].offsetWidth
+    this.height = this.$el.offsetHeight
     this.offsetLeft = this.$el.children[0].offsetLeft
+    this.offsetTop = this.$el.offsetTop
     this.$parent.panels.push(this)
   },
   computed: {
     isActive () {
       if (this.$parent.value === this.index) {
-        this.$parent.lineWidth = this.width
-        this.$parent.lineLeft = this.offsetLeft
+        this.$parent.lineSize = this.$parent.position ? this.height : this.width
+        this.$parent.lineOffset = this.$parent.position ? this.offsetTop : this.offsetLeft
         return true
       }
       return false

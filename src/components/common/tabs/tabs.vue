@@ -1,6 +1,6 @@
 <template>
-  <div class="com-tabs" :class="{card:type==='card',customClass}">
-    <ul class="tab-header">
+  <div class="com-tabs" :class="[{card:type==='card'},position,customClass]">
+    <ul class="tab-header" :class="{slider:type==='slider'}">
       <slot></slot>
     </ul>
     <div v-if="type==='card'" class="bottom-boader"></div>
@@ -20,11 +20,15 @@ export default {
     ComContainer: Container
   },
   props: {
+    position: {
+      type: String,
+      default: 'left'
+    },
     customClass: String,
     disabled: Boolean,
     type: {
       type: String,
-      default: ''
+      default: 'card'
     },
     value: {
       type: [String, Number],
@@ -33,8 +37,8 @@ export default {
   },
   data () {
     return {
-      lineWidth: 0,
-      lineLeft: 0,
+      lineSize: 0,
+      lineOffset: 0,
       panels: []
     }
   },
@@ -47,9 +51,16 @@ export default {
   },
   computed: {
     sliderStyle () {
-      return {
-        width: `${this.lineWidth}px`,
-        transform: `translateX(${this.lineLeft}px)`
+      if (this.position) {
+        return {
+          height: `${this.lineSize}px`,
+          transform: `translateY(${this.lineOffset}px)`
+        }
+      } else {
+        return {
+          width: `${this.lineSize}px`,
+          transform: `translateX(${this.lineOffset}px)`
+        }
       }
     }
   }
@@ -59,6 +70,49 @@ export default {
 <style lang="scss" scoped>
 .com-tabs {
   position: relative;
+  height: 100%;
+  &.left {
+    overflow: hidden;
+    &.card {
+      .tab-header {
+        margin-bottom: 0;
+        margin-right: -1px;
+      }
+      .tab-item.active {
+        border-right: 0;
+        border-left: 0;
+        border-top: 1px solid #dcdfe6;
+        border-bottom: 1px solid #dcdfe6;
+      }
+    }
+    .tab-header {
+      float: left;
+      text-align: right;
+      height: 100%;
+      &.slider {
+        margin-bottom: 0;
+        border-bottom: 0;
+        margin-right: -2px;
+        border-right: 2px solid #e4e7ed;
+      }
+    }
+    .tab-line {
+      width: 2px;
+      height: 2px;
+      float: left;
+      margin-bottom: 0;
+      margin-right: 15px;
+      .line-slider {
+        width: 2px;
+      }
+    }
+    .tab-item {
+      display: block;
+    }
+    .tab-content {
+      float: left;
+    }
+  }
   &.card {
     border: 1px solid #dcdfe6;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
@@ -83,11 +137,14 @@ export default {
     font-size: 0;
     white-space: nowrap;
     overflow: hidden;
+    &.slider {
+      border-bottom: 2px solid #e4e7ed;
+      margin-bottom: -2px;
+    }
   }
   .tab-line {
     width: 100%;
     height: 2px;
-    background-color: #e4e7ed;
     position: relative;
     margin-bottom: 15px;
     .line-slider {
