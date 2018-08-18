@@ -47,7 +47,8 @@
         <p class="v-subtitle">
           安全验证
         </p>
-        <com-input :value.sync="phone" :placeholder="phonePlaceholder" class="v-input" type="input" :max-length="11"></com-input>
+        <com-input v-if="isOldphone" :value.sync="phone" :placeholder="'输入原有注册手机号'" class="v-input" type="input" :max-length="11"></com-input>
+        <com-input v-if="!isOldphone" :value.sync="newPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11"></com-input>
         <div id="captcha"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6"></com-input>
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
@@ -60,7 +61,7 @@
           您的注册手机更换为
         </p>
         <p class="v-mobile">
-          13810878976
+          {{newPhone}}
         </p>
       </template>
       <template v-else-if="messageBoxType === 'changePassword'">
@@ -132,7 +133,6 @@
         messageBoxShow: false, // 是否显示弹窗
         messageBoxTitle: '更换手机', // 弹窗标题
         messageBoxExplain: '',
-        phonePlaceholder: '',
         messageBoxType: 'changeMobile', // 弹窗类型 更换手机（changeMobile）、修改密码（changePassword）、查看认证信息（seeState）
         step: 'initialPhone', // 更改手机步骤验证原有手机（initialPhone）、验证新手机（newPhone）、更换成功（phoneSuccess）
         key: '',
@@ -144,6 +144,9 @@
         isImg: false,
         cap: null,
         phone: '',
+        isOldphone: true,
+        newPhone: '',
+        token: '',
         phoneStatus: false,
         phoneCode: '', // 原有手机验证码
         oldPassword: '',
@@ -265,7 +268,7 @@
           case 'mobliePhone' : this.messageBoxType = 'changeMobile'
             this.phone = val
             this.messageBoxExplain = '为了保证您的账号安全，更换手机前请先进行安全验证'
-            this.phonePlaceholder = '输入原有注册手机号'
+            this.isOldphone = true
             // step: 'initialPhone',  更改手机步骤验证原有手机（initialPhone）、验证新手机（newPhone）、更换成功（phoneSuccess）
             this.step = 'initialPhone'
             let _self = this
@@ -285,7 +288,8 @@
                   console.log(err)
                 }
               },
-              onError: function () {
+              onError: function (err) {
+                console.log(err)
               }
             }, function onload (instance) {
               _self.cap = instance
@@ -316,25 +320,44 @@
         } else if (e.action === 'confirm') {
           if (this.messageBoxType === 'changeMobile') {
             if (this.step === 'initialPhone') {
-              this.phone = ''
-              this.messageBoxExplain = '验证成功，请输入新的手机号'
-              this.phonePlaceholder = '输入新手机号'
-              this.step = 'newPhone'
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
+              let data = {
+                mobile: this.phone,
+                code: this.code
+              }
+              account.verifyMobile(data).then((res) => {
+                if (res.code !== 200) {
+                  console.log(res.msg)
+                } else {
+                  this.token = res.data.token
+                  this.phone = ''
+                  this.messageBoxExplain = '验证成功，请输入新的手机号'
+                  this.isOldphone = false
+                  this.step = 'newPhone'
+                  clearInterval(this.timerr)
+                  this.isSend = false
+                  this.isProhibit = true
+                  this.second = 60
+                  this.isImg = false
+                  this.phoneKey = ''
+                  this.cap.refresh()
+                }
+              })
             } else if (this.step === 'newPhone') {
-              alert(2)
-              this.phone = ''
-              this.step = 'phoneSuccess'
+              let data = {
+                mobile: this.newPhone,
+                token: this.token,
+                code: this.code
+              }
+              account.updateMobile(data).then((res) => {
+                if (res.code !== 200) {
+                  console.log(res.msg)
+                } else {
+                  this.phone = ''
+                  this.step = 'phoneSuccess'
+                }
+              })
             } else if (this.step === 'phoneSuccess') {
-              alert(3)
-              this.messageBoxExplain = '为了保证您的账号安全，更换手机前请先进行安全验证'
-              this.phonePlaceholder = '输入原有注册手机号'
+              this.messageBoxExplain = '修改成功'
               this.step = 'initialPhone'
             }
           } else if (this.messageBoxType === 'changePassword') {

@@ -42,6 +42,20 @@ const Account = {
       url: '/user/business-user/linkman-info',
       params: data
     })
+  },
+  verifyMobile (data) { // 验证旧手机号
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/verify-mobile',
+      params: data
+    })
+  },
+  updateMobile (data) { // 更换手机号
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/update-mobile',
+      params: data
+    })
   }
 }
 export default Account

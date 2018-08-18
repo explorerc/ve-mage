@@ -54,38 +54,38 @@
       'com-input': MyInput
     },
     created () {
-      let _self = this
-      window.initNECaptcha({
-        captchaId: _self.key,
-        element: '#captcha',
-        mode: 'float',
-        width: 260,
-        onReady: function (instance) {
-        },
-        onVerify: function (err, data) {
-          if (data) {
-            _self.phoneKey = data.validate
-            _self.isImg = true
-          }
-          if (err) {
-            console.log(err)
-          }
-        },
-        onError: function () {
-        }
-      }, function onload (instance) {
-        _self.cap = instance
-      })
-    },
-    mounted () {
       let data = {}
       identifyingcodeManage.getCodeId(data).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
+          let _self = this
           this.key = res.data
+          window.initNECaptcha({
+            captchaId: _self.key,
+            element: '#captcha',
+            mode: 'float',
+            width: 260,
+            onReady: function (instance) {
+            },
+            onVerify: function (err, data) {
+              if (data) {
+                _self.phoneKey = data.validate
+                _self.isImg = true
+              }
+              if (err) {
+                console.log(err)
+              }
+            },
+            onError: function () {
+            }
+          }, function onload (instance) {
+            _self.cap = instance
+          })
         }
       })
+    },
+    mounted () {
     },
     watch: {
       outValue: function () {
@@ -278,7 +278,7 @@ body,
     top: 0;
     bottom: 0;
     margin: auto 0 auto -170px;
-    max-height: 475px;
+    max-height: 595px;
     text-align: left;
     font-size: 22px;
   }
