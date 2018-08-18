@@ -22,13 +22,13 @@ export default {
   props: {
     position: {
       type: String,
-      default: ''
+      default: 'left'
     },
     customClass: String,
     disabled: Boolean,
     type: {
       type: String,
-      default: ''
+      default: 'card'
     },
     value: {
       type: [String, Number],
