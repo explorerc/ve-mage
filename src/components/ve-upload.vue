@@ -1,124 +1,170 @@
 <template>
-  <div class="avatar-uploader">
-    <el-upload
-      :action="imgUploadUrl"
-      list-type="picture-card"
-      :on-preview="handlePictureCardPreview"
-      :before-upload="beforeUpload"
-      :on-success="upLoadSuccess"
-      :on-error="upLoadError"
-      :limit="1">
-      <div class="tip-box">
-        <i class="el-icon-plus avatar-uploader-icon"></i>
-        <span>{{tips}}</span>
-      </div>
-    </el-upload>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt="">
-    </el-dialog>
-  </div>
+  <com-upload
+    :accept="accept"
+    actionUrl="/api/upload/do-upload"
+    inputName="file"
+    :fileSize="fileSize"
+    @error="uploadError"
+    @progress="uploadProgress"
+    @load="uploadImgSuccess">
+    <div class="upload-file-box" title="点击上传">
+      <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
+      <i class="iconfont icon-jiahao"></i>
+      <span>{{tipTxt}}</span>
+      <div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>
+      <transition name="fade">
+        <div class="temp-img" v-if="fileSrc"
+             :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
+        <div class="temp-img" v-if="!fileSrc && coverImg"
+             :style="{backgroundImage:'url('+coverImg+')'}"></div>
+      </transition>
+    </div>
+  </com-upload>
 </template>
 
 <script>
+  import ComUpload from 'src/components/common/upload/com'
+
   export default {
     name: 've-upload',
+    components: {ComUpload},
     data () {
       return {
-        value: '',
-        dialogImageUrl: '',
-        dialogVisible: false,
-        fileList: []
+        imgHost: '',
+        fileSrc: '',
+        coverImg: '',
+        tipTxt: '',
+        percentImg: 0
       }
     },
     props: {
-      limitType: {
+      accept: {
         type: String,
-        default: ''
+        default: 'png|jpg|jpeg|bmp|gif|doc|mp4'
       },
       fileSize: {
         type: Number,
-        default: 0
+        default: 1024
       },
-      imgUploadUrl: {
+      defaultImg: {
         type: String,
         default: ''
       },
-      tips: {
+      title: {
         type: String,
-        default: ''
+        default: '上传文件'
       }
     },
-    computed: {
-      url () {
-        console.log('computed=' + this.imgUploadUrl)
-        return this.imgUploadUrl
+    watch: {
+      defaultImg: {
+        handler (val) {
+          this.coverImg = val
+        },
+        immediate: true
+      },
+      title: {
+        handler (val) {
+          this.tipTxt = val
+        },
+        immediate: true
       }
     },
     methods: {
-      handlePictureCardPreview (file) {
-        this.dialogImageUrl = file.url
-        this.dialogVisible = true
+      deleteImage () {
+        this.coverImg = ''
+        this.fileSrc = ''
+        this.$emit('success', {
+          name: '',
+          host: ''
+        })
       },
-      beforeUpload (file) {
-        const suffix = file.name.split('.')
-        const nameSuffix = suffix[suffix.length - 1].toLowerCase()
-        if (this.limitType && this.limitType.toLowerCase().indexOf(nameSuffix) === -1) {
-          this.$message.error(`上传文件只能是${this.limitType}格式!`)
-          return false
+      uploadProgress (data) {
+        this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
+        if (this.percentImg === 100) {
+          this.percentImg = 0
         }
-        if (!this.fileSize) return true
-        const isLt = file.size / 1024 > this.fileSize
-        if (isLt) {
-          const size = this.fileSize / 1024
-          this.$message.error(`上传文件大小不能超过 ${size}MB!`)
-          return false
-        }
-        return true
       },
-      upLoadSuccess (response, file) {
-        this.$emit('success', response, file)
+      uploadImgSuccess (data) {
+        const fildObj = JSON.parse(data.data).data
+        if (fildObj.host) this.imgHost = fildObj.host
+        if (fildObj.name) this.fileSrc = fildObj.name
+        this.$emit('success', fildObj)
       },
-      upLoadError (e) {
-        this.$message.error(`上传失败!`)
-        e.detail = '上传失败!'
-        this.$emit('error', e)
+      uploadError (data) {
+        this.fileSrc = ''
+        this.$emit('error', data)
       }
     }
   }
 </script>
 
-<style lang="scss">
-  .avatar-uploader {
-    .el-upload {
-      position: relative;
-      border: 1px dashed #d9d9d9;
-      border-radius: 6px;
-      cursor: pointer;
-      overflow: hidden;
+<style lang="scss" lang="scss">
+  .fade-enter-active {
+    transition: all .3s ease;
+  }
+
+  .fade-leave-active {
+    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+
+  .fade-enter, .fade-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .upload-file-box {
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #999;
+    text-align: center;
+    overflow: hidden;
+    .iconfont {
+      display: inline-block;
+      margin-top: 44px;
+      font-size: 30px;
+    }
+    span {
+      display: block;
+    }
+    .upload-file-botton {
+      position: absolute;
+      bottom: -30px;
+      left: 0;
+      height: 30px;
+      width: 100%;
+      line-height: 30px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      transition: bottom .5s;
+      z-index: 10;
+    }
+    &:hover {
       transition: border .3s;
+      opacity: .8;
+      border-style: solid;
+      .upload-file-botton {
+        bottom: 0;
+      }
     }
-    .el-upload:hover {
-      border-color: #409EFF;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      text-align: center;
-    }
-    .tip-box {
+  }
+
+  .upload-file-box {
+    .temp-img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      text-align: center;
-      font-size: 12px;
-      color: #666;
-      line-height: 1.5;
-      .el-icon-plus {
-        margin: 20px auto 0 auto;
-      }
-      span {
-        display: inline-block;
-        margin: 8px;
-      }
+      background-size: cover;
+      background-position: center center;
+    }
+    .el-progress--circle {
+      margin-top: 12px;
     }
   }
 </style>
