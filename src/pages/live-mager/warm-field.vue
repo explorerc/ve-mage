@@ -50,6 +50,7 @@
           <div class="from-content">
             <div class="from-content">
               <ve-upload
+                title="上传封面"
                 accept="png|jpg|jpeg|bmp|gif"
                 defaultImg="http://dev-zhike.oss-cn-beijing.aliyuncs.com/mp-dev/07/91/0791e38567d9423a0795de0332b52023.jpg"
                 :fileSize="1024"
