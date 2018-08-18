@@ -1,4 +1,3 @@
-
 <script>
 export default {
   props: {
@@ -7,14 +6,15 @@ export default {
       required: true
     }
   },
-  render (h) {
+  render () {
     const contents = this.panels.map(panel => {
       return panel.isActive ? panel.$slots.default : null
     })
-    return h('div', {class: 'tab-content'}, contents)
+    return (
+      <div class="tab-content">
+        {contents}
+      </div>
+    )
   }
 }
 </script>
-
-<style>
-</style>

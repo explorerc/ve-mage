@@ -2,6 +2,10 @@
   <li class="tab-item" :class="{active:isActive}" @click="handleClick">
     <span v-if="!$slots.label">{{label}}</span>
     <slot name="label"></slot>
+    <!-- 先用临时办法解决bug -->
+    <div class="fix-bug">
+      <slot></slot>
+    </div>
   </li>
 
 </template>
@@ -24,14 +28,16 @@ export default {
   },
   mounted () {
     this.width = this.$el.children[0].offsetWidth
+    this.height = this.$el.offsetHeight
     this.offsetLeft = this.$el.children[0].offsetLeft
+    this.offsetTop = this.$el.offsetTop
     this.$parent.panels.push(this)
   },
   computed: {
     isActive () {
       if (this.$parent.value === this.index) {
-        this.$parent.lineWidth = this.width
-        this.$parent.lineLeft = this.offsetLeft
+        this.$parent.lineSize = this.$parent.position ? this.height : this.width
+        this.$parent.lineOffset = this.$parent.position ? this.offsetTop : this.offsetLeft
         return true
       }
       return false
@@ -47,6 +53,9 @@ export default {
 
 <style lang="scss" scoped>
 .tab-item {
+  .fix-bug {
+    display: none !important;
+  }
   display: inline-block;
   padding: 0 20px;
   height: 40px;

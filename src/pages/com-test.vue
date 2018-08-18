@@ -1,5 +1,6 @@
 <template>
   <div>
+    <router-link to="/entry">bbbbb</router-link>
     <com-dialog
     :visible.sync="show1"
     header="提示"
@@ -46,11 +47,14 @@
     <div class="test-wrap" style="width:600px;">
       <com-tabs :value.sync="tabValue" >
         <com-tab label="用户管理" :index="1">用户管理的内容详情</com-tab>
-        <com-tab label="配置管理" :index="2"><com-input :value.sync="outValue"></com-input></com-tab>
+        <com-tab label="配置管理" :index="2">
+          <div><com-input :value.sync="outValue"></com-input><span>{{outValue}}</span></div>
+        </com-tab>
         <com-tab label="角色管理" :index="3"><span>{{outValue}}</span></com-tab>
         <com-tab label="定时任务补偿" :index="4">定时任务补偿的内容详情</com-tab>
       </com-tabs>
     </div>
+
   </div>
 </template>
 
