@@ -29,6 +29,20 @@ const ActivityManger = {
       params: data
     })
   },
+  queryReminderInfoById (id) { /* 通过id获取活动提醒 */
+    return utils.ajax({
+      method: 'post',
+      url: '/',
+      params: { id: id }
+    })
+  },
+  saveReminderInfo (data) { /* 保存活动提醒信息 */
+    return utils.ajax({
+      method: 'post',
+      url: '/',
+      params: data
+    })
+  },
   roleList (id) {
     return utils.ajax({
       method: 'GET',
