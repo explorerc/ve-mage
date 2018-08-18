@@ -6,14 +6,18 @@
     <div class="tab-line">
       <div class="line-slider" :style="sliderStyle"></div>
     </div>
-    <div class="tab-content">
-    </div>
+    <com-container :panels="panels"></com-container>
   </div>
 </template>
 
 <script>
+import Container from './container.vue'
+
 export default {
   name: 'ComTabs',
+  components: {
+    ComContainer: Container
+  },
   props: {
     customClass: String,
     disabled: Boolean,
@@ -25,7 +29,8 @@ export default {
   data () {
     return {
       lineWidth: 0,
-      lineLeft: 0
+      lineLeft: 0,
+      panels: []
     }
   },
   methods: {
@@ -38,8 +43,7 @@ export default {
   watch: {
     value: {
       handler (n) {
-        console.log(this.$slots.default)
-        console.log(this.$slots.default[2].props)
+
       },
       immediate: true
     }
@@ -48,7 +52,7 @@ export default {
     sliderStyle () {
       return {
         width: `${this.lineWidth}px`,
-        transform: `translateX(${this.lineWidth}px)`
+        transform: `translateX(${this.lineLeft}px)`
       }
     }
   }
@@ -67,6 +71,7 @@ export default {
     width: 100%;
     height: 2px;
     background-color: #e4e7ed;
+    position: relative;
     .line-slider {
       transition: all 0.3s;
       position: absolute;

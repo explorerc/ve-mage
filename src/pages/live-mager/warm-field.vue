@@ -49,23 +49,12 @@
           <div class="from-title">视频封面：</div>
           <div class="from-content">
             <div class="from-content">
-              <com-upload
+              <ve-upload
                 accept="png|jpg|jpeg|bmp|gif"
-                actionUrl="/api/upload/do-upload"
-                inputName="file"
+                defaultImg="http://dev-zhike.oss-cn-beijing.aliyuncs.com/mp-dev/07/91/0791e38567d9423a0795de0332b52023.jpg"
                 :fileSize="1024"
                 @error="uploadError"
-                @progress="uploadProgress"
-                @load="uploadImgSuccess">
-                <div class="upload-file-box" title="点击上传">
-                  <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
-                  <i class="iconfont icon-jiahao"></i>
-                  <span>上传封面</span>
-                  <div v-if="warm.playCover" class="upload-file-botton" @click.stop="deleteImage">删除</div>
-                  <div class="temp-img" v-if="warm.playCover"
-                       :style="{backgroundImage:'url('+imgHost+'/'+warm.playCover+')'}"></div>
-                </div>
-              </com-upload>
+                @success="uploadImgSuccess"/>
             </div>
           </div>
         </div>
@@ -90,12 +79,12 @@
 </template>
 
 <script>
-  import ComUpload from 'src/components/common/upload/com'
   import VeUpload from 'src/components/ve-upload'
+  import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: {ComUpload, VeUpload},
+    components: {VeUpload},
     data () {
       return {
         warm: {
@@ -116,6 +105,7 @@
         },
         imgHost: '', // 图片地址
         loading: false,
+        videoSize: '200', // 视频限制大小，单位兆
         percentVideo: 0, // 上传进度
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '' // 上传错误信息
@@ -153,26 +143,19 @@
       },
       queryWarmInfo () {
         console.log('查询暖场信息')
+        LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+        })
       },
       uploadVideo () {
         document.getElementById('upload').click()
       },
       saveWarm () {
         alert(JSON.stringify(this.warm))
-      },
-      uploadProgress (data) {
-        console.log('上传进度:', data)
-        console.log(data)
-        this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
-        if (this.percentImg === 100) {
-          this.percentImg = 0
-        }
+        this.saveWarmInfo(this.warm)
       },
       uploadImgSuccess (data) {
-        console.log('上传成功:', data)
-        const fildObj = JSON.parse(data.data)
-        this.warm.playCover = fildObj.data.name
-        this.imgHost = fildObj.data.host
+        this.warm.playCover = data.name
+        this.imgHost = data.host
       },
       uploadError (data) {
         console.log('上传失败:', data)
@@ -187,12 +170,25 @@
               signed_at: this.vhallParams.signed_at, // 鉴权信息生成的时间戳
               app_id: this.vhallParams.app_id
             },
-            beforeUpload: () => {
+            beforeUpload: (file) => {
+              if (file.type !== 'video/mp4') {
+                this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
+                return false
+              } else if (file.size / 1024 / 1024 > this.videoSize) {
+                this.uploadErrorMsg = '视频太大，请不要大于200M'
+                return false
+              }
+              this.uploadErrorMsg = ''
               this.loading = true
               this.percentVideo = 0
+              return true
             },
             progress: (percent) => {
+              this.loading = false
               this.percentVideo = parseFloat(percent.replace('%', ''))
+              if (this.percentVideo === 100) {
+                this.percentVideo = 0
+              }
             },
             uploadSuccess () {
               document.getElementById('confirmUpload').click()
@@ -200,7 +196,6 @@
             saveSuccess: (res) => {
               this.warm.record_id = res.record_id
               this.vhallParams.recordId = this.warm.record_id
-              this.loading = false
             },
             error: (msg, file, e) => {
               this.loading = false
