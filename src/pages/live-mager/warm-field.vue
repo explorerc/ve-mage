@@ -213,6 +213,9 @@
             videoNode: 'myVideo', // 推流视频回显节点id，必填
             complete: function () {
               window.VhallPlayer.play()
+            },
+            fail: function (res) {
+              console.log(res)
             }
           })
         })

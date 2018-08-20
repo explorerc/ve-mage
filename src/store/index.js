@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import appModules from './modules/app'
 import aModules from './modules/a'
 import bModules from './modules/b'
 import loginModules from './modules/login'
@@ -29,6 +30,7 @@ export default () => {
       }
     },
     modules: {
+      app: appModules,
       a: aModules,
       b: bModules,
       login: loginModules
