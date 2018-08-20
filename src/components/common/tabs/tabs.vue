@@ -10,7 +10,7 @@ export default {
   props: {
     position: {
       type: String,
-      default: 'left'
+      default: ''
     },
     customClass: {
       type: String,
@@ -19,7 +19,7 @@ export default {
     disabled: Boolean,
     type: {
       type: String,
-      default: 'slider'
+      default: ''
     },
     value: {
       type: [String, Number],
