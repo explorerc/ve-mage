@@ -110,7 +110,7 @@ export default [{
   component: SetAccount
 },
 {
-  path: '/liveMager/prepare/limit',
+  path: '/liveMager/prepare/limit/:id',
   name: 'limit',
   component: limit
 }

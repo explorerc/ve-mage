@@ -9,6 +9,7 @@
     :type="inputType"
     :style="style"
     :placeholder="placeholder"
+    :disabled="disabled"
     v-model="innerValue"
     @focus="showDelete=true"
     @blur="hideDelete"
@@ -33,6 +34,7 @@ export default {
       type: String,
       default: 'input'
     },
+    disabled: String,
     maxLength: Number
   },
   data () {
@@ -146,6 +148,9 @@ export default {
     }
     &::-webkit-input-placeholder {
       color: #bfbfbf;
+    }
+    &[disabled] {
+      cursor: not-allowed;
     }
   }
   .limit {

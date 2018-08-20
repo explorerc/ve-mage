@@ -89,7 +89,7 @@
               <div class='from-row'>
                 <div class="from-title">导入规则：</div>
                 <div class="from-content">
-                  创建新的分组
+                  <el-radio v-model="radio" label="1">创建新的分组</el-radio>
                 </div>
               </div>
               <div class='from-row'>
@@ -107,9 +107,21 @@
                     <li>爱上接电话</li>
                   </ol>
                   <el-button class='add-tag' @click='addTag=true'>添加</el-button>
-                  <div class='tag-list'>
-                    <p>选择合适的标签 <span>×</span></p>  
-                  </div>  
+                  <div class='tag-list' v-if='addTag'>
+                    <p class='title'>选择合适的标签 <span class='close' @click='addTag=false'>×</span></p>
+                    <span>客户属性标签</span>
+                    <div class='tag-box clearfix'>
+                      <el-checkbox-group v-model="attrTagArr">
+                        <el-checkbox-button v-for="city in attrTag" :label="city" :key="city">{{city}}</el-checkbox-button>
+                      </el-checkbox-group>
+                    </div>
+                    <span>客户行为标签</span>
+                    <div class='tag-box clearfix'>
+                       <el-checkbox-group v-model="habitTagArr">
+                        <el-checkbox-button v-for="city in habitTag" :label="city" :key="city">{{city}}</el-checkbox-button>
+                      </el-checkbox-group>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -128,9 +140,12 @@
         groudModal: false,
         importModal: false,
         tabValue: 1,
+        radio: '1',
         searchTitle: '',
         groupIdx: 0,
         tagIdx: 0,
+        attrIdx: 0,
+        habitIdx: 0,
         renameGroup: '',
         uploadData: {
           status: 1,
@@ -138,7 +153,11 @@
           name: '',
           infoNum: 10
         },
-        addTag: false
+        addTag: false,
+        attrTag: ['上海', '北京', '广州', '深圳'],
+        habitTag: ['上海2', '北京2', '广州2', '深圳2'],
+        attrTagArr: [],
+        habitTagArr: []
       }
     },
     methods: {
@@ -171,10 +190,8 @@
       }
     },
     watch: {
-      tagIdx: function (res) {
-      },
-      groupIdx: function (res) {
-      }
+      tagIdx: function (res) {},
+      groupIdx: function (res) {}
     }
   }
 </script>
@@ -301,6 +318,7 @@
     margin: 10px 0;
   }
 }
+
 .import-content {
   .from-row {
     display: flex;
@@ -337,7 +355,36 @@
       border-radius: 3px;
       margin: 0 5px;
     }
-    .add-tag {
+  }
+  .tag-list {
+    position: absolute;
+    background: blanchedalmond;
+    border-radius: 5px;
+    width: 400px;
+    padding: 20px;
+    .title {
+      // height: 50px;
+      // line-height: 50px;
+      text-align: left;
+      .close {
+        float: right;
+      }
+    }
+    span {
+      display: block;
+      margin: 10px 0;
+    }
+    .tag-box em {
+      cursor: pointer;
+      float: left;
+      padding: 5px 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .tag-box em.active {
+      border-color: orange;
+      color: orange;
     }
   }
 }
