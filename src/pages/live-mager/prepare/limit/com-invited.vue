@@ -24,27 +24,46 @@
         <div class='modal-box'>
           <h4>选择观众组 <span>×</span></h4>
           <div>
-          <com-tabs :value.sync="tabValue">
-            <com-tab label="分组" :index="1">分组</com-tab>
-            <com-tab label="标签" :index="2">标签</com-tab>
-          </com-tabs>
-          <div class="right">
-            <div class='top'>
-              <span>分组:<i>123</i>个</span>
-              <span><com-input :value.sync="searchTitle" placeholder="请输入关键字" :max-length="60" ></com-input>搜索</span>
-            </div>
-            <ol class='list'>
-              <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
-              <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
-              <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
-              <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
-              <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
-            </ol>
-            <div class='btm clearfix'>
-              <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
-              <el-button>确定</el-button>
-            </div>
-          </div>
+            <com-tabs :value.sync="tabValue" type='left'>
+              <com-tab label="分组" :index="1">
+                <div class="right">
+                  <div class='top'>
+                    <span>分组:<i>123</i>个</span>
+                    <span><com-input :value.sync="searchTitle" placeholder="请输入关键字" :max-length="60" ></com-input>搜索</span>
+                  </div>
+                  <ol class='list'>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                  </ol>
+                  <div class='btm clearfix'>
+                    <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
+                    <el-button>确定</el-button>
+                  </div>
+                </div>
+              </com-tab>
+              <com-tab label="标签" :index="2">
+                <div class="right">
+                  <div class='top'>
+                    <span>标签:<i>123</i>个</span>
+                    <span><com-input :value.sync="searchTitle" placeholder="请输入关键字" :max-length="60" ></com-input>搜索</span>
+                  </div>
+                  <ol class='list'>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                    <li><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose'>选择</em></li>
+                  </ol>
+                  <div class='btm clearfix'>
+                    <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
+                    <el-button>确定</el-button>
+                  </div>
+                </div>
+              </com-tab>
+            </com-tabs>
           </div>
         </div>
       </div>
@@ -126,6 +145,7 @@
     }
   }
 }
+
 .list {
   li {
     height: 50px;
