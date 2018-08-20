@@ -88,7 +88,6 @@ export default {
         this.innerValue = value
       },
       immediate: true
-
     },
     type: {
       handler (value) {
