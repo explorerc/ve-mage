@@ -61,8 +61,8 @@ export const ajax = (options) => {
     Loading(false)
     console.log('出错了', error)
     MessageBox({
-      header: error,
-      handleClick: (e) => {}
+      header: '提示',
+      content: error
     })
     return new Promise(() => {})
   })
