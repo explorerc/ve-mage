@@ -8,6 +8,7 @@
       <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
       <div class="v-editor">
         <span class="v-explain">账户头像</span>
+
         <com-upload
           accept="png|jpg|jpeg"
           actionUrl="/api/edu/database/doc-upload"
@@ -224,15 +225,15 @@
     },
     methods: {
       uploadLoad (e) {
-        console.log(e)
+        // console.log(e)
       },
       uploadError (e) {
-        console.log(e)
-        if (e.code === 503 && e.data[0].state === 'type-limit') {
-          console.log('上传文件类型不匹配')
-        } else {
-          console.log('上传文件大小超出限制')
-        }
+        // console.log(e)
+        // if (e.code === 503 && e.data[0].state === 'type-limit') {
+        //   console.log('上传文件类型不匹配')
+        // } else {
+        //   console.log('上传文件大小超出限制')
+        // }
       },
       uploadOver (e) {
         console.log(e)

@@ -19,10 +19,10 @@
             <p class="v-error">{{accountError}}</p>
           </div>
           <div class="input-form v-forget" style="margin-top: 5px;">
-            <a href="/pw" class="fr clickTag">忘记密码</a>
+            <a href="/forgot" class="fr clickTag">忘记密码</a>
             <template>
                         <el-checkbox v-model="remember">自动登录</el-checkbox>
-</template>
+            </template>
                 </div>
                 <el-button @click="accountSubmit">wo</el-button>
             </div>
@@ -46,7 +46,8 @@
   import MyInput from './login-input'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import {mapMutations} from 'vuex'
+  import {mapMutations, mapState} from 'vuex'
+  import * as types from 'src/store/mutation-types'
   export default {
     data () {
       return {
@@ -76,6 +77,9 @@
     components: {
       'com-input': MyInput
     },
+    computed: mapState('login', {
+      isLogin: state => state.isLogin
+    }),
     created () {
       let data = {}
       identifyingcodeManage.getCodeId(data).then((res) => {
@@ -116,8 +120,8 @@
       }
     },
     methods: {
-      ...mapMutations({
-        setIsLogin: `updateIsLogin`
+      ...mapMutations('login', {
+        setIsLogin: types.UPDATE_IS_LOGIN
       }),
       changeFunction (item) {
         if (item === 'account') {
@@ -130,6 +134,7 @@
         this.type = type
       },
       accountSubmit () {
+        this.setIsLogin(1)
         this.checkAccountForm()
         if (this.accountError) {
           return false
@@ -159,13 +164,14 @@
             this.accountError = res.msg
             this.accountOpacity = 1
           } else {
+            sessionStorage.setItem('isLogin', true)
+            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
             console.log('账号登录成功')
           }
         })
       },
       phoneSubmit () {
-        this.setIsLogin(1)
         this.checkMobileForm()
         if (this.mobileError) {
           return false
@@ -186,8 +192,9 @@
             this.mobileError = res.msg
             this.mobileOpacity = 1
           } else {
-            // console.log(this.$store.state)
-            // this.setIsLogin(1)
+            sessionStorage.setItem('isLogin', true)
+            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            this.setIsLogin(1)
             console.log('动态码登录成功')
             this.isSend = true
             this.isProhibit = true

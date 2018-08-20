@@ -1,3 +1,4 @@
+import * as types from '../mutation-types'
 const loginModules = {
   namespaced: true,
   state: {
@@ -7,8 +8,8 @@ const loginModules = {
     isLoginGetter: (state) => state.isLogin
   },
   mutations: {
-    'updateIsLogin' (state, val) {
-      state.isLogin = val
+    [types.UPDATE_IS_LOGIN] (state, status) {
+      state.isLogin = status
     }
   }
 }
