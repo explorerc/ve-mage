@@ -43,8 +43,6 @@ export default {
     }
   },
   created () {
-    console.log('init value2', this.value)
-    this.innerValue = this.value
     this.inputType = this.getType()
   },
   mounted () {
@@ -89,8 +87,18 @@ export default {
       }
       this.$emit('update:value', this.innerValue)
     },
-    value (value) {
-      this.innerValue = value
+    value: {
+      handler (value) {
+        this.innerValue = value
+      },
+      immediate: true
+
+    },
+    type: {
+      handler (value) {
+        this.inputType = this.getType()
+      },
+      immediate: true
     }
   },
   computed: {

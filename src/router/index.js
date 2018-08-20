@@ -8,27 +8,30 @@ export default () => {
     mode: 'history'
   })
 
-  // router.beforeEach((to, from, next) => {
-  //   if (to.noAuth) {
-  //     next()
-  //   } else {
-  //     if (localStorage.getItem('isLogin')) {
-  //       if (setPass) {
-  //         next()
-  //       } else {
-  //         setTimeout((data) => {
-  //           if (data.noPassword) {
-  //             next('/setPassword')
-  //           } else {
-  //             next()
-  //           }
-  //         }, 200)
-  //       }
-  //     } else {
-  //       next('/login')
-  //     }
-  //   }
-  // })
+  router.beforeResolve((to, from, next) => {
+    console.log(router.app.$store.state.login.isLogin)
+    next()
+    // if (to.noAuth) {
+    //   next()
+    // } else {
+    //   console.log(to)
+    //   if (localStorage.getItem('isLogin')) {
+    //     // if (setPass) {
+    //     //   next()
+    //     // } else {
+    //     //   setTimeout((data) => {
+    //     //     if (data.noPassword) {
+    //     //       next('/setPassword')
+    //     //     } else {
+    //     //       next()
+    //     //     }
+    //     //   }, 200)
+    //     // }
+    //   } else {
+    //     next('/login')
+    //   }
+    // }
+  })
 
   return router
 }

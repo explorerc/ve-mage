@@ -46,6 +46,7 @@
   import MyInput from './login-input'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
+  import {mapMutations} from 'vuex'
   export default {
     data () {
       return {
@@ -115,6 +116,9 @@
       }
     },
     methods: {
+      ...mapMutations({
+        setIsLogin: `updateIsLogin`
+      }),
       changeFunction (item) {
         if (item === 'account') {
           this.isAccount = true
@@ -155,11 +159,13 @@
             this.accountError = res.msg
             this.accountOpacity = 1
           } else {
+            this.setIsLogin(1)
             console.log('账号登录成功')
           }
         })
       },
       phoneSubmit () {
+        this.setIsLogin(1)
         this.checkMobileForm()
         if (this.mobileError) {
           return false
@@ -180,6 +186,9 @@
             this.mobileError = res.msg
             this.mobileOpacity = 1
           } else {
+            // console.log(this.$store.state)
+            // this.setIsLogin(1)
+            console.log('动态码登录成功')
             this.isSend = true
             this.isProhibit = true
             clearInterval(this.timerr)

@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import aModules from './modules/a'
 import bModules from './modules/b'
+import loginModules from './modules/login'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -29,7 +30,8 @@ export default () => {
     },
     modules: {
       a: aModules,
-      b: bModules
+      b: bModules,
+      login: loginModules
     }
     // mutations,
     // getters,

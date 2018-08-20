@@ -4,18 +4,25 @@
     <com-dialog
     :visible.sync="show1"
     header="提示"
-    content="需要注意的是内容是默认不居中的"
+
     center
     :beforeClose="beforeClose"
     @close="close"
     @closed="closed"
     >
+    <div v-if="at===1">
+      <com-input type="input"></com-input>
+    </div>
+    <div v-else-if="at===2">
+      <com-input type="password"></com-input>
+    </div>
       <div class="test-footer" slot="footer">
         <com-button>取消</com-button>
         <com-button type="primary" :loading="true" @click="ttt">确定</com-button>
       </div>
     </com-dialog>
     <button @click="testCom">test1</button>
+    <button @click="testCom1">test11</button>
    <div class="test-wrap" v-ComLoading="show1" com-loading-text="拼命加载中">
     <button @click="testFun">test2</button>
    </div>
@@ -65,6 +72,7 @@ import {Toast} from 'components/common/notification'
 export default {
   data () {
     return {
+      at: 1,
       tabValue: 2,
       dialogVisible: true,
       show1: false,
@@ -120,7 +128,12 @@ export default {
       console.log('上传完毕')
     },
     testCom () {
-      this.show1 = !this.show1
+      this.show1 = true
+      this.at = 1
+    },
+    testCom1 () {
+      this.show1 = true
+      this.at = 2
     },
     testFun () {
       Toast({

@@ -6,7 +6,7 @@
     </p>
 
     <el-tabs v-model="activeName">
-      <el-tab-pane label="用户管理" name="first">
+      <el-tab-pane label="用户管理" name="first" :disabled=true>
         <div class="v-get-password">
           <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
           <div id="captcha"></div>
@@ -19,7 +19,7 @@
           <el-button @click="verifyUser">wo</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="配置管理" name="second">
+      <el-tab-pane label="配置管理" name="second" :disabled=true>
         <div class="v-get-password">
           <com-input class="v-input" :value.sync="password" placeholder="新登录密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password"></com-input>
           <com-input class="v-input" :value.sync="rePassword" placeholder="确认新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password">
@@ -30,7 +30,7 @@
           <el-button @click="undatePhone">wo</el-button>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="角色管理" name="third">
+      <el-tab-pane label="角色管理" name="third" :disabled=true>
         成功
       </el-tab-pane>
     </el-tabs>
@@ -146,7 +146,7 @@
         }
         let data = {
           'mobile': this.userPhone,
-          'type': 'BUSINESS_USER_UPDADE_PASSWORD',
+          'type': 'BUSINESS_USER_UPDATE_PASSWORD',
           captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
@@ -186,7 +186,7 @@
         let data = {
           mobile: this.userPhone,
           code: this.phoneCode,
-          type: 'BUSINESS_USER_UPDADE_PASSWORD'
+          type: 'BUSINESS_USER_UPDATE_PASSWORD'
         }
         account.verifyMobile(data).then((res) => {
           if (res.code !== 200) {
