@@ -17,7 +17,7 @@ export default (options) => {
   document.body.appendChild(instance.vm.$el)
   instance.vm.visible = true
   instance.vm.$on('handleClick', (event) => {
-    handleClick(event)
+    if (handleClick) handleClick(event)
     document.body.removeChild(instance.vm.$el)
     instance.vm.$destroy()
   })
