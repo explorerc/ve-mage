@@ -51,17 +51,14 @@
       <div class="test-upload">我是自定义区域</div>
       </com-upload>
     </div>
-    <div class="test-wrap" style="width:600px;">
-      <com-tabs :value.sync="tabValue" >
-        <com-tab label="用户管理" :index="1">用户管理的内容详情</com-tab>
-        <com-tab label="配置管理" :index="2">
-          <div><com-input :value.sync="outValue"></com-input><span>{{outValue}}</span></div>
-        </com-tab>
-        <com-tab label="角色管理" :index="3"><span>{{outValue}}</span></com-tab>
-        <com-tab label="定时任务补偿" :index="4">定时任务补偿的内容详情</com-tab>
+    <div class="test-wrap" style="width:600px;height:400px;">
+      <com-tabs :value.sync="tabValue">
+       <com-tab label="用户管理" :index="1" >
+       <div ><com-input :value.sync="outValue"></com-input><span>{{outValue}}</span></div></com-tab>
+       <com-tab label="配置管理" :index="2" >配置管理的内容详情</com-tab>
+       <com-tab label="xxxx" :index="3" >sdasdasdds</com-tab>
       </com-tabs>
     </div>
-
   </div>
 </template>
 
@@ -73,7 +70,8 @@ export default {
   data () {
     return {
       at: 1,
-      tabValue: 2,
+      tabValue: 1,
+      tabValue1: '1',
       dialogVisible: true,
       show1: false,
       show: false,
