@@ -88,6 +88,7 @@
     components: {VeUpload},
     data () {
       return {
+        items: [1],
         warm: {
           isSwitch: false,
           videoSrc: '',
@@ -232,3 +233,4 @@
 
 <style lang="scss" scoped src="./css/live.scss">
 </style>
+
