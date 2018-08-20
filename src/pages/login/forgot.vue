@@ -4,9 +4,8 @@
     <p class="v-title">
       找回密码
     </p>
-
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="用户管理" name="first" :disabled=true>
+    <com-tabs :value.sync="activeName" disabled>
+       <com-tab label="用户管理" index="first">
         <div class="v-get-password">
           <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
           <div id="captcha"></div>
@@ -18,9 +17,9 @@
 		    	</div>
           <el-button @click="verifyUser">wo</el-button>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="配置管理" name="second" :disabled=true>
-        <div class="v-get-password">
+       </com-tab>
+       <com-tab label="配置管理" index="second">
+         <div class="v-get-password">
           <com-input class="v-input" :value.sync="password" placeholder="新登录密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password"></com-input>
           <com-input class="v-input" :value.sync="rePassword" placeholder="确认新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password">
           </com-input>
@@ -29,17 +28,11 @@
 		    	</div>
           <el-button @click="undatePhone">wo</el-button>
         </div>
-      </el-tab-pane>
-      <el-tab-pane label="角色管理" name="third" :disabled=true>
-        成功
-      </el-tab-pane>
-    </el-tabs>
-
-
-
-
-
-
+       </com-tab>
+       <com-tab label="角色管理" index="third">
+         成功
+       </com-tab>
+    </com-tabs>
   </div>
 </template>
 <script>

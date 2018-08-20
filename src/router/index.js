@@ -22,7 +22,7 @@ export default () => {
       } else {
         let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
         let userInfo = sessionStorage.getItem('userInfo')
-        if (isLogin && userInfo.hasPassword) {
+        if (isLogin && userInfo && userInfo.hasPassword) {
           if (userInfo.hasPassword) {
             next()
             return false

@@ -6,19 +6,15 @@
       </p>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
       <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
-      <div class="v-editor">
-        <span class="v-explain">账户头像</span>
-
-        <com-upload
-          accept="png|jpg|jpeg"
-          actionUrl="/api/edu/database/doc-upload"
-          inputName="resfile"
-          :fileSize="2048"
-          @load="uploadLoad"
-          @error="uploadError"
-          @over="uploadOver"
-        >
-        <div class="test-upload"><img src="avatar" alt=""><span>666</span></div>
+      <div class="v-editor" style="height: 170px;">
+        <span class="v-explain" style="vertical-align: top;">账户头像</span>
+              <ve-upload
+                title="上传封面"
+                accept="png|jpg|jpeg|bmp|gif"
+                :defaultImg="avatar"
+                :fileSize="1024"
+                @error="uploadError"
+                @success="uploadImgSuccess"/>
         </com-upload>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
@@ -97,6 +93,7 @@
   import Editor from './info-editor'
   import account from 'src/api/account-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
+  import VeUpload from 'src/components/ve-upload'
   export default {
     data () {
       return {
@@ -206,7 +203,8 @@
       })
     },
     components: {
-      'com-editor': Editor
+      'com-editor': Editor,
+      've-upload': VeUpload
     },
     created () {
     },
@@ -224,19 +222,20 @@
       }
     },
     methods: {
-      uploadLoad (e) {
-        // console.log(e)
+      uploadImgSuccess (data) {
+        let companyData = {
+          avatar: data.host + '/' + data.name
+        }
+        account.setCompanyInfo(companyData).then((res) => {
+          if (res.code !== 200) {
+            alert(res.msg)
+          } else {
+            alert('更新成功')
+          }
+        })
       },
-      uploadError (e) {
-        // console.log(e)
-        // if (e.code === 503 && e.data[0].state === 'type-limit') {
-        //   console.log('上传文件类型不匹配')
-        // } else {
-        //   console.log('上传文件大小超出限制')
-        // }
-      },
-      uploadOver (e) {
-        console.log(e)
+      uploadError (data) {
+        console.log('上传失败:', data)
       },
       save (val, type, saveType) {
         // 修改选项后点击保存、
