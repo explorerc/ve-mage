@@ -9,7 +9,7 @@
     </div>
     <div class="set-info">
       <div class='title'>
-        <el-button>添加信息</el-button><em>最多可设置5条信息</em></div>
+        <el-button @click='addNew'>添加信息</el-button><em>最多可设置5条信息</em></div>
       <div class="set-content">
         <ul class='table-title clearfix'>
           <li>信息类型</li>
@@ -20,8 +20,8 @@
         <ol class='table-content'>
           <li class='clearfix'>
             <div>
-              <el-select v-model="this.select.value" disabled placeholder="请选择">
-                <el-option v-for="item in this.select.arr" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="phone" disabled placeholder="请选择">
+                <el-option v-for="item in quesData" :key="item.type" :label="item.label" :value="item.type">
                 </el-option>
               </el-select>
             </div>
@@ -33,39 +33,33 @@
             </div>
             <div>登陆校验项目</div>
           </li>
-          <li class='clearfix'>
+          <li class='clearfix' v-for="(item,idx) in quesData" :key="item.type">
             <div>
-              <el-select v-model="this.select.value1" placeholder="请选择" @change='selectChange'>
-                <el-option v-for="item in this.select.arr" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="item.value" placeholder="请选择" @change='selectChange(idx,item.value)'>
+                <el-option v-for="item in quesData" :key="item.type" :label="item.label" :value="item.type">
                 </el-option>
               </el-select>
             </div>
             <div>
-              <com-input customClass='inp' value="文本" :max-length="8"></com-input>
+              <com-input customClass='inp' :value="item.info" :max-length="8"></com-input>
             </div>
             <div>
-              <com-input customClass='inp' value=" 请输入文字" :max-length="8"></com-input>
+              <com-input customClass='inp' :value="item.desc" :max-length="8"></com-input>
             </div>
             <div>
-              <el-button @click='removeItem'>删除</el-button>
+              <el-button @click='removeItem(idx)'>删除</el-button>
             </div>
-          </li>
-          <li class='clearfix'>
-            <div>
-              <el-select v-model="this.select.value2" placeholder="请选择" @change='selectChange'>
-                <el-option v-for="item in this.select.arr" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <div>
-              <com-input customClass='inp' value="文本" :max-length="8"></com-input>
-            </div>
-            <div>
-              <com-input customClass='inp' value=" 请输入文字" :max-length="8"></com-input>
-            </div>
-            <div>
-              <el-button @click='removeItem'>删除</el-button>
-            </div>
+            <section class='select-item clearfix' v-if="item.value === 4">
+              <p>选项详情
+                <el-button @click='addItem(idx)'>添加选项</el-button>
+              </p>
+              <ol>
+                <li v-for="(option,count) in item.detail">
+                  <com-input :value="option" :max-length="8"></com-input>
+                  <span @click='delItem(idx,count)'>删除</span>
+                </li>
+              </ol>
+            </section>
           </li>
         </ol>
       </div>
@@ -77,6 +71,7 @@
   export default {
     data () {
       return {
+        phone: '手机号码',
         checked: true,
         searchTitle: '123',
         date: new Date(),
@@ -85,74 +80,77 @@
             return time.getTime() < Date.now() - 8.64e7
           }
         },
-        select: {},
         quesData: {}
       }
     },
     created () {
-      this.select = {
-        arr: [{
-          value: '1',
-          label: '文本'
-        }, {
-          value: '2',
-          label: '姓名'
-        }, {
-          value: '3',
-          label: '数字'
-        }, {
-          value: '4',
-          label: '下拉选择'
-        }, {
-          value: '5',
-          label: '手机号码'
-        }],
-        value: '手机号码',
-        value1: '',
-        value2: '',
-        value3: ''
+      this.quesData = [{
+        type: 1,
+        value: 1,
+        info: '标题',
+        desc: '描述描述',
+        label: '文本',
+        detail: []
+      },
+      {
+        type: 2,
+        value: 2,
+        info: '标题a',
+        desc: '描述描述a',
+        label: '姓名',
+        detail: []
+      },
+      {
+        type: 3,
+        value: 3,
+        info: '标题b',
+        desc: '描述描述b',
+        label: '数字',
+        detail: []
+      },
+      {
+        type: 4,
+        value: 4,
+        info: '下拉',
+        desc: '描述下拉',
+        label: '下拉选择',
+        detail: [
+          '男',
+          '女',
+          '奥克兰圣'
+        ]
       }
-      this.quesData = [
-        {
-          type: 1,
-          info: '标题',
-          desc: '描述描述'
-        },
-        {
-          type: 2,
-          info: '标题a',
-          desc: '描述描述a'
-        },
-        {
-          type: 3,
-          info: '标题b',
-          desc: '描述描述b'
-        },
-        {
-          type: 4,
-          info: '数字',
-          desc: '数字描述b'
-        },
-        {
-          type: 5,
-          info: '下拉',
-          desc: '描述下拉',
-          detail: [
-            '男',
-            '女',
-            '奥克兰圣'
-          ]
-        }
       ]
     },
     methods: {
-      removeItem () {},
-      selectChange (res) {
+      removeItem (idx) {
+
+      },
+      selectChange (idx, res) {
+        console.log(idx)
         console.log(res)
+        // debugger// eslint-disable-line
         if (res === 4) {
-          console.log('弹出')
+          // debugger// eslint-disable-line
+          this.quesData[idx]['detail'].push('')
         }
+      },
+      addItem (idx) {
+        this.quesData[idx]['detail'].push('')
+      },
+      delItem (idx, count) {
+        // debugger // eslint-disable-line
+        this.quesData[idx]['detail'].splice(count, 1)
+      },
+      addNew () {
+
       }
+    },
+    watch: {
+      quesData: function () {
+        console.log('change')
+      },
+      deep: true
     }
   }
 </script>
@@ -175,18 +173,35 @@
     margin: 20px 0px;
   }
   .table-content {
-    li {
+    & > li {
       margin: 10px 0;
-      div {
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+      & > div {
         float: left;
         width: 250px;
         text-align: center;
+        padding-bottom: 20px;
       }
     }
     .inp,
     .el-select {
       width: 200px;
       margin: 0 25px;
+    }
+  }
+  .select-item {
+    clear: both;
+    padding: 0 30px;
+    p {
+      padding: 10px 0px;
+      border-top: 1px solid #ccc;
+    }
+    p button {
+      float: right;
+    }
+    li {
+      padding: 10px 0px;
     }
   }
 }
