@@ -88,6 +88,7 @@
     components: {VeUpload},
     data () {
       return {
+        items: [1],
         warm: {
           isSwitch: false,
           videoSrc: '',
@@ -152,7 +153,7 @@
       },
       saveWarm () {
         alert(JSON.stringify(this.warm))
-        this.saveWarmInfo(this.warm)
+        LiveHttp.saveWarmInfo(this.warm)
       },
       uploadImgSuccess (data) {
         this.warm.playCover = data.name
@@ -232,3 +233,4 @@
 
 <style lang="scss" scoped src="./css/live.scss">
 </style>
+
