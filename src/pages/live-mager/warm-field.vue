@@ -153,7 +153,7 @@
       },
       saveWarm () {
         alert(JSON.stringify(this.warm))
-        this.saveWarmInfo(this.warm)
+        LiveHttp.saveWarmInfo(this.warm)
       },
       uploadImgSuccess (data) {
         this.warm.playCover = data.name
