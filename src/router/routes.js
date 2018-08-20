@@ -16,6 +16,7 @@ const WarmField = () => import('src/pages/live-mager/warm-field')
 const Reminder = () => import('src/pages/live-mager/reminder')
 const Forgot = () => import('src/pages/login/forgot')
 const SetAccount = () => import('src/pages/account')
+const limit = () => import('src/pages/live-mager/prepare/limit/index')
 
 export default [{
   path: '/',
@@ -76,7 +77,7 @@ export default [{
   component: edit
 },
 {
-  path: '/liveMager/detail/detail/:id',
+  path: '/liveMager/detail/:id',
   name: 'detail',
   component: detail
 },
@@ -107,5 +108,10 @@ export default [{
   path: '/setAccount',
   name: 'setAccount',
   component: SetAccount
+},
+{
+  path: '/liveMager/prepare/limit',
+  name: 'limit',
+  component: limit
 }
 ]
