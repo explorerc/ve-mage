@@ -40,17 +40,26 @@ export default [{
 {
   path: '/login',
   name: 'login',
-  component: Login
+  component: Login,
+  meta: {
+    noAuth: true
+  }
 },
 {
   path: '/setPassword',
   name: 'setPassword',
-  component: SetPassword
+  component: SetPassword,
+  meta: {
+    noAuth: true
+  }
 },
 {
   path: '/register',
   name: 'register',
-  component: Register
+  component: Register,
+  meta: {
+    noAuth: true
+  }
 },
 {
   path: '/barrage',
@@ -90,7 +99,10 @@ export default [{
 {
   path: '/forgot',
   name: 'forgot',
-  component: Forgot
+  component: Forgot,
+  meta: {
+    noAuth: true
+  }
 },
 {
   path: '/setAccount',

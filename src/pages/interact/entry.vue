@@ -1,5 +1,6 @@
 <template>
   <div>
+    <router-link to="/test">aaaaa</router-link>
     <div id="entry" class="container">
       {{serverUrl}}<br>{{buildEnv}}
     </div>

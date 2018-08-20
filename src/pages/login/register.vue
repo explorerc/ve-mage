@@ -124,7 +124,8 @@
         }
         let data = {
           'mobile': this.userPhone,
-          'type': 'BUSINESS_USER_REG'
+          'type': 'BUSINESS_USER_REG',
+          captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
