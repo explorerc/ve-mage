@@ -9,7 +9,7 @@
     <p>直播封面：
       <com-upload
       accept="png|jpg|jpeg"
-      actionUrl="/api/edu/database/doc-upload"
+      actionUrl="/api/upload/do-upload"
       inputName="resfile"
       :fileSize="uploadData.fileSize"
       @load="uploadLoad"

@@ -21,7 +21,7 @@
           <li class='clearfix'>
             <div>
               <el-select v-model="phone" disabled placeholder="请选择">
-                <el-option v-for="item in quesData" :key="item.type" :label="item.label" :value="item.type">
+                <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
                 </el-option>
               </el-select>
             </div>
@@ -33,29 +33,29 @@
             </div>
             <div>登陆校验项目</div>
           </li>
-          <li class='clearfix' v-for="(item,idx) in quesData" :key="item.type">
+          <li class='clearfix' v-for="(item,idx) in quesData" :key="item.idx">
             <div>
-              <el-select v-model="item.value" placeholder="请选择" @change='selectChange(idx,item.value)'>
-                <el-option v-for="item in quesData" :key="item.type" :label="item.label" :value="item.type">
+              <el-select v-model="item.label" placeholder="请选择" @change='selectChange(idx,item.label)'>
+                <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.txt">
                 </el-option>
               </el-select>
             </div>
             <div>
-              <com-input customClass='inp' :value="item.info" :max-length="8"></com-input>
+              <com-input customClass='inp' :value="item.info" :max-length="8" placeholder="请输入信息标题"></com-input>
             </div>
             <div>
-              <com-input customClass='inp' :value="item.desc" :max-length="8"></com-input>
+              <com-input customClass='inp' :value="item.desc" :max-length="8" placeholder="请输入信息描述"></com-input>
             </div>
             <div>
               <el-button @click='removeItem(idx)'>删除</el-button>
             </div>
-            <section class='select-item clearfix' v-if="item.value === 4">
+            <section class='select-item clearfix' v-if="item.label === '下拉选择'">
               <p>选项详情
                 <el-button @click='addItem(idx)'>添加选项</el-button>
               </p>
               <ol>
-                <li v-for="(option,count) in item.detail">
-                  <com-input :value="option" :max-length="8"></com-input>
+                <li v-for="(option,count) in item.detail" :key='count'>
+                  <com-input :value="option" :max-length="8" placeholder="请输入选项"></com-input>
                   <span @click='delItem(idx,count)'>删除</span>
                 </li>
               </ol>
@@ -80,37 +80,47 @@
             return time.getTime() < Date.now() - 8.64e7
           }
         },
-        quesData: {}
+        options: [],
+        quesData: []
       }
     },
     created () {
-      this.quesData = [{
-        type: 1,
+      this.options = [{
         value: 1,
+        txt: '文本'
+      },
+      {
+        value: 2,
+        txt: '姓名'
+      },
+      {
+        value: 3,
+        txt: '数字'
+      },
+      {
+        value: 4,
+        txt: '下拉选择'
+      }
+      ]
+      this.quesData = [{
         info: '标题',
         desc: '描述描述',
         label: '文本',
         detail: []
       },
       {
-        type: 2,
-        value: 2,
         info: '标题a',
         desc: '描述描述a',
         label: '姓名',
         detail: []
       },
       {
-        type: 3,
-        value: 3,
         info: '标题b',
         desc: '描述描述b',
         label: '数字',
         detail: []
       },
       {
-        type: 4,
-        value: 4,
         info: '下拉',
         desc: '描述下拉',
         label: '下拉选择',
@@ -124,13 +134,10 @@
     },
     methods: {
       removeItem (idx) {
-
+        this.quesData.splice([idx], 1)
       },
       selectChange (idx, res) {
-        console.log(idx)
-        console.log(res)
-        // debugger// eslint-disable-line
-        if (res === 4) {
+        if (res === '下拉选择') {
           // debugger// eslint-disable-line
           this.quesData[idx]['detail'].push('')
         }
@@ -143,14 +150,22 @@
         this.quesData[idx]['detail'].splice(count, 1)
       },
       addNew () {
-
+        let obj = {
+          info: '标题',
+          desc: '描述描述',
+          label: '文本',
+          detail: []
+        }
+        this.quesData.push(obj)
       }
     },
     watch: {
-      quesData: function () {
-        console.log('change')
-      },
-      deep: true
+      quesData: {
+        handler (newValue) {
+          console.log('change')
+        },
+        deep: true
+      }
     }
   }
 </script>
