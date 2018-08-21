@@ -70,6 +70,20 @@ const ActivityManger = {
       url: '/manage/view-limit/get-limit',
       params: { activityId: id }
     })
+  },
+  webinarInfo (id) { /* 获取互动信息 */
+    return utils.ajax({
+      method: 'GET',
+      url: '/manage/base-manage/detail-activity',
+      params: { id: id }
+    })
+  },
+  updateWebinfo (isNew, data) { /* 更新/创建活动 */
+    return utils.ajax({
+      method: 'POST',
+      url: isNew ? '/manage/base-manage/add-activity' : '/manage/base-manage/update-activity',
+      params: data
+    })
   }
 }
 export default ActivityManger

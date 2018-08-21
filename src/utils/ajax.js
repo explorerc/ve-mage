@@ -43,7 +43,7 @@ axios.interceptors.response.use(
     Loading(false)
     if (res.data.code !== 200) {
       // 错误处理
-      return Promise.reject(res.data.msg)
+      return Promise.reject(res.data)
     }
     return res
   }, error => {
@@ -57,13 +57,13 @@ export const ajax = (options) => {
   console.log(_options)
   return axios(_options).then((res) => {
     return res.data
-  }).catch((error) => {
+  }).catch((data) => {
     Loading(false)
-    console.log('出错了', error)
+    console.log('出错了', data)
     MessageBox({
       header: '提示',
-      content: error
+      content: data.msg
     })
-    return new Promise(() => {})
+    return new Promise(() => { })
   })
 }
