@@ -4,17 +4,12 @@
       <p class="v-title">
         基本信息
       </p>
+      <a href="javascript:;" @click="logOff()">退出登录</a>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
       <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
       <div class="v-editor" style="height: 170px;">
         <span class="v-explain" style="vertical-align: top;">账户头像</span>
-              <ve-upload
-                title="上传封面"
-                accept="png|jpg|jpeg|bmp|gif"
-                :defaultImg="avatar"
-                :fileSize="1024"
-                @error="uploadError"
-                @success="uploadImgSuccess"/>
+              <ve-upload title="上传封面" accept="png|jpg|jpeg|bmp|gif" :defaultImg="avatar" :fileSize="1024" @error="uploadError" @success="uploadImgSuccess"/>
         </com-upload>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
@@ -92,8 +87,11 @@
 <script>
   import Editor from './info-editor'
   import account from 'src/api/account-manage'
+  import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import VeUpload from 'src/components/ve-upload'
+  import {mapMutations, mapState} from 'vuex'
+  import * as types from 'src/store/mutation-types'
   export default {
     data () {
       return {
@@ -159,27 +157,8 @@
       }
     },
     mounted () {
-      let data = {
-      }
-      account.getAccount(data).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
-        } else {
-          let resData = res.data
-          this.account = resData.userName
-          this.accountName = resData.name
-          this.avatar = resData.avatar
-          this.accountPhone = resData.mobile
-          this.accountPassword = resData.hasPassword ? '已设置' : ''
-          this.companyName = resData.company
-          this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
-          this.selectIndustry = resData.industry
-          this.companyWebsite = res.website
-          this.licenseCode = res.licenseCode
-          this.licensePic = res.licensePic
-        }
-      })
-      account.getUserInfo(data).then((res) => {
+      this.getAccount()
+      account.getUserInfo({}).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
@@ -194,7 +173,7 @@
           this.userRemarks = resData.remark
         }
       })
-      identifyingcodeManage.getCodeId(data).then((res) => {
+      identifyingcodeManage.getCodeId({}).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
@@ -202,6 +181,9 @@
         }
       })
     },
+    computed: mapState('login', {
+      isLogin: state => state.isLogin
+    }),
     components: {
       'com-editor': Editor,
       've-upload': VeUpload
@@ -222,14 +204,56 @@
       }
     },
     methods: {
+      ...mapMutations('login', {
+        setIsLogin: types.UPDATE_IS_LOGIN
+      }),
+      logOff () {
+        loginManage.logOff({}).then((res) => {
+          if (res.code !== 200) {
+            console.log(res.msg)
+          } else {
+            sessionStorage.removeItem('isLogin')
+            sessionStorage.removeItem('userInfo')
+            this.setIsLogin(0)
+            console.log('账号退出成功')
+          }
+        })
+      },
+      getAccount () {
+        account.getAccount({}).then((res) => {
+          if (res.code !== 200) {
+            console.log(res.msg)
+          } else {
+            let resData = res.data
+            this.account = resData.userName
+            this.accountName = resData.name
+            this.avatar = resData.avatar
+            this.accountPhone = resData.mobile
+            this.accountPassword = resData.hasPassword ? '已设置' : ''
+            this.companyName = resData.company
+            this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
+            this.selectIndustry = resData.industry
+            this.companyWebsite = res.website
+            this.licenseCode = res.licenseCode
+            this.licensePic = res.licensePic
+            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+          }
+        })
+      },
       uploadImgSuccess (data) {
         let companyData = {
-          avatar: data.host + '/' + data.name
+          avatar: ''
+        }
+        if (data.host && data.name) {
+          companyData = {
+            avatar: data.host + '/' + data.name
+          }
         }
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
             alert(res.msg)
           } else {
+            this.getAccount()
             alert('更新成功')
           }
         })
@@ -248,6 +272,7 @@
             if (res.code !== 200) {
               alert(res.msg)
             } else {
+              this.getAccount()
               alert('更新成功')
             }
           })

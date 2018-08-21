@@ -1,7 +1,7 @@
 import utils from 'src/utils'
 
 const LoginManage = {
-  register (data) {
+  register (data) { // 注册
     return utils.ajax({
       method: 'post',
       url: '/user/business-user/reg',
@@ -9,16 +9,23 @@ const LoginManage = {
     })
   },
   loginByPhone (data) {
-    return utils.ajax({
+    return utils.ajax({ // 手机快捷登录
       method: 'post',
       url: '/user/business-user/mobile-login',
       params: data
     })
   },
-  loginByAccount (data) {
+  loginByAccount (data) { // 账号登录
     return utils.ajax({
       method: 'post',
       url: '/user/business-user/account-login',
+      params: data
+    })
+  },
+  logOff (data) { // 退出登录
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/signout',
       params: data
     })
   }
