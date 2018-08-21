@@ -130,6 +130,9 @@ export default [{
 {
   path: '/liveMager/prepare/limit/:id',
   name: 'limit',
-  component: limit
+  component: limit,
+  meta: {
+    noAuth: true
+  }
 }
 ]

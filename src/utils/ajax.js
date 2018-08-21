@@ -69,6 +69,6 @@ export const ajax = (options) => {
         console.log('跳转到登录页')
         break
     }
-    return new Promise(() => {})
+    return new Promise(() => { })
   })
 }

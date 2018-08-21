@@ -27,17 +27,45 @@
   import comNone from './com-none'
   import comInvited from './com-invited'
   import comApply from './com-apply'
+  import prepareHttp from 'src/api/activity-manger'
   export default {
     data () {
       return {
         radio: 1,
-        tab: 0
+        tab: 0,
+        id: ''
       }
+    },
+    created () {
+      this.id = this.$route.params.id
+      this.getLimit()
     },
     components: {
       comNone,
       comInvited,
       comApply
+    },
+    methods: {
+      getLimit () {
+        prepareHttp.limit(this.id).then((res) => {
+          this.msgDelete = false
+          if (res.code === 200) {
+            console.log(res)
+            this.$toast({
+              content: '删除成功',
+              position: 'center'
+            })
+            // 更新data
+            this.tableData.splice([this.modalData.idx], 1)
+          }
+        }).catch((res) => {
+          this.$toast({
+            content: res.msg,
+            position: 'center'
+          })
+          this.msgDelete = false
+        })
+      }
     }
 
   }
