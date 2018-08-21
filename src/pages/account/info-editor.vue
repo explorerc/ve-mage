@@ -11,7 +11,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <com-input v-else="type === 'input'" :value.sync="inputValue" placeholder="" class="v-input" type="input" :max-length="maxLength"></com-input>
+      <com-input v-else-if="type === 'input'" :value.sync="inputValue" placeholder="" class="v-input" type="input" :max-length="maxLength"></com-input>
     </template>
     <template v-if="type !== 'readOnly'">
       <a href="javascript:;" v-if="!isEdit||clickType!=='save'" @click="modify(clickType)"><span v-if="value === '' && btnName ==='' ">完善</span><span v-else-if="value !== '' && btnName ==='' ">修改</span><span v-else-if="btnName !=='' ">{{btnName}}</span></a>

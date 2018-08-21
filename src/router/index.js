@@ -32,6 +32,7 @@ export default () => {
           }
         } else {
           account.getUserInfo({}).then((res) => {
+            console.log(res)
             if (res.code !== 200) {
               next('/login')
               return false

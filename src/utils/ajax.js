@@ -64,6 +64,11 @@ export const ajax = (options) => {
       header: '提示',
       content: data.msg
     })
+    switch (data.code) {
+      case 10030:
+        console.log('跳转到登录页')
+        break
+    }
     return new Promise(() => { })
   })
 }
