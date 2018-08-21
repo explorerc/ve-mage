@@ -191,8 +191,6 @@
     created () {
     },
     watch: {
-      value: function () {
-      },
       phone: function () {
         this.checkPhone(this.phone)
       },
