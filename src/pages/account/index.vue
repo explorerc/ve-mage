@@ -9,7 +9,7 @@
       <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
       <div class="v-editor" style="height: 170px;">
         <span class="v-explain" style="vertical-align: top;">账户头像</span>
-              <ve-upload title="上传封面" accept="png|jpg|jpeg|bmp|gif" :defaultImg="avatar" :fileSize="1024" @error="uploadError" @success="uploadImgSuccess"/>
+              <ve-upload title="上传封面" accept="png|jpg|jpeg|bmp|gif" :defaultImg="$imgHost + '/' + avatar" :fileSize="1024" @error="uploadError" @success="uploadImgSuccess"/>
         </com-upload>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
@@ -244,7 +244,7 @@
         }
         if (data.host && data.name) {
           companyData = {
-            avatar: data.host + '/' + data.name
+            avatar: data.name
           }
         }
         account.setCompanyInfo(companyData).then((res) => {
