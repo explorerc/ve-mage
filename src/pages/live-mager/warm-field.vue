@@ -105,7 +105,6 @@
           recordId: '',
           accountId: 'v770'
         },
-        imgHost: '', // 图片地址
         loading: false,
         videoSize: '200', // 视频限制大小，单位兆
         percentVideo: 0, // 上传进度
@@ -157,7 +156,6 @@
       },
       uploadImgSuccess (data) {
         this.warm.playCover = data.name
-        this.imgHost = data.host
       },
       uploadError (data) {
         console.log('上传失败:', data)

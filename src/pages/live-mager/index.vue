@@ -24,14 +24,14 @@
         </el-select>
         <div class="search-box">
           <com-input class="fr"
-            type="search"
-            :value.sync="searchParams.keyword"
-            @keyup.native.enter="searchEnter"
-            placeholder="输入直播名称"></com-input>
+                     type="search"
+                     :value.sync="searchParams.keyword"
+                     @keyup.native.enter="searchEnter"
+                     placeholder="输入直播名称"></com-input>
         </div>
       </div>
       <!--<div class="clearfix">-->
-        <live-table  :tableList="tableList" @handleClick="handleClick"/>
+      <live-table :tableList="tableList" @handleClick="handleClick"/>
       <!--</div>-->
       <div class="pagination-box">
         <div class="page-pagination">
@@ -126,6 +126,12 @@
         liveHttp.queryList(this.searchParams).then((res) => {
           this.loading = false
           if (res.code === 200) {
+            res.data.list.map((item, indx) => {
+              if (item.imgUrl) {
+                item.imgUrl = this.$imgHost + '/' + item.imgUrl
+              }
+              return item
+            })
             this.tableList = res.data.list
             this.total = res.data.total
           }
