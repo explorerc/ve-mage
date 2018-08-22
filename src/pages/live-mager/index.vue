@@ -82,6 +82,8 @@
       }
     },
     created () {
+      console.log('999999999')
+      console.log(this.$imgHost)
       this.queryList()
     },
     methods: {
