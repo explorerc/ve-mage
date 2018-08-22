@@ -8,7 +8,7 @@
             <p class="v-title">
                 免费试用
             </p>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="先生/女士" :maxLength="20" @inputFocus="inputFocus()"></com-input>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="输入您的姓名" :maxLength="20" @inputFocus="inputFocus()"></com-input>
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPosition" placeholder="输入您的职务" :maxLength="20" @inputFocus="inputFocus()"></com-input>
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userCompany" placeholder="输入公司名称" :maxLength="40" @inputFocus="inputFocus()"></com-input>
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
