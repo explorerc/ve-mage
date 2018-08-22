@@ -82,7 +82,11 @@ export default [{
 {
   path: '/barrage',
   name: 'Barrage',
-  component: Barrage
+  component: Barrage,
+  meta: {
+    noAuth: true,
+    noLogin: true
+  }
 },
 {
   path: '/liveMager/create',

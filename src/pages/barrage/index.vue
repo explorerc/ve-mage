@@ -19,21 +19,51 @@
       <el-button @click="resumeBarrage">恢复</el-button>
       <el-button @click="destroyBarrage">销毁</el-button>
     </div>
+    <svg width="400px"
+         height="400px">
+      <path ref="pathRef"
+            fill="none"
+            stroke="#CCC"
+            stroke-width="10"
+            stroke-linecap="round"></path>
+    </svg>
   </section>
 </template>
 
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
+// import Progress from '../../components/common/progress/Progress.js'
 export default {
   created () {
     this.barrageSystem = new Barrage()
+    // let opt = {
+    //   x: 100,
+    //   y: 100,
+    //   r: 50
+    // }
+
+    // this.c = new Progress(opt)
+  },
+  mounted () {
+    // let pathRef = this.$refs.pathRef
+    // this.c.progress = 0.5
+    // pathRef.setAttribute('d', this.c.progress)
+
+    // let p = 0
+    // setInterval(() => {
+    //   p += 0.01
+    //   p = p >= 1 ? 0 : p
+    //   this.c.progress = p
+    //   pathRef.setAttribute('d', this.c.progress)
+    // }, 100)
   },
   data () {
     return {
       content: '',
       barrageSystem: null,
       fps: 0,
-      intervalId: 0
+      intervalId: 0,
+      c: null
     }
   },
   methods: {
