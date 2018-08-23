@@ -64,11 +64,18 @@ const ActivityManger = {
       params: data
     })
   },
-  limit (id) { /* 获取观看条件 */
+  getLimit (id) { /* 获取观看条件 */
     return utils.ajax({
       method: 'GET',
       url: '/manage/view-limit/get-limit',
       params: { activityId: id }
+    })
+  },
+  saveLimit (data) { /* 保存观看条件 */
+    return utils.ajax({
+      method: 'POST',
+      url: '/manage/view-limit/update-limit',
+      params: data
     })
   },
   webinarInfo (id) { /* 获取互动信息 */

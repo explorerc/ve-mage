@@ -7,8 +7,11 @@ const Login = () => import('src/pages/login')
 const SetPassword = () => import('src/pages/login/set-password')
 const Register = () => import('src/pages/login/register')
 const Barrage = () => import('src/pages/barrage/index')
+/* 创建活动 */
 const edit = () => import('src/pages/live-mager/edit')
+/* 活动详情 */
 const detail = () => import('src/pages/live-mager/detail/detail')
+/* 角色设置 */
 const role = () => import('src/pages/live-mager/prepare/role')
 /* 暖场视频 */
 const WarmField = () => import('src/pages/live-mager/warm-field')
@@ -16,7 +19,10 @@ const WarmField = () => import('src/pages/live-mager/warm-field')
 const Reminder = () => import('src/pages/live-mager/reminder')
 const Forgot = () => import('src/pages/login/forgot')
 const SetAccount = () => import('src/pages/account')
-const limit = () => import('src/pages/live-mager/prepare/limit/index')
+/* 观看条件-邀请 */
+const limitInvite = () => import('src/pages/live-mager/prepare/limit/invite')
+/* 观看条件-报名 */
+const limitApply = () => import('src/pages/live-mager/prepare/limit/apply')
 
 export default [{
   path: '/',
@@ -110,9 +116,17 @@ export default [{
   component: SetAccount
 },
 {
-  path: '/liveMager/prepare/limit/:id',
+  path: '/liveMager/prepare/limit-invite/:id',
   name: 'limit',
-  component: limit,
+  component: limitInvite,
+  meta: {
+    noAuth: true
+  }
+},
+{
+  path: '/liveMager/prepare/limit-apply/:id',
+  name: 'limit',
+  component: limitApply,
   meta: {
     noAuth: true
   }

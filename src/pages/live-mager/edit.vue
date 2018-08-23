@@ -5,7 +5,7 @@
       <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60"></com-input>
     </p>
     <p>直播时间：
-      <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+      <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss">
       </el-date-picker>
     </p>
     <p>直播封面：
@@ -154,7 +154,6 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
-@import '~assets/css/base';
 .modal-cover {
   position: fixed;
   top: 0;
