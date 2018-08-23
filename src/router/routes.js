@@ -30,7 +30,7 @@ const Forgot = () =>
 const SetAccount = () =>
   import('src/pages/account')
 /* 直播引导页设置 */
-const liveGuided = () =>
+const setLiveGuided = () =>
   import('src/pages/live-guided')
 /* 邮件邀约--列表 */
 const Email = () =>
@@ -40,15 +40,23 @@ const EmailEdit = () =>
   import('src/pages/live-mager/email/edit')
 
 /* 创建 编辑 活动 */
-const edit = () => import('src/pages/live-mager/edit')
+const edit = () =>
+  import('src/pages/live-mager/edit')
 /* 活动详情 */
-const detail = () => import('src/pages/live-mager/detail/detail')
+const detail = () =>
+  import('src/pages/live-mager/detail/detail')
 /* 角色设置 */
-const role = () => import('src/pages/live-mager/prepare/role')
+const role = () =>
+  import('src/pages/live-mager/prepare/role')
 /* 观看条件-邀请 */
-const limitInvite = () => import('src/pages/live-mager/prepare/limit/invite')
+const limitInvite = () =>
+  import('src/pages/live-mager/prepare/limit/invite')
 /* 观看条件-报名 */
-const limitApply = () => import('src/pages/live-mager/prepare/limit/apply')
+const limitApply = () =>
+  import('src/pages/live-mager/prepare/limit/apply')
+/* 直播引导页设置 */
+const setLiveWatch = () =>
+  import('src/pages/live-guided')
 
 export default [{
   path: '/',
@@ -165,9 +173,14 @@ export default [{
   }
 },
 {
-  path: '/liveGuided',
-  name: 'liveGuided',
-  component: liveGuided
+  path: '/setLiveGuided',
+  name: 'setLiveGuided',
+  component: setLiveGuided
+},
+{
+  path: '/setLiveWatch',
+  name: 'setLiveWatch',
+  component: setLiveWatch
 },
 {
   path: '/liveMager/email/:id',
