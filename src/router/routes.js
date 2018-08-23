@@ -6,10 +6,13 @@ const Test = () =>
 /* 直播列表 */
 const LiveMager = () =>
   import('src/pages/live-mager')
+/* 登录页面PC */
 const Login = () =>
   import('src/pages/login')
+/* 首次设置密码 */
 const SetPassword = () =>
   import('src/pages/login/set-password')
+/* 注册页面 */
 const Register = () =>
   import('src/pages/login/register')
 const Barrage = () =>
@@ -26,14 +29,20 @@ const WarmField = () =>
 /* 参会提醒 */
 const Reminder = () =>
   import('src/pages/live-mager/reminder')
+/* 忘记密码 */
 const Forgot = () =>
   import('src/pages/login/forgot')
+/* 账户信息设置 */
 const SetAccount = () =>
   import('src/pages/account')
 const limit = () =>
   import('src/pages/live-mager/prepare/limit/index')
+/* 直播引导页设置 */
 const liveGuided = () =>
   import('src/pages/live-guided')
+/* 邮件邀约--列表 */
+const Email = () =>
+  import('src/pages/email/index')
 
 export default [{
   path: '/',
@@ -145,5 +154,10 @@ export default [{
   path: '/liveGuided',
   name: 'liveGuided',
   component: liveGuided
+},
+{
+  path: '/email',
+  name: 'email',
+  component: Email
 }
 ]
