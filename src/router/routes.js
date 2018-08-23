@@ -46,6 +46,12 @@ const role = () => import('src/pages/live-mager/prepare/role')
 const limitInvite = () => import('src/pages/live-mager/prepare/limit/invite')
 /* 观看条件-报名 */
 const limitApply = () => import('src/pages/live-mager/prepare/limit/apply')
+/* 推广-微信 */
+const promoteWechat = () => import('src/pages/live-mager/promote/wechat/list')
+const wechatCreate = () => import('src/pages/live-mager/promote/wechat/edit')
+/* 推广-短信 */
+const promoteMsg = () => import('src/pages/live-mager/promote/message/list')
+const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
 
 export default [{
   path: '/',
@@ -170,5 +176,38 @@ export default [{
   path: '/liveMager/email/:id',
   name: 'email',
   component: Email
+},
+{
+  path: '/liveMager/promote/wechat/list/:id',
+  name: 'wechat',
+  component: promoteWechat
+},
+{
+  path: '/liveMager/promote/wechat/create',
+  name: 'wechatCreate',
+  component: wechatCreate,
+  meta: {
+    noAuth: true
+  }
+},
+{
+  path: '/liveMager/promote/wechat/edit/:id',
+  name: 'wechatEdit',
+  component: wechatCreate
+},
+{
+  path: '/liveMager/promote/msg/list/:id',
+  name: 'wechat',
+  component: promoteMsg
+},
+{
+  path: '/liveMager/promote/msg/create',
+  name: 'msgCreate',
+  component: msgCreate
+},
+{
+  path: '/liveMager/promote/msg/edit/:id',
+  name: 'msgEdit',
+  component: msgCreate
 }
 ]

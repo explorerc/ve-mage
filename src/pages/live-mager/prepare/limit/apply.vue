@@ -10,7 +10,7 @@
       <span>设置后，报名关闭后，不可再报名，且未报名的用户，无法观看直播</span>
       <div class="set-time" v-if="pickDate">
         报名结束时间：
-        <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" @change='chooseTime'>
+        <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" >
         </el-date-picker>
       </div>
     </div>
@@ -174,10 +174,6 @@
       delItem (idx, count) {
         // debugger // eslint-disable-line
         this.quesData[idx]['detail'].splice(count, 1)
-      },
-      chooseTime (res) {
-        console.log(res)
-        debugger
       },
       addNew () {
         let obj = {
