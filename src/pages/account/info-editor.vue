@@ -1,7 +1,7 @@
 <template>
   <div class="v-editor">
     <slot></slot>
-    <span class="v-indo-label" v-if="!isEdit">{{value===''?'无':value}}</span>
+    <span class="v-info-label" v-if="!isEdit">{{value===''?'无':value}}</span>
     <template v-else-if="type !== 'readOnly'">
       <el-select v-if="type === 'select'" v-model="inputValue" :value.sync="inputValue" placeholder="请选择">
         <el-option
@@ -76,7 +76,7 @@ export default {
   margin-bottom: 20px;
   height: 42px;
   line-height: 42px;
-  .v-indo-label {
+  .v-info-label {
     display: inline-block;
     width: 145px;
     text-align: left;
