@@ -200,7 +200,6 @@
   }
 </script>
 <style lang="scss">
-@import '~assets/css/base';
 .v-div {
   display: block;
   width: 1200px;

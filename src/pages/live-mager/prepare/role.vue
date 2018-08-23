@@ -357,7 +357,7 @@ export default {
 
 <style lang='scss' scope>
 @import '~assets/css/variable';
-@import '~assets/css/base';
+
 .modal-cover {
   position: fixed;
   top: 0;

@@ -309,7 +309,6 @@
 </script>
 
 <style lang="scss">
-@import '~assets/css/base';
 #app,
 .v-div {
   height: 100%;

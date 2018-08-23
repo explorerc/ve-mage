@@ -108,8 +108,8 @@
                   </ol>
                   <el-button class='add-tag' @click='addTag=true'>添加</el-button>
                   <div class='tag-list'>
-                    <p>选择合适的标签 <span>×</span></p>  
-                  </div>  
+                    <p>选择合适的标签 <span>×</span></p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -181,7 +181,6 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
-@import '~assets/css/base';
 .group {
   span {
     display: inline-block;

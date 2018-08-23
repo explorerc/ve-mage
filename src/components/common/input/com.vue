@@ -17,8 +17,15 @@
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
     <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
-  <div v-else>
-    <textarea name="" id="" cols="30" rows="10"></textarea>
+  <div class="com-input area" v-else>
+    <textarea
+    ref="tarea"
+    v-model="innerValue"
+    :placeholder="placeholder"
+    :rows="rows"
+  placeholder="请输入内容"
+    ></textarea>
+    <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
 </template>
 
@@ -33,19 +40,28 @@ export default {
       type: String,
       default: 'input'
     },
-    maxLength: Number
+    maxLength: Number,
+    rows: {
+      type: Number,
+      default: 2
+    },
+    autosize: Boolean
   },
   data () {
     return {
       innerValue: '',
       showDelete: false,
-      inputType: ''
+      inputType: '',
+      offsetHeight: 0
     }
   },
   created () {
     this.inputType = this.getType()
   },
   mounted () {
+    if (this.$refs.tarea) {
+      this.offsetHeight = this.$refs.tarea.offsetHeight - this.$refs.tarea.clientHeight
+    }
   },
   methods: {
     empty () {
@@ -80,6 +96,10 @@ export default {
     innerValue (value) {
       if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
+      }
+      if (this.type === 'textarea' && this.autosize) {
+        this.$refs.tarea.style.height = 'auto'
+        this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
       this.$emit('update:value', this.innerValue)
     },
@@ -157,6 +177,11 @@ export default {
     .length {
       color: #5ea6ed;
     }
+    &.area {
+      transform: none;
+      top: auto;
+      bottom: 10px;
+    }
   }
   .icon-search {
     color: #999999;
@@ -181,6 +206,21 @@ export default {
   }
   .icon-faxian-yanjing {
     @extend .icon-right-center;
+  }
+
+  textarea {
+    display: inline-block;
+    padding: 4px 11px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-size: inherit;
   }
 }
 </style>

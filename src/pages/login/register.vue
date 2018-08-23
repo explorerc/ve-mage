@@ -235,7 +235,6 @@
   }
 </script>
 <style lang="scss">
-@import '~assets/css/base';
 html,
 body,
 #app,

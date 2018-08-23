@@ -119,7 +119,6 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
-@import '~assets/css/base';
 .modal-cover {
   position: fixed;
   top: 0;
