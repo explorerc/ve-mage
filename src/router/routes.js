@@ -56,7 +56,7 @@ const limitApply = () =>
   import('src/pages/live-mager/prepare/limit/apply')
 /* 直播引导页设置 */
 const setLiveWatch = () =>
-  import('src/pages/set-live-guided')
+  import('src/pages/set-live-watch')
 
 export default [{
   path: '/',

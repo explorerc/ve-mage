@@ -75,7 +75,7 @@
                   5天23小时44分钟12秒
                 </div>
                 <a href="javascript:;" class="v-phone-enroll">
-                  报名
+                  {{viewCondition === '活动报名'? '报名':'预约'}}
                 </a>
               </div>
             </div>
