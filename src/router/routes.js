@@ -38,6 +38,9 @@ const Email = () =>
 /* 邮件邀约--添加，编辑 */
 const EmailEdit = () =>
   import('src/pages/live-mager/email/edit')
+/* 邮件邀约--查看 */
+const EmailInfo = () =>
+  import('src/pages/live-mager/email/info')
 
 /* 创建 编辑 活动 */
 const edit = () =>
@@ -191,5 +194,10 @@ export default [{
   path: '/liveMager/emailEdit/:id',
   name: 'emailEdit',
   component: EmailEdit
+},
+{
+  path: '/liveMager/emailInfo/:id',
+  name: 'emailInfo',
+  component: EmailInfo
 }
 ]

@@ -1,5 +1,5 @@
 <template>
-  <div id="quill-upload" >
+  <div id="quill-upload">
     <!-- 图片上传组件辅助-->
     <el-upload
       class="avatar-uploader"
@@ -95,6 +95,12 @@
     watch: {
       value (val) {
         this.editerContent = val
+        this.$nextTick(() => {
+          var s = document.getElementById('quill-upload').querySelector('.ql-editor').innerText
+          let quill = this.$refs.myQuillEditor.quill
+          // 调整光标到最后
+          quill.setSelection(s.length + 1)
+        })
       },
       editerContent (val) {
         this.$emit('input', val)
@@ -143,25 +149,26 @@
 </script>
 
 <style lang="scss">
-@import '../../node_modules/quill/dist/quill.core.css';
-@import '../../node_modules/quill/dist/quill.snow.css';
-@import '../../node_modules/quill/dist/quill.bubble.css';
-#quill-upload {
-  // height: 300px;
-  .el-row {
-    height: 100%;
-    .quill-editor {
+  @import '../../node_modules/quill/dist/quill.core.css';
+  @import '../../node_modules/quill/dist/quill.snow.css';
+  @import '../../node_modules/quill/dist/quill.bubble.css';
+
+  #quill-upload {
+    // height: 300px;
+    .el-row {
       height: 100%;
+      .quill-editor {
+        height: 100%;
+      }
+      .ql-toolbar {
+        text-align: left;
+      }
+      .ql-toolbar.ql-snow .ql-formats {
+        margin-right: 0px;
+      }
     }
-    .ql-toolbar {
-      text-align: left;
-    }
-    .ql-toolbar.ql-snow .ql-formats {
-      margin-right: 0px;
+    .ql-toolbar.ql-snow + .ql-container.ql-snow {
+      height: calc(100% - 42px);
     }
   }
-  .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    height: calc(100% - 42px);
-  }
-}
 </style>

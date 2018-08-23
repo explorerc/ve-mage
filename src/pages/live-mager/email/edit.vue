@@ -1,17 +1,28 @@
 <template>
-  <div class="live-mager email-box">
+  <div class="live-mager">
     <div class="live-title">
-      <span>邮件编辑</span>
+      <span>邮件处理</span>
+      <el-button class="live-btn fr" type="primary" plain @click="this.$router.go(-1)">返回</el-button>
     </div>
+    <transition name="fade" mode="out-in">
+      <keep-alive>
+        <component :is="currentComponent"></component>
+      </keep-alive>
+    </transition>
   </div>
 </template>
 
 <script>
-  import LiveHttp from 'src/api/activity-manger'
+  import editStepOne from './edit-step-one'
+  import editStepTwo from './edit-step-two'
+
   export default {
     name: 'edit',
     data () {
       return {
+        activeId: '',
+        emailId: '',
+        currentComponent: editStepOne
       }
     },
     created () {
@@ -19,79 +30,15 @@
       if (!queryId) {
         this.$router.go(-1)
       }
-      this.liveId = queryId
+      this.activeId = queryId
+      this.emailId = this.$route.query.email
     },
     methods: {
-      changePage (currentPage) {
-        this.currentPage = currentPage
-        this.queryEmailListById()
-      },
-      queryEmailListById () {
-        LiveHttp.queryEmailListById({
-          id: this.liveId,
-          pageSize: this.pageSize,
-          page: this.currentPage
-        }).then((res) => {
-          console.log(res)
-        }).catch((e) => {
-          console.log('查询邮件列表失败')
-          console.log(e)
-        })
-      },
-      queryInfoEmail (idx) {
-        const emaiId = this.emailList[idx].id
-        LiveHttp.queryEmailInfoById(emaiId).then((res) => {
-        }).catch((e) => {
-          console.log('查询邮件信息失败')
-          console.log(e)
-        })
-      },
-      editEmail (idx) {
-        const emaiId = this.emailList[idx].id
-        console.log(emaiId)
-      },
-      sendEmail (idx) {
-        const emaiId = this.emailList[idx].id
-        LiveHttp.sendEmailInfo(emaiId).then((res) => {
-          if (res.code === 200) {
-            console.log('邮件发送成功')
-          }
-        }).catch((e) => {
-          console.log('邮件发送失败')
-          console.log(e)
-        })
-      },
-      delEmail (idx) {
-        const emaiId = this.emailList[idx].id
-        LiveHttp.deleteEmailById(emaiId).then((res) => {
-          if (res.code === 200) {
-            this.queryEmailListById()
-          }
-        }).catch((e) => {
-          console.log('删除邮件失败')
-          console.log(e)
-        })
+      stepPage () {
+        this.currentComponent = editStepTwo
       }
     }
   }
 </script>
 <style lang="scss" scoped src="../css/live.scss">
-</style>
-<style lang="scss" scoped>
-  .email-table-box {
-    margin: 20px;
-    font-size: 14px;
-  }
-
-  .email-setting {
-    margin-bottom: 30px;
-    padding: 10px 0;
-  }
-</style>
-<style lang="scss">
-  /*.email-box {*/
-  /*.el-table th.is-leaf {*/
-  /*border: 1px solid #ebeef5;*/
-  /*}*/
-  /*}*/
 </style>
