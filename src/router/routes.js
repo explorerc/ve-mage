@@ -32,6 +32,9 @@ const SetAccount = () =>
   import('src/pages/account')
 const limit = () =>
   import('src/pages/live-mager/prepare/limit/index')
+/* 邮件邀约--列表 */
+const Email = () =>
+  import('src/pages/email/index')
 
 export default [{
   path: '/',
@@ -138,5 +141,10 @@ export default [{
   meta: {
     noAuth: true
   }
+},
+{
+  path: '/email',
+  name: 'email',
+  component: Email
 }
 ]
