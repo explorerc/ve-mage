@@ -17,12 +17,6 @@ const Register = () =>
   import('src/pages/login/register')
 const Barrage = () =>
   import('src/pages/barrage/index')
-const edit = () =>
-  import('src/pages/live-mager/edit')
-const detail = () =>
-  import('src/pages/live-mager/detail/detail')
-const role = () =>
-  import('src/pages/live-mager/prepare/role')
 /* 暖场视频 */
 const WarmField = () =>
   import('src/pages/live-mager/warm-field')
@@ -35,14 +29,26 @@ const Forgot = () =>
 /* 账户信息设置 */
 const SetAccount = () =>
   import('src/pages/account')
-const limit = () =>
-  import('src/pages/live-mager/prepare/limit/index')
 /* 直播引导页设置 */
 const liveGuided = () =>
   import('src/pages/live-guided')
 /* 邮件邀约--列表 */
 const Email = () =>
-  import('src/pages/email/index')
+  import('src/pages/live-mager/email/index')
+/* 邮件邀约--添加，编辑 */
+const EmailEdit = () =>
+  import('src/pages/live-mager/email/edit')
+
+/* 创建 编辑 活动 */
+const edit = () => import('src/pages/live-mager/edit')
+/* 活动详情 */
+const detail = () => import('src/pages/live-mager/detail/detail')
+/* 角色设置 */
+const role = () => import('src/pages/live-mager/prepare/role')
+/* 观看条件-邀请 */
+const limitInvite = () => import('src/pages/live-mager/prepare/limit/invite')
+/* 观看条件-报名 */
+const limitApply = () => import('src/pages/live-mager/prepare/limit/apply')
 
 export default [{
   path: '/',
@@ -143,9 +149,17 @@ export default [{
   component: SetAccount
 },
 {
-  path: '/liveMager/prepare/limit/:id',
+  path: '/liveMager/prepare/limit-invite/:id',
   name: 'limit',
-  component: limit,
+  component: limitInvite,
+  meta: {
+    noAuth: true
+  }
+},
+{
+  path: '/liveMager/prepare/limit-apply/:id',
+  name: 'limit',
+  component: limitApply,
   meta: {
     noAuth: true
   }
@@ -156,8 +170,13 @@ export default [{
   component: liveGuided
 },
 {
-  path: '/email',
+  path: '/liveMager/email/:id',
   name: 'email',
   component: Email
+},
+{
+  path: '/liveMager/emailEdit/:id',
+  name: 'emailEdit',
+  component: EmailEdit
 }
 ]

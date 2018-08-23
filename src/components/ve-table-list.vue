@@ -1,12 +1,10 @@
 <template>
-  <div>
-    邮件邀约
-  </div>
+    $END$
 </template>
 
 <script>
   export default {
-    name: 'index'
+    name: 've-table-list'
   }
 </script>
 

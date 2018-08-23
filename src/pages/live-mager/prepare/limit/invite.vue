@@ -18,6 +18,14 @@
           </ul>
         </div>
       </div>
+       <div class="from-row">
+        <div class="from-title">观看校验：</div>
+        <div class="from-content">
+         <el-radio v-model="radioVerify" label="1">校验手机号</el-radio>
+        <el-radio v-model="radioVerify" label="2">校验邮箱</el-radio>
+        </div>
+        <span>邀请观看需要校验手机号或邮箱，从而帮您获取到更加精准的观众信息</span>
+      </div>
     </div>
     <!-- 选择分组弹窗 -->
     <transition name='fade'>
@@ -157,8 +165,12 @@
         attrTag: ['上海', '北京', '广州', '深圳'],
         habitTag: ['上海2', '北京2', '广州2', '深圳2'],
         attrTagArr: [],
-        habitTagArr: []
+        habitTagArr: [],
+        radioVerify: ''
       }
+    },
+    created () {
+      this.radioVerify = '1'
     },
     methods: {
       closeModal (e) {
