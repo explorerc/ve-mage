@@ -1,6 +1,8 @@
 <template>
   <div class="clearfix v-div">
-    123
+    <p class="v-title">
+      直播引导页
+    </p>
   </div>
 </template>
 <script>
@@ -32,5 +34,13 @@
 </script>
 <style lang="scss">
 @import '~assets/css/base';
+.v-div {
+  padding: 30px;
+  .v-title {
+    font-size: 18px;
+    width: 100%;
+    border-bottom: 1px solid #666;
+  }
+}
 </style>
 
