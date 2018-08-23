@@ -132,14 +132,8 @@
     mounted () {
     },
     watch: {
-      userPhone: function () {
-        console.log(1)
-      }
     },
     methods: {
-      setPassword () {
-        console.log(1)
-      },
       uploadImgSuccess (data) {
         const fildObj = JSON.parse(data.data)
         console.log(fildObj)

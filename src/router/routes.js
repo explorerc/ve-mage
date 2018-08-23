@@ -31,7 +31,7 @@ const SetAccount = () =>
   import('src/pages/account')
 /* 直播引导页设置 */
 const setLiveGuided = () =>
-  import('src/pages/live-guided')
+  import('src/pages/set-live-guided')
 /* 邮件邀约--列表 */
 const Email = () =>
   import('src/pages/live-mager/email/index')
@@ -56,7 +56,7 @@ const limitApply = () =>
   import('src/pages/live-mager/prepare/limit/apply')
 /* 直播引导页设置 */
 const setLiveWatch = () =>
-  import('src/pages/live-guided')
+  import('src/pages/set-live-guided')
 
 export default [{
   path: '/',
