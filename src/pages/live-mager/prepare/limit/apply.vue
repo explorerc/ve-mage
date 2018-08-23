@@ -1,11 +1,23 @@
 <template>
   <div class="apply-page">
-    <p>报名观看需要校验手机号，从而帮您获取到更加精准的观众信息</p>
-    <div class="set-time">
-      报名关闭时间：
-      <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
-      </el-date-picker>
-      <el-checkbox v-model="checked">与直播同步关闭</el-checkbox>
+    <div>活动报名:
+      <el-checkbox v-model="checked">开启</el-checkbox>
+      注意：活动报名与邀请观看无法同时开启，活动发布后将无法修改
+    </div>
+    <div>报名结束时间：<br>
+      <el-radio v-model="radioTime" label="1">与直播同步关闭</el-radio>
+      <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
+      <span>设置后，报名关闭后，不可再报名，且未报名的用户，无法观看直播</span>
+      <div class="set-time" v-if="pickDate">
+        报名结束时间：
+        <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" @change='chooseTime'>
+        </el-date-picker>
+      </div>
+    </div>
+    <div>报名校验:<br>
+      <el-radio v-model="queryData.checkField" label="mobile">校验手机号</el-radio>
+      <el-radio v-model="queryData.checkField" label="email">校验邮箱</el-radio>
+      <span>报名观看需要校验手机号或邮箱，从而帮您获取到更加精准的观众信息</span>
     </div>
     <div class="set-info">
       <div class='title'>
@@ -64,16 +76,20 @@
         </ol>
       </div>
     </div>
+    <el-button @click='saveLimit'>保存</el-button>
   </div>
 </template>
 
 <script>
+  import prepareHttp from 'src/api/activity-manger'
   export default {
     data () {
       return {
+        activityId: '',
+        checked: '',
+        radioTime: '',
         phone: '手机号码',
-        checked: true,
-        searchTitle: '123',
+        pickDate: false,
         date: new Date(),
         pickerOptions: {
           disabledDate (time) {
@@ -81,10 +97,20 @@
           }
         },
         options: [],
-        quesData: []
+        quesData: [],
+        queryData: {
+          activityId: '',
+          checkField: '',
+          finishTime: '',
+          questionId: ''
+        },
+        questionId: ''
       }
     },
     created () {
+      this.questionId = 1
+      this.activityId = this.$route.params.id
+      this.getLimit()
       this.options = [{
         value: 1,
         txt: '文本'
@@ -149,6 +175,10 @@
         // debugger // eslint-disable-line
         this.quesData[idx]['detail'].splice(count, 1)
       },
+      chooseTime (res) {
+        console.log(res)
+        debugger
+      },
       addNew () {
         let obj = {
           info: '标题',
@@ -157,6 +187,53 @@
           detail: []
         }
         this.quesData.push(obj)
+      },
+      getLimit () {
+        prepareHttp.getLimit(this.activityId).then((res) => {
+          if (res.code === 200) {
+            console.log(res)
+            // this.viewLimit = res.data.viewCondition
+            if (res.data.viewCondition === 'APPOINT') {
+              this.queryData = res.data.detail
+              if (res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
+                this.queryData.finishTime = ''
+              }
+              res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
+            }
+          }
+        }).catch((res) => {
+          this.$toast({
+            content: res.msg,
+            position: 'center'
+          })
+        })
+      },
+      saveLimit () {
+        let detail = []
+        if (this.radioTime === '2') {
+          detail['finishTime'] = this.queryData.finishTime
+        }
+        detail['questionId'] = this.questionId
+        detail['checkField'] = this.queryData.checkField // email|mobile
+        let data = {
+          activityId: this.activityId,
+          viewCondition: 'APPOINT',
+          detail: detail
+        }
+        prepareHttp.saveLimit(data).then((res) => {
+          if (res.code === 200) {
+            // console.log(res)
+            this.$toast({
+              content: '保存成功',
+              position: 'center'
+            })
+          }
+        }).catch((res) => {
+          this.$toast({
+            content: '保存失败',
+            position: 'center'
+          })
+        })
       }
     },
     watch: {
@@ -165,6 +242,11 @@
           console.log('change')
         },
         deep: true
+      },
+      radioTime: {
+        handler (newValue) {
+          newValue === '2' ? this.pickDate = true : this.pickDate = false
+        }
       }
     }
   }
@@ -219,5 +301,9 @@
       padding: 10px 0px;
     }
   }
+}
+
+.apply-page > div {
+  margin: 30px 0px;
 }
 </style>
