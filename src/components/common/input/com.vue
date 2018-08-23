@@ -9,6 +9,7 @@
     :type="inputType"
     :style="style"
     :placeholder="placeholder"
+    :disabled="disabled"
     v-model="innerValue"
     @focus="showDelete=true"
     @blur="hideDelete"
@@ -45,7 +46,8 @@ export default {
       type: Number,
       default: 2
     },
-    autosize: Boolean
+    autosize: Boolean,
+    disabled: String
   },
   data () {
     return {
@@ -62,6 +64,8 @@ export default {
     if (this.$refs.tarea) {
       this.offsetHeight = this.$refs.tarea.offsetHeight - this.$refs.tarea.clientHeight
     }
+    this.innerValue = this.value
+    this.inputType = this.getType()
   },
   methods: {
     empty () {
@@ -81,6 +85,7 @@ export default {
     },
     getType () {
       let type = ''
+      console.log('init', this.type)
       switch (this.type) {
         case 'password':
           type = 'password'
@@ -165,6 +170,9 @@ export default {
     }
     &::-webkit-input-placeholder {
       color: #bfbfbf;
+    }
+    &[disabled] {
+      cursor: not-allowed;
     }
   }
   .limit {

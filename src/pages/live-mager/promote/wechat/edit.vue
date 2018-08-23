@@ -1,21 +1,54 @@
 <template>
-  <div class="invite-page mager-box">
+  <div class="content">
+    <p>创建微信通知</p>
     <div class="from-box">
       <div class="from-row">
-        <div class="from-title">观众组：</div>
+        <div class="from-title">通知标题：</div>
         <div class="from-content">
-          <el-button @click='groudModal = true'>选择分组</el-button>
-          <el-button @click='importModal = true'>倒入分组</el-button>
-          <el-button>下载模版</el-button>
+          <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30"></com-input>
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">已选择：</div>
+        <div class="from-title">消息模板：</div>
         <div class="from-content">
-          <ul class='group'>
-            <li><span>分组1</span><i>删除</i></li>
-            <li><span>分组2</span><i>删除</i></li>
-          </ul>
+          <el-select v-model="tplValue" placeholder="请选择">
+            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">发送设置：</div>
+        <div class="from-content">
+          <el-select v-model="sendValue" placeholder="请选择">
+            <el-option v-for="item in sendOptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div class="from-row" v-if='pickDate'>
+        <div class="from-title">选择时间：</div>
+        <div class="from-content">
+          <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+          </el-date-picker>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">接收人：</div>
+        <div class="from-content">
+          <el-button @click='groudModal = true'>点击添加</el-button>
+          <ol class='groupList'>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title"></div>
+        <div class="from-content">
+          <el-button>测试</el-button>
+          <el-button>保存</el-button>
         </div>
       </div>
     </div>
@@ -25,7 +58,7 @@
         <div class='modal-box'>
           <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
           <div class='content-box'>
-            <com-tabs :value.sync="tabValue" position='left' customClass='choose-tab'>
+            <com-tabs :value.sync="tabValue" position='left' type='card' customClass='choose-tab'>
               <com-tab label="分组" :index="1">
                 <div class="right">
                   <div class='top clearfix'>
@@ -69,55 +102,21 @@
         </div>
       </div>
     </transition>
-    <!-- 倒入观众组弹窗 -->
-    <transition name='fade'>
-      <div class="modal-cover" v-if='importModal' @click="closeModal">
-        <div class='modal-box'>
-          <h4>倒入观众组 <span class='close' @click='importModal = false'>×</span></h4>
-          <div class="content-box import-box">
-            <p class='import-title'>上传名单：<span>模版下载</span></p>
-            <div class="import-content">
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/edu/database/doc-upload" inputName="resfile" :fileSize="1024" @selected="uploadSelected" @progress="uploadProgress" @error="uploadError" @over="uploadOver">
-                <div class="test-upload">
-                  <div class="upload-btn" v-if='uploadData.status === 1'>选择文件</div>
-                  <div class="upload-btn" v-else>{{uploadData.name}}</div>
-                </div>
-              </com-upload>
-              <em v-if='uploadData.status === 1'>请使用微吼指定模版文件上传</em>
-              <em v-if='uploadData.status === 2'>文件上传中38%</em>
-              <em v-if='uploadData.status === 3'>上传成功,监测到{{uploadData.infoNum}}位观众信息</em>
-              <div class='from-row'>
-                <div class="from-title">导入规则：</div>
-                <div class="from-content">
-                  创建新的分组
-                </div>
-              </div>
-              <div class='from-row'>
-                <div class="from-title">分组名称：</div>
-                <div class="from-content">
-                  <com-input :value.sync="renameGroup" placeholder="请输入分组名称" :max-length="10"></com-input>
-                </div>
-              </div>
-              <div class='from-row tag-box'>
-                <div class="from-title">客户标签：</div>
-                <div class="from-content">
-                  <ol class='clearfix'>
-                    <li>外部导入</li>
-                    <li>内部员工</li>
-                    <li>爱上接电话</li>
-                  </ol>
-                  <el-button class='add-tag' @click='addTag=true'>添加</el-button>
-                  <div class='tag-list'>
-                    <p>选择合适的标签 <span>×</span></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <el-button>保存</el-button>
-          </div>
+    <div class="overview-box">
+      <div class="header">微吼服务号</div>
+      <div class="msg-box">
+        <div class="msg-title">
+          个人信息通知<span>8月10日</span>
         </div>
+        <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
+        <p>标题：<span>{{titleValue}}</span></p>
+        <p>时间：<span>{{date}}</span></p>
+        <p>内容：<span>点击查看详情</span></p>
+        <p>退订</p>
+        <div class="footer">详情</div>
       </div>
-    </transition>
+
+    </div>
   </div>
 </template>
 
@@ -125,21 +124,42 @@
   export default {
     data () {
       return {
+        webinarName: '活动名字啊啊啊',
         groudModal: false,
-        importModal: false,
         tabValue: 1,
         searchTitle: '',
+        titleValue: '',
         groupIdx: 0,
         tagIdx: 0,
-        renameGroup: '',
-        uploadData: {
-          status: 1,
-          progress: '',
-          name: '',
-          infoNum: 10
-        },
-        addTag: false
+        tplOptions: [{
+          value: 1,
+          label: '活动邀请'
+        }, {
+          value: 2,
+          label: '活动推荐'
+        }],
+        sendOptions: [{
+          value: 1,
+          label: '定时发送'
+        }, {
+          value: 2,
+          label: '立即发送'
+        }, {
+          value: 3,
+          label: '暂存为草稿'
+        }],
+        tplValue: '',
+        sendValue: '',
+        pickDate: false,
+        date: new Date(),
+        pickerOptions: {
+          disabledDate (time) {
+            return time.getTime() < Date.now() - 8.64e7
+          }
+        }
       }
+    },
+    created () {
     },
     methods: {
       closeModal (e) {
@@ -154,26 +174,13 @@
       },
       chooseTag (idx) {
         this.tagIdx = idx
-      },
-      uploadSelected (file) {
-        this.uploadData.status = 2
-        this.uploadData.name = file.data[0].name
-      },
-      uploadProgress (e) {
-        // console.log(e)
-        this.uploadData.status = e.percent
-      },
-      uploadOver (e) {
-        this.uploadData.status = 3
-      },
-      uploadError (e) {
-        // console.log(e)
       }
     },
     watch: {
-      tagIdx: function (res) {
-      },
-      groupIdx: function (res) {
+      sendValue: {
+        handler (newValue) {
+          newValue === 1 ? this.pickDate = true : this.pickDate = false
+        }
       }
     }
   }
@@ -181,16 +188,45 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
-.group {
-  span {
-    display: inline-block;
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
+.from-box {
+  margin: 20px;
+  .from-row {
+    display: flex;
+    padding: 10px;
+    .from-title {
+      width: 180px;
+      text-align: right;
+      padding-right: 20px;
+      .star {
+        position: relative;
+        top: 3px;
+        color: $color-error;
+        padding-right: 5px;
+      }
+    }
+    .from-content {
+      flex: 1;
+      .input-box {
+        width: 400px;
+      }
+    }
   }
-  i {
-    cursor: pointer;
+}
+
+.groupList {
+  li {
+    padding: 0 10px;
+    width: 300px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0px;
+    span {
+      cursor: pointer;
+      float: right;
+    }
   }
 }
 
@@ -201,6 +237,7 @@
   width: 100%;
   height: 100%;
   background: rgba($color: #000000, $alpha: 0.5);
+  z-index: 9;
 }
 
 .modal-box {
@@ -252,91 +289,72 @@
   }
 }
 
-.list {
-  li {
+.modal-box .list {
+  & > li {
     height: 50px;
     line-height: 50px;
-    i.icon {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 100px;
-      border: 1px solid #ccc;
-    }
-    span {
-      float: left;
-    }
-    em {
-      float: right;
-    }
-  }
-}
-
-.choose-tab /deep/ {
-  .tab-content {
-    border-left: 1px solid #ccc;
-    padding: 0 20px;
-    width: 560px;
-    height: 400px;
-  }
-}
-
-.import-box {
-  .import-title {
     text-align: left;
-    span {
+    .choose {
       cursor: pointer;
       float: right;
     }
   }
-  .upload-btn {
-    width: 630px;
+}
+
+.modal-box .right {
+  width: 500px;
+}
+
+.overview-box {
+  width: 375px;
+  height: 500px;
+  border: 1px solid #ccc;
+  position: absolute;
+  top: 100px;
+  right: 100px;
+  .header,
+  .footer {
+    text-align: center;
     height: 50px;
     line-height: 50px;
+    background: #000000;
+    color: #fff;
+  }
+  .footer {
+    background: #fff;
+    color: #000000;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid #ccc;
+  }
+  .msg-box {
+    width: 300px;
+    height: 400px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  .com-upload {
-    margin: 10px 0;
-  }
-}
-.import-content {
-  .from-row {
-    display: flex;
-    padding: 10px;
-    .from-title {
-      // width: 180px;
-      text-align: right;
-      padding-right: 20px;
-      .star {
-        position: relative;
-        top: 3px;
-        color: $color-error;
-        padding-right: 5px;
-      }
-    }
-    .from-content {
-      flex: 1;
+    padding: 20px;
+    margin: 20px auto;
+    position: relative;
+    .msg-title {
       text-align: left;
-      .input-box {
-        width: 400px;
+      font-size: 20px;
+      span {
+        display: block;
+        text-align: left;
+        font-size: 14px;
       }
     }
-  }
-  em {
-    display: block;
-    text-align: left;
-  }
-  .tag-box {
-    li {
-      cursor: default;
-      float: left;
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-      margin: 0 5px;
+    p {
+      text-align: left;
+      margin: 10px 0px;
     }
-    .add-tag {
+    p.detal {
+      span {
+        color: #ccc;
+        display: inline-block;
+        text-align: left;
+      }
     }
   }
 }

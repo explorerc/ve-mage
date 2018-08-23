@@ -4,21 +4,12 @@
       <p class="v-title">
         基本信息
       </p>
+      <a href="javascript:;" @click="logOff()">退出登录</a>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
       <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
-      <div class="v-editor">
-        <span class="v-explain">账户头像</span>
-        <com-upload
-          accept="png|jpg|jpeg"
-          actionUrl="/api/edu/database/doc-upload"
-          inputName="resfile"
-          :fileSize="2048"
-          @load="uploadLoad"
-          @error="uploadError"
-          @over="uploadOver"
-        >
-        <div class="test-upload"><img src="avatar" alt=""><span>666</span></div>
-        </com-upload>
+      <div class="v-editor" style="height: 170px;">
+        <span class="v-explain" style="vertical-align: top;">账户头像</span>
+              <ve-upload title="上传封面" accept="png|jpg|jpeg|bmp|gif" :defaultImg="$imgHost + '/' + avatar" :fileSize="1024" @error="uploadError" @success="uploadImgSuccess"/>
       </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
       <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码</span></com-editor>
@@ -42,7 +33,7 @@
     </div>
     <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="480px" class="message-box" :confirmText="confirmText">
       <div slot="header">{{messageBoxTitle}}</div>
-      <template v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
+      <div v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
         <p class="v-explain">
           {{messageBoxExplain}}
         </p>
@@ -54,8 +45,8 @@
         <div id="captcha"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6"></com-input>
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-      </template>
-      <template v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
+      </div>
+      <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
         <p class="v-explain">
           修改成功
         </p>
@@ -65,8 +56,8 @@
         <p class="v-mobile">
           {{newPhone}}
         </p>
-      </template>
-      <template v-else-if="messageBoxType === 'changePassword'">
+      </div>
+      <div v-else-if="messageBoxType === 'changePassword'">
         <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30"></com-input>
         <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"></com-input>
         <p class="v-passordExplain">
@@ -76,8 +67,8 @@
         <p class="v-passordExplain">
           支持6~30位的大小写英文和数字
         </p>
-      </template>
-      <template v-else-if="messageBoxType === 'seeState'">
+      </div>
+      <div v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
           <span class="v-label">公司名称</span><span class="v-information">{{companyName}}</span>
         </p>
@@ -88,14 +79,18 @@
           <span class="v-label">营业执照照片</span>
           <img src="licensePic" alt="123">
         </p>
-      </template>
+      </div>
     </message-box>
   </div>
 </template>
 <script>
   import Editor from './info-editor'
   import account from 'src/api/account-manage'
+  import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
+  import VeUpload from 'src/components/ve-upload'
+  import {mapMutations, mapState} from 'vuex'
+  import * as types from 'src/store/mutation-types'
   export default {
     data () {
       return {
@@ -161,27 +156,8 @@
       }
     },
     mounted () {
-      let data = {
-      }
-      account.getAccount(data).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
-        } else {
-          let resData = res.data
-          this.account = resData.userName
-          this.accountName = resData.name
-          this.avatar = resData.avatar
-          this.accountPhone = resData.mobile
-          this.accountPassword = resData.hasPassword ? '已设置' : ''
-          this.companyName = resData.company
-          this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
-          this.selectIndustry = resData.industry
-          this.companyWebsite = res.website
-          this.licenseCode = res.licenseCode
-          this.licensePic = res.licensePic
-        }
-      })
-      account.getUserInfo(data).then((res) => {
+      this.getAccount()
+      account.getUserInfo({}).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
@@ -196,7 +172,7 @@
           this.userRemarks = resData.remark
         }
       })
-      identifyingcodeManage.getCodeId(data).then((res) => {
+      identifyingcodeManage.getCodeId({}).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
@@ -204,14 +180,16 @@
         }
       })
     },
+    computed: mapState('login', {
+      isLogin: state => state.isLogin
+    }),
     components: {
-      'com-editor': Editor
+      'com-editor': Editor,
+      've-upload': VeUpload
     },
     created () {
     },
     watch: {
-      value: function () {
-      },
       phone: function () {
         this.checkPhone(this.phone)
       },
@@ -223,19 +201,62 @@
       }
     },
     methods: {
-      uploadLoad (e) {
-        console.log(e)
+      ...mapMutations('login', {
+        setIsLogin: types.UPDATE_IS_LOGIN
+      }),
+      logOff () {
+        loginManage.logOff({}).then((res) => {
+          if (res.code !== 200) {
+            console.log(res.msg)
+          } else {
+            sessionStorage.removeItem('isLogin')
+            sessionStorage.removeItem('userInfo')
+            this.setIsLogin(0)
+            console.log('账号退出成功')
+          }
+        })
       },
-      uploadError (e) {
-        console.log(e)
-        if (e.code === 503 && e.data[0].state === 'type-limit') {
-          console.log('上传文件类型不匹配')
-        } else {
-          console.log('上传文件大小超出限制')
+      getAccount () {
+        account.getAccount({}).then((res) => {
+          if (res.code !== 200) {
+            console.log(res.msg)
+          } else {
+            let resData = res.data
+            this.account = resData.userName
+            this.accountName = resData.name
+            this.avatar = resData.avatar
+            this.accountPhone = resData.mobile
+            this.accountPassword = resData.hasPassword ? '已设置' : ''
+            this.companyName = resData.company
+            this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
+            this.selectIndustry = resData.industry
+            this.companyWebsite = res.website
+            this.licenseCode = res.licenseCode
+            this.licensePic = res.licensePic
+            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+          }
+        })
+      },
+      uploadImgSuccess (data) {
+        let companyData = {
+          avatar: ''
         }
+        if (data.host && data.name) {
+          companyData = {
+            avatar: data.name
+          }
+        }
+        account.setCompanyInfo(companyData).then((res) => {
+          if (res.code !== 200) {
+            alert(res.msg)
+          } else {
+            this.getAccount()
+            alert('更新成功')
+          }
+        })
       },
-      uploadOver (e) {
-        console.log(e)
+      uploadError (data) {
+        console.log('上传失败:', data)
       },
       save (val, type, saveType) {
         // 修改选项后点击保存、
@@ -248,6 +269,7 @@
             if (res.code !== 200) {
               alert(res.msg)
             } else {
+              this.getAccount()
               alert('更新成功')
             }
           })
@@ -306,6 +328,9 @@
             this.phoneKey = ''
             break
           case 'password' : this.messageBoxType = 'changePassword'
+            this.oldPassword = ''
+            this.newPassword = ''
+            this.reNewPassword = ''
             this.confirmText = '提交'
             this.messageBoxTitle = '修改密码'
             break

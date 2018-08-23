@@ -1,7 +1,5 @@
 <template>
-  <div class="apply-page">
-    报名观看
-  </div>
+
 </template>
 
 <script>

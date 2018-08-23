@@ -1,7 +1,7 @@
 <template>
   <div class="v-editor">
     <slot></slot>
-    <span class="v-indo-label" v-if="!isEdit">{{value===''?'无':value}}</span>
+    <span class="v-info-label" v-if="!isEdit">{{value===''?'无':value}}</span>
     <template v-else-if="type !== 'readOnly'">
       <el-select v-if="type === 'select'" v-model="inputValue" :value.sync="inputValue" placeholder="请选择">
         <el-option
@@ -11,7 +11,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <com-input v-else="type === 'input'" :value.sync="inputValue" placeholder="" class="v-input" type="input" :max-length="maxLength"></com-input>
+      <com-input v-else-if="type === 'input'" :value.sync="inputValue" placeholder="" class="v-input" type="input" :max-length="maxLength"></com-input>
     </template>
     <template v-if="type !== 'readOnly'">
       <a href="javascript:;" v-if="!isEdit||clickType!=='save'" @click="modify(clickType)"><span v-if="value === '' && btnName ==='' ">完善</span><span v-else-if="value !== '' && btnName ==='' ">修改</span><span v-else-if="btnName !=='' ">{{btnName}}</span></a>
@@ -76,7 +76,7 @@ export default {
   margin-bottom: 20px;
   height: 42px;
   line-height: 42px;
-  .v-indo-label {
+  .v-info-label {
     display: inline-block;
     width: 145px;
     text-align: left;

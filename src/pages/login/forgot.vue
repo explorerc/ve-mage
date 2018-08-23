@@ -4,22 +4,34 @@
     <p class="v-title">
       找回密码
     </p>
-    <com-tabs :value.sync="tabValue" :disabled="true">
-       <com-tab label="验证用户身份" :index="1">
-          <div class="v-get-password">
-            <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
-            <div id="captcha"></div>
-            <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()" :class="{warning:isWarning}">
-            </com-input>
-            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-            <div class="input-form v-label" :style="{opacity:opacity}">
-		      		<p class="v-error">{{error}}</p>
-		      	</div>
-            <el-button @click="verifyUser">wo</el-button>
-          </div>
+    <com-tabs :value.sync="activeName" disabled>
+       <com-tab label="用户管理" index="first">
+        <div class="v-get-password">
+          <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
+          <div id="captcha"></div>
+          <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()" :class="{warning:isWarning}">
+          </com-input>
+          <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+          <div class="input-form v-label" :style="{opacity:opacity}">
+		    		<p class="v-error">{{error}}</p>
+		    	</div>
+          <el-button @click="verifyUser">wo</el-button>
+        </div>
        </com-tab>
-       <com-tab label="设置新密码" :index="2"><com-input :value.sync="outValue"></com-input></com-tab>
-       <com-tab label="完成" :index="3"><span>{{outValue}}</span></com-tab>
+       <com-tab label="配置管理" index="second">
+         <div class="v-get-password">
+          <com-input class="v-input" :value.sync="password" placeholder="新登录密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password"></com-input>
+          <com-input class="v-input" :value.sync="rePassword" placeholder="确认新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password">
+          </com-input>
+          <div class="input-form v-label" :style="{opacity:opacity}">
+		    		<p class="v-error">{{error}}</p>
+		    	</div>
+          <el-button @click="undatePhone">wo</el-button>
+        </div>
+       </com-tab>
+       <com-tab label="角色管理" index="third">
+         成功
+       </com-tab>
     </com-tabs>
   </div>
 </template>
@@ -33,6 +45,8 @@
         outValue: '123',
         userPhone: '',
         phoneCode: '',
+        token: '',
+        activeName: 'first',
         isWarning: false,
         phoneStatus: false,
         type: 'password',
@@ -45,7 +59,10 @@
         isImg: false,
         cap: null,
         opacity: 0,
-        error: ''
+        error: '',
+        password: '',
+        rePassword: '',
+        isValidPassword: false
       }
     },
     components: {
@@ -58,30 +75,27 @@
         } else {
           let _self = this
           this.key = res.data
-          setTimeout(() => {
-            console.log('sssssssssssssssss')
-            window.initNECaptcha({
-              captchaId: _self.key,
-              element: '#captcha',
-              mode: 'float',
-              width: 300,
-              onReady: function (instance) {
-              },
-              onVerify: function (err, data) {
-                if (data) {
-                  _self.phoneKey = data.validate
-                  _self.isImg = true
-                }
-                if (err) {
-                  console.log(err)
-                }
-              },
-              onError: function () {
+          window.initNECaptcha({
+            captchaId: _self.key,
+            element: '#captcha',
+            mode: 'float',
+            width: 300,
+            onReady: function (instance) {
+            },
+            onVerify: function (err, data) {
+              if (data) {
+                _self.phoneKey = data.validate
+                _self.isImg = true
               }
-            }, function onload (instance) {
-              _self.cap = instance
-            })
-          }, 5000)
+              if (err) {
+                console.log(err)
+              }
+            },
+            onError: function () {
+            }
+          }, function onload (instance) {
+            _self.cap = instance
+          })
         }
       })
     },
@@ -125,7 +139,7 @@
         }
         let data = {
           'mobile': this.userPhone,
-          'type': 'BUSINESS_USER_UPDADE_PASSWORD',
+          'type': 'BUSINESS_USER_UPDATE_PASSWORD',
           captcha: this.phoneKey
         }
         identifyingcodeManage.getCode(data).then((res) => {
@@ -165,14 +179,14 @@
         let data = {
           mobile: this.userPhone,
           code: this.phoneCode,
-          type: 'BUSINESS_USER_UPDADE_PASSWORD'
+          type: 'BUSINESS_USER_UPDATE_PASSWORD'
         }
         account.verifyMobile(data).then((res) => {
           if (res.code !== 200) {
             this.error = res.msg
             this.opacity = 1
           } else {
-            this.tabValue = 2
+            this.activeName = 'second'
             this.token = res.data.codeToken
             this.phone = ''
             this.messageBoxExplain = '验证成功，请输入新的手机号'
@@ -188,9 +202,36 @@
           }
         })
       },
+      undatePhone () {
+        if (this.password !== this.rePassword) {
+          this.error = '两次密码输入不一致'
+          this.opacity = 1
+        } else if (!this.validPassword()) {
+          this.error = '密码不符合规则'
+          this.opacity = 1
+        } else {
+          let data = {
+            mobile: this.userPhone,
+            codeToken: this.token,
+            newPassword: this.password
+          }
+          account.updateMobileByToken(data).then((res) => {
+            if (res.code !== 200) {
+              this.error = res.msg
+              this.opacity = 1
+            } else {
+              this.activeName = 'third'
+            }
+          })
+        }
+      },
       validPhone: function (phone) {
         var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
         return re.test(phone)
+      },
+      validPassword: function () {
+        var re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
+        return re.test(this.password) && re.test(this.rePassword)
       },
       inputFocus: function () {
         this.error = ''
@@ -208,7 +249,7 @@
   .v-get-password {
     display: block;
     width: 500px;
-    margin: 30px auto 0;
+    margin: 140px auto 0;
     .v-label {
       margin-top: -12px;
       height: 18px;

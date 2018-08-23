@@ -65,13 +65,6 @@
         }
       }
     }
-    .msg-tip{
-      position: relative;
-      left: 10px;
-      @include border;
-      padding: 5px 10px;
-      margin-right: 10px;
-    }
   }
   .upload-video{
     position: relative;
@@ -96,5 +89,32 @@
     height: 337.5px;
     line-height: 300px;
     text-align: center;
+  }
+  .msg-tip{
+    position: relative;
+    left: 10px;
+    @include border;
+    padding: 5px 10px;
+    margin-right: 10px;
+  }
+  .email-info{
+    margin: 10px 20px 30px 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    .email-info-row{
+      display: flex;
+      text-align: left;
+      margin: 10px 0;
+      span{
+        &:nth-child(1){
+          display: inline-block;
+          width: 80px;
+          font-weight: bold;
+        }
+        &:nth-child(2){
+          flex: 1;
+        }
+      }
+    }
   }
 }

@@ -36,7 +36,7 @@ const Account = {
       params: data
     })
   },
-  getUserInfo (data) { // 设置指定联系人信息
+  getUserInfo (data) { // 获取指定联系人信息
     return utils.ajax({
       method: 'post',
       url: '/user/business-user/linkman-info',
@@ -54,6 +54,13 @@ const Account = {
     return utils.ajax({
       method: 'post',
       url: '/user/business-user/update-mobile',
+      params: data
+    })
+  },
+  updateMobileByToken (data) { // 找回密码
+    return utils.ajax({
+      method: 'post',
+      url: '/user/business-user/update-password-by-code-token',
       params: data
     })
   }

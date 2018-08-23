@@ -88,6 +88,7 @@
     components: {VeUpload},
     data () {
       return {
+        items: [1],
         warm: {
           isSwitch: false,
           videoSrc: '',
@@ -104,7 +105,6 @@
           recordId: '',
           accountId: 'v770'
         },
-        imgHost: '', // 图片地址
         loading: false,
         videoSize: '200', // 视频限制大小，单位兆
         percentVideo: 0, // 上传进度
@@ -152,11 +152,10 @@
       },
       saveWarm () {
         alert(JSON.stringify(this.warm))
-        this.saveWarmInfo(this.warm)
+        LiveHttp.saveWarmInfo(this.warm)
       },
       uploadImgSuccess (data) {
         this.warm.playCover = data.name
-        this.imgHost = data.host
       },
       uploadError (data) {
         console.log('上传失败:', data)
@@ -232,3 +231,4 @@
 
 <style lang="scss" scoped src="./css/live.scss">
 </style>
+

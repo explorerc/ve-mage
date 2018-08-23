@@ -123,7 +123,7 @@
     color: #999;
     text-align: center;
     overflow: hidden;
-    .iconfont {
+    .icon-jiahao {
       display: inline-block;
       margin-top: 44px;
       font-size: 30px;

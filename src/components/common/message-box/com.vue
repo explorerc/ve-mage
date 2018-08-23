@@ -14,11 +14,11 @@
         </div>
         <slot></slot>
         <div class="ve-message-box__btns">
-          <button type="button" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
-            <span>{{cancelText}}</span>
-          </button>
           <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
             <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
+          </button>
+          <button type="button" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
+            <span>{{cancelText}}</span>
           </button>
         </div>
       </div>
@@ -74,7 +74,6 @@
           this.closeTime = newVal
           clearInterval(this.intervalTime)
           this.intervalTime = setInterval(() => {
-            console.log('-------')
             if (!this.closeTime--) {
               clearInterval(this.intervalTime)
               this.$emit('handleClick', {
@@ -172,6 +171,7 @@
         }
         button {
           display: inline-block;
+          min-width: 80px;
           line-height: 1;
           white-space: nowrap;
           cursor: pointer;
