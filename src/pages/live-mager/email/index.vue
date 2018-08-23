@@ -53,12 +53,28 @@
     </div>
     <message-box
       v-if="sendShow"
-      header="提示"
-      content="活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？"
-      cancelText="取消"
-      confirmText='删除'
+      width="500px"
+      header="邮件推送确认"
+      confirmText='确认发送'
       @handleClick="handleClickSendEmail">
-      5666666666666666666
+      <div class="email-info">
+        <div class="email-info-row">
+          <span>邮件标题：</span>
+          <span>{{currentEmail.title}}</span>
+        </div>
+        <div class="email-info-row">
+          <span>发件人：</span>
+          <span>*****</span>
+        </div>
+        <div class="email-info-row">
+          <span>收件人：</span>
+          <span>{{recipientPersons}}</span>
+        </div>
+        <div class="email-info-row">
+          <span>邮件摘要：</span>
+          <span>***********************************************************</span>
+        </div>
+      </div>
     </message-box>
   </div>
 </template>
@@ -83,23 +99,31 @@
         pageSize: 10,
         total: 0,
         currentPage: 1,
-        liveId: '', // 活动id
+        activeId: '', // 活动id
         sendShow: false,
         currentEmailIdx: '',
         handleType: handleType,
         emailList: [
-          {id: 0, title: '111', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 1, title: '22', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 2, title: '33', sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
-          {id: 3, title: '4', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 4, title: '55', sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
-          {id: 5, title: '66', sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
-          {id: 6, title: '77', sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
-          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'}
+          {id: 0, title: '111', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 1, title: '22', recipients: ['收件人4444444', '收件人3333'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 2, title: '33', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
+          {id: 3, title: '4', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 4, title: '55', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
+          {id: 5, title: '66', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
+          {id: 6, title: '77', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
+          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'}
         ]
+      }
+    },
+    computed: {
+      currentEmail () {
+        return this.emailList[this.currentEmailIdx]
+      },
+      recipientPersons () {
+        return this.currentEmail.recipients.join('、')
       }
     },
     created () {
@@ -107,7 +131,7 @@
       if (!queryId) {
         this.$router.go(-1)
       }
-      this.liveId = queryId
+      this.activeId = queryId
       this.queryEmailListById()
     },
     methods: {
@@ -117,7 +141,7 @@
       },
       queryEmailListById () {
         LiveHttp.queryEmailList({
-          id: this.liveId,
+          id: this.activeId,
           pageSize: this.pageSize,
           page: this.currentPage
         }).then((res) => {
@@ -142,7 +166,6 @@
             cancelText: '取消',
             confirmText: '删除',
             handleClick: (e) => {
-              debugger
               if (e.action === 'confirm') {
                 this.delEmail()
               }
@@ -152,11 +175,12 @@
       },
       queryInfoEmail () {
         const emaiId = this.emailList[this.currentEmailIdx].id
-        LiveHttp.queryEmailInfoById(emaiId).then((res) => {
-        }).catch((e) => {
-          console.log('查询邮件信息失败')
-          console.log(e)
-        })
+        // LiveHttp.queryEmailInfoById(emaiId).then((res) => {
+        // }).catch((e) => {
+        //   console.log('查询邮件信息失败')
+        //   console.log(e)
+        // })
+        this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${emaiId}`)
       },
       sendEmail () {
         const emaiId = this.emailList[this.currentEmailIdx].id
@@ -170,7 +194,6 @@
         })
       },
       handleClickSendEmail (e) {
-        console.log(e)
         this.sendShow = false
         if (e.action === 'confirm') {
           this.sendEmail()
@@ -189,31 +212,23 @@
       },
       editEmail () {
         const emaiId = this.emailList[this.currentEmailIdx].id
-        this.$router.push(`/liveMager/emailEdit/${this.liveId}?email=${emaiId}`)
+        this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${emaiId}`)
       },
       addEmail () {
-        this.$router.push(`/liveMager/emailEdit/${this.liveId}`)
+        this.$router.push(`/liveMager/emailEdit/${this.activeId}`)
       }
     }
   }
 </script>
-<style lang="scss" scoped src="../css/live.scss">
-</style>
+<style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
   .email-table-box {
     margin: 20px;
     font-size: 14px;
   }
-
   .email-setting {
     margin-bottom: 30px;
     padding: 10px 0;
   }
 </style>
-<style lang="scss">
-  /*.email-box {*/
-  /*.el-table th.is-leaf {*/
-  /*border: 1px solid #ebeef5;*/
-  /*}*/
-  /*}*/
-</style>
+

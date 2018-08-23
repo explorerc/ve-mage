@@ -38,6 +38,9 @@ const Email = () =>
 /* 邮件邀约--添加，编辑 */
 const EmailEdit = () =>
   import('src/pages/live-mager/email/edit')
+/* 邮件邀约--查看 */
+const EmailInfo = () =>
+  import('src/pages/live-mager/email/info')
 
 /* 创建 编辑 活动 */
 const edit = () =>
@@ -51,12 +54,23 @@ const role = () =>
 /* 观看条件-邀请 */
 const limitInvite = () =>
   import('src/pages/live-mager/prepare/limit/invite')
-/* 观看条件-报名 */
-const limitApply = () =>
-  import('src/pages/live-mager/prepare/limit/apply')
 /* 直播引导页设置 */
 const setLiveWatch = () =>
   import('src/pages/set-live-watch')
+import('src/pages/set-live-guided')
+/* 观看条件-报名 */
+const limitApply = () =>
+  import('src/pages/live-mager/prepare/limit/apply')
+/* 推广-微信 */
+const promoteWechat = () =>
+  import('src/pages/live-mager/promote/wechat/list')
+const wechatCreate = () =>
+  import('src/pages/live-mager/promote/wechat/edit')
+/* 推广-短信 */
+const promoteMsg = () =>
+  import('src/pages/live-mager/promote/message/list')
+const msgCreate = () =>
+  import('src/pages/live-mager/promote/message/edit')
 
 export default [{
   path: '/',
@@ -191,5 +205,43 @@ export default [{
   path: '/liveMager/emailEdit/:id',
   name: 'emailEdit',
   component: EmailEdit
+},
+{
+  path: '/liveMager/emailInfo/:id',
+  name: 'emailInfo',
+  component: EmailInfo
+},
+{
+  path: '/liveMager/promote/wechat/list/:id',
+  name: 'wechat',
+  component: promoteWechat
+},
+{
+  path: '/liveMager/promote/wechat/create',
+  name: 'wechatCreate',
+  component: wechatCreate,
+  meta: {
+    noAuth: true
+  }
+},
+{
+  path: '/liveMager/promote/wechat/edit/:id',
+  name: 'wechatEdit',
+  component: wechatCreate
+},
+{
+  path: '/liveMager/promote/msg/list/:id',
+  name: 'wechat',
+  component: promoteMsg
+},
+{
+  path: '/liveMager/promote/msg/create',
+  name: 'msgCreate',
+  component: msgCreate
+},
+{
+  path: '/liveMager/promote/msg/edit/:id',
+  name: 'msgEdit',
+  component: msgCreate
 }
 ]
