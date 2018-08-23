@@ -43,6 +43,9 @@ const liveGuided = () =>
 /* 邮件邀约--列表 */
 const Email = () =>
   import('src/pages/live-mager/email/index')
+/* 邮件邀约--添加，编辑 */
+const EmailEdit = () =>
+  import('src/pages/live-mager/email/edit')
 
 export default [{
   path: '/',
@@ -159,5 +162,10 @@ export default [{
   path: '/liveMager/email/:id',
   name: 'email',
   component: Email
+},
+{
+  path: '/liveMager/emailEdit/:id',
+  name: 'emailEdit',
+  component: EmailEdit
 }
 ]

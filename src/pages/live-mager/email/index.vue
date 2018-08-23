@@ -11,7 +11,7 @@
           active-color="#13ce66">
         </el-switch>
         <span class="msg-tip">开启后，将可以定制邀约邮件，邀请特定客户群参加直播活动</span>
-        <el-button class="live-btn fr" type="primary" plain @click="">新建邮件</el-button>
+        <el-button class="live-btn fr" type="primary" plain @click="addEmail">新建邮件</el-button>
       </div>
       <el-table
         :data="emailList"
@@ -43,7 +43,7 @@
         </el-table-column>
       </el-table>
       <div class="pagination-box">
-        <div class="page-pagination" v-if="emailList.length>=pageSize">
+        <div class="page-pagination" v-if="emailList.length>pageSize">
           <ve-pagination
             :total="emailList.length"
             :pageSize="pageSize"
@@ -66,20 +66,43 @@
         isInvite: false,
         pageSize: 10,
         total: 0,
+        currentPage: 1,
+        liveId: '', // 活动id
         emailList: [
-          {id: 0, title: '111', sendTime: '2019-10-22', sendCount: 10, state: '发送中'},
-          {id: 2, title: '111', sendTime: '2019-10-22', sendCount: 10, state: '发送中'}
+          {id: 0, title: '111', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 1, title: '22', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 2, title: '33', sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
+          {id: 3, title: '4', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 4, title: '55', sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
+          {id: 5, title: '66', sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
+          {id: 6, title: '77', sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
+          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {id: 7, title: '88', sendTime: '2019-10-22', sendCount: 10, state: '草稿'}
         ]
       }
     },
     created () {
-      if (!this.$route.params.id) {
+      const queryId = this.$route.params.id
+      if (!queryId) {
         this.$router.go(-1)
       }
+      this.liveId = queryId
+      this.queryEmailListById()
     },
     methods: {
+      changePage (currentPage) {
+        this.currentPage = currentPage
+        this.queryEmailListById()
+      },
       queryEmailListById () {
-        LiveHttp.queryEmailListById(this.$route.params.id).then(() => {
+        LiveHttp.queryEmailList({
+          id: this.liveId,
+          pageSize: this.pageSize,
+          page: this.currentPage
+        }).then((res) => {
+          console.log(res)
         }).catch((e) => {
           console.log('查询邮件列表失败')
           console.log(e)
@@ -92,10 +115,6 @@
           console.log('查询邮件信息失败')
           console.log(e)
         })
-      },
-      editEmail (idx) {
-        const emaiId = this.emailList[idx].id
-        console.log(emaiId)
       },
       sendEmail (idx) {
         const emaiId = this.emailList[idx].id
@@ -118,6 +137,13 @@
           console.log('删除邮件失败')
           console.log(e)
         })
+      },
+      editEmail (idx) {
+        const emaiId = this.emailList[idx].id
+        this.$router.push(`/liveMager/emailEdit/${this.liveId}?email=${emaiId}`)
+      },
+      addEmail () {
+        this.$router.push(`/liveMager/emailEdit/${this.liveId}`)
       }
     }
   }
@@ -136,9 +162,9 @@
   }
 </style>
 <style lang="scss">
-  .email-box {
-    .el-table th.is-leaf {
-      border: 1px solid #ebeef5;
-    }
-  }
+  /*.email-box {*/
+  /*.el-table th.is-leaf {*/
+  /*border: 1px solid #ebeef5;*/
+  /*}*/
+  /*}*/
 </style>

@@ -85,11 +85,11 @@ const ActivityManger = {
       params: data
     })
   },
-  queryEmailListById (id) { /* 通过id获取邮件列表 */
+  queryEmailList (data) { /* 获取邮件列表 */
     return utils.ajax({
       method: 'post',
       url: '/',
-      params: {id: id}
+      params: data
     })
   },
   deleteEmailById (id) { /* 通过id删除邮件 */
