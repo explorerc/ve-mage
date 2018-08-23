@@ -42,7 +42,7 @@ const liveGuided = () =>
   import('src/pages/live-guided')
 /* 邮件邀约--列表 */
 const Email = () =>
-  import('src/pages/email/index')
+  import('src/pages/live-mager/email/index')
 
 export default [{
   path: '/',
@@ -156,7 +156,7 @@ export default [{
   component: liveGuided
 },
 {
-  path: '/email',
+  path: '/liveMager/email/:id',
   name: 'email',
   component: Email
 }
