@@ -18,7 +18,7 @@
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
     <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
-  <div class="com-input area" v-else>
+  <div class="com-input area" :class="customClass" v-else>
     <textarea
     ref="tarea"
     v-model="innerValue"
