@@ -82,6 +82,8 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
+  import {mapMutations} from 'vuex'
+  import * as types from '../../../store/mutation-types'
 
   const handleType = {
     info: 'queryInfoEmail',
@@ -139,6 +141,9 @@
       this.queryEmailListById()
     },
     methods: {
+      ...mapMutations('liveMager', {
+        storeEmailInfo: types.EMAIL_INFO
+      }),
       changePage (currentPage) {
         this.currentPage = currentPage
         this.queryEmailListById()
@@ -188,16 +193,12 @@
         }
       },
       queryInfoEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].id
-        // LiveHttp.queryEmailInfoById(emaiId).then((res) => {
-        // }).catch((e) => {
-        //   console.log('查询邮件信息失败')
-        //   console.log(e)
-        // })
-        this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${emaiId}`)
+        const email = this.emailList[this.currentEmailIdx]
+        this.storeEmailInfo(email)
+        this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
       },
       sendEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].id
+        const emaiId = this.emailList[this.currentEmailIdx].emailInviteId
         LiveHttp.sendEmailInfo(emaiId).then((res) => {
           if (res.code === 200) {
             console.log('邮件发送成功')

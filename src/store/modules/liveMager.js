@@ -14,7 +14,7 @@ const liveMagerModules = {
     }
   },
   getters: {
-    getEmailInfo: state => state.emailInfo
+    emailInfo: state => state.emailInfo
   },
   mutations: {
     [types.EMAIL_INFO] (state, reLoad) {

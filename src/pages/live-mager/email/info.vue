@@ -4,38 +4,30 @@
       <div class="from-box">
         <div class="from-row">
           <div class="from-title">邮件标题：</div>
-          <div class="from-content">
-            Adobe活动邀请函
-          </div>
+          <div class="from-content">{{email.title}}</div>
         </div>
         <div class="from-row">
           <div class="from-title">发件人：</div>
-          <div class="from-content">
-            微吼营销服务器
-          </div>
+          <div class="from-content">{{email.senderName}}</div>
         </div>
         <div class="from-row">
           <div class="from-title">发件状态：</div>
-          <div class="from-content">
-            XXXXXXX
-          </div>
+          <div class="from-content">{{email.statusName}}</div>
         </div>
         <div class="from-row">
           <div class="from-title">发件时间：</div>
-          <div class="from-content">
-            已发送/已定时/草稿
-          </div>
+          <div class="from-content">{{email.sendTime}}</div>
         </div>
         <div class="from-row">
           <div class="from-title">邮件摘要：</div>
           <div class="from-content">
-            <div>Adobe活动邀请函Adobe活动邀请函Adobe活动邀请函Adobe活动 邀请函Adobe活动邀请函</div>
+            <div>{{email.desc}}</div>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title">邮件内容：</div>
           <div class="from-content">
-            <div>Adobe活动邀请函Adobe活动邀请函Adobe活动邀请函Adobe活动 邀请函Adobe活动邀请函</div>
+            <div v-html="email.content"></div>
           </div>
         </div>
         <div class="from-row">
@@ -64,29 +56,69 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
+  import {mapState, mapMutations} from 'vuex'
+  import * as types from '../../../store/mutation-types'
 
+  const statusType = {
+    DRAFT: '草稿',
+    SEND: '已发送',
+    AWAIT: '等待发送'
+  }
   export default {
     name: 'info',
     data () {
       return {
         email: {
+          activityId: 0,
+          emailInviteId: 0,
           title: '',
-          sendPersonName: '',
+          content: '',
           desc: '',
-          activeId: '',
-          emailId: ''
+          planTime: '',
+          sendTime: '',
+          senderName: '',
+          sendCount: 0,
+          status: '',
+          statusName: ''
         }
       }
     },
+    computed: mapState('liveMager', {
+      emailInfo: state => state.emailInfo
+    }),
+    watch: {
+      emailInfo: {
+        handler (newVal) {
+          this.email = {...newVal}
+        },
+        immediate: true
+      }
+    },
     created () {
+      // 如果vuex可以取到值就return
+      if (this.email.emailInviteId) return
+      // 如果vuex不能取到值就查询接口
       const queryId = this.$route.params.id
       if (!queryId) {
         this.$router.go(-1)
+        return
       }
-      this.activeId = queryId
-      this.emailId = this.$route.query.email
+      this.email.emailInviteId = this.$route.query.email
+      this.queryEmailInfo()
     },
     methods: {
+      ...mapMutations('liveMager', {
+        storeEmailInfo: types.EMAIL_INFO
+      }),
+      queryEmailInfo () {
+        // 如果不是编辑页面就return
+        if (!this.email.emailInviteId) return
+        LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
+          res.data.statusName = statusType[res.data.status]
+          this.email = res.data
+          this.storeEmailInfo(this.email)
+        })
+      },
       sendEmail () {
         LiveHttp.sendEmailInfo({}).then((res) => {
           if (res.code === 200) {
@@ -96,7 +128,7 @@
         })
       },
       editEmail () {
-        this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${this.emailId}`)
+        this.$router.push(`/liveMager/emailEdit/${this.email.activityId}?email=${this.email.emailInviteId}`)
       },
       prePage () {
         this.$router.go(-1)

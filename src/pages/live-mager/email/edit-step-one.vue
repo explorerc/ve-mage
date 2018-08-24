@@ -84,9 +84,13 @@
       this.$refs.defaultTem.click()
     },
     created () {
+      // 如果vuex可以取到值就return
+      if (this.email.emailInviteId) return
+      // 如果vuex不能取到值就查询接口
       const queryId = this.$route.params.id
       if (!queryId) {
         this.$router.go(-1)
+        return
       }
       this.email.activityId = queryId
       this.email.emailInviteId = this.$route.query.email
