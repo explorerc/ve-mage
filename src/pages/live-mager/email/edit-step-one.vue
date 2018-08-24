@@ -7,6 +7,13 @@
           img-upload-url="/api/upload/do-upload"
           height="600"
           v-model="editerContent"></ve-editer>
+        <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
+          <div>为自己发送一封测试邮件</div>
+          <div>
+            <input placeholder="输入邮件地址" />
+            <el-button class="live-btn" type="primary" plain @click="">发送测试邮件</el-button>
+          </div>
+        </div>
       </div>
       <div class="edit-content-temp fr">
         <div class="temp-title">

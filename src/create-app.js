@@ -19,7 +19,6 @@ import Loading from './components/common/loading'
 import Dialog from './components/common/dialog'
 import Button from './components/common/button'
 import Tabs from './components/common/tabs'
-import Ajax from './utils/ajax'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -32,7 +31,6 @@ Vue.use(Loading)
 Vue.use(Dialog)
 Vue.use(Button)
 Vue.use(Tabs)
-Vue.use(Ajax)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'

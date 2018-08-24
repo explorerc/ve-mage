@@ -1,4 +1,5 @@
 import createApp from './create-app'
+import EventBus from 'src/utils/eventBus'
 
 const {
   app,
@@ -9,6 +10,10 @@ const {
 if (window.__INITIAL_STATE__) {
   store.replaceState(window.__INITIAL_STATE__)
 }
+
+EventBus.$on('auth', () => {
+  router.push('/login')
+})
 
 router.onReady(() => {
   app.$mount('#root')
