@@ -45,8 +45,8 @@
           </div>
         </div>
         <div class="step-btns">
-          <el-button class="live-btn fr" type="primary" plain @click="sendEmail">立即发送</el-button>
-          <el-button class="live-btn fr" type="primary" plain @click="editEmail">编辑邮件</el-button>
+          <el-button v-if="email.status!=='DRAFT'" class="live-btn fr" type="primary" plain @click="sendEmail">立即发送</el-button>
+          <el-button v-if="email.status!=='SEND'" class="live-btn fr" type="primary" plain @click="editEmail">编辑邮件</el-button>
           <el-button class="live-btn fr" type="primary" plain @click="prePage">返回上级</el-button>
         </div>
       </div>
@@ -120,11 +120,14 @@
         })
       },
       sendEmail () {
-        LiveHttp.sendEmailInfo({}).then((res) => {
-          if (res.code === 200) {
-            console.log('保存草稿成功')
-            this.prePage()
-          }
+        LiveHttp.sendEmailInfo({
+          emailInviteId: this.email.emailInviteId
+        }).then((res) => {
+          console.log('邮件发送成功')
+          console.log(res)
+        }).catch((e) => {
+          console.log('邮件发送失败')
+          console.log(e)
         })
       },
       editEmail () {

@@ -127,6 +127,7 @@
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           // 回写邮件id
           this.email.emailInviteId = res.data.emailInviteId
+          this.email.title = res.data.title
           // 把信息保存到vuex
           this.storeEmailInfo(this.email)
           this.$toast({

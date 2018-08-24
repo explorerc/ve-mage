@@ -35,10 +35,25 @@
         <el-table-column
           label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
+            <el-button
+               type="text" size="small"
+               @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
+            <el-button
+               type="text" size="small"
+               v-if="emailList[scope.$index].status==='DRAFT'"
+               @click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>
+            <el-button
+               type="text" size="small"
+               v-else-if="emailList[scope.$index].status!=='SEND'"
+               @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
+            <el-button
+               type="text" size="small"
+               v-if="emailList[scope.$index].status!=='SEND'"
+               @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
+            <el-button
+               type="text" size="small"
+               v-if="emailList[scope.$index].status!=='SEND'"
+               @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -198,11 +213,11 @@
         this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
       },
       sendEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].emailInviteId
-        LiveHttp.sendEmailInfo(emaiId).then((res) => {
-          if (res.code === 200) {
-            console.log('邮件发送成功')
-          }
+        LiveHttp.sendEmailInfo({
+          emailInviteId: this.emailList[this.currentEmailIdx].emailInviteId
+        }).then((res) => {
+          console.log('邮件发送成功')
+          console.log(res)
         }).catch((e) => {
           console.log('邮件发送失败')
           console.log(e)

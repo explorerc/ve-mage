@@ -167,16 +167,24 @@
       },
       sendEmail () {
         this.timerSendShow = false
+        if (this.isTimer) { // 发送定时邮件
+          LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
+            console.log(res)
+          })
+        } else { // 保存并发送
+          LiveHttp.saveAndsendEmail(this.email).then((res) => {
+            console.log(res)
+          })
+        }
       },
       timerSend () {
         this.timerSendShow = true
+        this.isTimer = true
       },
       immediatelySend () {
         this.email.timerSend = ''
         this.isTimer = false
-        this.$nextTick(() => {
-          this.timerSendShow = true
-        })
+        this.timerSendShow = true
       },
       handleClickSendEmail () {
         this.timerSendShow = false
