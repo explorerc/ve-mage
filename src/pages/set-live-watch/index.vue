@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix v-div">
+  <div class="clearfix set-live-watch-container">
     <p class="v-title">
       直播观看页
     </p>
@@ -182,124 +182,126 @@
     }
   }
 </script>
-<style lang="scss">
-.pull-left {
-  float: left;
-}
-.pull-right {
-  float: right;
-}
-.v-div {
-  padding: 30px;
-  .v-title {
-    font-size: 18px;
-    width: 100%;
-    border-bottom: 1px solid #666;
+<style lang="scss" scoped>
+.set-live-watch-container {
+  .pull-left {
+    float: left;
   }
-  .v-set {
-    width: 600px;
-    .v-info-label {
-      width: 80px;
-    }
-    .v-info {
-      width: 375px;
-    }
+  .pull-right {
+    float: right;
   }
-  .v-show {
-    width: 630px;
-    .v-pc {
-      width: 620px;
-      height: 340px;
-      background-position: center;
-      background-size: cover;
-      padding: 25px 0;
-      .v-content {
-        width: 515px;
-        height: 310px;
-        margin: 0 auto;
-        background-color: #999;
-        position: relative;
-        img {
-          display: block;
-          width: 140px;
-          height: 50px;
-          position: absolute;
-          top: 15px;
-          left: 15px;
-        }
+  .v-div {
+    padding: 30px;
+    .v-title {
+      font-size: 18px;
+      width: 100%;
+      border-bottom: 1px solid #666;
+    }
+    .v-set {
+      width: 600px;
+      .v-info-label {
+        width: 80px;
+      }
+      .v-info {
+        width: 375px;
       }
     }
-  }
-  .v-share {
     .v-show {
-      width: 360px;
-      margin: 5px auto;
-      .v-title {
-        height: 35px;
-        border: 1px solid #666;
+      width: 630px;
+      .v-pc {
+        width: 620px;
+        height: 340px;
+        background-position: center;
+        background-size: cover;
+        padding: 25px 0;
+        .v-content {
+          width: 515px;
+          height: 310px;
+          margin: 0 auto;
+          background-color: #999;
+          position: relative;
+          img {
+            display: block;
+            width: 140px;
+            height: 50px;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+          }
+        }
+      }
+    }
+    .v-share {
+      .v-show {
+        width: 360px;
         margin: 5px auto;
-      }
-      .v-avatar {
-        display: inline-block;
-        width: 35px;
-        height: 35px;
-        border: 1px solid #666;
-      }
-      .v-share-friend {
-        width: 315px;
-        height: 108px;
-        border: 1px solid #666;
-        margin-left: 10px;
-        .v-show-img {
-          display: inline-block;
-          width: 80px;
-          height: 80px;
-          margin: 15px 0 0 35px;
+        .v-title {
+          height: 35px;
+          border: 1px solid #666;
+          margin: 5px auto;
         }
-        .v-share-title,
-        .v-introduction {
-          width: 190px;
-          word-break: break-all;
-        }
-      }
-      .v-share-friend-circle {
         .v-avatar {
           display: inline-block;
-          vertical-align: middle;
-        }
-        span {
-          display: inline-block;
-          vertical-align: middle;
-        }
-        .v-content {
-          width: 315px;
-          height: 77px;
+          width: 35px;
+          height: 35px;
           border: 1px solid #666;
-          margin-left: 45px;
+        }
+        .v-share-friend {
+          width: 315px;
+          height: 108px;
+          border: 1px solid #666;
+          margin-left: 10px;
           .v-show-img {
             display: inline-block;
-            width: 45px;
-            height: 45px;
-            margin: 15px 15px 0;
+            width: 80px;
+            height: 80px;
+            margin: 15px 0 0 35px;
           }
+          .v-share-title,
           .v-introduction {
             width: 190px;
             word-break: break-all;
-            margin-top: 10px;
+          }
+        }
+        .v-share-friend-circle {
+          .v-avatar {
+            display: inline-block;
+            vertical-align: middle;
+          }
+          span {
+            display: inline-block;
+            vertical-align: middle;
+          }
+          .v-content {
+            width: 315px;
+            height: 77px;
+            border: 1px solid #666;
+            margin-left: 45px;
+            .v-show-img {
+              display: inline-block;
+              width: 45px;
+              height: 45px;
+              margin: 15px 15px 0;
+            }
+            .v-introduction {
+              width: 190px;
+              word-break: break-all;
+              margin-top: 10px;
+            }
           }
         }
       }
     }
-  }
-  .btn-upload {
-    display: block;
-    width: 175px;
-    height: 35px;
-    text-align: center;
-    line-height: 35px;
-    background-color: #666;
-    color: #fff;
-    margin-left: 80px;
+    .btn-upload {
+      display: block;
+      width: 175px;
+      height: 35px;
+      text-align: center;
+      line-height: 35px;
+      background-color: #666;
+      color: #fff;
+      margin-left: 80px;
+    }
   }
 }
 </style>

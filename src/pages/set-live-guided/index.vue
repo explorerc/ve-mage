@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix v-div">
+  <div class="clearfix set-live-guided-container">
     <p class="v-title">
       直播引导页
     </p>
@@ -145,126 +145,128 @@
     }
   }
 </script>
-<style lang="scss">
-.pull-left {
-  float: left;
-}
-.pull-right {
-  float: right;
-}
-.v-div {
-  padding: 30px;
-  .v-title {
-    font-size: 18px;
-    width: 100%;
-    border-bottom: 1px solid #666;
+<style lang="scss" scoped>
+.set-live-guided-container {
+  .pull-left {
+    float: left;
   }
-  .v-edit {
-    width: 665px;
-    .v-info-label {
-      width: 80px;
-      height: 100%;
-    }
-    .v-info {
-      max-width: 450px;
-    }
-    .v-save {
-      display: block;
-      width: 155px;
-      height: 45px;
-      text-align: center;
-      line-height: 45px;
-      text-decoration: none;
-      color: #fff;
-      background-color: #666;
-      margin-left: 80px;
-    }
+  .pull-right {
+    float: right;
   }
-  .v-show {
-    width: 690px;
-    .v-phone {
-      border: 1px solid #666;
-      width: 333px;
-      height: 620px;
-      .v-img {
-        width: 100%;
-        height: 333px;
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .v-phone-info {
-        .v-phone-title {
-          font-size: 12px;
-          text-align: left;
-          border-bottom: 1px solid #666;
-        }
-        .v-phone-introduction {
-          font-size: 12px;
-          text-align: center;
-          border-bottom: 1px solid #666;
-          height: 100px;
-        }
-        .v-phone-countdown {
-          width: 255px;
-          height: 50px;
-          border: 1px solid #666;
-          margin: 5px auto;
-        }
-        .v-phone-enroll {
-          display: block;
-          width: 255px;
-          height: 35px;
-          border: 1px solid #666;
-          margin: 10px auto;
-          text-decoration: none;
-          text-align: center;
-          line-height: 35px;
-        }
-      }
+  .v-div {
+    padding: 30px;
+    .v-title {
+      font-size: 18px;
+      width: 100%;
+      border-bottom: 1px solid #666;
     }
-    .v-pc {
-      width: 650px;
-      height: 365px;
-      border: 1px solid #666;
-      .v-img {
-        width: 420px;
-        height: 236px;
-        img {
-          width: 100%;
-          height: 100%;
-        }
+    .v-edit {
+      width: 665px;
+      .v-info-label {
+        width: 80px;
+        height: 100%;
       }
-      .v-pc-info {
-        width: 228px;
+      .v-info {
+        max-width: 450px;
+      }
+      .v-save {
+        display: block;
+        width: 155px;
+        height: 45px;
         text-align: center;
-        .v-pc-title {
-          font-size: 12px;
-          text-align: left;
-          border-bottom: 1px solid #666;
+        line-height: 45px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #666;
+        margin-left: 80px;
+      }
+    }
+    .v-show {
+      width: 690px;
+      .v-phone {
+        border: 1px solid #666;
+        width: 333px;
+        height: 620px;
+        .v-img {
+          width: 100%;
+          height: 333px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
-        .v-pc-introduction {
-          font-size: 12px;
+        .v-phone-info {
+          .v-phone-title {
+            font-size: 12px;
+            text-align: left;
+            border-bottom: 1px solid #666;
+          }
+          .v-phone-introduction {
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 1px solid #666;
+            height: 100px;
+          }
+          .v-phone-countdown {
+            width: 255px;
+            height: 50px;
+            border: 1px solid #666;
+            margin: 5px auto;
+          }
+          .v-phone-enroll {
+            display: block;
+            width: 255px;
+            height: 35px;
+            border: 1px solid #666;
+            margin: 10px auto;
+            text-decoration: none;
+            text-align: center;
+            line-height: 35px;
+          }
+        }
+      }
+      .v-pc {
+        width: 650px;
+        height: 365px;
+        border: 1px solid #666;
+        .v-img {
+          width: 420px;
+          height: 236px;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        .v-pc-info {
+          width: 228px;
           text-align: center;
-          border-bottom: 1px solid #666;
-          height: 100px;
-        }
-        .v-pc-countdown {
-          width: 200px;
-          height: 50px;
-          border: 1px solid #666;
-          margin: 5px auto;
-        }
-        .v-pc-enroll {
-          display: block;
-          width: 200px;
-          height: 35px;
-          border: 1px solid #666;
-          margin: 10px auto;
-          text-decoration: none;
-          text-align: center;
-          line-height: 35px;
+          .v-pc-title {
+            font-size: 12px;
+            text-align: left;
+            border-bottom: 1px solid #666;
+          }
+          .v-pc-introduction {
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 1px solid #666;
+            height: 100px;
+          }
+          .v-pc-countdown {
+            width: 200px;
+            height: 50px;
+            border: 1px solid #666;
+            margin: 5px auto;
+          }
+          .v-pc-enroll {
+            display: block;
+            width: 200px;
+            height: 35px;
+            border: 1px solid #666;
+            margin: 10px auto;
+            text-decoration: none;
+            text-align: center;
+            line-height: 35px;
+          }
         }
       }
     }

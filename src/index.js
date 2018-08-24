@@ -13,3 +13,9 @@ if (window.__INITIAL_STATE__) {
 router.onReady(() => {
   app.$mount('#root')
 })
+
+export default {
+  app,
+  router,
+  store
+}

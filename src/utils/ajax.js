@@ -66,9 +66,9 @@ export const ajax = (options) => {
     })
     switch (data.code) {
       case 10030:
-        console.log('跳转到登录页')
+        console.log(this)
         break
     }
-    return new Promise(() => { })
+    return new Promise(() => {})
   })
 }
