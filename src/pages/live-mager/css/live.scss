@@ -18,6 +18,20 @@
       top: 5px;
     }
   }
+  .upload-tips{
+    display: inline-block;
+    width: 400px;
+    vertical-align: top;
+    margin-left: 10px;
+    span{
+      display: block;
+      &.error{
+        color: $color-error;
+        line-height: 30px;
+        margin-top: 8px;
+      }
+    }
+  }
   .search-box{
     width: 300px;
     float: right;
@@ -68,20 +82,6 @@
   }
   .upload-video{
     position: relative;
-    .upload-tips{
-      display: inline-block;
-      width: 400px;
-      vertical-align: top;
-      margin-left: 10px;
-      span{
-        display: block;
-        &.error{
-          color: $color-error;
-          line-height: 30px;
-          margin-top: 8px;
-        }
-      }
-    }
   }
   .play-box{
     background-color: #e5e5e5;

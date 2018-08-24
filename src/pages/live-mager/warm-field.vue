@@ -32,9 +32,6 @@
                 <span>视频仅支持mp4格式，文件大小不超过200M</span>
                 <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
               </div>
-              <!--<div style="width: 500px;margin-top: 10px;">-->
-              <!--<el-progress :text-inside="true" :stroke-width="18" :percentage="percentVideo"></el-progress>-->
-              <!--</div>-->
             </div>
           </div>
         </div>
@@ -55,7 +52,11 @@
                 defaultImg=""
                 :fileSize="1024"
                 @error="uploadError"
-                @success="uploadImgSuccess"/>
+                @success="uploadImgSuccess"></ve-upload>
+              <div class="upload-tips">
+                <span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>
+                <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -109,7 +110,8 @@
         videoSize: '200', // 视频限制大小，单位兆
         percentVideo: 0, // 上传进度
         percentImg: 0, // 图片上传进度
-        uploadErrorMsg: '' // 上传错误信息
+        uploadErrorMsg: '', // 上传错误信息
+        uploadImgErrorMsg: '' // 图片上传错误信息
       }
     },
     watch: {
@@ -159,6 +161,7 @@
       },
       uploadError (data) {
         console.log('上传失败:', data)
+        this.uploadImgErrorMsg = '上传图片失败'
       },
       initVhallUpload () {
         this.$nextTick(() => {
