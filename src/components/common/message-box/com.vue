@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" v-if="visible">
-    <div class="ve-message-box__wrapper" :customClass="customClass">
+    <div :class="['ve-message-box__wrapper',customClass]">
       <div class="ve-message-box" :style="{width: width}">
         <div class="ve-message-box__header">
           <div class="ve-message-box__title" v-if="!this.$slots.header&&header">{{header}}</div>

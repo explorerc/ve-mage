@@ -3,7 +3,7 @@
     <div class="live-title">
       <span>邮件邀约</span>
     </div>
-    <div class="email-table-box">
+    <div class="email-table-box" v-ComLoading="loading">
       <div class="email-setting">
         邮件邀约：
         <el-switch
@@ -82,7 +82,6 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
-  import MessageBox from 'src/components/common/message-box/com'
 
   const handleType = {
     info: 'queryInfoEmail',
@@ -92,7 +91,7 @@
   }
   export default {
     name: 'index',
-    components: {VePagination, MessageBox},
+    components: {VePagination},
     data () {
       return {
         isInvite: false,
@@ -103,9 +102,17 @@
         sendShow: false,
         currentEmailIdx: '',
         handleType: handleType,
+        loading: false,
         emailList: [
           {id: 0, title: '111', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 1, title: '22', recipients: ['收件人4444444', '收件人3333'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
+          {
+            id: 1,
+            title: '22',
+            recipients: ['收件人4444444', '收件人3333'],
+            sendTime: '2019-10-22',
+            sendCount: 10,
+            state: '草稿'
+          },
           {id: 2, title: '33', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
           {id: 3, title: '4', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
           {id: 4, title: '55', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
@@ -140,6 +147,7 @@
         this.queryEmailListById()
       },
       queryEmailListById () {
+        this.loading = true
         LiveHttp.queryEmailList({
           id: this.activeId,
           pageSize: this.pageSize,
@@ -150,6 +158,9 @@
           console.log('查询邮件列表失败')
           console.log(e)
         })
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
       },
       clickEmail (idx, type) {
         this.currentEmailIdx = idx
@@ -226,6 +237,7 @@
     margin: 20px;
     font-size: 14px;
   }
+
   .email-setting {
     margin-bottom: 30px;
     padding: 10px 0;

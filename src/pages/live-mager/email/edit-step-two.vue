@@ -61,10 +61,48 @@
     </div>
     <div class="step-btns">
       <el-button class="live-btn fl" type="primary" plain @click="prePage">上一步</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="">立即发送</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="">定时发送</el-button>
+      <el-button class="live-btn fr" type="primary" plain @click="immediatelySend">立即发送</el-button>
+      <el-button class="live-btn fr" type="primary" plain @click="timerSend">定时发送</el-button>
       <el-button class="live-btn fr" type="primary" plain @click="saveEmail">保存草稿</el-button>
     </div>
+    <message-box
+      v-if="timerSendShow"
+      width="500px"
+      header="邮件推送确认"
+      confirmText='确认发送'
+      customClass="msg-box"
+      @handleClick="handleClickSendEmail">
+      <div class="email-info">
+        <div class="email-info-row">
+          <span>邮件标题：</span>
+          <span>00000</span>
+        </div>
+        <div class="email-info-row">
+          <span>发件人：</span>
+          <span>*****</span>
+        </div>
+        <div class="email-info-row">
+          <span>收件人：</span>
+          <span>6666666666666</span>
+        </div>
+        <div class="email-info-row">
+          <span>邮件摘要：</span>
+          <span>***********************************************************</span>
+        </div>
+      </div>
+      <div slot="bottom">
+        <div class="email-timer" v-if="isTimer">
+          <el-date-picker
+            v-model="email.timerSend"
+            type="datetime"
+            placeholder="选择日期时间"
+            align="right"
+            format="yyyy-MM-dd HH:mm">
+          </el-date-picker>
+        </div>
+        <el-button class="live-btn fr" type="primary" plain @click="sendEmail">定时发送</el-button>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -76,15 +114,34 @@
     data () {
       return {
         outValue: '',
+        timerSendShow: false,
+        isTimer: true,
         email: {
           title: '',
           sendPersonName: '',
+          timerSend: '',
           desc: ''
         }
       }
     },
     methods: {
       saveEmail () {
+      },
+      sendEmail () {
+        this.timerSendShow = false
+      },
+      timerSend () {
+        this.timerSendShow = true
+      },
+      immediatelySend () {
+        this.email.timerSend = ''
+        this.isTimer = false
+        this.$nextTick(() => {
+          this.timerSendShow = true
+        })
+      },
+      handleClickSendEmail () {
+        this.timerSendShow = false
       },
       prePage () {
         this.$parent.$data.currentComponent = editStepOne
@@ -96,35 +153,41 @@
 </style>
 <style lang="scss" scoped>
   .edit-step-box {
+    .msg-box {
+      z-index: 1000;
+    }
     .step-btns {
       margin-top: 20px;
     }
     .input-email {
       width: 400px;
     }
-    .edit-groups{
+    .email-timer {
+      display: inline-block;
+    }
+    .edit-groups {
       margin-top: 40px;
-      .edit-groups-item{
+      .edit-groups-item {
         margin: 10px 0;
         line-height: 30px;
-        span{
+        span {
           display: inline-block;
           text-align: center;
-          &:nth-child(1){
+          &:nth-child(1) {
             width: 200px;
             border: solid 1px #e5e5e5;
           }
-          &:nth-child(2){
+          &:nth-child(2) {
             margin: 0 0 0 20px;
             padding: 0 5px;
             cursor: pointer;
           }
-          &:nth-child(3){
+          &:nth-child(3) {
             padding: 0 5px;
             cursor: pointer;
           }
           &:nth-child(2):hover,
-          &:nth-child(3):hover{
+          &:nth-child(3):hover {
             color: #2878FF;
           }
         }
