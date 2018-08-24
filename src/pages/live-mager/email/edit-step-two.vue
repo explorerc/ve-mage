@@ -153,7 +153,6 @@
       }),
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
-          console.log(res)
           if (res.code === 200) {
             this.storeEmailInfo(this.email)
             this.$toast({
