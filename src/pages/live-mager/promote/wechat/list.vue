@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="form-row">
-      <el-button><a href="/liveMager/promote/wechat/create">新建</a></el-button>
+      <el-button><router-link to="/liveMager/promote/wechat/create">新建</router-link></el-button>
     <div class="content">
       <el-table
       :data="tableData"
@@ -71,7 +71,7 @@
             title: '标题标题标题',
             tpl: '活动邀请',
             time: '2018-08-23 11:00:00',
-            receiver: '奥克兰设计大赛的',
+            receiver: '观众分组(40)',
             status: 1,
             autoSend: false,
             toolShow: false
@@ -80,23 +80,22 @@
             title: '标题标222',
             tpl: '活动推荐',
             time: '2018-05-21 11:23:11',
-            receiver: '奥克兰设计大赛的',
+            receiver: '观众分组(40)',
             status: 2,
             autoSend: true,
-            toolShow: true
+            toolShow: false
           },
           {
             title: 'asd',
             tpl: '活动推荐',
             time: '2018-05-21 11:23:11',
-            receiver: '奥克兰设计大赛的',
+            receiver: '观众分组(40)',
             status: 3,
             autoSend: false,
             toolShow: false
           }
         ],
-        switchVal: true,
-        showTool: false
+        switchVal: true
       }
     },
     methods: {

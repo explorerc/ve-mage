@@ -65,6 +65,10 @@ const wechatCreate = () => import('src/pages/live-mager/promote/wechat/edit')
 /* 推广-短信 */
 const promoteMsg = () => import('src/pages/live-mager/promote/message/list')
 const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
+/* 推广-自动化 */
+const promoteAuto = () => import('src/pages/live-mager/promote/automation')
+const autoEditwx = () => import('src/pages/live-mager/promote/automation/wechat')
+const autoEditmsg = () => import('src/pages/live-mager/promote/automation/msg')
 
 export default [{
   path: '/',
@@ -166,7 +170,7 @@ export default [{
 },
 {
   path: '/liveMager/prepare/limit-invite/:id',
-  name: 'limit',
+  name: 'limitInvite',
   component: limitInvite,
   meta: {
     noAuth: true
@@ -174,7 +178,7 @@ export default [{
 },
 {
   path: '/liveMager/prepare/limit-apply/:id',
-  name: 'limit',
+  name: 'limitApply',
   component: limitApply,
   meta: {
     noAuth: true
@@ -207,7 +211,7 @@ export default [{
 },
 {
   path: '/liveMager/promote/wechat/list/:id',
-  name: 'wechat',
+  name: 'promoteWechat',
   component: promoteWechat
 },
 {
@@ -225,7 +229,7 @@ export default [{
 },
 {
   path: '/liveMager/promote/msg/list/:id',
-  name: 'wechat',
+  name: 'promoteMsg',
   component: promoteMsg
 },
 {
@@ -237,5 +241,20 @@ export default [{
   path: '/liveMager/promote/msg/edit/:id',
   name: 'msgEdit',
   component: msgCreate
+},
+{
+  path: '/liveMager/promote/auto/preview/:id',
+  name: 'auto',
+  component: promoteAuto
+},
+{
+  path: '/liveMager/promote/auto/editWx/:id',
+  name: 'autoEditwX',
+  component: autoEditwx
+},
+{
+  path: '/liveMager/promote/auto/editMsg/:id',
+  name: 'autoEditmsg',
+  component: autoEditmsg
 }
 ]
