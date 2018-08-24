@@ -68,7 +68,8 @@ export const ajax = (options) => {
       default:
         MessageBox({
           header: '提示',
-          content: data.msg
+          content: data.msg,
+          confirmText: '知道了'
         })
     }
     return new Promise(() => {})
