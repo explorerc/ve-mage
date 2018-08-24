@@ -9,8 +9,8 @@
         <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
           <div>为自己发送一封测试邮件</div>
           <div>
-            <input placeholder="输入邮件地址"/>
-            <el-button class="live-btn" type="primary" plain @click="">发送测试邮件</el-button>
+            <input v-model="testEmail" placeholder="输入邮件地址"/>
+            <el-button class="live-btn" type="primary" plain @click="sendTestEmail">发送测试邮件</el-button>
           </div>
         </div>
       </div>
@@ -57,6 +57,7 @@
     name: 'edit-step-one',
     data () {
       return {
+        testEmail: '',
         email: {
           activityId: '',
           emailInviteId: '',
@@ -120,6 +121,39 @@
         LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
           this.email = res.data
           this.storeEmailInfo(this.email)
+        })
+      },
+      sendTestEmail () {
+        if (!this.testEmail) {
+          this.$messageBox({
+            header: '提示',
+            content: '邮箱不能为空',
+            confirmText: '知道了',
+            autoClose: 10
+          })
+          return
+        }
+        if (!this.email.content) {
+          this.$messageBox({
+            header: '提示',
+            content: '邮件内容不能为空',
+            confirmText: '知道了',
+            autoClose: 10
+          })
+          return
+        }
+        LiveHttp.sendTestEmailInfo({
+          content: this.email.content,
+          receiverEmail: this.testEmail
+        }).then((res) => {
+          if (res.code === 200) {
+            this.$toast({
+              header: `提示`,
+              content: '发送成功，请稍后查收邮件',
+              autoClose: 2000,
+              position: 'right-top'
+            })
+          }
         })
       },
       /* 保存草稿 */
