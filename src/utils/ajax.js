@@ -75,6 +75,7 @@ export const ajax = (options) => {
 
 export default (Vue) => {
   Vue.prototype.$http = function (options) {
+    console.log('jinru....', this)
     options.url = options.abPath || BASE_URL + options.url
     let _options = Object.assign({}, defaultOptions, options)
     console.log(_options)
@@ -90,6 +91,7 @@ export default (Vue) => {
       switch (data.code) {
         case 10030:
           console.log('跳转到登录页')
+          console.log('跳转。。。', this)
           break
       }
       return new Promise(() => {})
