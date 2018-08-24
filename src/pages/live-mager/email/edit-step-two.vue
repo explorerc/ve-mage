@@ -169,10 +169,12 @@
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
             console.log(res)
+            this.$router.go(-1)
           })
         } else { // 保存并发送
           LiveHttp.saveAndsendEmail(this.email).then((res) => {
             console.log(res)
+            this.$router.go(-1)
           })
         }
       },
