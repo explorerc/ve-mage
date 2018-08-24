@@ -95,28 +95,35 @@ const ActivityManger = {
   queryEmailList (data) { /* 获取邮件列表 */
     return utils.ajax({
       method: 'post',
-      url: '/',
+      url: '/expand/email-invite/list',
       params: data
     })
   },
   deleteEmailById (id) { /* 通过id删除邮件 */
     return utils.ajax({
       method: 'post',
-      url: '/',
-      params: {id: id}
+      url: '/expand/email-invite/delete',
+      params: {emailInviteId: id}
     })
   },
   queryEmailInfoById (id) { /* 通过邮件id查询邮件详细 */
     return utils.ajax({
       method: 'post',
-      url: '/',
-      params: {id: id}
+      url: '/expand/email-invite/query',
+      params: {emailInviteId: id}
     })
   },
   sendEmailInfo (data) { /* 发送邮件 */
     return utils.ajax({
       method: 'post',
       url: '/',
+      params: data
+    })
+  },
+  saveEmailInfo (data) { /* 保存草稿 */
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/email-invite/save-draft',
       params: data
     })
   }

@@ -18,7 +18,7 @@
             <com-input
               placeholder="输入发件人名称"
               customClass="input-email"
-              :value.sync="email.sendPersonName"
+              :value.sync="email.senderName"
               :max-length="15"></com-input>
           </div>
         </div>
@@ -107,7 +107,10 @@
 </template>
 
 <script>
+  import LiveHttp from 'src/api/activity-manger'
   import editStepOne from './edit-step-one'
+  import {mapState, mapMutations} from 'vuex'
+  import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
@@ -117,15 +120,50 @@
         timerSendShow: false,
         isTimer: true,
         email: {
+          activityId: '',
+          emailInviteId: '',
+          emailTemplateId: 1,
           title: '',
-          sendPersonName: '',
-          timerSend: '',
-          desc: ''
+          content: '',
+          desc: '',
+          senderName: '',
+          timerSend: ''
         }
       }
     },
+    computed: mapState('liveMager', {
+      emailInfo: state => state.emailInfo
+    }),
+    watch: {
+      emailInfo: {
+        handler (newVal) {
+          this.email = {...this.email, ...newVal}
+        },
+        immediate: true
+      }
+    },
+    created () {
+      if (!this.email.emailInviteId) {
+        this.prePage()
+      }
+    },
     methods: {
+      ...mapMutations('liveMager', {
+        storeEmailInfo: types.EMAIL_INFO
+      }),
       saveEmail () {
+        LiveHttp.saveEmailInfo(this.email).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            this.storeEmailInfo(this.email)
+            this.$toast({
+              header: `提示`,
+              content: '保存草稿成功',
+              autoClose: 2000,
+              position: 'right-top'
+            })
+          }
+        })
       },
       sendEmail () {
         this.timerSendShow = false

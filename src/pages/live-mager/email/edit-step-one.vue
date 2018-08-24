@@ -3,14 +3,13 @@
     <div class="edit-content clearfix">
       <div class="edit-content-box fl">
         <ve-editer
-          @change="editorChange"
           img-upload-url="/api/upload/do-upload"
           height="600"
-          v-model="editerContent"></ve-editer>
+          v-model="email.content"></ve-editer>
         <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
           <div>为自己发送一封测试邮件</div>
           <div>
-            <input placeholder="输入邮件地址" />
+            <input placeholder="输入邮件地址"/>
             <el-button class="live-btn" type="primary" plain @click="">发送测试邮件</el-button>
           </div>
         </div>
@@ -48,18 +47,39 @@
 </template>
 
 <script>
+  import LiveHttp from 'src/api/activity-manger'
   import VeEditer from 'src/components/ve-editer'
   import editStepTwo from './edit-step-two'
+  import {mapState, mapMutations} from 'vuex'
+  import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-one',
     data () {
       return {
-        editerContent: '',
-        activeId: ''
+        email: {
+          activityId: '',
+          emailInviteId: '',
+          emailTemplateId: 1,
+          title: '',
+          content: '',
+          desc: '',
+          senderName: ''
+        }
       }
     },
     components: {VeEditer},
+    computed: mapState('liveMager', {
+      emailInfo: state => state.emailInfo
+    }),
+    watch: {
+      emailInfo: {
+        handler (newVal) {
+          this.email = {...this.email, ...newVal}
+        },
+        immediate: true
+      }
+    },
     mounted () {
       this.$refs.defaultTem.click()
     },
@@ -68,18 +88,44 @@
       if (!queryId) {
         this.$router.go(-1)
       }
-      this.activeId = queryId
+      this.email.activityId = queryId
+      this.email.emailInviteId = this.$route.query.email
+      this.queryEmailInfo()
     },
     methods: {
-      editorChange (e) {
-        console.log('编辑器内容改变事件:')
-        console.log(e)
+      ...mapMutations('liveMager', {
+        storeEmailInfo: types.EMAIL_INFO
+      }),
+      /* 查询邮件详情 */
+      queryEmailInfo () {
+        // 如果不是编辑页面就return
+        if (!this.email.emailInviteId) return
+        LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
+          this.email = res.data
+          this.storeEmailInfo(this.email)
+        })
       },
+      /* 保存草稿 */
       saveEmail () {
+        LiveHttp.saveEmailInfo(this.email).then((res) => {
+          // 回写邮件id
+          this.email.emailInviteId = res.data.emailInviteId
+          // 把信息保存到vuex
+          this.storeEmailInfo(this.email)
+          this.$toast({
+            header: `提示`,
+            content: '保存草稿成功',
+            autoClose: 2000,
+            position: 'right-top'
+          })
+        })
       },
       nextEmail () {
+        this.storeEmailInfo(this.email)
+        // 切换到下一步
         this.$parent.$data.currentComponent = editStepTwo
       },
+      /* 更换模板 */
       changeTemp (content) {
         this.$messageBox({
           header: '',
@@ -88,11 +134,12 @@
           confirmText: '确认替换',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              this.editerContent = content
+              this.content = content
             }
           }
         })
       },
+      /* 恢复默认模板 */
       recoverDefault () {
         this.$messageBox({
           header: '',
@@ -106,8 +153,9 @@
           }
         })
       },
+      /* 到邮件管理列表 */
       goLiveManger () {
-        this.$router.push(`/liveMager/email/${this.activeId}`)
+        this.$router.push(`/liveMager/email/${this.email.activityId}`)
       }
     }
   }

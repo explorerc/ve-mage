@@ -5,3 +5,6 @@ export const UPDATE_LOGIN = 'UPDATE_LOGIN'
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA'
 export const UPDATE_JOIN_INFO = 'UPDATE_JOIN_INFO'
 export const UPDATE_IS_LOGIN = 'Update_Is_Login'
+
+// 邮件邀约
+export const EMAIL_INFO = 'EMAIL_INFO'

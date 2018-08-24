@@ -36,6 +36,10 @@ Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = process.env.NODE_ENV !== 'production'
 Vue.prototype.$imgHost = process.env.IMGHOST
+Vue.filter('isEmpty', function (value, replaceStr) {
+  replaceStr = replaceStr || '-'
+  return value || replaceStr
+})
 
 export default () => {
   const router = createRouter()
