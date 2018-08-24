@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" v-if="visible">
-    <div class="ve-message-box__wrapper">
+    <div class="ve-message-box__wrapper" :customClass="customClass">
       <div class="ve-message-box" :style="{width: width}">
         <div class="ve-message-box__header">
           <div class="ve-message-box__title" v-if="!this.$slots.header&&header">{{header}}</div>
@@ -14,12 +14,15 @@
         </div>
         <slot></slot>
         <div class="ve-message-box__btns">
-          <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
-            <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
-          </button>
-          <button type="button" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
-            <span>{{cancelText}}</span>
-          </button>
+          <div v-if="!this.$slots.bottom">
+            <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
+              <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
+            </button>
+            <button type="button" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
+              <span>{{cancelText}}</span>
+            </button>
+          </div>
+          <slot name="bottom"></slot>
         </div>
       </div>
       <div class="ve-modal" @click.prevent="handleClick(action.cancel)"></div>
@@ -42,6 +45,7 @@
       }
     },
     props: {
+      customClass: String,
       header: {
         type: String,
         default: '提示'
