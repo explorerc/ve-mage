@@ -69,6 +69,7 @@ export const ajax = (options) => {
         MessageBox({
           header: '提示',
           content: data.msg,
+          autoClose: 10,
           confirmText: '知道了'
         })
     }
