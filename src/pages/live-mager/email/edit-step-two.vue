@@ -29,6 +29,7 @@
             <com-input
               placeholder="输入发件人名称"
               type="textarea"
+              autosize
               customClass="input-email"
               :value.sync="email.desc"
               :max-length="140"></com-input>
