@@ -84,17 +84,30 @@
       this.$refs.defaultTem.click()
     },
     created () {
-      // 如果vuex可以取到值就return
-      if (this.email.emailInviteId) return
       // 如果vuex不能取到值就查询接口
       const queryId = this.$route.params.id
       if (!queryId) {
         this.$router.go(-1)
         return
       }
-      this.email.activityId = queryId
-      this.email.emailInviteId = this.$route.query.email
-      this.queryEmailInfo()
+      const emailId = this.$route.query.email
+      if (emailId) { // 编辑
+        // 如果vuex可以取到值就return
+        if (this.email.emailInviteId) return
+        this.email.emailInviteId = emailId
+        this.queryEmailInfo()
+      } else { // 新增
+        this.email = {
+          activityId: queryId,
+          emailInviteId: '',
+          emailTemplateId: 1,
+          title: '',
+          content: '',
+          desc: '',
+          senderName: ''
+        }
+        this.storeEmailInfo(this.email)
+      }
     },
     methods: {
       ...mapMutations('liveMager', {
