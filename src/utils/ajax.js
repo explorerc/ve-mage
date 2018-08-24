@@ -69,6 +69,30 @@ export const ajax = (options) => {
         console.log('跳转到登录页')
         break
     }
-    return new Promise(() => { })
+    return new Promise(() => {})
   })
+}
+
+export default (Vue) => {
+  Vue.prototype.$http = function (options) {
+    options.url = options.abPath || BASE_URL + options.url
+    let _options = Object.assign({}, defaultOptions, options)
+    console.log(_options)
+    return axios(_options).then((res) => {
+      return res.data
+    }).catch((data) => {
+      Loading(false)
+      console.log('出错了', data)
+      MessageBox({
+        header: '提示',
+        content: data.msg
+      })
+      switch (data.code) {
+        case 10030:
+          console.log('跳转到登录页')
+          break
+      }
+      return new Promise(() => {})
+    })
+  }
 }
