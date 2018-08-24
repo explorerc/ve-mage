@@ -382,7 +382,6 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
-@import '~assets/css/base';
 .state {
   padding: 3px;
   border: 1px solid #ccc;

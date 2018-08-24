@@ -93,14 +93,11 @@
       }
     },
     watch: {
-      value (val) {
-        this.editerContent = val
-        this.$nextTick(() => {
-          var s = document.getElementById('quill-upload').querySelector('.ql-editor').innerText
-          let quill = this.$refs.myQuillEditor.quill
-          // 调整光标到最后
-          quill.setSelection(s.length + 1)
-        })
+      value: {
+        handler (newVal) {
+          this.editerContent = newVal
+        },
+        immediate: true
       },
       editerContent (val) {
         this.$emit('input', val)

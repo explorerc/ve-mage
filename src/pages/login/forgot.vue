@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix v-div">
+  <div class="clearfix forgot-container">
     <img src="" alt="logo">
     <p class="v-title">
       找回密码
@@ -240,9 +240,8 @@
     }
   }
 </script>
-<style lang="scss">
-@import '~assets/css/base';
-.v-div {
+<style lang="scss" scoped>
+.forgot-container /deep/ {
   display: block;
   width: 1200px;
   margin: 85px auto 0;

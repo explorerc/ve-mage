@@ -1,5 +1,5 @@
 <template>
-  <div class="v-frame">
+  <div class="setpsd-container">
     <p>
       感谢您选择微吼，在开始前请先设置登录密码
     </p>
@@ -52,8 +52,8 @@
     }
   }
 </script>
-<style lang="scss">
-.v-frame {
+<style lang="scss" scoped>
+.setpsd-container {
   width: 640px;
   height: 440px;
   margin: 200px auto;

@@ -3,7 +3,7 @@
     <div class="live-title">
       <span>邮件邀约</span>
     </div>
-    <div class="email-table-box">
+    <div class="email-table-box" v-ComLoading="loading">
       <div class="email-setting">
         邮件邀约：
         <el-switch
@@ -29,23 +29,38 @@
           label="发送数量">
         </el-table-column>
         <el-table-column
-          prop="state"
+          prop="statusName"
           label="状态">
         </el-table-column>
         <el-table-column
           label="操作">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
-            <el-button type="text" size="small" @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
+            <el-button
+               type="text" size="small"
+               @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
+            <el-button
+               type="text" size="small"
+               v-if="emailList[scope.$index].status==='DRAFT'"
+               @click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>
+            <el-button
+               type="text" size="small"
+               v-else-if="emailList[scope.$index].status!=='SEND'"
+               @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
+            <el-button
+               type="text" size="small"
+               v-if="emailList[scope.$index].status!=='SEND'"
+               @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
+            <el-button
+               type="text" size="small"
+               v-if="emailList[scope.$index].status!=='SEND'"
+               @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="pagination-box">
-        <div class="page-pagination" v-if="emailList.length>pageSize">
+        <div class="page-pagination" v-if="total>pageSize">
           <ve-pagination
-            :total="emailList.length"
+            :total="total"
             :pageSize="pageSize"
             @changePage="changePage"/>
         </div>
@@ -68,7 +83,7 @@
         </div>
         <div class="email-info-row">
           <span>收件人：</span>
-          <span>{{recipientPersons}}</span>
+          <span>666</span>
         </div>
         <div class="email-info-row">
           <span>邮件摘要：</span>
@@ -82,7 +97,8 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
-  import MessageBox from 'src/components/common/message-box/com'
+  import {mapMutations} from 'vuex'
+  import * as types from '../../../store/mutation-types'
 
   const handleType = {
     info: 'queryInfoEmail',
@@ -90,9 +106,14 @@
     edit: 'editEmail',
     delete: 'deleteEmail'
   }
+  const statusType = {
+    DRAFT: '草稿',
+    SEND: '已发送',
+    AWAIT: '等待发送'
+  }
   export default {
     name: 'index',
-    components: {VePagination, MessageBox},
+    components: {VePagination},
     data () {
       return {
         isInvite: false,
@@ -103,27 +124,27 @@
         sendShow: false,
         currentEmailIdx: '',
         handleType: handleType,
+        loading: false,
         emailList: [
-          {id: 0, title: '111', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 1, title: '22', recipients: ['收件人4444444', '收件人3333'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 2, title: '33', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
-          {id: 3, title: '4', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 4, title: '55', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
-          {id: 5, title: '66', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '等待发送'},
-          {id: 6, title: '77', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '已发送'},
-          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'},
-          {id: 7, title: '88', recipients: ['收件人1', '收件人2'], sendTime: '2019-10-22', sendCount: 10, state: '草稿'}
+          {
+            activityId: 0,
+            emailInviteId: 0,
+            title: '',
+            content: '',
+            desc: '',
+            planTime: '',
+            sendTime: '',
+            senderName: '',
+            sendCount: 0,
+            status: '',
+            statusName: ''
+          }
         ]
       }
     },
     computed: {
       currentEmail () {
         return this.emailList[this.currentEmailIdx]
-      },
-      recipientPersons () {
-        return this.currentEmail.recipients.join('、')
       }
     },
     created () {
@@ -135,20 +156,33 @@
       this.queryEmailListById()
     },
     methods: {
+      ...mapMutations('liveMager', {
+        storeEmailInfo: types.EMAIL_INFO
+      }),
       changePage (currentPage) {
         this.currentPage = currentPage
         this.queryEmailListById()
       },
       queryEmailListById () {
+        this.loading = true
         LiveHttp.queryEmailList({
-          id: this.activeId,
+          activityId: this.activeId,
           pageSize: this.pageSize,
           page: this.currentPage
         }).then((res) => {
-          console.log(res)
-        }).catch((e) => {
-          console.log('查询邮件列表失败')
-          console.log(e)
+          this.loading = false
+          if (res.code === 200) {
+            res.data.list.map((dataItem) => {
+              dataItem.statusName = statusType[dataItem.status]
+              dataItem.sendTime = dataItem.sendTime || '--'
+              dataItem.title = dataItem.title || '--'
+              return dataItem
+            })
+            this.total = res.data.total
+            this.emailList = res.data.list
+          }
+        }).catch(() => {
+          this.loading = false
         })
       },
       clickEmail (idx, type) {
@@ -174,20 +208,16 @@
         }
       },
       queryInfoEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].id
-        // LiveHttp.queryEmailInfoById(emaiId).then((res) => {
-        // }).catch((e) => {
-        //   console.log('查询邮件信息失败')
-        //   console.log(e)
-        // })
-        this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${emaiId}`)
+        const email = this.emailList[this.currentEmailIdx]
+        this.storeEmailInfo(email)
+        this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
       },
       sendEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].id
-        LiveHttp.sendEmailInfo(emaiId).then((res) => {
-          if (res.code === 200) {
-            console.log('邮件发送成功')
-          }
+        LiveHttp.sendEmailInfo({
+          emailInviteId: this.emailList[this.currentEmailIdx].emailInviteId
+        }).then((res) => {
+          console.log('邮件发送成功')
+          console.log(res)
         }).catch((e) => {
           console.log('邮件发送失败')
           console.log(e)
@@ -200,7 +230,7 @@
         }
       },
       delEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].id
+        const emaiId = this.emailList[this.currentEmailIdx].emailInviteId
         LiveHttp.deleteEmailById(emaiId).then((res) => {
           if (res.code === 200) {
             this.queryEmailListById()
@@ -211,7 +241,7 @@
         })
       },
       editEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].id
+        const emaiId = this.emailList[this.currentEmailIdx].emailInviteId
         this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${emaiId}`)
       },
       addEmail () {
@@ -226,6 +256,7 @@
     margin: 20px;
     font-size: 14px;
   }
+
   .email-setting {
     margin-bottom: 30px;
     padding: 10px 0;

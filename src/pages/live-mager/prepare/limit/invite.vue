@@ -210,7 +210,6 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
-@import '~assets/css/base';
 .group {
   span {
     display: inline-block;

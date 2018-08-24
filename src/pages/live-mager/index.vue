@@ -140,15 +140,16 @@
         })
       },
       share (item) {
-        this.$share({
-          link: 'https://live.vhall.com/261678795',
-          data: {
-            title: item.title,
-            desc: item.description,
-            summary: 'summary',
-            pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
-          }
-        })
+        this.$router.push(`liveMager/detail/${item.id}`)
+        // this.$share({
+        //   link: 'https://live.vhall.com/261678795',
+        //   data: {
+        //     title: item.title,
+        //     desc: item.description,
+        //     summary: 'summary',
+        //     pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
+        //   }
+        // })
       }
     }
   }

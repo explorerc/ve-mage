@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix v-div">
+  <div class="clearfix login-container">
     <div class="v-left">
       <img src="" alt="" class="v-logo">
     </div>
@@ -324,123 +324,117 @@
   }
 </script>
 
-<style lang="scss">
-@import '~assets/css/base';
-#app,
-.v-div {
+<style lang="scss" scoped>
+.login-container /deep/ {
   height: 100%;
   min-height: 660px;
-}
-
-#app,
-.v-div {
   width: 100%;
   min-width: 1200px;
   overflow: auto;
   overflow-y: hidden;
-}
 
-.v-left {
-  float: left;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(-30deg, #e62e2e 4%, #ff6c3b 100%);
-  position: relative;
-  .v-logo {
-    width: 94px;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-  }
-  .v-title {
-    font-size: 32px;
-    color: #333333;
-  }
-}
-
-.v-right {
-  float: right;
-  width: 50%;
-  height: 100%;
-  position: relative;
-  .v-content {
-    width: 340px;
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    margin: auto 0 auto -170px;
-    max-height: 475px;
-    text-align: left;
-    font-size: 22px;
-  }
-  .v-tabs {
-    li {
-      float: left;
-      font-size: 26px;
-      color: #333333;
-      margin-right: 5px;
-      border-right: 1px solid #000;
-      padding-right: 5px;
-      &:last-child {
-        border: none;
-      }
-    }
-  }
-  .yidun.yidun--light {
-    width: 100% !important;
-    margin-top: 38px !important;
-    .yidun_control {
-      background-color: #fff !important;
-      border: 1px solid #c4c4c4 !important;
-    }
-  }
-  .input-form {
+  .v-left {
+    float: left;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(-30deg, #e62e2e 4%, #ff6c3b 100%);
     position: relative;
-    .v-error {
-      display: block;
-      height: 40px;
-      line-height: 40px;
-      margin-top: 8px;
-      font-size: 12px;
-      color: #e62e2e;
+    .v-logo {
+      width: 94px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
     }
-    &.v-forget {
-      margin-top: 8px;
-      font-size: 13px;
-      .clickTag {
+    .v-title {
+      font-size: 32px;
+      color: #333333;
+    }
+  }
+
+  .v-right {
+    float: right;
+    width: 50%;
+    height: 100%;
+    position: relative;
+    .v-content {
+      width: 340px;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      margin: auto 0 auto -170px;
+      max-height: 475px;
+      text-align: left;
+      font-size: 22px;
+    }
+    .v-tabs {
+      li {
+        float: left;
+        font-size: 26px;
+        color: #333333;
+        margin-right: 5px;
+        border-right: 1px solid #000;
+        padding-right: 5px;
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+    .yidun.yidun--light {
+      width: 100% !important;
+      margin-top: 38px !important;
+      .yidun_control {
+        background-color: #fff !important;
+        border: 1px solid #c4c4c4 !important;
+      }
+    }
+    .input-form {
+      position: relative;
+      .v-error {
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #e62e2e;
+      }
+      &.v-forget {
+        margin-top: 8px;
         font-size: 13px;
-        color: #999;
-        vertical-align: middle;
-      }
-      .fr {
-        float: right;
+        .clickTag {
+          font-size: 13px;
+          color: #999;
+          vertical-align: middle;
+        }
+        .fr {
+          float: right;
+        }
       }
     }
-  }
-  .v-getcode {
-    background-color: #fc5659;
-    display: block;
-    width: 115px;
-    height: 34px;
-    line-height: 34px;
-    text-align: center;
-    font-size: 13px;
-    color: #fff;
-    position: absolute;
-    bottom: 22px;
-    right: 0;
-    border-radius: 2px;
-    text-decoration: none;
-    &.prohibit {
-      background-color: #dedede;
-      &:hover {
+    .v-getcode {
+      background-color: #fc5659;
+      display: block;
+      width: 115px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+      position: absolute;
+      bottom: 22px;
+      right: 0;
+      border-radius: 2px;
+      text-decoration: none;
+      &.prohibit {
         background-color: #dedede;
+        &:hover {
+          background-color: #dedede;
+        }
       }
     }
-  }
-  .el-button {
-    margin-top: 10px;
+    .el-button {
+      margin-top: 10px;
+    }
   }
 }
 </style>

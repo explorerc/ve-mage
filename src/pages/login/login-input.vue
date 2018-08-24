@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .mu-text-field {
   font-size: 16px;
   width: 100%;

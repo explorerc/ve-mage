@@ -3,6 +3,7 @@ import appModules from './modules/app'
 import aModules from './modules/a'
 import bModules from './modules/b'
 import loginModules from './modules/login'
+import liveMagerModules from './modules/liveMager'
 
 const isDev = process.env.NODE_ENV !== 'production'
 
@@ -33,7 +34,8 @@ export default () => {
       app: appModules,
       a: aModules,
       b: bModules,
-      login: loginModules
+      login: loginModules,
+      liveMager: liveMagerModules
     }
     // mutations,
     // getters,

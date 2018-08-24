@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="account-container">
     <div class="v-info">
       <p class="v-title">
         基本信息
@@ -474,80 +474,82 @@
     }
   }
 </script>
-<style lang="scss">
-.v-info {
-  width: 1170px;
-  margin: 35px auto 0;
-  border: 1px solid #333;
-  padding: 10px;
-  .v-editor {
-    display: block;
-    margin-bottom: 20px;
-    height: 42px;
-    line-height: 42px;
-    .v-explain {
-      display: inline-block;
-      width: 65px;
+<style lang="scss" scoped>
+.account-container {
+  .v-info {
+    width: 1170px;
+    margin: 35px auto 0;
+    border: 1px solid #333;
+    padding: 10px;
+    .v-editor {
+      display: block;
+      margin-bottom: 20px;
+      height: 42px;
+      line-height: 42px;
+      .v-explain {
+        display: inline-block;
+        width: 65px;
+      }
+      .v-indo-label {
+        display: inline-block;
+        width: 155px;
+        text-align: left;
+        margin-right: 45px;
+        overflow: hidden;
+        vertical-align: middle;
+      }
+      .test-upload {
+        width: 65px;
+        height: 65px;
+        border: 1px solid #333;
+      }
     }
-    .v-indo-label {
-      display: inline-block;
-      width: 155px;
+    .v-title {
       text-align: left;
-      margin-right: 45px;
-      overflow: hidden;
-      vertical-align: middle;
-    }
-    .test-upload {
-      width: 65px;
-      height: 65px;
-      border: 1px solid #333;
+      font-size: 14px;
+      color: #333;
     }
   }
-  .v-title {
-    text-align: left;
-    font-size: 14px;
-    color: #333;
-  }
-}
-#captcha {
-  margin-bottom: 10px;
-}
-.com-input {
-  &.v-input {
-    width: 435px;
+  #captcha {
     margin-bottom: 10px;
-    input {
+  }
+  .com-input {
+    &.v-input {
       width: 435px;
-      height: 40px;
-      line-height: 40px;
-    }
-    &.phone-code {
-      width: 300px;
+      margin-bottom: 10px;
       input {
+        width: 435px;
+        height: 40px;
+        line-height: 40px;
+      }
+      &.phone-code {
         width: 300px;
+        input {
+          width: 300px;
+        }
       }
     }
   }
-}
-.phone-code-btn {
-  display: inline-block;
-  width: 130px;
-  height: 40px;
-  line-height: 40px;
-  margin-left: 5px;
-}
-.v-explain {
-  text-align: center;
-  color: #333;
-}
-.v-subtitle {
-  text-align: left;
-  margin: 135px auto 10px;
-  padding: 0 23px;
-}
-.v-passordExplain {
-  text-align: left;
-  margin: -5px auto 10px;
-  padding: 0 23px;
+  .phone-code-btn {
+    display: inline-block;
+    width: 130px;
+    height: 40px;
+    line-height: 40px;
+    margin-left: 5px;
+  }
+  .v-explain {
+    text-align: center;
+    color: #333;
+  }
+  .v-subtitle {
+    text-align: left;
+    margin: 135px auto 10px;
+    padding: 0 23px;
+  }
+  .v-passordExplain {
+    text-align: left;
+    margin: -5px auto 10px;
+    padding: 0 23px;
+  }
 }
 </style>

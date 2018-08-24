@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import EventBus from 'src/utils/eventBus'
 import {
   Loading
 } from 'components/common/loading'
@@ -60,15 +61,16 @@ export const ajax = (options) => {
   }).catch((data) => {
     Loading(false)
     console.log('出错了', data)
-    MessageBox({
-      header: '提示',
-      content: data.msg
-    })
     switch (data.code) {
       case 10030:
-        console.log('跳转到登录页')
+        EventBus.$emit('auth')
         break
+      default:
+        MessageBox({
+          header: '提示',
+          content: data.msg
+        })
     }
-    return new Promise(() => { })
+    return new Promise(() => {})
   })
 }
