@@ -18,7 +18,7 @@
             <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
               <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
             </button>
-            <button type="button" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
+            <button type="button" class="button--cancel" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
               <span>{{cancelText}}</span>
             </button>
           </div>
@@ -209,6 +209,9 @@
             border-color: #66b1ff;
             color: #fff;
           }
+        }
+        .button--cancel:hover{
+          color: #409eff;
         }
       }
     }
