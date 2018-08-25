@@ -4,8 +4,7 @@
     <el-upload
       class="avatar-uploader"
       :action="imgUploadUrl"
-      name="img"
-      :show-file-list="false"
+      name="file"
       :on-success="uploadSuccess"
       :on-error="uploadError"
       :before-upload="beforeUpload">
@@ -124,11 +123,11 @@
         // 获取富文本组件实例
         let quill = this.$refs.myQuillEditor.quill
         // 如果上传成功
-        if (res.code === '200' && res.info !== null) {
+        if (res.code === 200 && res.data !== null) {
           // 获取光标所在位置
           let length = quill.getSelection().index
           // 插入图片  res.info为服务器返回的图片地址
-          quill.insertEmbed(length, 'image', res.info)
+          quill.insertEmbed(length, 'image', `${res.data.host}/${res.data.name}`)
           // 调整光标到最后
           quill.setSelection(length + 1)
         } else {
@@ -152,6 +151,9 @@
 
   #quill-upload {
     // height: 300px;
+    .avatar-uploader{
+      display: none;
+    }
     .el-row {
       height: 100%;
       .quill-editor {

@@ -93,14 +93,15 @@
       <div slot="bottom">
         <div class="email-timer" v-if="isTimer">
           <el-date-picker
-            v-model="email.timerSend"
+            v-model="email.planTime"
             type="datetime"
             placeholder="选择日期时间"
             align="right"
-            format="yyyy-MM-dd HH:mm">
+            format="yyyy-MM-dd HH:mm"
+            value-format="yyyy-MM-dd HH:mm">
           </el-date-picker>
         </div>
-        <el-button class="live-btn fr" type="primary" plain @click="sendEmail">定时发送</el-button>
+        <el-button class="live-btn fr" type="primary" plain @click="sendEmail">{{isTimer?'定时发送':'立即发送'}}</el-button>
       </div>
     </message-box>
   </div>
@@ -108,7 +109,7 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import editStepOne from './edit-step-one'
+  // import editStepOne from './edit-step-one'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
@@ -127,7 +128,7 @@
           content: '',
           desc: '',
           senderName: '',
-          timerSend: ''
+          planTime: ''
         }
       }
     },
@@ -142,11 +143,6 @@
         immediate: true
       }
     },
-    created () {
-      if (!this.email.emailInviteId) {
-        this.prePage()
-      }
-    },
     methods: {
       ...mapMutations('liveMager', {
         storeEmailInfo: types.EMAIL_INFO
@@ -154,6 +150,7 @@
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
+            this.email = {...this.email, ...res.data}
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
@@ -166,6 +163,7 @@
       },
       sendEmail () {
         this.timerSendShow = false
+        if (!this.checkParams(this.isTimer)) return
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
             console.log(res)
@@ -183,15 +181,45 @@
         this.isTimer = true
       },
       immediatelySend () {
-        this.email.timerSend = ''
+        this.email.planTime = ''
         this.isTimer = false
         this.timerSendShow = true
+      },
+      checkParams (isTimer) {
+        let toastParam = {
+          title: '警告',
+          message: '',
+          type: 'warning'
+        }
+        if (!this.email.title) {
+          toastParam.message = '标题不能为空'
+          this.$notify(toastParam)
+          return false
+        } else if (!this.email.senderName) {
+          toastParam.message = '发件人不能为空'
+          this.$notify(toastParam)
+          return false
+        } else if (!this.email.content) {
+          toastParam.message = '邮件内容不能为空'
+          this.$notify(toastParam)
+          return false
+        } else if (!this.email.desc) {
+          toastParam.message = '邮件摘要不能为空'
+          this.$notify(toastParam)
+          return false
+        } else if (isTimer && !this.email.planTime) {
+          toastParam.message = '定时时间不能为空'
+          this.$notify(toastParam)
+          return false
+        }
+        return true
       },
       handleClickSendEmail () {
         this.timerSendShow = false
       },
       prePage () {
-        this.$parent.$data.currentComponent = editStepOne
+        // this.$parent.$data.currentComponent = editStepOne
+        this.$emit('changeView', 0)
       }
     }
   }

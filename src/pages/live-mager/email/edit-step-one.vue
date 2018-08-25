@@ -49,7 +49,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VeEditer from 'src/components/ve-editer'
-  import editStepTwo from './edit-step-two'
+  // import editStepTwo from './edit-step-two'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
@@ -175,7 +175,7 @@
       nextEmail () {
         this.storeEmailInfo(this.email)
         // 切换到下一步
-        this.$parent.$data.currentComponent = editStepTwo
+        this.$emit('changeView', 1)
       },
       /* 更换模板 */
       changeTemp (content) {

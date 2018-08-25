@@ -6,7 +6,7 @@
     </div>
     <transition name="fade" mode="out-in">
       <keep-alive>
-        <component :is="currentComponent"></component>
+        <component @changeView="changeView" :is="currentComponent"></component>
       </keep-alive>
     </transition>
   </div>
@@ -14,12 +14,14 @@
 
 <script>
   import editStepOne from './edit-step-one'
+  import editStepTwo from './edit-step-two'
+  const componentArry = [editStepOne, editStepTwo]
 
   export default {
     name: 'edit',
     data () {
       return {
-        currentComponent: editStepOne
+        currentComponent: componentArry[0]
       }
     },
     created () {
@@ -29,6 +31,13 @@
       }
     },
     methods: {
+      /**
+       * 动态切换到指定组件
+       * @param idx
+       */
+      changeView (idx) {
+        this.currentComponent = componentArry[idx]
+      },
       goBack () {
         this.$router.go(-1)
       }
