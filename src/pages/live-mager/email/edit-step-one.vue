@@ -3,7 +3,6 @@
     <div class="edit-content clearfix">
       <div class="edit-content-box fl">
         <ve-editer
-          img-upload-url="/api/upload/do-upload"
           height="600"
           v-model="email.content"></ve-editer>
         <div style="width: 50%;margin: 0 auto;padding: 20px 0;">

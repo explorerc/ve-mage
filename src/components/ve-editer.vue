@@ -83,7 +83,7 @@
       },
       imgUploadUrl: {
         type: String,
-        default: ''
+        default: '/api/upload/do-upload'
       }
     },
     computed: {
@@ -151,6 +151,7 @@
 
   #quill-upload {
     // height: 300px;
+    min-width: 688px;
     .avatar-uploader{
       display: none;
     }
