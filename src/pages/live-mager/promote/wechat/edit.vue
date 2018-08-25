@@ -48,7 +48,7 @@
         <div class="from-title"></div>
         <div class="from-content">
           <el-button>测试</el-button>
-          <el-button>保存</el-button>
+          <el-button @click="save">保存</el-button>
         </div>
       </div>
     </div>
@@ -121,9 +121,12 @@
 </template>
 
 <script>
+  import createHttp from 'src/api/activity-manger'
   export default {
     data () {
       return {
+        inviteId: this.$route.query.id, // 签名列表传过来的id
+        activitId: this.$route.params.id,
         webinarName: '活动名字啊啊啊',
         groudModal: false,
         tabValue: 1,
@@ -139,13 +142,13 @@
           label: '活动推荐'
         }],
         sendOptions: [{
-          value: 1,
+          value: 'await',
           label: '定时发送'
         }, {
-          value: 2,
+          value: 'send',
           label: '立即发送'
         }, {
-          value: 3,
+          value: 'draft',
           label: '暂存为草稿'
         }],
         tplValue: '',
@@ -160,6 +163,13 @@
       }
     },
     created () {
+      if (this.inviteId.length) {
+        createHttp.queryWechat(this.inviteId).then(res => {
+          console.log(res)
+        }).catch((res) => {
+
+        })
+      }
     },
     methods: {
       closeModal (e) {
@@ -174,12 +184,28 @@
       },
       chooseTag (idx) {
         this.tagIdx = idx
+      },
+      save () {
+        let data = {
+          activityId: this.$route.params.id,
+          templateId: this.tplValue,
+          title: this.titleValue,
+          groupId: '1', // 分组id
+          status: this.sendValue,
+          sendTime: this.date
+        }
+        // 更新
+        createHttp.saveWechat(data).then((res) => {
+          console.log(res)
+        }).catch((res) => {
+
+        })
       }
     },
     watch: {
       sendValue: {
         handler (newValue) {
-          newValue === 1 ? this.pickDate = true : this.pickDate = false
+          newValue === 'await' ? this.pickDate = true : this.pickDate = false
         }
       }
     }

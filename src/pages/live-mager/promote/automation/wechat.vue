@@ -52,6 +52,8 @@
   export default {
     data () {
       return {
+        date: '2018-12-10 10:00:00',
+        titleValue: '',
         webinarName: '活动名字啊啊啊',
         tplOptions: [{
           value: 1,

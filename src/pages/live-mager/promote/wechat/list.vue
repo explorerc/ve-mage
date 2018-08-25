@@ -47,7 +47,7 @@
         label="操作">
         <template slot-scope="scope">
           <div class="tool-box">
-            <span><a href=''>详情</a></span>
+            <span> <router-link :to="{ name:'wechatEdit', query:{ id : scope.row.id} }">详情</router-link></span>
             <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
             <div class="tool" v-if='scope.row.toolShow'>
               <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
@@ -63,65 +63,82 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        tableData: [
-          {
-            title: '标题标题标题',
-            tpl: '活动邀请',
-            time: '2018-08-23 11:00:00',
-            receiver: '观众分组(40)',
-            status: 1,
-            autoSend: false,
-            toolShow: false
-          },
-          {
-            title: '标题标222',
-            tpl: '活动推荐',
-            time: '2018-05-21 11:23:11',
-            receiver: '观众分组(40)',
-            status: 2,
-            autoSend: true,
-            toolShow: false
-          },
-          {
-            title: 'asd',
-            tpl: '活动推荐',
-            time: '2018-05-21 11:23:11',
-            receiver: '观众分组(40)',
-            status: 3,
-            autoSend: false,
-            toolShow: false
-          }
-        ],
-        switchVal: true
-      }
+import createHttp from 'src/api/activity-manger'
+export default {
+  data () {
+    return {
+      activityId: this.$route.params.id,
+      tableData: [
+        {
+          id: '1',
+          title: '标题标题标题',
+          tpl: '活动邀请',
+          time: '2018-08-23 11:00:00',
+          receiver: '观众分组(40)',
+          status: 1,
+          autoSend: false,
+          toolShow: false
+        },
+        {
+          id: '2',
+          title: '标题标222',
+          tpl: '活动推荐',
+          time: '2018-05-21 11:23:11',
+          receiver: '观众分组(40)',
+          status: 2,
+          autoSend: true,
+          toolShow: false
+        },
+        {
+          id: '3',
+          title: 'asd',
+          tpl: '活动推荐',
+          time: '2018-05-21 11:23:11',
+          receiver: '观众分组(40)',
+          status: 3,
+          autoSend: false,
+          toolShow: false
+        }
+      ],
+      switchVal: true
+    }
+  },
+  created () {
+    let queryData = {
+      activityId: this.activityId,
+      page: 1,
+      pageSize: 10
+    }
+    createHttp.queryWechatlist(queryData).then((res) => {
+      console.log(res)
+    }).catch((e) => {
+      console.log(e)
+    })
+  },
+  methods: {
+    switchAutosend (idx, data) {
+      data[idx]['autoSend'] === false ? data[idx]['autoSend'] = true : data[idx]['autoSend'] = false
     },
-    methods: {
-      switchAutosend (idx, data) {
-        data[idx]['autoSend'] === false ? data[idx]['autoSend'] = true : data[idx]['autoSend'] = false
-      },
-      del (idx, data) {
-        data.splice(idx, 1)
-      },
-      showMore (idx, data) {
+    del (idx, data) {
+      data.splice(idx, 1)
+    },
+    showMore (idx, data) {
+      this.tableData.forEach(item => {
+        item.toolShow = false
+      })
+      data[idx]['toolShow'] === false ? data[idx]['toolShow'] = true : data[idx]['toolShow'] = false
+    },
+    closeAlltool (e) {
+      console.log(e.target.className)
+      if (e.target.className.search('more') === -1 || e.target.className.search('more') === -1) {
+        console.log('in')
         this.tableData.forEach(item => {
           item.toolShow = false
         })
-        data[idx]['toolShow'] === false ? data[idx]['toolShow'] = true : data[idx]['toolShow'] = false
-      },
-      closeAlltool (e) {
-        console.log(e.target.className)
-        if (e.target.className.search('more') === -1 || e.target.className.search('more') === -1) {
-          console.log('in')
-          this.tableData.forEach(item => {
-            item.toolShow = false
-          })
-        }
       }
     }
   }
+}
 </script>
 
 <style lang='scss' scoped>

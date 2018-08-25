@@ -219,7 +219,7 @@ export default [{
   component: promoteWechat
 },
 {
-  path: '/liveMager/promote/wechat/create',
+  path: '/liveMager/promote/wechat/create/:id',
   name: 'wechatCreate',
   component: wechatCreate,
   meta: {
@@ -237,7 +237,7 @@ export default [{
   component: promoteMsg
 },
 {
-  path: '/liveMager/promote/msg/create',
+  path: '/liveMager/promote/msg/create/:id',
   name: 'msgCreate',
   component: msgCreate
 },
