@@ -73,6 +73,8 @@ const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
 const promoteAuto = () => import('src/pages/live-mager/promote/automation')
 const autoEditwx = () => import('src/pages/live-mager/promote/automation/wechat')
 const autoEditmsg = () => import('src/pages/live-mager/promote/automation/msg')
+/* 回放 */
+const PlayBack = () => import('src/pages/live-mager/playBack')
 
 export default [{
   path: '/',
@@ -260,5 +262,10 @@ export default [{
   path: '/liveMager/promote/auto/editMsg/:id',
   name: 'autoEditmsg',
   component: autoEditmsg
+},
+{
+  path: '/liveMager/playBack/:id',
+  name: 'playBack',
+  component: PlayBack
 }
 ]
