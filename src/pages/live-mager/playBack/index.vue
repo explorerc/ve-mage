@@ -62,6 +62,10 @@
                 :value="item.value">
               </el-option>
             </el-select>
+            <div class="msg-tip-box">
+              <i>?</i>
+              <span>ssssss尔特人拖热拖若也若拖和若拖也拖若也若拖也若拖若和拖拖若若若若若若若若若若若若若若若若若若若若若若若若若若若若若</span>
+            </div>
             <div class="black-box">
               <transition name="left-right">
                 <div class="upload-video" v-if="playBackMode==1">
@@ -168,7 +172,12 @@
         if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = '<embed src="http://player.video.iqiyi.com/aea7e1cbc3ff0e7cdafefaae05d72e11/0/0/v_19rqzip0sw.swf-albumId=1278839100-tvId=1278839100-isPurchase=0-cnId=6" allowFullScreen="true" quality="high" width="480" height="350" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>'
         } else {
-          console.log('error')
+          this.$toast({
+            header: `提示`,
+            content: '格式不正确',
+            autoClose: 2000,
+            position: 'top-center'
+          })
         }
       },
       uploadImgSuccess (data) {
@@ -228,34 +237,67 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-.black-box {
-  margin-top: 20px;
-  .el-date-editor {
-    margin-left: 10px;
-  }
-  .play-content {
-    .out-line {
-      margin: 10px 0;
-      span {
-        display: inline-block;
-        margin-right: 20px;
-      }
-      .out-line-input {
-        width: 400px;
-      }
-    }
-    .play-box {
+  .msg-tip-box{
+    display: inline-block;
+    position: relative;
+    font-size: 12px;
+    height: 20px;
+    i{
       display: inline-block;
-      width: 474px;
-      height: 266.6px;
-      line-height: 266px;
-      vertical-align: top;
-      background-color: #666666;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      border: solid 1px #e5e5e5;
+      border-radius: 50%;
+      &:hover{
+        cursor: pointer;
+        opacity: .8;
+      }
+    }
+    span{
+      display: inline-block;
+      max-width: 400px;
+      border: solid 1px #e5e5e5;
+      padding: 5px;
+      background-color: rgba(0,0,0,.8);
       color: #fff;
-      .iframe-box {
-        height: 100%;
+      vertical-align: top;
+      opacity: 0;
+    }
+    i:hover + span{
+      opacity: 1;
+      transition: opacity 1s;
+    }
+  }
+  .black-box {
+    margin-top: 20px;
+    .el-date-editor {
+      margin-left: 10px;
+    }
+    .play-content {
+      .out-line {
+        margin: 10px 0;
+        span {
+          display: inline-block;
+          margin-right: 20px;
+        }
+        .out-line-input {
+          width: 400px;
+        }
+      }
+      .play-box {
+        display: inline-block;
+        width: 474px;
+        height: 266.6px;
+        line-height: 266px;
+        vertical-align: top;
+        background-color: #666666;
+        color: #fff;
+        .iframe-box {
+          height: 100%;
+        }
       }
     }
   }
-}
 </style>
