@@ -86,7 +86,7 @@ const webpackConfig = {
           loader: 'url-loader',
           options: {
             name: subPath('img/[name].[hash:7].[ext]'),
-            limit: 500 //单位是byte
+            limit: 5000 //单位是byte
           }
         }],
         include: resolve('src')
@@ -107,7 +107,7 @@ const webpackConfig = {
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 50,
+            limit: 5000,
             name: subPath('fonts/[name].[hash:7].[ext]')
           }
         }],
