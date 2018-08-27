@@ -197,7 +197,7 @@ export default [{
     component: setLiveGuided
   },
   {
-    path: '/setLiveWatch',
+    path: '/setLiveWatch/:id',
     name: 'setLiveWatch',
     component: setLiveWatch
   },
