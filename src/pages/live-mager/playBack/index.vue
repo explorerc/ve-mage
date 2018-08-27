@@ -166,7 +166,7 @@
       preViewOutLine () {
         // this.outLineLink
         var reg = /^['<embed','<iframe']$/
-        if (reg.test(this.outLineLink)){
+        if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = '<embed src="http://player.video.iqiyi.com/aea7e1cbc3ff0e7cdafefaae05d72e11/0/0/v_19rqzip0sw.swf-albumId=1278839100-tvId=1278839100-isPurchase=0-cnId=6" allowFullScreen="true" quality="high" width="480" height="350" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>'
         }
       },
@@ -227,34 +227,34 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .black-box {
-    margin-top: 20px;
-    .el-date-editor {
-      margin-left: 10px;
-    }
-    .play-content {
-      .out-line {
-        margin: 10px 0;
-        span {
-          display: inline-block;
-          margin-right: 20px;
-        }
-        .out-line-input {
-          width: 400px;
-        }
-      }
-      .play-box {
+.black-box {
+  margin-top: 20px;
+  .el-date-editor {
+    margin-left: 10px;
+  }
+  .play-content {
+    .out-line {
+      margin: 10px 0;
+      span {
         display: inline-block;
-        width: 474px;
-        height: 266.6px;
-        line-height: 266px;
-        vertical-align: top;
-        background-color: #666666;
-        color: #fff;
-        .iframe-box {
-          height: 100%;
-        }
+        margin-right: 20px;
+      }
+      .out-line-input {
+        width: 400px;
+      }
+    }
+    .play-box {
+      display: inline-block;
+      width: 474px;
+      height: 266.6px;
+      line-height: 266px;
+      vertical-align: top;
+      background-color: #666666;
+      color: #fff;
+      .iframe-box {
+        height: 100%;
       }
     }
   }
+}
 </style>
