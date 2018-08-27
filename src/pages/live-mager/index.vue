@@ -2,7 +2,7 @@
   <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
       <span>直播列表</span>
-      <el-button class="live-btn fr" type="primary" plain>创建直播</el-button>
+      <el-button class="live-btn fr" type="primary" plain @click="createLive">创建直播</el-button>
     </div>
     <div class="mager-box">
       <div class="live-search">
@@ -114,6 +114,9 @@
       },
       searchEnter () {
         this.queryList()
+      },
+      createLive () {
+        this.$router.push('/liveMager/create')
       },
       deleteLive (activityId) {
         liveHttp.deleteById(activityId).then((res) => {
