@@ -64,42 +64,38 @@
             </el-select>
             <ve-msg-tips tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>
             <div class="black-box">
-              <transition name="left-right">
-                <div class="upload-video" v-if="playBackMode==1">
-                  <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
-                       @click="uploadVideo">
-                    <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
-                    <i class="iconfont icon-jiahao"></i>
-                    <span>上传视频</span>
-                    <div class="hide">
-                      <input type="file" id="upload"/>
-                      <input type="text" id='rename'>
-                      <button id="confirmUpload" class="saveBtn"></button>
-                    </div>
-                  </div>
-                  <div class="upload-tips">
-                    <span>视频仅支持mp4格式，文件大小不超过200M</span>
-                    <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
+              <div class="upload-video" v-if="playBackMode==1">
+                <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
+                     @click="uploadVideo">
+                  <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
+                  <i class="iconfont icon-jiahao"></i>
+                  <span>上传视频</span>
+                  <div class="hide">
+                    <input type="file" id="upload"/>
+                    <input type="text" id='rename'>
+                    <button id="confirmUpload" class="saveBtn"></button>
                   </div>
                 </div>
-              </transition>
-              <transition name="left-right">
-                <div class="play-content" v-if="playBackMode==2">
-                  <div class="out-line">
-                    <span>输入链接</span>
-                    <com-input customClass="out-line-input" :value.sync="outLineLink"
-                               placeholder="请输入链接"></com-input>
-                    <el-button class="live-btn" type="primary" plain @click="preViewOutLine">确定</el-button>
-                  </div>
-                  <div class="out-line">
-                    <span>链接预览</span>
-                    <div class="play-box">
-                      <span v-if="!playBack.outLineLink">暂无预览</span>
-                      <div class="iframe-box" v-if="playBack.outLineLink" v-html="playBack.outLineLink"></div>
-                    </div>
+                <div class="upload-tips">
+                  <span>视频仅支持mp4格式，文件大小不超过200M</span>
+                  <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
+                </div>
+              </div>
+              <div class="play-content" v-if="playBackMode==2">
+                <div class="out-line">
+                  <span>输入链接</span>
+                  <com-input customClass="out-line-input" :value.sync="outLineLink"
+                             placeholder="请输入链接"></com-input>
+                  <el-button class="live-btn" type="primary" plain @click="preViewOutLine">确定</el-button>
+                </div>
+                <div class="out-line">
+                  <span>链接预览</span>
+                  <div class="play-box">
+                    <span v-if="!playBack.outLineLink">暂无预览</span>
+                    <div class="iframe-box" v-if="playBack.outLineLink" v-html="playBack.outLineLink"></div>
                   </div>
                 </div>
-              </transition>
+              </div>
             </div>
           </div>
         </div>
@@ -168,7 +164,7 @@
       preViewOutLine () {
         const reg = /^<embed|<iframe.*(embed>|iframe>)$/
         if (reg.test(this.outLineLink)) {
-          this.playBack.outLineLink = '<embed src="http://player.video.iqiyi.com/aea7e1cbc3ff0e7cdafefaae05d72e11/0/0/v_19rqzip0sw.swf-albumId=1278839100-tvId=1278839100-isPurchase=0-cnId=6" allowFullScreen="true" quality="high" width="480" height="350" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>'
+          this.playBack.outLineLink = this.outLineLink
         } else {
           this.$toast({
             header: `提示`,
@@ -291,13 +287,14 @@
       .play-box {
         display: inline-block;
         width: 474px;
-        height: 266.6px;
+        min-height: 266.6px;
         line-height: 266px;
         vertical-align: top;
         background-color: #666666;
         color: #fff;
-        .iframe-box {
+        .iframe-box{
           height: 100%;
+          width: 100%;
         }
       }
     }

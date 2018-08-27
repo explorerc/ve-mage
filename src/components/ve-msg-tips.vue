@@ -41,6 +41,7 @@
      }
     }
     span{
+      position: relative;
       display: inline-block;
       max-width: 400px;
       transform: translateY(-50%);
@@ -53,7 +54,7 @@
       opacity: 0;
       word-wrap:break-word;
       word-break:break-all;
-
+      z-index: 10;
     }
     i:hover + span{
       opacity: 1;
