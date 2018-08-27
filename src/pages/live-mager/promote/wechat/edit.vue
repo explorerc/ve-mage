@@ -54,9 +54,9 @@
     </div>
     <!-- 选择分组弹窗 -->
     <transition name='fade'>
-      <div class="modal-cover" v-if='testModal' @click="closeModal">
+      <div class="modal-cover" v-if='groudModal' @click="closeModal">
         <div class='modal-box'>
-          <h4>选择观众组 <span class='close' @click='testModal = false'>×</span></h4>
+          <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
           <div class='content-box'>
             <com-tabs :value.sync="tabValue" position='left' type='card' customClass='choose-tab'>
               <com-tab label="分组" :index="1">

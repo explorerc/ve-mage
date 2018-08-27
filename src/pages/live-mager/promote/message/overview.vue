@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">发送状态：</div>
+        <div class="from-title"></div>
         <div class="from-content">
           <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
           <el-button><router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link></el-button>

@@ -9,12 +9,26 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">消息模板：</div>
+        <div class="from-title">接收人：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择">
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <el-button @click='groudModal = true'>点击添加</el-button>
+          <ol class='groupList'>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">短信内容：</div>
+        <div class="from-content">
+          <com-input type="textarea" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="200"></com-input>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">短信签名：</div>
+        <div class="from-content">
+          <com-input :value.sync="msgTag" placeholder="请输入签名" :max-length="10"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -31,17 +45,6 @@
         <div class="from-content">
           <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
           </el-date-picker>
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title">接收人：</div>
-        <div class="from-content">
-          <el-button @click='groudModal = true'>点击添加</el-button>
-          <ol class='groupList'>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-          </ol>
         </div>
       </div>
       <div class="from-row">
@@ -107,18 +110,12 @@
       <div class="modal-cover" v-if='testModal' @click="closeModal">
         <div class='modal-box'>
           <h4>短信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
-          <div class='content-box'>
+          <div class='content-box from-box'>
             <p>每天只允许发送5条测试短信</p>
             <div class="from-row">
               <div class="from-title">输入号码：</div>
               <div class="from-content">
-                <com-input :value.sync="titleValue" placeholder="请输入手机号码"></com-input>
-              </div>
-            </div>
-            <div class="from-row">
-              <div class="from-title">短信内容：</div>
-              <div class="from-content">
-                <div class="content-detail">奥斯卡了解到卢卡斯角度看拉升阶段卢卡斯阶段</div>
+                <com-input placeholder="请输入手机号码"></com-input>
               </div>
             </div>
           </div>
@@ -170,9 +167,11 @@ export default {
         value: 'DRAFT',
         label: '暂存为草稿'
       }],
-      tplValue: '',
+      // tplValue: '',
       sendValue: '',
       pickDate: false,
+      msgTag: '',
+      msgContent: '',
       date: new Date(),
       pickerOptions: {
         disabledDate (time) {
