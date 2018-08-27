@@ -62,10 +62,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <div class="msg-tip-box">
-              <i>?</i>
-              <span>ssssss尔特人拖热拖若也若拖和若拖也拖若也若拖也若拖若和拖拖若若若若若若若若若若若若若若若若若若若若若若若若若若若若若</span>
-            </div>
+            <ve-msg-tips tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>
             <div class="black-box">
               <transition name="left-right">
                 <div class="upload-video" v-if="playBackMode==1">
@@ -116,6 +113,7 @@
 
 <script>
   import VeUpload from 'src/components/ve-upload'
+  import veMsgTips from 'src/components/ve-msg-tips'
 
   const outLineMode = {
     'FOREVER': 'forever',
@@ -123,7 +121,7 @@
   }
   export default {
     name: 'play-back',
-    components: {VeUpload},
+    components: {VeUpload, veMsgTips},
     data () {
       return {
         vhallParams: {
@@ -237,12 +235,12 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .msg-tip-box{
+  .msg-tip-box {
     display: inline-block;
     position: relative;
     font-size: 12px;
     height: 20px;
-    i{
+    i {
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -250,22 +248,26 @@
       text-align: center;
       border: solid 1px #e5e5e5;
       border-radius: 50%;
-      &:hover{
+      &:hover {
         cursor: pointer;
         opacity: .8;
       }
     }
-    span{
+    span {
       display: inline-block;
       max-width: 400px;
       border: solid 1px #e5e5e5;
       padding: 5px;
-      background-color: rgba(0,0,0,.8);
+      background-color: rgba(0, 0, 0, .8);
       color: #fff;
       vertical-align: top;
       opacity: 0;
+      word-wrap: break-word;
+      word-break: break-all;
+      transform: translateY(-50%);
+      margin-top: 15px;
     }
-    i:hover + span{
+    i:hover + span {
       opacity: 1;
       transition: opacity 1s;
     }
