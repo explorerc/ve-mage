@@ -241,8 +241,9 @@
         })
       },
       editEmail () {
-        const emaiId = this.emailList[this.currentEmailIdx].emailInviteId
-        this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${emaiId}`)
+        const email = this.emailList[this.currentEmailIdx]
+        this.storeEmailInfo(email)
+        this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${email.emailInviteId}`)
       },
       addEmail () {
         this.$router.push(`/liveMager/emailEdit/${this.activeId}`)
