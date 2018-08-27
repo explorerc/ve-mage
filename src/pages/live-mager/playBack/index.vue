@@ -62,7 +62,8 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <ve-msg-tips tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>
+            <ve-msg-tips
+              tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>
             <div class="black-box">
               <div class="upload-video" v-if="playBackMode==1">
                 <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
@@ -101,6 +102,49 @@
         </div>
       </div>
     </div>
+    <div class="list-box">
+      <el-table
+        :data="playBackList"
+        style="width: 100%">
+        <el-table-column
+          label="缩略图">
+          <template slot-scope="scope">
+            <img class="play-back-img" :src="playBackList[scope.$index].playCover">
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="片段名">
+        </el-table-column>
+        <el-table-column
+          prop="timeLength"
+          label="时长">
+        </el-table-column>
+        <el-table-column
+          prop="createTime"
+          label="生成时间">
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              type="text" size="small"
+              v-if="playBackList[scope.$index].isDefault"
+              @click.stop="">默认回放
+            </el-button>
+            <el-button
+              type="text" size="small"
+              v-else
+              @click.stop="">设为默认回放
+            </el-button>
+            <el-button
+              type="text" size="small"
+              @click.stop="">更多
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <div class="step-btns">
       <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
     </div>
@@ -136,6 +180,26 @@
           recordId: '',
           outLineLink: ''
         },
+        playBackList: [
+          {
+            id: 0,
+            playCover: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2896936926,3592497727&fm=173&app=25&f=JPEG?w=400&h=266&s=3822CE1449634F1D24ED2441030050F2',
+            isDefault: 1,
+            title: '缩略图1',
+            name: '片段名1',
+            timeLength: '10:22',
+            createTime: '2018-7-14 12:00'
+          },
+          {
+            id: 1,
+            playCover: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2896936926,3592497727&fm=173&app=25&f=JPEG?w=400&h=266&s=3822CE1449634F1D24ED2441030050F2',
+            isDefault: 0,
+            title: '缩略图2',
+            name: '片段名2',
+            timeLength: '10:22',
+            createTime: '2018-7-14 12:00'
+          }
+        ],
         options: [
           {value: '0', label: '默认回放'},
           {value: '1', label: '上传视频'},
@@ -231,43 +295,6 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .msg-tip-box {
-    display: inline-block;
-    position: relative;
-    font-size: 12px;
-    height: 20px;
-    i {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-      text-align: center;
-      border: solid 1px #e5e5e5;
-      border-radius: 50%;
-      &:hover {
-        cursor: pointer;
-        opacity: .8;
-      }
-    }
-    span {
-      display: inline-block;
-      max-width: 400px;
-      border: solid 1px #e5e5e5;
-      padding: 5px;
-      background-color: rgba(0, 0, 0, .8);
-      color: #fff;
-      vertical-align: top;
-      opacity: 0;
-      word-wrap: break-word;
-      word-break: break-all;
-      transform: translateY(-50%);
-      margin-top: 15px;
-    }
-    i:hover + span {
-      opacity: 1;
-      transition: opacity 1s;
-    }
-  }
   .black-box {
     margin-top: 20px;
     .el-date-editor {
@@ -292,11 +319,23 @@
         vertical-align: top;
         background-color: #666666;
         color: #fff;
-        .iframe-box{
+        .iframe-box {
           height: 100%;
           width: 100%;
         }
       }
     }
+  }
+
+  .list-box {
+    margin: 10px 40px;
+  }
+
+  .step-btns {
+    margin-left: 150px;
+  }
+  .play-back-img{
+    width: 200px;
+    height: 130px;
   }
 </style>
