@@ -1,6 +1,6 @@
 // const entry=() => import(/* webpackChunkName: "todo-view" */ '../views/todo/todo.vue')
-const Entry = () =>
-  import('src/pages/interact/entry')
+const Layout = () =>
+  import('src/pages/layout')
 const Test = () =>
   import('src/pages/com-test')
 /* 直播列表 */
@@ -67,205 +67,207 @@ const promoteWechat = () =>
 const wechatCreate = () =>
   import('src/pages/live-mager/promote/wechat/edit')
 /* 推广-短信 */
-const promoteMsg = () => import('src/pages/live-mager/promote/message/list')
-const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
+const promoteMsg = () =>
+  import('src/pages/live-mager/promote/message/list')
+const msgCreate = () =>
+  import('src/pages/live-mager/promote/message/edit')
 /* 推广-自动化 */
-const promoteAuto = () => import('src/pages/live-mager/promote/automation')
-const autoEditwx = () => import('src/pages/live-mager/promote/automation/wechat')
-const autoEditmsg = () => import('src/pages/live-mager/promote/automation/msg')
+const promoteAuto = () =>
+  import('src/pages/live-mager/promote/automation')
+const autoEditwx = () =>
+  import('src/pages/live-mager/promote/automation/wechat')
+const autoEditmsg = () =>
+  import('src/pages/live-mager/promote/automation/msg')
 /* 回放 */
-const PlayBack = () => import('src/pages/live-mager/playBack')
+const PlayBack = () =>
+  import('src/pages/live-mager/playBack')
 
 export default [{
-  path: '/',
-  redirect: '/entry'
-},
-{
-  path: '/entry',
-  name: 'Entry',
-  component: Entry
-},
-{
   path: '/test',
   name: 'Test',
   component: Test
-},
-{
-  path: '/liveMager',
-  name: 'liveMager',
-  component: LiveMager
-},
-{
-  path: '/login',
-  name: 'login',
-  component: Login,
-  meta: {
-    noAuth: true,
-    noLogin: true
+}, {
+  path: '/',
+  name: 'Layout',
+  component: Layout,
+  redirect: '/setAccount',
+  children: [{
+    path: '/liveMager',
+    name: 'liveMager',
+    component: LiveMager
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
+    meta: {
+      noAuth: true,
+      noLogin: true
+    }
+  },
+  {
+    path: '/setPassword',
+    name: 'setPassword',
+    component: SetPassword,
+    meta: {
+      noAuth: true,
+      noLogin: true
+    }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register,
+    meta: {
+      noAuth: true,
+      noLogin: true
+    }
+  },
+  {
+    path: '/barrage',
+    name: 'Barrage',
+    component: Barrage,
+    meta: {
+      noAuth: true,
+      noLogin: true
+    }
+  },
+  {
+    path: '/liveMager/create',
+    name: 'create',
+    component: edit
+  },
+  {
+    path: '/liveMager/edit/:id',
+    name: 'edit',
+    component: edit
+  },
+  {
+    path: '/liveMager/detail/:id',
+    name: 'detail',
+    component: detail
+  },
+  {
+    path: '/liveMager/prepare/role/:id',
+    name: 'role',
+    component: role
+  },
+  {
+    path: '/liveMager/warmField/:id',
+    name: 'warmField',
+    component: WarmField
+  },
+  {
+    path: '/liveMager/reminder/:id',
+    name: 'reminder',
+    component: Reminder
+  },
+  {
+    path: '/forgot',
+    name: 'forgot',
+    component: Forgot,
+    meta: {
+      noAuth: true
+    }
+  },
+  {
+    path: '/setAccount',
+    name: 'setAccount',
+    component: SetAccount
+  },
+  {
+    path: '/liveMager/prepare/limit-invite/:id',
+    name: 'limitInvite',
+    component: limitInvite,
+    meta: {
+      noAuth: true
+    }
+  },
+  {
+    path: '/liveMager/prepare/limit-apply/:id',
+    name: 'limitApply',
+    component: limitApply,
+    meta: {
+      noAuth: true
+    }
+  },
+  {
+    path: '/setLiveGuided',
+    name: 'setLiveGuided',
+    component: setLiveGuided
+  },
+  {
+    path: '/setLiveWatch',
+    name: 'setLiveWatch',
+    component: setLiveWatch
+  },
+  {
+    path: '/liveMager/email/:id',
+    name: 'email',
+    component: Email
+  },
+  {
+    path: '/liveMager/emailEdit/:id',
+    name: 'emailEdit',
+    component: EmailEdit
+  },
+  {
+    path: '/liveMager/emailInfo/:id',
+    name: 'emailInfo',
+    component: EmailInfo
+  },
+  {
+    path: '/liveMager/promote/wechat/list/:id',
+    name: 'promoteWechat',
+    component: promoteWechat
+  },
+  {
+    path: '/liveMager/promote/wechat/create',
+    name: 'wechatCreate',
+    component: wechatCreate,
+    meta: {
+      noAuth: true
+    }
+  },
+  {
+    path: '/liveMager/promote/wechat/edit/:id',
+    name: 'wechatEdit',
+    component: wechatCreate
+  },
+  {
+    path: '/liveMager/promote/msg/list/:id',
+    name: 'promoteMsg',
+    component: promoteMsg
+  },
+  {
+    path: '/liveMager/promote/msg/create',
+    name: 'msgCreate',
+    component: msgCreate
+  },
+  {
+    path: '/liveMager/promote/msg/edit/:id',
+    name: 'msgEdit',
+    component: msgCreate
+  },
+  {
+    path: '/liveMager/promote/auto/preview/:id',
+    name: 'auto',
+    component: promoteAuto
+  },
+  {
+    path: '/liveMager/promote/auto/editWx/:id',
+    name: 'autoEditwX',
+    component: autoEditwx
+  },
+  {
+    path: '/liveMager/promote/auto/editMsg/:id',
+    name: 'autoEditmsg',
+    component: autoEditmsg
+  },
+  {
+    path: '/liveMager/playBack/:id',
+    name: 'playBack',
+    component: PlayBack
   }
-},
-{
-  path: '/setPassword',
-  name: 'setPassword',
-  component: SetPassword,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
-},
-{
-  path: '/register',
-  name: 'register',
-  component: Register,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
-},
-{
-  path: '/barrage',
-  name: 'Barrage',
-  component: Barrage,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
-},
-{
-  path: '/liveMager/create',
-  name: 'create',
-  component: edit
-},
-{
-  path: '/liveMager/edit/:id',
-  name: 'edit',
-  component: edit
-},
-{
-  path: '/liveMager/detail/:id',
-  name: 'detail',
-  component: detail
-},
-{
-  path: '/liveMager/prepare/role/:id',
-  name: 'role',
-  component: role
-},
-{
-  path: '/liveMager/warmField/:id',
-  name: 'warmField',
-  component: WarmField
-},
-{
-  path: '/liveMager/reminder/:id',
-  name: 'reminder',
-  component: Reminder
-},
-{
-  path: '/forgot',
-  name: 'forgot',
-  component: Forgot,
-  meta: {
-    noAuth: true
-  }
-},
-{
-  path: '/setAccount',
-  name: 'setAccount',
-  component: SetAccount
-},
-{
-  path: '/liveMager/prepare/limit-invite/:id',
-  name: 'limitInvite',
-  component: limitInvite,
-  meta: {
-    noAuth: true
-  }
-},
-{
-  path: '/liveMager/prepare/limit-apply/:id',
-  name: 'limitApply',
-  component: limitApply,
-  meta: {
-    noAuth: true
-  }
-},
-{
-  path: '/setLiveGuided',
-  name: 'setLiveGuided',
-  component: setLiveGuided
-},
-{
-  path: '/setLiveWatch',
-  name: 'setLiveWatch',
-  component: setLiveWatch
-},
-{
-  path: '/liveMager/email/:id',
-  name: 'email',
-  component: Email
-},
-{
-  path: '/liveMager/emailEdit/:id',
-  name: 'emailEdit',
-  component: EmailEdit
-},
-{
-  path: '/liveMager/emailInfo/:id',
-  name: 'emailInfo',
-  component: EmailInfo
-},
-{
-  path: '/liveMager/promote/wechat/list/:id',
-  name: 'promoteWechat',
-  component: promoteWechat
-},
-{
-  path: '/liveMager/promote/wechat/create',
-  name: 'wechatCreate',
-  component: wechatCreate,
-  meta: {
-    noAuth: true
-  }
-},
-{
-  path: '/liveMager/promote/wechat/edit/:id',
-  name: 'wechatEdit',
-  component: wechatCreate
-},
-{
-  path: '/liveMager/promote/msg/list/:id',
-  name: 'promoteMsg',
-  component: promoteMsg
-},
-{
-  path: '/liveMager/promote/msg/create',
-  name: 'msgCreate',
-  component: msgCreate
-},
-{
-  path: '/liveMager/promote/msg/edit/:id',
-  name: 'msgEdit',
-  component: msgCreate
-},
-{
-  path: '/liveMager/promote/auto/preview/:id',
-  name: 'auto',
-  component: promoteAuto
-},
-{
-  path: '/liveMager/promote/auto/editWx/:id',
-  name: 'autoEditwX',
-  component: autoEditwx
-},
-{
-  path: '/liveMager/promote/auto/editMsg/:id',
-  name: 'autoEditmsg',
-  component: autoEditmsg
-},
-{
-  path: '/liveMager/playBack/:id',
-  name: 'playBack',
-  component: PlayBack
-}
-]
+  ]
+}]
