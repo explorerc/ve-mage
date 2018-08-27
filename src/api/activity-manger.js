@@ -219,6 +219,14 @@ const ActivityManger = {
       params: data
     })
   },
+  // 保存短信邀请任务
+  saveMsg (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/save',
+      params: data
+    })
+  },
   // 查询微信邀请任务详情
   queryWechat (id) {
     return utils.ajax({
@@ -229,11 +237,29 @@ const ActivityManger = {
       }
     })
   },
+  // 查询短信邀请任务详情
+  queryMsg (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/query',
+      params: {
+        inviteId: id
+      }
+    })
+  },
   // 微信邀请任务列表
   queryWechatlist (data) {
     return utils.ajax({
       method: 'post',
-      url: '/expand/wechat-invite/lists',
+      url: '/expand/wechat-invite/list',
+      params: data
+    })
+  },
+  // 短信邀请任务列表
+  queryMsglist (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/list',
       params: data
     })
   },
@@ -242,6 +268,16 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/wechat-invite/delete',
+      params: {
+        inviteId: id
+      }
+    })
+  },
+  // 删除短信任务
+  deleteMsg (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/delete',
       params: {
         inviteId: id
       }
