@@ -47,8 +47,8 @@
       <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content">
-          <el-button>测试</el-button>
-          <el-button>保存</el-button>
+          <el-button @click='testModal = true'>测试</el-button>
+          <el-button @click="save">保存</el-button>
         </div>
       </div>
     </div>
@@ -102,6 +102,33 @@
         </div>
       </div>
     </transition>
+    <!-- 测试发送弹窗 -->
+    <transition name='fade'>
+      <div class="modal-cover" v-if='testModal' @click="closeModal">
+        <div class='modal-box'>
+          <h4>短信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
+          <div class='content-box'>
+            <p>每天只允许发送5条测试短信</p>
+            <div class="from-row">
+              <div class="from-title">输入号码：</div>
+              <div class="from-content">
+                <com-input :value.sync="titleValue" placeholder="请输入手机号码"></com-input>
+              </div>
+            </div>
+            <div class="from-row">
+              <div class="from-title">短信内容：</div>
+              <div class="from-content">
+                <div class="content-detail">奥斯卡了解到卢卡斯角度看拉升阶段卢卡斯阶段</div>
+              </div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <el-button>编辑</el-button>
+            <el-button>立即发送<span>(10)</span>条</el-button>
+          </div>
+        </div>
+      </div>
+    </transition>
     <div class="overview-box">
       <div class="header">短信</div>
       <div class="msg-box">
@@ -112,69 +139,109 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        webinarName: '活动名字啊啊啊',
-        groudModal: false,
-        tabValue: 1,
-        searchTitle: '',
-        titleValue: '',
-        groupIdx: 0,
-        tagIdx: 0,
-        tplOptions: [{
-          value: 1,
-          label: '活动邀请'
-        }, {
-          value: 2,
-          label: '活动推荐'
-        }],
-        sendOptions: [{
-          value: 1,
-          label: '定时发送'
-        }, {
-          value: 2,
-          label: '立即发送'
-        }, {
-          value: 3,
-          label: '暂存为草稿'
-        }],
-        tplValue: '',
-        sendValue: '',
-        pickDate: false,
-        date: new Date(),
-        pickerOptions: {
-          disabledDate (time) {
-            return time.getTime() < Date.now() - 8.64e7
-          }
-        }
-      }
-    },
-    created () {
-    },
-    methods: {
-      closeModal (e) {
-        if (e.target.className === 'modal-cover') {
-          this.groudModal = false
-          this.groupIdx = 0
-          this.tagIdx = 0
-        }
-      },
-      chooseGroup (idx) {
-        this.groupIdx = idx
-      },
-      chooseTag (idx) {
-        this.tagIdx = idx
-      }
-    },
-    watch: {
-      sendValue: {
-        handler (newValue) {
-          newValue === 1 ? this.pickDate = true : this.pickDate = false
+import createHttp from 'src/api/activity-manger'
+export default {
+  data () {
+    return {
+      inviteId: this.$route.query.id, // 签名列表传过来的id
+      activitId: this.$route.params.id,
+      webinarName: '活动名字啊啊啊',
+      groudModal: false,
+      testModal: false,
+      tabValue: 1,
+      searchTitle: '',
+      titleValue: '',
+      groupIdx: 0,
+      tagIdx: 0,
+      tplOptions: [{
+        value: 1,
+        label: '活动邀请'
+      }, {
+        value: 2,
+        label: '活动推荐'
+      }],
+      sendOptions: [{
+        value: 'AWAIT',
+        label: '定时发送'
+      }, {
+        value: 'SEND',
+        label: '立即发送'
+      }, {
+        value: 'DRAFT',
+        label: '暂存为草稿'
+      }],
+      tplValue: '',
+      sendValue: '',
+      pickDate: false,
+      date: new Date(),
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now() - 8.64e7
         }
       }
     }
+  },
+  created () {
+    if (this.inviteId) {
+      createHttp.queryMsg(this.inviteId).then((res) => {
+        // console.log(res)
+        this.titleValue = res.data.title
+        this.tplValue = res.data.templateId
+        this.sendValue = res.data.status
+        this.date = res.data.sendTime
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
+  },
+  methods: {
+    closeModal (e) {
+      if (e.target.className === 'modal-cover') {
+        this.groudModal = false
+        this.groupIdx = 0
+        this.tagIdx = 0
+      }
+    },
+    chooseGroup (idx) {
+      this.groupIdx = idx
+    },
+    chooseTag (idx) {
+      this.tagIdx = idx
+    },
+    save () {
+      let data = {
+        activityId: this.$route.params.id,
+        templateId: this.tplValue,
+        title: this.titleValue,
+        groupId: '1', // 分组id
+        status: this.sendValue.toLowerCase(),
+        sendTime: this.date
+      }
+      // 更新
+      createHttp.saveMsg(data).then((res) => {
+        // console.log(res)
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+        // 跳转到列表页面
+        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
+      }).catch((res) => {
+        this.$toast({
+          content: '保存失败',
+          position: 'center'
+        })
+      })
+    }
+  },
+  watch: {
+    sendValue: {
+      handler (newValue) {
+        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+      }
+    }
   }
+}
 </script>
 
 <style lang='scss' scoped>

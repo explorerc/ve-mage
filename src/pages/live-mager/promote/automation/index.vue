@@ -156,7 +156,7 @@
       </div>
     </div>
     <el-button>保存</el-button>
-    <!-- 选择分组弹窗 -->
+    <!-- 测试发送弹窗 -->
     <transition name='fade'>
       <div class="modal-cover" v-if='testModal' @click="closeModal">
         <div class='modal-box'>

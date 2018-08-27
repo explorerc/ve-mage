@@ -66,11 +66,11 @@ const promoteWechat = () =>
   import('src/pages/live-mager/promote/wechat/list')
 const wechatCreate = () =>
   import('src/pages/live-mager/promote/wechat/edit')
+const wechatOverview = () => import('src/pages/live-mager/promote/wechat/overview')
 /* 推广-短信 */
-const promoteMsg = () =>
-  import('src/pages/live-mager/promote/message/list')
-const msgCreate = () =>
-  import('src/pages/live-mager/promote/message/edit')
+const promoteMsg = () => import('src/pages/live-mager/promote/message/list')
+const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
+const msgOverview = () => import('src/pages/live-mager/promote/message/overview')
 /* 推广-自动化 */
 const promoteAuto = () =>
   import('src/pages/live-mager/promote/automation')
@@ -222,12 +222,22 @@ export default [{
     component: promoteWechat
   },
   {
-    path: '/liveMager/promote/wechat/create',
+    path: '/liveMager/promote/wechat/create/:id',
     name: 'wechatCreate',
     component: wechatCreate,
     meta: {
       noAuth: true
     }
+  },
+  {
+    path: '/liveMager/promote/wechat/overview/:id',
+    name: 'wechatOverview',
+    component: wechatOverview
+  },
+  {
+    path: '/liveMager/promote/msg/overview/:id',
+    name: 'msgOverview',
+    component: msgOverview
   },
   {
     path: '/liveMager/promote/wechat/edit/:id',
@@ -240,7 +250,7 @@ export default [{
     component: promoteMsg
   },
   {
-    path: '/liveMager/promote/msg/create',
+    path: '/liveMager/promote/msg/create/:id',
     name: 'msgCreate',
     component: msgCreate
   },

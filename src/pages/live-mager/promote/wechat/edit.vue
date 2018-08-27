@@ -47,16 +47,16 @@
       <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content">
-          <el-button>测试</el-button>
-          <el-button>保存</el-button>
+          <el-button @click='testModal = true'>测试</el-button>
+          <el-button @click="save">保存</el-button>
         </div>
       </div>
     </div>
     <!-- 选择分组弹窗 -->
     <transition name='fade'>
-      <div class="modal-cover" v-if='groudModal' @click="closeModal">
+      <div class="modal-cover" v-if='testModal' @click="closeModal">
         <div class='modal-box'>
-          <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
+          <h4>选择观众组 <span class='close' @click='testModal = false'>×</span></h4>
           <div class='content-box'>
             <com-tabs :value.sync="tabValue" position='left' type='card' customClass='choose-tab'>
               <com-tab label="分组" :index="1">
@@ -102,6 +102,22 @@
         </div>
       </div>
     </transition>
+    <!-- 测试发送弹窗 -->
+    <transition name='fade'>
+      <div class="modal-cover" v-if='testModal' @click="closeModal">
+        <div class='modal-box'>
+          <h4>微信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
+          <div class='content-box'>
+            <p>每天只允许发送5条测试消息</p>
+            <div class="from-row">
+              <img src="/../asdasd.png" class='qrcode'>
+            </div>
+            <p>扫描二维码，授权后，即可收到测试消息</p>
+            <p>当前可发送(<span>5</span>条)</p>
+          </div>
+        </div>
+      </div>
+    </transition>
     <div class="overview-box">
       <div class="header">微吼服务号</div>
       <div class="msg-box">
@@ -121,11 +137,15 @@
 </template>
 
 <script>
+  import createHttp from 'src/api/activity-manger'
   export default {
     data () {
       return {
+        inviteId: this.$route.query.id, // 签名列表传过来的id
+        activitId: this.$route.params.id,
         webinarName: '活动名字啊啊啊',
         groudModal: false,
+        testModal: false,
         tabValue: 1,
         searchTitle: '',
         titleValue: '',
@@ -139,13 +159,13 @@
           label: '活动推荐'
         }],
         sendOptions: [{
-          value: 1,
+          value: 'AWAIT',
           label: '定时发送'
         }, {
-          value: 2,
+          value: 'SEND',
           label: '立即发送'
         }, {
-          value: 3,
+          value: 'DRAFT',
           label: '暂存为草稿'
         }],
         tplValue: '',
@@ -160,11 +180,23 @@
       }
     },
     created () {
+      if (this.inviteId) {
+        createHttp.queryWechat(this.inviteId).then((res) => {
+          // console.log(res)
+          this.titleValue = res.data.title
+          this.tplValue = res.data.templateId
+          this.sendValue = res.data.status
+          this.date = res.data.sendTime
+        }).catch((e) => {
+          console.log(e)
+        })
+      }
     },
     methods: {
       closeModal (e) {
         if (e.target.className === 'modal-cover') {
           this.groudModal = false
+          this.testModal = false
           this.groupIdx = 0
           this.tagIdx = 0
         }
@@ -174,12 +206,37 @@
       },
       chooseTag (idx) {
         this.tagIdx = idx
+      },
+      save () {
+        let data = {
+          activityId: this.$route.params.id,
+          templateId: this.tplValue,
+          title: this.titleValue,
+          groupId: '1', // 分组id
+          status: this.sendValue.toLowerCase(),
+          sendTime: this.date
+        }
+        // 更新
+        createHttp.saveWechat(data).then((res) => {
+          // console.log(res)
+          this.$toast({
+            content: '保存成功',
+            position: 'center'
+          })
+          // 跳转到列表页面
+          this.$router.push({name: 'promoteWechat', params: {id: this.activitId}})
+        }).catch((res) => {
+          this.$toast({
+            content: '保存失败',
+            position: 'center'
+          })
+        })
       }
     },
     watch: {
       sendValue: {
         handler (newValue) {
-          newValue === 1 ? this.pickDate = true : this.pickDate = false
+          newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
         }
       }
     }
@@ -357,5 +414,12 @@
       }
     }
   }
+}
+.qrcode {
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ccc;
 }
 </style>

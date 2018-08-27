@@ -1,33 +1,38 @@
 <template>
   <div class="content">
-    <p>编辑微信通知2</p>
     <div class="from-box">
       <div class="from-row">
-        <div class="from-title">微信模板：</div>
+        <div class="from-title">微信标题：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择">
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          {{title}}
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">接收人：</div>
+        <div class="from-title">收件人：</div>
         <div class="from-content">
-          <p>预约用户/邀请观看用户/活动报名用户（547人） <span class='show-group'> 查看观众组</span></p>
+          {{group}}
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">发送规则：</div>
+        <div class="from-title">发送状态：</div>
         <div class="from-content">
-          <p>自动化发送</p>
+          <span v-if="status === 'SEND'">已发送</span>
+          <span v-if="status === 'AWAIT'">已定时</span>
+          <span v-if="status === 'DRAFT'">草稿</span>
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title"></div>
+        <div class="from-title">发送时间：</div>
         <div class="from-content">
-          <el-button>测试</el-button>
-          <el-button>保存</el-button>
+          {{date}}
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">发送状态：</div>
+        <div class="from-content">
+          <el-button><router-link :to="{name:'promoteWechat',params:{id:activityId}}">返回</router-link></el-button>
+          <el-button><router-link :to="{name:'wechatEdit',params:{id:activityId},query:{id:id}}">编辑</router-link></el-button>
+          <el-button>立即发送</el-button>
         </div>
       </div>
     </div>
@@ -38,37 +43,45 @@
           个人信息通知<span>8月10日</span>
         </div>
         <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
-        <p>标题：<span>{{titleValue}}</span></p>
-        <p>时间：<span>{{date}}</span></p>
+        <p>标题：<span>{{title}}</span></p>
+        <p>时间：<span>{{time}}</span></p>
         <p>内容：<span>点击查看详情</span></p>
         <p>退订</p>
-        <div class="footer">详情</div>
+        <div class="footer">微信通知将于{{date}}发送</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        date: '2018-12-10 10:00:00',
-        titleValue: '',
-        webinarName: '活动名字啊啊啊',
-        tplOptions: [{
-          value: 1,
-          label: '活动邀请'
-        }, {
-          value: 2,
-          label: '活动推荐'
-        }],
-        tplValue: ''
-      }
-    },
-    created () {},
-    methods: {},
-    watch: {}
+import queryHttp from 'src/api/activity-manger'
+export default {
+  data () {
+    return {
+      activityId: this.$route.params.id,
+      id: this.$route.query.id,
+      webinarName: '',
+      title: '',
+      group: '',
+      status: '',
+      time: '',
+      tpl: '',
+      date: ''
+    }
+  },
+  created () {
+    queryHttp.queryWechat(this.id).then((res) => {
+      console.log(res)
+      this.group = res.data.groupId
+      this.title = res.data.title
+      this.tpl = res.data.templateId
+      this.status = res.data.status
+      this.date = res.data.sendTime
+    }).catch((e) => {
+      console.log(e)
+    })
   }
+}
 </script>
 
 <style lang='scss' scoped>
@@ -96,10 +109,6 @@
       }
     }
   }
-}
-
-.show-group {
-  cursor: pointer;
 }
 
 .overview-box {
