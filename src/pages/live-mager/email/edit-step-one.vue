@@ -213,36 +213,35 @@
 </script>
 
 <style lang="scss" scoped>
-  .edit-step-box {
-    height: 800px;
-    .edit-content {
-      margin: 20px 0;
-      .edit-content-temp {
-        width: 400px;
-        margin-top: 20px;
-        .temp-title {
-          margin: 0 20px;
-        }
-        .temp-boxs {
-          margin: 20px;
-          .temp-item {
-            width: 160px;
-            height: 180px;
-            line-height: 180px;
-            margin: 10px;
-            text-align: center;
-            box-sizing: border-box;
-            border: solid 1px #e5e5e5;
-          }
-        }
+.edit-step-box {
+  height: 800px;
+  .edit-content {
+    margin: 20px 0;
+    .edit-content-temp {
+      width: 400px;
+      margin-top: 20px;
+      .temp-title {
+        margin: 0 20px;
       }
-      .edit-content-box {
-        width: calc(100% - 400px);
+      .temp-boxs {
+        margin: 20px;
+        .temp-item {
+          width: 160px;
+          height: 180px;
+          line-height: 180px;
+          margin: 10px;
+          text-align: center;
+          box-sizing: border-box;
+          border: solid 1px #e5e5e5;
+        }
       }
     }
-    .step-btns {
-      margin-top: 20px;
+    .edit-content-box {
+      width: calc(100% - 400px);
     }
   }
-
+  .step-btns {
+    margin-top: 20px;
+  }
+}
 </style>

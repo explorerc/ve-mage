@@ -9,7 +9,7 @@
           观看条件：
         </p>
         <p class="v-info pull-left">
-          {{viewCondition}}
+          {{liveGuidedInit.viewCondition}}
         </p>
       </div>
       <div class="input-form v-label clearfix" >
@@ -17,7 +17,7 @@
           引导标题：
         </p>
         <p class="v-info pull-left">
-          <com-input :value.sync="title" placeholder="标题" :max-length="15" ></com-input>
+          <com-input :value.sync="liveGuidedInit.title" placeholder="标题" :max-length="15" ></com-input>
         </p>
       </div>
       <div class="input-form v-label clearfix" >
@@ -43,9 +43,9 @@
           辅助信息：
         </p>
         <p class="v-info pull-left">
-          <el-checkbox v-model="isShowCountDown">活动开始前显示直播倒计时</el-checkbox>
-          <el-checkbox v-model="isShowIntroduction">显示直播简介</el-checkbox>
-          <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="introduction">
+          <el-checkbox v-model="liveGuidedInit.isShowCountDown">活动开始前显示直播倒计时</el-checkbox>
+          <el-checkbox v-model="liveGuidedInit.isShowIntroduction">显示直播简介</el-checkbox>
+          <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="liveGuidedInit.introduction">
           </el-input>
         </p>
       </div>
@@ -55,27 +55,27 @@
       <p class="v-sub-title">
         预览
       </p>
-      <com-tabs :value.sync="tabValue" >
+      <com-tabs :value.sync="liveGuidedInit.tabValue" >
         <com-tab label="手机" :index="1">
           <div class="v-phone">
             <div class="v-img">
-              <img :src="$imgHost + '/' + imgUrl" alt="">
+              <img :src="$imgHost + '/' + liveGuidedInit.imgUrl" alt="">
             </div>
             <div class="v-phone-info">
               <p class="v-phone-title">
-                {{title}}
+                {{liveGuidedInit.title}}
               </p>
-              <div v-if="isShowIntroduction" class="v-phone-introduction">
+              <div v-if="liveGuidedInit.isShowIntroduction" class="v-phone-introduction">
                 <p>
-                  {{introduction}}
+                  {{liveGuidedInit.introduction}}
                 </p>
               </div>
               <div class="v-phone-operation">
-                <div v-if="isShowCountDown" class="v-phone-countdown">
+                <div v-if="liveGuidedInit.isShowCountDown" class="v-phone-countdown">
                   5天23小时44分钟12秒
                 </div>
                 <a href="javascript:;" class="v-phone-enroll">
-                  {{viewCondition === '活动报名'? '报名':'预约'}}
+                  {{liveGuidedInit.viewCondition === '活动报名'? '报名':'预约'}}
                 </a>
               </div>
             </div>
@@ -84,19 +84,19 @@
         <com-tab label="电脑" :index="2">
           <div class="v-pc clearfix">
             <div class="v-img pull-left">
-              <img :src="$imgHost + '/' + imgUrl" alt="">
+              <img :src="$imgHost + '/' + liveGuidedInit.imgUrl" alt="">
             </div>
             <div class="v-pc-info pull-left">
               <p class="v-pc-title">
-                {{title}}
+                {{liveGuidedInit.title}}
               </p>
-              <div v-if="isShowIntroduction" class="v-pc-introduction">
+              <div v-if="liveGuidedInit.isShowIntroduction" class="v-pc-introduction">
                 <p>
-                  {{introduction}}
+                  {{liveGuidedInit.introduction}}
                 </p>
               </div>
               <div class="v-pc-operation">
-                <div v-if="isShowCountDown" class="v-pc-countdown">
+                <div v-if="liveGuidedInit.isShowCountDown" class="v-pc-countdown">
                   5天23小时44分钟12秒
                 </div>
                 <a href="javascript:;" class="v-pc-enroll">
@@ -113,30 +113,85 @@
 <script>
   // import account from 'src/api/account-manage'
   // import identifyingcodeManage from 'src/api/identifyingcode-manage'
+
+  import {mapMutations, mapState} from 'vuex'
+  import * as types from '../../store/mutation-types'
   export default {
     data () {
       return {
-        viewCondition: '活动报名', // 观看条件
-        title: '标题', // 引导标题
-        isShowCountDown: true, // 是否显示倒计时
-        isShowIntroduction: true, // 是否显示简介
-        introduction: '666', // 简介
-        tabValue: 1, // 预览页签选择
-        imgUrl: ''// 引导图片
+        liveGuidedInit: {
+          id: 0,
+          viewCondition: '活动报名', // 观看条件
+          title: '标题', // 引导标题
+          isShowCountDown: true, // 是否显示倒计时
+          isShowIntroduction: true, // 是否显示简介
+          introduction: '666', // 简介
+          tabValue: 1, // 预览页签选择
+          imgUrl: ''// 引导图片
+        }
       }
     },
     components: {
     },
+    computed: mapState('liveGuided', {
+      liveGuided: state => state.liveGuided
+    }),
     created () {
+      let liveGuidedinfo = {
+        id: 1,
+        viewCondition: '活动报名', // 观看条件
+        title: '标题', // 引导标题
+        isShowCountDown: true, // 是否显示倒计时
+        isShowIntroduction: true, // 是否显示简介
+        introduction: '简介', // 简介
+        tabValue: 1, // 预览页签选择
+        imgUrl: ''// 引导图片
+      }
+      this.setLiveGuidedinfo(liveGuidedinfo)
+      console.log(this.liveGuidedInit)
+      debugger
+      console.log('666:' + this.$route.params.id)
+      const queryId = this.$route.params.id
+      if (!queryId) {
+        this.$router.go(-1)
+      }
+      const isEdit = this.$route.query.isEdit
+      if (isEdit) { // 编辑
+        // 如果vuex可以取到值就return
+        if (this.liveGuidedInit.id) return
+        this.liveGuidedInit.id = queryId
+        // this.queryEmailInfo()
+      } else { // 新增
+        this.liveGuidedInit = {
+          id: queryId,
+          viewCondition: '',
+          title: '',
+          isShowCountDown: true,
+          isShowIntroduction: true,
+          introduction: '简介',
+          tabValue: 1,
+          imgUrl: ''
+        }
+        // this.storeEmailInfo(this.email)
+      }
     },
     mounted () {
     },
     watch: {
+      liveGuided: {
+        handler (newVal) {
+          console.log('newVal' + newVal)
+          this.liveGuidedInit = {...this.liveGuidedInit, ...newVal}
+        },
+        immediate: true
+      }
     },
     methods: {
+      ...mapMutations('liveGuided', {
+        setLiveGuidedinfo: types.LIVE_GUIDED
+      }),
       uploadImgSuccess (data) {
         const fildObj = JSON.parse(data.data)
-        console.log(fildObj)
         this.imgUrl = fildObj.data.name
       },
       uploadError (data) {

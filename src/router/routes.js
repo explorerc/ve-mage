@@ -67,14 +67,20 @@ const promoteWechat = () =>
 const wechatCreate = () =>
   import('src/pages/live-mager/promote/wechat/edit')
 /* 推广-短信 */
-const promoteMsg = () => import('src/pages/live-mager/promote/message/list')
-const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
+const promoteMsg = () =>
+  import('src/pages/live-mager/promote/message/list')
+const msgCreate = () =>
+  import('src/pages/live-mager/promote/message/edit')
 /* 推广-自动化 */
-const promoteAuto = () => import('src/pages/live-mager/promote/automation')
-const autoEditwx = () => import('src/pages/live-mager/promote/automation/wechat')
-const autoEditmsg = () => import('src/pages/live-mager/promote/automation/msg')
+const promoteAuto = () =>
+  import('src/pages/live-mager/promote/automation')
+const autoEditwx = () =>
+  import('src/pages/live-mager/promote/automation/wechat')
+const autoEditmsg = () =>
+  import('src/pages/live-mager/promote/automation/msg')
 /* 回放 */
-const PlayBack = () => import('src/pages/live-mager/playBack')
+const PlayBack = () =>
+  import('src/pages/live-mager/playBack')
 
 export default [{
   path: '/',
@@ -191,7 +197,7 @@ export default [{
   }
 },
 {
-  path: '/setLiveGuided',
+  path: '/setLiveGuided/:id',
   name: 'setLiveGuided',
   component: setLiveGuided
 },
