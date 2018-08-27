@@ -164,10 +164,11 @@
     },
     methods: {
       preViewOutLine () {
-        // this.outLineLink
-        var reg = /^['<embed','<iframe']$/
+        const reg = /^<embed|<iframe.*(embed>|iframe>)$/
         if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = '<embed src="http://player.video.iqiyi.com/aea7e1cbc3ff0e7cdafefaae05d72e11/0/0/v_19rqzip0sw.swf-albumId=1278839100-tvId=1278839100-isPurchase=0-cnId=6" allowFullScreen="true" quality="high" width="480" height="350" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>'
+        } else {
+          console.log('error')
         }
       },
       uploadImgSuccess (data) {
