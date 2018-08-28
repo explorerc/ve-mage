@@ -66,11 +66,15 @@ const promoteWechat = () =>
   import('src/pages/live-mager/promote/wechat/list')
 const wechatCreate = () =>
   import('src/pages/live-mager/promote/wechat/edit')
-const wechatOverview = () => import('src/pages/live-mager/promote/wechat/overview')
+const wechatOverview = () =>
+  import('src/pages/live-mager/promote/wechat/overview')
 /* 推广-短信 */
-const promoteMsg = () => import('src/pages/live-mager/promote/message/list')
-const msgCreate = () => import('src/pages/live-mager/promote/message/edit')
-const msgOverview = () => import('src/pages/live-mager/promote/message/overview')
+const promoteMsg = () =>
+  import('src/pages/live-mager/promote/message/list')
+const msgCreate = () =>
+  import('src/pages/live-mager/promote/message/edit')
+const msgOverview = () =>
+  import('src/pages/live-mager/promote/message/overview')
 /* 推广-自动化 */
 const promoteAuto = () =>
   import('src/pages/live-mager/promote/automation')
@@ -95,33 +99,6 @@ export default [{
     path: '/liveMager',
     name: 'liveMager',
     component: LiveMager
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login,
-    meta: {
-      noAuth: true,
-      noLogin: true
-    }
-  },
-  {
-    path: '/setPassword',
-    name: 'setPassword',
-    component: SetPassword,
-    meta: {
-      noAuth: true,
-      noLogin: true
-    }
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: Register,
-    meta: {
-      noAuth: true,
-      noLogin: true
-    }
   },
   {
     path: '/barrage',
@@ -280,4 +257,31 @@ export default [{
     component: PlayBack
   }
   ]
-}]
+}, {
+  path: '/login',
+  name: 'login',
+  component: Login,
+  meta: {
+    noAuth: true,
+    noLogin: true
+  }
+},
+{
+  path: '/register',
+  name: 'register',
+  component: Register,
+  meta: {
+    noAuth: true,
+    noLogin: true
+  }
+},
+{
+  path: '/setPassword',
+  name: 'setPassword',
+  component: SetPassword,
+  meta: {
+    noAuth: true,
+    noLogin: true
+  }
+}
+]
