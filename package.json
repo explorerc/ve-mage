@@ -60,6 +60,7 @@
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
+    "vue-html5-editor": "^1.1.1",
     "vue-loader": "^15.2.6",
     "vue-quill-editor": "^3.0.6",
     "vue-style-loader": "^4.1.1",

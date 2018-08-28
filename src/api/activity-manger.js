@@ -18,7 +18,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/manage/base-manage/del-activity',
-      params: { id: id }
+      params: {id: id}
     })
   },
   /**
@@ -27,8 +27,8 @@ const ActivityManger = {
   queryWarmInfoById (id) {
     return utils.ajax({
       method: 'post',
-      url: '/',
-      params: { id: id }
+      url: '/manage/warm-up-manage/get',
+      params: {activityId: id}
     })
   },
   /**
@@ -48,7 +48,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/',
-      params: { id: id }
+      params: {id: id}
     })
   },
   /**
@@ -68,7 +68,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/role-manage/list-role',
-      params: { activityId: id }
+      params: {activityId: id}
     })
   },
   /**
@@ -98,7 +98,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/view-limit/get-limit',
-      params: { activityId: id }
+      params: {activityId: id}
     })
   },
   /**
@@ -118,7 +118,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/base-manage/detail-activity',
-      params: { id: id }
+      params: {id: id}
     })
   },
   /**
@@ -148,7 +148,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/delete',
-      params: { emailInviteId: id }
+      params: {emailInviteId: id}
     })
   },
   /**
@@ -158,7 +158,17 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/query',
-      params: { emailInviteId: id }
+      params: {emailInviteId: id}
+    })
+  },
+  /**
+   *  获取邮件模板
+   */
+  queryEmailTemplateList () {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/email-invite/query',
+      params: {}
     })
   },
   /**
@@ -281,6 +291,13 @@ const ActivityManger = {
       params: {
         inviteId: id
       }
+    })
+  },
+  queryPassSdkInfo () {
+    return utils.ajax({
+      method: 'post',
+      url: '/common/pass-sdk/create-access-token',
+      params: {}
     })
   }
 }

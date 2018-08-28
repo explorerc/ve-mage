@@ -19,20 +19,9 @@
           <el-button class="live-btn fr" type="primary" plain @click="recoverDefault">恢复默认</el-button>
         </div>
         <div class="temp-boxs">
-          <div ref="defaultTem" class="temp-item fl" @click.stop="editerContent='<h1>默认</h1>'">
-            默认
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>2</h1>')">
-            2
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>3</h1>')">
-            3
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>4</h1>')">
-            4
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>5</h1>')">
-            5
+          <div v-for="(emailItem,idx) in emailList" :class="{'temp-item':true,fl:true,active:idx==currentTemp}"
+               @click.stop="changeTemp(idx)">
+            {{emailItem.isDefault==='Y'?'默认':'模板'+idx}}
           </div>
         </div>
       </div>
@@ -42,12 +31,27 @@
       <el-button class="live-btn fr" type="primary" plain @click="nextEmail">下一步</el-button>
       <el-button class="live-btn fr" type="primary" plain @click="saveEmail">保存草稿</el-button>
     </div>
+    <div ref="emailBox">
+      <table class="email-box">
+        <tr>
+          <td>dddd</td>
+          <td>dddd</td>
+          <td>dddd</td>
+        </tr>
+        <tr>
+          <td>dddd</td>
+          <td>dddd</td>
+          <td>dddd</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import VeEditer from 'src/components/ve-editer'
+  // import VeEditer from 'src/components/ve-editer'
+  import VeEditer from 'src/components/ve-html5-editer'
   // import editStepTwo from './edit-step-two'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
@@ -57,6 +61,8 @@
     data () {
       return {
         testEmail: '',
+        emailList: [],
+        currentTemp: 0,
         email: {
           activityId: '',
           emailInviteId: '',
@@ -80,9 +86,6 @@
         immediate: true
       }
     },
-    mounted () {
-      this.$refs.defaultTem.click()
-    },
     created () {
       // 如果vuex不能取到值就查询接口
       const queryId = this.$route.params.id
@@ -93,7 +96,11 @@
       const emailId = this.$route.query.email
       if (emailId) { // 编辑
         // 如果vuex可以取到值就return
-        if (this.email.emailInviteId) return
+        if (this.email.emailInviteId) {
+          this.currentTemp = this.email.emailTemplateId
+          this.queryEmailTemp()
+          return
+        }
         this.email.emailInviteId = emailId
         this.queryEmailInfo()
       } else { // 新增
@@ -108,6 +115,7 @@
         }
         this.storeEmailInfo(this.email)
       }
+      this.queryEmailTemp()
     },
     methods: {
       ...mapMutations('liveMager', {
@@ -120,6 +128,14 @@
         LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
           this.email = res.data
           this.storeEmailInfo(this.email)
+        })
+      },
+      queryEmailTemp () {
+        LiveHttp.queryEmailTemplateList().then((res) => {
+          this.emailList = res.data.list
+          if (!this.email.emailInviteId) { // 如果不是编辑
+            this.email.content = this.emailList[this.currentTemp].content
+          }
         })
       },
       sendTestEmail () {
@@ -177,7 +193,7 @@
         this.$emit('changeView', 1)
       },
       /* 更换模板 */
-      changeTemp (content) {
+      changeTemp (idx) {
         this.$messageBox({
           header: '',
           content: '更换邮件模板会导致已编辑的内容丢失',
@@ -185,7 +201,8 @@
           confirmText: '确认替换',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              this.content = content
+              this.currentTemp = idx
+              this.email.content = this.emailList[idx].content
             }
           }
         })
@@ -213,35 +230,38 @@
 </script>
 
 <style lang="scss" scoped>
-.edit-step-box {
-  height: 800px;
-  .edit-content {
-    margin: 20px 0;
-    .edit-content-temp {
-      width: 400px;
-      margin-top: 20px;
-      .temp-title {
-        margin: 0 20px;
-      }
-      .temp-boxs {
-        margin: 20px;
-        .temp-item {
-          width: 160px;
-          height: 180px;
-          line-height: 180px;
-          margin: 10px;
-          text-align: center;
-          box-sizing: border-box;
-          border: solid 1px #e5e5e5;
+  .edit-step-box {
+    height: 800px;
+    .edit-content {
+      margin: 20px 0;
+      .edit-content-temp {
+        width: 400px;
+        margin-top: 20px;
+        .temp-title {
+          margin: 0 20px;
+        }
+        .temp-boxs {
+          margin: 20px;
+          .temp-item {
+            width: 160px;
+            height: 180px;
+            line-height: 180px;
+            margin: 10px;
+            text-align: center;
+            box-sizing: border-box;
+            border: solid 1px #e5e5e5;
+          }
+          .active{
+            border-color: red;
+          }
         }
       }
+      .edit-content-box {
+        width: calc(100% - 400px);
+      }
     }
-    .edit-content-box {
-      width: calc(100% - 400px);
+    .step-btns {
+      margin-top: 20px;
     }
   }
-  .step-btns {
-    margin-top: 20px;
-  }
-}
 </style>
