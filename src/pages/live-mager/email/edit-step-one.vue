@@ -19,20 +19,9 @@
           <el-button class="live-btn fr" type="primary" plain @click="recoverDefault">恢复默认</el-button>
         </div>
         <div class="temp-boxs">
-          <div ref="defaultTem" class="temp-item fl" @click.stop="editerContent='<h1>默认</h1>'">
-            默认
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>2</h1>')">
-            2
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>3</h1>')">
-            3
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>4</h1>')">
-            4
-          </div>
-          <div class="temp-item fl" @click.stop="changeTemp('<h1>5</h1>')">
-            5
+          <div v-for="(emailItem,idx) in emailList" :class="{'temp-item':true,fl:true,active:idx==currentTemp}"
+               @click.stop="changeTemp(idx)">
+            {{emailItem.isDefault==='Y'?'默认':'模板'+idx}}
           </div>
         </div>
       </div>
@@ -61,7 +50,8 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import VeEditer from 'src/components/ve-editer'
+  // import VeEditer from 'src/components/ve-editer'
+  import VeEditer from 'src/components/ve-html5-editer'
   // import editStepTwo from './edit-step-two'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
@@ -71,6 +61,8 @@
     data () {
       return {
         testEmail: '',
+        emailList: [],
+        currentTemp: 0,
         email: {
           activityId: '',
           emailInviteId: '',
@@ -94,15 +86,7 @@
         immediate: true
       }
     },
-    mounted () {
-      // this.$refs.defaultTem.click()
-    },
     created () {
-      // setTimeout(() => {
-      //   let content = `<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td colspan="2" style="text-align: center;"><img width="100" height="100" src="./comm/1.jpg"></td></tr><tr><td colspan="2" style="text-align: center;"><h3>在这里填写你的邮件标题</h3><p>在这里填写邮件副标题</p></td></tr><tr><td colspan="2" style="padding: 0 10px;text-align: center;"><hr style="height:2px;background-color: #cccccc;margin: 0;padding: 0;"/><hr style="background-color: #cccccc;"/><div style="height: 2px;background-color: #cccccc;"></div></td></tr><tr><td colspan="2" style="padding: 0 10px;" ><p style="font-size: 14px;">伙伴们好</p><p style="font-size: 14px;">我是微吼的产品经理Ace，你现在看到的是我们为你精心准备的邮件模板，在这个位置你可以编辑邀请函的正文，并使用我们的排版工具美化你的邮件版式，我们希望你可以通过丰富的模板获得更加优质良好的产品体验。</p><p style="font-size: 14px;">在邮件编辑中，你为文字添加超链接，可以尝试按照我们建议的图片尺寸添加你想要展现在邮件中的图片，让你的邮件内容更加生动，赋有阅读性。</p><p style="font-size: 14px;">在此邮件模板中，我们还为你准备了资料介绍区域和活动信息展示区域，希望我们的努力可以帮你节约时间，更有效率的完成你的工作。</p><br/><hr style="background-color: #e5e5e5;"/><br/></td></tr><tr><td colspan="2" style="text-align: center;"><h3>在这里填写你的邮件标题</h3></td></tr><tr><td style="text-align: left;padding: 0 10px;"><h4>主讲人姓名/关键信息</h4><p style="font-size: 14px;">备注区域，可以添加活动备注、活动地点、注意事项等…</p><p style="font-size: 14px;">简练且有效率的表达，可以让你的活动更吸引人</p></td><td style="padding: 0 10px;text-align: right;width: 150px;"><img width="90" height="90" src="./comm/2.jpg"></td></tr><tr style="background-color: #e5e5e5;"><td style="padding: 0 10px;text-align: left;border-radius: 5px;"><h5>此处可填写活动开始时间</h5><p style="font-size: 12px;">备注区域，可以添加活动备注、活动地点、注意事项等…</p></td><td style="padding: 0 10px;text-align: right;width: 150px;border-radius: 5px;"><a style="padding:8px 20px;font-size: 14px;border-radius: 4px;background-color:#ffffff;height: 30px;line-height: 30px;text-align: center;" href="www.baidu.com">进入活动</a></td></tr><tr><td style="padding: 0 10px;text-align: left;border-radius: 5px;"><p style="font-size: 20px;color: #66ff66;">活动信息</p><p style="font-size: 12px;margin-bottom: 10px;">主办方：在这里可以填写主办方的名称</p><p style="font-size: 14px;margin: 10px 0 0 0;">活动官网：https://www.naiveblue.com/</p><p style="font-size: 14px;margin: 0;">活动链接：https://www.naiveblue.com/</p></td><td style="padding: 0 10px;text-align: right;width: 150px;border-radius: 5px;"><img width="70" height="70" src="https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1179858620,4197545893&fm=173&app=25&f=JPEG?w=640&h=360&s=64D138D5183A279E9A14402303007044"></td></tr></table>`
-      //   console.log(document.querySelector('.ql-editor'))
-      //   document.querySelector('.ql-editor').innerHTML = content
-      // }, 3000)
       // 如果vuex不能取到值就查询接口
       const queryId = this.$route.params.id
       if (!queryId) {
@@ -127,6 +111,7 @@
         }
         this.storeEmailInfo(this.email)
       }
+      this.queryEmailTemp()
     },
     methods: {
       ...mapMutations('liveMager', {
@@ -139,6 +124,14 @@
         LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
           this.email = res.data
           this.storeEmailInfo(this.email)
+        })
+      },
+      queryEmailTemp () {
+        LiveHttp.queryEmailTemplateList().then((res) => {
+          this.emailList = res.data.list
+          if (!this.email.emailInviteId) { // 如果不是编辑，第一个模板
+            this.email.content = this.emailList[0].content
+          }
         })
       },
       sendTestEmail () {
@@ -196,7 +189,7 @@
         this.$emit('changeView', 1)
       },
       /* 更换模板 */
-      changeTemp (content) {
+      changeTemp (idx) {
         this.$messageBox({
           header: '',
           content: '更换邮件模板会导致已编辑的内容丢失',
@@ -204,7 +197,8 @@
           confirmText: '确认替换',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              this.content = content
+              this.currentTemp = idx
+              this.email.content = this.emailList[idx].content
             }
           }
         })
@@ -232,35 +226,38 @@
 </script>
 
 <style lang="scss" scoped>
-.edit-step-box {
-  height: 800px;
-  .edit-content {
-    margin: 20px 0;
-    .edit-content-temp {
-      width: 400px;
-      margin-top: 20px;
-      .temp-title {
-        margin: 0 20px;
-      }
-      .temp-boxs {
-        margin: 20px;
-        .temp-item {
-          width: 160px;
-          height: 180px;
-          line-height: 180px;
-          margin: 10px;
-          text-align: center;
-          box-sizing: border-box;
-          border: solid 1px #e5e5e5;
+  .edit-step-box {
+    height: 800px;
+    .edit-content {
+      margin: 20px 0;
+      .edit-content-temp {
+        width: 400px;
+        margin-top: 20px;
+        .temp-title {
+          margin: 0 20px;
+        }
+        .temp-boxs {
+          margin: 20px;
+          .temp-item {
+            width: 160px;
+            height: 180px;
+            line-height: 180px;
+            margin: 10px;
+            text-align: center;
+            box-sizing: border-box;
+            border: solid 1px #e5e5e5;
+          }
+          .active{
+            border-color: red;
+          }
         }
       }
+      .edit-content-box {
+        width: calc(100% - 400px);
+      }
     }
-    .edit-content-box {
-      width: calc(100% - 400px);
+    .step-btns {
+      margin-top: 20px;
     }
   }
-  .step-btns {
-    margin-top: 20px;
-  }
-}
 </style>

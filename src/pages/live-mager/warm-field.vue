@@ -100,11 +100,11 @@
         },
         vhallParams: {
           sign: '41256133923f50e3ae298e5f89b784b5', // 生成的鉴权信息
-          signed_at: '1534486369', // 鉴权信息生成的时间戳
           app_id: 'e909e583',
+          accountId: 'v770',
           access_token: 'access:e909e583:85615832f2d648f7',
-          recordId: '',
-          accountId: 'v770'
+          signed_at: '1534486369', // 鉴权信息生成的时间戳
+          recordId: ''
         },
         loading: false,
         videoSize: '200', // 视频限制大小，单位兆
@@ -134,7 +134,10 @@
       }
       this.queryWarmInfo()
       this.warm.id = this.$route.params.id
-      this.initVhallUpload()
+      // this.initVhallUpload()
+      LiveHttp.queryPassSdkInfo().then((res) => {
+        console.log(res)
+      })
     },
     methods: {
       goBack () {
