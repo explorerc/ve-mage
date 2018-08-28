@@ -180,9 +180,6 @@
               sign: this.vhallParams.sign,
               signed_at: this.vhallParams.signed_at,
               app_id: this.vhallParams.app_id
-              // sign: 'e4e7f765dfacfbfe1398deca3c84993a',
-              // signed_at: '1535457568',
-              // app_id: 'e909e583'
             },
             beforeUpload: (file) => {
               if (file.type !== 'video/mp4') {
