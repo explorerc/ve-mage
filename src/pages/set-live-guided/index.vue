@@ -43,9 +43,9 @@
           辅助信息：
         </p>
         <p class="v-info pull-left">
-          <el-checkbox v-model="isShowCountDown">活动开始前显示直播倒计时</el-checkbox>
-          <el-checkbox v-model="isShowIntroduction">显示直播简介</el-checkbox>
-          <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="introduction">
+          <el-checkbox v-model="enableCountdown">活动开始前显示直播倒计时</el-checkbox>
+          <el-checkbox v-model="enableDescription">显示直播简介</el-checkbox>
+          <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="description">
           </el-input>
         </p>
       </div>
@@ -65,13 +65,13 @@
               <p class="v-phone-title">
                 {{title}}
               </p>
-              <div v-if="isShowIntroduction" class="v-phone-introduction">
+              <div v-if="enableDescription" class="v-phone-description">
                 <p>
-                  {{introduction}}
+                  {{description}}
                 </p>
               </div>
               <div class="v-phone-operation">
-                <div v-if="isShowCountDown" class="v-phone-countdown">
+                <div v-if="enableCountdown" class="v-phone-countdown">
                   5天23小时44分钟12秒
                 </div>
                 <a href="javascript:;" class="v-phone-enroll">
@@ -90,13 +90,13 @@
               <p class="v-pc-title">
                 {{title}}
               </p>
-              <div v-if="isShowIntroduction" class="v-pc-introduction">
+              <div v-if="enableDescription" class="v-pc-description">
                 <p>
-                  {{introduction}}
+                  {{description}}
                 </p>
               </div>
               <div class="v-pc-operation">
-                <div v-if="isShowCountDown" class="v-pc-countdown">
+                <div v-if="enableCountdown" class="v-pc-countdown">
                   5天23小时44分钟12秒
                 </div>
                 <a href="javascript:;" class="v-pc-enroll">
@@ -111,16 +111,16 @@
   </div>
 </template>
 <script>
-  import liveGuidedManage from 'src/api/live-guided-manage'
+  import liveGuidedManage from 'src/api/set-live-guided-manage'
   export default {
     data () {
       return {
         activityId: 0,
         viewCondition: '活动报名', // 观看条件
         title: '标题', // 引导标题
-        isShowCountDown: true, // 是否显示倒计时
-        isShowIntroduction: true, // 是否显示简介
-        introduction: '666', // 简介
+        enableCountdown: true, // 是否显示倒计时
+        enableDescription: false, // 是否显示简介
+        description: '666', // 简介
         tabValue: 1, // 预览页签选择
         imgUrl: ''// 引导图片
       }
@@ -142,9 +142,9 @@
         } else {
           this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
           this.title = res.data.title ? res.data.title : ''
-          this.isShowCountDown = res.data.enableCountdown === 'Y'
-          this.isShowIntroduction = res.data.enableDescription === 'Y'
-          this.introduction = res.data.description ? res.data.description : ''
+          this.enableCountdown = res.data.enableCountdown === 'Y'
+          this.enableDescription = res.data.enableDescription === 'Y'
+          this.description = res.data.description ? res.data.description : ''
           this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
           this.tabValue = 1
         }
@@ -167,10 +167,10 @@
         let data = {
           'activityId': this.activityId,
           'title': this.title,
-          'enableDescription': this.isShowIntroduction ? 'Y' : 'N',
-          'enableCountdown': this.isShowCountDown ? 'Y' : 'N',
+          'enableDescription': this.enableDescription ? 'Y' : 'N',
+          'enableCountdown': this.enableCountdown ? 'Y' : 'N',
           'imgUrl': this.imgUrl,
-          'description': this.introduction
+          'description': this.description
         }
         liveGuidedManage.setLiveGuided(data).then((res) => {
           if (res.code !== 200) {
@@ -239,7 +239,7 @@
             text-align: left;
             border-bottom: 1px solid #666;
           }
-          .v-phone-introduction {
+          .v-phone-description {
             font-size: 12px;
             text-align: center;
             border-bottom: 1px solid #666;
@@ -283,7 +283,7 @@
             text-align: left;
             border-bottom: 1px solid #666;
           }
-          .v-pc-introduction {
+          .v-pc-description {
             font-size: 12px;
             text-align: center;
             border-bottom: 1px solid #666;

@@ -133,25 +133,59 @@
   </div>
 </template>
 <script>
-  // import account from 'src/api/account-manage'
-  // import identifyingcodeManage from 'src/api/identifyingcode-manage'
+  import liveWatchManage from 'src/api/set-live-watch-manage'
   export default {
     data () {
       return {
+        activityId: 0,
         tabValue: 1, // 页签选择
         bgImgUrl: '', // 背景图片
         logoImgUrl: '', // logo图片
         shareImgUrl: '', // 分享图标
         shareTitle: '', // 分享标题
         shareIntroduction: '', // 分享简介
-        isShowWatch: false, // 是否在直播观看页显示
-        isShowOfficialWebsite: false, // 是否在活动官网显示
-        isShowGuided: false// 是否在直播引导页显示
+        isShowWatch: true, // 是否在直播观看页显示
+        isShowOfficialWebsite: true, // 是否在活动官网显示
+        isShowGuided: true// 是否在直播引导页显示
       }
     },
     components: {
     },
     created () {
+      this.activityId = this.$route.params.id
+      let data = {
+        'activityId': this.activityId
+      }
+      if (!this.activityId) {
+        this.$router.go(-1)
+        return
+      }
+      liveWatchManage.getLiveShare(data).then((res) => {
+        if (res.code !== 200) {
+          console.log(res.msg)
+        } else {
+          if (res.data) {
+            this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+            this.shareTitle = res.data.title ? res.data.title : ''
+            this.shareIntroduction = res.data.description ? res.data.description : ''
+            this.isShowWatch = !!res.page.live_route
+            this.isShowOfficialWebsite = !!res.page.officia_route
+            this.isShowGuided = !!res.page.guide_route
+            this.tabValue = 1
+          }
+        }
+      })
+      liveWatchManage.getLiveBrand(data).then((res) => {
+        if (res.code !== 200) {
+          console.log(res.msg)
+        } else {
+          if (res.data) {
+            this.bgImgUrl = res.data.backgroundUrl ? res.data.backgroundUrl : ''
+            this.logoImgUrl = res.data.logoUrl ? res.data.logoUrl : ''
+            this.tabValue = 1
+          }
+        }
+      })
     },
     mounted () {
     },
@@ -174,134 +208,165 @@
         this.shareImgUrl = fildObj.data.name
       },
       brandClick () { // 品牌设置保存
-        console.log('品牌设置保存')
+        let data = {
+          'activityId': this.activityId,
+          'backgroundUrl': this.bgImgUrl,
+          'logoUrl': this.logoImgUrl
+        }
+        liveWatchManage.setLiveBrand(data).then((res) => {
+          if (res.code !== 200) {
+            console.log(res.msg)
+          } else {
+            alert('保存成功')
+          }
+        })
       },
       shareClick () { // 分享设置保存
-        console.log('分享设置保存')
+        let data = {
+          'activityId': this.activityId,
+          'title': this.shareTitle,
+          'description': this.shareIntroduction,
+          'imgUrl': this.shareImgUrl,
+          'page': []
+        }
+        if (this.isShowWatch) {
+          data.page.push('live_route')
+        }
+        if (this.isShowOfficialWebsite) {
+          data.page.push('officia_route')
+        }
+        if (this.isShowGuided) {
+          data.page.push('guide_route')
+        }
+        liveWatchManage.setLiveShare(data).then((res) => {
+          if (res.code !== 200) {
+            console.log(res.msg)
+          } else {
+            alert('保存成功')
+          }
+        })
       }
     }
   }
 </script>
 <style lang="scss" scoped>
-.set-live-watch-container {
+.set-live-watch-container /deep/ {
+  padding: 30px;
   .pull-left {
     float: left;
   }
   .pull-right {
     float: right;
   }
-  .v-div {
-    padding: 30px;
-    .v-title {
-      font-size: 18px;
-      width: 100%;
-      border-bottom: 1px solid #666;
+  .v-title {
+    font-size: 18px;
+    width: 100%;
+    border-bottom: 1px solid #666;
+  }
+  .v-set {
+    width: 600px;
+    .v-info-label {
+      width: 80px;
     }
-    .v-set {
-      width: 600px;
-      .v-info-label {
-        width: 80px;
-      }
-      .v-info {
-        width: 375px;
+    .v-info {
+      width: 375px;
+    }
+  }
+  .v-show {
+    width: 630px;
+    .v-pc {
+      width: 620px;
+      height: 340px;
+      background-position: center;
+      background-size: cover;
+      padding: 25px 0;
+      .v-content {
+        width: 515px;
+        height: 310px;
+        margin: 0 auto;
+        background-color: #999;
+        position: relative;
+        img {
+          display: block;
+          width: 140px;
+          height: 50px;
+          position: absolute;
+          top: 15px;
+          left: 15px;
+        }
       }
     }
+  }
+  .v-share {
     .v-show {
-      width: 630px;
-      .v-pc {
-        width: 620px;
-        height: 340px;
-        background-position: center;
-        background-size: cover;
-        padding: 25px 0;
-        .v-content {
-          width: 515px;
-          height: 310px;
-          margin: 0 auto;
-          background-color: #999;
-          position: relative;
-          img {
-            display: block;
-            width: 140px;
-            height: 50px;
-            position: absolute;
-            top: 15px;
-            left: 15px;
-          }
+      width: 360px;
+      margin: 5px auto;
+      .v-title {
+        height: 35px;
+        border: 1px solid #666;
+        margin: 5px auto;
+      }
+      .v-avatar {
+        display: inline-block;
+        width: 35px;
+        height: 35px;
+        border: 1px solid #666;
+      }
+      .v-share-friend {
+        width: 315px;
+        height: 108px;
+        border: 1px solid #666;
+        margin-left: 10px;
+        .v-show-img {
+          display: inline-block;
+          width: 80px;
+          height: 80px;
+          margin: 15px 0 0 35px;
+        }
+        .v-share-title,
+        .v-introduction {
+          width: 190px;
+          word-break: break-all;
         }
       }
-    }
-    .v-share {
-      .v-show {
-        width: 360px;
-        margin: 5px auto;
-        .v-title {
-          height: 35px;
-          border: 1px solid #666;
-          margin: 5px auto;
-        }
+      .v-share-friend-circle {
         .v-avatar {
           display: inline-block;
-          width: 35px;
-          height: 35px;
-          border: 1px solid #666;
+          vertical-align: middle;
         }
-        .v-share-friend {
+        span {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .v-content {
           width: 315px;
-          height: 108px;
+          height: 77px;
           border: 1px solid #666;
-          margin-left: 10px;
+          margin-left: 45px;
           .v-show-img {
             display: inline-block;
-            width: 80px;
-            height: 80px;
-            margin: 15px 0 0 35px;
+            width: 45px;
+            height: 45px;
+            margin: 15px 15px 0;
           }
-          .v-share-title,
           .v-introduction {
             width: 190px;
             word-break: break-all;
-          }
-        }
-        .v-share-friend-circle {
-          .v-avatar {
-            display: inline-block;
-            vertical-align: middle;
-          }
-          span {
-            display: inline-block;
-            vertical-align: middle;
-          }
-          .v-content {
-            width: 315px;
-            height: 77px;
-            border: 1px solid #666;
-            margin-left: 45px;
-            .v-show-img {
-              display: inline-block;
-              width: 45px;
-              height: 45px;
-              margin: 15px 15px 0;
-            }
-            .v-introduction {
-              width: 190px;
-              word-break: break-all;
-              margin-top: 10px;
-            }
+            margin-top: 10px;
           }
         }
       }
     }
-    .btn-upload {
-      display: block;
-      width: 175px;
-      height: 35px;
-      text-align: center;
-      line-height: 35px;
-      background-color: #666;
-      color: #fff;
-      margin-left: 80px;
-    }
+  }
+  .btn-upload {
+    display: block;
+    width: 175px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    background-color: #666;
+    color: #fff;
+    margin-left: 80px;
   }
 }
 </style>
