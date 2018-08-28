@@ -22,7 +22,7 @@
       <div class="from-row">
         <div class="from-title">短信内容：</div>
         <div class="from-content">
-          <com-input type="textarea" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="200"></com-input>
+          <com-input type="textarea" customClass="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="200"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -115,13 +115,12 @@
             <div class="from-row">
               <div class="from-title">输入号码：</div>
               <div class="from-content">
-                <com-input placeholder="请输入手机号码"></com-input>
+                <com-input placeholder="请输入手机号码" v-modal='sendPhone'></com-input>
               </div>
             </div>
           </div>
           <div class="btn-group">
-            <el-button>编辑</el-button>
-            <el-button>立即发送<span>(10)</span>条</el-button>
+            <el-button @click='sendTest'>立即发送<span>(10)</span>条</el-button>
           </div>
         </div>
       </div>
@@ -172,6 +171,7 @@ export default {
       pickDate: false,
       msgTag: '',
       msgContent: '',
+      sendPhone: '',
       date: new Date(),
       pickerOptions: {
         disabledDate (time) {
@@ -185,9 +185,11 @@ export default {
       createHttp.queryMsg(this.inviteId).then((res) => {
         // console.log(res)
         this.titleValue = res.data.title
-        this.tplValue = res.data.templateId
+        // this.tplValue = res.data.templateId
         this.sendValue = res.data.status
         this.date = res.data.sendTime
+        this.msgContent = res.data.desc
+        this.msgTag = res.data.signature
       }).catch((e) => {
         console.log(e)
       })
@@ -210,11 +212,13 @@ export default {
     save () {
       let data = {
         activityId: this.$route.params.id,
-        templateId: this.tplValue,
+        // templateId: this.tplValue,
         title: this.titleValue,
         groupId: '1', // 分组id
         status: this.sendValue.toLowerCase(),
-        sendTime: this.date
+        sendTime: this.date,
+        desc: this.msgContent,
+        signature: this.msgTag
       }
       // 更新
       createHttp.saveMsg(data).then((res) => {
@@ -230,6 +234,17 @@ export default {
           content: '保存失败',
           position: 'center'
         })
+      })
+    },
+    sendTest () {
+      const data = {
+        content: this.msgContent,
+        receiverMobile: this.sendPhone
+      }
+      createHttp.sendTestmsg(data).then((res) => {
+        console.log(res)
+      }).catch((e) => {
+        console.log(e)
       })
     }
   },
@@ -361,7 +376,10 @@ export default {
 .modal-box .right {
   width: 500px;
 }
-
+.msg-content {
+  width: 400px;
+  height: 200px;
+}
 .overview-box {
   width: 375px;
   height: 500px;

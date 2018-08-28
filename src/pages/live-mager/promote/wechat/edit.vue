@@ -9,12 +9,9 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">消息模板：</div>
+        <div class="from-title">微信内容：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择">
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <com-input type="textarea" customClass="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="200"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -170,6 +167,7 @@
         }],
         tplValue: '',
         sendValue: '',
+        msgContent: '',
         pickDate: false,
         date: new Date(),
         pickerOptions: {
@@ -296,7 +294,10 @@
   background: rgba($color: #000000, $alpha: 0.5);
   z-index: 9;
 }
-
+.msg-content {
+  width: 400px;
+  height: 200px;
+}
 .modal-box {
   width: 700px;
   height: 500px;

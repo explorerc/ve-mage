@@ -80,6 +80,15 @@ export default {
     }).catch((e) => {
       console.log(e)
     })
+  },
+  methods: {
+    sendNow () {
+      queryHttp.sendWechat(this.id).then((res) => {
+        console.log(res)
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
   }
 }
 </script>

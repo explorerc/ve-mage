@@ -14,11 +14,11 @@
         </el-date-picker>
       </div>
     </div>
-    <div>报名校验:<br>
+    <!-- <div>报名校验:<br>
       <el-radio v-model="queryData.checkField" label="mobile">校验手机号</el-radio>
       <el-radio v-model="queryData.checkField" label="email">校验邮箱</el-radio>
       <span>报名观看需要校验手机号或邮箱，从而帮您获取到更加精准的观众信息</span>
-    </div>
+    </div> -->
     <div class="set-info">
       <div class='title'>
         <el-button @click='addNew'>添加信息</el-button><em>最多可设置5条信息</em></div>
@@ -45,29 +45,29 @@
             </div>
             <div>登陆校验项目</div>
           </li>
-          <li class='clearfix' v-for="(item,idx) in quesData" :key="item.idx">
+          <li class='clearfix' v-for="(item,idx) in quesData" :key="idx">
             <div>
-              <el-select v-model="item.label" placeholder="请选择" @change='selectChange(idx,item.label)'>
+              <el-select v-model="item.type" placeholder="请选择" @change='selectChange(idx,item.type)'>
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.txt">
                 </el-option>
               </el-select>
             </div>
             <div>
-              <com-input customClass='inp' :value="item.info" :max-length="8" placeholder="请输入信息标题"></com-input>
+              <com-input customClass='inp' :value="item.title" :max-length="16" placeholder="请输入信息标题"></com-input>
             </div>
             <div>
-              <com-input customClass='inp' :value="item.desc" :max-length="8" placeholder="请输入信息描述"></com-input>
+              <com-input customClass='inp' :value="item.placeholder === 'null' ? item.placeholder : ''" :max-length="16" placeholder="请输入信息描述"></com-input>
             </div>
             <div>
               <el-button @click='removeItem(idx)'>删除</el-button>
             </div>
-            <section class='select-item clearfix' v-if="item.label === '下拉选择'">
+            <section class='select-item clearfix' v-if="item.type === 'select'">
               <p>选项详情
                 <el-button @click='addItem(idx)'>添加选项</el-button>
               </p>
               <ol>
                 <li v-for="(option,count) in item.detail" :key='count'>
-                  <com-input :value="option" :max-length="8" placeholder="请输入选项"></com-input>
+                  <com-input :value="option.value" :max-length="16" placeholder="请输入选项"></com-input>
                   <span @click='delItem(idx,count)'>删除</span>
                 </li>
               </ol>
@@ -100,7 +100,7 @@
         quesData: [],
         queryData: {
           activityId: '',
-          checkField: '',
+          // checkField: '',
           finishTime: '',
           questionId: ''
         },
@@ -124,38 +124,43 @@
         txt: '数字'
       },
       {
+        value: 5,
+        txt: '邮箱'
+      },
+      {
         value: 4,
         txt: '下拉选择'
       }
       ]
-      this.quesData = [{
-        info: '标题',
-        desc: '描述描述',
-        label: '文本',
-        detail: []
-      },
-      {
-        info: '标题a',
-        desc: '描述描述a',
-        label: '姓名',
-        detail: []
-      },
-      {
-        info: '标题b',
-        desc: '描述描述b',
-        label: '数字',
-        detail: []
-      },
-      {
-        info: '下拉',
-        desc: '描述下拉',
-        label: '下拉选择',
-        detail: [
-          '男',
-          '女',
-          '奥克兰圣'
-        ]
-      }
+      this.quesData = [
+      // {
+      //   info: '标题',
+      //   desc: '描述描述',
+      //   label: '文本',
+      //   detail: []
+      // },
+      // {
+      //   info: '标题a',
+      //   desc: '描述描述a',
+      //   label: '姓名',
+      //   detail: []
+      // },
+      // {
+      //   info: '标题b',
+      //   desc: '描述描述b',
+      //   label: '数字',
+      //   detail: []
+      // },
+      // {
+      //   info: '下拉',
+      //   desc: '描述下拉',
+      //   label: '下拉选择',
+      //   detail: [
+      //     '男',
+      //     '女',
+      //     '奥克兰圣'
+      //   ]
+      // }
       ]
     },
     methods: {
@@ -169,7 +174,7 @@
         }
       },
       addItem (idx) {
-        this.quesData[idx]['detail'].push('')
+        this.quesData[idx]['detail'].push({value: ''})
       },
       delItem (idx, count) {
         // debugger // eslint-disable-line
@@ -191,6 +196,7 @@
             // this.viewLimit = res.data.viewCondition
             if (res.data.viewCondition === 'APPOINT') {
               this.queryData = res.data.detail
+              this.quesData = res.data.detail.questionList
               if (res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
                 this.queryData.finishTime = ''
               }
@@ -210,7 +216,7 @@
           detail['finishTime'] = this.queryData.finishTime
         }
         detail['questionId'] = this.questionId
-        detail['checkField'] = this.queryData.checkField // email|mobile
+        // detail['checkField'] = this.queryData.checkField // email|mobile
         let data = {
           activityId: this.activityId,
           viewCondition: 'APPOINT',

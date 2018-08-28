@@ -282,6 +282,42 @@ const ActivityManger = {
         inviteId: id
       }
     })
+  },
+  // 短信立即发送
+  sendMsg (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/send',
+      params: {
+        inviteId: id
+      }
+    })
+  },
+  // 短信测试发送
+  sendTestmsg (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/test-send',
+      params: data
+    })
+  },
+  // 微信正式发送
+  sendWechat (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/wechat-invite/send',
+      params: {
+        inviteId: id
+      }
+    })
+  },
+  // 微信测试发送
+  sendTestWechat (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/wechat-invite/test-send',
+      params: data
+    })
   }
 }
 export default ActivityManger

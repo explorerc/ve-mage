@@ -32,7 +32,7 @@
         <div class="from-content">
           <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
           <el-button><router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link></el-button>
-          <el-button>立即发送</el-button>
+          <el-button @click='sendNow'>立即发送</el-button>
         </div>
       </div>
     </div>
@@ -75,6 +75,15 @@ export default {
     }).catch((e) => {
       console.log(e)
     })
+  },
+  methods: {
+    sendNow () {
+      queryHttp.sendMsg(this.id).then((res) => {
+        console.log(res)
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
   }
 }
 </script>
