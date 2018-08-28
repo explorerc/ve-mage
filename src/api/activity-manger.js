@@ -18,7 +18,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/manage/base-manage/del-activity',
-      params: {id: id}
+      params: { id: id }
     })
   },
   /**
@@ -28,7 +28,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/',
-      params: {id: id}
+      params: { id: id }
     })
   },
   /**
@@ -48,7 +48,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/',
-      params: {id: id}
+      params: { id: id }
     })
   },
   /**
@@ -68,7 +68,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/role-manage/list-role',
-      params: {activityId: id}
+      params: { activityId: id }
     })
   },
   /**
@@ -98,7 +98,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/view-limit/get-limit',
-      params: {activityId: id}
+      params: { activityId: id }
     })
   },
   /**
@@ -118,7 +118,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/base-manage/detail-activity',
-      params: {id: id}
+      params: { id: id }
     })
   },
   /**
@@ -148,7 +148,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/delete',
-      params: {emailInviteId: id}
+      params: { emailInviteId: id }
     })
   },
   /**
@@ -158,7 +158,7 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/query',
-      params: {emailInviteId: id}
+      params: { emailInviteId: id }
     })
   },
   /**
@@ -209,6 +209,78 @@ const ActivityManger = {
       method: 'post',
       url: '/expand/email-invite/save-draft',
       params: data
+    })
+  },
+  // 保存微信邀请任务
+  saveWechat (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/wechat-invite/save',
+      params: data
+    })
+  },
+  // 保存短信邀请任务
+  saveMsg (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/save',
+      params: data
+    })
+  },
+  // 查询微信邀请任务详情
+  queryWechat (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/wechat-invite/query',
+      params: {
+        inviteId: id
+      }
+    })
+  },
+  // 查询短信邀请任务详情
+  queryMsg (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/query',
+      params: {
+        inviteId: id
+      }
+    })
+  },
+  // 微信邀请任务列表
+  queryWechatlist (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/wechat-invite/list',
+      params: data
+    })
+  },
+  // 短信邀请任务列表
+  queryMsglist (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/list',
+      params: data
+    })
+  },
+  // 删除微信任务
+  deleteWechat (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/wechat-invite/delete',
+      params: {
+        inviteId: id
+      }
+    })
+  },
+  // 删除短信任务
+  deleteMsg (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/sms-invite/delete',
+      params: {
+        inviteId: id
+      }
     })
   }
 }
