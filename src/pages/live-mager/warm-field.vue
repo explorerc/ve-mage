@@ -38,8 +38,8 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>播放模式：</div>
           <div class="from-content">
-            <el-radio v-model="warm.playMode" label="1">自定循环</el-radio>
-            <el-radio v-model="warm.playMode" label="2">单次播放</el-radio>
+            <el-radio v-model="warm.playMode" label="AUTO">自动循环</el-radio>
+            <el-radio v-model="warm.playMode" label="ONCE">单次播放</el-radio>
           </div>
         </div>
         <div class="from-row">
@@ -92,18 +92,16 @@
         items: [1],
         warm: {
           isSwitch: false,
-          videoSrc: '',
-          playMode: '1',
+          playMode: 'AUTO',
           playCover: '',
-          record_id: '',
-          id: 'lss_fcf39dc5'
+          record_id: ''
         },
         vhallParams: {
-          sign: '41256133923f50e3ae298e5f89b784b5', // 生成的鉴权信息
-          app_id: 'e909e583',
-          accountId: 'v770',
-          access_token: 'access:e909e583:85615832f2d648f7',
-          signed_at: '1534486369', // 鉴权信息生成的时间戳
+          sign: '',
+          app_id: '',
+          accountId: '',
+          token: '',
+          signed_at: '',
           recordId: ''
         },
         loading: false,
@@ -134,9 +132,9 @@
       }
       this.queryWarmInfo()
       this.warm.id = this.$route.params.id
-      // this.initVhallUpload()
       LiveHttp.queryPassSdkInfo().then((res) => {
-        console.log(res)
+        this.vhallParams = res.data
+        this.initVhallUpload()
       })
     },
     methods: {
@@ -150,6 +148,13 @@
       queryWarmInfo () {
         console.log('查询暖场信息')
         LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+          this.warm = {
+            isSwitch: false,
+            playMode: res.data.playType,
+            playCover: res.data.imgUrl,
+            record_id: res.data.recordId
+          }
+          this.vhallParams.recordId = res.data.recordId
         })
       },
       uploadVideo () {
@@ -171,10 +176,13 @@
           window.vhallCloudDemandSDK('#upload', {
             params: {
               confirmBtn: '#confirmUpload', // 保存按钮的ID
-              name: '#rename', // 用于修改文件名称的input的ID
-              sign: this.vhallParams.sign, // 生成的鉴权信息
-              signed_at: this.vhallParams.signed_at, // 鉴权信息生成的时间戳
+              name: '#rename',
+              sign: this.vhallParams.sign,
+              signed_at: this.vhallParams.signed_at,
               app_id: this.vhallParams.app_id
+              // sign: 'e4e7f765dfacfbfe1398deca3c84993a',
+              // signed_at: '1535457568',
+              // app_id: 'e909e583'
             },
             beforeUpload: (file) => {
               if (file.type !== 'video/mp4') {
@@ -226,9 +234,9 @@
         })
         /* 初始化配置 */
         window.Vhall.config({
-          appId: this.vhallParams.app_id, // 应用 ID ,必填
+          appId: this.vhallParams.appId, // 应用 ID ,必填
           accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
-          token: this.vhallParams.access_token // token必填
+          token: this.vhallParams.token // token必填
         })
       }
     }

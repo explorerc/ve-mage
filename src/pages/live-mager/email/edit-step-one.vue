@@ -96,7 +96,11 @@
       const emailId = this.$route.query.email
       if (emailId) { // 编辑
         // 如果vuex可以取到值就return
-        if (this.email.emailInviteId) return
+        if (this.email.emailInviteId) {
+          this.currentTemp = this.email.emailTemplateId
+          this.queryEmailTemp()
+          return
+        }
         this.email.emailInviteId = emailId
         this.queryEmailInfo()
       } else { // 新增
@@ -129,8 +133,8 @@
       queryEmailTemp () {
         LiveHttp.queryEmailTemplateList().then((res) => {
           this.emailList = res.data.list
-          if (!this.email.emailInviteId) { // 如果不是编辑，第一个模板
-            this.email.content = this.emailList[0].content
+          if (!this.email.emailInviteId) { // 如果不是编辑
+            this.email.content = this.emailList[this.currentTemp].content
           }
         })
       },

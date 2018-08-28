@@ -27,8 +27,8 @@ const ActivityManger = {
   queryWarmInfoById (id) {
     return utils.ajax({
       method: 'post',
-      url: '/',
-      params: {id: id}
+      url: '/manage/warm-up-manage/get',
+      params: {activityId: id}
     })
   },
   /**
@@ -167,7 +167,7 @@ const ActivityManger = {
   queryEmailTemplateList () {
     return utils.ajax({
       method: 'post',
-      url: '/expand/email-invite/templates',
+      url: '/expand/email-invite/query',
       params: {}
     })
   },
