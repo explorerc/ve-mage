@@ -32,12 +32,12 @@ const ActivityManger = {
     })
   },
   /**
-   *  保存暖场信息
+   *  保存或者编辑暖场信息
    */
-  saveWarmInfo (data) {
+  saveAndEditWarmInfo (data) {
     return utils.ajax({
       method: 'post',
-      url: '/',
+      url: '/manage/warm-up-manage/edit',
       params: data
     })
   },
