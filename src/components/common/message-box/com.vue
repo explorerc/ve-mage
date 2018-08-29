@@ -120,7 +120,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    z-index: 3000;
+    z-index: 1000;
     .ve-modal {
       position: fixed;
       left: 0;
@@ -143,7 +143,7 @@
       font-size: 16px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       overflow: hidden;
-      z-index: 3001;
+      z-index: 1001;
       .ve-message-box__header {
         position: relative;
         padding: 15px;

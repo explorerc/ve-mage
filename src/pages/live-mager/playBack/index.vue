@@ -6,51 +6,51 @@
     </div>
     <div class="mager-box">
       <div class="from-box">
-        <div class="from-row">
-          <div class="from-title">回放设置：</div>
-          <div class="from-content">
-            <el-checkbox v-model="playBack.isSwitch">开启</el-checkbox>
-            <span class="msg-tip">功能已开启，直播结束后观众可观看回放</span>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">回放下线设置：</div>
-          <div class="from-content">
-            <el-radio v-model="outLineMode" label="0">永不下线，长期有效</el-radio>
-            <el-radio v-model="outLineMode" label="1">定时下线(下线后回放将不能观看)</el-radio>
-            <transition name="left-right">
-              <div class="black-box" v-if="outLineMode==1">
-                设置下线时间
-                <el-date-picker
-                  v-model="playBack.outLineTime"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  align="right"
-                  format="yyyy-MM-dd HH:mm"
-                  value-format="yyyy-MM-dd HH:mm">
-                </el-date-picker>
-              </div>
-            </transition>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">回放封面：</div>
-          <div class="from-content">
-            <div class="from-content">
-              <ve-upload
-                title="点击上传封面"
-                accept="png|jpg|jpeg"
-                defaultImg=""
-                :fileSize="1024"
-                @error="uploadError"
-                @success="uploadImgSuccess"></ve-upload>
-              <div class="upload-tips">
-                <span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>
-                <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放设置：</div>-->
+        <!--<div class="from-content">-->
+        <!--<el-checkbox v-model="playBack.isSwitch">开启</el-checkbox>-->
+        <!--<span class="msg-tip">功能已开启，直播结束后观众可观看回放</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放下线设置：</div>-->
+        <!--<div class="from-content">-->
+        <!--<el-radio v-model="outLineMode" label="0">永不下线，长期有效</el-radio>-->
+        <!--<el-radio v-model="outLineMode" label="1">定时下线(下线后回放将不能观看)</el-radio>-->
+        <!--<transition name="left-right">-->
+        <!--<div class="black-box" v-if="outLineMode==1">-->
+        <!--设置下线时间-->
+        <!--<el-date-picker-->
+        <!--v-model="playBack.outLineTime"-->
+        <!--type="datetime"-->
+        <!--placeholder="选择日期时间"-->
+        <!--align="right"-->
+        <!--format="yyyy-MM-dd HH:mm"-->
+        <!--value-format="yyyy-MM-dd HH:mm">-->
+        <!--</el-date-picker>-->
+        <!--</div>-->
+        <!--</transition>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放封面：</div>-->
+        <!--<div class="from-content">-->
+        <!--<div class="from-content">-->
+        <!--<ve-upload-->
+        <!--title="点击上传封面"-->
+        <!--accept="png|jpg|jpeg"-->
+        <!--defaultImg=""-->
+        <!--:fileSize="1024"-->
+        <!--@error="uploadError"-->
+        <!--@success="uploadImgSuccess"></ve-upload>-->
+        <!--<div class="upload-tips">-->
+        <!--<span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>-->
+        <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--<div class="from-row">-->
         <!--<div class="from-title">回放内容：</div>-->
         <!--<div class="from-content">-->
@@ -143,7 +143,7 @@
             <el-button
               type="text" size="small"
               v-else
-              @click.stop="">设为默认回放
+              @click.stop="playBackSetting(scope.$index)">设为默认回放
             </el-button>
             <div class="more">
               <span>更多</span>
@@ -161,6 +161,7 @@
     <div class="step-btns">
       <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
     </div>
+    <!-- 重命名 -->
     <message-box
       v-show="renameShow"
       header=""
@@ -172,6 +173,7 @@
         <com-input :value.sync="newTitle"/>
       </div>
     </message-box>
+    <!-- 添加视频 -->
     <message-box
       v-show="addVideoShow"
       width="600px"
@@ -226,6 +228,66 @@
         </div>
       </div>
     </message-box>
+    <!-- 回放设置 -->
+    <message-box
+      v-show="playBackShow"
+      width="600px"
+      header="设置默认回放"
+      cancelText="取消"
+      confirmText='确定'
+      @handleClick="savePlayBackConfig">
+      <div class="mager-box message-box-content">
+        <div class="from-box">
+          <div class="from-row">
+            <div class="from-title">回放封面：</div>
+            <div class="from-content">
+              <div class="from-content">
+                <ve-upload
+                  title="点击上传封面"
+                  accept="png|jpg|jpeg"
+                  :defaultImg="defaultImg"
+                  :fileSize="1024"
+                  @error="uploadError"
+                  @success="uploadImgSuccess"></ve-upload>
+                <div class="upload-tips">
+                  <span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>
+                  <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">下线设置：</div>
+            <div class="from-content">
+              <el-radio v-model="outLineMode" label="0">与活动同步下线</el-radio>
+              <el-radio v-model="outLineMode" label="1">指定下线时间</el-radio>
+              <transition name="left-right">
+                <div class="black-box" v-if="outLineMode==1">
+                  设置下线时间
+                  <el-date-picker
+                    v-model="playBack.outLineTime"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    align="right"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy-MM-dd HH:mm">
+                  </el-date-picker>
+                </div>
+              </transition>
+            </div>
+          </div>
+        </div>
+      </div>
+    </message-box>
+    <transition name="fade">
+      <div class="video-modal-box" v-if="prePlayShow">
+        <div class="video-modal" @click="prePlayShow=false"></div>
+        <div class="video-content">
+          <span v-if="!recordId||playMsg">{{playMsg||'暂无视频'}}</span>
+          <div id="myVideo" v-else style="width:100%; height:100%;"></div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -247,6 +309,7 @@
         navIdx: 0,
         addVideoShow: false,
         renameShow: false,
+        playBackShow: false,
         newTitle: '',
         selectRowIdx: 0,
         vhallParams: {
@@ -282,7 +345,17 @@
         loading: false,
         uploadImgErrorMsg: '',
         uploadErrorMsg: '',
-        percentVideo: ''
+        percentVideo: '',
+        playMsg: '',
+        prePlayShow: false
+      }
+    },
+    computed: {
+      defaultImg () {
+        if (!this.playBack.playBackCover) {
+          return ''
+        }
+        return `${this.$imgHost}/${this.playBack.playBackCover}`
       }
     },
     watch: {
@@ -340,10 +413,20 @@
         this.navIdx = idx
         this.queryPlayBackList()
       },
+      playBackSetting (idx) {
+        this.playBackShow = true
+        this.selectRowIdx = idx
+      },
+      /* 更多 */
       handlerMore (idx, type) {
         this.selectRowIdx = idx
         if (type === 0) { // 下载
         } else if (type === 1) { // 预览
+          this.prePlayShow = true
+          this.recordId = this.playBackList[this.selectRowIdx].video
+          this.$nextTick(() => {
+            this.videosSuccess()
+          })
         } else if (type === 2) { // 重命名
           this.newTitle = this.playBackList[this.selectRowIdx].title
           this.renameShow = true
@@ -351,6 +434,7 @@
           this.delPlayBack()
         }
       },
+      /* 添加视频 */
       addVideohandleClick (e) {
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
@@ -362,7 +446,7 @@
           PlayBackHttp.createPlayBack({
             activityId: this.activityId,
             title: this.newTitle,
-            type: this.playBackMode ? 'VIDEO' : 'LINK',
+            type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
             link: this.outLineLink,
             video: this.recordId
           }).then((res) => {
@@ -374,11 +458,29 @@
         }
         this.addVideoShow = false
       },
+      /* 重命名 */
       renameHandleClick (e) {
         this.renameShow = false
         if (e.action === 'confirm') {
           this.updataTitle()
         }
+      },
+      /* 设置默认回放 */
+      savePlayBackConfig (e) {
+        if (e.action === 'confirm') {
+          if (this.outLineMode === '0') {
+            this.playBack.outLineTime = ''
+          }
+          PlayBackHttp.savePlayBackConfig({
+            replayId: this.playBackList[this.selectRowIdx].replayId,
+            cover: this.playBack.playBackCover,
+            offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
+            offlineTime: this.playBack.outLineTime
+          }).then((res) => {
+            console.log(res)
+          })
+        }
+        this.playBackShow = false
       },
       updataTitle () {
         let playBack = this.playBackList[this.selectRowIdx]
@@ -481,7 +583,6 @@
               window.VhallPlayer.play()
             },
             fail: (msg) => {
-              console.log(msg)
               this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
             }
           })
@@ -619,6 +720,37 @@
     }
     .upload-tips {
       width: 273px !important;
+    }
+  }
+
+  .video-modal-box {
+    .video-modal {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .5);
+      z-index: 10;
+    }
+    .video-content {
+      position: absolute;
+      width: 800px;
+      height: 450px;
+      line-height: 450px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      vertical-align: top;
+      background-color: #333333;
+      color: #fff;
+      text-align: center;
+      z-index: 11;
+      .iframe-box {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 </style>

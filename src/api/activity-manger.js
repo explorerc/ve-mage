@@ -296,7 +296,7 @@ const ActivityManger = {
   queryPassSdkInfo () {
     return utils.ajax({
       method: 'post',
-      url: '/common/pass-sdk/create-access-token',
+      url: '/common/paas/create-access-token',
       params: {}
     })
   }

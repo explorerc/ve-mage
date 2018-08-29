@@ -50,6 +50,16 @@ const PlayBack = {
       url: '/manage/replay-manage/create',
       params: data
     })
+  },
+  /**
+   *  设置默认回放配置
+   */
+  savePlayBackConfig (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/manage/replay-manage/save-config',
+      params: data
+    })
   }
 }
 export default PlayBack
