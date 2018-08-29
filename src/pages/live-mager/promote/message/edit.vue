@@ -50,7 +50,7 @@
       <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content">
-          <el-button @click='testModal = true'>测试</el-button>
+          <el-button @click="test">测试</el-button>
           <el-button @click="save">保存</el-button>
         </div>
       </div>
@@ -115,12 +115,12 @@
             <div class="from-row">
               <div class="from-title">输入号码：</div>
               <div class="from-content">
-                <com-input placeholder="请输入手机号码" v-modal='sendPhone'></com-input>
+                <com-input placeholder="请输入手机号码" :value.sync='sendPhone'></com-input>
               </div>
             </div>
           </div>
           <div class="btn-group">
-            <el-button @click='sendTest'>立即发送<span>(10)</span>条</el-button>
+            <el-button @click='sendTest'>立即发送<span>({{limitCount}})</span>条</el-button>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@
     <div class="overview-box">
       <div class="header">短信</div>
       <div class="msg-box">
-        <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
+        <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
       </div>
     </div>
   </div>
@@ -177,15 +177,14 @@ export default {
         disabledDate (time) {
           return time.getTime() < Date.now() - 8.64e7
         }
-      }
+      },
+      limitCount: ''
     }
   },
   created () {
     if (this.inviteId) {
       createHttp.queryMsg(this.inviteId).then((res) => {
-        // console.log(res)
         this.titleValue = res.data.title
-        // this.tplValue = res.data.templateId
         this.sendValue = res.data.status
         this.date = res.data.sendTime
         this.msgContent = res.data.desc
@@ -211,8 +210,8 @@ export default {
     },
     save () {
       let data = {
+        inviteId: this.inviteId,
         activityId: this.$route.params.id,
-        // templateId: this.tplValue,
         title: this.titleValue,
         groupId: '1', // 分组id
         status: this.sendValue.toLowerCase(),
@@ -236,6 +235,14 @@ export default {
         })
       })
     },
+    test () {
+      this.testModal = true
+      createHttp.msgLimit().then((res) => {
+        if (res.code === 200) {
+          this.limitCount = res.data
+        }
+      }).catch((e) => { console.log(e) })
+    },
     sendTest () {
       const data = {
         content: this.msgContent,
@@ -243,8 +250,19 @@ export default {
       }
       createHttp.sendTestmsg(data).then((res) => {
         console.log(res)
+        if (res.code === 200) {
+          this.limitCount -= 1
+          this.$toast({
+            content: '发送成功',
+            position: 'center'
+          })
+        }
       }).catch((e) => {
         console.log(e)
+        this.$toast({
+          content: '发送失败',
+          position: 'center'
+        })
       })
     }
   },

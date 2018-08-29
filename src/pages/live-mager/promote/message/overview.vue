@@ -31,8 +31,11 @@
         <div class="from-title"></div>
         <div class="from-content">
           <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
-          <el-button><router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link></el-button>
-          <el-button @click='sendNow'>立即发送</el-button>
+          <el-button v-if="status !== 'SEND'">
+            <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link>
+          </el-button>
+          <el-button v-if="status === 'SEND'" disabled>已发送</el-button>
+          <el-button @click='sendNow' v-else>立即发送</el-button>
         </div>
       </div>
     </div>
@@ -40,7 +43,7 @@
       <div class="header">短信</div>
       <div class="msg-box">
         <div class="msg-title">
-          【短信签名】您关注的活动名称即将开始，赶快参加吧！
+          <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
           <div class="footer">短信通知将于{{date}}发送</div>
         </div>
       </div>
@@ -49,6 +52,7 @@
 </template>
 
 <script>
+import {formatDate} from 'src/assets/js/date'
 import queryHttp from 'src/api/activity-manger'
 export default {
   data () {
@@ -60,8 +64,9 @@ export default {
       group: '',
       status: '',
       time: '',
-      tpl: '',
-      date: ''
+      date: '',
+      msgTag: '',
+      msgContent: ''
     }
   },
   created () {
@@ -69,9 +74,10 @@ export default {
       console.log(res)
       this.group = res.data.groupId
       this.title = res.data.title
-      this.tpl = res.data.templateId
       this.status = res.data.status
       this.date = res.data.sendTime
+      this.msgTag = res.data.signature
+      this.msgContent = res.data.desc
     }).catch((e) => {
       console.log(e)
     })
@@ -80,6 +86,13 @@ export default {
     sendNow () {
       queryHttp.sendMsg(this.id).then((res) => {
         console.log(res)
+        if (res.code === 200) {
+          this.$toast({
+            content: '发送成功'
+          })
+          this.status = 'SEND'
+          this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+        }
       }).catch((e) => {
         console.log(e)
       })

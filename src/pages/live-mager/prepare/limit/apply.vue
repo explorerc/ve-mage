@@ -21,7 +21,7 @@
       </div> -->
     <div class="set-info">
       <div class='title'>
-        <el-button @click='addNew' :disabled="queryData.questionList.length=== 5 ? true : false">添加信息</el-button><em>最多可设置5条信息</em></div>
+        <el-button @click='addNew' :disabled="quesData.length === 5 ? true : false">添加信息</el-button><em>最多可设置5条信息</em></div>
       <div class="set-content">
         <ul class='table-title clearfix'>
           <li>信息类型</li>
