@@ -3,7 +3,7 @@
     <div class="edit-content clearfix">
       <div class="edit-content-box fl">
         <ve-editer
-          height="600"
+          height="500"
           v-model="email.content"></ve-editer>
         <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
           <div>为自己发送一封测试邮件</div>
