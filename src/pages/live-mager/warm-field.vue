@@ -90,7 +90,7 @@
     data () {
       return {
         warm: {
-          status: 'DISABLE',
+          enabled: 'N',
           playMode: 'AUTO',
           playCover: '',
           recordId: '',
@@ -118,6 +118,11 @@
         return this.warm.playCover ? `${this.$imgHost}/${this.warm.playCover}` : ''
       }
     },
+    watch: {
+      isSwitch (newVal) {
+        this.warm.enabled = newVal ? 'Y' : 'N'
+      }
+    },
     created () {
       if (!this.$route.params.id) {
         this.goBack()
@@ -137,16 +142,18 @@
           /* 查询详情 */
           this.warm = {
             activityId: this.$route.params.id,
-            status: res.data.status,
+            enabled: res.data.enabled,
             playMode: res.data.playType,
             playCover: res.data.imgUrl,
             recordId: res.data.recordId
           }
+          this.isSwitch = res.data.enabled === 'Y'
           this.vhallParams.recordId = res.data.recordId
         }).then(() => {
           /* 获取pass信息 */
           LiveHttp.queryPassSdkInfo().then((res) => {
             this.vhallParams = res.data
+            /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
               // 初始化pass上传插件
               this.initVhallUpload()
@@ -154,19 +161,6 @@
               this.videosSuccess()
             })
           })
-        })
-      },
-      queryWarmInfo (successFn) {
-        LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
-          this.warm = {
-            activityId: this.$route.params.id,
-            status: res.data.status,
-            playMode: res.data.playType,
-            playCover: res.data.imgUrl,
-            recordId: res.data.recordId
-          }
-          this.vhallParams.recordId = res.data.recordId
-          if (successFn) successFn()
         })
       },
       uploadVideo () {
@@ -178,9 +172,8 @@
           recordId: this.warm.recordId,
           playType: this.warm.playMode,
           imgUrl: this.warm.playCover,
-          status: this.warm.status
+          enabled: this.warm.enabled
         }).then((res) => {
-          console.log(res)
           if (res.code === 200) {
             this.$toast({
               header: `提示`,
@@ -233,7 +226,9 @@
             },
             saveSuccess: (res) => {
               this.warm.recordId = res.record_id
-              this.videosSuccess()
+              this.$nextTick(() => {
+                this.videosSuccess()
+              })
             },
             error: (msg, file, e) => {
               this.loading = false
@@ -254,7 +249,7 @@
             },
             fail: (msg) => {
               console.log(msg)
-              this.playMsg = `${msg}...`
+              this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
             }
           })
         })
