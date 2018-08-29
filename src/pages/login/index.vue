@@ -168,6 +168,7 @@
             sessionStorage.setItem('userInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
             console.log('账号登录成功')
+            this.$router.replace('/setAccount')
           }
         })
       },

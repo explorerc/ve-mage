@@ -23,6 +23,16 @@
       </el-submenu>
       <el-submenu index="2">
         <template slot="title">
+          <i class="iconfont icon-kechengguanli"></i>
+          <span>品牌管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/brand/template">活动官网</el-menu-item>
+          <el-menu-item index="">直播引导页</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
           <i class="iconfont icon-ziliaoguanli"></i>
           <span>账户管理</span>
         </template>

@@ -85,17 +85,31 @@ const autoEditmsg = () =>
 /* 回放 */
 const PlayBack = () =>
   import('src/pages/live-mager/playBack')
+/* 活动官网 */
+const Site = () =>
+  import('src/pages/brand/site')
+/* 活动官网品牌页 */
+const SiteTemplate = () =>
+  import('src/pages/brand/site/template.vue')
 
 export default [{
   path: '/test',
   name: 'Test',
   component: Test
 }, {
+  path: '/brand/template',
+  name: 'SiteTemplate',
+  component: SiteTemplate
+}, {
   path: '/',
   name: 'Layout',
   component: Layout,
-  redirect: '/setAccount',
+  redirect: 'setAccount',
   children: [{
+    path: 'brand/site',
+    name: 'Site',
+    component: Site
+  }, {
     path: '/liveMager',
     name: 'liveMager',
     component: LiveMager

@@ -85,7 +85,6 @@ export default {
     },
     getType () {
       let type = ''
-      console.log('init', this.type)
       switch (this.type) {
         case 'password':
           type = 'password'
