@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <p>创建微信通知</p>
     <div class="from-box">
       <div class="from-row">
@@ -9,12 +9,9 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">消息模板：</div>
+        <div class="from-title">微信内容：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择">
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <com-input type="textarea" customClass="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="200"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -47,16 +44,16 @@
       <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content">
-          <el-button @click='testModal = true'>测试</el-button>
+          <el-button @click='testSend'>测试</el-button>
           <el-button @click="save">保存</el-button>
         </div>
       </div>
     </div>
     <!-- 选择分组弹窗 -->
     <transition name='fade'>
-      <div class="modal-cover" v-if='testModal' @click="closeModal">
+      <div class="modal-cover" v-if='groudModal' @click="closeModal">
         <div class='modal-box'>
-          <h4>选择观众组 <span class='close' @click='testModal = false'>×</span></h4>
+          <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
           <div class='content-box'>
             <com-tabs :value.sync="tabValue" position='left' type='card' customClass='choose-tab'>
               <com-tab label="分组" :index="1">
@@ -110,10 +107,10 @@
           <div class='content-box'>
             <p>每天只允许发送5条测试消息</p>
             <div class="from-row">
-              <img src="/../asdasd.png" class='qrcode'>
+              <img :src="imgUrl" class='qrcode'>
             </div>
             <p>扫描二维码，授权后，即可收到测试消息</p>
-            <p>当前可发送(<span>5</span>条)</p>
+            <p>当前可发送(<span>{{limitCount}}</span>条)</p>
           </div>
         </div>
       </div>
@@ -124,9 +121,9 @@
         <div class="msg-title">
           个人信息通知<span>8月10日</span>
         </div>
-        <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
-        <p>标题：<span>{{titleValue}}</span></p>
-        <p>时间：<span>{{date}}</span></p>
+        <p class="tips">您关注的<span> {{webinarName}} </span>即将开始，赶快参加吧！</p>
+        <p>标题：<span>{{webinarName}}</span></p>
+        <p>时间：<span>{{webinarTime}}</span></p>
         <p>内容：<span>点击查看详情</span></p>
         <p>退订</p>
         <div class="footer">详情</div>
@@ -142,8 +139,7 @@
     data () {
       return {
         inviteId: this.$route.query.id, // 签名列表传过来的id
-        activitId: this.$route.params.id,
-        webinarName: '活动名字啊啊啊',
+        activityId: this.$route.params.id,
         groudModal: false,
         testModal: false,
         tabValue: 1,
@@ -168,27 +164,42 @@
           value: 'DRAFT',
           label: '暂存为草稿'
         }],
-        tplValue: '',
         sendValue: '',
+        wxContent: '',
+        imgUrl: '',
         pickDate: false,
         date: new Date(),
         pickerOptions: {
           disabledDate (time) {
             return time.getTime() < Date.now() - 8.64e7
           }
-        }
+        },
+        webinarName: '',
+        webinarTime: '',
+        limitCount: '',
+        loading: false
       }
     },
     created () {
       if (this.inviteId) {
+        this.loading = true
         createHttp.queryWechat(this.inviteId).then((res) => {
           // console.log(res)
           this.titleValue = res.data.title
-          this.tplValue = res.data.templateId
           this.sendValue = res.data.status
           this.date = res.data.sendTime
+          this.wxContent = res.data.desc
         }).catch((e) => {
           console.log(e)
+        })
+        createHttp.webinarInfo(this.activityId).then((res) => {
+          if (res.code === 200) {
+            this.webinarName = res.data.title
+            this.webinarTime = res.data.startTime
+            this.loading = false
+          }
+        }).catch((e) => {
+          this.loading = false
         })
       }
     },
@@ -209,11 +220,12 @@
       },
       save () {
         let data = {
+          inviteId: this.inviteId,
           activityId: this.$route.params.id,
-          templateId: this.tplValue,
           title: this.titleValue,
           groupId: '1', // 分组id
           status: this.sendValue.toLowerCase(),
+          desc: this.wxContent,
           sendTime: this.date
         }
         // 更新
@@ -224,10 +236,34 @@
             position: 'center'
           })
           // 跳转到列表页面
-          this.$router.push({name: 'promoteWechat', params: {id: this.activitId}})
+          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
         }).catch((res) => {
           this.$toast({
             content: '保存失败',
+            position: 'center'
+          })
+        })
+      },
+      testSend () {
+        this.testModal = true
+        createHttp.wxLimit().then((res) => {
+          if (res.code === 200) {
+            console.log(res)
+            this.limitCount = res.data
+          }
+        }).catch((e) => { console.log(e) })
+
+        const data = {
+          content: this.wxContent,
+          activityId: this.activityId
+        }
+        createHttp.sendTestWechat(data).then((res) => {
+          if (res.code === 200) {
+            this.imgUrl = res.data
+          }
+        }).catch((e) => {
+          this.$toast({
+            content: '二维码生成失败',
             position: 'center'
           })
         })
@@ -296,7 +332,10 @@
   background: rgba($color: #000000, $alpha: 0.5);
   z-index: 9;
 }
-
+.msg-content {
+  width: 400px;
+  height: 200px;
+}
 .modal-box {
   width: 700px;
   height: 500px;
