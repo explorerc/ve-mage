@@ -55,7 +55,7 @@ axios.interceptors.response.use(
 export const ajax = (options) => {
   options.url = options.abPath || BASE_URL + options.url
   let _options = Object.assign({}, defaultOptions, options)
-  console.log(_options)
+  // console.log(_options)
   return axios(_options).then((res) => {
     return res.data
   }).catch((data) => {
