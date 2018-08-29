@@ -167,7 +167,7 @@ const ActivityManger = {
   queryEmailTemplateList () {
     return utils.ajax({
       method: 'post',
-      url: '/expand/email-invite/query',
+      url: '/expand/email-invite/templates',
       params: {}
     })
   },
