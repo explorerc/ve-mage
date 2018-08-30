@@ -1,14 +1,14 @@
 <template>
-  <div class="content" @click.stop='closeAlltool'>
+  <div class="content" @click.stop='closeAlltool' v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="form-row">
       <el-button>
         <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}">新建</router-link>
       </el-button>
       <div class="content">
         <el-table :data="tableData" stripe style="width: 100%">
-          <el-table-column prop='title' label="任务标题" width="200">
+          <el-table-column prop='title' label="微信通知标题" width="200">
           </el-table-column>
-          <el-table-column prop="templateId" label="任务模版" width="200">
+          <el-table-column prop="templateId" label="发送数量" width="200">
           </el-table-column>
           <el-table-column prop="sendTime" label="发送时间" width="200">
           </el-table-column>
@@ -86,7 +86,8 @@
         moreIdx: NaN,
         delConfirm: false,
         delId: '',
-        delIdx: ''
+        delIdx: '',
+        loading: false
       }
     },
     created () {
@@ -127,14 +128,17 @@
         }
       },
       queryList () {
+        this.loading = true
         createHttp.queryWechatlist(this.queryData).then((res) => {
           console.log(res)
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
           this.total = parseInt(res.data.total)
+          this.loading = false
         }).catch((e) => {
           console.log(e)
+          this.loading = false
         })
       },
       currentChange (e) {

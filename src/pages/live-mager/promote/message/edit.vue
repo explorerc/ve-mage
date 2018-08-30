@@ -9,12 +9,26 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">消息模板：</div>
+        <div class="from-title">接收人：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择">
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <el-button @click='groudModal = true'>点击添加</el-button>
+          <ol class='groupList'>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">短信内容：</div>
+        <div class="from-content">
+          <com-input type="textarea" customClass="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="200"></com-input>
+        </div>
+      </div>
+      <div class="from-row">
+        <div class="from-title">短信签名：</div>
+        <div class="from-content">
+          <com-input :value.sync="msgTag" placeholder="请输入签名" :max-length="10"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -34,20 +48,9 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title">接收人：</div>
-        <div class="from-content">
-          <el-button @click='groudModal = true'>点击添加</el-button>
-          <ol class='groupList'>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-          </ol>
-        </div>
-      </div>
-      <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content">
-          <el-button @click='testModal = true'>测试</el-button>
+          <el-button @click="test">测试</el-button>
           <el-button @click="save">保存</el-button>
         </div>
       </div>
@@ -107,24 +110,17 @@
       <div class="modal-cover" v-if='testModal' @click="closeModal">
         <div class='modal-box'>
           <h4>短信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
-          <div class='content-box'>
+          <div class='content-box from-box'>
             <p>每天只允许发送5条测试短信</p>
             <div class="from-row">
               <div class="from-title">输入号码：</div>
               <div class="from-content">
-                <com-input :value.sync="titleValue" placeholder="请输入手机号码"></com-input>
-              </div>
-            </div>
-            <div class="from-row">
-              <div class="from-title">短信内容：</div>
-              <div class="from-content">
-                <div class="content-detail">奥斯卡了解到卢卡斯角度看拉升阶段卢卡斯阶段</div>
+                <com-input placeholder="请输入手机号码" :value.sync='sendPhone'></com-input>
               </div>
             </div>
           </div>
           <div class="btn-group">
-            <el-button>编辑</el-button>
-            <el-button>立即发送<span>(10)</span>条</el-button>
+            <el-button @click='sendTest'>立即发送<span>({{limitCount}})</span>条</el-button>
           </div>
         </div>
       </div>
@@ -132,7 +128,7 @@
     <div class="overview-box">
       <div class="header">短信</div>
       <div class="msg-box">
-        <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
+        <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
       </div>
     </div>
   </div>
@@ -170,25 +166,29 @@ export default {
         value: 'DRAFT',
         label: '暂存为草稿'
       }],
-      tplValue: '',
+      // tplValue: '',
       sendValue: '',
       pickDate: false,
+      msgTag: '',
+      msgContent: '',
+      sendPhone: '',
       date: new Date(),
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() < Date.now() - 8.64e7
         }
-      }
+      },
+      limitCount: ''
     }
   },
   created () {
     if (this.inviteId) {
       createHttp.queryMsg(this.inviteId).then((res) => {
-        // console.log(res)
         this.titleValue = res.data.title
-        this.tplValue = res.data.templateId
         this.sendValue = res.data.status
         this.date = res.data.sendTime
+        this.msgContent = res.data.desc
+        this.msgTag = res.data.signature
       }).catch((e) => {
         console.log(e)
       })
@@ -210,12 +210,14 @@ export default {
     },
     save () {
       let data = {
+        inviteId: this.inviteId,
         activityId: this.$route.params.id,
-        templateId: this.tplValue,
         title: this.titleValue,
         groupId: '1', // 分组id
         status: this.sendValue.toLowerCase(),
-        sendTime: this.date
+        sendTime: this.date,
+        desc: this.msgContent,
+        signature: this.msgTag
       }
       // 更新
       createHttp.saveMsg(data).then((res) => {
@@ -229,6 +231,36 @@ export default {
       }).catch((res) => {
         this.$toast({
           content: '保存失败',
+          position: 'center'
+        })
+      })
+    },
+    test () {
+      this.testModal = true
+      createHttp.msgLimit().then((res) => {
+        if (res.code === 200) {
+          this.limitCount = res.data
+        }
+      }).catch((e) => { console.log(e) })
+    },
+    sendTest () {
+      const data = {
+        content: this.msgContent,
+        receiverMobile: this.sendPhone
+      }
+      createHttp.sendTestmsg(data).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.limitCount -= 1
+          this.$toast({
+            content: '发送成功',
+            position: 'center'
+          })
+        }
+      }).catch((e) => {
+        console.log(e)
+        this.$toast({
+          content: '发送失败',
           position: 'center'
         })
       })
@@ -362,7 +394,10 @@ export default {
 .modal-box .right {
   width: 500px;
 }
-
+.msg-content {
+  width: 400px;
+  height: 200px;
+}
 .overview-box {
   width: 375px;
   height: 500px;
