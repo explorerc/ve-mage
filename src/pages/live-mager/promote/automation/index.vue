@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <p>自动化通知：<el-switch v-model="isOpen"></el-switch> 开启自动化通知，自动通知您的观众，提升活动服务体验</p>
     <div class='preview'>
       <p>预约阶段</p>
       <div class="detail">
@@ -19,7 +20,7 @@
               </div>
               <div class="btn-group">
                 <el-button type="small">测试发送</el-button>
-                <el-button type="small">编辑</el-button>
+                <el-button type="small"><router-link :to="{ name:'autoEditmsg',query:{'noticeId':3,'timing':'BEFORE_ORDER'} }">编辑</router-link></el-button>
                 <el-button type="small">删除</el-button>
               </div>
             </div>
@@ -42,14 +43,19 @@
         </div>
         <div class="block">
           <div class="title clearfix">
-            <p>开播前1小时提醒 <span>提醒用户活动即将开始，做好参加准备</span></p>
+            <p>开播前{{firstValue}}小时提醒 <span>提醒用户活动即将开始，做好参加准备</span></p>
             <el-button size="medium">添加短信</el-button>
             <el-button size="medium">添加微信</el-button>
-            <!-- <el-button size="medium">编辑提醒时间</el-button> -->
-            <el-select v-model="value" placeholder="编辑提醒时间" style='float:right;'>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
+            <el-button size="medium" @click='firstSel = true'>编辑提醒时间</el-button>
+            <div class="seltime-modal" v-if='firstSel'>
+              <div class="title">修改时间：</div>
+              <el-select v-model="firstValue" placeholder="编辑提醒时间">
+                <el-option v-for="item in hourOptions" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+              <el-button>放弃</el-button>
+              <el-button @click='saveFirst'>保存</el-button>
+            </div>
           </div>
           <div class="item-box">
             <div class="item">
@@ -69,23 +75,19 @@
         </div>
         <div class="block">
           <div class="title clearfix">
-            <p>开播前15分钟提醒 <span>活动开始前15分钟，提醒用户活动即将开始，做好参加准备</span></p>
+            <p>开播前{{secondValue}}分钟提醒 <span>活动开始前{{secondValue}}分钟，提醒用户活动即将开始，做好参加准备</span></p>
             <el-button size="medium">添加短信</el-button>
             <el-button size="medium">添加微信</el-button>
-            <!-- <el-button size="medium">编辑提醒时间</el-button> -->
-            <el-select v-model="value" placeholder="编辑提醒时间" style='float:right;'>
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-            <!-- <div class="seltime-modal" v-if='true'>
+            <el-button size="medium" @click='secondSel = true'>编辑提醒时间</el-button>
+            <div class="seltime-modal" v-if='secondSel'>
               <div class="title">修改时间：</div>
-              <el-select v-model="value" placeholder="编辑提醒时间">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              <el-select v-model="secondValue" placeholder="编辑提醒时间">
+                <el-option v-for="item in minOptions" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
               <el-button>放弃</el-button>
-              <el-button>保存</el-button>
-            </div> -->
+              <el-button @click='saveSecond'>保存</el-button>
+            </div>
           </div>
           <div class="item-box">
             <div class="item">
@@ -122,7 +124,7 @@
               </div>
               <div class="btn-group">
                 <el-button type="small">测试发送</el-button>
-                <el-button type="small">编辑</el-button>
+                <el-button type="small"><router-link :to="{ name:'autoEditmsg',query:{'noticeId':3,'timing':'BEFORE_ORDER'} }">编辑</router-link></el-button>
                 <el-button type="small">删除</el-button>
               </div>
             </div>
@@ -196,20 +198,34 @@
   export default {
     data () {
       return {
+        isOpen: true,
         testModal: false,
         titleValue: '',
         delConfirm: false,
-        options: [{
+        firstSel: false,
+        secondSel: false,
+        hourOptions: [{
           value: 1,
           label: '开播前1小时'
         }, {
-          value: 2,
+          value: 8,
           label: '开播前8小时'
         }, {
-          value: 3,
+          value: 24,
           label: '开播前24小时'
         }],
-        value: '开播前1小时'
+        firstValue: 1,
+        minOptions: [{
+          value: 5,
+          label: '开播前5分钟'
+        }, {
+          value: 15,
+          label: '开播前15分钟'
+        }, {
+          value: 30,
+          label: '开播前30分钟'
+        }],
+        secondValue: 15
       }
     },
     methods: {
@@ -220,6 +236,12 @@
       },
       del () {
 
+      },
+      saveFirst () {
+        this.firstSel = false
+      },
+      saveSecond () {
+        this.secondSel = false
       }
     }
 

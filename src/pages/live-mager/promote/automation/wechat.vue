@@ -5,7 +5,7 @@
       <div class="from-row">
         <div class="from-title">微信模板：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择">
+          <el-select v-model="tplValue" placeholder="请选择" @change='selChange'>
             <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -31,44 +31,83 @@
         </div>
       </div>
     </div>
-    <div class="overview-box">
-      <div class="header">微吼服务号</div>
-      <div class="msg-box">
-        <div class="msg-title">
-          个人信息通知<span>8月10日</span>
-        </div>
-        <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
-        <p>标题：<span>{{titleValue}}</span></p>
-        <p>时间：<span>{{date}}</span></p>
-        <p>内容：<span>点击查看详情</span></p>
-        <p>退订</p>
-        <div class="footer">详情</div>
-      </div>
-    </div>
+    <send-tpl
+    :type="tplData.type"
+    :tpl="tplData.tpl"
+    :tag="tplData.tag"
+    :webinarName="tplData.webinarName"
+    :hostName="tplData.hostName"
+    :date="tplData.date"
+    :firstCount="tplData.firstCount"
+    :secondCount="tplData.secondCount"
+    ></send-tpl>
   </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        date: '2018-12-10 10:00:00',
-        titleValue: '',
-        webinarName: '活动名字啊啊啊',
-        tplOptions: [{
-          value: 1,
-          label: '活动邀请'
-        }, {
-          value: 2,
-          label: '活动推荐'
-        }],
-        tplValue: ''
+import sendTpl from './send-tpl'
+export default {
+  data () {
+    return {
+      date: '2018-12-10 10:00:00',
+      titleValue: '',
+      webinarName: '活动名字啊啊啊',
+      tplOptions: [{
+        value: 1,
+        label: '预约成功通知'
+      }, {
+        value: 2,
+        label: '报名成功通知'
+      }, {
+        value: 3,
+        label: '开播提醒通知1'
+      }, {
+        value: 4,
+        label: '开播提醒通知2'
+      }, {
+        value: 5,
+        label: '订阅成功提醒'
+      }, {
+        value: 6,
+        label: '回放设置成功提醒'
+      }],
+      tplValue: 1,
+      tplData: {
+        type: 'wx',
+        tpl: 1,
+        tag: '',
+        webinarName: '',
+        hostName: '',
+        date: '',
+        firstCount: '',
+        secondCount: '',
+        subscribeDate: ''
       }
-    },
-    created () {},
-    methods: {},
-    watch: {}
+    }
+  },
+  created () {
+    this.tplData = {
+      type: 'wx',
+      tpl: 1,
+      tag: '',
+      webinarName: '',
+      hostName: '',
+      date: '',
+      firstCount: '',
+      secondCount: '',
+      subscribeDate: ''
+    }
+  },
+  methods: {
+    selChange (idx) {
+      this.tplData.tpl = idx
+    }
+  },
+  watch: {},
+  components: {
+    sendTpl
   }
+}
 </script>
 
 <style lang='scss' scoped>
