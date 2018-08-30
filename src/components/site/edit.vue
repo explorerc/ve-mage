@@ -48,12 +48,12 @@ export default {
   top: 0;
   bottom: 0;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.2);
   .edit-content {
     position: absolute;
     right: 0;
     height: 100%;
-    width: 400px;
+    width: 360px;
     transition: all 0.3s;
     background-color: white;
     transform: translateX(100%);

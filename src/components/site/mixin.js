@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     handleEnter (e) {
+      console.log(e.target)
       e.stopPropagation()
       if (this.edit) {
         this.$refs.target.style.border = '2px dashed #ff0000'

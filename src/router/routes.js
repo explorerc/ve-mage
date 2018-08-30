@@ -3,6 +3,8 @@ const Layout = () =>
   import('src/pages/layout')
 const Test = () =>
   import('src/pages/com-test')
+const Example = () =>
+  import('src/pages/comps-example')
 /* 直播列表 */
 const LiveMager = () =>
   import('src/pages/live-mager')
@@ -96,6 +98,10 @@ export default [{
   path: '/test',
   name: 'Test',
   component: Test
+}, {
+  path: '/example',
+  name: 'Example',
+  component: Example
 }, {
   path: '/brand/template',
   name: 'SiteTemplate',

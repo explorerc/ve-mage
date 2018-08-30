@@ -1,5 +1,5 @@
 <template>
-  <div id="quill-upload">
+  <div id="quill-upload" :class="customClass">
     <!-- 图片上传组件辅助-->
     <el-upload
       class="avatar-uploader"
@@ -74,6 +74,10 @@
     },
     components: {quillEditor},
     props: {
+      customClass: {
+        type: String,
+        default: ''
+      },
       value: {
         default: ''
       },
@@ -84,6 +88,10 @@
       imgUploadUrl: {
         type: String,
         default: '/api/upload/do-upload'
+      },
+      exclude: {
+        type: Array,
+        default: []
       }
     },
     computed: {
@@ -145,30 +153,30 @@
 </script>
 
 <style lang="scss">
-  @import '../../node_modules/quill/dist/quill.core.css';
-  @import '../../node_modules/quill/dist/quill.snow.css';
-  @import '../../node_modules/quill/dist/quill.bubble.css';
+@import '../../node_modules/quill/dist/quill.core.css';
+@import '../../node_modules/quill/dist/quill.snow.css';
+@import '../../node_modules/quill/dist/quill.bubble.css';
 
-  #quill-upload {
-    // height: 300px;
-    min-width: 688px;
-    .avatar-uploader{
-      display: none;
-    }
-    .el-row {
+#quill-upload {
+  // height: 300px;
+  min-width: 688px;
+  .avatar-uploader {
+    display: none;
+  }
+  .el-row {
+    height: 100%;
+    .quill-editor {
       height: 100%;
-      .quill-editor {
-        height: 100%;
-      }
-      .ql-toolbar {
-        text-align: left;
-      }
-      .ql-toolbar.ql-snow .ql-formats {
-        margin-right: 0px;
-      }
     }
-    .ql-toolbar.ql-snow + .ql-container.ql-snow {
-      height: calc(100% - 42px);
+    .ql-toolbar {
+      text-align: left;
+    }
+    .ql-toolbar.ql-snow .ql-formats {
+      margin-right: 0px;
     }
   }
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    height: calc(100% - 42px);
+  }
+}
 </style>

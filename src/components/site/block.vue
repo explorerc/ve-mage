@@ -69,7 +69,6 @@ export default {
   watch: {
     datas: {
       handler (data) {
-        console.log(data)
         if (data.bgType) {
           ({bgType: this.bgType, color: this.color, img: this.img} = data)
           if (!this.color) {

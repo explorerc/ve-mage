@@ -7,7 +7,9 @@
         :list="navList"
       ></com-nav>
     </com-block>
-    <com-block customClass="section1" :datas="section1Data"></com-block>
+    <com-block customClass="section1" :datas="section1Data">
+      <com-font></com-font>
+    </com-block>
     <!-- <div class="img-group">
       <img src="https://img.alicdn.com/tfs/TB1uf5JjhrI8KJjy0FpXXb5hVXa-1920-640.png" alt="">
     </div>  -->
@@ -18,10 +20,11 @@
 import ComLogo from 'components/site/logo'
 import ComNav from 'components/site/navigation'
 import ComBlock from 'components/site/block'
+import ComFont from 'components/site/font'
 
 export default {
   components: {
-    ComLogo, ComNav, ComBlock
+    ComLogo, ComNav, ComBlock, ComFont
   },
   data () {
     return {
