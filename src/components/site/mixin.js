@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     handleEnter (e) {
-      console.log(e.target)
       e.stopPropagation()
       if (this.edit) {
         this.$refs.target.style.border = '2px dashed #ff0000'
@@ -33,7 +32,8 @@ export default {
       }
     },
     showEdit () {
-      this.$refs.editTarget.show()
+      let rect = this.$refs.target.getBoundingClientRect()
+      this.$refs.editTarget.show(rect)
     }
   }
 }

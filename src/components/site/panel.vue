@@ -4,15 +4,15 @@
         <slot></slot>
     </div>
     <com-edit ref="editTarget">
-      <com-tabs :value="bgType">
+      <com-tabs :value="value.bgType">
        <com-tab index="color" >
-         <div slot="label"><el-radio v-model="bgType" label="color">显示颜色</el-radio></div>
+         <div slot="label"><el-radio v-model="value.bgType" label="color">显示颜色</el-radio></div>
          <div>
-           <el-color-picker show-alpha v-model="color"></el-color-picker>
+           <el-color-picker show-alpha v-model="value.color"></el-color-picker>
          </div>
        </com-tab>
        <com-tab index="img" >
-          <div slot="label"><el-radio v-model="bgType" label="img">显示图片</el-radio></div>
+          <div slot="label"><el-radio v-model="value.bgType" label="img">显示图片</el-radio></div>
          <div>
            <com-upload
       accept="png|jpg|jpeg|bmp|gif"
@@ -34,7 +34,7 @@
 <script>
 import editMixin from './mixin'
 import ComEdit from './edit'
-
+const host = 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/'
 export default {
   mixins: [editMixin],
   components: {
@@ -53,26 +53,35 @@ export default {
     },
     edit: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    value: {
+      type: Object,
+      default () {
+        return {
+          bgType: 'color',
+          color: 'rgba(0, 0, 0, 1)',
+          img: ''
+        }
+      }
     }
   },
   data () {
     return {
-      bgType: 'color',
-      color: 'rgba(0, 0, 0, 1)',
-      img: ''
+
     }
   },
   mounted () {
-    this.analysisData({bgType: this.bgType, color: this.color, img: this.img})
+    this.analysisData({bgType: this.value.bgType, color: this.value.color, img: this.value.img})
   },
   watch: {
-    datas: {
+    value: {
       handler (data) {
         if (data.bgType) {
-          ({bgType: this.bgType, color: this.color, img: this.img} = data)
-          if (!this.color) {
-            this.color = 'rgba(0, 0, 0, 1)'
+          ({bgType: this.value.bgType, color: this.value.color, img: this.value.img} = data)
+          this.value.img = this.value.img
+          if (!this.value.color) {
+            this.value.color = 'rgba(0, 0, 0, 1)'
           }
         }
       },
@@ -88,7 +97,7 @@ export default {
   methods: {
     analysisData (data) {
       if (data.bgType === 'img') {
-        this.$refs.target.style.cssText = `background-image:url(${data.img})`
+        this.$refs.target.style.cssText = `background-image:url(${host + data.img})`
       } else {
         this.$refs.target.style.cssText = `background-color:${data.color}`
       }
@@ -96,7 +105,8 @@ export default {
     uploadLoad (data) {
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        this.img = `${ret.data.host}/${ret.data.name}`
+        this.value.img = `${ret.data.name}`
+        this.analysisData(this.value)
       }
     }
   }

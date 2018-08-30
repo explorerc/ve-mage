@@ -2,6 +2,7 @@
   <button
   class="com-button"
   :disabled="loading"
+  :style="styles"
   :class="[{primary:type==='primary',loading:loading},customClass]"
   @click="handleClick"
   >
@@ -16,7 +17,8 @@ export default {
   props: {
     customClass: String,
     type: String,
-    loading: Boolean
+    loading: Boolean,
+    styles: Object
   },
   methods: {
     handleClick (evt) {

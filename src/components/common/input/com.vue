@@ -106,6 +106,7 @@ export default {
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
       this.$emit('update:value', this.innerValue)
+      this.$emit('input', this.innerValue)
     },
     value: {
       handler (value) {

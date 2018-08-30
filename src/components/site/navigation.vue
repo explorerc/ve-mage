@@ -2,7 +2,7 @@
   <div class="navigation-container" :class="customClass">
     <div ref="target" class="navigation-content">
       <ul class="nav-group">
-        <li class="nav-item" v-for="(item,index) in datas" :key="index">
+        <li class="nav-item" v-for="(item,index) in value" :key="index">
           <a :target="item.type" :href="item.link | voidLink">{{item.text}}</a>
         </li>
       </ul>
@@ -10,7 +10,7 @@
     <com-edit ref="editTarget" customClass="nav-edit">
       <com-button class="add-btn" @click="addNav">添加导航</com-button>
       <ul class="nav-edit-group">
-        <li v-for="(item,index) in datas" :key="'a'+index">
+        <li v-for="(item,index) in value" :key="'a'+index">
           <div class="nav-title" @click="titleClick(index)">{{item.text}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
           <div class="nav-content" :class="{active:active===index}">
             <div><com-input placeholder="输入导航名称" :value.sync="item.text"></com-input></div>
@@ -38,36 +38,27 @@ export default {
   props: {
     edit: {
       type: Boolean,
-      default: true
+      default: false
     },
     customClass: {
       type: String,
       default: ''
     },
-    list: {
+    value: {
       type: Array,
       default: []
     }
   },
   data () {
     return {
-      datas: [],
       active: -1
-    }
-  },
-  watch: {
-    list: {
-      handler (data) {
-        this.datas = data
-      },
-      immediate: true
     }
   },
   methods: {
     addNav () {
-      let len = this.datas.length
+      let len = this.value.length
       if (len < 8) {
-        this.datas.push({
+        this.value.push({
           text: `导航${len + 1}`,
           type: '_blank',
           link: ''
@@ -83,8 +74,8 @@ export default {
       }
     },
     removeClick (index) {
-      if (this.datas.length > 1) {
-        this.datas.splice(index, 1)
+      if (this.value.length > 1) {
+        this.value.splice(index, 1)
       }
     }
   }

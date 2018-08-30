@@ -1,5 +1,5 @@
 <template>
-  <div class="html-editer">
+  <div class="html-editer" :class="customClass">
     <editor
       :content="content"
       :height="editHeight"
@@ -10,11 +10,143 @@
   </div>
 </template>
 
+
 <script>
   import VueHtml5Editor from 'vue-html5-editor'
-
+  const colorTemplate = `<div>
+    <div>
+        <label>
+            <input type="radio" value="foreColor" v-model="command">&nbsp;
+            {{$parent.locale["fore color"]}}
+        </label>
+        <label>
+            <input type="radio" value="backColor" v-model="command">&nbsp;
+            {{$parent.locale["background color"]}}
+        </label>
+    </div>
+    <div>
+        <div v-for="color in colors" :style="{'background-color':color}" class="color-card"
+             @click="changeColor(color)">
+        </div>
+        <div style="clear: both"></div>
+    </div>
+</div>`
+const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
+    <div>
+        <label>{{$parent.locale["heading"]}}:</label>
+        <button v-for="h in 6" type="button" @click="setHeading(h)">H{{h}}</button>
+    </div>
+    <div>
+        <label>
+            {{$parent.locale["font name"]}}:
+        </label>
+        <button v-for="name in nameList" type="button" @click="setFontName(name)">{{name}}</button>
+    </div>
+    <div>
+        <label>
+            {{$parent.locale["font size"]}}:
+        </label>
+        <button v-for="size in fontSizeList" type="button" @click="setFontSize(size)">{{size}}</button>
+    </div>
+    <div>
+        <label>
+            {{$parent.locale["line height"]}}:
+        </label>
+        <button v-for="lh in lineHeightList" type="button" @click="setLineHeight(lh)">
+            {{lh}}
+        </button>
+    </div>
+</div>`
   const editor = new VueHtml5Editor({
     showModuleName: true,
+    modules: [
+      {
+        // custom module with dashboard.html
+        name: 'colorEx',
+        icon: 'fa fa-paint-brush',
+        i18n: 'color',
+        dashboard: {
+          template: colorTemplate,
+          data () {
+            return {
+            // foreColor,backColor
+              command: 'foreColor',
+              colors: [
+                '#ffffff', '#000000', '#000033', '#000066', '#000099', '#003300', '#003333', '#003366',
+                '#003399', '#006600', '#006633', '#009900', '#330000', '#330033', '#330066',
+                '#333300', '#333366', '#660000', '#660033', '#663300', '#666600', '#666633',
+                '#666666', '#666699', '#990000', '#990033', '#9900CC', '#996600', '#FFCC00',
+                '#FFCCCC', '#FFCC99', '#FFFF00', '#FF9900', '#CCFFCC', '#CCFFFF', '#CCFF99'
+              ]
+            }
+          },
+          methods: {
+            changeColor (color) {
+              this.$parent.execCommand(this.command, color)
+            }
+          }
+        }
+      },
+      {
+        // custom module with dashboard.html
+        name: 'fontEx',
+        icon: 'fa fa-font',
+        i18n: 'font',
+        dashboard: {
+          template: fontTemplate,
+          data () {
+            return {
+              nameList: [
+                'Microsoft YaHei',
+                'Helvetica Neue',
+                'Helvetica',
+                'Arial',
+                'sans-serif',
+                'Verdana',
+                'Georgia',
+                'Times New Roman',
+                'Trebuchet MS',
+                'Microsoft JhengHei',
+                'Courier New',
+                'Impact',
+                'Comic Sans MS',
+                'Consolas'
+              ],
+              lineHeightList: [
+                '1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'
+              ],
+              fontSizeList: [
+                '12px', '14px', '16px', '18px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px', '38px', '40px'
+              ]
+            }
+          },
+          methods: {
+            setFontName (name) {
+              this.$parent.execCommand('fontName', name)
+            },
+            setFontSize (size) {
+              this.$parent.execCommand('fontSize', size)
+            },
+            setHeading (heading) {
+              this.$parent.execCommand('formatBlock', `h${heading}`)
+            },
+            setLineHeight (lh) {
+              this.$parent.execCommand('lineHeight', lh)
+            }
+          },
+          created () {
+            const config = this.$options.module.config
+            // font name
+            if (!config) {
+              return
+            }
+            if (Array.isArray(config.fontNames)) {
+              this.nameList = config.fontNames
+            }
+          }
+        }
+      }
+    ],
     image: {
       sizeLimit: 512 * 1024,
       compress: true,
@@ -24,8 +156,8 @@
     },
     visibleModules: [
       'text',
-      'color',
-      'font',
+      'colorEx',
+      'fontEx',
       'align',
       'list',
       'link',
@@ -94,6 +226,10 @@
       }
     },
     props: {
+      customClass: {
+        type: String,
+        default: ''
+      },
       value: {
         default: ''
       },
@@ -129,10 +265,10 @@
 </script>
 
 <style lang="scss">
-  .html-editer {
-    min-width: 480px;
-    .content{
-      max-height: 600px;
-    }
+.html-editer {
+  min-width: 480px;
+  .content {
+    max-height: 600px;
   }
+}
 </style>

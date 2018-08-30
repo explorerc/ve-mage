@@ -1,6 +1,6 @@
 <template>
   <div class="edit-container" v-show="showWrap" @click="hide" @mouseover="over">
-    <div class="edit-content" :class="[{active:showEdit},customClass]" @click.stop="()=>{}">
+    <div class="edit-content" :class="[{active:showEdit},customClass,{follow:follow}]" :style="styles" @click.stop="()=>{}">
       <slot></slot>
     </div>
   </div>
@@ -12,22 +12,39 @@ export default {
     customClass: {
       type: String,
       default: ''
+    },
+    follow: {
+      type: Boolean,
+      default: false
+    },
+    offsetTop: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
       showWrap: false,
-      showEdit: false
+      showEdit: false,
+      rect: undefined
     }
   },
+  created () {
+
+  },
   methods: {
-    show () {
+    show (rect) {
+      if (this.follow) {
+        this.rect = rect
+      }
+      this.$emit('show', this.rect)
       this.showWrap = true
       setTimeout(() => {
         this.showEdit = true
       }, 0)
     },
     hide () {
+      this.$emit('hide')
       this.showEdit = false
       setTimeout(() => {
         this.showWrap = false
@@ -35,6 +52,21 @@ export default {
     },
     over (e) {
       e.stopPropagation()
+    }
+  },
+  computed: {
+    styles () {
+      let ret = {}
+      if (this.rect) {
+        ret = {
+          top: `${this.rect.top + this.offsetTop}px`,
+          left: `${this.rect.left}px`,
+          width: `${this.rect.width}px`,
+          // height: `${this.rect.height + Math.abs(this.offsetTop)}px`
+          height: `auto`
+        }
+      }
+      return ret
     }
   }
 }
@@ -60,6 +92,10 @@ export default {
     overflow-y: auto;
     &.active {
       transform: translateX(0);
+    }
+    &.follow {
+      transform: translateX(0);
+      background-color: transparent;
     }
   }
 }

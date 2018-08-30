@@ -1,7 +1,7 @@
 <template>
   <div class="logo-container" :class="customClass">
     <div ref="target" class="logo-content">
-      <a target="_blank" :href=" link | voidLink "><img class="left" :src="url"></a>
+      <a target="_blank" :href=" value.link | voidLink "><img class="left" :src="url"></a>
     </div>
     <com-edit ref="editTarget">
 <com-upload
@@ -14,7 +14,7 @@
       @load="uploadLoad"
       >
       </com-upload>
-      <com-input placeholder="跳转链接" v-model="link"></com-input>
+      <com-input placeholder="跳转链接" v-model="value.link"></com-input>
     </com-edit>
   </div>
 </template>
@@ -22,6 +22,7 @@
 <script>
 import editMixin from './mixin'
 import ComEdit from './edit'
+const host = 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/'
 export default {
   mixins: [editMixin],
   components: {
@@ -34,21 +35,34 @@ export default {
     },
     edit: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    value: {
+      type: Object,
+      default () {
+        return {
+          url: '',
+          link: ''
+        }
+      }
     }
   },
   data () {
     return {
-      url: '//img.alicdn.com/tps/TB16hl5LpXXXXXRXVXXXXXXXXXX-198-46.png',
-      link: ''
+
     }
   },
   methods: {
     uploadLoad (data) {
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        this.url = `${ret.data.host}/${ret.data.name}`
+        this.value.url = `${ret.data.name}`
       }
+    }
+  },
+  computed: {
+    url () {
+      return host + this.value.url
     }
   }
 }
@@ -68,6 +82,7 @@ export default {
     img {
       width: 100%;
       max-width: 100%;
+      max-height: 100%;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
