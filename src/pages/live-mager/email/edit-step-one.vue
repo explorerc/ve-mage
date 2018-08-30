@@ -3,7 +3,7 @@
     <div class="edit-content clearfix">
       <div class="edit-content-box fl">
         <ve-editer
-          height="600"
+          height="500"
           v-model="email.content"></ve-editer>
         <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
           <div>为自己发送一封测试邮件</div>
@@ -19,9 +19,10 @@
           <el-button class="live-btn fr" type="primary" plain @click="recoverDefault">恢复默认</el-button>
         </div>
         <div class="temp-boxs">
-          <div v-for="(emailItem,idx) in emailList" :class="{'temp-item':true,fl:true,active:idx==currentTemp}"
+          <div v-for="(emailItem,idx) in emailList"
+               :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
                @click.stop="changeTemp(idx)">
-            {{emailItem.isDefault==='Y'?'默认':'模板'+idx}}
+            {{emailItem.title}}
           </div>
         </div>
       </div>
@@ -62,7 +63,6 @@
       return {
         testEmail: '',
         emailList: [],
-        currentTemp: 0,
         email: {
           activityId: '',
           emailInviteId: '',
@@ -97,7 +97,6 @@
       if (emailId) { // 编辑
         // 如果vuex可以取到值就return
         if (this.email.emailInviteId) {
-          this.currentTemp = this.email.emailTemplateId
           this.queryEmailTemp()
           return
         }
@@ -134,7 +133,7 @@
         LiveHttp.queryEmailTemplateList().then((res) => {
           this.emailList = res.data.list
           if (!this.email.emailInviteId) { // 如果不是编辑
-            this.email.content = this.emailList[this.currentTemp].content
+            this.email.content = this.emailList[0].content
           }
         })
       },
@@ -201,7 +200,7 @@
           confirmText: '确认替换',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              this.currentTemp = idx
+              this.email.emailTemplateId = this.emailList[idx].emailTemplateId
               this.email.content = this.emailList[idx].content
             }
           }
@@ -216,7 +215,13 @@
           confirmText: '恢复默认',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              this.$refs.defaultTem.click()
+              for (let i = 0; i < this.emailList.length; i++) {
+                const emailObj = this.emailList[i]
+                if (emailObj.emailTemplateId === this.email.emailTemplateId) {
+                  this.email.content = emailObj.content
+                  break
+                }
+              }
             }
           }
         })
@@ -251,7 +256,7 @@
             box-sizing: border-box;
             border: solid 1px #e5e5e5;
           }
-          .active{
+          .active {
             border-color: red;
           }
         }

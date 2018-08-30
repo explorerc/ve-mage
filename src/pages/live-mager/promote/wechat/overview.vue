@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="from-box">
       <div class="from-row">
         <div class="from-title">微信标题：</div>
@@ -31,8 +31,11 @@
         <div class="from-title">发送状态：</div>
         <div class="from-content">
           <el-button><router-link :to="{name:'promoteWechat',params:{id:activityId}}">返回</router-link></el-button>
-          <el-button><router-link :to="{name:'wechatEdit',params:{id:activityId},query:{id:id}}">编辑</router-link></el-button>
-          <el-button>立即发送</el-button>
+          <el-button  v-if="status !== 'SEND'">
+            <router-link :to="{name:'wechatEdit',params:{id:activityId},query:{id:id}}">编辑</router-link>
+          </el-button>
+          <el-button v-if="status === 'SEND'" disabled>已发送</el-button>
+          <el-button @click='sendNow' v-else>立即发送</el-button>
         </div>
       </div>
     </div>
@@ -42,9 +45,9 @@
         <div class="msg-title">
           个人信息通知<span>8月10日</span>
         </div>
-        <p class="tips">您关注的<span>{{webinarName}}</span>即将开始，赶快参加吧！</p>
-        <p>标题：<span>{{title}}</span></p>
-        <p>时间：<span>{{time}}</span></p>
+        <p class="tips">您关注的<span> {{webinarName}} </span>即将开始，赶快参加吧！</p>
+        <p>标题：<span>{{webinarName}}</span></p>
+        <p>时间：<span>{{webinarTime}}</span></p>
         <p>内容：<span>点击查看详情</span></p>
         <p>退订</p>
         <div class="footer">微信通知将于{{date}}发送</div>
@@ -54,6 +57,7 @@
 </template>
 
 <script>
+import {formatDate} from 'src/assets/js/date'
 import queryHttp from 'src/api/activity-manger'
 export default {
   data () {
@@ -61,25 +65,57 @@ export default {
       activityId: this.$route.params.id,
       id: this.$route.query.id,
       webinarName: '',
+      webinarTime: '',
       title: '',
       group: '',
       status: '',
       time: '',
       tpl: '',
-      date: ''
+      date: '',
+      loading: true
     }
   },
   created () {
     queryHttp.queryWechat(this.id).then((res) => {
       console.log(res)
-      this.group = res.data.groupId
-      this.title = res.data.title
-      this.tpl = res.data.templateId
-      this.status = res.data.status
-      this.date = res.data.sendTime
+      if (res.code === 200) {
+        this.group = res.data.groupId
+        this.title = res.data.title
+        this.tpl = res.data.templateId
+        this.status = res.data.status
+        this.date = res.data.sendTime
+        this.loading = false
+      }
     }).catch((e) => {
       console.log(e)
+      this.loading = false
     })
+    queryHttp.webinarInfo(this.activityId).then((res) => {
+      if (res.code === 200) {
+        this.webinarName = res.data.title
+        this.webinarTime = res.data.startTime
+        this.loading = false
+      }
+    }).catch((e) => {
+      this.loading = false
+    })
+  },
+  methods: {
+    sendNow () {
+      queryHttp.sendWechat(this.id).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$toast({
+            content: '发送成功',
+            position: 'center'
+          })
+          this.status = 'SEND'
+          this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
   }
 }
 </script>

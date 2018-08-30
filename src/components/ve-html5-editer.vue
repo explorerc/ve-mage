@@ -128,8 +128,11 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss">
   .html-editer {
     min-width: 480px;
+    .content{
+      max-height: 600px;
+    }
   }
 </style>

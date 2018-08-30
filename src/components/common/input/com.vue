@@ -219,6 +219,7 @@ export default {
     display: inline-block;
     padding: 4px 11px;
     width: 100%;
+    height: 100%;
     font-size: 14px;
     line-height: 1.5;
     color: rgba(0, 0, 0, 0.65);

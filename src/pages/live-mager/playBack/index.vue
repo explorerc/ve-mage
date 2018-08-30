@@ -1,71 +1,199 @@
 <template>
   <div class="live-mager">
     <div class="live-title">
-      <span>回放设置</span>
+      <span>活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
     </div>
     <div class="mager-box">
       <div class="from-box">
-        <div class="from-row">
-          <div class="from-title">回放设置：</div>
-          <div class="from-content">
-            <el-checkbox v-model="playBack.isSwitch">开启</el-checkbox>
-            <span class="msg-tip">功能已开启，直播结束后观众可观看回放</span>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">回放下线设置：</div>
-          <div class="from-content">
-            <el-radio v-model="outLineMode" label="0">永不下线，长期有效</el-radio>
-            <el-radio v-model="outLineMode" label="1">定时下线(下线后回放将不能观看)</el-radio>
-            <transition name="left-right">
-              <div class="black-box" v-if="outLineMode==1">
-                设置下线时间
-                <el-date-picker
-                  v-model="playBack.outLineTime"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  align="right"
-                  format="yyyy-MM-dd HH:mm"
-                  value-format="yyyy-MM-dd HH:mm">
-                </el-date-picker>
-              </div>
-            </transition>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">回放封面：</div>
-          <div class="from-content">
-            <div class="from-content">
-              <ve-upload
-                title="点击上传封面"
-                accept="png|jpg|jpeg"
-                defaultImg=""
-                :fileSize="1024"
-                @error="uploadError"
-                @success="uploadImgSuccess"></ve-upload>
-              <div class="upload-tips">
-                <span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>
-                <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放设置：</div>-->
+        <!--<div class="from-content">-->
+        <!--<el-checkbox v-model="playBack.isSwitch">开启</el-checkbox>-->
+        <!--<span class="msg-tip">功能已开启，直播结束后观众可观看回放</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放下线设置：</div>-->
+        <!--<div class="from-content">-->
+        <!--<el-radio v-model="outLineMode" label="0">永不下线，长期有效</el-radio>-->
+        <!--<el-radio v-model="outLineMode" label="1">定时下线(下线后回放将不能观看)</el-radio>-->
+        <!--<transition name="left-right">-->
+        <!--<div class="black-box" v-if="outLineMode==1">-->
+        <!--设置下线时间-->
+        <!--<el-date-picker-->
+        <!--v-model="playBack.outLineTime"-->
+        <!--type="datetime"-->
+        <!--placeholder="选择日期时间"-->
+        <!--align="right"-->
+        <!--format="yyyy-MM-dd HH:mm"-->
+        <!--value-format="yyyy-MM-dd HH:mm">-->
+        <!--</el-date-picker>-->
+        <!--</div>-->
+        <!--</transition>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放封面：</div>-->
+        <!--<div class="from-content">-->
+        <!--<div class="from-content">-->
+        <!--<ve-upload-->
+        <!--title="点击上传封面"-->
+        <!--accept="png|jpg|jpeg"-->
+        <!--defaultImg=""-->
+        <!--:fileSize="1024"-->
+        <!--@error="uploadError"-->
+        <!--@success="uploadImgSuccess"></ve-upload>-->
+        <!--<div class="upload-tips">-->
+        <!--<span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>-->
+        <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="from-row">-->
+        <!--<div class="from-title">回放内容：</div>-->
+        <!--<div class="from-content">-->
+        <!--<el-select v-model="playBackMode" placeholder="请选择">-->
+        <!--<el-option-->
+        <!--v-for="item in options"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
+        <!--</el-select>-->
+        <!--<ve-msg-tips-->
+        <!--tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>-->
+        <!--<div class="black-box">-->
+        <!--<div class="upload-video" v-if="playBackMode==1">-->
+        <!--<div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."-->
+        <!--@click="uploadVideo">-->
+        <!--<el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>-->
+        <!--<i class="iconfont icon-jiahao"></i>-->
+        <!--<span>上传视频</span>-->
+        <!--<div class="hide">-->
+        <!--<input type="file" id="upload"/>-->
+        <!--<input type="text" id='rename'>-->
+        <!--<button id="confirmUpload" class="saveBtn"></button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="upload-tips">-->
+        <!--<span>视频仅支持mp4格式，文件大小不超过200M</span>-->
+        <!--<span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="play-content" v-if="playBackMode==2">-->
+        <!--<div class="out-line">-->
+        <!--<span>输入链接</span>-->
+        <!--<com-input customClass="out-line-input" :value.sync="outLineLink"-->
+        <!--placeholder="请输入链接"></com-input>-->
+        <!--<el-button class="live-btn" type="primary" plain @click="preViewOutLine">确定</el-button>-->
+        <!--</div>-->
+        <!--<div class="out-line">-->
+        <!--<span>链接预览</span>-->
+        <!--<div class="play-box">-->
+        <!--<span v-if="!playBack.outLineLink">暂无预览</span>-->
+        <!--<div class="iframe-box" v-if="playBack.outLineLink" v-html="playBack.outLineLink"></div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+      </div>
+    </div>
+    <div class="list-box">
+      <div>
+        <nav class="table-nav">
+          <span :class="{active:navIdx===0}" @click="changeNav(0)">回放片段</span>
+          <span :class="{active:navIdx===1}" @click="changeNav(1)">视频</span>
+        </nav>
+        <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
+        <el-button class="live-btn fr" type="primary" plain @click="addVideoShow=true">添加视频</el-button>
+      </div>
+      <el-table
+        :data="playBackList"
+        style="width: 100%">
+        <el-table-column
+          label="缩略图">
+          <template slot-scope="scope">
+            <img class="play-back-img" :src="playBackList[scope.$index].pic">
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="title"
+          label="片段名">
+        </el-table-column>
+        <el-table-column
+          prop="duration"
+          label="时长">
+        </el-table-column>
+        <el-table-column
+          prop="generateTime"
+          label="生成时间">
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              type="text" size="small"
+              v-if="playBackList[scope.$index].replayId == playBack.replayId"
+              @click.stop="">默认回放
+            </el-button>
+            <el-button
+              type="text" size="small"
+              v-else
+              @click.stop="playBackSetting(scope.$index)">设为默认回放
+            </el-button>
+            <div class="more">
+              <span>更多</span>
+              <div class="more-menu">
+                <span @click="handlerMore(scope.$index, 0)">下载</span>
+                <span @click="handlerMore(scope.$index, 1)">预览</span>
+                <span @click="handlerMore(scope.$index, 2)">重命名</span>
+                <span @click="handlerMore(scope.$index, 3)">删除</span>
               </div>
             </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="step-btns">
+      <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
+    </div>
+    <!-- 重命名 -->
+    <message-box
+      v-show="renameShow"
+      header=""
+      cancelText="取消"
+      confirmText='确定'
+      @handleClick="renameHandleClick">
+      <div class="prop-input">
+        输入新的视频标题：
+        <com-input :value.sync="newTitle"/>
+      </div>
+    </message-box>
+    <!-- 添加视频 -->
+    <message-box
+      v-show="addVideoShow"
+      width="600px"
+      header="添加视频"
+      cancelText="取消"
+      confirmText='确定'
+      @handleClick="addVideohandleClick">
+      <div class="mager-box message-box-content">
+        <div class="from-box">
+          <div class="from-row">
+            <div class="from-title">视频类型：</div>
+            <div class="from-content">
+              <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
+              <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
+            </div>
           </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">回放内容：</div>
-          <div class="from-content">
-            <el-select v-model="playBackMode" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-            <ve-msg-tips
-              tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>
-            <div class="black-box">
-              <div class="upload-video" v-if="playBackMode==1">
+          <div class="from-row" v-if="playBackMode==0">
+            <div class="from-title">上传视频：</div>
+            <div class="from-content">
+              <div class="upload-video">
                 <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
                      @click="uploadVideo">
                   <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
@@ -82,136 +210,152 @@
                   <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
                 </div>
               </div>
-              <div class="play-content" v-if="playBackMode==2">
-                <div class="out-line">
-                  <span>输入链接</span>
-                  <com-input customClass="out-line-input" :value.sync="outLineLink"
-                             placeholder="请输入链接"></com-input>
-                  <el-button class="live-btn" type="primary" plain @click="preViewOutLine">确定</el-button>
-                </div>
-                <div class="out-line">
-                  <span>链接预览</span>
-                  <div class="play-box">
-                    <span v-if="!playBack.outLineLink">暂无预览</span>
-                    <div class="iframe-box" v-if="playBack.outLineLink" v-html="playBack.outLineLink"></div>
-                  </div>
-                </div>
-              </div>
+            </div>
+          </div>
+          <div class="from-row" v-else>
+            <div class="from-title">视频链接：</div>
+            <div class="from-content">
+              <com-input customClass="out-line-input" :value.sync="outLineLink"
+                         placeholder="请输入链接"></com-input>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">视频标题：</div>
+            <div class="from-content">
+              <com-input :value.sync="newTitle"/>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="list-box">
-      <el-table
-        :data="playBackList"
-        style="width: 100%">
-        <el-table-column
-          label="缩略图">
-          <template slot-scope="scope">
-            <img class="play-back-img" :src="playBackList[scope.$index].playCover">
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="片段名">
-        </el-table-column>
-        <el-table-column
-          prop="timeLength"
-          label="时长">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="生成时间">
-        </el-table-column>
-        <el-table-column
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="text" size="small"
-              v-if="playBackList[scope.$index].isDefault"
-              @click.stop="">默认回放
-            </el-button>
-            <el-button
-              type="text" size="small"
-              v-else
-              @click.stop="">设为默认回放
-            </el-button>
-            <el-button
-              type="text" size="small"
-              @click.stop="">更多
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="step-btns">
-      <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
-    </div>
+    </message-box>
+    <!-- 回放设置 -->
+    <message-box
+      v-show="playBackShow"
+      width="600px"
+      header="设置默认回放"
+      cancelText="取消"
+      confirmText='确定'
+      @handleClick="savePlayBackConfig">
+      <div class="mager-box message-box-content">
+        <div class="from-box">
+          <div class="from-row">
+            <div class="from-title">回放封面：</div>
+            <div class="from-content">
+              <div class="from-content">
+                <ve-upload
+                  title="点击上传封面"
+                  accept="png|jpg|jpeg"
+                  :defaultImg="defaultImg"
+                  :fileSize="1024"
+                  @error="uploadError"
+                  @success="uploadImgSuccess"></ve-upload>
+                <div class="upload-tips">
+                  <span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>
+                  <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">下线设置：</div>
+            <div class="from-content">
+              <el-radio v-model="outLineMode" label="0">与活动同步下线</el-radio>
+              <el-radio v-model="outLineMode" label="1">指定下线时间</el-radio>
+              <transition name="left-right">
+                <div class="black-box" v-if="outLineMode==1">
+                  设置下线时间
+                  <el-date-picker
+                    v-model="playBack.outLineTime"
+                    type="datetime"
+                    placeholder="选择日期时间"
+                    align="right"
+                    format="yyyy-MM-dd HH:mm"
+                    value-format="yyyy-MM-dd HH:mm">
+                  </el-date-picker>
+                </div>
+              </transition>
+            </div>
+          </div>
+        </div>
+      </div>
+    </message-box>
+    <transition name="fade">
+      <div class="video-modal-box" v-if="prePlayShow">
+        <div class="video-modal" @click="prePlayShow=false"></div>
+        <div class="video-content">
+          <span v-if="!recordId||playMsg">{{playMsg||'暂无视频'}}</span>
+          <div id="myVideo" v-else style="width:100%; height:100%;"></div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
   import VeUpload from 'src/components/ve-upload'
   import veMsgTips from 'src/components/ve-msg-tips'
+  import PlayBackHttp from 'src/api/play-back'
+  import LiveHttp from 'src/api/activity-manger'
 
   const outLineMode = {
-    'FOREVER': 'forever',
-    'TIMING': 'timing'
+    'FOREVER': 'NEVER',
+    'TIMING': 'PLAN'
   }
   export default {
     name: 'play-back',
     components: {VeUpload, veMsgTips},
     data () {
       return {
+        navIdx: 0,
+        addVideoShow: false,
+        renameShow: false,
+        playBackShow: false,
+        newTitle: '',
+        selectRowIdx: 0,
         vhallParams: {
-          sign: '41256133923f50e3ae298e5f89b784b5', // 生成的鉴权信息
-          signed_at: '1534486369', // 鉴权信息生成的时间戳
-          app_id: 'e909e583',
-          access_token: 'access:e909e583:85615832f2d648f7',
-          recordId: '',
-          accountId: 'v770'
+          sign: '',
+          appId: '',
+          accountId: '',
+          token: '',
+          signedAt: ''
         },
         playBack: {
           isSwitch: true,
+          replayId: '',
           outLineMode: '',
           outLineTime: '',
           playBackCover: '',
           recordId: '',
           outLineLink: ''
         },
-        playBackList: [
-          {
-            id: 0,
-            playCover: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2896936926,3592497727&fm=173&app=25&f=JPEG?w=400&h=266&s=3822CE1449634F1D24ED2441030050F2',
-            isDefault: 1,
-            title: '缩略图1',
-            name: '片段名1',
-            timeLength: '10:22',
-            createTime: '2018-7-14 12:00'
-          },
-          {
-            id: 1,
-            playCover: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2896936926,3592497727&fm=173&app=25&f=JPEG?w=400&h=266&s=3822CE1449634F1D24ED2441030050F2',
-            isDefault: 0,
-            title: '缩略图2',
-            name: '片段名2',
-            timeLength: '10:22',
-            createTime: '2018-7-14 12:00'
-          }
-        ],
+        playBackList: [],
         options: [
           {value: '0', label: '默认回放'},
           {value: '1', label: '上传视频'},
           {value: '2', label: '外部链接'}
         ],
+        recordId: '',
+        activityId: '',
+        page: 1,
+        pageSize: 5,
+        total: 0,
         outLineLink: '',
         outLineMode: '0',
         playBackMode: '0',
         loading: false,
         uploadImgErrorMsg: '',
         uploadErrorMsg: '',
-        percentVideo: ''
+        percentVideo: '',
+        playMsg: '',
+        prePlayShow: false
+      }
+    },
+    computed: {
+      defaultImg () {
+        if (!this.playBack.playBackCover) {
+          return ''
+        }
+        return `${this.$imgHost}/${this.playBack.playBackCover}`
       }
     },
     watch: {
@@ -224,7 +368,142 @@
         }
       }
     },
+    created () {
+      this.activityId = this.$route.params.id
+      this.initPage()
+    },
     methods: {
+      initPage () {
+        PlayBackHttp.queryPlayBack({
+          activityId: this.activityId
+        }).then((res) => {
+          this.playBack = {
+            replayId: res.data.replayId,
+            outLineMode: res.data.offlineType,
+            outLineTime: res.data.offlineTime,
+            playBackCover: res.data.cover
+          }
+        }).then(() => {
+          this.queryPlayBackList()
+          /* 获取pass信息 */
+          LiveHttp.queryPassSdkInfo().then((res) => {
+            this.vhallParams = res.data
+            /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+            this.$nextTick(() => {
+              // 初始化pass上传插件
+              this.initVhallUpload()
+            })
+          })
+        })
+      },
+      queryPlayBackList () {
+        PlayBackHttp.queryPlayBackList({
+          activityId: this.activityId,
+          page: this.page,
+          pageSize: this.pageSize,
+          type: this.navIdx === 0 ? 'SLICE' : ''
+        }).then((res) => {
+          this.playBackList = res.data.list
+          this.total = res.data.total
+        })
+      },
+      changeNav (idx) {
+        this.page = 0
+        this.total = 0
+        this.navIdx = idx
+        this.queryPlayBackList()
+      },
+      playBackSetting (idx) {
+        this.playBackShow = true
+        this.selectRowIdx = idx
+      },
+      /* 更多 */
+      handlerMore (idx, type) {
+        this.selectRowIdx = idx
+        if (type === 0) { // 下载
+        } else if (type === 1) { // 预览
+          this.prePlayShow = true
+          this.recordId = this.playBackList[this.selectRowIdx].video
+          this.$nextTick(() => {
+            this.videosSuccess()
+          })
+        } else if (type === 2) { // 重命名
+          this.newTitle = this.playBackList[this.selectRowIdx].title
+          this.renameShow = true
+        } else if (type === 3) { // 删除
+          this.delPlayBack()
+        }
+      },
+      /* 添加视频 */
+      addVideohandleClick (e) {
+        if (e.action === 'confirm') {
+          if (this.playBackMode === '0') {
+            this.outLineLink = ''
+          } else if (this.playBackMode === '1') {
+            this.recordId = ''
+            if (!this.preViewOutLine()) return
+          }
+          PlayBackHttp.createPlayBack({
+            activityId: this.activityId,
+            title: this.newTitle,
+            type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
+            link: this.outLineLink,
+            video: this.recordId
+          }).then((res) => {
+            if (res.code === 200) {
+              this.navIdx = 1
+              this.queryPlayBackList()
+            }
+          })
+        }
+        this.addVideoShow = false
+      },
+      /* 重命名 */
+      renameHandleClick (e) {
+        this.renameShow = false
+        if (e.action === 'confirm') {
+          this.updataTitle()
+        }
+      },
+      /* 设置默认回放 */
+      savePlayBackConfig (e) {
+        if (e.action === 'confirm') {
+          if (this.outLineMode === '0') {
+            this.playBack.outLineTime = ''
+          }
+          PlayBackHttp.savePlayBackConfig({
+            replayId: this.playBackList[this.selectRowIdx].replayId,
+            cover: this.playBack.playBackCover,
+            offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
+            offlineTime: this.playBack.outLineTime
+          }).then((res) => {
+            console.log(res)
+          })
+        }
+        this.playBackShow = false
+      },
+      updataTitle () {
+        let playBack = this.playBackList[this.selectRowIdx]
+        PlayBackHttp.retitlePlayBack(playBack.replayId, this.newTitle).then((res) => {
+          if (res.code === 200) {
+            playBack.title = this.newTitle
+          }
+        })
+      },
+      delPlayBack () {
+        const delId = this.playBackList[this.selectRowIdx].replayId
+        PlayBackHttp.deletePlayBackById(delId).then((res) => {
+          if (res.code === 200) {
+            this.$toast({
+              header: `提示`,
+              content: '删除成功！',
+              autoClose: 2000,
+              position: 'right-top'
+            })
+            this.queryPlayBackList()
+          }
+        })
+      },
       preViewOutLine () {
         const reg = /^<embed|<iframe.*(embed>|iframe>)$/
         if (reg.test(this.outLineLink)) {
@@ -233,10 +512,12 @@
           this.$toast({
             header: `提示`,
             content: '格式不正确',
-            autoClose: 2000,
+            autoClose: 20000,
             position: 'top-center'
           })
+          return false
         }
+        return true
       },
       uploadImgSuccess (data) {
         this.playBack.playBackCover = data.name
@@ -249,44 +530,68 @@
         document.getElementById('upload').click()
       },
       initVhallUpload () {
-        window.vhallCloudDemandSDK('#upload', {
-          params: {
-            confirmBtn: '#confirmUpload', // 保存按钮的ID
-            name: '#rename', // 用于修改文件名称的input的ID
-            sign: this.vhallParams.sign, // 生成的鉴权信息
-            signed_at: this.vhallParams.signed_at, // 鉴权信息生成的时间戳
-            app_id: this.vhallParams.app_id
-          },
-          beforeUpload: (file) => {
-            if (file.type !== 'video/mp4') {
-              this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
-              return false
-            } else if (file.size / 1024 / 1024 > this.videoSize) {
-              this.uploadErrorMsg = '视频太大，请不要大于200M'
-              return false
-            }
-            this.uploadErrorMsg = ''
-            this.loading = true
-            this.percentVideo = 0
-            return true
-          },
-          progress: (percent) => {
-            this.loading = false
-            this.percentVideo = parseFloat(percent.replace('%', ''))
-            if (this.percentVideo === 100) {
+        this.$nextTick(() => {
+          window.vhallCloudDemandSDK('#upload', {
+            params: {
+              confirmBtn: '#confirmUpload', // 保存按钮的ID
+              name: '#rename',
+              sign: this.vhallParams.sign,
+              signed_at: this.vhallParams.signedAt,
+              app_id: this.vhallParams.appId
+            },
+            beforeUpload: (file) => {
+              if (file.type !== 'video/mp4') {
+                this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
+                return false
+              } else if (file.size / 1024 / 1024 > this.videoSize) {
+                this.uploadErrorMsg = '视频太大，请不要大于200M'
+                return false
+              }
+              this.uploadErrorMsg = ''
+              this.loading = true
               this.percentVideo = 0
+              return true
+            },
+            progress: (percent) => {
+              this.loading = false
+              this.percentVideo = parseFloat(percent.replace('%', ''))
+              if (this.percentVideo === 100) {
+                this.percentVideo = 0
+              }
+            },
+            uploadSuccess () {
+              document.getElementById('confirmUpload').click()
+            },
+            saveSuccess: (res) => {
+              this.recordId = res.record_id
+            },
+            error: (msg, file, e) => {
+              this.loading = false
+              this.uploadErrorMsg = msg
             }
-          },
-          uploadSuccess () {
-            document.getElementById('confirmUpload').click()
-          },
-          saveSuccess: (res) => {
-            this.recordId.record_id = res.record_id
-          },
-          error: (msg, file, e) => {
-            this.loading = false
-            this.uploadErrorMsg = msg
-          }
+          })
+        })
+      },
+      videosSuccess () {
+        if (!this.recordId) return
+        window.Vhall.ready(() => {
+          window.VhallPlayer.init({
+            recordId: this.recordId, // 回放Id，点播必填，直播不写
+            type: 'vod', // 播放类型,必填，live 直播, vod 为点播
+            videoNode: 'myVideo', // 推流视频回显节点id，必填
+            complete: function () {
+              window.VhallPlayer.play()
+            },
+            fail: (msg) => {
+              this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
+            }
+          })
+        })
+        /* 初始化配置 */
+        window.Vhall.config({
+          appId: this.vhallParams.appId, // 应用 ID ,必填
+          accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
+          token: this.vhallParams.token // token必填
         })
       }
     }
@@ -294,7 +599,14 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss">
 </style>
+<style lang="scss">
+  .list-box .el-table .cell {
+    overflow: visible;
+  }
+</style>
 <style lang="scss" scoped>
+  @import '~assets/css/variable';
+
   .black-box {
     margin-top: 20px;
     .el-date-editor {
@@ -334,8 +646,111 @@
   .step-btns {
     margin-left: 150px;
   }
-  .play-back-img{
+
+  .play-back-img {
     width: 200px;
     height: 130px;
+  }
+
+  .table-nav {
+    display: inline-block;
+    margin: 10px 0;
+    font-size: 0;
+    border: solid 1px #e5e5e5;
+    span {
+      display: inline-block;
+      width: 120px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 14px;
+      &.active {
+        background-color: $color-bg-btn;
+      }
+      &:hover {
+        cursor: pointer;
+        opacity: .8;
+      }
+    }
+  }
+
+  .more {
+    display: inline-block;
+    position: relative;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #409EFF;
+    cursor: pointer;
+    text-align: center;
+    &:hover .more-menu {
+      display: block;
+    }
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: -30px;
+      left: 34px;
+      width: 50px;
+      z-index: 9999999;
+      color: #666;
+      border: solid 1px #e5e5e5;
+      span {
+        display: block;
+        padding: 0;
+        &:hover {
+          color: #409EFF;
+        }
+      }
+    }
+  }
+
+  .prop-input {
+    text-align: left;
+    margin: 20px;
+    font-size: 14px;
+    .com-input {
+      width: 258px;
+      margin: 5px 0;
+    }
+  }
+
+  .message-box-content {
+    text-align: left;
+    .from-title {
+      width: 100px !important;
+    }
+    .upload-tips {
+      width: 273px !important;
+    }
+  }
+
+  .video-modal-box {
+    .video-modal {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .5);
+      z-index: 10;
+    }
+    .video-content {
+      position: absolute;
+      width: 800px;
+      height: 450px;
+      line-height: 450px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      vertical-align: top;
+      background-color: #333333;
+      color: #fff;
+      text-align: center;
+      z-index: 11;
+      .iframe-box {
+        height: 100%;
+        width: 100%;
+      }
+    }
   }
 </style>
