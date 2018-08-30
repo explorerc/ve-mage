@@ -3,26 +3,29 @@
     <div :class="['ve-message-box__wrapper',customClass]">
       <div class="ve-message-box" :style="{width: width}">
         <div class="ve-message-box__header">
-          <div class="ve-message-box__title" v-if="!this.$slots.header&&header">{{header}}</div>
-          <slot name="header"></slot>
           <button type="button" @click.prevent="handleClick(action.cancel)">
             <i class="iconfont icon-close"></i>
           </button>
         </div>
-        <div class="ve-message-box__content" v-if="(!this.$slots.default||this.$slots.default.length==0)&&content">
-          {{content}}
-        </div>
-        <slot></slot>
-        <div class="ve-message-box__btns">
-          <div v-if="!this.$slots.bottom">
-            <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
-              <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
-            </button>
-            <button type="button" class="button--cancel" @click.prevent="handleClick(action.cancel)" v-if="cancelText">
-              <span>{{cancelText}}</span>
-            </button>
+        <div class="ve-message-box__container">
+          <div class="ve-message-box__title" v-if="!this.$slots.header&&header">{{header}}</div>
+          <slot name="header"></slot>
+          <div class="ve-message-box__content" v-if="(!this.$slots.default||this.$slots.default.length==0)&&content">
+            {{content}}
           </div>
-          <slot name="bottom"></slot>
+          <slot></slot>
+          <div class="ve-message-box__btns">
+            <div v-if="!this.$slots.bottom">
+              <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
+                <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
+              </button>
+              <button type="button" class="button--cancel" @click.prevent="handleClick(action.cancel)"
+                      v-if="cancelText">
+                <span>{{cancelText}}</span>
+              </button>
+            </div>
+            <slot name="bottom"></slot>
+          </div>
         </div>
       </div>
       <div class="ve-modal" @click.prevent="handleClick(action.cancel)"></div>
@@ -139,11 +142,24 @@
       padding-bottom: 10px;
       background-color: #fff;
       border-radius: 4px;
-      border: 1px solid #ebeef5;
       font-size: 16px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       overflow: hidden;
       z-index: 1001;
+      &:before {
+        display: block;
+        content: '';
+        height: 5px;
+        background-color: #FFD021;
+      }
+      .ve-message-box__container {
+        padding: 10px 20px 20px 20px;
+        font-size: 14px;
+        text-align: left;
+        .ve-message-box__title {
+          font-size: 20px;
+        }
+      }
       .ve-message-box__header {
         position: relative;
         padding: 15px;
@@ -166,52 +182,45 @@
       }
       .ve-message-box__content {
         font-size: 14px;
-        padding: 20px;
+        padding: 20px 0;
       }
       .ve-message-box__btns {
-        margin: 10px 0;
+        text-align: right;
         .auto-close {
           padding-left: 6px;
         }
         button {
           display: inline-block;
-          min-width: 80px;
-          line-height: 1;
+          height: 38px;
+          line-height: 38px;
           white-space: nowrap;
           cursor: pointer;
-          background: #fff;
-          border: 1px solid #dcdfe6;
-          color: #606266;
+          border: none;
           -webkit-appearance: none;
           text-align: center;
           box-sizing: border-box;
           outline: none;
-          margin: 0;
-          transition: .1s;
           font-weight: 500;
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;
-          padding: 12px 20px;
-          font-size: 14px;
-          border-radius: 4px;
-          padding: 9px 15px;
-          font-size: 12px;
-          border-radius: 3px;
+          padding: 0 40px;
           margin: 0 20px;
+          border-radius: 19px;
+          color: #222222;
+          background: transparent;
+        }
+        button:last-child{
+          margin-right: 0;
         }
         .button--primary {
-          color: #fff;
-          background-color: #409eff;
-          border-color: #409eff;
+          background: rgba(255, 208, 33, 1);
           &:hover {
-            background: #66b1ff;
-            border-color: #66b1ff;
-            color: #fff;
+            opacity: .8;
           }
         }
-        .button--cancel:hover{
-          color: #409eff;
+        .button--cancel:hover {
+          color: rgba(255, 208, 33, 1);
         }
       }
     }

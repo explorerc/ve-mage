@@ -4,163 +4,6 @@
       <span>活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
     </div>
-    <div class="mager-box">
-      <div class="from-box">
-        <!--<div class="from-row">-->
-        <!--<div class="from-title">回放设置：</div>-->
-        <!--<div class="from-content">-->
-        <!--<el-checkbox v-model="playBack.isSwitch">开启</el-checkbox>-->
-        <!--<span class="msg-tip">功能已开启，直播结束后观众可观看回放</span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="from-row">-->
-        <!--<div class="from-title">回放下线设置：</div>-->
-        <!--<div class="from-content">-->
-        <!--<el-radio v-model="outLineMode" label="0">永不下线，长期有效</el-radio>-->
-        <!--<el-radio v-model="outLineMode" label="1">定时下线(下线后回放将不能观看)</el-radio>-->
-        <!--<transition name="left-right">-->
-        <!--<div class="black-box" v-if="outLineMode==1">-->
-        <!--设置下线时间-->
-        <!--<el-date-picker-->
-        <!--v-model="playBack.outLineTime"-->
-        <!--type="datetime"-->
-        <!--placeholder="选择日期时间"-->
-        <!--align="right"-->
-        <!--format="yyyy-MM-dd HH:mm"-->
-        <!--value-format="yyyy-MM-dd HH:mm">-->
-        <!--</el-date-picker>-->
-        <!--</div>-->
-        <!--</transition>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="from-row">-->
-        <!--<div class="from-title">回放封面：</div>-->
-        <!--<div class="from-content">-->
-        <!--<div class="from-content">-->
-        <!--<ve-upload-->
-        <!--title="点击上传封面"-->
-        <!--accept="png|jpg|jpeg"-->
-        <!--defaultImg=""-->
-        <!--:fileSize="1024"-->
-        <!--@error="uploadError"-->
-        <!--@success="uploadImgSuccess"></ve-upload>-->
-        <!--<div class="upload-tips">-->
-        <!--<span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>-->
-        <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="from-row">-->
-        <!--<div class="from-title">回放内容：</div>-->
-        <!--<div class="from-content">-->
-        <!--<el-select v-model="playBackMode" placeholder="请选择">-->
-        <!--<el-option-->
-        <!--v-for="item in options"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
-        <!--<ve-msg-tips-->
-        <!--tip='当回放内容选择“外部链接”时，现在该提示符，鼠标移动到提示符上时会显示如下文案：为了达到最好的播放效果，推荐您先将视频上传到视频网站，再将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：&lt;iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen&gt;&lt;/iframe&gt;'></ve-msg-tips>-->
-        <!--<div class="black-box">-->
-        <!--<div class="upload-video" v-if="playBackMode==1">-->
-        <!--<div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."-->
-        <!--@click="uploadVideo">-->
-        <!--<el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>-->
-        <!--<i class="iconfont icon-jiahao"></i>-->
-        <!--<span>上传视频</span>-->
-        <!--<div class="hide">-->
-        <!--<input type="file" id="upload"/>-->
-        <!--<input type="text" id='rename'>-->
-        <!--<button id="confirmUpload" class="saveBtn"></button>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="upload-tips">-->
-        <!--<span>视频仅支持mp4格式，文件大小不超过200M</span>-->
-        <!--<span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="play-content" v-if="playBackMode==2">-->
-        <!--<div class="out-line">-->
-        <!--<span>输入链接</span>-->
-        <!--<com-input customClass="out-line-input" :value.sync="outLineLink"-->
-        <!--placeholder="请输入链接"></com-input>-->
-        <!--<el-button class="live-btn" type="primary" plain @click="preViewOutLine">确定</el-button>-->
-        <!--</div>-->
-        <!--<div class="out-line">-->
-        <!--<span>链接预览</span>-->
-        <!--<div class="play-box">-->
-        <!--<span v-if="!playBack.outLineLink">暂无预览</span>-->
-        <!--<div class="iframe-box" v-if="playBack.outLineLink" v-html="playBack.outLineLink"></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-      </div>
-    </div>
-    <div class="list-box">
-      <div>
-        <nav class="table-nav">
-          <span :class="{active:navIdx===0}" @click="changeNav(0)">回放片段</span>
-          <span :class="{active:navIdx===1}" @click="changeNav(1)">视频</span>
-        </nav>
-        <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
-        <el-button class="live-btn fr" type="primary" plain @click="addVideoShow=true">添加视频</el-button>
-      </div>
-      <el-table
-        :data="playBackList"
-        style="width: 100%">
-        <el-table-column
-          label="缩略图">
-          <template slot-scope="scope">
-            <img class="play-back-img" :src="playBackList[scope.$index].pic">
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="title"
-          label="片段名">
-        </el-table-column>
-        <el-table-column
-          prop="duration"
-          label="时长">
-        </el-table-column>
-        <el-table-column
-          prop="generateTime"
-          label="生成时间">
-        </el-table-column>
-        <el-table-column
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="text" size="small"
-              v-if="playBackList[scope.$index].replayId == playBack.replayId"
-              @click.stop="">默认回放
-            </el-button>
-            <el-button
-              type="text" size="small"
-              v-else
-              @click.stop="playBackSetting(scope.$index)">设为默认回放
-            </el-button>
-            <div class="more">
-              <span>更多</span>
-              <div class="more-menu">
-                <span @click="handlerMore(scope.$index, 0)">下载</span>
-                <span @click="handlerMore(scope.$index, 1)">预览</span>
-                <span @click="handlerMore(scope.$index, 2)">重命名</span>
-                <span @click="handlerMore(scope.$index, 3)">删除</span>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="step-btns">
-      <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
-    </div>
     <!-- 重命名 -->
     <message-box
       v-show="renameShow"
@@ -283,11 +126,73 @@
       <div class="video-modal-box" v-if="prePlayShow">
         <div class="video-modal" @click="prePlayShow=false"></div>
         <div class="video-content">
-          <span v-if="!recordId||playMsg">{{playMsg||'暂无视频'}}</span>
+          <div class="iframe-box" v-if="playBack.outLineLink">
+            <div v-html="playBack.outLineLink" style="width:100%;height: 100%;"></div>
+          </div>
+          <span v-else-if="!recordId||playMsg">{{playMsg||'暂无视频'}}</span>
           <div id="myVideo" v-else style="width:100%; height:100%;"></div>
         </div>
       </div>
     </transition>
+    <div class="list-box">
+      <div>
+        <nav class="table-nav">
+          <span :class="{active:navIdx===0}" @click="changeNav(0)">回放片段</span>
+          <span :class="{active:navIdx===1}" @click="changeNav(1)">视频</span>
+        </nav>
+        <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
+        <el-button class="live-btn fr" type="primary" plain @click="addVideoShow=true">添加视频</el-button>
+      </div>
+      <el-table
+        :data="playBackList"
+        style="width: 100%">
+        <el-table-column
+          label="缩略图">
+          <template slot-scope="scope">
+            <img class="play-back-img" :src="playBackList[scope.$index].pic">
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="title"
+          label="片段名">
+        </el-table-column>
+        <el-table-column
+          prop="duration"
+          label="时长">
+        </el-table-column>
+        <el-table-column
+          prop="generateTime"
+          label="生成时间">
+        </el-table-column>
+        <el-table-column
+          label="操作">
+          <template slot-scope="scope">
+            <el-button
+              type="text" size="small"
+              v-if="playBackList[scope.$index].replayId == playBack.replayId"
+              @click.stop="">默认回放
+            </el-button>
+            <el-button
+              type="text" size="small"
+              v-else
+              @click.stop="playBackSetting(scope.$index)">设为默认回放
+            </el-button>
+            <div class="more">
+              <span>更多</span>
+              <div class="more-menu">
+                <span @click="handlerMore(scope.$index, 0)" :class="{disabled:playBackList[scope.$index].type=='LINK'}">下载</span>
+                <span @click="handlerMore(scope.$index, 1)">预览</span>
+                <span @click="handlerMore(scope.$index, 2)">重命名</span>
+                <span @click="handlerMore(scope.$index, 3)">删除</span>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div class="step-btns">
+      <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
+    </div>
   </div>
 </template>
 
@@ -381,8 +286,10 @@
             replayId: res.data.replayId,
             outLineMode: res.data.offlineType,
             outLineTime: res.data.offlineTime,
-            playBackCover: res.data.cover
+            playBackCover: res.data.cover,
+            outLineLink: ''
           }
+          this.outLineMode = res.data.offlineType === outLineMode.TIMING ? '1' : '0'
         }).then(() => {
           this.queryPlayBackList()
           /* 获取pass信息 */
@@ -420,19 +327,32 @@
       /* 更多 */
       handlerMore (idx, type) {
         this.selectRowIdx = idx
+        const playBack = this.playBackList[this.selectRowIdx]
         if (type === 0) { // 下载
+          this.downLoadVideo('http://t-download.e.vhall.com//paas_1011_1535615631_720p.zip?st=GogMs7H4odAyfHDkeNtisw&e=1536220431&aid=1011&platform=paas&typename=0&uid=&vfid=750&app_id=e909e583')
         } else if (type === 1) { // 预览
           this.prePlayShow = true
-          this.recordId = this.playBackList[this.selectRowIdx].video
+          if (playBack.type === 'LINK') { /* 外链 */
+            this.recordId = ''
+            this.playBack.outLineLink = playBack.link
+            return
+          }
+          this.recordId = playBack.video
           this.$nextTick(() => {
             this.videosSuccess()
           })
         } else if (type === 2) { // 重命名
-          this.newTitle = this.playBackList[this.selectRowIdx].title
+          this.newTitle = playBack.title
           this.renameShow = true
         } else if (type === 3) { // 删除
           this.delPlayBack()
         }
+      },
+      /* 下载 */
+      downLoadVideo (url) {
+        let dl = document.createElement('a')
+        dl.href = url
+        dl.click()
       },
       /* 添加视频 */
       addVideohandleClick (e) {
