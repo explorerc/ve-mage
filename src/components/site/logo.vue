@@ -7,7 +7,7 @@
 <com-upload
       accept="png|jpg|jpeg|bmp|gif"
       uploadTxt="上传"
-      actionUrl="/api/upload/do-upload"
+      actionUrl="/api/upload/image"
       inputName="file"
       :fileSize="2048"
       :exParams="{}"

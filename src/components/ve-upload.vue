@@ -1,7 +1,7 @@
 <template>
   <com-upload
     :accept="accept"
-    actionUrl="/api/upload/do-upload"
+    actionUrl="/api/upload/image"
     inputName="file"
     :fileSize="fileSize"
     @error="uploadError"

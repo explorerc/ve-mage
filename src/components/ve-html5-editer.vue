@@ -239,7 +239,7 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
       },
       imgUploadUrl: {
         type: String,
-        default: '/api/upload/do-upload'
+        default: '/api/upload/image'
       }
     },
     computed: {

@@ -87,7 +87,7 @@
       },
       imgUploadUrl: {
         type: String,
-        default: '/api/upload/do-upload'
+        default: '/api/upload/image'
       },
       exclude: {
         type: Array,

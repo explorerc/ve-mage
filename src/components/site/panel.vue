@@ -1,7 +1,10 @@
 <template>
-  <div class="block-container" :class="customClass">
-    <div ref="target" class="block" >
-        <slot></slot>
+  <div class="panel-container" :class="customClass">
+    <div ref="target" class="panel" >
+      <div class="media-container" v-if="value.bgType==='video'" >
+        <video autoplay loop></video>
+      </div>
+      <slot></slot>
     </div>
     <com-edit ref="editTarget">
       <com-tabs :value="value.bgType">
@@ -13,17 +16,45 @@
        </com-tab>
        <com-tab index="img" >
           <div slot="label"><el-radio v-model="value.bgType" label="img">显示图片</el-radio></div>
-         <div>
-           <com-upload
-      accept="png|jpg|jpeg|bmp|gif"
-      uploadTxt="上传"
-      actionUrl="/api/upload/do-upload"
-      inputName="file"
-      :fileSize="2048"
-      :exParams="{}"
-      @load="uploadLoad"
-      >
-      </com-upload>
+          <div>
+            <com-upload
+            accept="png|jpg|jpeg|bmp|gif"
+            uploadTxt="上传"
+            actionUrl="/api/upload/image"
+            inputName="file"
+            :fileSize="2048"
+            :exParams="{}"
+            @load="uploadLoad"
+            >
+            </com-upload>
+          </div>
+       </com-tab>
+       <com-tab index="video" >
+          <div slot="label"><el-radio v-model="value.bgType" label="video">显示视频</el-radio></div>
+          <div>
+            <com-tabs :value="value.videoType">
+            <com-tab index="upload" >
+              <div slot="label"><el-radio v-model="value.videoType" label="upload">上传视频</el-radio></div>
+              <div>
+                <com-upload
+                accept="mp4"
+                uploadTxt="上传"
+                actionUrl="/api/upload/video"
+                inputName="file"
+                :fileSize="10240"
+                :exParams="{}"
+                @load="uploadLoad"
+                >
+                </com-upload>
+              </div>
+            </com-tab>
+            <com-tab index="url" >
+              <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
+              <div>
+                asdasdasd
+              </div>
+            </com-tab>
+           </com-tabs>
          </div>
        </com-tab>
       </com-tabs>
@@ -60,6 +91,7 @@ export default {
       default () {
         return {
           bgType: 'color',
+          videoType: 'upload',
           color: 'rgba(0, 0, 0, 1)',
           img: ''
         }
@@ -72,20 +104,21 @@ export default {
     }
   },
   mounted () {
-    this.analysisData({bgType: this.value.bgType, color: this.value.color, img: this.value.img})
+    this.analysisData(this.value)
   },
   watch: {
     value: {
       handler (data) {
         if (data.bgType) {
-          ({bgType: this.value.bgType, color: this.value.color, img: this.value.img} = data)
-          this.value.img = this.value.img
           if (!this.value.color) {
             this.value.color = 'rgba(0, 0, 0, 1)'
           }
+          this.$nextTick(() => {
+            this.analysisData(this.value)
+          })
         }
       },
-      immediate: true
+      deep: true
     },
     color (value) {
       this.$refs.target.style.cssText = `background-color:${value}`
@@ -98,6 +131,10 @@ export default {
     analysisData (data) {
       if (data.bgType === 'img') {
         this.$refs.target.style.cssText = `background-image:url(${host + data.img})`
+      } else if (data.bgType === 'video') {
+        if (data.video) {
+          this.$refs.target.querySelector('.media-container video').setAttribute('src', `${host + data.video}`)
+        }
       } else {
         this.$refs.target.style.cssText = `background-color:${data.color}`
       }
@@ -105,7 +142,11 @@ export default {
     uploadLoad (data) {
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        this.value.img = `${ret.data.name}`
+        if (data.bgType === 'img') {
+          this.value.img = `${ret.data.name}`
+        } else {
+          this.value.video = `${ret.data.name}`
+        }
         this.analysisData(this.value)
       }
     }
@@ -114,12 +155,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.block-container /deep/ {
+.panel-container /deep/ {
   position: relative;
-  .block {
+  .panel {
     height: 100%;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    .media-container {
+      height: 100%;
+      overflow: hidden;
+      video {
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+    }
     .edit {
       position: absolute;
       top: 0;
@@ -128,6 +178,7 @@ export default {
       height: 16px;
       background-color: red;
       display: none;
+      z-index: 1;
       cursor: pointer;
     }
   }

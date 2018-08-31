@@ -35,7 +35,9 @@ export default {
         data: {
           panel: {
             bgType: 'img',
-            img: 'mp-dev/5c/09/5c0910c30c7750c6bf8a5a0a3f9b1e85.png'
+            videoType: 'upload',
+            img: 'mp-dev/5c/09/5c0910c30c7750c6bf8a5a0a3f9b1e85.png',
+            color: 'rgba(0, 0, 0, 1)'
           },
           logo: {
             url: 'mp-dev/8e/22/8e2298ad578ed4a3c848653d0e1a4e46.png',
@@ -77,7 +79,7 @@ export default {
             color: 'rgba(0, 0, 0, 1)'
           },
           font: {
-            content: `<h1 style="text-align: center; line-height: 1.5;"><font color="#ffffff" style="font-size: 32px;">Adobe 峰会 | 数字营销大会</font></h1><div style="text-align: center; line-height: 1.5;"><font color="#ffffff"><span style="font-size: 16px;">2017 年 3 月 19–23 日，拉斯维加斯</span><br></font></div><div style="text-align: center; line-height: 1.5;"><font color="#ffffff"><span style="font-size: 16px;">参加最重要的数字营销专业人士活动，获得全球顶级数字营销专家的最新洞察。</span><br></font></div>`
+            content: `<h1 style="text-align: center; line-height: 1.8;"><font color="#ffffff" style="font-size: 32px;">Adobe 峰会 | 数字营销大会</font></h1><div style="text-align: center; line-height: 1.8;"><font color="#ffffff"><span style="font-size: 16px;">2017 年 3 月 19–23 日，拉斯维加斯</span><br></font></div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff"><span style="font-size: 16px;">参加最重要的数字营销专业人士活动，获得全球顶级数字营销专家的最新洞察。</span><br></font></div>`
           },
           btn: {
             bgColor: 'rgba(255, 255, 255, 1)',
@@ -97,18 +99,21 @@ export default {
           font: {
             content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 40px;">即刻打造自己的直播平台</span></div>`
           },
-          block1: [{
-            content: `<div style="text-align: left; line-height: 2.5;"><span style="color: rgb(255, 255, 255); font-size: 24px;">&nbsp;&nbsp;</span><span style="font-size: 22px; color: rgb(255, 255, 255);">一天接入</span></div><div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap; font-size: 12px;">  完善的SDK/API</span><br></font></div></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  高完成度的Demo体验，组件化的解决方案</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  使用户无论从0到1搭建</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font face="Consolas, Lucida Console, Courier New, monospace" color="#ffffff"><span style="font-size: 12px; white-space: pre-wrap;">  还是接入已有产品，都同样方便快捷</span></font><br></div>`,
-            img: 'mp-dev/76/d8/76d840cb274ed18cc68a8f60c9c325b3.png'
-          },
-          {
-            content: `<div style="text-align: left; line-height: 2.5;"><span style="color: rgb(255, 255, 255); font-size: 24px;">&nbsp; </span><span style="color: rgb(255, 255, 255); font-size: 22px;">节省成本</span></div><div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap; font-size: 12px;">  丰富完善的功能</span><br></font></div></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  </span></font><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">全面的开发文档，快捷的接入方式</span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  </span></font><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">一站式的技术服务</span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">  帮助减少企业90%的开发成本</span></font><br></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">  省钱又省力</span></font></div>`,
-            img: 'mp-dev/40/04/4004ad110f3a85016ac62b387185f1eb.png'
-          },
-          {
-            content: `<div style="text-align: left; line-height: 2.5;"><span style="color: rgb(255, 255, 255); font-size: 24px;">&nbsp;&nbsp;</span><span style="font-size: 22px; color: rgb(255, 255, 255);">方便快捷</span></div><div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap; font-size: 12px;">  完善的SDK/API，方便快捷</span><br></font></div></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  高完成度的Demo体验</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  使用户无论从0到1搭建，组件化的</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font face="Consolas, Lucida Console, Courier New, monospace" color="#ffffff"><span style="font-size: 12px; white-space: pre-wrap;">  解决方案还是接入已有产品</span></font><br></div>`,
-            img: 'mp-dev/76/d8/76d840cb274ed18cc68a8f60c9c325b3.png'
-          }]
+          block1: {
+            type: 'top',
+            list: [{
+              content: `<div style="text-align: left; line-height: 2.5;"><span style="color: rgb(255, 255, 255); font-size: 24px;">&nbsp;&nbsp;</span><span style="font-size: 22px; color: rgb(255, 255, 255);">一天接入</span></div><div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap; font-size: 12px;">  完善的SDK/API</span><br></font></div></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  高完成度的Demo体验，组件化的解决方案</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  使用户无论从0到1搭建</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font face="Consolas, Lucida Console, Courier New, monospace" color="#ffffff"><span style="font-size: 12px; white-space: pre-wrap;">  还是接入已有产品，都同样方便快捷</span></font><br></div>`,
+              img: 'mp-dev/76/d8/76d840cb274ed18cc68a8f60c9c325b3.png'
+            },
+            {
+              content: `<div style="text-align: left; line-height: 2.5;"><span style="color: rgb(255, 255, 255); font-size: 24px;">&nbsp; </span><span style="color: rgb(255, 255, 255); font-size: 22px;">节省成本</span></div><div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap; font-size: 12px;">  丰富完善的功能</span><br></font></div></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  </span></font><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">全面的开发文档，快捷的接入方式</span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  </span></font><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">一站式的技术服务</span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">  帮助减少企业90%的开发成本</span></font><br></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff" face="Consolas, Lucida Console, Courier New, monospace"><span style="font-size: 12px; white-space: pre-wrap;">  省钱又省力</span></font></div>`,
+              img: 'mp-dev/40/04/4004ad110f3a85016ac62b387185f1eb.png'
+            },
+            {
+              content: `<div style="text-align: left; line-height: 2.5;"><span style="color: rgb(255, 255, 255); font-size: 24px;">&nbsp;&nbsp;</span><span style="font-size: 22px; color: rgb(255, 255, 255);">方便快捷</span></div><div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap; font-size: 12px;">  完善的SDK/API，方便快捷</span><br></font></div></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  高完成度的Demo体验</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font color="#ffffff"><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;">  使用户无论从0到1搭建，组件化的</span><span style="font-family: Consolas, &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace; font-size: 12px; white-space: pre-wrap;"><br></span></font></div><div style="text-align: left; line-height: 1.5;"><font face="Consolas, Lucida Console, Courier New, monospace" color="#ffffff"><span style="font-size: 12px; white-space: pre-wrap;">  解决方案还是接入已有产品</span></font><br></div>`,
+              img: 'mp-dev/76/d8/76d840cb274ed18cc68a8f60c9c325b3.png'
+            }]
+          }
         }
       }
     }
@@ -118,14 +123,18 @@ export default {
 
 <style scoped lang="scss">
 .template-container /deep/ {
+  min-width: 1366px;
   .section1 {
     width: 100%;
     height: 580px;
     position: relative;
+    overflow: hidden;
     .logo {
       width: 100px;
       height: 52px;
       margin-left: 10px;
+      position: absolute;
+      top: 0;
     }
     .nav {
       position: absolute;
@@ -151,9 +160,9 @@ export default {
   }
   .section2 {
     width: 100%;
-    height: 235px;
-    .block {
-      padding-top: 30px;
+    height: auto;
+    .panel {
+      padding: 50px 0;
       text-align: center;
     }
     .font-content {
@@ -178,9 +187,9 @@ export default {
   }
   .section3 {
     width: 100%;
-    height: 650px;
-    .block {
-      padding-top: 30px;
+    height: auto;
+    .panel {
+      padding: 50px 0;
       text-align: center;
     }
     .font-content {

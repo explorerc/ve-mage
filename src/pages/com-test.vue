@@ -37,7 +37,7 @@
       <com-upload
       accept="png|jpg|jpeg|bmp|gif|mp4"
       uploadTxt="xxx"
-      actionUrl="/api/upload/do-upload"
+      actionUrl="/api/upload/image"
       inputName="resfile"
       :fileSize="fileSize"
       :exParams="exParams"
