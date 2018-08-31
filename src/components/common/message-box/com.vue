@@ -245,7 +245,6 @@
         }
         button:last-child {
           margin-right: 0;
-          padding: 0 20px 0 0;
         }
         .button--primary {
           background: $color-default;
@@ -265,10 +264,13 @@
             }
           }
         }
-        .button--cancel:hover {
-          color: $color-default;
-          &[type='error']{
-            color: $color-red;
+        .button--cancel{
+          padding: 0 20px 0 0;
+          &:hover {
+            color: $color-default;
+            &[type='error']{
+              color: $color-red;
+            }
           }
         }
       }
