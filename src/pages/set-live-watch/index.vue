@@ -16,7 +16,7 @@
                 <br/>
                 背景图片，只对PC页面生效
               </p>
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/do-upload" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadBgSuccess">
+              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadBgSuccess">
                 <div class="btn-upload">背景图片</div>
               </com-upload>
             </div>
@@ -29,7 +29,7 @@
                 <br/>
                 Logo图片只对PC页面生效
               </p>
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/do-upload" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadLogoSuccess">
+              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadLogoSuccess">
                 <div class="btn-upload">背景图片</div>
               </com-upload>
             </div>
@@ -57,7 +57,7 @@
               <p class="v-info pull-left">
                 为了保证显示效果，请上传不大于***X***大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M
               </p>
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/do-upload" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadShareSuccess">
+              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadShareSuccess">
                 <div class="btn-upload">修改</div>
               </com-upload>
             </div>

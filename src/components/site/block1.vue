@@ -2,24 +2,24 @@
   <div class="block1-container" :class="customClass">
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
-        <li class="block1-item" v-for="(item,index) in value" :key="index">
-          <div class="content" v-html="item.content">
-          </div>
+        <li class="block1-item" v-for="(item,index) in value.list" :key="'block1_item'+index">
           <img class="img" :src="host+item.img">
+          <div class="content" :class="{top:value.type==='top'}" v-html="item.content">
+          </div>
         </li>
       </ul>
     </div>
     <com-edit ref="editTarget" customClass="block1-edit">
-      <com-button class="add-btn" @click="addBlock">添加导航</com-button>
+      <com-button class="add-btn" @click="addBlock">添加图块</com-button>
       <ul class="block1-edit-group">
-        <li v-for="(item,index) in value" :key="'a'+index">
+        <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
           <div class="block1-title" @click="titleClick(index)">{{`图块${index+1}`}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
           <div class="block1-content" :class="{active:active===index}">
             <div>
               <com-upload
       accept="png|jpg|jpeg|bmp|gif"
       uploadTxt="上传"
-      actionUrl="/api/upload/do-upload"
+      actionUrl="/api/upload/image"
       inputName="file"
       :fileSize="2048"
       :exParams="{}"
@@ -56,8 +56,13 @@ export default {
       default: ''
     },
     value: {
-      type: Array,
-      default: []
+      type: Object,
+      default () {
+        return {
+          type: 'top',
+          list: []
+        }
+      }
     }
   },
   data () {
@@ -68,12 +73,11 @@ export default {
   },
   methods: {
     addBlock () {
-      let len = this.value.length
+      let len = this.value.list.length
       if (len < 8) {
-        this.value.push({
-          text: `导航${len + 1}`,
-          type: '_blank',
-          link: ''
+        this.value.list.push({
+          content: `图块${len + 1}`,
+          img: ''
         })
         this.active = len
       }
@@ -86,20 +90,20 @@ export default {
       }
     },
     removeClick (index) {
-      if (this.value.length > 2) {
-        this.value.splice(index, 1)
+      if (this.value.list.length > 2) {
+        this.value.list.splice(index, 1)
       }
     },
     uploadLoad (data, index) {
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        this.value[index].img = `${ret.data.name}`
+        this.value.list[index].img = `${ret.data.name}`
       }
     }
   },
   computed: {
     widthClass () {
-      return `width${this.value.length}`
+      return `width${this.value.list.length}`
     }
   }
 }
@@ -110,25 +114,42 @@ export default {
   position: relative;
   .block1-content {
     height: 100%;
+    display: inline-block;
+    position: relative;
     .block1-group {
       font-size: 0;
       &.width2 {
         .block1-item {
-          width: 490px;
+          width: 500px;
+          height: 256px;
         }
       }
       &.width3 {
         .block1-item {
-          width: 340px;
+          width: 390px;
+          height: 199px;
+        }
+      }
+      &.width4 {
+        .block1-item {
+          width: 280px;
+          height: 146px;
         }
       }
       .block1-item {
+        cursor: pointer;
         display: inline-block;
         font-size: 14px;
-        margin-right: 15px;
+        margin-right: 25px;
         position: relative;
+        &:last-child {
+          margin-right: 0;
+        }
         .content {
           position: absolute;
+          &.top {
+            top: 0;
+          }
         }
         .img {
           width: 100%;
@@ -162,13 +183,13 @@ export default {
       }
     }
     .block1-content {
-      height: 0;
+      display: none;
       overflow: hidden;
       transition: all 0.3s;
       &.active {
         border-bottom: 1px solid #dadada;
         padding: 20px 10px;
-        height: auto;
+        display: block;
       }
       .com-input {
         width: 100%;

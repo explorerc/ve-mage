@@ -28,7 +28,7 @@
           为了保证显示效果，请上传不大于1920x1080大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M
         <com-upload
         accept="png|jpg|jpeg|bmp|gif"
-        actionUrl="/api/upload/do-upload"
+        actionUrl="/api/upload/image"
         inputName="file"
         :fileSize="2048"
         @error="uploadError"
