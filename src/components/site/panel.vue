@@ -2,7 +2,7 @@
   <div class="panel-container" :class="customClass">
     <div ref="target" class="panel" >
       <div class="media-container" v-if="value.bgType==='video'" >
-        <video autoplay loop></video>
+        <video  autoplay loop></video>
       </div>
       <slot></slot>
     </div>
@@ -32,28 +32,30 @@
        <com-tab index="video" >
           <div slot="label"><el-radio v-model="value.bgType" label="video">显示视频</el-radio></div>
           <div>
-            <com-tabs :value="value.videoType">
-            <com-tab index="upload" >
-              <div slot="label"><el-radio v-model="value.videoType" label="upload">上传视频</el-radio></div>
-              <div>
-                <com-upload
-                accept="mp4"
-                uploadTxt="上传"
-                actionUrl="/api/upload/video"
-                inputName="file"
-                :fileSize="10240"
-                :exParams="{}"
-                @load="uploadLoad"
-                >
-                </com-upload>
-              </div>
-            </com-tab>
-            <com-tab index="url" >
-              <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
-              <div>
-                asdasdasd
-              </div>
-            </com-tab>
+            <com-tabs :value="value.videoType" @change="">
+              <com-tab index="upload" >
+                <div slot="label"><el-radio v-model="value.videoType" label="upload">上传视频</el-radio></div>
+                <div>
+                  <com-upload
+                  accept="mp4"
+                  uploadTxt="上传"
+                  actionUrl="/api/upload/video"
+                  inputName="file"
+                  :fileSize="10240"
+                  :exParams="{}"
+                  @progress="progress"
+                  @load="uploadLoad"
+                  >
+                  </com-upload>
+                  <span>进度{{pro}}</span>
+                </div>
+              </com-tab>
+              <com-tab index="url" >
+                <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
+                <div>
+                  <com-input placeholder="视频url" v-model="value.video"></com-input>
+                </div>
+              </com-tab>
            </com-tabs>
          </div>
        </com-tab>
@@ -76,16 +78,6 @@ export default {
       type: String,
       default: ''
     },
-    datas: {
-      type: Object,
-      default () {
-        return {}
-      }
-    },
-    edit: {
-      type: Boolean,
-      default: false
-    },
     value: {
       type: Object,
       default () {
@@ -100,7 +92,7 @@ export default {
   },
   data () {
     return {
-
+      pro: '0%'
     }
   },
   mounted () {
@@ -129,15 +121,24 @@ export default {
   },
   methods: {
     analysisData (data) {
-      if (data.bgType === 'img') {
-        this.$refs.target.style.cssText = `background-image:url(${host + data.img})`
-      } else if (data.bgType === 'video') {
-        if (data.video) {
-          this.$refs.target.querySelector('.media-container video').setAttribute('src', `${host + data.video}`)
-        }
-      } else {
+      if (data.bgType === 'color') {
         this.$refs.target.style.cssText = `background-color:${data.color}`
+      } else if (data.bgType === 'img') {
+        this.$refs.target.style.cssText = `background-image:url(${host + data.img})`
+      } else if (data.bgType === 'video' && data.video) {
+        if (data.videoType === 'upload') {
+          if (!(/^(http|https|<iframe):\/\//.test(data.video))) {
+            this.$refs.target.querySelector('.media-container video').setAttribute('src', `${host + data.video}`)
+          }
+        } else {
+          if (/^(http|https):\/\//.test(data.video)) {
+            this.$refs.target.querySelector('.media-container video').setAttribute('src', `${data.video}`)
+          }
+        }
       }
+    },
+    progress (data) {
+      this.pro = data.percent
     },
     uploadLoad (data) {
       let ret = JSON.parse(data.data)
@@ -168,6 +169,11 @@ export default {
         position: absolute;
         top: 0;
         width: 100%;
+      }
+      iframe {
+        video {
+          object-fit: cover;
+        }
       }
     }
     .edit {

@@ -5,6 +5,12 @@ function parseDom (str) {
 };
 
 export default {
+  props: {
+    edit: {
+      type: Boolean,
+      default: false
+    }
+  },
   mounted () {
     this.$refs.target.addEventListener('mouseover', this.handleEnter)
     this.$refs.target.addEventListener('mouseout', this.handleLeave)

@@ -3,7 +3,7 @@
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" v-for="(item,index) in value.list" :key="'block1_item'+index">
-          <img class="img" :src="host+item.img">
+          <img v-if="item.img" class="img" :src="host+item.img">
           <div class="content" :class="{top:value.type==='top'}" v-html="item.content">
           </div>
         </li>
@@ -11,6 +11,10 @@
     </div>
     <com-edit ref="editTarget" customClass="block1-edit">
       <com-button class="add-btn" @click="addBlock">添加图块</com-button>
+      <div>
+        <el-radio v-model="value.type" label="top">图片上</el-radio>
+        <el-radio v-model="value.type" label="bottom">图片下</el-radio>
+      </div>
       <ul class="block1-edit-group">
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
           <div class="block1-title" @click="titleClick(index)">{{`图块${index+1}`}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
@@ -47,13 +51,17 @@ export default {
     ComEdit, ComEditer
   },
   props: {
-    edit: {
-      type: Boolean,
-      default: false
-    },
     customClass: {
       type: String,
       default: ''
+    },
+    min: {
+      type: Number,
+      default: 2
+    },
+    max: {
+      type: Number,
+      default: 4
     },
     value: {
       type: Object,
@@ -74,9 +82,9 @@ export default {
   methods: {
     addBlock () {
       let len = this.value.list.length
-      if (len < 8) {
+      if (len < this.max) {
         this.value.list.push({
-          content: `图块${len + 1}`,
+          content: ``,
           img: ''
         })
         this.active = len
@@ -90,7 +98,7 @@ export default {
       }
     },
     removeClick (index) {
-      if (this.value.list.length > 2) {
+      if (this.value.list.length > this.min) {
         this.value.list.splice(index, 1)
       }
     },
@@ -118,24 +126,6 @@ export default {
     position: relative;
     .block1-group {
       font-size: 0;
-      &.width2 {
-        .block1-item {
-          width: 500px;
-          height: 256px;
-        }
-      }
-      &.width3 {
-        .block1-item {
-          width: 390px;
-          height: 199px;
-        }
-      }
-      &.width4 {
-        .block1-item {
-          width: 280px;
-          height: 146px;
-        }
-      }
       .block1-item {
         cursor: pointer;
         display: inline-block;
@@ -154,6 +144,7 @@ export default {
         .img {
           width: 100%;
           height: 100%;
+          display: block;
         }
       }
     }

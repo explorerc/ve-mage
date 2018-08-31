@@ -169,7 +169,7 @@ export default {
       }
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
-          this.$emit('progress', {name: this.current, percent: `${e.loaded / e.total * 100}%`})
+          this.$emit('progress', {name: this.current, loaded: e.loaded, total: e.total, percent: `${(e.loaded / e.total * 100).toFixed(2)}%`})
         }
       }
       xhr.onload = (e) => {

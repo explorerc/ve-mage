@@ -85,7 +85,7 @@ export default {
     position: absolute;
     right: 0;
     height: 100%;
-    width: 360px;
+    width: 460px;
     transition: all 0.3s;
     background-color: white;
     transform: translateX(100%);

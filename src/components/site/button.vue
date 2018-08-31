@@ -36,10 +36,6 @@ export default {
       type: String,
       default: ''
     },
-    edit: {
-      type: Boolean,
-      default: false
-    },
     value: {
       type: Object,
       default () {

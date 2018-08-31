@@ -36,10 +36,6 @@ export default {
     ComEdit
   },
   props: {
-    edit: {
-      type: Boolean,
-      default: false
-    },
     customClass: {
       type: String,
       default: ''
