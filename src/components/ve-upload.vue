@@ -28,8 +28,8 @@
       @load="uploadImgSuccess">
       <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
         <i class="upload-icon"></i>
-        <span v-if="!errorMsg">{{tipTxt}}</span>
-        <span class="error-msg" v-else>{{errorMsg}}</span>
+        <span v-if="!errorTxt">{{tipTxt}}</span>
+        <span class="error-msg" v-else>{{errorTxt}}</span>
         <!--<el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>-->
         <!--<i class="iconfont icon-jiahao"></i>-->
         <!--<span>{{tipTxt}}</span>-->
@@ -57,7 +57,8 @@
         fileSrc: '',
         coverImg: '',
         tipTxt: '',
-        percentImg: 0
+        percentImg: 0,
+        errorTxt: ''
       }
     },
     props: {
@@ -83,6 +84,9 @@
       }
     },
     watch: {
+      errorMsg (value) {
+        this.errorTxt = value
+      },
       defaultImg: {
         handler (val) {
           this.coverImg = val
@@ -100,6 +104,7 @@
       deleteImage () {
         this.coverImg = ''
         this.fileSrc = ''
+        this.errorTxt = ''
         this.$emit('success', {
           name: '',
           host: ''
