@@ -1,7 +1,7 @@
 <template>
   <transition name="fade" v-if="visible">
     <div :class="['ve-message-box__wrapper',customClass]">
-      <div class="ve-message-box" :style="{width: width}">
+      <div class="ve-message-box" :style="{width: width}" :type="type">
         <div class="ve-message-box__header">
           <button type="button" @click.prevent="handleClick(action.cancel)">
             <i class="iconfont icon-close"></i>
@@ -16,10 +16,10 @@
           <slot></slot>
           <div class="ve-message-box__btns">
             <div v-if="!this.$slots.bottom">
-              <button type="button" class="button--primary" @click.prevent="handleClick(action.confirm)">
+              <button type="button" class="button--primary" :type="type" @click.prevent="handleClick(action.confirm)">
                 <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
               </button>
-              <button type="button" class="button--cancel" @click.prevent="handleClick(action.cancel)"
+              <button type="button" class="button--cancel" :type="type" @click.prevent="handleClick(action.cancel)"
                       v-if="cancelText">
                 <span>{{cancelText}}</span>
               </button>
@@ -72,6 +72,10 @@
       width: {
         type: String,
         default: '300px'
+      },
+      type: {
+        type: String,
+        default: ''
       }
     },
     watch: {
@@ -106,16 +110,16 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "~assets/css/mixin.scss";
+
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.3s;
   }
-
   .fade-enter,
   .fade-leave-to {
     opacity: 0;
   }
-
   .ve-message-box__wrapper {
     position: fixed;
     top: 0;
@@ -143,14 +147,18 @@
       background-color: #fff;
       border-radius: 4px;
       font-size: 16px;
-      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
       overflow: hidden;
       z-index: 1001;
       &:before {
         display: block;
         content: '';
-        height: 5px;
-        background-color: #FFD021;
+        position: relative;
+        top: -1px;
+        height: 6px;
+        background-color: $color-default;
+      }
+      &[type='error']:before{
+        background-color: $color-red;
       }
       .ve-message-box__container {
         padding: 10px 20px 20px 20px;
@@ -186,13 +194,14 @@
       }
       .ve-message-box__btns {
         text-align: right;
+        margin-top: 10px;
         .auto-close {
           padding-left: 6px;
         }
         button {
           display: inline-block;
-          height: 38px;
-          line-height: 38px;
+          height: 40px;
+          line-height: 41px;
           white-space: nowrap;
           cursor: pointer;
           border: none;
@@ -209,18 +218,34 @@
           border-radius: 19px;
           color: #222222;
           background: transparent;
+          transition: all .3s;
         }
-        button:last-child{
+        button:last-child {
           margin-right: 0;
         }
         .button--primary {
-          background: rgba(255, 208, 33, 1);
+          background: $color-default;
           &:hover {
-            opacity: .8;
+            background: $color-default-hover;
+          }
+          &:active {
+            background: $color-default-active;
+          }
+          &[type='error']{
+            background-color: $color-red;
+            &:hover {
+              background: $color-red-hover;
+            }
+            &:active {
+              background: $color-red-active;
+            }
           }
         }
         .button--cancel:hover {
-          color: rgba(255, 208, 33, 1);
+          color: $color-default;
+          &[type='error']{
+            color: $color-red;
+          }
         }
       }
     }

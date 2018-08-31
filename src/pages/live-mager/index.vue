@@ -91,6 +91,8 @@
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
             cancelText: '暂不删除',
             confirmText: '仍要删除',
+            type: 'error',
+            width: '500px',
             handleClick: (e) => {
               if (e.action !== 'confirm') return
               this.deleteLive(event.id)
