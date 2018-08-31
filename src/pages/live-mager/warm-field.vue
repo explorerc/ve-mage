@@ -47,16 +47,17 @@
           <div class="from-content">
             <div class="from-content">
               <ve-upload
-                title="上传封面"
+                title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
                 accept="png|jpg|jpeg|bmp|gif"
                 :defaultImg="defaultImg"
-                :fileSize="1024"
+                :fileSize="2048"
+                :errorMsg="uploadImgErrorMsg"
                 @error="uploadError"
                 @success="uploadImgSuccess"></ve-upload>
-              <div class="upload-tips">
-                <span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>
-                <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
-              </div>
+              <!--<div class="upload-tips">-->
+                <!--<span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>-->
+                <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
+              <!--</div>-->
             </div>
           </div>
         </div>

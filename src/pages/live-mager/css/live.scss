@@ -18,7 +18,7 @@
   }
   .live-title {
     border-bottom: 1px solid $color-bd;
-    line-height: 50px;
+    line-height: 60px;
     span.title {
       display: inline-block;
       font-size: 24px;
@@ -69,6 +69,7 @@
   }
   .pagination-box {
     width: 100%;
+    margin-top: 20px;
     overflow: hidden;
   }
   .page-pagination {

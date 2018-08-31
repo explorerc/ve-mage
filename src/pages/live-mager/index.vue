@@ -24,7 +24,7 @@
                    :value.sync="searchParams.keyword"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
-        <button class="primary-button"  @click="createLive">创建直播</button>
+        <button class="primary-button" @click="createLive">创建直播</button>
       </div>
     </div>
     <div class="mager-box">
@@ -77,10 +77,15 @@
         total: 0
       }
     },
-    created () {
-      console.log('999999999')
-      console.log(this.$imgHost)
-      this.queryList()
+    watch: {
+      searchParams: {
+        handler (newVal) {
+          if (newVal.keyword) return
+          this.queryList()
+        },
+        immediate: true,
+        deep: true
+      }
     },
     methods: {
       handleClick (event) {
@@ -91,13 +96,17 @@
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
             cancelText: '暂不删除',
             confirmText: '仍要删除',
+            type: 'error',
+            width: '400px',
             handleClick: (e) => {
               if (e.action !== 'confirm') return
               this.deleteLive(event.id)
             }
           })
-        } else if (event.type === 'share') { // 分享观看页
-          this.share(event)
+        } else if (event.type === 'share') { // 推广
+          this.$router.push(`liveMager/detail/${event.id}?type=tg`)
+        } else if (event.type === 'info') { // 详情
+          this.$router.push(`liveMager/detail/${event.id}`)
         }
       },
       changePage (currentPage) {
@@ -137,18 +146,6 @@
         }).catch(() => {
           this.loading = false
         })
-      },
-      share (item) {
-        this.$router.push(`liveMager/detail/${item.id}`)
-        // this.$share({
-        //   link: 'https://live.vhall.com/261678795',
-        //   data: {
-        //     title: item.title,
-        //     desc: item.description,
-        //     summary: 'summary',
-        //     pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
-        //   }
-        // })
       }
     }
   }

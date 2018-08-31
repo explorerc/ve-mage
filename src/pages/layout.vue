@@ -52,7 +52,7 @@ export default {
 
 <style scoped lang="scss">
 .main-box {
-  background-color: #f2f4f6;
+  background-color: #f5f5f5;
 }
 .container {
   height: 100%;
@@ -71,7 +71,7 @@ export default {
   text-align: right;
   // margin-right: 10px;
   background-color: #ffffff;
-  border-bottom: 1px solid #d2d2d2;
+  border-bottom: 1px solid #e2e2e2;
   span {
     cursor: pointer;
   }
