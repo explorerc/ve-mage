@@ -1,24 +1,28 @@
 <template>
   <div class="live-item" :style="{height: this.height+'px'}">
-    <span v-if='liveData.status=="PREPARE"' class="live-state" style="background-color: #5ea6ec;">预告</span>
-    <span v-if='liveData.status=="LIVING"' class="live-state" style="background-color: #fc5659;">直播中</span>
-    <span v-if='liveData.status=="PLAYBACK"' class="live-state" style="background-color: #2ab804;">回放</span>
-    <span v-if='liveData.status=="FINISH"' class="live-state" style="background-color: #999;">结束</span>
+    <span v-if='liveData.status=="PREPARE"' class="live-state">预告</span>
+    <span v-if='liveData.status=="LIVING"' class="live-state"><i class="live-point"></i>直播中</span>
+    <span v-if='liveData.status=="PLAYBACK"' class="live-state">回放</span>
+    <span v-if='liveData.status=="FINISH"' class="live-state">结束</span>
     <div class="live-img" :style="imgStyle"></div>
     <div class="live-md">
       <span>{{liveData.title}}</span>
       <span class="time">{{liveData.startTime}}</span>
     </div>
     <div class="live-bottom">
+      <!-- 开播 -->
       <span class="item" @click.stop="handleClick(action.play)">
         <i class="iconfont icon-shipin"></i>
       </span>
+      <!-- 推广 -->
       <span class="item" @click.stop="handleClick(action.share)">
         <i class="iconfont icon-fasong"></i>
       </span>
+      <!-- 详情 -->
       <span class="item" @click.stop="handleClick(action.info)">
         <i class="iconfont icon-xiangqingjieshao"></i>
       </span>
+      <!-- 更多 -->
       <span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">
         <i class="iconfont icon-gengduo"></i>
         <transition name="slide-fade">
@@ -30,22 +34,7 @@
           </div>
         </transition>
       </span>
-      <!--<span class="item" @click.stop="handleClick(action.play)">开播</span>-->
-      <!--<span class="item" @click.stop="handleClick(action.share)">推广</span>-->
-      <!--<span class="item" @click.stop="handleClick(action.info)">详情</span>-->
-      <!--<span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">-->
-        <!--更多-->
-        <!--<transition name="slide-fade">-->
-          <!--<div class="live-more" v-show="showMore">-->
-            <!--<span @click.stop="handleClick(action.role)">角色</span>-->
-            <!--<span class="disabled" @click.stop="handleClick(action.viewer)">观众</span>-->
-            <!--<span class="disabled" @click.stop="handleClick(action.data)">数据</span>-->
-            <!--<span @click.stop="handleClick(action.delete)">删除</span>-->
-          <!--</div>-->
-        <!--</transition>-->
-      <!--</span>-->
     </div>
-
   </div>
 </template>
 <script>
@@ -130,28 +119,41 @@
   .live-item {
     position: relative;
     min-width: 228px;
-    border-radius: 2px;
+    border-radius: 4px;
     font-size: 14px;
     color: $color-font;
     background-color: $color-bg;
     @include border;
     &:hover {
       cursor: pointer;
-      border-color: #ff3333;
     }
     .live-state {
       position: absolute;
-      top: 0;
-      left: 0;
-      color: #fff;
-      padding: 2px 4px;
-      font-size: 12px;
+      top: 10px;
+      left: 10px;
+      padding: 0 10px;
+      height: 20px;
+      line-height: 20px;
+      border-radius: 10px;
+      font-size: 10px;
+      color: #ccc;
+      background-color: rgba(0,0,0,.6);
+      .live-point{
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 6px;
+        border-radius: 50%;
+        background-color: #FC5659;
+      }
     }
     .live-img {
       height: calc(100% - 94px);
       background-size: cover;
       border-bottom: 1px solid $color-bd;
       background-position: center center;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
     }
     .live-md {
       height: 60px;
@@ -181,14 +183,17 @@
         float: left;
         margin: 0 20px;
         text-align: center;
+        .iconfont{
+          color: $color-font-icon;
+          &:hover {
+            color: $color-font-hover;
+            span {
+              color: $color-font;
+            }
+          }
+        }
         .icon-shipin{
           font-size: 24px;
-        }
-        &:hover {
-          color: $color-font-hover;
-          span {
-            color: $color-font;
-          }
         }
         &:last-child{
           float: right;

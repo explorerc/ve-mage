@@ -36,13 +36,13 @@
     margin-top: 22px;
     width: 325px;
     /* 设备宽度大于 1920px */
-    @media all and (min-width:1920px) {
+    @media all and (min-width:1600px) {
       &:nth-child(4n+1){
         margin-left: 0;
       }
     }
     /* 设备宽度小于 1920px */
-    @media all and (max-width:1900px) {
+    @media all and (max-width:1600px) {
       &:nth-child(3n+1){
         margin-left: 0;
       }

@@ -24,7 +24,7 @@
                    :value.sync="searchParams.keyword"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
-        <button class="primary-button"  @click="createLive">创建直播</button>
+        <button class="primary-button" @click="createLive">创建直播</button>
       </div>
     </div>
     <div class="mager-box">
@@ -96,8 +96,10 @@
               this.deleteLive(event.id)
             }
           })
-        } else if (event.type === 'share') { // 分享观看页
-          this.share(event)
+        } else if (event.type === 'share') { // 推广
+          this.$router.push(`liveMager/detail/${event.id}?type=tg`)
+        } else if (event.type === 'info') { // 详情
+          this.$router.push(`liveMager/detail/${event.id}`)
         }
       },
       changePage (currentPage) {
@@ -137,18 +139,6 @@
         }).catch(() => {
           this.loading = false
         })
-      },
-      share (item) {
-        this.$router.push(`liveMager/detail/${item.id}`)
-        // this.$share({
-        //   link: 'https://live.vhall.com/261678795',
-        //   data: {
-        //     title: item.title,
-        //     desc: item.description,
-        //     summary: 'summary',
-        //     pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
-        //   }
-        // })
       }
     }
   }
