@@ -141,7 +141,7 @@
           <span :class="{active:navIdx===1}" @click="changeNav(1)">视频</span>
         </nav>
         <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
-        <el-button class="live-btn fr" type="primary" plain @click="addVideoShow=true">添加视频</el-button>
+        <button class="primary-button fr" plain @click="addVideoShow=true">添加视频</button>
       </div>
       <el-table
         :data="playBackList"
@@ -564,7 +564,7 @@
   }
 
   .list-box {
-    margin: 10px 40px;
+    margin: 10px 0;
   }
 
   .step-btns {

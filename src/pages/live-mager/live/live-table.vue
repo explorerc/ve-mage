@@ -35,8 +35,8 @@
   .none-data{
     text-align: center;
     line-height: 60px;
-    font-size: 20px;
-    color: #888;
+    font-size: 16px;
+    color: #909399;
   }
   .live-item-box{
     float: left;
