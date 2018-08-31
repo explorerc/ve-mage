@@ -3,12 +3,13 @@
     <div :class="['ve-message-box__wrapper',customClass]">
       <div class="ve-message-box" :style="{width: width}" :type="type">
         <div class="ve-message-box__header">
+          <span class="prompt-title">{{header}}</span>
           <button type="button" @click.prevent="handleClick(action.cancel)">
             <i class="iconfont icon-close"></i>
           </button>
         </div>
         <div class="ve-message-box__container">
-          <div class="ve-message-box__title" v-if="!this.$slots.header&&header">{{header}}</div>
+          <div class="ve-message-box__title" v-if="!this.$slots.header&&header&&type!=='prompt'">{{header}}</div>
           <slot name="header"></slot>
           <div class="ve-message-box__content" v-if="(!this.$slots.default||this.$slots.default.length==0)&&content">
             {{content}}
@@ -160,6 +161,28 @@
       &[type='error']:before{
         background-color: $color-red;
       }
+      &[type='prompt']{
+        &:before{
+          display: none;
+        }
+        .ve-message-box__header{
+          height: 40px;
+          line-height: 40px;
+          background-color: $color-default;
+          button {
+            &:hover {
+              color: #2878FF;
+            }
+            .icon-close{
+              position: relative;
+              top: -3px;
+            }
+          }
+        }
+        .prompt-title{
+          font-size: 16px;
+        }
+      }
       .ve-message-box__container {
         padding: 10px 20px 20px 20px;
         font-size: 14px;
@@ -170,7 +193,7 @@
       }
       .ve-message-box__header {
         position: relative;
-        padding: 15px;
+        padding: 0 20px;
         padding-bottom: 10px;
         text-align: left;
         button {
