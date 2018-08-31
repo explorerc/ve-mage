@@ -15,7 +15,17 @@
   box-shadow:0 1px 2px 0 rgba(0,0,0,0.08);
   @include border
 }
-
+@mixin default-border(){
+  height: 40px;
+  line-height: 40px;
+  border-radius:20px;
+  border: none;
+  padding: 0 30px;
+  font-size: 14px;
+  color: #222;
+  background-color: $color-bg-btn;
+  box-sizing: border-box;
+}
 @mixin linear($color1: #000, $color2: #fff, $angle: 180deg) {
   background: ($color1+$color2)/2;
   background: linear-gradient($angle, $color1, $color2);

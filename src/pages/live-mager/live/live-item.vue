@@ -113,6 +113,7 @@
     border-radius: 2px;
     font-size: 14px;
     color: $color-font;
+    background-color: $color-bg;
     @include border;
     &:hover {
       cursor: pointer;

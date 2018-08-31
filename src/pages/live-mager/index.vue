@@ -1,11 +1,8 @@
 <template>
   <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
-      <span>直播列表</span>
-      <el-button class="live-btn fr" type="primary" plain @click="createLive">创建直播</el-button>
-    </div>
-    <div class="mager-box">
-      <div class="live-search">
+      <span>活动列表</span>
+      <div class="search-box fr">
         <el-select v-model="searchParams.status" @change="changeSearch" placeholder="直播状态">
           <el-option
             v-for="item in optionsStates"
@@ -22,17 +19,15 @@
             :value="item.value">
           </el-option>
         </el-select>
-        <div class="search-box">
-          <com-input class="fr"
-                     type="search"
-                     :value.sync="searchParams.keyword"
-                     @keyup.native.enter="searchEnter"
-                     placeholder="输入直播名称"></com-input>
-        </div>
+        <com-input type="search"
+                   :value.sync="searchParams.keyword"
+                   @keyup.native.enter="searchEnter"
+                   placeholder="输入直播名称"></com-input>
+        <button class="create-btn"  @click="createLive">创建直播</button>
       </div>
-      <!--<div class="clearfix">-->
+    </div>
+    <div class="mager-box">
       <live-table :tableList="tableList" @handleClick="handleClick"/>
-      <!--</div>-->
       <div class="pagination-box">
         <div class="page-pagination">
           <ve-pagination

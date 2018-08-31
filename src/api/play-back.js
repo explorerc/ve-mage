@@ -60,6 +60,16 @@ const PlayBack = {
       url: '/manage/replay-manage/save-config',
       params: data
     })
+  },
+  /**
+   *  下载回放视频
+   */
+  downloadVideo (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/manage/replay-manage/download',
+      params: {replayId: id}
+    })
   }
 }
 export default PlayBack
