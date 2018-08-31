@@ -3,7 +3,7 @@
     <div :class="['ve-message-box__wrapper',customClass]">
       <div class="ve-message-box" :style="{width: width}" :type="type">
         <div class="ve-message-box__header">
-          <span class="prompt-title">{{header}}</span>
+          <span v-if="type=='prompt'" class="prompt-title">{{header}}</span>
           <button type="button" @click.prevent="handleClick(action.cancel)">
             <i class="iconfont icon-close"></i>
           </button>
