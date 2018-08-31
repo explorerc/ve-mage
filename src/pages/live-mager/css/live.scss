@@ -1,17 +1,27 @@
 @import "~assets/css/mixin.scss";
 
 .live-mager {
-  border: 1px solid $color-bd;
-  background-color: $color-bg;
   border-radius: 5px;
   overflow: hidden;
   padding-bottom: 30px;
+  margin: 0 auto;
+  width: 1366px;
+  min-width: 1019px;
+  color: #222;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width:1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width:1600px) {
+    width: 1019px;
+  }
   .live-title {
     border-bottom: 1px solid $color-bd;
     line-height: 50px;
-    span {
+    span.title {
       display: inline-block;
-      margin-left: 20px;
+      font-size: 24px;
     }
     .live-btn{
       position: relative;
@@ -26,24 +36,36 @@
     span{
       display: block;
       &.error{
-        color: $color-error;
+        color: $color-red;
         line-height: 30px;
         margin-top: 8px;
       }
     }
   }
   .search-box{
-    width: 300px;
+    width: 766px;
     float: right;
+    text-align: right;
+    .create-btn{
+      @include primary-button();
+    }
+    .el-select:nth-child(1){
+      width: 88px;
+    }
+    .el-select:nth-child(2){
+      width: 174px;
+    }
+    .search-com /deep/{
+      height: 40px;
+      line-height: 40px;
+      margin: 0 10px;
+      input{
+        border-radius: 20px;
+      }
+    }
   }
   .live-btn{
     margin-right: 20px;
-  }
-  .live-search{
-    padding: 30px 20px 20px 20px;
-    .el-select:nth-child(2){
-      margin-left: 10px;
-    }
   }
   .pagination-box {
     width: 100%;
@@ -67,7 +89,7 @@
           .star{
             position: relative;
             top: 3px;
-            color: $color-error;
+            color: $color-red;
             padding-right: 5px;
           }
         }

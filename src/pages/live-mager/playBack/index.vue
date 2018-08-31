@@ -190,9 +190,6 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="step-btns">
-      <el-button class="live-btn fl" type="primary" plain @click="">保存</el-button>
-    </div>
   </div>
 </template>
 
@@ -329,7 +326,7 @@
         this.selectRowIdx = idx
         const playBack = this.playBackList[this.selectRowIdx]
         if (type === 0) { // 下载
-          this.downLoadVideo('http://t-download.e.vhall.com//paas_1011_1535615631_720p.zip?st=GogMs7H4odAyfHDkeNtisw&e=1536220431&aid=1011&platform=paas&typename=0&uid=&vfid=750&app_id=e909e583')
+          this.downLoadVideo()
         } else if (type === 1) { // 预览
           this.prePlayShow = true
           if (playBack.type === 'LINK') { /* 外链 */
@@ -349,10 +346,17 @@
         }
       },
       /* 下载 */
-      downLoadVideo (url) {
-        let dl = document.createElement('a')
-        dl.href = url
-        dl.click()
+      downLoadVideo () {
+        const playBack = this.playBackList[this.selectRowIdx]
+        if (playBack.downloadUrl) {
+          let dl = document.createElement('a')
+          dl.href = playBack.downloadUrl
+          dl.click()
+          return
+        }
+        PlayBackHttp.downloadVideo(playBack.replayId).then((res) => {
+          console.log(res)
+        })
       },
       /* 添加视频 */
       addVideohandleClick (e) {
