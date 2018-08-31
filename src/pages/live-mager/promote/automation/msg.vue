@@ -14,7 +14,7 @@
       <div class="from-row">
         <div class="from-title">短信签名：</div>
         <div class="from-content">
-          <com-input :value.sync="tplData.tag" placeholder="请输入签名" :max-length="8" ></com-input>
+          <com-input :value.sync="tplData.tag" placeholder="请输入签名" :max-length="8" disabled></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -33,7 +33,7 @@
         <div class="from-title"></div>
         <div class="from-content">
           <el-button>测试</el-button>
-          <el-button>保存</el-button>
+          <el-button @click='save'>保存</el-button>
         </div>
       </div>
     </div>
@@ -44,38 +44,42 @@
     :webinarName="tplData.webinarName"
     :hostName="tplData.hostName"
     :date="tplData.date"
-    :firstCount="tplData.firstCount"
     :secondCount="tplData.secondCount"
     ></send-tpl>
   </div>
 </template>
 
 <script>
-import sendTpl from './send-tpl'
+import sendTpl from './com-tpl'
+import http from 'src/api/activity-manger'
 export default {
   data () {
     return {
-      webinarName: '活动名字啊啊啊',
+      activityId: this.$route.params.id,
+      noticeId: this.$route.query.noticeId,
+      webinarName: '',
       sign: '',
-      tplOptions: [{
-        value: 1,
-        label: '预约成功通知'
-      }, {
-        value: 2,
-        label: '报名成功通知'
-      }, {
-        value: 3,
-        label: '开播提醒通知1'
-      }, {
-        value: 4,
-        label: '开播提醒通知2'
-      }, {
-        value: 5,
-        label: '订阅成功提醒'
-      }, {
-        value: 6,
-        label: '回放设置成功提醒'
-      }],
+      tplOptions: [
+      // {
+      //   value: 1,
+      //   label: '预约成功通知'
+      // }, {
+      //   value: 2,
+      //   label: '报名成功通知'
+      // }, {
+      //   value: 3,
+      //   label: '开播提醒通知1'
+      // }, {
+      //   value: 4,
+      //   label: '开播提醒通知2'
+      // }, {
+      //   value: 5,
+      //   label: '订阅成功提醒'
+      // }, {
+      //   value: 6,
+      //   label: '回放设置成功提醒'
+      // }
+      ],
       tplValue: 1,
       tplData: {
         type: 'msg',
@@ -84,26 +88,131 @@ export default {
         webinarName: '',
         hostName: '',
         date: '',
-        firstCount: '',
-        secondCount: ''
+        triggerType: ''
       }
     }
   },
   created () {
-    this.tplData = {
-      type: 'msg',
-      tpl: 1,
-      tag: '',
-      webinarName: '',
-      hostName: '',
-      date: '',
-      firstCount: '',
-      secondCount: ''
+    if (this.noticeId) {
+    // 获取模版变量
+      this.getParams()
+      // 获取模版id
+      this.getTpl()
+    } else {
+      this.tplData.triggerType = this.$route.query.timing
+      // 获取模版变量
+      this.getParams()
+      this.pushOption(this.$route.query.timing)
     }
   },
   methods: {
     selChange (idx) {
       this.tplData.tpl = idx
+    },
+    save () {
+      const data = {
+        activityId: this.activityId,
+        templateId: this.tplValue,
+        triggerType: this.tplData.triggerType,
+        type: 'SMS'
+      }
+      http.autoSavetask(data).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$toast({
+            content: '保存成功',
+            position: 'center'
+          })
+          // 跳转到列表页面
+          this.$router.push({name: 'auto', params: {id: this.activityId}})
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    getParams () {
+      // 获取模版变量
+      http.autoGetparams(this.activityId).then((res) => {
+      // console.log(res)
+        if (res.code === 200) {
+          this.tplData.tag = res.data.tag
+          this.tplData.webinarName = res.data.webinarName
+          this.tplData.date = res.data.date
+          this.tplData.hostName = res.data.hostName
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    getTpl () {
+      // 获取模版id
+      http.autoFindtask(this.noticeId).then((res) => {
+        if (res.code === 200) {
+          this.tplData.tpl = res.data.templateId
+          this.tplData.triggerType = res.data.triggerType
+          this.pushOption(this.tplData.triggerType)
+        }
+      }).catch((e) => {
+        console.log(e)
+      })
+    },
+    pushOption (str) {
+      switch (str) {
+        case 'BEFORE_ORDER':
+          this.tplValue = 1
+          this.tplOptions.push(
+            {
+              value: 1,
+              label: '预约成功通知'
+            }
+          )
+          break
+        case 'BEFORE_APPLY':
+          this.tplValue = 2
+          this.tplOptions.push(
+            {
+              value: 2,
+              label: '报名成功通知'
+            }
+          )
+          break
+        case 'BEFORE_HOUR':
+          this.tplValue = 3
+          this.tplOptions.push(
+            {
+              value: 3,
+              label: '开播提醒通知'
+            }
+          )
+          break
+        case 'BEFORE_MINUTE':
+          this.tplValue = 3
+          this.tplOptions.push(
+            {
+              value: 3,
+              label: '开播提醒通知'
+            }
+          )
+          break
+        case 'SUBSCRIBE':
+          this.tplValue = 4
+          this.tplOptions.push(
+            {
+              value: 4,
+              label: '订阅成功提醒'
+            }
+          )
+          break
+        case 'REPLAY':
+          this.tplValue = 5
+          this.tplOptions.push(
+            {
+              value: 5,
+              label: '回放设置成功提醒'
+            }
+          )
+          break
+      }
     }
   },
   watch: {},

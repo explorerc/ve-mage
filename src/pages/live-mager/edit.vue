@@ -9,7 +9,7 @@
       </el-date-picker>
     </p>
     <p>直播封面：
-      <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/do-upload" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
+      <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
         <div class="upload-file-box" title="点击上传">
           <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
           <i class="iconfont icon-jiahao"></i>
