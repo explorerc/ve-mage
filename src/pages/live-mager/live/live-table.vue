@@ -3,6 +3,7 @@
     <div class="live-item-box" v-for="itemData in tableList" :key="itemData.id">
       <live-item height="300" :liveData="itemData" @handleClick="handleClick"/>
     </div>
+    <div class="none-data" v-if="!(tableList&&tableList.length>0)">暂无数据</div>
   </div>
 </template>
 
@@ -30,6 +31,13 @@
 
 <style lang="scss" scoped>
 .live-list {
+  margin-top: 20px;
+  .none-data{
+    text-align: center;
+    line-height: 60px;
+    font-size: 20px;
+    color: #888;
+  }
   .live-item-box{
     float: left;
     margin-left: 22px;

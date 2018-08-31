@@ -6,7 +6,7 @@
     <span v-if='liveData.status=="FINISH"' class="live-state">结束</span>
     <div class="live-img" :style="imgStyle"></div>
     <div class="live-md">
-      <span>{{liveData.title}}</span>
+      <span :title="liveData.title">{{liveData.title}}</span>
       <span class="time">{{liveData.startTime}}</span>
     </div>
     <div class="live-bottom">
@@ -124,9 +124,6 @@
     color: $color-font;
     background-color: $color-bg;
     @include border;
-    &:hover {
-      cursor: pointer;
-    }
     .live-state {
       position: absolute;
       top: 10px;
@@ -163,10 +160,14 @@
         min-width: 60%;
         line-height: 20px;
         padding-left: 20px;
+        max-width: 310px;
         &:nth-child(1) {
           margin-top: 5px;
           color: $color-font;
           font-size: 16px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
         }
         &.time {
           font-size: 14px;
@@ -183,6 +184,7 @@
         float: left;
         margin: 0 20px;
         text-align: center;
+        cursor: pointer;
         .iconfont{
           color: $color-font-icon;
           &:hover {

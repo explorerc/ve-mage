@@ -126,7 +126,7 @@ export default {
       const ret = {}
 
       if (this.type === 'search') {
-        ret.paddingLeft = '30px'
+        ret.paddingLeft = '36px'
         ret.paddingRight = '30px'
       } else if (this.maxLength) {
         ret.paddingRight = '45px'
@@ -195,7 +195,7 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 8px;
+    left: 12px;
   }
   .icon-right-center {
     color: #999999;
