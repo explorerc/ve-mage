@@ -97,7 +97,7 @@
             cancelText: '暂不删除',
             confirmText: '仍要删除',
             type: 'error',
-            width: '500px',
+            width: '400px',
             handleClick: (e) => {
               if (e.action !== 'confirm') return
               this.deleteLive(event.id)
