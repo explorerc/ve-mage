@@ -23,7 +23,7 @@
                    :value.sync="searchParams.keyword"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
-        <button class="create-btn"  @click="createLive">创建直播</button>
+        <button class="primary-button"  @click="createLive">创建直播</button>
       </div>
     </div>
     <div class="mager-box">
