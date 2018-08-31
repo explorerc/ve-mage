@@ -10,11 +10,17 @@
       <span class="time">{{liveData.startTime}}</span>
     </div>
     <div class="live-bottom">
-      <span class="item" @click.stop="handleClick(action.play)">开播</span>
-      <span class="item" @click.stop="handleClick(action.share)">推广</span>
-      <span class="item" @click.stop="handleClick(action.info)">详情</span>
+      <span class="item" @click.stop="handleClick(action.play)">
+        <i class="iconfont icon-shipin"></i>
+      </span>
+      <span class="item" @click.stop="handleClick(action.share)">
+        <i class="iconfont icon-fasong"></i>
+      </span>
+      <span class="item" @click.stop="handleClick(action.info)">
+        <i class="iconfont icon-xiangqingjieshao"></i>
+      </span>
       <span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">
-        更多
+        <i class="iconfont icon-gengduo"></i>
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <span @click.stop="handleClick(action.role)">角色</span>
@@ -24,6 +30,20 @@
           </div>
         </transition>
       </span>
+      <!--<span class="item" @click.stop="handleClick(action.play)">开播</span>-->
+      <!--<span class="item" @click.stop="handleClick(action.share)">推广</span>-->
+      <!--<span class="item" @click.stop="handleClick(action.info)">详情</span>-->
+      <!--<span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">-->
+        <!--更多-->
+        <!--<transition name="slide-fade">-->
+          <!--<div class="live-more" v-show="showMore">-->
+            <!--<span @click.stop="handleClick(action.role)">角色</span>-->
+            <!--<span class="disabled" @click.stop="handleClick(action.viewer)">观众</span>-->
+            <!--<span class="disabled" @click.stop="handleClick(action.data)">数据</span>-->
+            <!--<span @click.stop="handleClick(action.delete)">删除</span>-->
+          <!--</div>-->
+        <!--</transition>-->
+      <!--</span>-->
     </div>
 
   </div>
@@ -128,51 +148,50 @@
       font-size: 12px;
     }
     .live-img {
-      height: calc(100% - 84px);
+      height: calc(100% - 94px);
       background-size: cover;
       border-bottom: 1px solid $color-bd;
       background-position: center center;
     }
     .live-md {
-      height: 50px;
-      border-bottom: solid 1px $color-bd;
+      height: 60px;
+      padding: 5px 0;
       span {
         display: inline-block;
         min-width: 60%;
         line-height: 20px;
-        padding-left: 10px;
+        padding-left: 20px;
         &:nth-child(1) {
           margin-top: 5px;
+          color: $color-font;
+          font-size: 16px;
         }
         &.time {
-          font-size: .8em;
+          font-size: 14px;
           color: $color-font-time;
         }
       }
     }
     .live-bottom {
       position: relative;
-      height: 34px;
-      line-height: 34px;
+      height: 30px;
+      line-height: 30px;
       span.item {
-        display: block;
+        display: inline-block;
         float: left;
-        width: 25%;
+        margin: 0 20px;
         text-align: center;
+        .icon-shipin{
+          font-size: 24px;
+        }
         &:hover {
           color: $color-font-hover;
           span {
             color: $color-font;
           }
         }
-        &:nth-child(2) {
-          border-left: solid 1px $color-bd;
-          border-right: solid 1px $color-bd;
-          box-sizing: border-box;
-        }
-        &:nth-child(3){
-          border-right: solid 1px $color-bd;
-          box-sizing: border-box;
+        &:last-child{
+          float: right;
         }
         .live-more {
           position: absolute;
