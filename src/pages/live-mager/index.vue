@@ -77,8 +77,15 @@
         total: 0
       }
     },
-    created () {
-      this.queryList()
+    watch: {
+      searchParams: {
+        handler (newVal) {
+          if (newVal.keyword) return
+          this.queryList()
+        },
+        immediate: true,
+        deep: true
+      }
     },
     methods: {
       handleClick (event) {
