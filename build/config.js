@@ -39,5 +39,4 @@ const config = {
     PUBLIC_PATH: '//static01-class.e.vhall.com/vhallclass/'
   }
 }
-
 module.exports = config
