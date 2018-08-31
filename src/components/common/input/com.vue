@@ -144,11 +144,10 @@ export default {
   width: 200px;
   input {
     display: inline-block;
-    padding: 4px 11px;
     width: 100%;
-    height: 32px;
+    height: 40px;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 40px;
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;
     background-image: none;

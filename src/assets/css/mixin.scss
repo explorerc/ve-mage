@@ -51,30 +51,38 @@
     border-color: transparent;
   }
 }
+
 /* 主要按钮 */
 @mixin primary-button() {
   @include button-normal();
 }
+
 /* 红色按钮 */
 @mixin red-button() {
   @include button-normal($color-red, $color-red-hover, $color-red-active)
 }
+
 /* 蓝色按钮 */
 @mixin blue-button() {
   @include button-normal($color-blue, $color-blue-hover, $color-blue-active)
 }
-.default-button{
+
+.default-button {
   @include default-button
 }
-.primary-button{
+
+.primary-button {
   @include primary-button
 }
-.red-button{
+
+.red-button {
   @include red-button
 }
-.blue-button{
+
+.blue-button {
   @include blue-button
 }
+
 @mixin linear($color1: #000, $color2: #fff, $angle: 180deg) {
   background: ($color1+$color2)/2;
   background: linear-gradient($angle, $color1, $color2);

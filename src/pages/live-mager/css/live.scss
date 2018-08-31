@@ -7,6 +7,7 @@
   margin: 0 auto;
   width: 1366px;
   min-width: 1019px;
+  color: #222;
   /* 设备宽度大于 1600 */
   @media all and (min-width:1600px) {
     width: 1366px;
@@ -18,8 +19,9 @@
   .live-title {
     border-bottom: 1px solid $color-bd;
     line-height: 50px;
-    span {
+    span.title {
       display: inline-block;
+      font-size: 24px;
     }
     .live-btn{
       position: relative;
@@ -43,8 +45,23 @@
   .search-box{
     width: 766px;
     float: right;
+    text-align: right;
     .create-btn{
       @include primary-button();
+    }
+    .el-select:nth-child(1){
+      width: 88px;
+    }
+    .el-select:nth-child(2){
+      width: 174px;
+    }
+    .search-com /deep/{
+      height: 40px;
+      line-height: 40px;
+      margin: 0 10px;
+      input{
+        border-radius: 20px;
+      }
     }
   }
   .live-btn{

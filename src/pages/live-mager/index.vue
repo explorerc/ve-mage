@@ -1,7 +1,7 @@
 <template>
   <div class="live-mager" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="live-title">
-      <span>活动列表</span>
+      <span class="title">活动列表</span>
       <div class="search-box fr">
         <el-select v-model="searchParams.status" @change="changeSearch" placeholder="直播状态">
           <el-option
@@ -20,6 +20,7 @@
           </el-option>
         </el-select>
         <com-input type="search"
+                   customClass="search-com"
                    :value.sync="searchParams.keyword"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
