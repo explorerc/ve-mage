@@ -1,25 +1,48 @@
 <template>
-  <com-upload
-    :accept="accept"
-    actionUrl="/api/upload/image"
-    inputName="file"
-    :fileSize="fileSize"
-    @error="uploadError"
-    @progress="uploadProgress"
-    @load="uploadImgSuccess">
-    <div class="upload-file-box" title="点击上传">
-      <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
-      <i class="iconfont icon-jiahao"></i>
-      <span>{{tipTxt}}</span>
-      <div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>
+  <div class="ve-upload-box">
+    <div class="upload-img-box" v-if="fileSrc||(!fileSrc && coverImg)">
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
              :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
         <div class="temp-img" v-if="!fileSrc && coverImg"
              :style="{backgroundImage:'url('+coverImg+')'}"></div>
       </transition>
+      <div class="over-upload">
+        <span @click.stop="deleteImage">
+          <i class="iconfont icon-icon-shanchu"></i>
+          删除
+        </span>
+        <span @click.stop="overUpload">
+          <i class="iconfont icon-yulanxuanzhuan"></i>
+          重置
+        </span>
+      </div>
     </div>
-  </com-upload>
+    <com-upload
+      :accept="accept"
+      actionUrl="/api/upload/image"
+      inputName="file"
+      :fileSize="fileSize"
+      @error="uploadError"
+      @progress="uploadProgress"
+      @load="uploadImgSuccess">
+      <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
+        <i class="upload-icon"></i>
+        <span v-if="!errorMsg">{{tipTxt}}</span>
+        <span class="error-msg" v-else>{{errorMsg}}</span>
+        <!--<el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>-->
+        <!--<i class="iconfont icon-jiahao"></i>-->
+        <!--<span>{{tipTxt}}</span>-->
+        <!--<div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>-->
+        <!--<transition name="fade">-->
+        <!--<div class="temp-img" v-if="fileSrc"-->
+        <!--:style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>-->
+        <!--<div class="temp-img" v-if="!fileSrc && coverImg"-->
+        <!--:style="{backgroundImage:'url('+coverImg+')'}"></div>-->
+        <!--</transition>-->
+      </div>
+    </com-upload>
+  </div>
 </template>
 
 <script>
@@ -53,6 +76,10 @@
       title: {
         type: String,
         default: '上传文件'
+      },
+      errorMsg: {
+        type: String,
+        default: ''
       }
     },
     watch: {
@@ -77,6 +104,9 @@
           name: '',
           host: ''
         })
+      },
+      overUpload () {
+        this.$refs.uploadFile.click()
       },
       uploadProgress (data) {
         this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
@@ -108,17 +138,88 @@
   }
 
   .fade-enter, .fade-leave-to {
-    transform: translateY(100%);
     opacity: 0;
   }
 
+  .ve-upload-box {
+    position: relative;
+    width: 440px;
+    height: 140px;
+    border: 1px dashed #E2E2E2;
+    border-radius: 4px;
+    background-color: #F7F7F7;
+    text-align: center;
+    overflow: hidden;
+    .upload-img-box {
+      height: 100%;
+      width: 249px;
+      margin: 0 auto;
+      background-color: #666666;
+      overflow: hidden;
+      cursor: pointer;
+      .temp-img {
+        width: 100%;
+        height: 100%;
+        background-position: center center;
+        background-size: cover;
+      }
+      &:hover .over-upload {
+        transition: top .3s, opacity .5s;
+        top: -100%;
+        opacity: 1;
+      }
+    }
+    .upload-file-box {
+      width: 400px;
+      padding-bottom: 40px;
+      cursor: pointer;
+      span {
+        font-size: 14px;
+        line-height: 20px;
+        color: #888;
+        &.error-msg {
+          color: #FC5659;
+        }
+      }
+      .upload-icon {
+        display: block;
+        width: 55px;
+        height: 43px;
+        margin: 30px auto 10px auto;
+        background-image: url("../assets/image/upload-icon.png");
+      }
+    }
+    .over-upload {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, .6);
+      z-index: 3;
+      top: 0;
+      opacity: 0;
+      span {
+        display: inline-block;
+        width: 34%;
+        text-align: center;
+        color: #fff;
+        margin-top: 50px;
+        .iconfont {
+          display: block;
+        }
+        &:hover {
+          color: #ccc;
+        }
+      }
+    }
+  }
+
+  /*
   .upload-file-box {
     position: relative;
     display: inline-block;
-    width: 150px;
-    height: 150px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
+    width: 90%;
+    height: 100%;
     cursor: pointer;
     color: #999;
     text-align: center;
@@ -152,7 +253,6 @@
       }
     }
   }
-
   .upload-file-box {
     .temp-img {
       position: absolute;
@@ -166,5 +266,5 @@
     .el-progress--circle {
       margin-top: 12px;
     }
-  }
+  }*/
 </style>
