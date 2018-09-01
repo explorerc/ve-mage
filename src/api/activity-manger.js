@@ -351,6 +351,72 @@ const ActivityManger = {
       url: '/expand/sms-invite/limit-num',
       params: ''
     })
+  },
+  // 自动化通知获取模板变量
+  autoGetparams (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/template-params',
+      params: {
+        activityId: id
+      }
+    })
+  },
+  // 自动化通知获取时间颗粒
+  autoFindconfig (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/find-config',
+      params: {
+        activityId: id
+      }
+    })
+  },
+  // 自动化通知保存时间颗粒
+  autoSaveconfig (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/save-config',
+      params: data
+    })
+  },
+  // 自动化通知获取通知列表
+  autoList (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/task-list',
+      params: {
+        activityId: id
+      }
+    })
+  },
+  // 自动化通知修改通知
+  autoSavetask (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/saveTask',
+      params: data
+    })
+  },
+  // 自动化通知保存通知
+  autoFindtask (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/find-task',
+      params: {
+        noticeTaskId: id
+      }
+    })
+  },
+  // 自动化通知删除通知
+  autoDeletetask (id) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/delete-task',
+      params: {
+        noticeTaskId: id
+      }
+    })
   }
 }
 export default ActivityManger
