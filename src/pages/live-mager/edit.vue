@@ -2,7 +2,8 @@
 <template>
   <div class='edit-page'>
     <div class="edit-title">
-      <span class="title">新建活动</span>
+      <span class="title" v-if="activityId">编辑活动</span>
+      <span class="title" v-else>新建活动</span>
     </div>
     <div class="tips">
       <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
@@ -25,7 +26,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播封面：</div>
           <div class="from-content">
-            <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
+            <!-- <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
               <div class="upload-file-box" title="点击上传">
                 <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
                 <i class="iconfont icon-jiahao"></i>
@@ -33,7 +34,15 @@
                 <div v-if="poster" class="upload-file-botton">编辑</div>
                 <div class="temp-img" v-if="poster" :style="{backgroundImage:'url('+imgHost+'/'+poster+')'}"></div>
               </div>
-            </com-upload>
+            </com-upload> -->
+            <ve-upload
+                title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
+                accept="png|jpg|jpeg|bmp|gif"
+                :defaultImg="defaultImg"
+                :fileSize="2048"
+                :errorMsg="uploadImgErrorMsg"
+                @error="uploadError"
+                @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
@@ -54,10 +63,15 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播介绍：</div>
           <div class="from-content">
-            <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange'></ve-editer>
+            <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange' customClass='editor'></ve-editer>
           </div>
         </div>
-        <div class="from-row"><button @click='comfirm'>创建</button></div>
+        <div class="from-row">
+          <button @click='comfirm' class='creat-btn'>
+            <template v-if="activityId">更新活动</template>
+            <template v-else>创建活动</template>
+          </button>
+        </div>
     </div>
     <transition name='fade'>
       <div class="modal-cover" v-if='createdSuccess' @click="closeModal">
@@ -76,6 +90,7 @@
 
 <script>
   import veEditer from 'components/ve-editer'
+  import VeUpload from 'src/components/ve-upload'
   import http from 'src/api/activity-manger'
   export default {
     name: 'edit',
@@ -89,6 +104,7 @@
         tagList: [],
         tagGroup: [],
         poster: '',
+        uploadImgErrorMsg: '', // 上传图片错误提示
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
         activityId: this.$route.params.id,
@@ -170,8 +186,14 @@
         })
       }
     },
+    computed: {
+      defaultImg () {
+        return this.poster ? `${this.$imgHost}/${this.poster}` : ''
+      }
+    },
     components: {
-      veEditer
+      veEditer,
+      VeUpload
     }
   }
 </script>
@@ -243,6 +265,9 @@
       width: 440px;
       height: 40px;
       line-height: 40px;
+      input {
+        padding-left:10px;
+      }
     }
     .el-date-editor.el-input, .el-date-editor.el-input__inner {
       width:440px;
@@ -251,6 +276,14 @@
       display:block;
       color:#888;
       padding-top:3px;
+    }
+    .creat-btn {
+      margin:0 auto;
+      @include primary-button;
+    }
+    .editor {
+      width:729px;
+      height:280px;
     }
   }
 }
@@ -341,22 +374,29 @@
 
 .tag-list {
   li {
-    padding: 5px 20px;
-    border-radius: 5px;
-    float: left;
+    padding:5px 30px;
+    background:rgba(240,241,254,1);
+    border-radius:20px;
+    border:1px solid rgba(240,241,254,1);
     border: 1px solid #ccc;
     position: relative;
+    display:inline-block;
+    margin-right:10px;
     &:before {
       content: '×';
-      width: 20px;
-      height: 20px;
+      cursor:pointer;
+      width: 15px;
+      height: 15px;
       text-align: center;
-      line-height: 20px;
+      line-height: 16px;
       position: absolute;
       border: 1px solid #ccc;
       border-radius: 100px;
-      top: -10px;
-      right: -10px;
+      font-size: 12px;
+      top: 5px;
+      right: 5px;
+      background:#4B5AFE;
+      color:#fff;
     }
   }
 }
@@ -367,14 +407,14 @@
   background: pink;
 }
 .from-box{
-      margin: 20px;
+      // margin: 20px;
       .from-row{
         display: flex;
         padding: 10px;
         .from-title{
-          width: 180px;
+          width: 110px;
           text-align: right;
-          padding-right: 20px;
+          padding-right: 15px;
           line-height:40px;
           .star{
             position: relative;
