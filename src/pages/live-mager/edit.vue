@@ -1,40 +1,64 @@
 <!--新建/编辑活动-->
 <template>
-  <div>
-    <p>直播标题：
-      <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60"></com-input>
-    </p>
-    <p>直播时间：
-      <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss">
-      </el-date-picker>
-    </p>
-    <p>直播封面：
-      <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
-        <div class="upload-file-box" title="点击上传">
-          <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
-          <i class="iconfont icon-jiahao"></i>
-          <span>分辨率最大1920x1080，支持jpg、jpeg、png格式，文件大小不超过2M</span>
-          <div v-if="poster" class="upload-file-botton">编辑</div>
-          <div class="temp-img" v-if="poster" :style="{backgroundImage:'url('+imgHost+'/'+poster+')'}"></div>
+  <div class='edit-page'>
+    <div class="edit-title">
+      <span class="title">新建活动</span>
+    </div>
+    <div class="tips">
+      <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
+    </div>
+    <div class="content from-box">
+        <div class="from-row">
+          <div class="from-title"><i class="star">*</i>直播标题：</div>
+          <div class="from-content">
+            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" customClass='inp'></com-input>
+          </div>
         </div>
-      </com-upload>
-    </p>
-    <p>直播标签：
-      <ol class='tag-list clearfix'>
-        <li v-for="item in tagGroup">{{item}}</li>
-      </ol>
-      <el-button @click='tagModal=true'>添加标签</el-button>
-      <div class="tag-modal" v-show='tagModal'>
-        <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
-          <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
-        </el-checkbox-group>
-        <el-button @click="">确定</el-button>
-      </div>
-    </p>
-    <p class='clearfix'>直播介绍：
-      <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange'></ve-editer>
-    </p>
-    <p><button @click='comfirm'>创建</button></p>
+        <div class="from-row">
+          <div class="from-title"><i class="star">*</i>直播时间：</div>
+          <div class="from-content">
+            <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" >
+            </el-date-picker>
+            <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title"><i class="star">*</i>直播封面：</div>
+          <div class="from-content">
+            <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
+              <div class="upload-file-box" title="点击上传">
+                <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
+                <i class="iconfont icon-jiahao"></i>
+                <span>分辨率最大1920x1080，支持jpg、jpeg、png格式，文件大小不超过2M</span>
+                <div v-if="poster" class="upload-file-botton">编辑</div>
+                <div class="temp-img" v-if="poster" :style="{backgroundImage:'url('+imgHost+'/'+poster+')'}"></div>
+              </div>
+            </com-upload>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title"><i class="star">*</i>直播标签：</div>
+          <div class="from-content">
+            <ol class='tag-list clearfix'>
+              <li v-for="item in tagGroup">{{item}}</li>
+            </ol>
+            <el-button @click='tagModal=true'>添加标签</el-button>
+            <div class="tag-modal" v-show='tagModal'>
+              <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
+                <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
+              </el-checkbox-group>
+              <el-button @click="">确定</el-button>
+            </div>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title"><i class="star">*</i>直播介绍：</div>
+          <div class="from-content">
+            <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange'></ve-editer>
+          </div>
+        </div>
+        <div class="from-row"><button @click='comfirm'>创建</button></div>
+    </div>
     <transition name='fade'>
       <div class="modal-cover" v-if='createdSuccess' @click="closeModal">
         <div class='created-modal'>
@@ -154,6 +178,82 @@
 
 <style lang='scss' scoped>
 @import '~assets/css/variable';
+@import '~assets/css/mixin.scss';
+.edit-page {
+  border-radius: 5px;
+  overflow: hidden;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  width: 1366px;
+  min-width: 1019px;
+  color: #222;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  .edit-title {
+    // border-bottom: 1px solid $color-bd;
+    line-height: 60px;
+    span.title {
+      display: inline-block;
+      font-size: 24px;
+    }
+  }
+  .tips {
+    width: 1020px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background: rgba(233, 235, 255, 1);
+    border-radius: 4px;
+    border: 1px solid rgba(129, 140, 254, 1);
+    margin-bottom: 20px;
+    i {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      background: url('~assets/image/excal.svg') no-repeat;
+      position: relative;
+      top: 4px;
+      right: 4px;
+    }
+  }
+  .content /deep/ {
+    & > p {
+      margin: 15px 0;
+    }
+    font-size: 14px;
+    padding: 40px 80px;
+    width: 1020px;
+    // height: 860px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 4px;
+    border: 1px solid rgba(226, 226, 226, 1);
+    .star {
+      position: relative;
+      top: 3px;
+      color: #fc5659;
+      padding-right: 5px;
+    }
+    .inp{
+      width: 440px;
+      height: 40px;
+      line-height: 40px;
+    }
+    .el-date-editor.el-input, .el-date-editor.el-input__inner {
+      width:440px;
+    }
+    .tips-time {
+      display:block;
+      color:#888;
+      padding-top:3px;
+    }
+  }
+}
 .modal-cover {
   position: fixed;
   top: 0;
@@ -266,4 +366,29 @@
   height: 200px;
   background: pink;
 }
+.from-box{
+      margin: 20px;
+      .from-row{
+        display: flex;
+        padding: 10px;
+        .from-title{
+          width: 180px;
+          text-align: right;
+          padding-right: 20px;
+          line-height:40px;
+          .star{
+            position: relative;
+            top: 3px;
+            color: $color-red;
+            padding-right: 5px;
+          }
+        }
+        .from-content{
+          flex: 1;
+          .input-box{
+            width: 400px;
+          }
+        }
+      }
+    }
 </style>

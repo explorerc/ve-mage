@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>叹号</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="M01_创建活动" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M01_活动管理_新建活动_Normal" transform="translate(-619.000000, -186.000000)">
+            <g id="内容" transform="translate(320.000000, 120.000000)">
+                <g id="提示" transform="translate(0.000000, 51.000000)">
+                    <g id="文字" transform="translate(300.000000, 12.000000)">
+                        <g id="叹号" transform="translate(0.000000, 4.000000)">
+                            <g id="Group-2" transform="translate(7.500000, 3.000000)" fill="#222222">
+                                <path d="M0.0347087133,0.995942093 C-0.0303236057,0.445898464 0.35565271,0 0.9152331,0 L2.07372602,0 C2.62505853,0 3.01811118,0.446698666 2.9518493,0.995942093 L2.2873387,6.50405791 C2.22098029,7.05410154 1.72072695,7.5 1.17627226,7.5 L1.7946052,7.5 C1.24733856,7.5 0.750877572,7.05330133 0.685939862,6.50405791 L0.0347087133,0.995942093 Z" id="Rectangle-13"></path>
+                                <circle id="Oval-5" cx="1.5" cy="9.75" r="1.5"></circle>
+                            </g>
+                            <circle id="Oval-4" stroke="#222222" cx="9" cy="9" r="9"></circle>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
