@@ -32,12 +32,15 @@
       </div>
     </div>
     <send-tpl
+    :isDom="true"
     :type="tplData.type"
     :tpl="tplData.tpl"
     :tag="tplData.tag"
     :webinarName="tplData.webinarName"
     :hostName="tplData.hostName"
     :date="tplData.date"
+    :triggerType="tplData.triggerType"
+    :firstCount="tplData.firstCount"
     :secondCount="tplData.secondCount"
     ></send-tpl>
   </div>
@@ -136,6 +139,8 @@ export default {
           this.tplData.webinarName = res.data.webinarName
           this.tplData.date = res.data.date
           this.tplData.hostName = res.data.hostName
+          this.tplData.firstCount = res.data.firstCount
+          this.tplData.secondCount = res.data.secondCount
         }
       }).catch((e) => {
         console.log(e)
