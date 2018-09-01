@@ -12,11 +12,14 @@ export default {
     }
   },
   mounted () {
-    this.$refs.target.addEventListener('mouseover', this.handleEnter)
-    this.$refs.target.addEventListener('mouseout', this.handleLeave)
-    this.$refs.edit = parseDom('<div ref="edit" class="edit"><i class="iconfont icon-pen"></i></div>')[0]
-    this.$refs.target.insertBefore(this.$refs.edit, this.$refs.target.firstChild)
-    this.$refs.edit.addEventListener('click', this.showEdit)
+    if (this.edit) {
+      this.$refs.target.addEventListener('mouseover', this.handleEnter)
+      this.$refs.target.addEventListener('mouseout', this.handleLeave)
+      this.$refs.edit = parseDom('<div ref="edit" class="edit"><i class="iconfont icon-pen"></i></div>')[0]
+      this.$refs.target.insertBefore(this.$refs.edit, this.$refs.target.firstChild)
+      this.$refs.edit.addEventListener('click', this.showEdit)
+      this.$refs.target.style.border = '2px dashed transparent'
+    }
   },
   filters: {
     voidLink (value) {
@@ -33,7 +36,7 @@ export default {
     },
     handleLeave () {
       if (this.edit) {
-        this.$refs.target.style.border = 'none'
+        this.$refs.target.style.border = '2px dashed transparent'
         this.$refs.edit.style.display = 'none'
       }
     },

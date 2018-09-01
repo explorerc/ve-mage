@@ -21,7 +21,7 @@ export default {
   },
   props: {
     customClass: {
-      type: String,
+      type: [String, Object],
       default: ''
     },
     value: {
@@ -68,6 +68,7 @@ export default {
   font-size: 14px;
 
   .font-content {
+    width: 100%;
   }
   .font-edit {
     .font-editer {

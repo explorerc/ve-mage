@@ -22,7 +22,6 @@
 <script>
 import editMixin from './mixin'
 import ComEdit from './edit'
-const host = 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/'
 export default {
   mixins: [editMixin],
   components: {
@@ -45,7 +44,7 @@ export default {
   },
   data () {
     return {
-
+      host: process.env.IMGHOST + '/'
     }
   },
   methods: {
@@ -58,7 +57,7 @@ export default {
   },
   computed: {
     url () {
-      return host + this.value.url
+      return this.host + this.value.url
     }
   }
 }

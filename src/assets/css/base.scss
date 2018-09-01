@@ -38,6 +38,7 @@ em {
 
 textarea {
   resize: none;
+  font-style: normal;
 }
 
 ul,
@@ -52,8 +53,8 @@ ol {
 
 .fade-enter,
 .fade-leave-to
-/* .fade-leave-active below version 2.1.8 */
 
+/* .fade-leave-active below version 2.1.8 */
   {
   opacity: 0;
 }

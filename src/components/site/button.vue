@@ -62,8 +62,9 @@ export default {
 
 <style scoped lang="scss">
 .btn-container {
-  display: inline-block;
+  display: block;
   position: relative;
   font-size: 14px;
+  text-align: center;
 }
 </style>

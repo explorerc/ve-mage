@@ -2,7 +2,7 @@
   <div class="panel-container" :class="customClass">
     <div ref="target" class="panel" >
       <div class="media-container" v-if="value.bgType==='video'" >
-        <video  autoplay loop></video>
+        <video  autoplay loop muted ></video>
       </div>
       <slot></slot>
     </div>
@@ -67,7 +67,7 @@
 <script>
 import editMixin from './mixin'
 import ComEdit from './edit'
-const host = 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/'
+
 export default {
   mixins: [editMixin],
   components: {
@@ -92,7 +92,8 @@ export default {
   },
   data () {
     return {
-      pro: '0%'
+      pro: '0%',
+      host: process.env.IMGHOST + '/'
     }
   },
   mounted () {
@@ -124,11 +125,11 @@ export default {
       if (data.bgType === 'color') {
         this.$refs.target.style.cssText = `background-color:${data.color}`
       } else if (data.bgType === 'img') {
-        this.$refs.target.style.cssText = `background-image:url(${host + data.img})`
+        this.$refs.target.style.cssText = `background-image:url(${this.host + data.img})`
       } else if (data.bgType === 'video' && data.video) {
         if (data.videoType === 'upload') {
           if (!(/^(http|https|<iframe):\/\//.test(data.video))) {
-            this.$refs.target.querySelector('.media-container video').setAttribute('src', `${host + data.video}`)
+            this.$refs.target.querySelector('.media-container video').setAttribute('src', `${this.host + data.video}`)
           }
         } else {
           if (/^(http|https):\/\//.test(data.video)) {
@@ -143,7 +144,7 @@ export default {
     uploadLoad (data) {
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        if (data.bgType === 'img') {
+        if (this.value.bgType === 'img') {
           this.value.img = `${ret.data.name}`
         } else {
           this.value.video = `${ret.data.name}`
@@ -162,6 +163,7 @@ export default {
     height: 100%;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    background-origin: border-box;
     .media-container {
       height: 100%;
       overflow: hidden;
@@ -175,17 +177,6 @@ export default {
           object-fit: cover;
         }
       }
-    }
-    .edit {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 16px;
-      height: 16px;
-      background-color: red;
-      display: none;
-      z-index: 1;
-      cursor: pointer;
     }
   }
 }

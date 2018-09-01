@@ -26,14 +26,23 @@ export default {
     return {
       showWrap: false,
       showEdit: false,
-      rect: undefined
+      rect: undefined,
+      scrollOffset: 0
     }
   },
   created () {
 
   },
+  mounted () {
+    window.addEventListener('scroll', (e) => {
+      if (this.showWrap) {
+        this.scrollOffset = document.documentElement.scrollTop - this.scrollStart
+      }
+    })
+  },
   methods: {
     show (rect) {
+      this.scrollStart = document.documentElement.scrollTop
       if (this.follow) {
         this.rect = rect
       }
@@ -48,7 +57,7 @@ export default {
       this.showEdit = false
       setTimeout(() => {
         this.showWrap = false
-      }, 300)
+      }, (this.follow ? 0 : 300))
     },
     over (e) {
       e.stopPropagation()
@@ -58,8 +67,9 @@ export default {
     styles () {
       let ret = {}
       if (this.rect) {
+        console.log(this.scrollOffset)
         ret = {
-          top: `${this.rect.top + this.offsetTop}px`,
+          top: `${this.rect.top + this.offsetTop - this.scrollOffset}px`,
           left: `${this.rect.left}px`,
           width: `${this.rect.width}px`,
           // height: `${this.rect.height + Math.abs(this.offsetTop)}px`
@@ -95,6 +105,7 @@ export default {
     }
     &.follow {
       transform: translateX(0);
+      transition: none;
       background-color: transparent;
     }
   }
