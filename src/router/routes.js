@@ -263,7 +263,7 @@ export default [{
   },
   {
     path: '/liveMager/promote/auto/editWx/:id',
-    name: 'autoEditwX',
+    name: 'autoEditwx',
     component: autoEditwx
   },
   {
