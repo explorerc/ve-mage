@@ -33,7 +33,7 @@
         <div class='modal-box'>
           <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
           <div class='content-box'>
-            <com-tabs :value.sync="tabValue" position='left' type='card' customClass='choose-tab'>
+            <com-tabs :value.sync="tabValue" position='left' type='card' class='choose-tab'>
               <com-tab label="分组" :index="1">
                 <div class="right">
                   <div class='top clearfix'>

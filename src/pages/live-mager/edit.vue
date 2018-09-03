@@ -12,7 +12,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
-            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" customClass='inp'></com-input>
+            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp'></com-input>
           </div>
         </div>
         <div class="from-row">
@@ -63,7 +63,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播介绍：</div>
           <div class="from-content">
-            <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange' customClass='editor'></ve-editer>
+            <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange' class='editor'></ve-editer>
           </div>
         </div>
         <div class="from-row">
@@ -261,29 +261,30 @@
       color: #fc5659;
       padding-right: 5px;
     }
-    .inp{
+    .inp {
       width: 440px;
       height: 40px;
       line-height: 40px;
       input {
-        padding-left:10px;
+        padding-left: 10px;
       }
     }
-    .el-date-editor.el-input, .el-date-editor.el-input__inner {
-      width:440px;
+    .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+      width: 440px;
     }
     .tips-time {
-      display:block;
-      color:#888;
-      padding-top:3px;
+      display: block;
+      color: #888;
+      padding-top: 3px;
     }
     .creat-btn {
-      margin:0 auto;
+      margin: 0 auto;
       @include primary-button;
     }
     .editor {
-      width:729px;
-      height:280px;
+      width: 729px;
+      height: 280px;
     }
   }
 }
@@ -374,17 +375,17 @@
 
 .tag-list {
   li {
-    padding:5px 30px;
-    background:rgba(240,241,254,1);
-    border-radius:20px;
-    border:1px solid rgba(240,241,254,1);
+    padding: 5px 30px;
+    background: rgba(240, 241, 254, 1);
+    border-radius: 20px;
+    border: 1px solid rgba(240, 241, 254, 1);
     border: 1px solid #ccc;
     position: relative;
-    display:inline-block;
-    margin-right:10px;
+    display: inline-block;
+    margin-right: 10px;
     &:before {
       content: '×';
-      cursor:pointer;
+      cursor: pointer;
       width: 15px;
       height: 15px;
       text-align: center;
@@ -395,8 +396,8 @@
       font-size: 12px;
       top: 5px;
       right: 5px;
-      background:#4B5AFE;
-      color:#fff;
+      background: #4b5afe;
+      color: #fff;
     }
   }
 }
@@ -406,29 +407,29 @@
   height: 200px;
   background: pink;
 }
-.from-box{
-      // margin: 20px;
-      .from-row{
-        display: flex;
-        padding: 10px;
-        .from-title{
-          width: 110px;
-          text-align: right;
-          padding-right: 15px;
-          line-height:40px;
-          .star{
-            position: relative;
-            top: 3px;
-            color: $color-red;
-            padding-right: 5px;
-          }
-        }
-        .from-content{
-          flex: 1;
-          .input-box{
-            width: 400px;
-          }
-        }
+.from-box {
+  // margin: 20px;
+  .from-row {
+    display: flex;
+    padding: 10px;
+    .from-title {
+      width: 110px;
+      text-align: right;
+      padding-right: 15px;
+      line-height: 40px;
+      .star {
+        position: relative;
+        top: 3px;
+        color: $color-red;
+        padding-right: 5px;
       }
     }
+    .from-content {
+      flex: 1;
+      .input-box {
+        width: 400px;
+      }
+    }
+  }
+}
 </style>

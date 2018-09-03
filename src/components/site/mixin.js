@@ -15,9 +15,10 @@ export default {
     if (this.edit) {
       this.$refs.target.addEventListener('mouseover', this.handleEnter)
       this.$refs.target.addEventListener('mouseout', this.handleLeave)
-      this.$refs.edit = parseDom('<div ref="edit" class="edit"><i class="iconfont icon-pen"></i></div>')[0]
+      this.$refs.edit = parseDom('<div ref="edit" class="edit"><i class="iconfont icon-delete"></i><i class="iconfont icon-pen"></i></div>')[0]
       this.$refs.target.insertBefore(this.$refs.edit, this.$refs.target.firstChild)
-      this.$refs.edit.addEventListener('click', this.showEdit)
+      this.$refs.edit.querySelector('.icon-delete').addEventListener('click', this.disable)
+      this.$refs.edit.querySelector('.icon-pen').addEventListener('click', this.showEdit)
       this.$refs.target.style.border = '2px dashed transparent'
     }
   },
@@ -43,6 +44,9 @@ export default {
     showEdit () {
       let rect = this.$refs.target.getBoundingClientRect()
       this.$refs.editTarget.show(rect)
+    },
+    disable () {
+
     }
   }
 }

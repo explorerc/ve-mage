@@ -1,5 +1,5 @@
 <template>
-  <div class="btn-container" :class="customClass">
+  <div class="btn-container">
     <div ref="target" class="btn-content">
       <a target="_black" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
     </div>
@@ -32,10 +32,6 @@ export default {
     ComEdit
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     value: {
       type: Object,
       default () {

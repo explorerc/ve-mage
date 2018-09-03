@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-container" :class="customClass">
+  <div class="panel-container" >
     <div ref="target" class="panel" >
       <div class="media-container" v-if="value.bgType==='video'" >
         <video  autoplay loop muted ></video>
@@ -74,10 +74,6 @@ export default {
     ComEdit
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     value: {
       type: Object,
       default () {

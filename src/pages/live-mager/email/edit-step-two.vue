@@ -7,7 +7,7 @@
           <div class="from-content">
             <com-input
               placeholder="输入标题，可结合变量使用"
-              customClass="input-email"
+              class="input-email"
               :value.sync="email.title"
               :max-length="30"></com-input>
           </div>
@@ -17,7 +17,7 @@
           <div class="from-content">
             <com-input
               placeholder="输入发件人名称"
-              customClass="input-email"
+              class="input-email"
               :value.sync="email.senderName"
               :max-length="15"></com-input>
           </div>
@@ -30,7 +30,7 @@
               placeholder="输入发件人名称"
               type="textarea"
               autosize
-              customClass="input-email"
+              class="input-email"
               :value.sync="email.desc"
               :max-length="140"></com-input>
           </div>
@@ -70,7 +70,7 @@
       width="500px"
       header="邮件推送确认"
       confirmText='确认发送'
-      customClass="msg-box"
+      class="msg-box"
       @handleClick="handleClickSendEmail">
       <div class="email-info">
         <div class="email-info-row">
@@ -227,46 +227,46 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .edit-step-box {
-    .msg-box {
-      z-index: 1000;
-    }
-    .step-btns {
-      margin-top: 20px;
-    }
-    .input-email {
-      width: 400px;
-    }
-    .email-timer {
-      display: inline-block;
-    }
-    .edit-groups {
-      margin-top: 40px;
-      .edit-groups-item {
-        margin: 10px 0;
-        line-height: 30px;
-        span {
-          display: inline-block;
-          text-align: center;
-          &:nth-child(1) {
-            width: 200px;
-            border: solid 1px #e5e5e5;
-          }
-          &:nth-child(2) {
-            margin: 0 0 0 20px;
-            padding: 0 5px;
-            cursor: pointer;
-          }
-          &:nth-child(3) {
-            padding: 0 5px;
-            cursor: pointer;
-          }
-          &:nth-child(2):hover,
-          &:nth-child(3):hover {
-            color: #2878FF;
-          }
+.edit-step-box {
+  .msg-box {
+    z-index: 1000;
+  }
+  .step-btns {
+    margin-top: 20px;
+  }
+  .input-email {
+    width: 400px;
+  }
+  .email-timer {
+    display: inline-block;
+  }
+  .edit-groups {
+    margin-top: 40px;
+    .edit-groups-item {
+      margin: 10px 0;
+      line-height: 30px;
+      span {
+        display: inline-block;
+        text-align: center;
+        &:nth-child(1) {
+          width: 200px;
+          border: solid 1px #e5e5e5;
+        }
+        &:nth-child(2) {
+          margin: 0 0 0 20px;
+          padding: 0 5px;
+          cursor: pointer;
+        }
+        &:nth-child(3) {
+          padding: 0 5px;
+          cursor: pointer;
+        }
+        &:nth-child(2):hover,
+        &:nth-child(3):hover {
+          color: #2878ff;
         }
       }
     }
   }
+}
 </style>

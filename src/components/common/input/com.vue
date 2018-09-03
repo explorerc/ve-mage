@@ -2,7 +2,6 @@
   <div
   class="com-input"
   v-if="type!=='textarea'"
-  :class="customClass"
   >
     <i v-if="type==='search'" class="iconfont icon-search"></i>
     <input
@@ -18,7 +17,7 @@
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
     <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
   </div>
-  <div class="com-input area" :class="customClass" v-else>
+  <div class="com-input area"  v-else>
     <textarea
     ref="tarea"
     v-model="innerValue"
@@ -35,7 +34,6 @@ export default {
   name: 'ComInput',
   props: {
     placeholder: String,
-    customClass: String,
     value: String,
     type: {
       type: String,

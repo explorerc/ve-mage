@@ -11,7 +11,7 @@
       <div class="from-row">
         <div class="from-title">微信内容：</div>
         <div class="from-content">
-          <com-input type="textarea" customClass="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="200"></com-input>
+          <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="200"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -55,7 +55,7 @@
         <div class='modal-box'>
           <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
           <div class='content-box'>
-            <com-tabs :value.sync="tabValue" position='left' type='card' customClass='choose-tab'>
+            <com-tabs :value.sync="tabValue" position='left' type='card' class='choose-tab'>
               <com-tab label="分组" :index="1">
                 <div class="right">
                   <div class='top clearfix'>

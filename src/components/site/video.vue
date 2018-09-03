@@ -22,7 +22,7 @@
         <com-tab index="url" >
           <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
           <div>
-            <com-input customClass="link-input" :rows="6" type="textarea" placeholder="视频url" v-model="value.url"></com-input>
+            <com-input class="link-input" :rows="6" type="textarea" placeholder="视频url" v-model="value.url"></com-input>
           </div>
         </com-tab>
       </com-tabs>
@@ -40,10 +40,6 @@ export default {
     ComEdit
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     value: {
       type: Object,
       default () {

@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" v-if="visible">
-    <div :class="['ve-message-box__wrapper',customClass]">
+    <div :class="['ve-message-box__wrapper']">
       <div class="ve-message-box" :style="{width: width}" :type="type">
         <div class="ve-message-box__header">
           <span v-if="type=='prompt'" class="prompt-title">{{header}}</span>
@@ -49,7 +49,6 @@
       }
     },
     props: {
-      customClass: String,
       header: {
         type: String,
         default: '提示'
@@ -111,169 +110,169 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "~assets/css/mixin.scss";
+@import '~assets/css/mixin.scss';
 
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.3s;
-  }
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-  .ve-message-box__wrapper {
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.ve-message-box__wrapper {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 1000;
+  .ve-modal {
     position: fixed;
-    top: 0;
-    bottom: 0;
     left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 1000;
-    .ve-modal {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      opacity: .5;
-      background: #000;
-    }
-    .ve-message-box {
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background: #000;
+  }
+  .ve-message-box {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-bottom: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 16px;
+    overflow: hidden;
+    z-index: 1001;
+    &:before {
       display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding-bottom: 10px;
-      background-color: #fff;
-      border-radius: 4px;
-      font-size: 16px;
-      overflow: hidden;
-      z-index: 1001;
+      content: '';
+      position: relative;
+      top: -1px;
+      height: 6px;
+      background-color: $color-default;
+    }
+    &[type='error']:before {
+      background-color: $color-red;
+    }
+    &[type='prompt'] {
       &:before {
-        display: block;
-        content: '';
-        position: relative;
-        top: -1px;
-        height: 6px;
-        background-color: $color-default;
-      }
-      &[type='error']:before{
-        background-color: $color-red;
-      }
-      &[type='prompt']{
-        &:before{
-          display: none;
-        }
-        .ve-message-box__header{
-          height: 40px;
-          line-height: 40px;
-          background-color: $color-default;
-          button {
-            &:hover {
-              color: #2878FF;
-            }
-            .icon-close{
-              position: relative;
-              top: -3px;
-            }
-          }
-        }
-        .prompt-title{
-          font-size: 16px;
-        }
-      }
-      .ve-message-box__container {
-        padding: 10px 20px 20px 20px;
-        font-size: 14px;
-        text-align: left;
-        .ve-message-box__title {
-          font-size: 20px;
-        }
+        display: none;
       }
       .ve-message-box__header {
-        position: relative;
-        padding: 0 20px;
-        padding-bottom: 10px;
-        text-align: left;
+        height: 40px;
+        line-height: 40px;
+        background-color: $color-default;
         button {
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          padding: 0;
-          border: none;
-          outline: none;
-          background: transparent;
-          font-size: 14px;
-          cursor: pointer;
           &:hover {
-            color: $color-default;
+            color: #2878ff;
+          }
+          .icon-close {
+            position: relative;
+            top: -3px;
           }
         }
       }
-      .ve-message-box__content {
-        font-size: 14px;
-        padding: 20px 0;
+      .prompt-title {
+        font-size: 16px;
       }
-      .ve-message-box__btns {
-        text-align: right;
-        margin-top: 10px;
-        .auto-close {
-          padding-left: 6px;
+    }
+    .ve-message-box__container {
+      padding: 10px 20px 20px 20px;
+      font-size: 14px;
+      text-align: left;
+      .ve-message-box__title {
+        font-size: 20px;
+      }
+    }
+    .ve-message-box__header {
+      position: relative;
+      padding: 0 20px;
+      padding-bottom: 10px;
+      text-align: left;
+      button {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 0;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        cursor: pointer;
+        &:hover {
+          color: $color-default;
         }
-        button {
-          display: inline-block;
-          height: 40px;
-          line-height: 41px;
-          white-space: nowrap;
-          cursor: pointer;
-          border: none;
-          -webkit-appearance: none;
-          text-align: center;
-          box-sizing: border-box;
-          outline: none;
-          font-weight: 500;
-          -moz-user-select: none;
-          -webkit-user-select: none;
-          -ms-user-select: none;
-          padding: 0 40px;
-          margin: 0 20px;
-          border-radius: 19px;
-          color: #222222;
-          background: transparent;
-          transition: all .3s;
+      }
+    }
+    .ve-message-box__content {
+      font-size: 14px;
+      padding: 20px 0;
+    }
+    .ve-message-box__btns {
+      text-align: right;
+      margin-top: 10px;
+      .auto-close {
+        padding-left: 6px;
+      }
+      button {
+        display: inline-block;
+        height: 40px;
+        line-height: 41px;
+        white-space: nowrap;
+        cursor: pointer;
+        border: none;
+        -webkit-appearance: none;
+        text-align: center;
+        box-sizing: border-box;
+        outline: none;
+        font-weight: 500;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        padding: 0 40px;
+        margin: 0 20px;
+        border-radius: 19px;
+        color: #222222;
+        background: transparent;
+        transition: all 0.3s;
+      }
+      button:last-child {
+        margin-right: 0;
+      }
+      .button--primary {
+        background: $color-default;
+        &:hover {
+          background: $color-default-hover;
         }
-        button:last-child {
-          margin-right: 0;
+        &:active {
+          background: $color-default-active;
         }
-        .button--primary {
-          background: $color-default;
+        &[type='error'] {
+          background-color: $color-red;
           &:hover {
-            background: $color-default-hover;
+            background: $color-red-hover;
           }
           &:active {
-            background: $color-default-active;
-          }
-          &[type='error']{
-            background-color: $color-red;
-            &:hover {
-              background: $color-red-hover;
-            }
-            &:active {
-              background: $color-red-active;
-            }
+            background: $color-red-active;
           }
         }
-        .button--cancel{
-          padding: 0 20px 0 0;
-          &:hover {
-            color: $color-default;
-            &[type='error']{
-              color: $color-red;
-            }
+      }
+      .button--cancel {
+        padding: 0 20px 0 0;
+        &:hover {
+          color: $color-default;
+          &[type='error'] {
+            color: $color-red;
           }
         }
       }
     }
   }
+}
 </style>

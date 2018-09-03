@@ -3,7 +3,7 @@
   class="com-button"
   :disabled="loading"
   :style="styles"
-  :class="[{primary:type==='primary',loading:loading},customClass]"
+  :class="[{primary:type==='primary',loading:loading}]"
   @click="handleClick"
   >
     <i v-if="loading" class="iconfont icon-Loading"></i>
@@ -15,7 +15,6 @@
 export default {
   name: 'ComButton',
   props: {
-    customClass: String,
     type: String,
     loading: Boolean,
     styles: Object

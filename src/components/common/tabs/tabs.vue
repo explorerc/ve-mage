@@ -12,10 +12,6 @@ export default {
       type: String,
       default: ''
     },
-    customClass: {
-      type: String,
-      default: ''
-    },
     disabled: Boolean,
     type: {
       type: String,
@@ -62,9 +58,6 @@ export default {
 
     const classNames = {
       'com-tabs': true
-    }
-    if (this.customClass) {
-      classNames[this.customClass] = true
     }
     if (this.position) {
       classNames[this.position] = true

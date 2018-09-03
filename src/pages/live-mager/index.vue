@@ -20,7 +20,7 @@
           </el-option>
         </el-select>
         <com-input type="search"
-                   customClass="search-com"
+                   class="search-com"
                    :value.sync="searchParams.keyword"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
