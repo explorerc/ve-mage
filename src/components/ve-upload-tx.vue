@@ -1,5 +1,5 @@
 <template>
-  <div class="ve-upload-tx">
+  <div class="ve-upload-tx" @click.stop="overUpload">
     <div class="upload-img-box" v-if="fileSrc||(!fileSrc && coverImg)">
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
@@ -120,18 +120,18 @@
   height: 100px;
   border: 1px dashed #e2e2e2;
   border-radius: 50%;
-  background-color: #f7f7f7;
   text-align: center;
   overflow: hidden;
   box-sizing: border-box;
+  background-image: url("./static/image/avatar@2x.png");
+  background-position: center center;
+  background-size: cover;
+  cursor: pointer;
   .upload-img-box {
     height: 100%;
     width: 100%;
     overflow: hidden;
     cursor: pointer;
-    background-image: url("./static/image/avatar@2x.png");
-    background-position: center center;
-    background-size: cover;
     .temp-img {
       width: 100%;
       height: 100%;

@@ -47,6 +47,22 @@
             </div>
           </div>
         </div>
+        <div class="from-row">
+          <div class="from-title">视频封面：</div>
+          <div class="from-content">
+            <div class="from-content">
+              <ve-upload-tx
+                title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
+                accept="png|jpg|jpeg|bmp|gif"
+                @error="uploadError"
+                @success="uploadImgSuccess"></ve-upload-tx
+                title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
+                accept="png|jpg|jpeg|bmp|gif"
+                @error="uploadError"
+                @success="uploadImgSuccess">
+            </div>
+          </div>
+        </div>
       </div>
       <div class="bottom-btn">
         <button class="primary-button" @click="saveWarm">保存</button>
@@ -59,11 +75,12 @@
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
+  import VeUploadTx from 'src/components/ve-upload-tx'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: {VeUploadImage, VeUploadVideo},
+    components: {VeUploadImage, VeUploadVideo, VeUploadTx},
     data () {
       return {
         warm: {
