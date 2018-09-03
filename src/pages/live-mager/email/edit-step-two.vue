@@ -110,7 +110,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   // import editStepOne from './edit-step-one'
-  import {mapState, mapMutations} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -138,7 +138,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...this.email, ...newVal}
+          this.email = { ...this.email, ...newVal }
         },
         immediate: true
       }
@@ -150,7 +150,7 @@
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = {...this.email, ...res.data}
+            this.email = { ...this.email, ...res.data }
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,

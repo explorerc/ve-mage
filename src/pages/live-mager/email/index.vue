@@ -97,7 +97,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
-  import {mapMutations} from 'vuex'
+  import { mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const handleType = {
@@ -113,7 +113,7 @@
   }
   export default {
     name: 'index',
-    components: {VePagination},
+    components: { VePagination },
     data () {
       return {
         isInvite: false,
@@ -253,14 +253,14 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
-  .email-table-box {
-    margin: 20px;
-    font-size: 14px;
-  }
+.email-table-box {
+  margin: 20px;
+  font-size: 14px;
+}
 
-  .email-setting {
-    margin-bottom: 30px;
-    padding: 10px 0;
-  }
+.email-setting {
+  margin-bottom: 30px;
+  padding: 10px 0;
+}
 </style>
 

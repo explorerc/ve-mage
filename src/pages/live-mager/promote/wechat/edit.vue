@@ -236,7 +236,7 @@
             position: 'center'
           })
           // 跳转到列表页面
-          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
+          this.$router.push({ name: 'promoteWechat', params: { id: this.activityId } })
         }).catch((res) => {
           this.$toast({
             content: '保存失败',

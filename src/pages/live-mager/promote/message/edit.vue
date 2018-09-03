@@ -227,7 +227,7 @@ export default {
           position: 'center'
         })
         // 跳转到列表页面
-        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
+        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       }).catch((res) => {
         this.$toast({
           content: '保存失败',

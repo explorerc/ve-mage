@@ -49,8 +49,8 @@
   import ComUpload from 'src/components/common/upload/com'
 
   export default {
-    name: 've-upload',
-    components: {ComUpload},
+    name: 've-upload-image',
+    components: { ComUpload },
     data () {
       return {
         imgHost: '',
@@ -135,14 +135,15 @@
 
 <style lang="scss" lang="scss">
   .fade-enter-active {
-    transition: all .3s ease;
+    transition: all 0.3s ease;
   }
 
   .fade-leave-active {
-    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
   }
 
-  .fade-enter, .fade-leave-to {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
   }
 
@@ -150,9 +151,9 @@
     position: relative;
     width: 440px;
     height: 140px;
-    border: 1px dashed #E2E2E2;
+    border: 1px dashed #e2e2e2;
     border-radius: 4px;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
     text-align: center;
     overflow: hidden;
     .upload-img-box {
@@ -169,7 +170,7 @@
         background-size: cover;
       }
       &:hover .over-upload {
-        transition: top .3s, opacity .5s;
+        transition: top 0.3s, opacity 0.5s;
         top: -100%;
         opacity: 1;
       }
@@ -183,15 +184,16 @@
         line-height: 20px;
         color: #888;
         &.error-msg {
-          color: #FC5659;
+          color: #fc5659;
         }
       }
       .upload-icon {
         display: block;
-        width: 55px;
-        height: 43px;
-        margin: 30px auto 10px auto;
-        background-image: url("../assets/image/upload-icon.png");
+        width: 60px;
+        height: 60px;
+        margin: 20px auto 10px auto;
+        background-image: url('./static/image/upload-video-icon@2x.png');
+        background-size: cover;
       }
     }
     .over-upload {
@@ -199,7 +201,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, .6);
+      background-color: rgba(0, 0, 0, 0.6);
       z-index: 3;
       top: 0;
       opacity: 0;
@@ -218,58 +220,4 @@
       }
     }
   }
-
-  /*
-  .upload-file-box {
-    position: relative;
-    display: inline-block;
-    width: 90%;
-    height: 100%;
-    cursor: pointer;
-    color: #999;
-    text-align: center;
-    overflow: hidden;
-    .icon-jiahao {
-      display: inline-block;
-      margin-top: 44px;
-      font-size: 30px;
-    }
-    span {
-      display: block;
-    }
-    .upload-file-botton {
-      position: absolute;
-      bottom: -30px;
-      left: 0;
-      height: 30px;
-      width: 100%;
-      line-height: 30px;
-      background-color: rgba(0, 0, 0, 0.5);
-      color: #fff;
-      transition: bottom .5s;
-      z-index: 10;
-    }
-    &:hover {
-      transition: border .3s;
-      opacity: .8;
-      border-style: solid;
-      .upload-file-botton {
-        bottom: 0;
-      }
-    }
-  }
-  .upload-file-box {
-    .temp-img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center center;
-    }
-    .el-progress--circle {
-      margin-top: 12px;
-    }
-  }*/
 </style>

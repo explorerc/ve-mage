@@ -194,7 +194,7 @@
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload'
+  import VeUpload from 'src/components/ve-upload-image'
   import veMsgTips from 'src/components/ve-msg-tips'
   import PlayBackHttp from 'src/api/play-back'
   import LiveHttp from 'src/api/activity-manger'
@@ -205,7 +205,7 @@
   }
   export default {
     name: 'play-back',
-    components: {VeUpload, veMsgTips},
+    components: { VeUpload, veMsgTips },
     data () {
       return {
         navIdx: 0,
@@ -232,9 +232,9 @@
         },
         playBackList: [],
         options: [
-          {value: '0', label: '默认回放'},
-          {value: '1', label: '上传视频'},
-          {value: '2', label: '外部链接'}
+          { value: '0', label: '默认回放' },
+          { value: '1', label: '上传视频' },
+          { value: '2', label: '外部链接' }
         ],
         recordId: '',
         activityId: '',
