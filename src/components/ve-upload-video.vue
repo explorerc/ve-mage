@@ -5,12 +5,13 @@
         <span :class='{"mp4-video-icon":true,"mp4-eror":errorTxt}'>.Mp4</span>
         <span class="file-name">{{fileName}}</span>
         <span class="error-msg" v-if="errorTxt">{{errorTxt}}</span>
-        <span class="file-size" v-else-if="!isConvert">120M</span>
+        <span class="file-size" v-else-if="!isConvert">{{fileRealSize}}M</span>
         <span class="file-convert" v-else="isConvert">上传成功，转码中…</span>
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
         </div>
-        <span class="upload-delete" @click="deleteVideo">删除</span>
+        <span v-if="!isConvert&&fileName" class="upload-video upload-pre-view" @click="preViewVideo">预览</span>
+        <span class="upload-video upload-delete" @click="deleteVideo">删除</span>
       </div>
       <div v-else class="upload-file-box" id="uploadFile_video" title="点击上传" @click="clickUploadVideo">
         <i class="upload-video-icon"></i>
@@ -62,9 +63,12 @@
         default: ''
       },
       sdk: {
-        sing: '',
+        sign: '',
         signed_at: '',
-        app_id: ''
+        app_id: '',
+        fileName: '',
+        fileSize: '',
+        recordId: ''
       }
     },
     watch: {
@@ -78,7 +82,10 @@
         immediate: true
       },
       sdk: {
-        handler () {
+        handler (newVal) {
+          if (!newVal.sign) return
+          this.fileName = newVal.fileName
+          this.fileRealSize = (newVal.fileSize / 1024).toFixed(2)
           this.initPage()
         },
         deep: true
@@ -94,7 +101,16 @@
         this.fileName = ''
         this.fileRealSize = 0
         this.isConvert = false
-        this.$emit('success', '')
+        this.$emit('handleClick', {
+          type: 'delete',
+          detail: '删除'
+        })
+      },
+      preViewVideo () {
+        this.$emit('handleClick', {
+          type: 'pre-view',
+          detail: '预览'
+        })
       },
       initPage () {
         this.$nextTick(() => {
@@ -129,7 +145,7 @@
             saveSuccess: (res) => {
               this.record_id = res.record_id
               this.isConvert = true
-              this.$emit('success', this.record_id)
+              this.$emit('success', this.record_id, this.fileName)
             },
             error: (msg, file, e) => {
               this.errorTxt = msg
@@ -146,13 +162,16 @@
   .fade-enter-active {
     transition: all 0.3s ease;
   }
+
   .fade-leave-active {
     transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
   }
+
   .fade-enter,
   .fade-leave-to {
     opacity: 0;
   }
+
   .ve-upload-box {
     position: relative;
     width: 440px;
@@ -197,21 +216,38 @@
         display: block;
         width: 60px;
         height: 60px;
-        margin: 15px auto 6px auto;
+        margin: 18px auto 6px auto;
         background-image: url('./static/image/mp4_icon@2x.png');
         background-size: cover;
         color: #fff;
         line-height: 74px;
       }
-      .upload-delete {
+      .upload-video {
         position: absolute;
         top: 0;
-        right: 15px;
         font-size: 12px;
         color: #555;
         &:hover {
           cursor: pointer;
           color: #FFD021;
+        }
+      }
+      .upload-delete {
+        right: 15px;
+      }
+      .upload-pre-view {
+        display: block;
+        right: 50px;
+        padding-right: 10px;
+        &:before {
+          display: block;
+          content: '';
+          position: absolute;
+          top: 3px;
+          right: -1px;
+          width: 1px;
+          height: 12px;
+          background-color: #e2e2e2;
         }
       }
       .mp4-eror {
@@ -225,7 +261,7 @@
         color: #888;
         line-height: 24px;
       }
-      .file-convert{
+      .file-convert {
         display: block;
         color: #4B5AFE;
         line-height: 24px;

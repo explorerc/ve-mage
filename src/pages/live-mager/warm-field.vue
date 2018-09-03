@@ -21,6 +21,7 @@
               :fileSize="204800"
               :errorMsg="uploadVideoErrorMsg"
               :sdk="sdkParam"
+              @handleClick="handleVideoClick"
               @success="uploadVideoSuccess"></ve-upload-video>
           </div>
         </div>
@@ -49,7 +50,6 @@
       </div>
       <div class="bottom-btn">
         <button class="primary-button" @click="saveWarm">保存</button>
-        <button class="primary-button" @click="prePlayVideo">预览</button>
       </div>
     </div>
 
@@ -71,12 +71,16 @@
           playMode: 'AUTO',
           playCover: '',
           recordId: '',
-          activityId: ''
+          activityId: '',
+          filename: ''
         },
         sdkParam: { // sdk上传插件初始化参数
-          sing: '',
+          sign: '',
           signed_at: '',
-          app_id: ''
+          app_id: '',
+          fileName: '',
+          fileSize: '',
+          recordId: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -119,11 +123,8 @@
       goBack () {
         this.$router.go(-1)
       },
-      deleteImage () {
-        this.warm.playCover = ''
-      },
+      /* 播放器进行播放,预览 */
       prePlayVideo () {
-        // 播放器进行播放,预览
         this.$playVideo({
           ...this.sdkPlayParam
         })
@@ -137,10 +138,14 @@
               enabled: res.data.enabled,
               playMode: res.data.playType,
               playCover: res.data.imgUrl,
-              recordId: res.data.recordId
+              recordId: res.data.recordId,
+              filename: res.data.filename
             }
             this.isSwitch = res.data.enabled === 'Y'
+            /* sdk参数赋值 */
             this.sdkPlayParam.recordId = res.data.recordId
+            this.sdkParam.fileName = res.data.filename
+            this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
           }
         }).then(() => {
           /* 获取pass信息 */
@@ -148,11 +153,9 @@
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
               // 初始化pass上传插件
-              this.sdkParam = {
-                sign: res.data.sign,
-                signed_at: res.data.signedAt,
-                app_id: res.data.appId
-              }
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
               // 初始化pass播放参数
               this.sdkPlayParam.app_id = res.data.appId
               this.sdkPlayParam.accountId = res.data.accountId
@@ -164,6 +167,7 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
+      /* 保存暖场信息 */
       saveWarm () {
         LiveHttp.saveAndEditWarmInfo({
           activityId: this.warm.activityId,
@@ -171,7 +175,7 @@
           playType: this.warm.playMode,
           imgUrl: this.warm.playCover,
           enabled: this.warm.enabled,
-          filename: ''
+          filename: this.warm.filename
         }).then((res) => {
           if (res.code === 200) {
             this.$toast({
@@ -190,10 +194,18 @@
       /* 上传视频成功 */
       uploadVideoSuccess (recordId, fileName) {
         this.warm.recordId = recordId
-        this.warm.recordId = fileName
+        this.warm.filename = fileName
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.prePlayVideo()
+        } else if (e.type === 'delete') { // 删除
+          this.warm.recordId = ''
+          this.warm.filename = ''
+        }
       },
       uploadError (data) {
-        console.log('上传失败:', data)
         this.uploadImgErrorMsg = '上传图片失败'
       }
     }

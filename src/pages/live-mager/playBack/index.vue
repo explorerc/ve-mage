@@ -461,28 +461,6 @@
       },
       uploadVideoSuccess (recordId) {
         this.recordId = recordId
-      },
-      videosSuccess () {
-        // if (!this.recordId) return
-        // window.Vhall.ready(() => {
-        //   window.VhallPlayer.init({
-        //     recordId: this.recordId, // 回放Id，点播必填，直播不写
-        //     type: 'vod', // 播放类型,必填，live 直播, vod 为点播
-        //     videoNode: 'myVideo', // 推流视频回显节点id，必填
-        //     complete: function () {
-        //       window.VhallPlayer.play()
-        //     },
-        //     fail: (msg) => {
-        //       this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
-        //     }
-        //   })
-        // })
-        // /* 初始化配置 */
-        // window.Vhall.config({
-        //   appId: this.vhallParams.appId, // 应用 ID ,必填
-        //   accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
-        //   token: this.vhallParams.token // token必填
-        // })
       }
     }
   }
