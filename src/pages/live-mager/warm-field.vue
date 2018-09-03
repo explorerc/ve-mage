@@ -8,37 +8,49 @@
         active-color="#4B5AFE">
       </el-switch>
       <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
-      <button  disabled class="primary-button fr" @click="goBack">返回</button>
+      <button class="primary-button fr" @click="goBack">返回</button>
     </div>
     <div class="mager-box border-box">
       <div class="from-box">
         <!--<div class="from-row">-->
-          <!--<div class="from-title">暖场开关：</div>-->
-          <!--<div class="from-content">-->
-            <!--<el-checkbox v-model="isSwitch">开启</el-checkbox>-->
-            <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
-          <!--</div>-->
+        <!--<div class="from-title">暖场开关：</div>-->
+        <!--<div class="from-content">-->
+        <!--<el-checkbox v-model="isSwitch">开启</el-checkbox>-->
+        <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="from-row">-->
+        <!--<div class="from-title"><i class="star">*</i>暖场视频：</div>-->
+        <!--<div class="from-content">-->
+        <!--<div class="upload-video">-->
+        <!--<div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."-->
+        <!--@click="uploadVideo">-->
+        <!--<el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>-->
+        <!--<i class="iconfont icon-jiahao"></i>-->
+        <!--<span>上传视频</span>-->
+        <!--<div class="hide">-->
+        <!--<input type="file" id="upload"/>-->
+        <!--<input type="text" id='rename'>-->
+        <!--<button id="confirmUpload" class="saveBtn"></button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="upload-tips">-->
+        <!--<span>视频仅支持mp4格式，文件大小不超过200M</span>-->
+        <!--<span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>暖场视频：</div>
           <div class="from-content">
-            <div class="upload-video">
-              <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
-                   @click="uploadVideo">
-                <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
-                <i class="iconfont icon-jiahao"></i>
-                <span>上传视频</span>
-                <div class="hide">
-                  <input type="file" id="upload"/>
-                  <input type="text" id='rename'>
-                  <button id="confirmUpload" class="saveBtn"></button>
-                </div>
-              </div>
-              <div class="upload-tips">
-                <span>视频仅支持mp4格式，文件大小不超过200M</span>
-                <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
-              </div>
-            </div>
+            <ve-upload-video
+              title="视频仅支持mp4格式，文件大小不超过200M"
+              accept="mp4"
+              :fileSize="204800"
+              :errorMsg="uploadVideoErrorMsg"
+              :sdk="sdkParam"
+              @success="uploadVideoSuccess"></ve-upload-video>
           </div>
         </div>
         <div class="from-row">
@@ -60,37 +72,35 @@
                 :errorMsg="uploadImgErrorMsg"
                 @error="uploadError"
                 @success="uploadImgSuccess"></ve-upload-image>
-              <!--<div class="upload-tips">-->
-              <!--<span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>-->
-              <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
-              <!--</div>-->
             </div>
           </div>
         </div>
-        <div class="from-row">
-          <div class="from-title">视频预览：</div>
-          <div class="from-content">
-            <div class="play-box">
-              <span v-if="!warm.recordId||playMsg">{{playMsg||'暂无视频'}}</span>
-              <div id="myVideo" v-else style="width:100%; height:100%;"></div>
-            </div>
-          </div>
-        </div>
+        <!--<div class="from-row">-->
+          <!--<div class="from-title">视频预览：</div>-->
+          <!--<div class="from-content">-->
+            <!--<div class="play-box">-->
+              <!--<span v-if="!warm.recordId||playMsg">{{playMsg||'暂无视频'}}</span>-->
+              <!--<div id="myVideo" v-else style="width:100%; height:100%;"></div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      </div>
+      <div class="bottom-btn">
+        <button class="primary-button" @click="saveWarm">保存</button>
       </div>
     </div>
-    <div class="bottom-btn">
-      <button class="primary-button" @click="saveWarm">保存</button>
-    </div>
+
   </div>
 </template>
 
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
+  import VeUploadVideo from 'src/components/ve-upload-video'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: { VeUploadImage },
+    components: {VeUploadImage, VeUploadVideo},
     data () {
       return {
         warm: {
@@ -107,6 +117,11 @@
           token: '',
           signedAt: ''
         },
+        sdkParam: {
+          sing: '',
+          signed_at: '',
+          app_id: ''
+        },
         isSwitch: false,
         loading: false,
         videoSize: '200', // 视频限制大小，单位兆
@@ -114,6 +129,7 @@
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '', // 上传错误信息
         uploadImgErrorMsg: '', // 图片上传错误信息
+        uploadVideoErrorMsg: '', // 视频上传错误信息
         playMsg: ''
       }
     },
@@ -128,10 +144,12 @@
       }
     },
     created () {
-      if (!this.$route.params.id) {
+      const activityId = this.$route.params.id
+      if (!activityId) {
         this.goBack()
         return
       }
+      this.warm.activityId = activityId
       this.initPage()
     },
     methods: {
@@ -162,7 +180,12 @@
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
               // 初始化pass上传插件
-              this.initVhallUpload()
+              // this.initVhallUpload()
+              this.sdkParam = {
+                sign: this.vhallParams.sign,
+                signed_at: this.vhallParams.signedAt,
+                app_id: this.vhallParams.appId
+              }
               // 初始化pass播放插件
               this.videosSuccess()
             })
@@ -190,58 +213,17 @@
           }
         })
       },
+      /* 上传图片成功 */
       uploadImgSuccess (data) {
         this.warm.playCover = data.name
+      },
+      /* 上传视频成功 */
+      uploadVideoSuccess (data) {
+        this.warm.recordId = data
       },
       uploadError (data) {
         console.log('上传失败:', data)
         this.uploadImgErrorMsg = '上传图片失败'
-      },
-      initVhallUpload () {
-        this.$nextTick(() => {
-          window.vhallCloudDemandSDK('#upload', {
-            params: {
-              confirmBtn: '#confirmUpload', // 保存按钮的ID
-              name: '#rename',
-              sign: this.vhallParams.sign,
-              signed_at: this.vhallParams.signedAt,
-              app_id: this.vhallParams.appId
-            },
-            beforeUpload: (file) => {
-              if (file.type !== 'video/mp4') {
-                this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
-                return false
-              } else if (file.size / 1024 / 1024 > this.videoSize) {
-                this.uploadErrorMsg = '视频太大，请不要大于200M'
-                return false
-              }
-              this.uploadErrorMsg = ''
-              this.loading = true
-              this.percentVideo = 0
-              return true
-            },
-            progress: (percent) => {
-              this.loading = false
-              this.percentVideo = parseFloat(percent.replace('%', ''))
-              if (this.percentVideo === 100) {
-                this.percentVideo = 0
-              }
-            },
-            uploadSuccess () {
-              document.getElementById('confirmUpload').click()
-            },
-            saveSuccess: (res) => {
-              this.warm.recordId = res.record_id
-              this.$nextTick(() => {
-                this.videosSuccess()
-              })
-            },
-            error: (msg, file, e) => {
-              this.loading = false
-              this.uploadErrorMsg = msg
-            }
-          })
-        })
       },
       videosSuccess () {
         if (!this.warm.recordId) return
@@ -273,11 +255,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn{
+  .bottom-btn {
     text-align: center;
-    button{
+    button {
       width: 200px;
-      margin: 60px auto 0 auto;
+      margin: 60px auto 50px auto;
     }
   }
 </style>
