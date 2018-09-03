@@ -160,14 +160,6 @@ export default [{
     component: Reminder
   },
   {
-    path: '/forgot',
-    name: 'forgot',
-    component: Forgot,
-    meta: {
-      noAuth: true
-    }
-  },
-  {
     path: '/setAccount',
     name: 'setAccount',
     component: SetAccount
@@ -302,6 +294,14 @@ export default [{
   meta: {
     noAuth: true,
     noLogin: true
+  }
+},
+{
+  path: '/forgot',
+  name: 'forgot',
+  component: Forgot,
+  meta: {
+    noAuth: true
   }
 }
 ]

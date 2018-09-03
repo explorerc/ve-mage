@@ -31,7 +31,19 @@
 					  </div>
             <button class="primary-button" @click="submit">提交</button>
         </div>
+        <div class="v-info">
+          <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+        </div>
     </div>
+    <message-box v-show="show" :autoClose="closeTime" customClass="v-try-box" confirmText="我知道了" @handleClick="messageBoxClick" width="570px">
+      <div slot="header">免费试用</div>
+      <p>
+        感谢您提供的重要信息，我们会立即安排专业人员跟您联系，为您提供试用账号。您也可以拨打我们的专属服务热线获取更多信息。
+        </p>
+      <p class="v-tel">
+        400-888-9970
+      </p>
+    </message-box>
   </div>
 </template>
 <script>
@@ -57,7 +69,9 @@
         isImg: false,
         cap: null,
         opacity: 0,
-        error: ''
+        error: '',
+        show: false,
+        closeTime: 60
       }
     },
     components: {
@@ -109,9 +123,6 @@
       }
     },
     methods: {
-      setPassword () {
-        console.log(1)
-      },
       isGetCodePermission () {
         if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
@@ -180,25 +191,29 @@
           'code': this.code
         }
         loginManage.register(data).then((res) => {
+          this.closeTime = 60
           if (res.code !== 200) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
             this.error = res.msg
             this.opacity = 1
           } else {
-            this.$messageBox({
-              header: '免费试用',
-              content: '感谢您提供的重要信息，我们会立即安排专业人员跟您联系，为您提供试用账号。您也可以拨打我们的专属服务热线400-888-9970获取更多信息。',
-              confirmText: '我知道了',
-              autoClose: 60, // 60秒
-              handleClick: (e) => {
-                if (e.action === 'cancel') {
-                  console.log('取消或者关闭按钮')
-                } else if (e.action === 'confirm') {
-                  console.log('点击了确定按钮')
-                }
-              }
-            })
+            this.show = true
           }
         })
+      },
+      messageBoxClick (e) {
+        if (e.action === 'cancel') {
+          console.log('取消或者关闭按钮')
+          this.show = false
+        } else if (e.action === 'confirm') {
+          this.show = false
+        }
       },
       checkForm: function (e) {
         if (!this.userName) {
@@ -245,6 +260,7 @@
   }
 </script>
 <style lang="scss" scoped>
+@import '~assets/css/mixin.scss';
 .register-container /deep/ {
   height: 100%;
   min-height: 660px;
@@ -343,22 +359,42 @@
           background-color: #dedede;
         }
       }
+      .fr {
+        margin-left: 6px;
+        float: none;
+      }
     }
-    .v-submit {
+    .primary-button {
       display: block;
       width: 100%;
       height: 44px;
-      background-color: #ffd021;
-      color: #222;
-      font-size: 16px;
       border-radius: 4px;
+    }
+    .v-info {
+      width: 100%;
+      position: absolute;
+      bottom: 15px;
       text-align: center;
-      line-height: 44px;
-      &:hover {
-        background-color: #ffd437;
+    }
+  }
+  .v-try-box {
+    .ve-message-box {
+      width: 570px;
+      &::before {
+        background-color: #fff;
       }
-      &:active {
-        background-color: #e8bd20;
+      div {
+        font-size: 20px;
+        color: #222;
+      }
+      p {
+        font-size: 14px;
+        color: #222;
+        margin-top: 20px;
+        &.v-tel {
+          font-size: 18px;
+          color: #222;
+        }
       }
     }
   }

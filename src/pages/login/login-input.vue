@@ -4,7 +4,7 @@
       <div class="mu-text-field-content">
         <div class="mu-text-field-label" v-bind:class='float'>{{placeholder}}</div>
           <input :type="inputType" ref="myinput" class="mu-text-field-input" autocomplete="off" v-on:blur="onBlur(value)" v-on:focus="onFocus(value)" v-model="value" @change="getVal" :maxlength="maxLength"/>
-          <i class="v-showpsd" v-show="isPassword" @click="isShow()"></i>
+          <i class="v-showpsd icon-guanbi-yanjing" v-show="isPassword" @click="isShow()"></i>
         <div>
           <hr class="mu-text-field-line">
           <hr class="mu-text-field-focus-line">
@@ -77,7 +77,6 @@ export default {
   display: block;
   width: 16px;
   height: 10px;
-  background: #000 no-repeat 0px -3px;
   position: absolute;
   top: 40px;
   right: 0;
