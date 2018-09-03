@@ -8,7 +8,7 @@
         基本信息
       </p>
       <a href="javascript:;" @click="logOff()">退出登录</a>
-      <div class="v-editor" style="height: 170px;">
+      <div class="v-editor v-avatar-img" style="height: 170px;">
         <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
       </div>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
@@ -501,6 +501,7 @@
     width: 1020px;
     margin: 35px auto 0;
     border: 1px solid #333;
+    text-align: center;
     .v-title {
       font-size: 18px;
       color: #222;
@@ -513,10 +514,15 @@
       margin: 0 auto;
     }
     .v-editor {
-      display: block;
+      display: inline-block;
+      width: 375px;
       margin-bottom: 20px;
       height: 42px;
       line-height: 42px;
+      text-align: left;
+      &.v-avatar-img {
+        display: block;
+      }
       .v-explain {
         display: inline-block;
         width: 65px;
