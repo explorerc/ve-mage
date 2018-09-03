@@ -1,7 +1,17 @@
 <template>
   <div class="clearfix register-container">
     <div class="v-left">
-        <img src="" alt="" class="v-logo">
+      <p class="v-logo">
+        微吼知客
+      </p>
+      <div class="v-content">
+        <p class="v-title">
+          微吼知客
+        </p>
+        <p class="v-subtitle">
+          提供专属直播间、加速企业营销、获客、变现
+        </p>
+      </div>
     </div>
     <div class="v-right">
         <div class="v-content">
@@ -19,7 +29,7 @@
             <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:opacity}">
 					  	<p class="v-error">{{error}}</p>
 					  </div>
-            <el-button @click="submit">wo</el-button>
+            <button class="primary-button" @click="submit">提交</button>
         </div>
     </div>
   </div>
@@ -246,17 +256,32 @@
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(-30deg, #e62e2e 4%, #ff6c3b 100%);
+    background: linear-gradient(
+      222deg,
+      rgba(255, 208, 33, 1) 0%,
+      rgba(255, 194, 0, 1) 100%
+    );
     position: relative;
     .v-logo {
-      width: 94px;
       position: absolute;
       top: 20px;
-      left: 20px;
+      left: 50px;
+      font-size: 36px;
+      color: #222;
     }
-    .v-title {
-      font-size: 32px;
-      color: #333333;
+    .v-content {
+      width: 375px;
+      margin: 260px auto;
+      text-align: center;
+      .v-title {
+        font-size: 36px;
+        color: #222;
+      }
+      .v-subtitle {
+        font-size: 18px;
+        color: #222;
+        margin-top: 12px;
+      }
     }
   }
   .v-right {
@@ -274,6 +299,10 @@
       max-height: 595px;
       text-align: left;
       font-size: 22px;
+      .v-title {
+        font-size: 32px;
+        color: #333;
+      }
     }
     .yidun.yidun--light {
       width: 100% !important;
@@ -295,7 +324,7 @@
       }
     }
     .v-getcode {
-      background-color: #fc5659;
+      background-color: #ffd021;
       display: block;
       width: 115px;
       height: 34px;
@@ -315,6 +344,34 @@
         }
       }
     }
+    .v-submit {
+      display: block;
+      width: 100%;
+      height: 44px;
+      background-color: #ffd021;
+      color: #222;
+      font-size: 16px;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 44px;
+      &:hover {
+        background-color: #ffd437;
+      }
+      &:active {
+        background-color: #e8bd20;
+      }
+    }
+  }
+}
+@media screen and (max-width: 1200px) {
+  .register-container {
+    min-width: auto;
+  }
+  .register-container .v-left {
+    display: none;
+  }
+  .register-container .v-right {
+    width: 100%;
   }
 }
 </style>

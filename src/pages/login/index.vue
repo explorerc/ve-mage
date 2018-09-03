@@ -1,7 +1,17 @@
 <template>
   <div class="clearfix login-container">
     <div class="v-left">
-      <img src="" alt="" class="v-logo">
+      <p class="v-logo">
+        微吼知客
+      </p>
+      <div class="v-content">
+        <p class="v-title">
+          微吼知客
+        </p>
+        <p class="v-subtitle">
+          提供专属直播间、加速企业营销、获客、变现
+        </p>
+      </div>
     </div>
     <div class="v-right">
       <div class="v-content">
@@ -338,20 +348,34 @@
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(-30deg, #e62e2e 4%, #ff6c3b 100%);
+    background: linear-gradient(
+      222deg,
+      rgba(255, 208, 33, 1) 0%,
+      rgba(255, 194, 0, 1) 100%
+    );
     position: relative;
     .v-logo {
-      width: 94px;
       position: absolute;
       top: 20px;
-      left: 20px;
+      left: 50px;
+      font-size: 36px;
+      color: #222;
     }
-    .v-title {
-      font-size: 32px;
-      color: #333333;
+    .v-content {
+      width: 375px;
+      margin: 260px auto;
+      text-align: center;
+      .v-title {
+        font-size: 36px;
+        color: #222;
+      }
+      .v-subtitle {
+        font-size: 18px;
+        color: #222;
+        margin-top: 12px;
+      }
     }
   }
-
   .v-right {
     float: right;
     width: 50%;
@@ -408,7 +432,7 @@
           vertical-align: middle;
         }
         .fr {
-          float: right;
+          margin-left: 6px;
         }
       }
     }
@@ -436,6 +460,17 @@
     .el-button {
       margin-top: 10px;
     }
+  }
+}
+@media screen and (max-width: 1200px) {
+  .login-container {
+    min-width: auto;
+  }
+  .login-container .v-left {
+    display: none;
+  }
+  .login-container .v-right {
+    width: 100%;
   }
 }
 </style>

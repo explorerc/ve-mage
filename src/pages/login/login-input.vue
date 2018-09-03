@@ -211,7 +211,7 @@ export default {
   margin: 0;
   height: 2px;
   border: none;
-  background-color: #2878ff;
+  background-color: #ffd021;
   position: absolute;
   left: 0;
   right: 0;
@@ -299,7 +299,7 @@ export default {
 .mu-text-field.has-label .mu-text-field-label.float {
   -webkit-transform: translate3d(0, 28px, 0) scale(1);
   transform: translate3d(0, 28px, 0) scale(1);
-  color: rgba(0, 0, 0, 0.38);
+  color: #999;
 }
 
 .mu-text-field-hint {
