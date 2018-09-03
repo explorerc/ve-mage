@@ -30,6 +30,16 @@
         <i class="upload-icon"></i>
         <span v-if="!errorTxt">{{tipTxt}}</span>
         <span class="error-msg" v-else>{{errorTxt}}</span>
+        <!--<el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>-->
+        <!--<i class="iconfont icon-jiahao"></i>-->
+        <!--<span>{{tipTxt}}</span>-->
+        <!--<div v-if="fileSrc||coverImg" class="upload-file-botton" @click.stop="deleteImage">删除</div>-->
+        <!--<transition name="fade">-->
+        <!--<div class="temp-img" v-if="fileSrc"-->
+        <!--:style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>-->
+        <!--<div class="temp-img" v-if="!fileSrc && coverImg"-->
+        <!--:style="{backgroundImage:'url('+coverImg+')'}"></div>-->
+        <!--</transition>-->
       </div>
     </com-upload>
   </div>
@@ -124,90 +134,90 @@
 </script>
 
 <style lang="scss" lang="scss">
-.fade-enter-active {
-  transition: all 0.3s ease;
-}
+  .fade-enter-active {
+    transition: all 0.3s ease;
+  }
 
-.fade-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-}
+  .fade-leave-active {
+    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  }
 
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
 
-.ve-upload-box {
-  position: relative;
-  width: 440px;
-  height: 140px;
-  border: 1px dashed #e2e2e2;
-  border-radius: 4px;
-  background-color: #f7f7f7;
-  text-align: center;
-  overflow: hidden;
-  .upload-img-box {
-    height: 100%;
-    width: 249px;
-    margin: 0 auto;
-    background-color: #666666;
+  .ve-upload-box {
+    position: relative;
+    width: 440px;
+    height: 140px;
+    border: 1px dashed #e2e2e2;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    text-align: center;
     overflow: hidden;
-    cursor: pointer;
-    .temp-img {
+    .upload-img-box {
+      height: 100%;
+      width: 249px;
+      margin: 0 auto;
+      background-color: #666666;
+      overflow: hidden;
+      cursor: pointer;
+      .temp-img {
+        width: 100%;
+        height: 100%;
+        background-position: center center;
+        background-size: cover;
+      }
+      &:hover .over-upload {
+        transition: top 0.3s, opacity 0.5s;
+        top: -100%;
+        opacity: 1;
+      }
+    }
+    .upload-file-box {
+      width: 400px;
+      padding-bottom: 40px;
+      cursor: pointer;
+      span {
+        font-size: 14px;
+        line-height: 20px;
+        color: #888;
+        &.error-msg {
+          color: #fc5659;
+        }
+      }
+      .upload-icon {
+        display: block;
+        width: 60px;
+        height: 60px;
+        margin: 20px auto 10px auto;
+        background-image: url('./static/image/upload-video-icon@2x.png');
+        background-size: cover;
+      }
+    }
+    .over-upload {
+      display: block;
+      position: relative;
       width: 100%;
       height: 100%;
-      background-position: center center;
-      background-size: cover;
-    }
-    &:hover .over-upload {
-      transition: top 0.3s, opacity 0.5s;
-      top: -100%;
-      opacity: 1;
-    }
-  }
-  .upload-file-box {
-    width: 400px;
-    padding-bottom: 40px;
-    cursor: pointer;
-    span {
-      font-size: 14px;
-      line-height: 20px;
-      color: #888;
-      &.error-msg {
-        color: #fc5659;
-      }
-    }
-    .upload-icon {
-      display: block;
-      width: 60px;
-      height: 60px;
-      margin: 20px auto 10px auto;
-      background-image: url('./static/image/upload-image-icon@2x.png');
-      background-size: cover;
-    }
-  }
-  .over-upload {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 3;
-    top: 0;
-    opacity: 0;
-    span {
-      display: inline-block;
-      width: 34%;
-      text-align: center;
-      color: #fff;
-      margin-top: 50px;
-      .iconfont {
-        display: block;
-      }
-      &:hover {
-        color: #ccc;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 3;
+      top: 0;
+      opacity: 0;
+      span {
+        display: inline-block;
+        width: 34%;
+        text-align: center;
+        color: #fff;
+        margin-top: 50px;
+        .iconfont {
+          display: block;
+        }
+        &:hover {
+          color: #ccc;
+        }
       }
     }
   }
-}
 </style>

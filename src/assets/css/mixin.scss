@@ -55,6 +55,10 @@
 /* 主要按钮 */
 @mixin primary-button() {
   @include button-normal();
+  &[disabled]{
+    opacity: .3;
+    cursor: no-drop;
+  }
 }
 
 /* 红色按钮 */
