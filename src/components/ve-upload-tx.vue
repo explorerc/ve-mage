@@ -118,7 +118,7 @@
   position: relative;
   width: 100px;
   height: 100px;
-  border: 1px dashed #e2e2e2;
+  border: 1px solid #e2e2e2;
   border-radius: 50%;
   text-align: center;
   overflow: hidden;
