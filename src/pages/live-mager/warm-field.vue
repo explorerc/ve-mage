@@ -63,7 +63,7 @@
 
   export default {
     name: 'warm-field',
-    components: {VeUploadImage, VeUploadVideo},
+    components: { VeUploadImage, VeUploadVideo },
     data () {
       return {
         warm: {
@@ -203,11 +203,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn {
-    text-align: center;
-    button {
-      width: 200px;
-      margin: 60px auto 50px auto;
-    }
+.bottom-btn {
+  text-align: center;
+  button {
+    width: 200px;
+    margin: 60px auto 50px auto;
   }
+}
 </style>

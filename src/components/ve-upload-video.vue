@@ -31,7 +31,7 @@
 
   export default {
     name: 've-upload-video',
-    components: {ComUpload},
+    components: { ComUpload },
     data () {
       return {
         tipTxt: '',
@@ -143,109 +143,109 @@
 </script>
 
 <style lang="scss" scoped>
-  .fade-enter-active {
-    transition: all 0.3s ease;
+.fade-enter-active {
+  transition: all 0.3s ease;
+}
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.ve-upload-box {
+  position: relative;
+  width: 440px;
+  height: 140px;
+  border: 1px dashed #e2e2e2;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  text-align: center;
+  overflow: hidden;
+  .hide {
+    display: none;
   }
-  .fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+  .error-msg {
+    display: block;
+    color: #fc5659;
+    line-height: 24px;
   }
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-  .ve-upload-box {
-    position: relative;
-    width: 440px;
-    height: 140px;
-    border: 1px dashed #e2e2e2;
-    border-radius: 4px;
-    background-color: #f7f7f7;
-    text-align: center;
-    overflow: hidden;
-    .hide {
-      display: none;
+  .upload-file-box {
+    width: 400px;
+    padding-bottom: 40px;
+    cursor: pointer;
+    span {
+      font-size: 14px;
+      line-height: 20px;
+      color: #888;
     }
-    .error-msg {
+    .upload-video-icon {
       display: block;
-      color: #fc5659;
+      width: 60px;
+      height: 60px;
+      margin: 15px auto 10px auto;
+      background-image: url('./static/image/upload-video-icon@2x.png');
+      background-size: cover;
+    }
+  }
+  .ve-upload-video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    .mp4-video-icon {
+      display: block;
+      width: 60px;
+      height: 60px;
+      margin: 15px auto 6px auto;
+      background-image: url('./static/image/mp4_icon@2x.png');
+      background-size: cover;
+      color: #fff;
+      line-height: 74px;
+    }
+    .upload-delete {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-size: 12px;
+      color: #555;
+      &:hover {
+        cursor: pointer;
+        color: #ffd021;
+      }
+    }
+    .mp4-eror {
+      background-image: url('./static/image/mp4_error_icon@2x.png');
+    }
+    .file-name {
+      color: #222;
+    }
+    .file-size {
+      display: block;
+      color: #888;
       line-height: 24px;
     }
-    .upload-file-box {
-      width: 400px;
-      padding-bottom: 40px;
-      cursor: pointer;
-      span {
-        font-size: 14px;
-        line-height: 20px;
-        color: #888;
-      }
-      .upload-video-icon {
-        display: block;
-        width: 60px;
-        height: 60px;
-        margin: 15px auto 10px auto;
-        background-image: url('./static/image/upload-video-icon@2x.png');
-        background-size: cover;
-      }
+    .file-convert {
+      display: block;
+      color: #4b5afe;
+      line-height: 24px;
     }
-    .ve-upload-video {
-      position: relative;
+    .percent-box {
+      position: absolute;
+      height: 4px;
       width: 100%;
-      height: 100%;
-      font-size: 14px;
-      .mp4-video-icon {
+      bottom: 15px;
+      left: 0;
+      background-color: #e2e2e2;
+      span {
         display: block;
-        width: 60px;
-        height: 60px;
-        margin: 15px auto 6px auto;
-        background-image: url('./static/image/mp4_icon@2x.png');
-        background-size: cover;
-        color: #fff;
-        line-height: 74px;
-      }
-      .upload-delete {
-        position: absolute;
-        top: 0;
-        right: 15px;
-        font-size: 12px;
-        color: #555;
-        &:hover {
-          cursor: pointer;
-          color: #FFD021;
-        }
-      }
-      .mp4-eror {
-        background-image: url('./static/image/mp4_error_icon@2x.png');
-      }
-      .file-name {
-        color: #222;
-      }
-      .file-size {
-        display: block;
-        color: #888;
-        line-height: 24px;
-      }
-      .file-convert{
-        display: block;
-        color: #4B5AFE;
-        line-height: 24px;
-      }
-      .percent-box {
-        position: absolute;
-        height: 4px;
-        width: 100%;
-        bottom: 15px;
-        left: 0;
-        background-color: #e2e2e2;
-        span {
-          display: block;
-          font-size: 0;
-          width: 20px;
-          height: 100%;
-          background-color: #FFD021;
-          transition: width .2s;
-        }
+        font-size: 0;
+        width: 20px;
+        height: 100%;
+        background-color: #ffd021;
+        transition: width 0.2s;
       }
     }
   }
+}
 </style>

@@ -1,16 +1,18 @@
 <template>
   <div class="account-container">
+    <p class="v-account-title">
+      账号设置
+    </p>
     <div class="v-info">
       <p class="v-title">
         基本信息
       </p>
       <a href="javascript:;" @click="logOff()">退出登录</a>
+      <div class="v-editor" style="height: 170px;">
+        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
+      </div>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
       <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
-      <div class="v-editor" style="height: 170px;">
-        <span class="v-explain" style="vertical-align: top;">账户头像</span>
-              <ve-upload title="上传封面" accept="png|jpg|jpeg|bmp|gif" :defaultImg="$imgHost + '/' + avatar" :fileSize="1024" @error="uploadError" @success="uploadImgSuccess"/>
-      </div>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
       <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称</span></com-editor>
@@ -88,7 +90,7 @@
   import account from 'src/api/account-manage'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import VeUpload from 'src/components/ve-upload-image'
+  import VeUploadTx from 'src/components/ve-upload-tx'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   export default {
@@ -152,7 +154,8 @@
         reNewPassword: '',
         licenseCode: '', // 营业执照编号
         licensePic: '', // 营业执照照片
-        avatar: ''// 账户头像
+        avatar: '' // 账户头像
+
       }
     },
     mounted () {
@@ -180,12 +183,17 @@
         }
       })
     },
-    computed: mapState('login', {
-      isLogin: state => state.isLogin
-    }),
+    computed: {
+      ...mapState('login', {
+        isLogin: state => state.isLogin
+      }),
+      defaultImg () {
+        return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      }
+    },
     components: {
       'com-editor': Editor,
-      've-upload': VeUpload
+      've-upload-tx': VeUploadTx
     },
     created () {
     },
@@ -475,12 +483,35 @@
   }
 </script>
 <style lang="scss" scoped>
-.account-container {
+.account-container /deep/ {
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  margin: 0 auto;
+  .v-account-title {
+    font-size: 24px;
+    color: #222;
+  }
   .v-info {
-    width: 1170px;
+    width: 1020px;
     margin: 35px auto 0;
     border: 1px solid #333;
-    padding: 10px;
+    .v-title {
+      font-size: 18px;
+      color: #222;
+      width: 100%;
+      border-bottom: 1px solid #e2e2e2;
+      line-height: 60px;
+      padding: 0 30px;
+    }
+    .ve-upload-tx {
+      margin: 0 auto;
+    }
     .v-editor {
       display: block;
       margin-bottom: 20px;
@@ -489,6 +520,10 @@
       .v-explain {
         display: inline-block;
         width: 65px;
+      }
+      .ve-upload-box {
+        width: 100px;
+        height: 100px;
       }
       .v-indo-label {
         display: inline-block;
