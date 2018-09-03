@@ -142,7 +142,7 @@
   }
 </script>
 
-<style lang="scss" lang="scss">
+<style lang="scss" scoped>
   .fade-enter-active {
     transition: all 0.3s ease;
   }
