@@ -143,6 +143,29 @@
   background-color: #f7f7f7;
   text-align: center;
   overflow: hidden;
+  .over-upload {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 3;
+    top: 0;
+    opacity: 0;
+    span {
+      display: inline-block;
+      width: 34%;
+      text-align: center;
+      color: #fff;
+      margin-top: 50px;
+      .iconfont {
+        display: block;
+      }
+      &:hover {
+        color: #ccc;
+      }
+    }
+  }
   .upload-img-box {
     height: 100%;
     width: 249px;
@@ -181,29 +204,6 @@
       margin: 20px auto 10px auto;
       background-image: url('./static/image/upload-image-icon@2x.png');
       background-size: cover;
-    }
-  }
-  .over-upload {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 3;
-    top: 0;
-    opacity: 0;
-    span {
-      display: inline-block;
-      width: 34%;
-      text-align: center;
-      color: #fff;
-      margin-top: 50px;
-      .iconfont {
-        display: block;
-      }
-      &:hover {
-        color: #ccc;
-      }
     }
   }
 }
