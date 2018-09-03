@@ -9,7 +9,8 @@ export default (options) => {
   } = options
   const instance = new ComConstructor({
     propsData: {
-      shareLink: {...rest}
+      shareLink: { ...rest
+      }
     }
   })
   instance.vm = instance.$mount()

@@ -11,7 +11,7 @@
   import LiveItem from './live-item'
   export default {
     name: 'live-table',
-    components: {LiveItem},
+    components: { LiveItem },
     props: {
       tableList: {
         type: Array,
@@ -32,26 +32,26 @@
 <style lang="scss" scoped>
 .live-list {
   margin-top: 20px;
-  .none-data{
+  .none-data {
     text-align: center;
     line-height: 60px;
     font-size: 16px;
     color: #909399;
   }
-  .live-item-box{
+  .live-item-box {
     float: left;
     margin-left: 22px;
     margin-top: 22px;
     width: 325px;
     /* 设备宽度大于 1920px */
-    @media all and (min-width:1600px) {
-      &:nth-child(4n+1){
+    @media all and (min-width: 1600px) {
+      &:nth-child(4n + 1) {
         margin-left: 0;
       }
     }
     /* 设备宽度小于 1920px */
-    @media all and (max-width:1600px) {
-      &:nth-child(3n+1){
+    @media all and (max-width: 1600px) {
+      &:nth-child(3n + 1) {
         margin-left: 0;
       }
     }

@@ -14,7 +14,9 @@ const appModules = {
     }
   },
   actions: {
-    updateLoadingStatusAsync ({commit}, data) {
+    updateLoadingStatusAsync ({
+      commit
+    }, data) {
       setTimeout(() => {
         commit(types.LOADING_STATUS, data)
       }, 2000)

@@ -28,7 +28,9 @@ const PlayBack = {
     return utils.ajax({
       method: 'post',
       url: '/manage/replay-manage/delete',
-      params: {replayId: id}
+      params: {
+        replayId: id
+      }
     })
   },
   /**
@@ -38,7 +40,10 @@ const PlayBack = {
     return utils.ajax({
       method: 'post',
       url: '/manage/replay-manage/update',
-      params: {replayId: id, title: title}
+      params: {
+        replayId: id,
+        title: title
+      }
     })
   },
   /**
@@ -68,7 +73,9 @@ const PlayBack = {
     return utils.ajax({
       method: 'post',
       url: '/manage/replay-manage/download',
-      params: {replayId: id}
+      params: {
+        replayId: id
+      }
     })
   }
 }

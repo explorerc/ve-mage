@@ -89,23 +89,23 @@
   // 参会提醒
   export default {
     name: 'reminder',
-    components: {ComUpload, VeUpload},
+    components: { ComUpload, VeUpload },
     data () {
       return {
         reminderTypes: [
-          {value: '0', label: '短信通知'},
-          {value: '1', label: '微信通知'}
+          { value: '0', label: '短信通知' },
+          { value: '1', label: '微信通知' }
         ],
         reminderTimes: [
-          {value: '0', label: '提前1天'},
-          {value: '1', label: '提前1小时'},
-          {value: '2', label: '提前10分钟'},
-          {value: '3', label: '活动开始时'}
+          { value: '0', label: '提前1天' },
+          { value: '1', label: '提前1小时' },
+          { value: '2', label: '提前10分钟' },
+          { value: '3', label: '活动开始时' }
         ],
         randOptions: [
-          {value: '0', label: '预约用户'},
-          {value: '1', label: '报名用户'},
-          {value: '2', label: '邀请用户'}
+          { value: '0', label: '预约用户' },
+          { value: '1', label: '报名用户' },
+          { value: '2', label: '邀请用户' }
         ],
         reminder: {
           isSwitch: false,
@@ -141,49 +141,49 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .mager-box {
-    display: flex;
-    margin-right: 20px;
-    .from-box {
-      flex: 1;
-    }
-    .from-left {
-      .phone-menu {
-        margin: 20px 0;
-        line-height: 30px;
-        nav {
-          float: right;
-          font-size: 0;
-          span {
-            display: inline-block;
-            border: solid 1px #666;
-            width: 80px;
-            text-align: center;
-            font-size: 14px;
-            cursor: pointer;
-            &:first-child {
-              margin-right: -1px;
-            }
-            &:hover {
-              color: #00FF00;
-            }
+.mager-box {
+  display: flex;
+  margin-right: 20px;
+  .from-box {
+    flex: 1;
+  }
+  .from-left {
+    .phone-menu {
+      margin: 20px 0;
+      line-height: 30px;
+      nav {
+        float: right;
+        font-size: 0;
+        span {
+          display: inline-block;
+          border: solid 1px #666;
+          width: 80px;
+          text-align: center;
+          font-size: 14px;
+          cursor: pointer;
+          &:first-child {
+            margin-right: -1px;
+          }
+          &:hover {
+            color: #00ff00;
           }
         }
       }
-      .phone-box {
-        width: 350px;
-        display: inline-block;
-        width: 350px;
-        height: 760px;
-        background: url(../../assets/image/phone.png) no-repeat;
-        background-size: cover;
-        padding: 100px 12px;
-        .phone {
-          height: 100%;
-          background-color: #fff;
-          box-sizing: border-box;
-        }
+    }
+    .phone-box {
+      width: 350px;
+      display: inline-block;
+      width: 350px;
+      height: 760px;
+      background: url(../../assets/image/phone.png) no-repeat;
+      background-size: cover;
+      padding: 100px 12px;
+      .phone {
+        height: 100%;
+        background-color: #fff;
+        box-sizing: border-box;
       }
     }
   }
+}
 </style>

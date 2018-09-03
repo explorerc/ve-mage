@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import {formatDate} from 'src/assets/js/date'
+import { formatDate } from 'src/assets/js/date'
 import queryHttp from 'src/api/activity-manger'
 export default {
   data () {

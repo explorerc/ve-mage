@@ -56,7 +56,7 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import {mapState, mapMutations} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const statusType = {
@@ -89,7 +89,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...newVal}
+          this.email = { ...newVal }
         },
         immediate: true
       }
@@ -142,9 +142,9 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .edit-step-box {
-    .step-btns {
-      margin-top: 20px;
-    }
+.edit-step-box {
+  .step-btns {
+    margin-top: 20px;
   }
+}
 </style>

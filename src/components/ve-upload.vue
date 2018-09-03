@@ -50,7 +50,7 @@
 
   export default {
     name: 've-upload',
-    components: {ComUpload},
+    components: { ComUpload },
     data () {
       return {
         imgHost: '',
@@ -134,92 +134,93 @@
 </script>
 
 <style lang="scss" lang="scss">
-  .fade-enter-active {
-    transition: all .3s ease;
-  }
+.fade-enter-active {
+  transition: all 0.3s ease;
+}
 
-  .fade-leave-active {
-    transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
 
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 
-  .ve-upload-box {
-    position: relative;
-    width: 440px;
-    height: 140px;
-    border: 1px dashed #E2E2E2;
-    border-radius: 4px;
-    background-color: #F7F7F7;
-    text-align: center;
+.ve-upload-box {
+  position: relative;
+  width: 440px;
+  height: 140px;
+  border: 1px dashed #e2e2e2;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  text-align: center;
+  overflow: hidden;
+  .upload-img-box {
+    height: 100%;
+    width: 249px;
+    margin: 0 auto;
+    background-color: #666666;
     overflow: hidden;
-    .upload-img-box {
-      height: 100%;
-      width: 249px;
-      margin: 0 auto;
-      background-color: #666666;
-      overflow: hidden;
-      cursor: pointer;
-      .temp-img {
-        width: 100%;
-        height: 100%;
-        background-position: center center;
-        background-size: cover;
-      }
-      &:hover .over-upload {
-        transition: top .3s, opacity .5s;
-        top: -100%;
-        opacity: 1;
-      }
-    }
-    .upload-file-box {
-      width: 400px;
-      padding-bottom: 40px;
-      cursor: pointer;
-      span {
-        font-size: 14px;
-        line-height: 20px;
-        color: #888;
-        &.error-msg {
-          color: #FC5659;
-        }
-      }
-      .upload-icon {
-        display: block;
-        width: 55px;
-        height: 43px;
-        margin: 30px auto 10px auto;
-        background-image: url("../assets/image/upload-icon.png");
-      }
-    }
-    .over-upload {
-      display: block;
-      position: relative;
+    cursor: pointer;
+    .temp-img {
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, .6);
-      z-index: 3;
-      top: 0;
-      opacity: 0;
-      span {
-        display: inline-block;
-        width: 34%;
-        text-align: center;
-        color: #fff;
-        margin-top: 50px;
-        .iconfont {
-          display: block;
-        }
-        &:hover {
-          color: #ccc;
-        }
+      background-position: center center;
+      background-size: cover;
+    }
+    &:hover .over-upload {
+      transition: top 0.3s, opacity 0.5s;
+      top: -100%;
+      opacity: 1;
+    }
+  }
+  .upload-file-box {
+    width: 400px;
+    padding-bottom: 40px;
+    cursor: pointer;
+    span {
+      font-size: 14px;
+      line-height: 20px;
+      color: #888;
+      &.error-msg {
+        color: #fc5659;
+      }
+    }
+    .upload-icon {
+      display: block;
+      width: 55px;
+      height: 43px;
+      margin: 30px auto 10px auto;
+      background-image: url('../assets/image/upload-icon.png');
+    }
+  }
+  .over-upload {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 3;
+    top: 0;
+    opacity: 0;
+    span {
+      display: inline-block;
+      width: 34%;
+      text-align: center;
+      color: #fff;
+      margin-top: 50px;
+      .iconfont {
+        display: block;
+      }
+      &:hover {
+        color: #ccc;
       }
     }
   }
+}
 
-  /*
+/*
   .upload-file-box {
     position: relative;
     display: inline-block;

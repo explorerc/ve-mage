@@ -87,7 +87,7 @@
 
   export default {
     name: 'warm-field',
-    components: {VeUpload},
+    components: { VeUpload },
     data () {
       return {
         warm: {

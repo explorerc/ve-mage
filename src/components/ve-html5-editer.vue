@@ -218,7 +218,7 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
 
   export default {
     name: 've-html5-editer',
-    components: {editor},
+    components: { editor },
     data () {
       return {
         showModuleName: false,
