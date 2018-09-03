@@ -194,7 +194,7 @@
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload'
+  import VeUpload from 'src/components/ve-upload-image'
   import veMsgTips from 'src/components/ve-msg-tips'
   import PlayBackHttp from 'src/api/play-back'
   import LiveHttp from 'src/api/activity-manger'

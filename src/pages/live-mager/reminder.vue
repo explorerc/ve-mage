@@ -84,7 +84,7 @@
 
 <script>
   import ComUpload from 'src/components/common/upload/com'
-  import VeUpload from 'src/components/ve-upload'
+  import VeUpload from 'src/components/ve-upload-image'
   import LiveHttp from 'src/api/activity-manger'
   // 参会提醒
   export default {

@@ -1,18 +1,24 @@
 <template>
   <div class="live-mager">
     <div class="live-title">
-      <span>暖场设置</span>
-      <el-button class="live-btn fr" type="primary" plain @click="goBack">返回</el-button>
+      <span class="title">暖场设置</span>
+      <el-switch
+        v-model="isSwitch"
+        inactive-color="#DEE1FF"
+        active-color="#4B5AFE">
+      </el-switch>
+      <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
+      <button class="primary-button fr" @click="goBack">返回</button>
     </div>
-    <div class="mager-box">
+    <div class="mager-box border-box">
       <div class="from-box">
-        <div class="from-row">
-          <div class="from-title">暖场开关：</div>
-          <div class="from-content">
-            <el-checkbox v-model="isSwitch">开启</el-checkbox>
-            <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
-          </div>
-        </div>
+        <!--<div class="from-row">-->
+          <!--<div class="from-title">暖场开关：</div>-->
+          <!--<div class="from-content">-->
+            <!--<el-checkbox v-model="isSwitch">开启</el-checkbox>-->
+            <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
+          <!--</div>-->
+        <!--</div>-->
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>暖场视频：</div>
           <div class="from-content">
@@ -46,17 +52,17 @@
           <div class="from-title">视频封面：</div>
           <div class="from-content">
             <div class="from-content">
-              <ve-upload
+              <ve-upload-image
                 title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
                 accept="png|jpg|jpeg|bmp|gif"
                 :defaultImg="defaultImg"
                 :fileSize="2048"
                 :errorMsg="uploadImgErrorMsg"
                 @error="uploadError"
-                @success="uploadImgSuccess"></ve-upload>
+                @success="uploadImgSuccess"></ve-upload-image>
               <!--<div class="upload-tips">-->
-                <!--<span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>-->
-                <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
+              <!--<span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>-->
+              <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
               <!--</div>-->
             </div>
           </div>
@@ -70,24 +76,21 @@
             </div>
           </div>
         </div>
-        <div class="from-row">
-          <div class="from-title"></div>
-          <div class="from-content">
-            <el-button class="live-btn" type="primary" plain @click="saveWarm">保存</el-button>
-          </div>
-        </div>
       </div>
+    </div>
+    <div class="bottom-btn">
+      <button class="primary-button" @click="saveWarm">保存</button>
     </div>
   </div>
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload'
+  import VeUploadImage from 'src/components/ve-upload-image'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: { VeUpload },
+    components: { VeUploadImage },
     data () {
       return {
         warm: {
@@ -141,15 +144,17 @@
       initPage () {
         LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
           /* 查询详情 */
-          this.warm = {
-            activityId: this.$route.params.id,
-            enabled: res.data.enabled,
-            playMode: res.data.playType,
-            playCover: res.data.imgUrl,
-            recordId: res.data.recordId
+          if (res.code === 200 && res.data) {
+            this.warm = {
+              activityId: this.$route.params.id,
+              enabled: res.data.enabled,
+              playMode: res.data.playType,
+              playCover: res.data.imgUrl,
+              recordId: res.data.recordId
+            }
+            this.isSwitch = res.data.enabled === 'Y'
+            this.vhallParams.recordId = res.data.recordId
           }
-          this.isSwitch = res.data.enabled === 'Y'
-          this.vhallParams.recordId = res.data.recordId
         }).then(() => {
           /* 获取pass信息 */
           LiveHttp.queryPassSdkInfo().then((res) => {
@@ -267,4 +272,12 @@
 
 <style lang="scss" scoped src="./css/live.scss">
 </style>
-
+<style lang="scss" scoped>
+  .bottom-btn{
+    text-align: center;
+    button{
+      width: 200px;
+      margin: 60px auto 0 auto;
+    }
+  }
+</style>

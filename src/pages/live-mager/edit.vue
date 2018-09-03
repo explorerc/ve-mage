@@ -90,7 +90,7 @@
 
 <script>
   import veEditer from 'components/ve-editer'
-  import VeUpload from 'src/components/ve-upload'
+  import VeUpload from 'src/components/ve-upload-image'
   import http from 'src/api/activity-manger'
   export default {
     name: 'edit',

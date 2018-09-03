@@ -26,7 +26,7 @@
 
 <script>
   import veEditer from 'src/components/ve-editer'
-  import veUpload from 'src/components/ve-upload'
+  import veUpload from 'src/components/ve-upload-image'
 
   export default {
     name: 'comps-example',
