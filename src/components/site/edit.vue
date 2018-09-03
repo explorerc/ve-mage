@@ -1,6 +1,6 @@
 <template>
   <div class="edit-container" v-show="showWrap" @click="hide" @mouseover="over">
-    <div class="edit-content" :class="[{active:showEdit},customClass,{follow:follow}]" :style="styles" @click.stop="()=>{}">
+    <div class="edit-content" :class="[{active:showEdit},{follow:follow}]" :style="styles" @click.stop="()=>{}">
       <slot></slot>
     </div>
   </div>
@@ -9,10 +9,6 @@
 <script>
 export default {
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     follow: {
       type: Boolean,
       default: false

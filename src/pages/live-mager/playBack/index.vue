@@ -19,7 +19,7 @@
     <!-- 添加视频 -->
     <message-box
       v-show="addVideoShow"
-      width="600px"
+      width="646px"
       header="添加视频"
       cancelText="取消"
       confirmText='确定'
@@ -36,29 +36,18 @@
           <div class="from-row" v-if="playBackMode==0">
             <div class="from-title">上传视频：</div>
             <div class="from-content">
-              <div class="upload-video">
-                <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
-                     @click="uploadVideo">
-                  <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
-                  <i class="iconfont icon-jiahao"></i>
-                  <span>上传视频</span>
-                  <div class="hide">
-                    <input type="file" id="upload"/>
-                    <input type="text" id='rename'>
-                    <button id="confirmUpload" class="saveBtn"></button>
-                  </div>
-                </div>
-                <div class="upload-tips">
-                  <span>视频仅支持mp4格式，文件大小不超过200M</span>
-                  <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
-                </div>
-              </div>
+              <ve-upload-video
+                title="视频仅支持mp4格式，文件大小不超过200M"
+                accept="mp4"
+                :fileSize="204800"
+                :sdk="sdkUploadParam"
+                @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
           <div class="from-row" v-else>
             <div class="from-title">视频链接：</div>
             <div class="from-content">
-              <com-input customClass="out-line-input" :value.sync="outLineLink"
+              <com-input class="out-line-input" :value.sync="outLineLink"
                          placeholder="请输入链接"></com-input>
             </div>
           </div>
@@ -194,7 +183,8 @@
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload'
+  import VeUpload from 'src/components/ve-upload-image'
+  import VeUploadVideo from 'src/components/ve-upload-video'
   import veMsgTips from 'src/components/ve-msg-tips'
   import PlayBackHttp from 'src/api/play-back'
   import LiveHttp from 'src/api/activity-manger'
@@ -205,7 +195,7 @@
   }
   export default {
     name: 'play-back',
-    components: { VeUpload, veMsgTips },
+    components: {VeUpload, veMsgTips, VeUploadVideo},
     data () {
       return {
         navIdx: 0,
@@ -214,12 +204,17 @@
         playBackShow: false,
         newTitle: '',
         selectRowIdx: 0,
-        vhallParams: {
-          sign: '',
-          appId: '',
+        sdkUploadParam: { // sdk上传插件初始化参数
+          sing: '',
+          signed_at: '',
+          app_id: ''
+        },
+        sdkPlayParam: { // sdk播放器初始化参数
+          app_id: '',
           accountId: '',
           token: '',
-          signedAt: ''
+          recordId: '', // 回放视频id
+          linkVideo: '' // 外链视频
         },
         playBack: {
           isSwitch: true,
@@ -232,9 +227,9 @@
         },
         playBackList: [],
         options: [
-          { value: '0', label: '默认回放' },
-          { value: '1', label: '上传视频' },
-          { value: '2', label: '外部链接' }
+          {value: '0', label: '默认回放'},
+          {value: '1', label: '上传视频'},
+          {value: '2', label: '外部链接'}
         ],
         recordId: '',
         activityId: '',
@@ -244,10 +239,8 @@
         outLineLink: '',
         outLineMode: '0',
         playBackMode: '0',
-        loading: false,
         uploadImgErrorMsg: '',
         uploadErrorMsg: '',
-        percentVideo: '',
         playMsg: '',
         prePlayShow: false
       }
@@ -291,11 +284,23 @@
           this.queryPlayBackList()
           /* 获取pass信息 */
           LiveHttp.queryPassSdkInfo().then((res) => {
-            this.vhallParams = res.data
+            // this.vhallParams = res.data
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
               // 初始化pass上传插件
-              this.initVhallUpload()
+              // this.initVhallUpload()
+              this.sdkUploadParam = {
+                sign: res.data.sign,
+                signed_at: res.data.signedAt,
+                app_id: res.data.appId
+              }
+              this.sdkPlayParam = {
+                app_id: res.data.appId,
+                accountId: res.data.accountId,
+                token: res.data.token,
+                recordId: '',
+                linkVideo: ''
+              }
             })
           })
         })
@@ -328,15 +333,16 @@
         if (type === 0) { // 下载
           this.downLoadVideo()
         } else if (type === 1) { // 预览
-          this.prePlayShow = true
           if (playBack.type === 'LINK') { /* 外链 */
-            this.recordId = ''
-            this.playBack.outLineLink = playBack.link
-            return
+            this.sdkPlayParam.outLineLink = playBack.link
+            this.sdkPlayParam.recordId = ''
+          } else {
+            this.sdkPlayParam.recordId = playBack.video
+            this.sdkPlayParam.outLineLink = ''
           }
-          this.recordId = playBack.video
-          this.$nextTick(() => {
-            this.videosSuccess()
+          // 播放器进行播放
+          this.$playVideo({
+            ...this.sdkPlayParam
           })
         } else if (type === 2) { // 重命名
           this.newTitle = playBack.title
@@ -453,70 +459,30 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
-      initVhallUpload () {
-        this.$nextTick(() => {
-          window.vhallCloudDemandSDK('#upload', {
-            params: {
-              confirmBtn: '#confirmUpload', // 保存按钮的ID
-              name: '#rename',
-              sign: this.vhallParams.sign,
-              signed_at: this.vhallParams.signedAt,
-              app_id: this.vhallParams.appId
-            },
-            beforeUpload: (file) => {
-              if (file.type !== 'video/mp4') {
-                this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
-                return false
-              } else if (file.size / 1024 / 1024 > this.videoSize) {
-                this.uploadErrorMsg = '视频太大，请不要大于200M'
-                return false
-              }
-              this.uploadErrorMsg = ''
-              this.loading = true
-              this.percentVideo = 0
-              return true
-            },
-            progress: (percent) => {
-              this.loading = false
-              this.percentVideo = parseFloat(percent.replace('%', ''))
-              if (this.percentVideo === 100) {
-                this.percentVideo = 0
-              }
-            },
-            uploadSuccess () {
-              document.getElementById('confirmUpload').click()
-            },
-            saveSuccess: (res) => {
-              this.recordId = res.record_id
-            },
-            error: (msg, file, e) => {
-              this.loading = false
-              this.uploadErrorMsg = msg
-            }
-          })
-        })
+      uploadVideoSuccess (recordId) {
+        this.recordId = recordId
       },
       videosSuccess () {
-        if (!this.recordId) return
-        window.Vhall.ready(() => {
-          window.VhallPlayer.init({
-            recordId: this.recordId, // 回放Id，点播必填，直播不写
-            type: 'vod', // 播放类型,必填，live 直播, vod 为点播
-            videoNode: 'myVideo', // 推流视频回显节点id，必填
-            complete: function () {
-              window.VhallPlayer.play()
-            },
-            fail: (msg) => {
-              this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
-            }
-          })
-        })
-        /* 初始化配置 */
-        window.Vhall.config({
-          appId: this.vhallParams.appId, // 应用 ID ,必填
-          accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
-          token: this.vhallParams.token // token必填
-        })
+        // if (!this.recordId) return
+        // window.Vhall.ready(() => {
+        //   window.VhallPlayer.init({
+        //     recordId: this.recordId, // 回放Id，点播必填，直播不写
+        //     type: 'vod', // 播放类型,必填，live 直播, vod 为点播
+        //     videoNode: 'myVideo', // 推流视频回显节点id，必填
+        //     complete: function () {
+        //       window.VhallPlayer.play()
+        //     },
+        //     fail: (msg) => {
+        //       this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
+        //     }
+        //   })
+        // })
+        // /* 初始化配置 */
+        // window.Vhall.config({
+        //   appId: this.vhallParams.appId, // 应用 ID ,必填
+        //   accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
+        //   token: this.vhallParams.token // token必填
+        // })
       }
     }
   }
@@ -524,157 +490,157 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-.list-box .el-table .cell {
-  overflow: visible;
-}
+  .list-box .el-table .cell {
+    overflow: visible;
+  }
 </style>
 <style lang="scss" scoped>
-@import '~assets/css/variable';
+  @import '~assets/css/variable';
 
-.black-box {
-  margin-top: 20px;
-  .el-date-editor {
-    margin-left: 10px;
-  }
-  .play-content {
-    .out-line {
-      margin: 10px 0;
-      span {
-        display: inline-block;
-        margin-right: 20px;
+  .black-box {
+    margin-top: 20px;
+    .el-date-editor {
+      margin-left: 10px;
+    }
+    .play-content {
+      .out-line {
+        margin: 10px 0;
+        span {
+          display: inline-block;
+          margin-right: 20px;
+        }
+        .out-line-input {
+          width: 400px;
+        }
       }
-      .out-line-input {
-        width: 400px;
+      .play-box {
+        display: inline-block;
+        width: 474px;
+        min-height: 266.6px;
+        line-height: 266px;
+        vertical-align: top;
+        background-color: #666666;
+        color: #fff;
+        .iframe-box {
+          height: 100%;
+          width: 100%;
+        }
       }
     }
-    .play-box {
+  }
+
+  .list-box {
+    margin: 10px 0;
+  }
+
+  .step-btns {
+    margin-left: 150px;
+  }
+
+  .play-back-img {
+    width: 200px;
+    height: 130px;
+  }
+
+  .table-nav {
+    display: inline-block;
+    margin: 10px 0;
+    font-size: 0;
+    border: solid 1px #e5e5e5;
+    span {
       display: inline-block;
-      width: 474px;
-      min-height: 266.6px;
-      line-height: 266px;
+      width: 120px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 14px;
+      &.active {
+        background-color: $color-bg-btn;
+      }
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .more {
+    display: inline-block;
+    position: relative;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #409eff;
+    cursor: pointer;
+    text-align: center;
+    &:hover .more-menu {
+      display: block;
+    }
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: -30px;
+      left: 34px;
+      width: 50px;
+      z-index: 9999999;
+      color: #666;
+      border: solid 1px #e5e5e5;
+      span {
+        display: block;
+        padding: 0;
+        &:hover {
+          color: #409eff;
+        }
+      }
+    }
+  }
+
+  .prop-input {
+    text-align: left;
+    margin: 20px;
+    font-size: 14px;
+    .com-input {
+      width: 258px;
+      margin: 5px 0;
+    }
+  }
+
+  .message-box-content {
+    text-align: left;
+    .from-title {
+      width: 100px !important;
+    }
+    .upload-tips {
+      width: 273px !important;
+    }
+  }
+
+  .video-modal-box {
+    .video-modal {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+    .video-content {
+      position: absolute;
+      width: 800px;
+      height: 450px;
+      line-height: 450px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       vertical-align: top;
-      background-color: #666666;
+      background-color: #333333;
       color: #fff;
+      text-align: center;
+      z-index: 11;
       .iframe-box {
         height: 100%;
         width: 100%;
       }
     }
   }
-}
-
-.list-box {
-  margin: 10px 0;
-}
-
-.step-btns {
-  margin-left: 150px;
-}
-
-.play-back-img {
-  width: 200px;
-  height: 130px;
-}
-
-.table-nav {
-  display: inline-block;
-  margin: 10px 0;
-  font-size: 0;
-  border: solid 1px #e5e5e5;
-  span {
-    display: inline-block;
-    width: 120px;
-    line-height: 34px;
-    text-align: center;
-    font-size: 14px;
-    &.active {
-      background-color: $color-bg-btn;
-    }
-    &:hover {
-      cursor: pointer;
-      opacity: 0.8;
-    }
-  }
-}
-
-.more {
-  display: inline-block;
-  position: relative;
-  padding: 0 5px;
-  font-size: 12px;
-  color: #409eff;
-  cursor: pointer;
-  text-align: center;
-  &:hover .more-menu {
-    display: block;
-  }
-  .more-menu {
-    display: none;
-    position: absolute;
-    top: -30px;
-    left: 34px;
-    width: 50px;
-    z-index: 9999999;
-    color: #666;
-    border: solid 1px #e5e5e5;
-    span {
-      display: block;
-      padding: 0;
-      &:hover {
-        color: #409eff;
-      }
-    }
-  }
-}
-
-.prop-input {
-  text-align: left;
-  margin: 20px;
-  font-size: 14px;
-  .com-input {
-    width: 258px;
-    margin: 5px 0;
-  }
-}
-
-.message-box-content {
-  text-align: left;
-  .from-title {
-    width: 100px !important;
-  }
-  .upload-tips {
-    width: 273px !important;
-  }
-}
-
-.video-modal-box {
-  .video-modal {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-  }
-  .video-content {
-    position: absolute;
-    width: 800px;
-    height: 450px;
-    line-height: 450px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    vertical-align: top;
-    background-color: #333333;
-    color: #fff;
-    text-align: center;
-    z-index: 11;
-    .iframe-box {
-      height: 100%;
-      width: 100%;
-    }
-  }
-}
 </style>

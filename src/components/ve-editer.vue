@@ -1,5 +1,5 @@
 <template>
-  <div id="quill-upload" :class="customClass">
+  <div id="quill-upload" >
     <!-- 图片上传组件辅助-->
     <el-upload
       class="avatar-uploader"
@@ -74,10 +74,6 @@
     },
     components: { quillEditor },
     props: {
-      customClass: {
-        type: String,
-        default: ''
-      },
       value: {
         default: ''
       },

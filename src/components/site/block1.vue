@@ -1,5 +1,5 @@
 <template>
-  <div class="block1-container" :class="customClass">
+  <div class="block1-container" >
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" v-for="(item,index) in value.list" :key="'block1_item'+index">
@@ -7,13 +7,13 @@
             <img v-if="item.img" class="img" :src="host+item.img">
             <div class="content" :class="{top:value.type==='top'}" v-html="item.content">
             </div>
-            <!-- <com-font :customClass="{content:true,top:value.type==='top'}" :edit="edit" v-model="item.content"></com-font> -->
+            <!-- <com-font :class="{content:true,top:value.type==='top'}" :edit="edit" v-model="item.content"></com-font> -->
             <com-btn v-if="value.showBtn" :edit="edit" v-model="value.btn"></com-btn>
           </a>
         </li>
       </ul>
     </div>
-    <com-edit ref="editTarget" customClass="block1-edit">
+    <com-edit ref="editTarget" class="block1-edit">
       <com-button class="add-btn" @click="addBlock">添加图块</com-button>
       <div>
         <el-radio v-model="value.type" label="top">图片上</el-radio>
@@ -39,7 +39,7 @@
       </com-upload>
             </div>
             <div>
-               <com-editer customClass="font-editer" v-model="item.content" ></com-editer>
+               <com-editer class="font-editer" v-model="item.content" ></com-editer>
             </div>
             <div>
                <com-input placeholder="按钮链接" v-model="item.link"></com-input>
@@ -63,10 +63,6 @@ export default {
     ComEdit, ComEditer, ComBtn, ComFont
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     min: {
       type: Number,
       default: 2
@@ -164,7 +160,7 @@ export default {
     }
   }
   .block1-edit {
-    padding: 20px 5px;
+    // padding: 20px 5px;
     .add-btn {
       width: 100%;
       margin-bottom: 10px;

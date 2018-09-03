@@ -1,5 +1,5 @@
 <template>
-  <div class="logo-container" :class="customClass">
+  <div class="logo-container" >
     <div ref="target" class="logo-content">
       <a target="_blank" :href=" value.link | voidLink "><img class="left" :src="url"></a>
     </div>
@@ -28,10 +28,6 @@ export default {
     ComEdit
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     value: {
       type: Object,
       default () {

@@ -1,5 +1,5 @@
 <template>
-  <div class="block2-container" :class="customClass">
+  <div class="block2-container" >
     <div ref="target" class="block2-content">
       <el-carousel trigger="click" :autoplay="autoplay" :height="height" :interval="4000">
         <el-carousel-item v-for="(item,index) in value" :key="'block2_item_'+index">
@@ -12,7 +12,7 @@
         </el-carousel-item>
       </el-carousel>
     </div>
-    <com-edit ref="editTarget" customClass="block2-edit" @show="showHandle" @hide="hideHandle">
+    <com-edit ref="editTarget" class="block2-edit" @show="showHandle" @hide="hideHandle">
       <com-button class="add-btn" @click="addBlock">添加图块</com-button>
       <ul class="block2-edit-group">
         <li v-for="(item,index) in value" :key="'block2_edit_item'+index">
@@ -31,7 +31,7 @@
       </com-upload>
             </div>
             <div>
-               <com-editer height="400" customClass="font-editer" v-model="item.content" ></com-editer>
+               <com-editer height="400" class="font-editer" v-model="item.content" ></com-editer>
             </div>
             <div>
                <com-input placeholder="按钮链接" v-model="item.link"></com-input>
@@ -54,10 +54,6 @@ export default {
     ComEdit, ComEditer, ComFont
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     min: {
       type: Number,
       default: 2

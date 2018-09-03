@@ -1,5 +1,5 @@
 <template>
-  <div class="html-editer" :class="customClass">
+  <div class="html-editer" >
     <editor
       :content="content"
       :height="editHeight"
@@ -226,10 +226,6 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
       }
     },
     props: {
-      customClass: {
-        type: String,
-        default: ''
-      },
       value: {
         default: ''
       },
