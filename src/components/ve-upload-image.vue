@@ -127,16 +127,13 @@
 .fade-enter-active {
   transition: all 0.3s ease;
 }
-
 .fade-leave-active {
   transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
-
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
 }
-
 .ve-upload-box {
   position: relative;
   width: 440px;
