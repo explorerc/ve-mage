@@ -90,9 +90,13 @@ const PlayBack = () =>
 /* 活动官网 */
 const Site = () =>
   import('src/pages/brand/site')
-/* 活动官网品牌页 */
+/* 活动官网模板 */
 const SiteTemplate = () =>
   import('src/pages/brand/site/template.vue')
+const SiteTemplate1 = () =>
+  import('src/pages/brand/site/template1.vue')
+const SiteTemplate2 = () =>
+  import('src/pages/brand/site/template2.vue')
 
 export default [{
   path: '/test',
@@ -103,16 +107,28 @@ export default [{
   name: 'Example',
   component: Example
 }, {
-  path: '/brand/template',
+  path: '/brand/site/edit/:id',
   name: 'SiteTemplate',
   component: SiteTemplate
+}, {
+  path: '/brand/site/preview/:id',
+  name: 'SiteTemplate',
+  component: SiteTemplate
+}, {
+  path: '/brand/template/0478320',
+  name: 'SiteTemplate1',
+  component: SiteTemplate1
+}, {
+  path: '/brand/template/0478321',
+  name: 'SiteTemplate2',
+  component: SiteTemplate2
 }, {
   path: '/',
   name: 'Layout',
   component: Layout,
   redirect: 'setAccount',
   children: [{
-    path: 'brand/site',
+    path: 'brand/site/:id',
     name: 'Site',
     component: Site
   }, {

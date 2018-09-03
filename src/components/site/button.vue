@@ -1,5 +1,5 @@
 <template>
-  <div class="btn-container">
+  <div class="btn-container" v-if="value.enable">
     <div ref="target" class="btn-content">
       <a target="_black" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
     </div>
@@ -31,19 +31,6 @@ export default {
   components: {
     ComEdit
   },
-  props: {
-    value: {
-      type: Object,
-      default () {
-        return {
-          bgColor: 'rgba(255, 255, 255, 1)',
-          fontColor: 'rgba(51, 51, 51, 1)',
-          text: '',
-          link: ''
-        }
-      }
-    }
-  },
   computed: {
     styles () {
       return {
@@ -62,5 +49,8 @@ export default {
   position: relative;
   font-size: 14px;
   text-align: center;
+  button {
+    border: 0;
+  }
 }
 </style>

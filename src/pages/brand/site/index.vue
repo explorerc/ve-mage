@@ -6,6 +6,7 @@
         <span class="state">是否开启</span>
         <el-switch
           v-model="enable"
+          @change="updateState"
           active-color="#13ce66"
           inactive-color="#ff4949">
         </el-switch>
@@ -13,15 +14,18 @@
     </div>
     <div class="group">
       <h3 class="fwn">我的模版</h3>
-      <div class="group-content">
-        <div class="template-block">
+      <div class="group-content" >
+        <div class="template-block" v-if="this.data.tid">
           <img src="../../../assets/image/tp3.png" alt="">
           <div class="option-wrap">
             <div class="option-group">
-              <a data-tid="tp_001">编辑</a>
-              <a data-tid="tp_001">预览</a>
+              <a @click="goEdit">编辑</a>
+              <a @click="goPreview">预览</a>
             </div>
           </div>
+        </div>
+        <div v-else>
+          没有模板
         </div>
       </div>
     </div>
@@ -32,8 +36,8 @@
           <img src="../../../assets/image/tp1.png" alt="">
           <div class="option-wrap">
             <div class="option-group">
-              <a data-tid="tp_001">使用</a>
-              <a data-tid="tp_001">预览</a>
+              <a @click="useTemplate('template1')">使用</a>
+              <a @click="showPreview('0478320')">预览</a>
             </div>
           </div>
         </div>
@@ -41,8 +45,8 @@
           <img src="../../../assets/image/tp2.png" alt="">
           <div class="option-wrap">
             <div class="option-group">
-              <a data-tid="tp_001">使用</a>
-              <a data-tid="tp_001">预览</a>
+              <a @click="useTemplate('template2')">使用</a>
+              <a @click="showPreview('0478321')">预览</a>
             </div>
           </div>
         </div>
@@ -52,10 +56,74 @@
 </template>
 
 <script>
+import brandService from 'src/api/brand-manage'
+import defaultData from './templateData'
+
 export default {
   data () {
     return {
-      enable: true
+      enable: false,
+      data: {}
+    }
+  },
+  mounted () {
+    this.init()
+  },
+  methods: {
+    init () {
+      brandService.getSiteData({
+        __loading: true,
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.enable = true
+        }
+        if (res.data.value) {
+          this.data = JSON.parse(res.data.value)
+        }
+      })
+    },
+    goEdit () {
+      let tid = this.data.tid
+      if (tid) {
+        this.$router.push(`/brand/site/edit/${this.$route.params.id}`)
+      }
+    },
+    goPreview () {
+      let tid = this.data.tid
+      if (tid) {
+        this.$router.push(`/brand/site/preview/${this.$route.params.id}`)
+      }
+    },
+    updateState () {
+      brandService.updateSiteState({
+        __loading: true,
+        activityId: this.$route.params.id,
+        submodule: 'TEMPLATE',
+        enabled: this.enable ? 'Y' : 'N'
+      }).then(data => {
+        this.$toast({
+          content: '保存成功',
+          autoClose: 2000
+        })
+      })
+    },
+    showPreview (tid) {
+      this.$router.push(`/brand/site/preview/${this.$route.params.id}?tid=${tid}`)
+    },
+    useTemplate (temp) {
+      let temData = defaultData[temp]()
+      brandService.updateSiteData({
+        __loading: true,
+        activityId: this.$route.params.id,
+        template: JSON.stringify(temData)
+      }).then(data => {
+        this.data = temData
+        this.$toast({
+          content: '设置成功',
+          autoClose: 2000
+        })
+      })
     }
   }
 }
