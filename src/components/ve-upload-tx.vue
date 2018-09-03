@@ -127,9 +127,11 @@
   .upload-img-box {
     height: 100%;
     width: 100%;
-    background-color: #666666;
     overflow: hidden;
     cursor: pointer;
+    background-image: url("./static/image/avatar@2x.png");
+    background-position: center center;
+    background-size: cover;
     .temp-img {
       width: 100%;
       height: 100%;
