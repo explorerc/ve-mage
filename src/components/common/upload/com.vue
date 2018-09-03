@@ -1,7 +1,6 @@
 <template>
   <div
   class="com-upload"
-  :class="customClass"
   @click="fileSelect"
   >
     <slot></slot>
@@ -42,7 +41,6 @@ const MIME_TYPES = {
 export default {
   name: 'ComUpload',
   props: {
-    customClass: String,
     accept: {
       type: String,
       default: ''

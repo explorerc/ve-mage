@@ -1,5 +1,5 @@
 <template>
-  <div v-show="visible" class="com-notification" :style="style" :class="customClass">
+  <div v-show="visible" class="com-notification" :style="style">
     <div class="inner-wrap">
       <i class="iconfont icon-Loading"></i>
       <span class="loading-txt">{{loadingText}}</span>
@@ -15,8 +15,7 @@ export default {
       type: String,
       default: 'Loading'
     },
-    relative: Boolean,
-    customClass: String
+    relative: Boolean
   },
   data () {
     return {

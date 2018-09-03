@@ -1,10 +1,10 @@
 <template>
-  <div class="font-container" :class="customClass">
+  <div class="font-container" >
     <div ref="target">
       <div class="font-content" v-html="fontContent"></div>
     </div>
-    <com-edit ref="editTarget" follow :offsetTop="-38" customClass="font-edit" @show="showHandle" @hide="hideHandle">
-      <com-editer customClass="font-editer" v-model="fontContent" @change="update"></com-editer>
+    <com-edit ref="editTarget" follow :offsetTop="-38" class="font-edit" @show="showHandle" @hide="hideHandle">
+      <com-editer class="font-editer" v-model="fontContent" @change="update"></com-editer>
     </com-edit>
   </div>
 </template>
@@ -20,10 +20,6 @@ export default {
     ComEdit, ComEditer
   },
   props: {
-    customClass: {
-      type: [String, Object],
-      default: ''
-    },
     value: {
       type: String,
       default: ''

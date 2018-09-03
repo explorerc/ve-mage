@@ -2,7 +2,6 @@
   <transition name="fade" @after-enter="afterEnter" @after-leave="afterLeave">
     <div
     class="com-notification"
-    :class="customClass"
     :style="style"
     v-show="visible"
     @mouseenter="clearTask"
@@ -25,7 +24,6 @@
 export default {
   name: 'ComNotification',
   props: {
-    customClass: String,
     header: String,
     content: {
       type: String,

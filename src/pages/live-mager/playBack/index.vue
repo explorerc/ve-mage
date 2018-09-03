@@ -58,7 +58,7 @@
           <div class="from-row" v-else>
             <div class="from-title">视频链接：</div>
             <div class="from-content">
-              <com-input customClass="out-line-input" :value.sync="outLineLink"
+              <com-input class="out-line-input" :value.sync="outLineLink"
                          placeholder="请输入链接"></com-input>
             </div>
           </div>

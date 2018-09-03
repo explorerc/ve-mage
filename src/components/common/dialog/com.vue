@@ -1,5 +1,5 @@
 <template>
-  <div class="com-dialog" :class="customClass" v-show="visible">
+  <div class="com-dialog" v-show="visible">
     <transition name="fade" >
       <div class="dialog-wrap" v-show="innerVisible">
         <div class="dialog-header" :class="{'align-center':center}">
@@ -23,7 +23,6 @@
 export default {
   name: 'ComDialog',
   props: {
-    customClass: String,
     header: String,
     content: String,
     center: Boolean,

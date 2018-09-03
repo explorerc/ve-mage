@@ -38,10 +38,10 @@
                 </el-select>
               </div>
               <div>
-                <com-input customClass='inp' value="手机号" disabled :max-length="16"></com-input>
+                <com-input class='inp' value="手机号" disabled :max-length="16"></com-input>
               </div>
               <div>
-                <com-input customClass='inp' value="请输入手机号" disabled :max-length="16"></com-input>
+                <com-input class='inp' value="请输入手机号" disabled :max-length="16"></com-input>
               </div>
               <div>登陆校验项目</div>
             </li> -->
@@ -59,10 +59,10 @@
               </el-select>
             </div>
             <div>
-              <com-input customClass='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
+              <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div>
             <div>
-              <com-input customClass='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="16" placeholder="请输入信息描述"></com-input>
+              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="16" placeholder="请输入信息描述"></com-input>
             </div>
             <div v-if="item.type === 'mobile'">
               <div>登陆校验项目</div>

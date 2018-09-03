@@ -1,5 +1,5 @@
 <template>
-  <div class="navigation-container" :class="customClass">
+  <div class="navigation-container" >
     <div ref="target" class="navigation-content">
       <ul class="nav-group">
         <li class="nav-item" v-for="(item,index) in value" :key="index">
@@ -7,7 +7,7 @@
         </li>
       </ul>
     </div>
-    <com-edit ref="editTarget" customClass="nav-edit">
+    <com-edit ref="editTarget" class="nav-edit">
       <com-button class="add-btn" @click="addNav">添加导航</com-button>
       <ul class="nav-edit-group">
         <li v-for="(item,index) in value" :key="'a'+index">
@@ -36,10 +36,6 @@ export default {
     ComEdit
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     value: {
       type: Array,
       default: []

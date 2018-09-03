@@ -1,5 +1,5 @@
 <template>
-  <div class="share-container" :class="customClass">
+  <div class="share-container" >
     <div v-if="showDialog" class="_dialog-container" @click="closeDialog">
       <div class="_dialog" @click.stop="">
         <div class="_dialog-header">分享到微信<i class="iconfont icon-close" @click="closeDialog"></i></div>
@@ -69,10 +69,6 @@ export default {
     ComEdit
   },
   props: {
-    customClass: {
-      type: String,
-      default: ''
-    },
     value: {
       type: Object,
       default () {

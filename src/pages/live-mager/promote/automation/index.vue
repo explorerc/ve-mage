@@ -268,7 +268,7 @@
         </div>
       </div>
     </transition>
-    <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center customClass='del-modal'>
+    <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
       <div class="del-footer" slot="footer">
         <com-button @click='delConfirm = false'>取消</com-button>
         <com-button type="primary" @click="deleteTask">确定</com-button>
