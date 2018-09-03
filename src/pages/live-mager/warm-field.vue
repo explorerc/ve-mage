@@ -134,7 +134,7 @@
       prePlayVideo () {
         // 播放器进行播放,预览
         this.$playVideo({
-          sdk: this.sdkPlayParam
+          ...this.sdkPlayParam
         })
       },
       initPage () {

@@ -342,7 +342,7 @@
           }
           // 播放器进行播放
           this.$playVideo({
-            sdk: this.sdkPlayParam
+            ...this.sdkPlayParam
           })
         } else if (type === 2) { // 重命名
           this.newTitle = playBack.title
