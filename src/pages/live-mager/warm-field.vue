@@ -179,7 +179,8 @@
           recordId: this.warm.recordId,
           playType: this.warm.playMode,
           imgUrl: this.warm.playCover,
-          enabled: this.warm.enabled
+          enabled: this.warm.enabled,
+          filename: ''
         }).then((res) => {
           if (res.code === 200) {
             this.$toast({
@@ -196,8 +197,9 @@
         this.warm.playCover = data.name
       },
       /* 上传视频成功 */
-      uploadVideoSuccess (data) {
-        this.warm.recordId = data
+      uploadVideoSuccess (recordId, fileName) {
+        this.warm.recordId = recordId
+        this.warm.recordId = fileName
       },
       uploadError (data) {
         console.log('上传失败:', data)
