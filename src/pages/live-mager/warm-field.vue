@@ -8,37 +8,21 @@
         active-color="#4B5AFE">
       </el-switch>
       <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
-      <button  disabled class="primary-button fr" @click="goBack">返回</button>
+      <button class="primary-button fr" @click="goBack">返回</button>
     </div>
     <div class="mager-box border-box">
       <div class="from-box">
-        <!--<div class="from-row">-->
-          <!--<div class="from-title">暖场开关：</div>-->
-          <!--<div class="from-content">-->
-            <!--<el-checkbox v-model="isSwitch">开启</el-checkbox>-->
-            <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
-          <!--</div>-->
-        <!--</div>-->
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>暖场视频：</div>
           <div class="from-content">
-            <div class="upload-video">
-              <div class="upload-file-box" title="点击上传" v-ComLoading="loading" com-loading-text="准备中..."
-                   @click="uploadVideo">
-                <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
-                <i class="iconfont icon-jiahao"></i>
-                <span>上传视频</span>
-                <div class="hide">
-                  <input type="file" id="upload"/>
-                  <input type="text" id='rename'>
-                  <button id="confirmUpload" class="saveBtn"></button>
-                </div>
-              </div>
-              <div class="upload-tips">
-                <span>视频仅支持mp4格式，文件大小不超过200M</span>
-                <span class="error" v-if="uploadErrorMsg">{{uploadErrorMsg}}</span>
-              </div>
-            </div>
+            <ve-upload-video
+              title="视频仅支持mp4格式，文件大小不超过200M"
+              accept="mp4"
+              :fileSize="204800"
+              :errorMsg="uploadVideoErrorMsg"
+              :sdk="sdkParam"
+              @handleClick="handleVideoClick"
+              @success="uploadVideoSuccess"></ve-upload-video>
           </div>
         </div>
         <div class="from-row">
@@ -60,37 +44,27 @@
                 :errorMsg="uploadImgErrorMsg"
                 @error="uploadError"
                 @success="uploadImgSuccess"></ve-upload-image>
-              <!--<div class="upload-tips">-->
-              <!--<span>建议尺寸XXXXXX，图片支持jpg、png、jpeg、bmp，图片大小不超过1M</span>-->
-              <!--<span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>-->
-              <!--</div>-->
-            </div>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">视频预览：</div>
-          <div class="from-content">
-            <div class="play-box">
-              <span v-if="!warm.recordId||playMsg">{{playMsg||'暂无视频'}}</span>
-              <div id="myVideo" v-else style="width:100%; height:100%;"></div>
             </div>
           </div>
         </div>
       </div>
+      <div class="bottom-btn">
+        <button class="primary-button" @click="saveWarm">保存</button>
+      </div>
     </div>
-    <div class="bottom-btn">
-      <button class="primary-button" @click="saveWarm">保存</button>
-    </div>
+
   </div>
 </template>
 
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
+  import VeUploadVideo from 'src/components/ve-upload-video'
+  import VeUploadTx from 'src/components/ve-upload-tx'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: { VeUploadImage },
+    components: {VeUploadImage, VeUploadVideo, VeUploadTx},
     data () {
       return {
         warm: {
@@ -98,14 +72,23 @@
           playMode: 'AUTO',
           playCover: '',
           recordId: '',
-          activityId: ''
+          activityId: '',
+          filename: ''
         },
-        vhallParams: {
+        sdkParam: { // sdk上传插件初始化参数
           sign: '',
-          appId: '',
+          signed_at: '',
+          app_id: '',
+          fileName: '',
+          fileSize: '',
+          recordId: ''
+        },
+        sdkPlayParam: { // sdk播放器初始化参数
+          app_id: '',
           accountId: '',
           token: '',
-          signedAt: ''
+          recordId: '', // 回放视频id
+          linkVideo: '' // 外链视频
         },
         isSwitch: false,
         loading: false,
@@ -114,6 +97,7 @@
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '', // 上传错误信息
         uploadImgErrorMsg: '', // 图片上传错误信息
+        uploadVideoErrorMsg: '', // 视频上传错误信息
         playMsg: ''
       }
     },
@@ -128,18 +112,23 @@
       }
     },
     created () {
-      if (!this.$route.params.id) {
+      const activityId = this.$route.params.id
+      if (!activityId) {
         this.goBack()
         return
       }
+      this.warm.activityId = activityId
       this.initPage()
     },
     methods: {
       goBack () {
         this.$router.go(-1)
       },
-      deleteImage () {
-        this.warm.playCover = ''
+      /* 播放器进行播放,预览 */
+      prePlayVideo () {
+        this.$playVideo({
+          ...this.sdkPlayParam
+        })
       },
       initPage () {
         LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
@@ -150,21 +139,28 @@
               enabled: res.data.enabled,
               playMode: res.data.playType,
               playCover: res.data.imgUrl,
-              recordId: res.data.recordId
+              recordId: res.data.recordId,
+              filename: res.data.filename
             }
             this.isSwitch = res.data.enabled === 'Y'
-            this.vhallParams.recordId = res.data.recordId
+            /* sdk参数赋值 */
+            this.sdkPlayParam.recordId = res.data.recordId
+            this.sdkParam.fileName = res.data.filename
+            this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
           }
         }).then(() => {
           /* 获取pass信息 */
           LiveHttp.queryPassSdkInfo().then((res) => {
-            this.vhallParams = res.data
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
               // 初始化pass上传插件
-              this.initVhallUpload()
-              // 初始化pass播放插件
-              this.videosSuccess()
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
+              // 初始化pass播放参数
+              this.sdkPlayParam.app_id = res.data.appId
+              this.sdkPlayParam.accountId = res.data.accountId
+              this.sdkPlayParam.token = res.data.token
             })
           })
         })
@@ -172,13 +168,15 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
+      /* 保存暖场信息 */
       saveWarm () {
         LiveHttp.saveAndEditWarmInfo({
           activityId: this.warm.activityId,
           recordId: this.warm.recordId,
           playType: this.warm.playMode,
           imgUrl: this.warm.playCover,
-          enabled: this.warm.enabled
+          enabled: this.warm.enabled,
+          filename: this.warm.filename
         }).then((res) => {
           if (res.code === 200) {
             this.$toast({
@@ -190,81 +188,26 @@
           }
         })
       },
+      /* 上传图片成功 */
       uploadImgSuccess (data) {
         this.warm.playCover = data.name
       },
+      /* 上传视频成功 */
+      uploadVideoSuccess (recordId, fileName) {
+        this.warm.recordId = recordId
+        this.warm.filename = fileName
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.prePlayVideo()
+        } else if (e.type === 'delete') { // 删除
+          this.warm.recordId = ''
+          this.warm.filename = ''
+        }
+      },
       uploadError (data) {
-        console.log('上传失败:', data)
         this.uploadImgErrorMsg = '上传图片失败'
-      },
-      initVhallUpload () {
-        this.$nextTick(() => {
-          window.vhallCloudDemandSDK('#upload', {
-            params: {
-              confirmBtn: '#confirmUpload', // 保存按钮的ID
-              name: '#rename',
-              sign: this.vhallParams.sign,
-              signed_at: this.vhallParams.signedAt,
-              app_id: this.vhallParams.appId
-            },
-            beforeUpload: (file) => {
-              if (file.type !== 'video/mp4') {
-                this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
-                return false
-              } else if (file.size / 1024 / 1024 > this.videoSize) {
-                this.uploadErrorMsg = '视频太大，请不要大于200M'
-                return false
-              }
-              this.uploadErrorMsg = ''
-              this.loading = true
-              this.percentVideo = 0
-              return true
-            },
-            progress: (percent) => {
-              this.loading = false
-              this.percentVideo = parseFloat(percent.replace('%', ''))
-              if (this.percentVideo === 100) {
-                this.percentVideo = 0
-              }
-            },
-            uploadSuccess () {
-              document.getElementById('confirmUpload').click()
-            },
-            saveSuccess: (res) => {
-              this.warm.recordId = res.record_id
-              this.$nextTick(() => {
-                this.videosSuccess()
-              })
-            },
-            error: (msg, file, e) => {
-              this.loading = false
-              this.uploadErrorMsg = msg
-            }
-          })
-        })
-      },
-      videosSuccess () {
-        if (!this.warm.recordId) return
-        window.Vhall.ready(() => {
-          window.VhallPlayer.init({
-            recordId: this.warm.recordId, // 回放Id，点播必填，直播不写
-            type: 'vod', // 播放类型,必填，live 直播, vod 为点播
-            videoNode: 'myVideo', // 推流视频回显节点id，必填
-            complete: function () {
-              window.VhallPlayer.play()
-            },
-            fail: (msg) => {
-              console.log(msg)
-              this.playMsg = `${msg}...,稍后刷新页面即可看到预览视频`
-            }
-          })
-        })
-        /* 初始化配置 */
-        window.Vhall.config({
-          appId: this.vhallParams.appId, // 应用 ID ,必填
-          accountId: this.vhallParams.accountId, // 第三方用户唯一标识,必填
-          token: this.vhallParams.token // token必填
-        })
       }
     }
   }
@@ -273,11 +216,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn{
+  .bottom-btn {
     text-align: center;
-    button{
+    button {
       width: 200px;
-      margin: 60px auto 0 auto;
+      margin: 60px auto 50px auto;
     }
   }
 </style>

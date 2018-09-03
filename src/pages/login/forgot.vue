@@ -1,37 +1,55 @@
 <template>
   <div class="clearfix forgot-container">
-    <img src="" alt="logo">
     <p class="v-title">
       找回密码
     </p>
-    <com-tabs :value.sync="activeName" disabled>
-       <com-tab label="用户管理" index="first">
+    <com-tabs :value.sync="activeName" customClass="v-forgot" disabled>
+      <com-tab index="first">
+        <div slot="label">
+          用户管理
+          <span class="v-circle active"><i></i></span>
+          <span class="v-line"></span>
+        </div>
         <div class="v-get-password">
-          <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
+          <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
           <div id="captcha"></div>
-          <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()" :class="{warning:isWarning}">
+          <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" @inputFocus="inputFocus()" :class="{warning:isWarning}">
           </com-input>
           <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
           <div class="input-form v-label" :style="{opacity:opacity}">
 		    		<p class="v-error">{{error}}</p>
 		    	</div>
-          <el-button @click="verifyUser">wo</el-button>
+          <button class="primary-button" @click="verifyUser">提交</button>
         </div>
-       </com-tab>
-       <com-tab label="配置管理" index="second">
-         <div class="v-get-password">
-          <com-input class="v-input" :value.sync="password" placeholder="新登录密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password"></com-input>
-          <com-input class="v-input" :value.sync="rePassword" placeholder="确认新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password">
+      </com-tab>
+      <com-tab index="second">
+        <div slot="label">
+          配置管理
+          <span class="v-circle" :class="{active: sedIsActive}"><i></i></span>
+        </div>
+        <div class="v-get-password">
+          <com-input class="v-input" :value.sync="password" placeholder="请输入新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password"></com-input>
+          <com-input class="v-input" :value.sync="rePassword" placeholder="请确认新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password">
           </com-input>
           <div class="input-form v-label" :style="{opacity:opacity}">
 		    		<p class="v-error">{{error}}</p>
 		    	</div>
-          <el-button @click="undatePhone">wo</el-button>
+          <button class="primary-button" @click="undatePhone">提交</button>
         </div>
-       </com-tab>
-       <com-tab label="角色管理" index="third">
-         成功
-       </com-tab>
+      </com-tab>
+      <com-tab index="third">
+        <div slot="label">
+          角色管理
+          <span class="v-circle" :class="{active: thdIsActive}"><i></i></span>
+        </div>
+        <img src="../../assets/image/success@2x.png" alt="" class="v-success-img">
+        <p class="v-success">
+          新密码设置成功
+        </p>
+        <p class="v-tip">
+          <span class="v-red">{{time}}s</span>后跳转到登录页面
+        </p>
+      </com-tab>
     </com-tabs>
   </div>
 </template>
@@ -62,7 +80,10 @@
         error: '',
         password: '',
         rePassword: '',
-        isValidPassword: false
+        isValidPassword: false,
+        sedIsActive: false,
+        thdIsActive: false,
+        time: 5
       }
     },
     components: {
@@ -79,7 +100,7 @@
             captchaId: _self.key,
             element: '#captcha',
             mode: 'float',
-            width: 300,
+            width: 450,
             onReady: function (instance) {
             },
             onVerify: function (err, data) {
@@ -186,6 +207,7 @@
             this.error = res.msg
             this.opacity = 1
           } else {
+            this.sedIsActive = true
             this.activeName = 'second'
             this.token = res.data.codeToken
             this.phone = ''
@@ -220,6 +242,13 @@
               this.error = res.msg
               this.opacity = 1
             } else {
+              setInterval(() => {
+                this.time--
+                if (this.time <= 0) {
+                  // this.$router.replace('/login')
+                }
+              }, 1000)
+              this.thdIsActive = true
               this.activeName = 'third'
             }
           })
@@ -241,15 +270,83 @@
   }
 </script>
 <style lang="scss" scoped>
+@import '~assets/css/mixin.scss';
 .forgot-container /deep/ {
+  text-align: center;
   display: block;
   width: 1200px;
-  margin: 85px auto 0;
-  padding: 35px 55px;
+  margin: 120px auto 0;
+  padding: 0 55px;
+  .v-title {
+    font-size: 24px;
+    color: #222;
+  }
+  .com-tabs {
+    width: 1020px;
+    height: 600px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    margin-top: 25px;
+    .tab-header-wrap {
+      width: 500px;
+      margin: 0 auto;
+    }
+    li {
+      margin-right: 165px;
+      padding: 0;
+      position: relative;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .tab-header {
+      padding-top: 130px;
+    }
+    .v-line {
+      display: block;
+      width: 445px;
+      height: 2px;
+      background-color: #e2e2e2;
+      position: absolute;
+      top: -7px;
+      left: 25px;
+    }
+    .v-circle {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #e2e2e2;
+      background-color: #fff;
+      position: relative;
+      margin: -55px auto 0;
+      z-index: 2;
+      &.active {
+        i {
+          display: block;
+        }
+      }
+      i {
+        display: none;
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #4b5afe;
+        top: 50%;
+        left: 50%;
+        margin-top: -4px;
+        margin-left: -4px;
+      }
+    }
+  }
   .v-get-password {
     display: block;
-    width: 500px;
-    margin: 140px auto 0;
+    width: 450px;
+    margin: 50px auto 0;
+    .v-error {
+      margin-top: 10px;
+    }
     .v-label {
       margin-top: -12px;
       height: 18px;
@@ -263,32 +360,34 @@
       width: 300px;
       margin-bottom: 15px;
     }
+    .primary-button {
+      display: block;
+      width: 200px;
+      height: 40px;
+      margin: 40px auto 0;
+    }
   }
 }
 .v-get-password {
+  position: relative;
   margin-top: 200px;
   .el-button {
     margin-top: 15px;
   }
   .com-input {
     &.v-input {
-      width: 300px;
-      margin-bottom: 10px;
+      width: 450px;
+      margin-bottom: 30px;
       input {
-        width: 300px;
-        height: 40px;
-        line-height: 40px;
-      }
-      &.phone-code {
-        width: 180px;
-        input {
-          width: 180px;
-        }
+        padding: 0 10px !important;
       }
     }
   }
   .v-getcode {
-    background-color: #fc5659;
+    position: absolute;
+    right: 3px;
+    top: 128px;
+    background-color: #ffd021;
     display: inline-block;
     width: 115px;
     height: 34px;
@@ -303,6 +402,28 @@
       &:hover {
         background-color: #dedede;
       }
+    }
+    .fr {
+      margin-left: 6px;
+      float: none;
+    }
+  }
+}
+.v-forgot {
+  .v-success-img {
+    width: 122px;
+    margin-top: 20px;
+  }
+  .v-success {
+    font-size: 24px;
+    color: #222;
+  }
+  .v-tip {
+    font-size: 14px;
+    color: #222;
+    margin-top: 5px;
+    .v-red {
+      color: #fc5659;
     }
   }
 }

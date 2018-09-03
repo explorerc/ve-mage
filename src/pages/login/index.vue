@@ -1,7 +1,17 @@
 <template>
   <div class="clearfix login-container">
     <div class="v-left">
-      <img src="" alt="" class="v-logo">
+      <p class="v-logo">
+        微吼知客
+      </p>
+      <div class="v-content">
+        <p class="v-title">
+          微吼知客
+        </p>
+        <p class="v-subtitle">
+          提供专属直播间、加速企业营销、获客、变现
+        </p>
+      </div>
     </div>
     <div class="v-right">
       <div class="v-content">
@@ -9,10 +19,11 @@
           欢迎登录微吼直播
         </p>
         <ul class="v-tabs clearfix">
-          <li v-for="(item, index) in items" v-bind:key="index" v-on:click="changeFunction(item)">{{item}}</li>
+          <li v-on:click="changeFunction('账号登录')" :class="{active: isActive}">账号登录</li>
+          <span>|</span>
+          <li v-on:click="changeFunction('手机登录')" :class="{active: !isActive}">手机登录</li>
         </ul>
         <div class="v-account" v-show="isAccount">
-          我是账号登录
           <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="用户名/邮箱/手机号" :maxLength="30" @inputFocus="inputFocus()"></com-input>
           <com-input :inputType="type" :isPassword="true" :inputValue.sync="passWord" v-model="passWord" @changePassword="change($event)" placeholder="密码" :maxLength="30" @inputFocus="inputFocus()"></com-input>
           <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:accountOpacity}">
@@ -21,10 +32,10 @@
           <div class="input-form v-forget" style="margin-top: 5px;">
             <a href="/forgot" class="fr clickTag">忘记密码</a>
             <template>
-                        <el-checkbox v-model="remember">自动登录</el-checkbox>
+              <el-checkbox v-model="remember">自动登录</el-checkbox>
             </template>
                 </div>
-                <el-button @click="accountSubmit">wo</el-button>
+                <button class="primary-button" @click="accountSubmit">提交</button>
             </div>
             <div class="v-mobile" v-show="!isAccount">
                 <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
@@ -35,8 +46,11 @@
                 <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
 					      	<p class="v-error">{{mobileError}}</p>
 					      </div>
-                <el-button @click="phoneSubmit">wo</el-button>
+                <button class="primary-button" @click="phoneSubmit">提交</button>
             </div>
+        </div>
+        <div class="v-info">
+          <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
         </div>
     </div>
   </div>
@@ -51,7 +65,6 @@
   export default {
     data () {
       return {
-        items: ['account', 'mobile'],
         isAccount: false,
         userName: '',
         passWord: '',
@@ -71,7 +84,8 @@
         mobileOpacity: 0,
         accountError: '',
         mobileError: '',
-        remember: false
+        remember: false,
+        isActive: false
       }
     },
     components: {
@@ -124,10 +138,12 @@
         setIsLogin: types.UPDATE_IS_LOGIN
       }),
       changeFunction (item) {
-        if (item === 'account') {
+        if (item === '账号登录') {
           this.isAccount = true
+          this.isActive = true
         } else {
           this.isAccount = false
+          this.isActive = false
         }
       },
       change (type) {
@@ -326,6 +342,7 @@
 </script>
 
 <style lang="scss" scoped>
+@import '~assets/css/mixin.scss';
 .login-container /deep/ {
   height: 100%;
   min-height: 660px;
@@ -338,25 +355,51 @@
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(-30deg, #e62e2e 4%, #ff6c3b 100%);
+    background: linear-gradient(
+      222deg,
+      rgba(255, 208, 33, 1) 0%,
+      rgba(255, 194, 0, 1) 100%
+    );
     position: relative;
     .v-logo {
-      width: 94px;
       position: absolute;
       top: 20px;
-      left: 20px;
+      left: 50px;
+      font-size: 36px;
+      color: #222;
     }
-    .v-title {
-      font-size: 32px;
-      color: #333333;
+    .v-content {
+      width: 375px;
+      margin: 260px auto;
+      text-align: center;
+      .v-title {
+        font-size: 36px;
+        color: #222;
+      }
+      .v-subtitle {
+        font-size: 18px;
+        color: #222;
+        margin-top: 12px;
+      }
     }
   }
-
   .v-right {
     float: right;
     width: 50%;
     height: 100%;
     position: relative;
+    .v-info {
+      width: 100%;
+      position: absolute;
+      bottom: 15px;
+      text-align: center;
+    }
+    .primary-button {
+      display: block;
+      width: 100%;
+      height: 44px;
+      border-radius: 4px;
+    }
     .v-content {
       width: 340px;
       position: absolute;
@@ -368,16 +411,28 @@
       text-align: left;
       font-size: 22px;
     }
+    .v-title {
+      font-size: 32px;
+      color: #333333;
+    }
     .v-tabs {
+      margin-top: 45px;
+      span {
+        float: left;
+        color: #333333;
+        font-size: 20px;
+        line-height: 29px;
+      }
       li {
         float: left;
-        font-size: 26px;
+        font-size: 22px;
         color: #333333;
-        margin-right: 5px;
-        border-right: 1px solid #000;
-        padding-right: 5px;
+        margin-right: 10px;
         &:last-child {
-          border: none;
+          margin-left: 10px;
+        }
+        &.active {
+          color: #ffd021;
         }
       }
     }
@@ -401,14 +456,12 @@
       }
       &.v-forget {
         margin-top: 8px;
+        margin-bottom: 50px;
         font-size: 13px;
         .clickTag {
           font-size: 13px;
           color: #999;
           vertical-align: middle;
-        }
-        .fr {
-          float: right;
         }
       }
     }
@@ -432,10 +485,37 @@
           background-color: #dedede;
         }
       }
+      .fr {
+        margin-left: 6px;
+        float: none;
+      }
     }
     .el-button {
       margin-top: 10px;
     }
+    .el-checkbox__inner:hover,
+    .el-checkbox__input.is-focus .el-checkbox__inner {
+      border-color: #ffd021;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+      background-color: #ffd021;
+      border-color: #ffd021;
+    }
+    .el-checkbox__label {
+      color: #999 !important;
+    }
+  }
+}
+@media screen and (max-width: 1200px) {
+  .login-container {
+    min-width: auto;
+  }
+  .login-container .v-left {
+    display: none;
+  }
+  .login-container .v-right {
+    width: 100%;
   }
 }
 </style>
