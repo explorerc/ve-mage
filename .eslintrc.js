@@ -15,11 +15,17 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'no-extend-native':'off',
+    'no-extend-native': 'off',
     "no-alert": 0,
     "no-spaced-func": 2,
     "no-var": 0,
     "no-debugger": 0,
+    "no-useless-constructor": 'off'
+  },
+  globals: {
+    Vhall: true,
+    VhallInteraction: true,
+    VhallInteractionGuest: true
   }
 
 }

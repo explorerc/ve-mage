@@ -2,8 +2,8 @@
   <section>
     <canvas ref="cvs"
             class="cvs"
-            width="800px"
-            height="400px"></canvas>
+            width="400px"
+            height="200px"></canvas>
     <!-- width="800px" height="400px" -->
     <div>
       <el-input clearable
@@ -19,6 +19,12 @@
       <el-button @click="resumeBarrage">恢复</el-button>
       <el-button @click="destroyBarrage">销毁</el-button>
     </div>
+    <div>
+      <div id="my-pusher"></div>
+      <el-button @click="getDevices">获取设备</el-button>
+      <el-button @click="broadcast">推旁路</el-button>
+      <el-button @click="stopBroadcast">取消旁路推流</el-button>
+    </div>
     <svg width="400px"
          height="400px">
       <path ref="pathRef"
@@ -33,6 +39,7 @@
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
 // import Progress from '../../components/common/progress/Progress.js'
+import HostPusher from '../../components/common/video/push/HostPusher'
 export default {
   created () {
     this.barrageSystem = new Barrage()
@@ -41,8 +48,16 @@ export default {
     //   y: 100,
     //   r: 50
     // }
-
     // this.c = new Progress(opt)
+
+    let appId = '499279ae'
+    let roomId = 'lss_5b3c9d9d'
+    let inavId = 'inav_47d93f42'
+    let rootEleId = 'my-pusher'
+    let token = 'access:499279ae:4173778b9f647d98'
+    this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
+    this.hostPusher.initHostPusher()
+    this.hostPusher.accountId = 'master'
   },
   mounted () {
     // let pathRef = this.$refs.pathRef
@@ -63,7 +78,8 @@ export default {
       barrageSystem: null,
       fps: 0,
       intervalId: 0,
-      c: null
+      c: null,
+      hostPusher: null
     }
   },
   methods: {
@@ -101,6 +117,15 @@ export default {
     },
     destroyBarrage () {
       this.barrageSystem.destroy()
+    },
+    getDevices () {
+      this.hostPusher.getDevices()
+    },
+    broadcast () {
+      this.hostPusher.startBroadCast()
+    },
+    stopBroadcast () {
+      this.hostPusher.stopBroadCast()
     }
   }
 }
@@ -111,5 +136,10 @@ export default {
   /* width: 800px;
   height: 400px; */
   background-color: pink;
+}
+
+.my-pusher {
+  width: 200px;
+  height: 150px;
 }
 </style>
