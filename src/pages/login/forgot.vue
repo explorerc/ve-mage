@@ -7,13 +7,14 @@
       <com-tab index="first">
         <div slot="label">
           验证身份
-          <span class="v-circle active"><i></i></span>
+          <i class="iconfont icon-duigou1 v-icon1" v-if="isStepOneSuccess"></i>
+          <span class="v-circle active" v-else><i></i></span>
           <span class="v-line"></span>
         </div>
         <div class="v-get-password">
-          <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" @inputFocus="inputFocus()" :class="{warning:isWarning}"></com-input>
+          <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" @focus="passwordFocus('userPhone')" :error-tips="errorTips.userPhone"></com-input>
           <div id="captcha"></div>
-          <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" @inputFocus="inputFocus()" :class="{warning:isWarning}">
+          <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" @focus="passwordFocus('phoneCode')" :error-tips="errorTips.phoneCode">
           </com-input>
           <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
           <button class="primary-button" @click="verifyUser">提交</button>
@@ -22,11 +23,12 @@
       <com-tab index="second">
         <div slot="label">
           设置新密码
-          <span class="v-circle" :class="{active: sedIsActive}"><i></i></span>
+          <i class="iconfont icon-duigou1 v-icon2" v-if="isStepTwoSuccess"></i>
+          <span class="v-circle" :class="{active: sedIsActive}" v-else><i></i></span>
         </div>
         <div class="v-get-password">
           <div class="v-psd">
-            <com-input class="v-input" :value.sync="password" placeholder="请输入新密码" :maxLength="30" type="password" @focus="passwordFocus('password')" @change="passwordChange()" @blur="passwordBlur()"  :error-tips="errorTips"></com-input>
+            <com-input class="v-input" :value.sync="password" placeholder="请输入新密码" :maxLength="30" type="password" @focus="passwordFocus('password')" @change="passwordChange()" @blur="passwordBlur()"  :error-tips="errorTips.password"></com-input>
             <div class="v-verification" v-if="isShow">
               <ul>
                 <p>密码至少包含：</p>
@@ -42,7 +44,7 @@
               </ul>
             </div>
           </div>
-          <com-input class="v-input" :value.sync="rePassword" placeholder="请确认新密码" :maxLength="30" type="password" @focus="passwordFocus('rePassword')" :error-tips="errorTips">
+          <com-input class="v-input" :value.sync="rePassword" placeholder="请确认新密码" :maxLength="30" type="password" @focus="passwordFocus('rePassword')" :error-tips="errorTips.rePassword">
           </com-input>
           <button class="primary-button" @click="undatePhone">提交</button>
         </div>
@@ -50,7 +52,8 @@
       <com-tab index="third">
         <div slot="label">
           设置完成
-          <span class="v-circle" :class="{active: thdIsActive}"><i></i></span>
+          <i class="iconfont icon-duigou1 v-icon2" v-if="isStepThreeSuccess"></i>
+          <span class="v-circle" :class="{active: thdIsActive}" v-else><i></i></span>
         </div>
         <img src="../../assets/image/success@2x.png" alt="" class="v-success-img">
         <p class="v-success">
@@ -75,7 +78,6 @@
         phoneCode: '',
         token: '',
         activeName: 'first',
-        isWarning: false,
         phoneStatus: false,
         type: 'password',
         key: '',
@@ -96,7 +98,15 @@
         isContainNum: 0,
         isContainCount: 0,
         isShow: false,
-        errorTips: ''
+        errorTips: {
+          userPhone: '',
+          phoneCode: '',
+          password: '',
+          rePassword: ''
+        },
+        isStepOneSuccess: false,
+        isStepTwoSuccess: false,
+        isStepThreeSuccess: false
       }
     },
     components: {
@@ -178,8 +188,7 @@
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
-            // this.error = res.msg
-            // this.opacity = 1
+            this.errorTips.userPhone = res.msg
             clearInterval(this.timerr)
             this.isSend = false
             this.isProhibit = true
@@ -207,7 +216,16 @@
         })
       },
       verifyUser () {
+        if (!this.userPhone) {
+          this.errorTips.userPhone = '请输入手机号'
+          return false
+        }
         if (!this.phoneStatus) {
+          this.errorTips.userPhone = '手机号格式不正确'
+          return false
+        }
+        if (!this.phoneCode) {
+          this.errorTips.phoneCode = '请输入验证码'
           return false
         }
         let data = {
@@ -217,9 +235,9 @@
         }
         account.verifyMobile(data).then((res) => {
           if (res.code !== 200) {
-            // this.error = res.msg
-            // this.opacity = 1
+            this.errorTips.phoneCode = res.msg
           } else {
+            this.isStepOneSuccess = true
             this.sedIsActive = true
             this.activeName = 'second'
             this.token = res.data.codeToken
@@ -238,47 +256,58 @@
         })
       },
       undatePhone () {
-        if (this.password !== this.rePassword) {
-          // this.error = '两次密码输入不一致'
-          // this.opacity = 1
-        } else if (!this.validPassword()) {
-          // this.error = '密码不符合规则'
-          // this.opacity = 1
-        } else {
-          let data = {
-            mobile: this.userPhone,
-            codeToken: this.token,
-            newPassword: this.password
-          }
-          account.updateMobileByToken(data).then((res) => {
-            if (res.code !== 200) {
-              // this.error = res.msg
-              // this.opacity = 1
-            } else {
-              setInterval(() => {
-                this.time--
-                if (this.time <= 0) {
-                  // this.$router.replace('/login')
-                }
-              }, 1000)
-              this.thdIsActive = true
-              this.activeName = 'third'
-            }
-          })
+        if (!this.validPassword()) {
+          this.errorTips.password = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
+          return false
         }
+        if (!this.rePassword) {
+          this.errorTips.rePassword = '请输入确认新密码'
+          return false
+        }
+        if (this.password !== this.rePassword) {
+          this.errorTips.rePassword = '两次密码输入不一致'
+          return false
+        }
+        let data = {
+          mobile: this.userPhone,
+          codeToken: this.token,
+          newPassword: this.password
+        }
+        account.updateMobileByToken(data).then((res) => {
+          if (res.code !== 200) {
+            this.errorTips.password = res.msg
+          } else {
+            setInterval(() => {
+              this.time--
+              if (this.time <= 0) {
+                this.$router.replace('/login')
+              }
+            }, 1000)
+            this.thdIsActive = true
+            this.isStepTwoSuccess = true
+            this.isStepThreeSuccess = true
+            this.activeName = 'third'
+          }
+        })
       },
       validPhone: function (phone) {
-        var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+        let re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
         return re.test(phone)
       },
       validPassword: function () {
-        var re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
-        return re.test(this.password) && re.test(this.rePassword)
+        let re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
+        return re.test(this.password)
       },
       passwordFocus (val) {
         switch (val) {
-          case 'password' : this.errorTips = ''
+          case 'password' : this.errorTips.password = ''
             this.isShow = true
+            break
+          case 'rePassword' : this.errorTips.rePassword = ''
+            break
+          case 'userPhone' : this.errorTips.userPhone = ''
+            break
+          case 'phoneCode' : this.errorTips.phoneCode = ''
             break
         }
       },
@@ -326,6 +355,7 @@
       margin-right: 165px;
       padding: 0;
       position: relative;
+      color: #222;
       &:last-child {
         margin-right: 0;
       }
@@ -335,12 +365,23 @@
     }
     .v-line {
       display: block;
-      width: 445px;
+      width: 450px;
       height: 2px;
       background-color: #e2e2e2;
       position: absolute;
       top: -7px;
-      left: 25px;
+      left: 34px;
+    }
+    .v-icon1,.v-icon2,.v-icon3{
+      display: block;
+      position: absolute;
+      color: #4B5AFE;
+      top: -26px;
+      left: 20px;
+      z-index: 2;
+    }
+    .v-icon2{
+      left: 28px;
     }
     .v-circle {
       display: block;
