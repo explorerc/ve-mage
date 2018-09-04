@@ -100,7 +100,8 @@
       </div>
     </transition>
     <!-- 测试发送弹窗 -->
-    <transition name='fade'>
+    <com-test :limitCount='limitCount' :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
+    <!-- <transition name='fade'>
       <div class="modal-cover" v-if='testModal' @click="closeModal">
         <div class='modal-box'>
           <h4>微信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
@@ -114,7 +115,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition> -->
     <div class="overview-box">
       <div class="header">微吼服务号</div>
       <div class="msg-box">
@@ -135,6 +136,7 @@
 
 <script>
   import createHttp from 'src/api/activity-manger'
+  import comTest from '../com-test'
   export default {
     data () {
       return {
@@ -166,7 +168,7 @@
         }],
         sendValue: '',
         wxContent: '',
-        imgUrl: '',
+        qrImgurl: '',
         pickDate: false,
         date: new Date(),
         pickerOptions: {
@@ -249,24 +251,28 @@
         createHttp.wxLimit().then((res) => {
           if (res.code === 200) {
             console.log(res)
-            this.limitCount = res.data
+            this.limitCount = res.data.toString()
           }
         }).catch((e) => { console.log(e) })
-
-        const data = {
-          content: this.wxContent,
-          activityId: this.activityId
-        }
-        createHttp.sendTestWechat(data).then((res) => {
-          if (res.code === 200) {
-            this.imgUrl = res.data
-          }
-        }).catch((e) => {
-          this.$toast({
-            content: '二维码生成失败',
-            position: 'center'
-          })
-        })
+        this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
+        // const data = {
+        //   content: this.wxContent,
+        //   activityId: this.activityId
+        // }
+        // createHttp.sendTestWechat(data).then((res) => {
+        //   if (res.code === 200) {
+        //     this.imgUrl = res.data
+        //   }
+        // }).catch((e) => {
+        //   this.$toast({
+        //     content: '二维码生成失败',
+        //     position: 'center'
+        //   })
+        // })
+      },
+      closeTest () {
+      // debugger
+        this.testModal = false
       }
     },
     watch: {
@@ -275,6 +281,9 @@
           newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
         }
       }
+    },
+    components: {
+      comTest
     }
   }
 </script>
