@@ -264,7 +264,7 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
 .html-editer {
   min-width: 480px;
   .content {
-    max-height: 600px;
+    max-height: 560px;
   }
 }
 </style>

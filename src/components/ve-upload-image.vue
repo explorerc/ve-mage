@@ -151,7 +151,6 @@
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 3;
     top: 0;
-    opacity: 0;
     span {
       display: inline-block;
       width: 34%;
@@ -180,9 +179,8 @@
       background-size: cover;
     }
     &:hover .over-upload {
-      transition: top 0.3s, opacity 0.5s;
+      transition: top 0.3s;
       top: -100%;
-      opacity: 1;
     }
   }
   .upload-file-box {
