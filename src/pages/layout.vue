@@ -1,7 +1,7 @@
 <template>
   <el-container class="container">
-        <el-aside class="left-container">
-            <com-menu v-if="menuType"></com-menu>
+        <el-aside class="left-container" :class="{close:close}">
+            <com-menu :close.sync="close"></com-menu>
         </el-aside>
         <el-container class="main-box">
             <el-header class="header-container">
@@ -35,10 +35,10 @@ export default {
       name: '',
       timer: '',
       msg: '',
-      menuType: true,
       update: false,
       tipInfo: {},
-      tipType: null
+      tipType: null,
+      close: false
     }
   },
   components: {
@@ -59,7 +59,10 @@ export default {
   min-width: 1340px;
 }
 .left-container {
-  width: 200px !important;
+  width: 220px !important;
+  &.close {
+    width: 95px !important;
+  }
   overflow: hidden;
   height: 100%;
   color: #f5f5f5;
@@ -79,7 +82,7 @@ export default {
 .main-container /deep/ {
   padding: 20px 50px;
   position: absolute;
-  left: 200px;
+  left: 220px;
   right: 0;
   top: 60px;
   bottom: 0;
