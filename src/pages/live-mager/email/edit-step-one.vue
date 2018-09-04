@@ -39,7 +39,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VeHtml5Editer from 'src/components/ve-html5-editer'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -59,14 +59,14 @@
         }
       }
     },
-    components: { VeHtml5Editer },
+    components: {VeHtml5Editer},
     computed: mapState('liveMager', {
       emailInfo: state => state.emailInfo
     }),
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
       }
@@ -195,6 +195,7 @@
       recoverDefault () {
         this.$messageBox({
           header: '',
+          width: '400px',
           content: '恢复默认模板会导致已编辑的内容丢失',
           cancelText: '取消',
           confirmText: '恢复默认',
@@ -223,43 +224,44 @@
 </style>
 <style lang="scss" scoped>
   @import "~assets/css/mixin.scss";
-.edit-step-box {
-  height: 800px;
-  background-color: #fff;
-  .step-btns {
-    margin: 30px 30px 100px 30px;
-    .margin-fl{
-      margin: 0 20px;
-    }
-  }
-  .edit-content {
-    margin: 20px 0;
-    .edit-content-temp {
-      width: 400px;
-      margin-top: 20px;
-      .temp-title {
-        margin: 0 0 0 20px;
-      }
-      .temp-boxs {
-        margin: 20px;
-        .temp-item {
-          width: 160px;
-          height: 180px;
-          line-height: 180px;
-          margin: 10px;
-          text-align: center;
-          box-sizing: border-box;
-          border: solid 1px #e5e5e5;
-        }
-        .active {
-          border-color: red;
-        }
+
+  .edit-step-box {
+    height: 800px;
+    background-color: #fff;
+    .step-btns {
+      margin: 30px 30px 100px 30px;
+      .margin-fl {
+        margin: 0 20px;
       }
     }
-    .edit-content-box {
-      width: calc(100% - 430px);
-      margin-left: 30px;
+    .edit-content {
+      margin: 20px 0;
+      .edit-content-temp {
+        width: 400px;
+        margin-top: 20px;
+        .temp-title {
+          margin: 0 0 0 20px;
+        }
+        .temp-boxs {
+          margin: 20px;
+          .temp-item {
+            width: 160px;
+            height: 180px;
+            line-height: 180px;
+            margin: 10px;
+            text-align: center;
+            box-sizing: border-box;
+            border: solid 1px #e5e5e5;
+          }
+          .active {
+            border-color: red;
+          }
+        }
+      }
+      .edit-content-box {
+        width: calc(100% - 430px);
+        margin-left: 30px;
+      }
     }
   }
-}
 </style>
