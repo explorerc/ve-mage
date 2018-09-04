@@ -89,7 +89,7 @@
       margin: 20px;
       .from-row{
         display: flex;
-        padding: 10px;
+        padding: 12px;
         .from-title{
           width: 180px;
           text-align: right;
@@ -102,6 +102,7 @@
           }
         }
         .from-content{
+          position: relative;
           flex: 1;
           .input-box{
             width: 400px;
@@ -130,7 +131,7 @@
     font-size: 14px;
   }
   .email-info{
-    margin: 10px 20px 30px 20px;
+    margin: 20px 20px 30px 20px;
     font-size: 14px;
     line-height: 1.5;
     .email-info-row{

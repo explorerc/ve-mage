@@ -7,6 +7,7 @@
     <input
     :type="inputType"
     :style="style"
+    :class="{error:errorMsg}"
     :placeholder="placeholder"
     :disabled="disabled"
     v-model="innerValue"
@@ -16,16 +17,19 @@
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
     <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
   </div>
   <div class="com-input area"  v-else>
     <textarea
     ref="tarea"
     v-model="innerValue"
+    :class="{error:errorMsg}"
     :placeholder="placeholder"
     :rows="rows"
   placeholder="请输入内容"
     ></textarea>
     <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
   </div>
 </template>
 
@@ -45,14 +49,16 @@ export default {
       default: 2
     },
     autosize: Boolean,
-    disabled: String
+    disabled: String,
+    errorTips: String
   },
   data () {
     return {
       innerValue: '',
       showDelete: false,
       inputType: '',
-      offsetHeight: 0
+      offsetHeight: 0,
+      errorMsg: ''
     }
   },
   created () {
@@ -125,6 +131,12 @@ export default {
         this.inputType = this.getType()
       },
       immediate: true
+    },
+    errorTips: {
+      handler (value) {
+        this.errorMsg = value
+      },
+      immediate: true
     }
   },
   computed: {
@@ -150,6 +162,13 @@ export default {
   position: relative;
   display: inline-block;
   width: 200px;
+  .error-msg{
+    display: block;
+    position: absolute;
+    color: #FC5659;
+    padding-left: 10px;
+    font-size:14px;
+  }
   input {
     display: inline-block;
     width: 100%;
@@ -162,7 +181,10 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    padding: 0 5px;
+    padding: 0 10px;
+    &.error{
+      border-color: #FC5659;
+    }
     &:hover {
       border-color: #4b5afe;
     }
@@ -238,6 +260,9 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     font-size: inherit;
+    &.error{
+      border-color: #FC5659;
+    }
     &:hover {
       border-color: #4b5afe;
     }
