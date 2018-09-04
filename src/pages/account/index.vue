@@ -7,40 +7,36 @@
       <p class="v-title">
         基本信息
       </p>
-      <a href="javascript:;" @click="logOff()">退出登录</a>
-      <div class="v-editor v-avatar-img" style="height: 170px;">
+      <!-- <a href="javascript:;" @click="logOff()">退出登录</a> -->
+      <div class="v-editor v-avatar-img" style="height: 125px;">
         <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
       </div>
-      <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
-      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40" @cancel="cancel($event,'accountName')"><span class="v-explain">账户名</span></com-editor>
-      <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
-      <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码</span></com-editor>
-      <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称</span></com-editor>
-      <com-editor :value.sync="state" type="input" @clickSaveBtn="clickSave(state,'popup','state')" clickType="popup" btnName="查看"><span class="v-explain">认证状态</span></com-editor>
-      <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry,'industry','company')" clickType="save"><span class="v-explain">所属行业</span></com-editor>
-      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"  @cancel="cancel($event,'companyWebsite')"><span class="v-explain">公司网址</span></com-editor>
+      <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号：</span></com-editor>
+      <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称：</span></com-editor>
+      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40" @cancel="cancel($event,'accountName')"><span class="v-explain">账户名称：</span></com-editor>
+      <com-editor :value.sync="state" type="input" @clickSaveBtn="clickSave(state,'popup','state')" clickType="popup" btnName="查看"><span class="v-explain">认证状态：</span></com-editor>
+      <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机：</span></com-editor>
+      <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry,'industry','company')" clickType="save"><span class="v-explain">所属行业：</span></com-editor>
+      <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码：</span></com-editor>
+      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"  @cancel="cancel($event,'companyWebsite')"><span class="v-explain">公司网址：</span></com-editor>
     </div>
     <div class="v-info">
       <p class="v-title">
         指定联系人
       </p>
-      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"  @cancel="cancel($event,'userName')"><span class="v-explain">姓名</span></com-editor>
-      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userPost')"><span class="v-explain">职务</span></com-editor>
-      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11" @cancel="cancel($event,'userPhone')"><span class="v-explain">手机</span></com-editor>
-      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"  @cancel="cancel($event,'officeNo')"><span class="v-explain">办公电话</span></com-editor>
-      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save" @cancel="cancel($event,'userEmail')"><span class="v-explain">邮箱</span></com-editor>
-      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40" @cancel="cancel($event,'userWechat')"><span class="v-explain">微信</span></com-editor>
-      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userQQ')"><span class="v-explain">QQ</span></com-editor>
-      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60" @cancel="cancel($event,'userRemarks')"><span class="v-explain">备注</span></com-editor>
+      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"  @cancel="cancel($event,'userName')"><span class="v-explain">姓名：</span></com-editor>
+      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userPost')"><span class="v-explain">职务：</span></com-editor>
+      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11" @cancel="cancel($event,'userPhone')"><span class="v-explain">手机：</span></com-editor>
+      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"  @cancel="cancel($event,'officeNo')"><span class="v-explain">办公电话：</span></com-editor>
+      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save" @cancel="cancel($event,'userEmail')"><span class="v-explain">邮箱：</span></com-editor>
+      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40" @cancel="cancel($event,'userWechat')"><span class="v-explain">微信：</span></com-editor>
+      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userQQ')"><span class="v-explain">QQ：</span></com-editor>
+      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60" @cancel="cancel($event,'userRemarks')"><span class="v-explain">备注：</span></com-editor>
     </div>
-    <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="480px" class="message-box" :confirmText="confirmText">
-      <div slot="header">{{messageBoxTitle}}</div>
+    <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="450px" class="message-box" :confirmText="confirmText" type='prompt' :header='messageBoxTitle' :class="[messageBoxType === 'seeState' ? 'v-state' : '']">
       <div v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
-        <p class="v-explain">
-          {{messageBoxExplain}}
-        </p>
-        <p class="v-subtitle">
-          安全验证
+        <p class="v-explain" :style="{color:fontColor}">
+          <i class="iconfont icon-duihao" v-if="step === 'newPhone'"></i> {{messageBoxExplain}}
         </p>
         <com-input v-if="isOldphone" :value.sync="phone" :placeholder="'输入原有注册手机号'" class="v-input" type="input" :max-length="11"></com-input>
         <com-input v-if="!isOldphone" :value.sync="newPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11"></com-input>
@@ -49,14 +45,12 @@
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
       </div>
       <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
-        <p class="v-explain">
+        <img src="../../assets/image/success@2x.png" alt="成功" class="v-success-img">
+        <p class="v-success-explain">
           修改成功
         </p>
         <p class="v-success">
-          您的注册手机更换为
-        </p>
-        <p class="v-mobile">
-          {{newPhone}}
+          您的注册手机更换为：{{newPhone}}
         </p>
       </div>
       <div v-else-if="messageBoxType === 'changePassword'">
@@ -72,14 +66,14 @@
       </div>
       <div v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
-          <span class="v-label">公司名称</span><span class="v-information">{{companyName}}</span>
+          <span class="v-label">公司名称：</span><span class="v-information">{{companyName}}</span>
         </p>
         <p class="v-state-info">
-          <span class="v-label">营业执照编号</span><span class="v-information">{{licenseCode}}</span>
+          <span class="v-label">营业执照编号：</span><span class="v-information">{{licenseCode}}</span>
         </p>
         <p class="v-state-info">
-          <span class="v-label">营业执照照片</span>
-          <img src="licensePic" alt="123">
+          <span class="v-label">营业执照照片：</span>
+          <img :src="licensePic" alt="成功" class="v-state-img">
         </p>
       </div>
     </message-box>
@@ -154,7 +148,8 @@
         reNewPassword: '',
         licenseCode: '', // 营业执照编号
         licensePic: '', // 营业执照照片
-        avatar: '' // 账户头像
+        avatar: '', // 账户头像
+        fontColor: '#555'
 
       }
     },
@@ -189,6 +184,9 @@
       }),
       defaultImg () {
         return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      },
+      licensePic () {
+        return this.licensePic ? this.$imgHost + '/' + this.licensePic : ''
       }
     },
     components: {
@@ -200,6 +198,9 @@
     watch: {
       phone: function () {
         this.checkPhone(this.phone)
+      },
+      newPhone: function () {
+        this.checkPhone(this.newPhone)
       },
       phoneStatus: function (val) {
         this.isGetCodePermission()
@@ -322,6 +323,7 @@
         }
         switch (boxType) {
           case 'mobliePhone' : this.messageBoxType = 'changeMobile'
+            this.fontColor = '#555'
             this.phone = val
             this.messageBoxExplain = '为了保证您的账号安全，更换手机前请先进行安全验证'
             this.isOldphone = true
@@ -332,7 +334,7 @@
               captchaId: _self.key,
               element: '#captcha',
               mode: 'float',
-              width: 435,
+              width: 390,
               onReady: function (instance) {
               },
               onVerify: function (err, data) {
@@ -360,6 +362,7 @@
             this.phoneKey = ''
             break
           case 'password' : this.messageBoxType = 'changePassword'
+            this.fontColor = '#555'
             this.oldPassword = ''
             this.newPassword = ''
             this.reNewPassword = ''
@@ -367,6 +370,7 @@
             this.messageBoxTitle = '修改密码'
             break
           case 'state':this.messageBoxType = 'seeState'
+            this.fontColor = '#555'
             this.confirmText = '确定'
             this.messageBoxTitle = '认证信息'
             break
@@ -382,7 +386,7 @@
               let data = {
                 mobile: this.phone,
                 code: this.phoneCode,
-                type: 'BUSINESS_USER_UPDATE_MOBILE'
+                type: 'BUSINESS_USER_VERIFY_MOBILE'
               }
               account.verifyMobile(data).then((res) => {
                 if (res.code !== 200) {
@@ -390,7 +394,9 @@
                 } else {
                   this.token = res.data.codeToken
                   this.phone = ''
+                  this.fontColor = '#4B5AFE'
                   this.messageBoxExplain = '验证成功，请输入新的手机号'
+                  this.phoneCode = ''
                   this.isOldphone = false
                   this.step = 'newPhone'
                   clearInterval(this.timerr)
@@ -405,8 +411,8 @@
             } else if (this.step === 'newPhone') {
               let data = {
                 mobile: this.newPhone,
-                token: this.token,
-                code: this.code
+                codeToken: this.token,
+                code: this.phoneCode
               }
               account.updateMobile(data).then((res) => {
                 if (res.code !== 200) {
@@ -414,11 +420,14 @@
                 } else {
                   this.phone = ''
                   this.step = 'phoneSuccess'
+                  this.confirmText = '完成'
                 }
               })
             } else if (this.step === 'phoneSuccess') {
               this.messageBoxExplain = '修改成功'
               this.step = 'initialPhone'
+              this.phoneCode = ''
+              this.messageBoxShow = false
             }
           } else if (this.messageBoxType === 'changePassword') {
             if (this.newPassword !== this.reNewPassword) {
@@ -468,10 +477,19 @@
         if (this.isProhibit) {
           return false
         }
-        let data = {
-          'mobile': this.phone,
-          'type': 'BUSINESS_USER_UPDATE_MOBILE',
-          captcha: this.phoneKey
+        let data = {}
+        if (this.isOldphone) {
+          data = {
+            'mobile': this.phone,
+            'type': 'BUSINESS_USER_VERIFY_MOBILE',
+            captcha: this.phoneKey
+          }
+        } else {
+          data = {
+            'mobile': this.newPhone,
+            'type': 'BUSINESS_USER_UPDATE_MOBILE',
+            captcha: this.phoneKey
+          }
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
@@ -524,8 +542,11 @@
   .v-info {
     width: 1020px;
     margin: 35px auto 0;
-    border: 1px solid #333;
+    border: 1px solid #e2e2e2;
     text-align: center;
+    border-radius: 4px;
+    background-color: #fff;
+    padding-bottom: 40px;
     .v-title {
       font-size: 18px;
       color: #222;
@@ -533,6 +554,7 @@
       border-bottom: 1px solid #e2e2e2;
       line-height: 60px;
       padding: 0 30px;
+      margin-bottom: 50px;
     }
     .ve-upload-tx {
       margin: 0 auto;
@@ -540,7 +562,6 @@
     .v-editor {
       display: inline-block;
       width: 375px;
-      margin-bottom: 20px;
       height: 42px;
       line-height: 42px;
       text-align: left;
@@ -550,6 +571,8 @@
         margin: 0 auto;
       }
       .v-explain {
+        font-size: 14px;
+        color: #555;
         display: inline-block;
         width: 70px;
         text-align: left;
@@ -568,6 +591,8 @@
         }
       }
       .v-info-label {
+        font-size: 14px;
+        color: #222;
         display: inline-block;
         width: 214px;
         text-align: left;
@@ -588,24 +613,77 @@
     }
   }
   #captcha {
-    margin-bottom: 10px;
+    width: 390px;
+    margin-bottom: 30px;
   }
   .message-box {
+    &.v-state {
+      .ve-message-box__btns {
+        display: none;
+      }
+    }
+    .ve-message-box {
+      overflow: visible;
+    }
+    .v-success-img {
+      display: block;
+      width: 122px;
+      margin: 45px auto 15px;
+    }
+    .v-success-explain {
+      font-size: 24px;
+      color: #222;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .v-success {
+      font-size: 14px;
+      color: #222;
+      text-align: center;
+      margin-bottom: 20px;
+    }
     .com-input {
       &.v-input {
-        width: 435px;
-        margin-bottom: 10px;
+        width: 390px;
+        margin-bottom: 30px;
         input {
-          width: 435px;
+          width: 390px;
           height: 40px;
           line-height: 40px;
         }
-        &.phone-code {
-          width: 300px;
-          input {
-            width: 300px;
-          }
+      }
+    }
+    .phone-code-btn {
+      background-color: #ffd021;
+      display: block;
+      width: 115px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+      position: absolute;
+      bottom: 22px;
+      right: 0;
+      border-radius: 2px;
+      text-decoration: none;
+      position: absolute;
+      top: 226px;
+      right: 43px;
+      &.prohibit {
+        background-color: #dedede;
+        &:hover {
+          background-color: #dedede;
         }
+      }
+      .fr {
+        margin-left: 6px;
+        float: none;
+      }
+    }
+    &.ve-message-box__wrapper {
+      .ve-message-box .ve-message-box__btns {
+        margin-top: -10px;
       }
     }
   }
@@ -617,8 +695,11 @@
     margin-left: 5px;
   }
   .v-explain {
-    text-align: center;
-    color: #333;
+    font-size: 14px;
+    width: 410px;
+    margin: 0 auto 14px;
+    text-align: left;
+    color: #555;
   }
   .v-subtitle {
     text-align: left;
@@ -629,6 +710,31 @@
     text-align: left;
     margin: -5px auto 10px;
     padding: 0 23px;
+  }
+  .v-verSuccess {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
+  }
+  .v-state-info {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+    .v-label {
+      width: 98px;
+      display: inline-block;
+    }
+    .v-information {
+      color: #222;
+    }
+    .v-state-img {
+      display: inline-block;
+      width: 120px;
+      height: 80px;
+      border: 1px solid #e2e2e2;
+      border-radius: 4px;
+    }
   }
 }
 </style>

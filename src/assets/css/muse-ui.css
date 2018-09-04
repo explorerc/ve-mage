@@ -23,7 +23,6 @@
 /* .mu-text-field.focus-state.error {
     color: #f44336
 } */
-
 .mu-text-field.has-label {
   min-height: 72px
 }
@@ -154,7 +153,8 @@
   left: 56px
 }
 
-.mu-text-field-focus-line.error, .mu-text-field-focus-line.focus {
+.mu-text-field-focus-line.error,
+.mu-text-field-focus-line.focus {
   -webkit-transform: scaleX(1);
   -ms-transform: scaleX(1);
   transform: scaleX(1)
@@ -250,4 +250,23 @@
 
 .mu-text-field.multi-line .mu-text-field-hint {
   line-height: 1.5
+}
+
+.yidun.yidun--light .yidun_slider:hover {
+  background-color: #FFD021 !important;
+}
+
+.yidun.yidun--light .yidun_control.yidun_control--moving .yidun_slide_indicator {
+  border-color: #FFD021 !important;
+  background-color: #FFF9E4 !important;
+}
+
+.yidun.yidun--light.yidun--success.yidun--jigsaw .yidun_slide_indicator {
+  border-color: #818CFE !important;
+  background-color: #F0F1FE !important;
+}
+
+.yidun.yidun--light.yidun--success.yidun--jigsaw .yidun_slider {
+  background-color: #4B5AFE !important;
+  border-color: #4B5AFE !important;
 }

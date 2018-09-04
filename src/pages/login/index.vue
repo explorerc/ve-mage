@@ -183,7 +183,6 @@
             sessionStorage.setItem('isLogin', true)
             sessionStorage.setItem('userInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
-            console.log('账号登录成功')
             this.$router.replace('/setAccount')
           }
         })
@@ -212,7 +211,6 @@
             sessionStorage.setItem('isLogin', true)
             sessionStorage.setItem('userInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
-            console.log('动态码登录成功')
             this.isSend = true
             this.isProhibit = true
             clearInterval(this.timerr)
@@ -228,6 +226,7 @@
                 this.cap.refresh()
               }
             }, 1000)
+            this.$router.replace('/setAccount')
           }
         })
       },
@@ -466,7 +465,7 @@
       }
     }
     .v-getcode {
-      background-color: #fc5659;
+      background-color: #ffd021;
       display: block;
       width: 115px;
       height: 34px;

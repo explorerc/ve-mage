@@ -51,7 +51,7 @@ export default {
         this.com = `t${this.ptid}`
       } else {
         activityService.webinarInfo(this.tid).then(res => {
-          ({title: this.title, published: this.published} = res.data)
+          ({ title: this.title, published: this.published } = res.data)
         })
         brandService.getSiteData({
           __loading: true,

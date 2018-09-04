@@ -76,7 +76,6 @@ export default {
 <style lang="scss" scoped>
 .v-editor {
   display: block;
-  margin-bottom: 20px;
   height: 42px;
   line-height: 42px;
   .v-info-label {

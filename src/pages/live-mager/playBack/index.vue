@@ -191,7 +191,7 @@
   }
   export default {
     name: 'play-back',
-    components: {VeUploadImage, veMsgTips, VeUploadVideo},
+    components: { VeUploadImage, veMsgTips, VeUploadVideo },
     data () {
       return {
         navIdx: 0,
