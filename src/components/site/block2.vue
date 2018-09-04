@@ -1,8 +1,8 @@
 <template>
-  <div class="block2-container" >
+  <div class="block2-container" v-if="value.enable">
     <div ref="target" class="block2-content">
       <el-carousel trigger="click" :autoplay="autoplay" :height="height" :interval="4000">
-        <el-carousel-item v-for="(item,index) in value" :key="'block2_item_'+index">
+        <el-carousel-item v-for="(item,index) in value.data" :key="'block2_item_'+index">
           <a target="_black" :href="item.link | voidLink">
             <div class="block2-item" :style="{'background-image':`url(${host+item.img})`}" >
               <div class="block2-item-content" v-html="item.content"></div>
@@ -15,7 +15,7 @@
     <com-edit ref="editTarget" class="block2-edit" @show="showHandle" @hide="hideHandle">
       <com-button class="add-btn" @click="addBlock">添加图块</com-button>
       <ul class="block2-edit-group">
-        <li v-for="(item,index) in value" :key="'block2_edit_item'+index">
+        <li v-for="(item,index) in value.data" :key="'block2_edit_item'+index">
           <div class="block2-title" @click="titleClick(index)">{{`图块${index+1}`}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
           <div class="block2-content" :class="{active:active===index}">
             <div>
@@ -65,12 +65,6 @@ export default {
     height: {
       type: String,
       default: '150px'
-    },
-    value: {
-      type: Array,
-      default () {
-        return []
-      }
     }
   },
   data () {
@@ -82,9 +76,9 @@ export default {
   },
   methods: {
     addBlock () {
-      let len = this.value.length
+      let len = this.value.data.length
       if (len < 8) {
-        this.value.push({
+        this.value.data.push({
           content: ``,
           img: ''
         })
@@ -99,14 +93,14 @@ export default {
       }
     },
     removeClick (index) {
-      if (this.value.length > 2) {
-        this.value.splice(index, 1)
+      if (this.value.data.length > 2) {
+        this.value.data.splice(index, 1)
       }
     },
     uploadLoad (data, index) {
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        this.value[index].img = `${ret.data.name}`
+        this.value.data[index].img = `${ret.data.name}`
       }
     },
     hideHandle () {

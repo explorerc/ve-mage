@@ -1,5 +1,5 @@
 <template>
-  <div class="block1-container" >
+  <div class="block1-container" v-if="value.enable">
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" v-for="(item,index) in value.list" :key="'block1_item'+index">
@@ -70,15 +70,6 @@ export default {
     max: {
       type: Number,
       default: 4
-    },
-    value: {
-      type: Object,
-      default () {
-        return {
-          type: 'top',
-          list: []
-        }
-      }
     }
   },
   data () {

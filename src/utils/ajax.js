@@ -23,6 +23,7 @@ axios.interceptors.request.use(
   config => {
     if (config.params.__loading) {
       Loading(true)
+      delete config.params.__loading
     }
     if (config.method === 'post') {
       config.data = qs.stringify(config.params)

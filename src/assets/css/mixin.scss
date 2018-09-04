@@ -32,12 +32,14 @@
   background-color: $bg-color;
   box-sizing: border-box;
   &:hover {
-    transition: background-color .3s;
+    transition: background-color .3s, opacity .1s;
     cursor: pointer;
     background-color: $hover-color;
+    opacity: .9;
   }
   &:active {
     background-color: $active-color;
+    opacity: 1;
   }
 }
 
@@ -55,7 +57,7 @@
 /* 主要按钮 */
 @mixin primary-button() {
   @include button-normal();
-  &[disabled]{
+  &[disabled] {
     opacity: .3;
     cursor: no-drop;
   }

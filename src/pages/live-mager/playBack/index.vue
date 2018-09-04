@@ -63,7 +63,7 @@
     <!-- 回放设置 -->
     <message-box
       v-show="playBackShow"
-      width="600px"
+      width="646px"
       header="设置默认回放"
       cancelText="取消"
       confirmText='确定'
@@ -74,17 +74,13 @@
             <div class="from-title">回放封面：</div>
             <div class="from-content">
               <div class="from-content">
-                <ve-upload
+                <ve-upload-image
                   title="点击上传封面"
                   accept="png|jpg|jpeg"
                   :defaultImg="defaultImg"
                   :fileSize="1024"
                   @error="uploadError"
-                  @success="uploadImgSuccess"></ve-upload>
-                <div class="upload-tips">
-                  <span>为了保证显示效果，请上传不大于1280x720大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M</span>
-                  <span class="error" v-if="uploadImgErrorMsg">{{uploadImgErrorMsg}}</span>
-                </div>
+                  @success="uploadImgSuccess"></ve-upload-image>
               </div>
             </div>
           </div>
@@ -183,7 +179,7 @@
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-image'
+  import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
   import veMsgTips from 'src/components/ve-msg-tips'
   import PlayBackHttp from 'src/api/play-back'
@@ -195,7 +191,7 @@
   }
   export default {
     name: 'play-back',
-    components: { VeUpload, veMsgTips, VeUploadVideo },
+    components: {VeUploadImage, veMsgTips, VeUploadVideo},
     data () {
       return {
         navIdx: 0,
@@ -239,7 +235,6 @@
         outLineLink: '',
         outLineMode: '0',
         playBackMode: '0',
-        uploadImgErrorMsg: '',
         uploadErrorMsg: '',
         playMsg: '',
         prePlayShow: false
@@ -454,7 +449,6 @@
       },
       uploadError (data) {
         console.log('上传失败:', data)
-        this.uploadImgErrorMsg = '上传图片失败'
       },
       uploadVideo () {
         document.getElementById('upload').click()
