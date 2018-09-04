@@ -10,7 +10,7 @@
     :placeholder="placeholder"
     :disabled="disabled"
     v-model="innerValue"
-    @focus="showDelete=true"
+    @focus="focus"
     @blur="hideDelete"
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
@@ -92,6 +92,10 @@ export default {
           break
       }
       return type
+    },
+    focus () {
+      this.showDelete = true
+      this.$emit('focus')
     }
   },
   watch: {

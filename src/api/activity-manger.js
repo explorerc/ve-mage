@@ -329,13 +329,13 @@ const ActivityManger = {
     })
   },
   // 微信测试发送
-  sendTestWechat (data) {
-    return utils.ajax({
-      method: 'post',
-      url: '/expand/wechat-invite/test-send',
-      params: data
-    })
-  },
+  // sendTestWechat (data) {
+  //   return utils.ajax({
+  //     method: 'post',
+  //     url: '/expand/wechat-invite/test-send',
+  //     params: data
+  //   })
+  // },
   // 获取微信测试限制数量
   wxLimit () {
     return utils.ajax({
