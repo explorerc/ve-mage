@@ -1,8 +1,8 @@
 <template>
   <div class="live-mager">
     <div class="live-title">
-      <span>邮件处理</span>
-      <el-button class="live-btn fr" type="primary" plain @click="goBack">返回</el-button>
+      <span class="title">邮件处理</span>
+      <button class="primary-button fr" @click="goBack">返回</button>
     </div>
     <transition name="fade" mode="out-in">
       <keep-alive>

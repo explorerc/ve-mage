@@ -33,3 +33,6 @@ $color-ui-components:#4B5AFE;
 .el-pagination.is-background .el-pager li.active {
   background-color: $color-ui-components;
 }
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+  background-color: #F0F1FE;
+}

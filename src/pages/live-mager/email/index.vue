@@ -1,7 +1,7 @@
 <template>
   <div class="live-mager email-box">
     <div class="live-title">
-      <span>邮件邀约</span>
+      <span class="title">邮件邀约</span>
     </div>
     <div class="email-table-box" v-ComLoading="loading">
       <div class="email-setting">
@@ -11,7 +11,7 @@
           active-color="#13ce66">
         </el-switch>
         <span class="msg-tip">开启后，将可以定制邀约邮件，邀请特定客户群参加直播活动</span>
-        <el-button class="live-btn fr" type="primary" plain @click="addEmail">新建邮件</el-button>
+        <button class="primary-button fr" @click="addEmail">新建邮件</button>
       </div>
       <el-table
         :data="emailList"
@@ -254,13 +254,12 @@
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
 .email-table-box {
-  margin: 20px;
   font-size: 14px;
 }
 
 .email-setting {
-  margin-bottom: 30px;
-  padding: 10px 0;
+  margin-bottom: 20px;
+  padding: 20px 0;
 }
 </style>
 
