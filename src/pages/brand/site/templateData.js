@@ -2,7 +2,6 @@ export default {
   template1 () {
     return {
       tid: '0478320',
-      editAble: true,
       section1Data: {
         panel: {
           bgType: 'img',
@@ -126,7 +125,13 @@ export default {
           color: 'rgba(255, 255, 255, 1)'
         },
         share: {
-          enable: true
+          enable: true,
+          sina: true,
+          qqSpace: true,
+          qq: true,
+          wxSpace: true,
+          wx: true,
+          copy: true
         }
       },
       section6Data: {
@@ -211,7 +216,6 @@ export default {
   template2 () {
     return {
       tid: '0478321',
-      editAble: false,
       section1Data: {
         panel: {
           bgType: 'img',
@@ -335,7 +339,13 @@ export default {
           color: 'rgba(255, 255, 255, 1)'
         },
         share: {
-          enable: true
+          enable: true,
+          sina: true,
+          qqSpace: true,
+          qq: true,
+          wxSpace: true,
+          wx: true,
+          copy: true
         }
       },
       section6Data: {

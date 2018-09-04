@@ -1,59 +1,44 @@
 <template>
   <div class="edit-step-box">
-    <div class="edit-content clearfix">
-      <div class="edit-content-box fl">
-        <ve-editer
-          height="500"
-          v-model="email.content"></ve-editer>
-        <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
-          <div>为自己发送一封测试邮件</div>
-          <div>
-            <input v-model="testEmail" placeholder="输入邮件地址"/>
-            <el-button class="live-btn" type="primary" plain @click="sendTestEmail">发送测试邮件</el-button>
+    <div class="mager-box border-box">
+      <div class="edit-content clearfix">
+        <div class="edit-content-box fl">
+          <ve-html5-editer
+            v-model="email.content"></ve-html5-editer>
+          <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
+            <div>为自己发送一封测试邮件</div>
+            <div>
+              <input v-model="testEmail" placeholder="输入邮件地址"/>
+              <el-button class="live-btn" type="primary" plain @click="sendTestEmail">发送测试邮件</el-button>
+            </div>
+          </div>
+        </div>
+        <div class="edit-content-temp fr">
+          <div class="temp-title">
+            选择模板
+            <el-button class="live-btn fr" type="primary" plain @click="recoverDefault">恢复默认</el-button>
+          </div>
+          <div class="temp-boxs">
+            <div v-for="(emailItem,idx) in emailList"
+                 :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
+                 @click.stop="changeTemp(idx)">
+              {{emailItem.title}}
+            </div>
           </div>
         </div>
       </div>
-      <div class="edit-content-temp fr">
-        <div class="temp-title">
-          选择模板
-          <el-button class="live-btn fr" type="primary" plain @click="recoverDefault">恢复默认</el-button>
-        </div>
-        <div class="temp-boxs">
-          <div v-for="(emailItem,idx) in emailList"
-               :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
-               @click.stop="changeTemp(idx)">
-            {{emailItem.title}}
-          </div>
-        </div>
+      <div class="step-btns">
+        <button class="primary-button fl" @click="goLiveManger">返回邮件管理</button>
+        <el-button class="primary-button fr" @click="nextEmail">下一步</el-button>
+        <el-button class="primary-button margin-fl fr" @click="saveEmail">保存草稿</el-button>
       </div>
-    </div>
-    <div class="step-btns">
-      <el-button class="live-btn fl" type="primary" plain @click="goLiveManger">返回邮件管理</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="nextEmail">下一步</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="saveEmail">保存草稿</el-button>
-    </div>
-    <div ref="emailBox">
-      <table class="email-box">
-        <tr>
-          <td>dddd</td>
-          <td>dddd</td>
-          <td>dddd</td>
-        </tr>
-        <tr>
-          <td>dddd</td>
-          <td>dddd</td>
-          <td>dddd</td>
-        </tr>
-      </table>
     </div>
   </div>
 </template>
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  // import VeEditer from 'src/components/ve-editer'
-  import VeEditer from 'src/components/ve-html5-editer'
-  // import editStepTwo from './edit-step-two'
+  import VeHtml5Editer from 'src/components/ve-html5-editer'
   import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
@@ -74,7 +59,7 @@
         }
       }
     },
-    components: { VeEditer },
+    components: { VeHtml5Editer },
     computed: mapState('liveMager', {
       emailInfo: state => state.emailInfo
     }),
@@ -234,16 +219,26 @@
   }
 </script>
 
+<style lang="scss" scoped src="../css/live.scss">
+</style>
 <style lang="scss" scoped>
+  @import "~assets/css/mixin.scss";
 .edit-step-box {
   height: 800px;
+  background-color: #fff;
+  .step-btns {
+    margin: 30px 30px 100px 30px;
+    .margin-fl{
+      margin: 0 20px;
+    }
+  }
   .edit-content {
     margin: 20px 0;
     .edit-content-temp {
       width: 400px;
       margin-top: 20px;
       .temp-title {
-        margin: 0 20px;
+        margin: 0 0 0 20px;
       }
       .temp-boxs {
         margin: 20px;
@@ -262,11 +257,9 @@
       }
     }
     .edit-content-box {
-      width: calc(100% - 400px);
+      width: calc(100% - 430px);
+      margin-left: 30px;
     }
-  }
-  .step-btns {
-    margin-top: 20px;
   }
 }
 </style>

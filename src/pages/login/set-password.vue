@@ -5,7 +5,23 @@
       <p class="v-info">
         请勿将密码泄露给第三者，避免造成不必要的损失
       </p>
-      <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()"></com-input>
+      <div class="v-psd">
+        <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()" @change="passwordChange()" @blur="passwordBlur()"></com-input>
+        <div class="v-verification" v-if="isShow">
+          <ul>
+            <p>密码至少包含：</p>
+            <li>
+              <i class="iconfont icon-duigou1" :class="{isActive: isContainEn}"></i> 1个英文字母
+            </li>
+            <li>
+              <i class="iconfont icon-duigou1" :class="{isActive: isContainNum}"></i> 1个数字
+            </li>
+            <li>
+              <i class="iconfont icon-duigou1" :class="{isActive: isContainCount}"></i> 6～30个字符
+            </li>
+          </ul>
+        </div>
+      </div>
     </message-box>
   </div>
 </template>
@@ -16,7 +32,12 @@
       return {
         password: '',
         isWarning: false,
-        show: true
+        show: true,
+        isContainEn: 0,
+        isContainNum: 0,
+        isContainCount: 0,
+        isShow: false,
+        isChecked: false
       }
     },
     components: {
@@ -35,35 +56,51 @@
     methods: {
       messageBoxClick (e) {
         if (e.action === 'confirm') {
-          if (this.password.trim() === '') {
-            this.isWarning = true
-          } else {
-            let data = {
-              'newPassword': this.password
-            }
-            account.setPassword(data).then((res) => {
-              if (res.code !== 200) {
-                alert(res.msg)
-              } else {
-                this.isWarning = false
-                this.$router.replace('/setAccount')
-              }
-            })
+          if (!this.isChecked) {
+            return false
           }
+          let data = {
+            'newPassword': this.password
+          }
+          account.setPassword(data).then((res) => {
+            if (res.code !== 200) {
+              alert(res.msg)
+            } else {
+              this.isWarning = false
+              this.$router.replace('/setAccount')
+            }
+          })
         }
       },
       passwordFocus () {
-        alert(1)
+        this.isShow = true
+      },
+      passwordChange () {
+        this.isContainCount = this.password.length >= 6 ? 1 : 0
+        var regNum = /^(?=.*\d.*\b)/
+        this.isContainNum = regNum.test(this.password) ? 1 : 0
+        var regEn = /[_a-zA-Z]/
+        this.isContainEn = regEn.test(this.password) ? 1 : 0
+        if (this.password.length >= 6 && regNum.test(this.password) && regEn.test(this.password)) {
+          this.isChecked = true
+        } else {
+          this.isChecked = false
+        }
+      },
+      passwordBlur () {
+        this.isShow = false
       }
     }
   }
 </script>
 <style lang="scss" scoped>
+@import '~assets/css/variable.scss';
 .setpsd-container /deep/ {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   .ve-message-box {
+    overflow: visible;
     &:before {
       height: 0;
     }
@@ -75,6 +112,38 @@
     }
     .ve-message-box__btns {
       margin-top: 40px;
+    }
+    .v-psd {
+      position: relative;
+      .v-verification {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        ul {
+          width: 130px;
+          height: 95px;
+          background-color: #fff;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+          padding: 8px 12px;
+          font-size: 12px;
+          color: #222;
+          li {
+            margin-bottom: 5px;
+          }
+          p {
+            color: #555;
+            margin-bottom: 5px;
+          }
+          i {
+            color: #e9ebff;
+            font-size: 12px;
+            &.isActive {
+              color: $color-blue;
+            }
+          }
+        }
+      }
     }
     .v-title {
       font-size: 20px;
