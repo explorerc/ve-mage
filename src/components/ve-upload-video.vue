@@ -98,8 +98,6 @@
       deleteVideo () {
         this.percentVideo = 0
         this.errorTxt = ''
-        this.fileName = ''
-        this.fileRealSize = 0
         this.isConvert = false
         this.$emit('handleClick', {
           type: 'delete',
