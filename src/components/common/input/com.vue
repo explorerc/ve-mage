@@ -7,25 +7,29 @@
     <input
     :type="inputType"
     :style="style"
+    :class="{error:errorMsg}"
     :placeholder="placeholder"
     :disabled="disabled"
     v-model="innerValue"
-    @focus="focus"
-    @blur="hideDelete"
+    @focus="focusHandle"
+    @blur="blurHandle"
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
     <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
   </div>
   <div class="com-input area"  v-else>
     <textarea
     ref="tarea"
     v-model="innerValue"
+    :class="{error:errorMsg}"
     :placeholder="placeholder"
     :rows="rows"
   placeholder="请输入内容"
     ></textarea>
     <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
+    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
   </div>
 </template>
 
@@ -45,14 +49,16 @@ export default {
       default: 2
     },
     autosize: Boolean,
-    disabled: String
+    disabled: String,
+    errorTips: String
   },
   data () {
     return {
       innerValue: '',
       showDelete: false,
       inputType: '',
-      offsetHeight: 0
+      offsetHeight: 0,
+      errorMsg: ''
     }
   },
   created () {
@@ -66,6 +72,14 @@ export default {
     this.inputType = this.getType()
   },
   methods: {
+    focusHandle (e) {
+      this.showDelete = true
+      this.$emit('focus', e)
+    },
+    blurHandle (e) {
+      this.hideDelete()
+      this.$emit('blur', e)
+    },
     empty () {
       this.innerValue = ''
     },
@@ -92,10 +106,6 @@ export default {
           break
       }
       return type
-    },
-    focus () {
-      this.showDelete = true
-      this.$emit('focus')
     }
   },
   watch: {
@@ -121,6 +131,12 @@ export default {
         this.inputType = this.getType()
       },
       immediate: true
+    },
+    errorTips: {
+      handler (value) {
+        this.errorMsg = value
+      },
+      immediate: true
     }
   },
   computed: {
@@ -132,6 +148,8 @@ export default {
         ret.paddingRight = '30px'
       } else if (this.maxLength) {
         ret.paddingRight = '45px'
+      } else if (this.type === 'password') {
+        ret.paddingRight = '30px'
       }
       return ret
     }
@@ -144,6 +162,13 @@ export default {
   position: relative;
   display: inline-block;
   width: 200px;
+  .error-msg {
+    display: block;
+    position: absolute;
+    color: #fc5659;
+    padding-left: 10px;
+    font-size: 14px;
+  }
   input {
     display: inline-block;
     width: 100%;
@@ -156,12 +181,16 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
+    padding: 0 10px;
+    &.error {
+      border-color: #fc5659;
+    }
     &:hover {
-      border-color: #40a9ff;
+      border-color: #4b5afe;
     }
-    &:focus {
-      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-    }
+    /*&:focus {*/
+    /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
+    /*}*/
     &::-moz-placeholder {
       color: #bfbfbf;
       opacity: 1;
@@ -184,7 +213,7 @@ export default {
     transform: translateY(-50%);
     right: 8px;
     .length {
-      color: #5ea6ed;
+      color: #4b5afe;
     }
     &.area {
       transform: none;
@@ -231,6 +260,25 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     font-size: inherit;
+    &.error {
+      border-color: #fc5659;
+    }
+    &:hover {
+      border-color: #4b5afe;
+    }
+    &::-moz-placeholder {
+      color: #bfbfbf;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: #bfbfbf;
+    }
+    &::-webkit-input-placeholder {
+      color: #bfbfbf;
+    }
+    &[disabled] {
+      cursor: not-allowed;
+    }
   }
 }
 </style>

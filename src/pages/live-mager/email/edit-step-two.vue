@@ -1,23 +1,25 @@
 <template>
   <div class="edit-step-box">
-    <div class="mager-box">
+    <div class="mager-box border-box">
       <div class="from-box">
         <div class="from-row">
-          <div class="from-title">邮件标题：</div>
+          <div class="from-title"><i class="star">*</i>邮件标题：</div>
           <div class="from-content">
             <com-input
               placeholder="输入标题，可结合变量使用"
               class="input-email"
+              :error-tips="errorMsg.title"
               :value.sync="email.title"
               :max-length="30"></com-input>
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title">发件人名称：</div>
+          <div class="from-title"><i class="star">*</i>发件人名称：</div>
           <div class="from-content">
             <com-input
               placeholder="输入发件人名称"
               class="input-email"
+              :error-tips="errorMsg.senderName"
               :value.sync="email.senderName"
               :max-length="15"></com-input>
           </div>
@@ -25,12 +27,13 @@
         <div class="from-row">
           <div class="from-title">邮件摘要：</div>
           <div class="from-content">
-            <div>在收件箱列表中显示的邮件内容摘要</div>
+            <div style="line-height: 34px;">在收件箱列表中显示的邮件内容摘要</div>
             <com-input
               placeholder="输入发件人名称"
               type="textarea"
               autosize
               class="input-email"
+              :error-tips="errorMsg.desc"
               :value.sync="email.desc"
               :max-length="140"></com-input>
           </div>
@@ -58,12 +61,12 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="step-btns">
-      <el-button class="live-btn fl" type="primary" plain @click="prePage">上一步</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="immediatelySend">立即发送</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="timerSend">定时发送</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="saveEmail">保存草稿</el-button>
+      <div class="step-btns">
+        <button class="primary-button fl" @click="prePage">上一步</button>
+        <button class="primary-button fr" @click="immediatelySend">立即发送</button>
+        <button class="primary-button margin-fl fr" @click="timerSend">定时发送</button>
+        <button class="primary-button fr" @click="saveEmail">保存草稿</button>
+      </div>
     </div>
     <message-box
       v-if="timerSendShow"
@@ -90,7 +93,7 @@
           <span>***********************************************************</span>
         </div>
       </div>
-      <div slot="bottom">
+      <div class="msg-box-bottom" slot="bottom">
         <div class="email-timer" v-if="isTimer">
           <el-date-picker
             v-model="email.planTime"
@@ -100,8 +103,9 @@
             format="yyyy-MM-dd HH:mm"
             value-format="yyyy-MM-dd HH:mm">
           </el-date-picker>
+          <span class="error-msg" v-if="errorMsg.planTime">{{errorMsg.planTime}}</span>
         </div>
-        <el-button class="live-btn fr" type="primary" plain @click="sendEmail">{{isTimer?'定时发送':'立即发送'}}</el-button>
+        <button class="primary-button fr" @click="sendEmail">{{isTimer?'定时发送':'立即发送'}}</button>
       </div>
     </message-box>
   </div>
@@ -109,8 +113,7 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  // import editStepOne from './edit-step-one'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -120,6 +123,13 @@
         outValue: '',
         timerSendShow: false,
         isTimer: true,
+        errorMsg: {
+          title: '',
+          content: '',
+          desc: '',
+          senderName: '',
+          planTime: ''
+        },
         email: {
           activityId: '',
           emailInviteId: '',
@@ -138,19 +148,51 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
+      },
+      email: {
+        handler () {
+          this.clearError()
+        },
+        deep: true
       }
     },
     methods: {
       ...mapMutations('liveMager', {
         storeEmailInfo: types.EMAIL_INFO
       }),
+      /* 清除错误信息 */
+      clearError () {
+        if (this.email.planTime) {
+          this.errorMsg.planTime = ''
+        } else {
+          return
+        }
+        if (this.email.title) {
+          this.errorMsg.title = ''
+        } else {
+          return
+        }
+        if (this.email.senderName) {
+          this.errorMsg.senderName = ''
+        } else {
+          return
+        }
+        if (this.email.desc) {
+          this.errorMsg.desc = ''
+        } else {
+          return
+        }
+        if (this.email.content) {
+          this.errorMsg.content = ''
+        }
+      },
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = { ...this.email, ...res.data }
+            this.email = {...this.email, ...res.data}
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
@@ -162,16 +204,18 @@
         })
       },
       sendEmail () {
+        if (this.isTimer && !this.email.planTime) {
+          this.errorMsg.planTime = '定时时间不能为空'
+          return
+        }
         this.timerSendShow = false
         if (!this.checkParams(this.isTimer)) return
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
-            console.log(res)
             this.$router.go(-1)
           })
         } else { // 保存并发送
           LiveHttp.saveAndsendEmail(this.email).then((res) => {
-            console.log(res)
             this.$router.go(-1)
           })
         }
@@ -186,30 +230,24 @@
         this.timerSendShow = true
       },
       checkParams (isTimer) {
-        let toastParam = {
-          title: '警告',
-          message: '',
-          type: 'warning'
+        this.errorMsg = {
+          title: '',
+          content: '',
+          desc: '',
+          senderName: '',
+          planTime: ''
         }
         if (!this.email.title) {
-          toastParam.message = '标题不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.title = '标题不能为空'
           return false
         } else if (!this.email.senderName) {
-          toastParam.message = '发件人不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.senderName = '发件人不能为空'
           return false
         } else if (!this.email.content) {
-          toastParam.message = '邮件内容不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.content = '邮件内容不能为空'
           return false
         } else if (!this.email.desc) {
-          toastParam.message = '邮件摘要不能为空'
-          this.$notify(toastParam)
-          return false
-        } else if (isTimer && !this.email.planTime) {
-          toastParam.message = '定时时间不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.desc = '邮件摘要不能为空'
           return false
         }
         return true
@@ -218,7 +256,6 @@
         this.timerSendShow = false
       },
       prePage () {
-        // this.$parent.$data.currentComponent = editStepOne
         this.$emit('changeView', 0)
       }
     }
@@ -227,46 +264,62 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-.edit-step-box {
-  .msg-box {
-    z-index: 1000;
-  }
-  .step-btns {
-    margin-top: 20px;
-  }
-  .input-email {
-    width: 400px;
-  }
-  .email-timer {
-    display: inline-block;
-  }
-  .edit-groups {
-    margin-top: 40px;
-    .edit-groups-item {
-      margin: 10px 0;
-      line-height: 30px;
-      span {
+  .edit-step-box {
+    .msg-box {
+      z-index: 1000;
+    }
+    .step-btns {
+      margin: 30px 30px 100px 30px;
+      .margin-fl {
+        margin: 0 20px;
+      }
+    }
+    .input-email {
+      width: 400px;
+    }
+    .msg-box-bottom {
+      height: 40px;
+      .email-timer {
         display: inline-block;
-        text-align: center;
-        &:nth-child(1) {
-          width: 200px;
-          border: solid 1px #e5e5e5;
-        }
-        &:nth-child(2) {
-          margin: 0 0 0 20px;
-          padding: 0 5px;
-          cursor: pointer;
-        }
-        &:nth-child(3) {
-          padding: 0 5px;
-          cursor: pointer;
-        }
-        &:nth-child(2):hover,
-        &:nth-child(3):hover {
-          color: #2878ff;
+        margin-right: 23px;
+      }
+      .error-msg {
+        display: block;
+        position: absolute;
+        color: #FC5659;
+        font-size: 14px;
+      }
+    }
+    .from-title {
+      line-height: 40px;
+    }
+    .edit-groups {
+      margin-top: 40px;
+      .edit-groups-item {
+        margin: 10px 0;
+        line-height: 30px;
+        span {
+          display: inline-block;
+          text-align: center;
+          &:nth-child(1) {
+            width: 200px;
+            border: solid 1px #e5e5e5;
+          }
+          &:nth-child(2) {
+            margin: 0 0 0 20px;
+            padding: 0 5px;
+            cursor: pointer;
+          }
+          &:nth-child(3) {
+            padding: 0 5px;
+            cursor: pointer;
+          }
+          &:nth-child(2):hover,
+          &:nth-child(3):hover {
+            color: #2878ff;
+          }
         }
       }
     }
   }
-}
 </style>

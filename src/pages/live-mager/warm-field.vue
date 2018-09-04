@@ -59,12 +59,11 @@
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
-  import VeUploadTx from 'src/components/ve-upload-tx'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: {VeUploadImage, VeUploadVideo, VeUploadTx},
+    components: { VeUploadImage, VeUploadVideo },
     data () {
       return {
         warm: {
@@ -80,8 +79,7 @@
           signed_at: '',
           app_id: '',
           fileName: '',
-          fileSize: '',
-          recordId: ''
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -202,8 +200,22 @@
         if (e.type === 'pre-view') { // 预览
           this.prePlayVideo()
         } else if (e.type === 'delete') { // 删除
-          this.warm.recordId = ''
-          this.warm.filename = ''
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.warm.recordId = ''
+                this.warm.filename = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+              }
+            }
+          })
         }
       },
       uploadError (data) {
@@ -216,11 +228,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn {
-    text-align: center;
-    button {
-      width: 200px;
-      margin: 60px auto 50px auto;
-    }
+.bottom-btn {
+  text-align: center;
+  button {
+    width: 200px;
+    margin: 60px auto 50px auto;
   }
+}
 </style>

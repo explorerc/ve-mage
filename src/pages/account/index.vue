@@ -1,35 +1,37 @@
 <template>
   <div class="account-container">
+    <p class="v-account-title">
+      账号设置
+    </p>
     <div class="v-info">
       <p class="v-title">
         基本信息
       </p>
       <a href="javascript:;" @click="logOff()">退出登录</a>
-      <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
-      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
-      <div class="v-editor" style="height: 170px;">
-        <span class="v-explain" style="vertical-align: top;">账户头像</span>
-              <ve-upload title="上传封面" accept="png|jpg|jpeg|bmp|gif" :defaultImg="$imgHost + '/' + avatar" :fileSize="1024" @error="uploadError" @success="uploadImgSuccess"/>
+      <div class="v-editor v-avatar-img" style="height: 170px;">
+        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
       </div>
+      <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
+      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40" @cancel="cancel($event,'accountName')"><span class="v-explain">账户名</span></com-editor>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
       <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称</span></com-editor>
       <com-editor :value.sync="state" type="input" @clickSaveBtn="clickSave(state,'popup','state')" clickType="popup" btnName="查看"><span class="v-explain">认证状态</span></com-editor>
       <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry,'industry','company')" clickType="save"><span class="v-explain">所属行业</span></com-editor>
-      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"><span class="v-explain">公司网址</span></com-editor>
+      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"  @cancel="cancel($event,'companyWebsite')"><span class="v-explain">公司网址</span></com-editor>
     </div>
     <div class="v-info">
       <p class="v-title">
         指定联系人
       </p>
-      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"><span class="v-explain">姓名</span></com-editor>
-      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20"><span class="v-explain">职务</span></com-editor>
-      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11"><span class="v-explain">手机</span></com-editor>
-      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"><span class="v-explain">办公电话</span></com-editor>
-      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save"><span class="v-explain">邮箱</span></com-editor>
-      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40"><span class="v-explain">微信</span></com-editor>
-      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20"><span class="v-explain">QQ</span></com-editor>
-      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60"><span class="v-explain">备注</span></com-editor>
+      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"  @cancel="cancel($event,'userName')"><span class="v-explain">姓名</span></com-editor>
+      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userPost')"><span class="v-explain">职务</span></com-editor>
+      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11" @cancel="cancel($event,'userPhone')"><span class="v-explain">手机</span></com-editor>
+      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"  @cancel="cancel($event,'officeNo')"><span class="v-explain">办公电话</span></com-editor>
+      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save" @cancel="cancel($event,'userEmail')"><span class="v-explain">邮箱</span></com-editor>
+      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40" @cancel="cancel($event,'userWechat')"><span class="v-explain">微信</span></com-editor>
+      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userQQ')"><span class="v-explain">QQ</span></com-editor>
+      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60" @cancel="cancel($event,'userRemarks')"><span class="v-explain">备注</span></com-editor>
     </div>
     <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="480px" class="message-box" :confirmText="confirmText">
       <div slot="header">{{messageBoxTitle}}</div>
@@ -88,7 +90,7 @@
   import account from 'src/api/account-manage'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import VeUpload from 'src/components/ve-upload-image'
+  import VeUploadTx from 'src/components/ve-upload-tx'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   export default {
@@ -152,7 +154,8 @@
         reNewPassword: '',
         licenseCode: '', // 营业执照编号
         licensePic: '', // 营业执照照片
-        avatar: ''// 账户头像
+        avatar: '' // 账户头像
+
       }
     },
     mounted () {
@@ -162,14 +165,14 @@
           console.log(res.msg)
         } else {
           let resData = res.data
-          this.userName = resData.name
-          this.userPost = resData.position
-          this.userPhone = resData.mobile
-          this.officeNo = resData.tel
-          this.userEmail = resData.email
-          this.userWechat = resData.wechat
-          this.userQQ = resData.qq
-          this.userRemarks = resData.remark
+          this.userName = resData.name ? resData.name : '无'
+          this.userPost = resData.position ? resData.position : '无'
+          this.userPhone = resData.mobile ? resData.mobile : '无'
+          this.officeNo = resData.tel ? resData.tel : '无'
+          this.userEmail = resData.email ? resData.email : '无'
+          this.userWechat = resData.wechat ? resData.wechat : '无'
+          this.userQQ = resData.qq ? resData.qq : '无'
+          this.userRemarks = resData.remark ? resData.remark : '无'
         }
       })
       identifyingcodeManage.getCodeId({}).then((res) => {
@@ -180,12 +183,17 @@
         }
       })
     },
-    computed: mapState('login', {
-      isLogin: state => state.isLogin
-    }),
+    computed: {
+      ...mapState('login', {
+        isLogin: state => state.isLogin
+      }),
+      defaultImg () {
+        return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      }
+    },
     components: {
       'com-editor': Editor,
-      've-upload': VeUpload
+      've-upload-tx': VeUploadTx
     },
     created () {
     },
@@ -221,18 +229,18 @@
           if (res.code !== 200) {
             console.log(res.msg)
           } else {
-            let resData = res.data
-            this.account = resData.userName
-            this.accountName = resData.name
-            this.avatar = resData.avatar
-            this.accountPhone = resData.mobile
-            this.accountPassword = resData.hasPassword ? '已设置' : ''
-            this.companyName = resData.company
+            let resData = res.data ? res.data : ''
+            this.account = resData.userName ? resData.userName : '无'
+            this.accountName = resData.name ? resData.userName : '无'
+            this.avatar = resData.avatar ? resData.avatar : '无'
+            this.accountPhone = resData.mobile ? resData.mobile : '无'
+            this.accountPassword = resData.hasPassword ? '已设置' : '未设置'
+            this.companyName = resData.company ? resData.company : '无'
             this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
-            this.selectIndustry = resData.industry
-            this.companyWebsite = res.website
-            this.licenseCode = res.licenseCode
-            this.licensePic = res.licensePic
+            this.selectIndustry = resData.industry ? resData.industry : '无'
+            this.companyWebsite = res.website ? resData.website : '无'
+            this.licenseCode = res.licenseCode ? resData.licenseCode : '无'
+            this.licensePic = res.licensePic ? resData.licensePic : '无'
             sessionStorage.setItem('userInfo', JSON.stringify(res.data))
           }
         })
@@ -281,6 +289,30 @@
               alert('更新成功')
             }
           })
+        }
+      },
+      cancel: function (val, type) {
+        switch (type) {
+          case 'accountName' : this.accountName = val
+            break
+          case 'companyWebsite' : this.companyWebsite = val
+            break
+          case 'userName' : this.userName = val
+            break
+          case 'userPost' : this.userPost = val
+            break
+          case 'userPhone' : this.userPhone = val
+            break
+          case 'officeNo' : this.officeNo = val
+            break
+          case 'userEmail' : this.userEmail = val
+            break
+          case 'userWechat' : this.userWechat = val
+            break
+          case 'userQQ' : this.userQQ = val
+            break
+          case 'userRemarks' : this.userRemarks = val
+            break
         }
       },
       clickSave (val, type, boxType) {
@@ -475,26 +507,71 @@
   }
 </script>
 <style lang="scss" scoped>
-.account-container {
+.account-container /deep/ {
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  margin: 0 auto;
+  .v-account-title {
+    font-size: 24px;
+    color: #222;
+  }
   .v-info {
-    width: 1170px;
+    width: 1020px;
     margin: 35px auto 0;
     border: 1px solid #333;
-    padding: 10px;
+    text-align: center;
+    .v-title {
+      font-size: 18px;
+      color: #222;
+      width: 100%;
+      border-bottom: 1px solid #e2e2e2;
+      line-height: 60px;
+      padding: 0 30px;
+    }
+    .ve-upload-tx {
+      margin: 0 auto;
+    }
     .v-editor {
-      display: block;
+      display: inline-block;
+      width: 375px;
       margin-bottom: 20px;
       height: 42px;
       line-height: 42px;
+      text-align: left;
+      &.v-avatar-img {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+      }
       .v-explain {
         display: inline-block;
-        width: 65px;
-      }
-      .v-indo-label {
-        display: inline-block;
-        width: 155px;
+        width: 70px;
         text-align: left;
-        margin-right: 45px;
+      }
+      .ve-upload-box {
+        width: 100px;
+        height: 100px;
+      }
+      .com-input {
+        width: 214px;
+        margin-right: 15px;
+        input {
+          width: 214px;
+          height: 40px;
+          line-height: 40px;
+        }
+      }
+      .v-info-label {
+        display: inline-block;
+        width: 214px;
+        text-align: left;
+        margin-right: 15px;
         overflow: hidden;
         vertical-align: middle;
       }
@@ -513,19 +590,21 @@
   #captcha {
     margin-bottom: 10px;
   }
-  .com-input {
-    &.v-input {
-      width: 435px;
-      margin-bottom: 10px;
-      input {
+  .message-box {
+    .com-input {
+      &.v-input {
         width: 435px;
-        height: 40px;
-        line-height: 40px;
-      }
-      &.phone-code {
-        width: 300px;
+        margin-bottom: 10px;
         input {
+          width: 435px;
+          height: 40px;
+          line-height: 40px;
+        }
+        &.phone-code {
           width: 300px;
+          input {
+            width: 300px;
+          }
         }
       }
     }

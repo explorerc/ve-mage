@@ -20,7 +20,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播时间：</div>
           <div class="from-content">
-            <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss">
+            <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
           </div>
@@ -48,7 +48,7 @@
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播介绍：</div>
-          <div class="from-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
+          <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
             <ve-editer height="280" v-model="editorContent" @change="change"></ve-editer>
             <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
@@ -218,6 +218,7 @@
 <style lang='scss' scoped>
 @import '~assets/css/variable';
 @import '~assets/css/mixin.scss';
+
 .edit-page {
   border-radius: 5px;
   overflow: hidden;
@@ -325,6 +326,9 @@
     .html-editer .content {
       width: 727px;
     }
+    .from-content.editor-content:not(.error):hover .vue-html5-editor {
+      border-color: $color-blue-hover;
+    }
     .from-content.error {
       .vue-html5-editor {
         border-color: $color-error;
@@ -387,7 +391,6 @@
 //   background: rgba($color: #000000, $alpha: 0.5);
 //   z-index: 9999;
 // }
-
 .created-modal {
   width: 400px;
   height: 300px;

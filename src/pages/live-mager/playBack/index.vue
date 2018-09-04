@@ -1,13 +1,14 @@
 <template>
   <div class="live-mager">
     <div class="live-title">
-      <span>活动回放</span>
+      <span class="title">活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
     </div>
     <!-- 重命名 -->
     <message-box
       v-show="renameShow"
       header=""
+      width="340px"
       cancelText="取消"
       confirmText='确定'
       @handleClick="renameHandleClick">
@@ -128,52 +129,54 @@
         <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
         <button class="primary-button fr" plain @click="addVideoShow=true">添加视频</button>
       </div>
-      <el-table
-        :data="playBackList"
-        style="width: 100%">
-        <el-table-column
-          label="缩略图">
-          <template slot-scope="scope">
-            <img class="play-back-img" :src="playBackList[scope.$index].pic">
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="title"
-          label="片段名">
-        </el-table-column>
-        <el-table-column
-          prop="duration"
-          label="时长">
-        </el-table-column>
-        <el-table-column
-          prop="generateTime"
-          label="生成时间">
-        </el-table-column>
-        <el-table-column
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="text" size="small"
-              v-if="playBackList[scope.$index].replayId == playBack.replayId"
-              @click.stop="">默认回放
-            </el-button>
-            <el-button
-              type="text" size="small"
-              v-else
-              @click.stop="playBackSetting(scope.$index)">设为默认回放
-            </el-button>
-            <div class="more">
-              <span>更多</span>
-              <div class="more-menu">
-                <span @click="handlerMore(scope.$index, 0)" :class="{disabled:playBackList[scope.$index].type=='LINK'}">下载</span>
-                <span @click="handlerMore(scope.$index, 1)">预览</span>
-                <span @click="handlerMore(scope.$index, 2)">重命名</span>
-                <span @click="handlerMore(scope.$index, 3)">删除</span>
+      <div class="table-list-box">
+        <el-table
+          :data="playBackList"
+          style="width: 100%">
+          <el-table-column
+            label="缩略图">
+            <template slot-scope="scope">
+              <img class="play-back-img" :src="playBackList[scope.$index].pic">
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="title"
+            label="片段名">
+          </el-table-column>
+          <el-table-column
+            prop="duration"
+            label="时长">
+          </el-table-column>
+          <el-table-column
+            prop="generateTime"
+            label="生成时间">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="text" size="small"
+                v-if="playBackList[scope.$index].replayId == playBack.replayId"
+                @click.stop="">默认回放
+              </el-button>
+              <el-button
+                type="text" size="small"
+                v-else
+                @click.stop="playBackSetting(scope.$index)">设为默认回放
+              </el-button>
+              <div class="more">
+                <span>更多</span>
+                <div class="more-menu">
+                  <span @click="handlerMore(scope.$index, 0)" :class="{disabled:playBackList[scope.$index].type=='LINK'}">下载</span>
+                  <span @click="handlerMore(scope.$index, 1)">预览</span>
+                  <span @click="handlerMore(scope.$index, 2)">重命名</span>
+                  <span @click="handlerMore(scope.$index, 3)">删除</span>
+                </div>
               </div>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -416,16 +419,28 @@
         })
       },
       delPlayBack () {
-        const delId = this.playBackList[this.selectRowIdx].replayId
-        PlayBackHttp.deletePlayBackById(delId).then((res) => {
-          if (res.code === 200) {
-            this.$toast({
-              header: `提示`,
-              content: '删除成功！',
-              autoClose: 2000,
-              position: 'right-top'
-            })
-            this.queryPlayBackList()
+        this.$messageBox({
+          header: '删除此视频',
+          width: '400px',
+          content: '您是否确定要删除此视频？',
+          cancelText: '取消',
+          confirmText: '删除',
+          type: 'error',
+          handleClick: (e) => {
+            if (e.action === 'confirm') {
+              const delId = this.playBackList[this.selectRowIdx].replayId
+              PlayBackHttp.deletePlayBackById(delId).then((res) => {
+                if (res.code === 200) {
+                  this.$toast({
+                    header: `提示`,
+                    content: '删除成功！',
+                    autoClose: 2000,
+                    position: 'right-top'
+                  })
+                  this.queryPlayBackList()
+                }
+              })
+            }
           }
         })
       },
