@@ -13,16 +13,17 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
-            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp' :class="{ 'error':titleEmpty }" @focus='titleFocus'></com-input>
+            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
             <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
           </div>
         </div>
-        <div class="from-row">
+        <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
-          <div class="from-content">
-            <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
+          <div class="from-content" :class="{ 'error':dateEmpty }">
+            <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
+            <span class="error-tips" v-if='dateEmpty'>直播标题不能为空</span>
           </div>
         </div>
         <div class="from-row">
@@ -56,10 +57,13 @@
           </div>
         </div>
         <div class="from-row">
-          <button @click='comfirm' class='create-btn' :disabled="outRange">
-            <template v-if="activityId">更新</template>
-            <template v-else>创建</template>
-          </button>
+          <div class="from-title"></div>
+          <div class="from-content">
+            <button @click='comfirm' class='create-btn' :disabled="outRange">
+              <template v-if="activityId">更新</template>
+              <template v-else>创建</template>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -88,13 +92,14 @@
       return {
         tagModal: false,
         isNew: true, // 是否是新建活动
-        date: new Date(),
+        date: '',
         title: '',
         editorContent: '',
         outRange: false,
         titleEmpty: false,
         descEmpty: false,
         tagEmpty: false,
+        dateEmpty: false,
         countCount: 0,
         tagList: [],
         tagGroup: [],
@@ -133,10 +138,10 @@
       }
     },
     methods: {
-      change (res) {
-        console.log('change')
-        // this.editorContent = res
-      },
+      // change (res) {
+      //   console.log('change')
+      //   // this.editorContent = res
+      // },
       // closeModal (e) {
       //   if (e.target.className === 'modal-cover') {
       //     this.createdSuccess = false
@@ -182,8 +187,9 @@
         this.title.length ? this.titleEmpty = false : this.titleEmpty = true
         this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true
         this.editorContent.length ? this.descEmpty = false : this.descEmpty = true
+        this.date.length ? this.dateEmpty = false : this.dateEmpty = true
         this.$nextTick(() => {
-          if (this.title.length && this.tagGroup.length && this.editorContent.length) {
+          if (this.title.length && this.tagGroup.length && this.editorContent.length && this.date.length) {
             this.updateWebinfo(this.isNew, data)
           }
         })
@@ -198,9 +204,6 @@
         }).catch((error) => {
           console.log(error)
         })
-      },
-      titleFocus () {
-        this.titleEmpty = false
       }
     },
     computed: {
@@ -286,9 +289,9 @@
       input {
         padding-left: 10px;
       }
-      &.error input {
-        border-color: $color-error;
-      }
+    }
+    .error input {
+      border-color: $color-error;
     }
     .el-date-editor.el-input,
     .el-date-editor.el-input__inner {
@@ -300,6 +303,7 @@
       padding-top: 3px;
     }
     .create-btn {
+      display: block;
       margin: 0 auto;
       @include primary-button;
       width: 200px;
