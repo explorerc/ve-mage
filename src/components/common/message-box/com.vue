@@ -127,7 +127,7 @@
   left: 0;
   right: 0;
   text-align: center;
-  z-index: 1000;
+  z-index: 1005;
   .ve-modal {
     position: fixed;
     left: 0;
@@ -148,7 +148,7 @@
     border-radius: 4px;
     font-size: 16px;
     overflow: hidden;
-    z-index: 1001;
+    z-index: 1006;
     &:before {
       display: block;
       content: '';
