@@ -30,3 +30,6 @@ $color-ui-components:#4B5AFE;
 .el-radio__input.is-checked+.el-radio__label {
   color: $color-ui-components;
 }
+.el-pagination.is-background .el-pager li.active {
+  background-color: $color-ui-components;
+}
