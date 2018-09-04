@@ -7,8 +7,7 @@
       <div class="email-setting">
         邮件邀约：
         <el-switch
-          v-model="isInvite"
-          active-color="#13ce66">
+          v-model="isInvite">
         </el-switch>
         <span class="msg-tip">开启后，将可以定制邀约邮件，邀请特定客户群参加直播活动</span>
         <button class="primary-button fr" @click="addEmail">新建邮件</button>

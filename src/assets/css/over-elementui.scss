@@ -36,3 +36,11 @@ $color-ui-components:#4B5AFE;
 .el-table--enable-row-hover .el-table__body tr:hover>td {
   background-color: #F0F1FE;
 }
+.el-switch__core {
+  border: 1px solid #DEE1FF;
+  background: #DEE1FF;
+}
+.el-switch.is-checked .el-switch__core {
+  border-color: $color-ui-components;
+  background-color: $color-ui-components;
+}
