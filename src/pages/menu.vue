@@ -256,11 +256,10 @@ export default {
   }
 
   .mark-menu {
-    width: 221px;
     padding-top: 10px;
     border-right: 0;
     &.el-menu--collapse {
-      width: 96px;
+      // width: 96px;
     }
     .is-active {
       .el-submenu__title {
