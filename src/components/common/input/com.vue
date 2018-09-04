@@ -123,6 +123,7 @@ export default {
     value: {
       handler (value) {
         this.innerValue = value
+        this.$emit('change')
       },
       immediate: true
     },
@@ -162,12 +163,12 @@ export default {
   position: relative;
   display: inline-block;
   width: 200px;
-  .error-msg{
+  .error-msg {
     display: block;
     position: absolute;
-    color: #FC5659;
+    color: #fc5659;
     padding-left: 10px;
-    font-size:14px;
+    font-size: 14px;
   }
   input {
     display: inline-block;
@@ -182,8 +183,8 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     padding: 0 10px;
-    &.error{
-      border-color: #FC5659;
+    &.error {
+      border-color: #fc5659;
     }
     &:hover {
       border-color: #4b5afe;
@@ -260,8 +261,8 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     font-size: inherit;
-    &.error{
-      border-color: #FC5659;
+    &.error {
+      border-color: #fc5659;
     }
     &:hover {
       border-color: #4b5afe;

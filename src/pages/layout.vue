@@ -16,7 +16,7 @@
                 </div>
                 <i class="el-icon-close" ></i>
             </div>
-            <section class="main-container">
+            <section class="main-container" :class="{close:close}">
                 <transition name='from-left'>
                     <router-view class="app-view"></router-view>
                 </transition>
@@ -62,8 +62,9 @@ export default {
   width: 220px !important;
   &.close {
     width: 95px !important;
+    transition: width 0.5s;
   }
-  overflow: hidden;
+  overflow: visible;
   height: 100%;
   color: #f5f5f5;
   background-color: #212221;
@@ -86,9 +87,11 @@ export default {
   right: 0;
   top: 60px;
   bottom: 0;
-  transition: 0.6s ease-in-out;
   overflow-y: auto;
   min-width: 1160px;
+}
+.main-container.close {
+  left: 95px;
 }
 .top-notice {
   width: 100%;

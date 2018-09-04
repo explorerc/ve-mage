@@ -113,7 +113,7 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import {mapState, mapMutations} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -148,7 +148,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...this.email, ...newVal}
+          this.email = { ...this.email, ...newVal }
         },
         immediate: true
       },
@@ -192,7 +192,7 @@
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = {...this.email, ...res.data}
+            this.email = { ...this.email, ...res.data }
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
@@ -256,7 +256,6 @@
         this.timerSendShow = false
       },
       prePage () {
-        // this.$parent.$data.currentComponent = editStepOne
         this.$emit('changeView', 0)
       }
     }
@@ -265,62 +264,62 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .edit-step-box {
-    .msg-box {
-      z-index: 1000;
+.edit-step-box {
+  .msg-box {
+    z-index: 1000;
+  }
+  .step-btns {
+    margin: 30px 30px 100px 30px;
+    .margin-fl {
+      margin: 0 20px;
     }
-    .step-btns {
-      margin: 30px 30px 100px 30px;
-      .margin-fl {
-        margin: 0 20px;
-      }
+  }
+  .input-email {
+    width: 400px;
+  }
+  .msg-box-bottom {
+    height: 40px;
+    .email-timer {
+      display: inline-block;
+      margin-right: 23px;
     }
-    .input-email {
-      width: 400px;
+    .error-msg {
+      display: block;
+      position: absolute;
+      color: #fc5659;
+      font-size: 14px;
     }
-    .msg-box-bottom {
-      height: 40px;
-      .email-timer {
+  }
+  .from-title {
+    line-height: 40px;
+  }
+  .edit-groups {
+    margin-top: 40px;
+    .edit-groups-item {
+      margin: 10px 0;
+      line-height: 30px;
+      span {
         display: inline-block;
-        margin-right: 23px;
-      }
-      .error-msg {
-        display: block;
-        position: absolute;
-        color: #FC5659;
-        font-size: 14px;
-      }
-    }
-    .from-title {
-      line-height: 40px;
-    }
-    .edit-groups {
-      margin-top: 40px;
-      .edit-groups-item {
-        margin: 10px 0;
-        line-height: 30px;
-        span {
-          display: inline-block;
-          text-align: center;
-          &:nth-child(1) {
-            width: 200px;
-            border: solid 1px #e5e5e5;
-          }
-          &:nth-child(2) {
-            margin: 0 0 0 20px;
-            padding: 0 5px;
-            cursor: pointer;
-          }
-          &:nth-child(3) {
-            padding: 0 5px;
-            cursor: pointer;
-          }
-          &:nth-child(2):hover,
-          &:nth-child(3):hover {
-            color: #2878ff;
-          }
+        text-align: center;
+        &:nth-child(1) {
+          width: 200px;
+          border: solid 1px #e5e5e5;
+        }
+        &:nth-child(2) {
+          margin: 0 0 0 20px;
+          padding: 0 5px;
+          cursor: pointer;
+        }
+        &:nth-child(3) {
+          padding: 0 5px;
+          cursor: pointer;
+        }
+        &:nth-child(2):hover,
+        &:nth-child(3):hover {
+          color: #2878ff;
         }
       }
     }
   }
+}
 </style>
