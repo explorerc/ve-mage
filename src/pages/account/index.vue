@@ -12,26 +12,26 @@
         <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
       </div>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号</span></com-editor>
-      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40"><span class="v-explain">账户名</span></com-editor>
+      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40" @cancel="cancel($event,'accountName')"><span class="v-explain">账户名</span></com-editor>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机</span></com-editor>
       <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称</span></com-editor>
       <com-editor :value.sync="state" type="input" @clickSaveBtn="clickSave(state,'popup','state')" clickType="popup" btnName="查看"><span class="v-explain">认证状态</span></com-editor>
       <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry,'industry','company')" clickType="save"><span class="v-explain">所属行业</span></com-editor>
-      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"><span class="v-explain">公司网址</span></com-editor>
+      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"  @cancel="cancel($event,'companyWebsite')"><span class="v-explain">公司网址</span></com-editor>
     </div>
     <div class="v-info">
       <p class="v-title">
         指定联系人
       </p>
-      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"><span class="v-explain">姓名</span></com-editor>
-      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20"><span class="v-explain">职务</span></com-editor>
-      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11"><span class="v-explain">手机</span></com-editor>
-      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"><span class="v-explain">办公电话</span></com-editor>
-      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save"><span class="v-explain">邮箱</span></com-editor>
-      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40"><span class="v-explain">微信</span></com-editor>
-      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20"><span class="v-explain">QQ</span></com-editor>
-      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60"><span class="v-explain">备注</span></com-editor>
+      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"  @cancel="cancel($event,'userName')"><span class="v-explain">姓名</span></com-editor>
+      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userPost')"><span class="v-explain">职务</span></com-editor>
+      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11" @cancel="cancel($event,'userPhone')"><span class="v-explain">手机</span></com-editor>
+      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"  @cancel="cancel($event,'officeNo')"><span class="v-explain">办公电话</span></com-editor>
+      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save" @cancel="cancel($event,'userEmail')"><span class="v-explain">邮箱</span></com-editor>
+      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40" @cancel="cancel($event,'userWechat')"><span class="v-explain">微信</span></com-editor>
+      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userQQ')"><span class="v-explain">QQ</span></com-editor>
+      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60" @cancel="cancel($event,'userRemarks')"><span class="v-explain">备注</span></com-editor>
     </div>
     <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="480px" class="message-box" :confirmText="confirmText">
       <div slot="header">{{messageBoxTitle}}</div>
@@ -165,14 +165,14 @@
           console.log(res.msg)
         } else {
           let resData = res.data
-          this.userName = resData.name
-          this.userPost = resData.position
-          this.userPhone = resData.mobile
-          this.officeNo = resData.tel
-          this.userEmail = resData.email
-          this.userWechat = resData.wechat
-          this.userQQ = resData.qq
-          this.userRemarks = resData.remark
+          this.userName = resData.name ? resData.name : '无'
+          this.userPost = resData.position ? resData.position : '无'
+          this.userPhone = resData.mobile ? resData.mobile : '无'
+          this.officeNo = resData.tel ? resData.tel : '无'
+          this.userEmail = resData.email ? resData.email : '无'
+          this.userWechat = resData.wechat ? resData.wechat : '无'
+          this.userQQ = resData.qq ? resData.qq : '无'
+          this.userRemarks = resData.remark ? resData.remark : '无'
         }
       })
       identifyingcodeManage.getCodeId({}).then((res) => {
@@ -229,18 +229,18 @@
           if (res.code !== 200) {
             console.log(res.msg)
           } else {
-            let resData = res.data
-            this.account = resData.userName
-            this.accountName = resData.name
-            this.avatar = resData.avatar
-            this.accountPhone = resData.mobile
-            this.accountPassword = resData.hasPassword ? '已设置' : ''
-            this.companyName = resData.company
+            let resData = res.data ? res.data : ''
+            this.account = resData.userName ? resData.userName : '无'
+            this.accountName = resData.name ? resData.userName : '无'
+            this.avatar = resData.avatar ? resData.avatar : '无'
+            this.accountPhone = resData.mobile ? resData.mobile : '无'
+            this.accountPassword = resData.hasPassword ? '已设置' : '未设置'
+            this.companyName = resData.company ? resData.company : '无'
             this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
-            this.selectIndustry = resData.industry
-            this.companyWebsite = res.website
-            this.licenseCode = res.licenseCode
-            this.licensePic = res.licensePic
+            this.selectIndustry = resData.industry ? resData.industry : '无'
+            this.companyWebsite = res.website ? resData.website : '无'
+            this.licenseCode = res.licenseCode ? resData.licenseCode : '无'
+            this.licensePic = res.licensePic ? resData.licensePic : '无'
             sessionStorage.setItem('userInfo', JSON.stringify(res.data))
           }
         })
@@ -289,6 +289,30 @@
               alert('更新成功')
             }
           })
+        }
+      },
+      cancel: function (val, type) {
+        switch (type) {
+          case 'accountName' : this.accountName = val
+            break
+          case 'companyWebsite' : this.companyWebsite = val
+            break
+          case 'userName' : this.userName = val
+            break
+          case 'userPost' : this.userPost = val
+            break
+          case 'userPhone' : this.userPhone = val
+            break
+          case 'officeNo' : this.officeNo = val
+            break
+          case 'userEmail' : this.userEmail = val
+            break
+          case 'userWechat' : this.userWechat = val
+            break
+          case 'userQQ' : this.userQQ = val
+            break
+          case 'userRemarks' : this.userRemarks = val
+            break
         }
       },
       clickSave (val, type, boxType) {
@@ -522,20 +546,32 @@
       text-align: left;
       &.v-avatar-img {
         display: block;
+        text-align: center;
+        margin: 0 auto;
       }
       .v-explain {
         display: inline-block;
-        width: 65px;
+        width: 70px;
+        text-align: left;
       }
       .ve-upload-box {
         width: 100px;
         height: 100px;
       }
-      .v-indo-label {
+      .com-input {
+        width: 214px;
+        margin-right: 15px;
+        input {
+          width: 214px;
+          height: 40px;
+          line-height: 40px;
+        }
+      }
+      .v-info-label {
         display: inline-block;
-        width: 155px;
+        width: 214px;
         text-align: left;
-        margin-right: 45px;
+        margin-right: 15px;
         overflow: hidden;
         vertical-align: middle;
       }
@@ -554,19 +590,21 @@
   #captcha {
     margin-bottom: 10px;
   }
-  .com-input {
-    &.v-input {
-      width: 435px;
-      margin-bottom: 10px;
-      input {
+  .message-box {
+    .com-input {
+      &.v-input {
         width: 435px;
-        height: 40px;
-        line-height: 40px;
-      }
-      &.phone-code {
-        width: 300px;
+        margin-bottom: 10px;
         input {
+          width: 435px;
+          height: 40px;
+          line-height: 40px;
+        }
+        &.phone-code {
           width: 300px;
+          input {
+            width: 300px;
+          }
         }
       }
     }
