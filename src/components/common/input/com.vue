@@ -171,7 +171,7 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    padding: 0 5px;
+    padding: 0 10px;
     &:hover {
       border-color: #4b5afe;
     }

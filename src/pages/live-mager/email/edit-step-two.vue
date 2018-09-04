@@ -33,6 +33,7 @@
               type="textarea"
               autosize
               class="input-email"
+              :error-tips="errorMsg.desc"
               :value.sync="email.desc"
               :max-length="140"></com-input>
           </div>
@@ -92,7 +93,7 @@
           <span>***********************************************************</span>
         </div>
       </div>
-      <div slot="bottom">
+      <div class="msg-box-bottom" slot="bottom">
         <div class="email-timer" v-if="isTimer">
           <el-date-picker
             v-model="email.planTime"
@@ -102,8 +103,9 @@
             format="yyyy-MM-dd HH:mm"
             value-format="yyyy-MM-dd HH:mm">
           </el-date-picker>
+          <span class="error-msg" v-if="errorMsg.planTime">{{errorMsg.planTime}}</span>
         </div>
-        <el-button class="live-btn fr" type="primary" plain @click="sendEmail">{{isTimer?'定时发送':'立即发送'}}</el-button>
+        <button class="primary-button fr" @click="sendEmail">{{isTimer?'定时发送':'立即发送'}}</button>
       </div>
     </message-box>
   </div>
@@ -124,7 +126,10 @@
         isTimer: true,
         errorMsg: {
           title: '',
-          senderName: ''
+          content: '',
+          desc: '',
+          senderName: '',
+          planTime: ''
         },
         email: {
           activityId: '',
@@ -147,12 +152,32 @@
           this.email = {...this.email, ...newVal}
         },
         immediate: true
+      },
+      email: {
+        handler () {
+          this.clearError()
+        },
+        deep: true
       }
     },
     methods: {
       ...mapMutations('liveMager', {
         storeEmailInfo: types.EMAIL_INFO
       }),
+      /* 清除错误信息 */
+      clearError () {
+        if (this.email.planTime) {
+          this.errorMsg.planTime = ''
+        } else if (this.email.title) {
+          this.errorMsg.title = ''
+        } else if (this.email.content) {
+          this.errorMsg.content = ''
+        } else if (this.email.desc) {
+          this.errorMsg.desc = ''
+        } else if (this.email.senderName) {
+          this.errorMsg.senderName = ''
+        }
+      },
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
@@ -168,16 +193,18 @@
         })
       },
       sendEmail () {
+        if (this.isTimer && !this.email.planTime) {
+          this.errorMsg.planTime = '定时时间不能为空'
+          return
+        }
         this.timerSendShow = false
         if (!this.checkParams(this.isTimer)) return
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
-            console.log(res)
             this.$router.go(-1)
           })
         } else { // 保存并发送
           LiveHttp.saveAndsendEmail(this.email).then((res) => {
-            console.log(res)
             this.$router.go(-1)
           })
         }
@@ -192,10 +219,12 @@
         this.timerSendShow = true
       },
       checkParams (isTimer) {
-        let toastParam = {
-          title: '警告',
-          message: '',
-          type: 'warning'
+        this.errorMsg = {
+          title: '',
+          content: '',
+          desc: '',
+          senderName: '',
+          planTime: ''
         }
         if (!this.email.title) {
           this.errorMsg.title = '标题不能为空'
@@ -204,16 +233,10 @@
           this.errorMsg.senderName = '发件人不能为空'
           return false
         } else if (!this.email.content) {
-          toastParam.message = '邮件内容不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.content = '邮件内容不能为空'
           return false
         } else if (!this.email.desc) {
-          toastParam.message = '邮件摘要不能为空'
-          this.$notify(toastParam)
-          return false
-        } else if (isTimer && !this.email.planTime) {
-          toastParam.message = '定时时间不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.desc = '邮件摘要不能为空'
           return false
         }
         return true
@@ -244,8 +267,18 @@
     .input-email {
       width: 400px;
     }
-    .email-timer {
-      display: inline-block;
+    .msg-box-bottom {
+      height: 40px;
+      .email-timer {
+        display: inline-block;
+        margin-right: 23px;
+      }
+      .error-msg {
+        display: block;
+        position: absolute;
+        color: #FC5659;
+        font-size: 14px;
+      }
     }
     .from-title {
       line-height: 40px;
