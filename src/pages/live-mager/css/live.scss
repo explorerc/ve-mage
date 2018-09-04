@@ -89,7 +89,7 @@
       margin: 20px;
       .from-row{
         display: flex;
-        padding: 10px;
+        padding: 12px;
         .from-title{
           width: 180px;
           text-align: right;
@@ -102,6 +102,7 @@
           }
         }
         .from-content{
+          position: relative;
           flex: 1;
           .input-box{
             width: 400px;

@@ -3,21 +3,23 @@
     <div class="mager-box border-box">
       <div class="from-box">
         <div class="from-row">
-          <div class="from-title">邮件标题：</div>
+          <div class="from-title"><i class="star">*</i>邮件标题：</div>
           <div class="from-content">
             <com-input
               placeholder="输入标题，可结合变量使用"
               class="input-email"
+              :error-tips="errorMsg.title"
               :value.sync="email.title"
               :max-length="30"></com-input>
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title">发件人名称：</div>
+          <div class="from-title"><i class="star">*</i>发件人名称：</div>
           <div class="from-content">
             <com-input
               placeholder="输入发件人名称"
               class="input-email"
+              :error-tips="errorMsg.senderName"
               :value.sync="email.senderName"
               :max-length="15"></com-input>
           </div>
@@ -110,7 +112,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   // import editStepOne from './edit-step-one'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -120,6 +122,10 @@
         outValue: '',
         timerSendShow: false,
         isTimer: true,
+        errorMsg: {
+          title: '',
+          senderName: ''
+        },
         email: {
           activityId: '',
           emailInviteId: '',
@@ -138,7 +144,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
       }
@@ -150,7 +156,7 @@
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = { ...this.email, ...res.data }
+            this.email = {...this.email, ...res.data}
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
@@ -192,12 +198,10 @@
           type: 'warning'
         }
         if (!this.email.title) {
-          toastParam.message = '标题不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.title = '标题不能为空'
           return false
         } else if (!this.email.senderName) {
-          toastParam.message = '发件人不能为空'
-          this.$notify(toastParam)
+          this.errorMsg.senderName = '发件人不能为空'
           return false
         } else if (!this.email.content) {
           toastParam.message = '邮件内容不能为空'
@@ -227,52 +231,52 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-.edit-step-box {
-  .msg-box {
-    z-index: 1000;
-  }
-  .step-btns {
-    margin: 30px 30px 100px 30px;
-    .margin-fl{
-      margin: 0 20px;
+  .edit-step-box {
+    .msg-box {
+      z-index: 1000;
     }
-  }
-  .input-email {
-    width: 400px;
-  }
-  .email-timer {
-    display: inline-block;
-  }
-  .from-title{
-    line-height: 40px;
-  }
-  .edit-groups {
-    margin-top: 40px;
-    .edit-groups-item {
-      margin: 10px 0;
-      line-height: 30px;
-      span {
-        display: inline-block;
-        text-align: center;
-        &:nth-child(1) {
-          width: 200px;
-          border: solid 1px #e5e5e5;
-        }
-        &:nth-child(2) {
-          margin: 0 0 0 20px;
-          padding: 0 5px;
-          cursor: pointer;
-        }
-        &:nth-child(3) {
-          padding: 0 5px;
-          cursor: pointer;
-        }
-        &:nth-child(2):hover,
-        &:nth-child(3):hover {
-          color: #2878ff;
+    .step-btns {
+      margin: 30px 30px 100px 30px;
+      .margin-fl {
+        margin: 0 20px;
+      }
+    }
+    .input-email {
+      width: 400px;
+    }
+    .email-timer {
+      display: inline-block;
+    }
+    .from-title {
+      line-height: 40px;
+    }
+    .edit-groups {
+      margin-top: 40px;
+      .edit-groups-item {
+        margin: 10px 0;
+        line-height: 30px;
+        span {
+          display: inline-block;
+          text-align: center;
+          &:nth-child(1) {
+            width: 200px;
+            border: solid 1px #e5e5e5;
+          }
+          &:nth-child(2) {
+            margin: 0 0 0 20px;
+            padding: 0 5px;
+            cursor: pointer;
+          }
+          &:nth-child(3) {
+            padding: 0 5px;
+            cursor: pointer;
+          }
+          &:nth-child(2):hover,
+          &:nth-child(3):hover {
+            color: #2878ff;
+          }
         }
       }
     }
   }
-}
 </style>
