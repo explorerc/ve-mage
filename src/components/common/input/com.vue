@@ -23,6 +23,7 @@
     <textarea
     ref="tarea"
     v-model="innerValue"
+    :class="{error:errorMsg}"
     :placeholder="placeholder"
     :rows="rows"
   placeholder="请输入内容"

@@ -175,8 +175,8 @@
         } else {
           return
         }
-        if (this.email.content) {
-          this.errorMsg.content = ''
+        if (this.email.senderName) {
+          this.errorMsg.senderName = ''
         } else {
           return
         }
@@ -185,8 +185,8 @@
         } else {
           return
         }
-        if (this.email.senderName) {
-          this.errorMsg.senderName = ''
+        if (this.email.content) {
+          this.errorMsg.content = ''
         }
       },
       saveEmail () {
