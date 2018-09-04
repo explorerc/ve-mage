@@ -1,6 +1,6 @@
 <template>
   <div class="edit-step-box">
-    <div class="mager-box">
+    <div class="mager-box border-box">
       <div class="from-box">
         <div class="from-row">
           <div class="from-title">邮件标题：</div>
@@ -25,7 +25,7 @@
         <div class="from-row">
           <div class="from-title">邮件摘要：</div>
           <div class="from-content">
-            <div>在收件箱列表中显示的邮件内容摘要</div>
+            <div style="line-height: 34px;">在收件箱列表中显示的邮件内容摘要</div>
             <com-input
               placeholder="输入发件人名称"
               type="textarea"
@@ -58,12 +58,12 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="step-btns">
-      <el-button class="live-btn fl" type="primary" plain @click="prePage">上一步</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="immediatelySend">立即发送</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="timerSend">定时发送</el-button>
-      <el-button class="live-btn fr" type="primary" plain @click="saveEmail">保存草稿</el-button>
+      <div class="step-btns">
+        <button class="primary-button fl" @click="prePage">上一步</button>
+        <button class="primary-button fr" @click="immediatelySend">立即发送</button>
+        <button class="primary-button margin-fl fr" @click="timerSend">定时发送</button>
+        <button class="primary-button fr" @click="saveEmail">保存草稿</button>
+      </div>
     </div>
     <message-box
       v-if="timerSendShow"
@@ -232,13 +232,19 @@
     z-index: 1000;
   }
   .step-btns {
-    margin-top: 20px;
+    margin: 30px 30px 100px 30px;
+    .margin-fl{
+      margin: 0 20px;
+    }
   }
   .input-email {
     width: 400px;
   }
   .email-timer {
     display: inline-block;
+  }
+  .from-title{
+    line-height: 40px;
   }
   .edit-groups {
     margin-top: 40px;

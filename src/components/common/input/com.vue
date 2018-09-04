@@ -152,12 +152,13 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
+    padding-left: 10px;
     &:hover {
-      border-color: #40a9ff;
+      border-color: #4B5AFE;
     }
-    &:focus {
-      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
-    }
+    /*&:focus {*/
+      /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
+    /*}*/
     &::-moz-placeholder {
       color: #bfbfbf;
       opacity: 1;
@@ -180,7 +181,7 @@ export default {
     transform: translateY(-50%);
     right: 8px;
     .length {
-      color: #5ea6ed;
+      color: #4B5AFE;
     }
     &.area {
       transform: none;
@@ -227,6 +228,22 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     font-size: inherit;
+    &:hover {
+      border-color: #4B5AFE;
+    }
+    &::-moz-placeholder {
+      color: #bfbfbf;
+      opacity: 1;
+    }
+    &:-ms-input-placeholder {
+      color: #bfbfbf;
+    }
+    &::-webkit-input-placeholder {
+      color: #bfbfbf;
+    }
+    &[disabled] {
+      cursor: not-allowed;
+    }
   }
 }
 </style>

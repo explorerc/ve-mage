@@ -12,50 +12,52 @@
         <span class="msg-tip">开启后，将可以定制邀约邮件，邀请特定客户群参加直播活动</span>
         <button class="primary-button fr" @click="addEmail">新建邮件</button>
       </div>
-      <el-table
-        :data="emailList"
-        style="width: 100%">
-        <el-table-column
-          prop="title"
-          label="邮件标题">
-        </el-table-column>
-        <el-table-column
-          prop="sendTime"
-          label="发送时间">
-        </el-table-column>
-        <el-table-column
-          prop="sendCount"
-          label="发送数量">
-        </el-table-column>
-        <el-table-column
-          prop="statusName"
-          label="状态">
-        </el-table-column>
-        <el-table-column
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-               type="text" size="small"
-               @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
-            <el-button
-               type="text" size="small"
-               v-if="emailList[scope.$index].status==='DRAFT'"
-               @click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>
-            <el-button
-               type="text" size="small"
-               v-else-if="emailList[scope.$index].status!=='SEND'"
-               @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
-            <el-button
-               type="text" size="small"
-               v-if="emailList[scope.$index].status!=='SEND'"
-               @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
-            <el-button
-               type="text" size="small"
-               v-if="emailList[scope.$index].status!=='SEND'"
-               @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div class="table-list-box">
+        <el-table
+          :data="emailList"
+          style="width: 100%">
+          <el-table-column
+            prop="title"
+            label="邮件标题">
+          </el-table-column>
+          <el-table-column
+            prop="sendTime"
+            label="发送时间">
+          </el-table-column>
+          <el-table-column
+            prop="sendCount"
+            label="发送数量">
+          </el-table-column>
+          <el-table-column
+            prop="statusName"
+            label="状态">
+          </el-table-column>
+          <el-table-column
+            label="操作">
+            <template slot-scope="scope">
+              <el-button
+                type="text" size="small"
+                @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
+              <el-button
+                type="text" size="small"
+                v-if="emailList[scope.$index].status==='DRAFT'"
+                @click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>
+              <el-button
+                type="text" size="small"
+                v-else-if="emailList[scope.$index].status!=='SEND'"
+                @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
+              <el-button
+                type="text" size="small"
+                v-if="emailList[scope.$index].status!=='SEND'"
+                @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
+              <el-button
+                type="text" size="small"
+                v-if="emailList[scope.$index].status!=='SEND'"
+                @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
       <div class="pagination-box">
         <div class="page-pagination" v-if="total>pageSize">
           <ve-pagination
