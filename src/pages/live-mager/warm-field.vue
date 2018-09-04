@@ -79,8 +79,7 @@
           signed_at: '',
           app_id: '',
           fileName: '',
-          fileSize: '',
-          recordId: ''
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
