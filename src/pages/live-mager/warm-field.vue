@@ -79,8 +79,7 @@
           signed_at: '',
           app_id: '',
           fileName: '',
-          fileSize: '',
-          recordId: ''
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -201,8 +200,22 @@
         if (e.type === 'pre-view') { // 预览
           this.prePlayVideo()
         } else if (e.type === 'delete') { // 删除
-          this.warm.recordId = ''
-          this.warm.filename = ''
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.warm.recordId = ''
+                this.warm.filename = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+              }
+            }
+          })
         }
       },
       uploadError (data) {

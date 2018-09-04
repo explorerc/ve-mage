@@ -256,7 +256,6 @@
         this.timerSendShow = false
       },
       prePage () {
-        // this.$parent.$data.currentComponent = editStepOne
         this.$emit('changeView', 0)
       }
     }
