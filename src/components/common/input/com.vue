@@ -138,6 +138,8 @@ export default {
         ret.paddingRight = '30px'
       } else if (this.maxLength) {
         ret.paddingRight = '45px'
+      } else if (this.type === 'password') {
+        ret.paddingRight = '30px'
       }
       return ret
     }
@@ -169,12 +171,12 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    padding-left: 10px;
+    padding: 0 5px;
     &:hover {
-      border-color: #4B5AFE;
+      border-color: #4b5afe;
     }
     /*&:focus {*/
-      /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
+    /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
     /*}*/
     &::-moz-placeholder {
       color: #bfbfbf;
@@ -198,7 +200,7 @@ export default {
     transform: translateY(-50%);
     right: 8px;
     .length {
-      color: #4B5AFE;
+      color: #4b5afe;
     }
     &.area {
       transform: none;
@@ -246,7 +248,7 @@ export default {
     transition: all 0.3s;
     font-size: inherit;
     &:hover {
-      border-color: #4B5AFE;
+      border-color: #4b5afe;
     }
     &::-moz-placeholder {
       color: #bfbfbf;

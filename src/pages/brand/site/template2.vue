@@ -1,28 +1,28 @@
 <template>
   <div class="template2-container">
-    <com-panel class="section1" :edit="data.editAble" v-model="data.section1Data.panel">
-      <com-logo class="logo" :edit="data.editAble" v-model="data.section1Data.logo"></com-logo>
-       <com-nav class="nav" :edit="data.editAble" v-model="data.section1Data.nav"></com-nav>
+    <com-panel class="section1" :edit="editAble" v-model="data.section1Data.panel">
+      <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
+       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
-    <com-panel class="section2" :edit="data.editAble" v-model="data.section2Data.panel">
-      <com-font :edit="data.editAble" v-model="data.section2Data.font"></com-font>
-      <com-btn class="btn" :edit="data.editAble" v-model="data.section2Data.btn"></com-btn>
-      <com-video :edit="data.editAble" v-model="data.section2Data.video"></com-video>
+    <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
+      <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
+      <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
+      <com-video :edit="editAble" v-model="data.section2Data.video"></com-video>
     </com-panel>
-    <com-block2 class="section3" :edit="data.editAble" height="556px" v-model="data.section3Data.block2"></com-block2>
-    <com-panel class="section4" :edit="data.editAble" v-model="data.section4Data.panel">
-      <com-font class="section4-font" :edit="data.editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="data.editAble" v-model="data.section4Data.block1"></com-block1>
+    <com-block2 class="section3" :edit="editAble" height="556px" v-model="data.section3Data.block2"></com-block2>
+    <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
+      <com-font class="section4-font" :edit="editAble" v-model="data.section4Data.font"></com-font>
+      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
     </com-panel>
-    <com-panel class="section5" :edit="data.editAble" v-model="data.section5Data.panel">
-      <com-share :edit="data.editAble" v-model="data.section5Data.share"></com-share>
+    <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
+      <com-share :edit="editAble" :share="shareData" v-model="data.section5Data.share"></com-share>
     </com-panel>
-    <com-panel class="section6" :edit="data.editAble" v-model="data.section6Data.panel">
-      <com-font class="section6-font" :edit="data.editAble" v-model="data.section6Data.font"></com-font>
-      <com-block1 :max="15" :edit="data.editAble" v-model="data.section6Data.block1"></com-block1>
+    <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
+      <com-font class="section6-font" :edit="editAble" v-model="data.section6Data.font"></com-font>
+      <com-block1 :max="15" :edit="editAble" v-model="data.section6Data.block1"></com-block1>
     </com-panel>
-     <com-panel class="section7" :edit="data.editAble" v-model="data.section7Data.panel">
-      <com-font :edit="data.editAble" v-model="data.section7Data.font"></com-font>
+     <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
+      <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
       <div class="support">微吼提供技术支持</div>
     </com-panel>
   </div>
@@ -52,6 +52,16 @@ export default {
   },
   props: {
     value: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    editAble: {
+      type: Boolean,
+      default: false
+    },
+    shareData: {
       type: Object,
       default () {
         return {}
