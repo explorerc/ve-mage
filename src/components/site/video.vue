@@ -1,5 +1,5 @@
 <template>
-  <div class="video-container">
+  <div class="video-container" v-if="value.enable">
     <div ref="target" class="video-content">
       <div v-if="value.videoType==='upload'" id="myVideo" class="video-wrap"></div>
       <div v-if="value.videoType==='url'" v-html="value.url" class="iframe-wrap"></div>
@@ -38,18 +38,6 @@ export default {
   mixins: [editMixin],
   components: {
     ComEdit
-  },
-  props: {
-    value: {
-      type: Object,
-      default () {
-        return {
-          videoType: 'upload',
-          url: '',
-          recordId: ''
-        }
-      }
-    }
   },
   data () {
     return {

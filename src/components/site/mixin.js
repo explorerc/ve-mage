@@ -9,10 +9,23 @@ export default {
     edit: {
       type: Boolean,
       default: false
+    },
+    value: {
+      type: Object,
+      default () {
+        return {
+
+        }
+      }
+    }
+  },
+  data () {
+    return {
+      enable: true
     }
   },
   mounted () {
-    if (this.edit) {
+    if (this.edit && this.value.enable) {
       this.$refs.target.addEventListener('mouseover', this.handleEnter)
       this.$refs.target.addEventListener('mouseout', this.handleLeave)
       this.$refs.edit = parseDom('<div ref="edit" class="edit"><i class="iconfont icon-delete"></i><i class="iconfont icon-pen"></i></div>')[0]
@@ -46,7 +59,7 @@ export default {
       this.$refs.editTarget.show(rect)
     },
     disable () {
-
+      this.value.enable = false
     }
   }
 }

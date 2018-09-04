@@ -96,24 +96,14 @@
         document.getElementById(this.uploadId).click()
       },
       deleteVideo () {
-        this.$messageBox({
-          header: '删除此视频',
-          content: '您是否确定要删除此视频？',
-          confirmText: '删除',
-          cancelText: '取消',
-          width: '400px',
-          handleClick: (e) => {
-            if (e.action !== 'confirm') return
-            this.percentVideo = 0
-            this.errorTxt = ''
-            this.fileName = ''
-            this.fileRealSize = 0
-            this.isConvert = false
-            this.$emit('handleClick', {
-              type: 'delete',
-              detail: '删除'
-            })
-          }
+        this.percentVideo = 0
+        this.errorTxt = ''
+        this.fileName = ''
+        this.fileRealSize = 0
+        this.isConvert = false
+        this.$emit('handleClick', {
+          type: 'delete',
+          detail: '删除'
         })
       },
       preViewVideo () {

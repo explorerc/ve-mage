@@ -59,12 +59,11 @@
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
-  import VeUploadTx from 'src/components/ve-upload-tx'
   import LiveHttp from 'src/api/activity-manger'
 
   export default {
     name: 'warm-field',
-    components: {VeUploadImage, VeUploadVideo, VeUploadTx},
+    components: { VeUploadImage, VeUploadVideo },
     data () {
       return {
         warm: {
@@ -216,11 +215,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn {
-    text-align: center;
-    button {
-      width: 200px;
-      margin: 60px auto 50px auto;
-    }
+.bottom-btn {
+  text-align: center;
+  button {
+    width: 200px;
+    margin: 60px auto 50px auto;
   }
+}
 </style>

@@ -1,10 +1,10 @@
 <template>
-  <div class="font-container" >
+  <div class="font-container" v-if="value.enable">
     <div ref="target">
-      <div class="font-content" v-html="fontContent"></div>
+      <div class="font-content" v-html="value.content"></div>
     </div>
     <com-edit ref="editTarget" follow :offsetTop="-38" class="font-edit" @show="showHandle" @hide="hideHandle">
-      <com-editer class="font-editer" v-model="fontContent" @change="update"></com-editer>
+      <com-editer class="font-editer" v-model="value.content" ></com-editer>
     </com-edit>
   </div>
 </template>
@@ -19,25 +19,10 @@ export default {
   components: {
     ComEdit, ComEditer
   },
-  props: {
-    value: {
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
-      fontContent: '',
       sizeEditor: false,
       height: 0
-    }
-  },
-  watch: {
-    value: {
-      handler (data) {
-        this.fontContent = data
-      },
-      immediate: true
     }
   },
   methods: {
@@ -49,9 +34,6 @@ export default {
     },
     hideHandle () {
       this.$refs.target.style.cssText = ''
-    },
-    update (data) {
-      this.$emit('input', data)
     }
   }
 }

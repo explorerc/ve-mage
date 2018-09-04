@@ -1,5 +1,5 @@
 <template>
-  <div class="panel-container" >
+  <div class="panel-container" v-if="value.enable">
     <div ref="target" class="panel" >
       <div class="media-container" v-if="value.bgType==='video'" >
         <video  autoplay loop muted ></video>
@@ -73,19 +73,6 @@ export default {
   components: {
     ComEdit
   },
-  props: {
-    value: {
-      type: Object,
-      default () {
-        return {
-          bgType: 'color',
-          videoType: 'upload',
-          color: 'rgba(0, 0, 0, 1)',
-          img: ''
-        }
-      }
-    }
-  },
   data () {
     return {
       pro: '0%',
@@ -118,6 +105,7 @@ export default {
   },
   methods: {
     analysisData (data) {
+      if (!this.$refs.target) return
       if (data.bgType === 'color') {
         this.$refs.target.style.cssText = `background-color:${data.color}`
       } else if (data.bgType === 'img') {

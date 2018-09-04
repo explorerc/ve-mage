@@ -16,7 +16,7 @@
     <template v-if="type !== 'readOnly'">
       <a href="javascript:;" v-if="!isEdit||clickType!=='save'" @click="modify(clickType)"><span v-if="value === '' && btnName ==='' ">完善</span><span v-else-if="value !== '' && btnName ==='' ">修改</span><span v-else-if="btnName !=='' ">{{btnName}}</span></a>
       <a href="javascript:;" v-if="isEdit && clickType==='save'" @click="save()">保存</a>
-      <a href="javascript:;" v-if="isEdit && clickType==='save'" @click="cancle">取消</a>
+      <a href="javascript:;" v-if="isEdit && clickType==='save'" @click="cancle" class="v-cancle">取消</a>
     </template>
   </div>
 </template>
@@ -37,14 +37,16 @@ export default {
   data () {
     return {
       inputValue: '',
-      isEdit: false
+      isEdit: false,
+      initData: ''
     }
   },
   created () {
-    this.inputValue = this.value
   },
   methods: {
     modify (val) {
+      this.initData = this.value
+      this.inputValue = this.value === '无' ? '' : this.value
       if (val === 'save') {
         this.isEdit = true
       } else {
@@ -56,6 +58,7 @@ export default {
       this.isEdit = false
     },
     cancle () {
+      this.$emit('cancel', this.initData)
       this.isEdit = false
     }
   },
@@ -86,6 +89,17 @@ export default {
   }
   .el-select {
     width: 200px;
+  }
+  a {
+    font-size: 14px;
+    color: #4b5afe;
+    &.v-cancle {
+      color: #555;
+    }
+    span {
+      font-size: 14px;
+      color: #4b5afe;
+    }
   }
 }
 </style>

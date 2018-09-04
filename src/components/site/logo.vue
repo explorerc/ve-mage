@@ -1,5 +1,5 @@
 <template>
-  <div class="logo-container" >
+  <div class="logo-container" v-if="value.enable">
     <div ref="target" class="logo-content">
       <a target="_blank" :href=" value.link | voidLink "><img class="left" :src="url"></a>
     </div>
@@ -26,17 +26,6 @@ export default {
   mixins: [editMixin],
   components: {
     ComEdit
-  },
-  props: {
-    value: {
-      type: Object,
-      default () {
-        return {
-          url: '',
-          link: ''
-        }
-      }
-    }
   },
   data () {
     return {
