@@ -113,7 +113,6 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  // import editStepOne from './edit-step-one'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
@@ -168,13 +167,25 @@
       clearError () {
         if (this.email.planTime) {
           this.errorMsg.planTime = ''
-        } else if (this.email.title) {
+        } else {
+          return
+        }
+        if (this.email.title) {
           this.errorMsg.title = ''
-        } else if (this.email.content) {
+        } else {
+          return
+        }
+        if (this.email.content) {
           this.errorMsg.content = ''
-        } else if (this.email.desc) {
+        } else {
+          return
+        }
+        if (this.email.desc) {
           this.errorMsg.desc = ''
-        } else if (this.email.senderName) {
+        } else {
+          return
+        }
+        if (this.email.senderName) {
           this.errorMsg.senderName = ''
         }
       },
