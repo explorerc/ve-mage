@@ -4,14 +4,14 @@ const IdentifyingcodeManage = {
   getCodeId (data) {
     return utils.ajax({
       method: 'post',
-      url: '/common/sms/get-captchaid',
+      url: '/common/message/get-captchaid',
       params: data
     })
   },
   getCode (data) {
     return utils.ajax({
       method: 'post',
-      url: '/common/sms/send-code',
+      url: '/common/message/send-code',
       params: data
     })
   }

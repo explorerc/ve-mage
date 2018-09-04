@@ -46,7 +46,7 @@ const Account = {
   verifyMobile (data) { // 验证旧手机号
     return utils.ajax({
       method: 'post',
-      url: '/common/sms/verify-code',
+      url: '/common/message/verify-code',
       params: data
     })
   },

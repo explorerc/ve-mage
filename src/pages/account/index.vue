@@ -40,7 +40,7 @@
         </p>
         <com-input v-if="isOldphone" :value.sync="phone" :placeholder="'输入原有注册手机号'" class="v-input" type="input" :max-length="11"></com-input>
         <com-input v-if="!isOldphone" :value.sync="newPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11"></com-input>
-        <div id="captcha"></div>
+        <div id="captcha"  :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6"></com-input>
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
       </div>
@@ -54,15 +54,25 @@
         </p>
       </div>
       <div v-else-if="messageBoxType === 'changePassword'">
-        <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30"></com-input>
-        <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"></com-input>
-        <p class="v-passordExplain">
-          支持6~30位的大小写英文和数字
-        </p>
-        <com-input :value.sync="reNewPassword" placeholder="请再次输入新密码" class="v-input" type="password" :max-length="30"></com-input>
-        <p class="v-passordExplain">
-          支持6~30位的大小写英文和数字
-        </p>
+        <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30" :error-tips="errorTips.oldPassword" @focus="passwordFocus('oldPassword')"></com-input>
+        <div class="v-psd">
+          <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"  @focus="passwordFocus('newPassword')" @change="passwordChange()" @blur="passwordBlur()" :error-tips="errorTips.newPassword"></com-input>
+          <div class="v-verification" v-if="isShow">
+            <ul>
+              <p>密码至少包含：</p>
+              <li>
+                <i class="iconfont icon-duigou1" :class="{isActive: isContainEn}"></i> 1个英文字母
+              </li>
+              <li>
+                <i class="iconfont icon-duigou1" :class="{isActive: isContainNum}"></i> 1个数字
+              </li>
+              <li>
+                <i class="iconfont icon-duigou1" :class="{isActive: isContainCount}"></i> 6～30个字符
+              </li>
+            </ul>
+          </div>
+        </div>
+        <com-input :value.sync="reNewPassword" placeholder="请再次输入新密码" class="v-input" type="password" :max-length="30" :error-tips="errorTips.rePassword" @focus="passwordFocus('reNewPassword')"></com-input>
       </div>
       <div v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
@@ -73,7 +83,7 @@
         </p>
         <p class="v-state-info">
           <span class="v-label">营业执照照片：</span>
-          <img :src="licensePic" alt="成功" class="v-state-img">
+          <img :src="licensePicUrl" alt="成功" class="v-state-img">
         </p>
       </div>
     </message-box>
@@ -149,8 +159,16 @@
         licenseCode: '', // 营业执照编号
         licensePic: '', // 营业执照照片
         avatar: '', // 账户头像
-        fontColor: '#555'
-
+        fontColor: '#555',
+        errorTips: {
+          oldPassword: '',
+          newPassword: '',
+          rePassword: ''
+        },
+        isShow: false,
+        isContainEn: 0,
+        isContainNum: 0,
+        isContainCount: 0
       }
     },
     mounted () {
@@ -185,8 +203,8 @@
       defaultImg () {
         return this.avatar ? this.$imgHost + '/' + this.avatar : ''
       },
-      licensePic () {
-        return this.licensePic ? this.$imgHost + '/' + this.licensePic : ''
+      licensePicUrl () {
+        return this.licensePic === '无' ? this.$imgHost + '/' + this.licensePic : ''
       }
     },
     components: {
@@ -430,8 +448,20 @@
               this.messageBoxShow = false
             }
           } else if (this.messageBoxType === 'changePassword') {
+            if (!this.oldPassword) {
+              this.errorTips.oldPassword = '请输入旧密码'
+              return false
+            }
+            if (!this.newPassword) {
+              this.errorTips.newPassword = '请输入新密码'
+              return false
+            }
+            if (!this.reNewPassword) {
+              this.errorTips.rePassword = '请输入确认新密码'
+              return false
+            }
             if (this.newPassword !== this.reNewPassword) {
-              alert('新密码与重新输入密码错误')
+              this.errorTips.rePassword = '重新输入密码与新密码不一致'
               return false
             }
             let data = {
@@ -520,11 +550,39 @@
             }, 1000)
           }
         })
+      },
+      passwordFocus (val) {
+        this.errorTips.newPassword = ''
+        switch (val) {
+          case 'oldPassword': this.errorTips.oldPassword = ''
+            break
+          case 'newPassword': this.errorTips.newPassword = ''
+            this.isShow = true
+            break
+          case 'reNewPassword': this.errorTips.rePassword = ''
+            break
+        }
+      },
+      passwordChange () {
+        this.isContainCount = this.newPassword.length >= 6 ? 1 : 0
+        var regNum = /^(?=.*\d.*\b)/
+        this.isContainNum = regNum.test(this.newPassword) ? 1 : 0
+        var regEn = /[_a-zA-Z]/
+        this.isContainEn = regEn.test(this.newPassword) ? 1 : 0
+        if (this.newPassword.length >= 6 && regNum.test(this.newPassword) && regEn.test(this.newPassword)) {
+          this.isChecked = true
+        } else {
+          this.isChecked = false
+        }
+      },
+      passwordBlur () {
+        this.isShow = false
       }
     }
   }
 </script>
 <style lang="scss" scoped>
+@import '~assets/css/variable.scss';
 .account-container /deep/ {
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
@@ -612,9 +670,15 @@
       color: #333;
     }
   }
+  .yidun.yidun--light {
+    display: none;
+  }
   #captcha {
     width: 390px;
     margin-bottom: 30px;
+    .yidun.yidun--light {
+      display: block;
+    }
   }
   .message-box {
     &.v-state {
@@ -641,6 +705,39 @@
       color: #222;
       text-align: center;
       margin-bottom: 20px;
+    }
+    .v-psd {
+      position: relative;
+      .v-verification {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        z-index: 2;
+        ul {
+          width: 130px;
+          height: 95px;
+          background-color: #fff;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+          padding: 8px 12px;
+          font-size: 12px;
+          color: #222;
+          li {
+            margin-bottom: 5px;
+          }
+          p {
+            color: #555;
+            margin-bottom: 5px;
+          }
+          i {
+            color: #e9ebff;
+            font-size: 12px;
+            &.isActive {
+              color: $color-blue;
+            }
+          }
+        }
+      }
     }
     .com-input {
       &.v-input {

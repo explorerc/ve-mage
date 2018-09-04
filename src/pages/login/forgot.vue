@@ -6,7 +6,7 @@
     <com-tabs :value.sync="activeName" customClass="v-forgot" disabled>
       <com-tab index="first">
         <div slot="label">
-          用户管理
+          验证身份
           <span class="v-circle active"><i></i></span>
           <span class="v-line"></span>
         </div>
@@ -16,30 +16,40 @@
           <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态密码" @inputFocus="inputFocus()" :class="{warning:isWarning}">
           </com-input>
           <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-          <div class="input-form v-label" :style="{opacity:opacity}">
-		    		<p class="v-error">{{error}}</p>
-		    	</div>
           <button class="primary-button" @click="verifyUser">提交</button>
         </div>
       </com-tab>
       <com-tab index="second">
         <div slot="label">
-          配置管理
+          设置新密码
           <span class="v-circle" :class="{active: sedIsActive}"><i></i></span>
         </div>
         <div class="v-get-password">
-          <com-input class="v-input" :value.sync="password" placeholder="请输入新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password"></com-input>
-          <com-input class="v-input" :value.sync="rePassword" placeholder="请确认新密码" :maxLength="30" @inputFocus="inputFocus()" :class="{warning:isWarning}" type="password">
+          <div class="v-psd">
+            <com-input class="v-input" :value.sync="password" placeholder="请输入新密码" :maxLength="30" type="password" @focus="passwordFocus('password')" @change="passwordChange()" @blur="passwordBlur()"  :error-tips="errorTips"></com-input>
+            <div class="v-verification" v-if="isShow">
+              <ul>
+                <p>密码至少包含：</p>
+                <li>
+                  <i class="iconfont icon-duigou1" :class="{isActive: isContainEn}"></i> 1个英文字母
+                </li>
+                <li>
+                  <i class="iconfont icon-duigou1" :class="{isActive: isContainNum}"></i> 1个数字
+                </li>
+                <li>
+                  <i class="iconfont icon-duigou1" :class="{isActive: isContainCount}"></i> 6～30个字符
+                </li>
+              </ul>
+            </div>
+          </div>
+          <com-input class="v-input" :value.sync="rePassword" placeholder="请确认新密码" :maxLength="30" type="password" @focus="passwordFocus('rePassword')" :error-tips="errorTips">
           </com-input>
-          <div class="input-form v-label" :style="{opacity:opacity}">
-		    		<p class="v-error">{{error}}</p>
-		    	</div>
           <button class="primary-button" @click="undatePhone">提交</button>
         </div>
       </com-tab>
       <com-tab index="third">
         <div slot="label">
-          角色管理
+          设置完成
           <span class="v-circle" :class="{active: thdIsActive}"><i></i></span>
         </div>
         <img src="../../assets/image/success@2x.png" alt="" class="v-success-img">
@@ -76,14 +86,17 @@
         phoneKey: '',
         isImg: false,
         cap: null,
-        opacity: 0,
-        error: '',
         password: '',
         rePassword: '',
         isValidPassword: false,
         sedIsActive: false,
         thdIsActive: false,
-        time: 5
+        time: 5,
+        isContainEn: 0,
+        isContainNum: 0,
+        isContainCount: 0,
+        isShow: false,
+        errorTips: ''
       }
     },
     components: {
@@ -165,8 +178,8 @@
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
-            this.error = res.msg
-            this.opacity = 1
+            // this.error = res.msg
+            // this.opacity = 1
             clearInterval(this.timerr)
             this.isSend = false
             this.isProhibit = true
@@ -204,8 +217,8 @@
         }
         account.verifyMobile(data).then((res) => {
           if (res.code !== 200) {
-            this.error = res.msg
-            this.opacity = 1
+            // this.error = res.msg
+            // this.opacity = 1
           } else {
             this.sedIsActive = true
             this.activeName = 'second'
@@ -226,11 +239,11 @@
       },
       undatePhone () {
         if (this.password !== this.rePassword) {
-          this.error = '两次密码输入不一致'
-          this.opacity = 1
+          // this.error = '两次密码输入不一致'
+          // this.opacity = 1
         } else if (!this.validPassword()) {
-          this.error = '密码不符合规则'
-          this.opacity = 1
+          // this.error = '密码不符合规则'
+          // this.opacity = 1
         } else {
           let data = {
             mobile: this.userPhone,
@@ -239,8 +252,8 @@
           }
           account.updateMobileByToken(data).then((res) => {
             if (res.code !== 200) {
-              this.error = res.msg
-              this.opacity = 1
+              // this.error = res.msg
+              // this.opacity = 1
             } else {
               setInterval(() => {
                 this.time--
@@ -262,9 +275,27 @@
         var re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
         return re.test(this.password) && re.test(this.rePassword)
       },
-      inputFocus: function () {
-        this.error = ''
-        this.opacity = 0
+      passwordFocus (val) {
+        switch (val) {
+          case 'password' : this.errorTips = ''
+            this.isShow = true
+            break
+        }
+      },
+      passwordChange () {
+        this.isContainCount = this.password.length >= 6 ? 1 : 0
+        var regNum = /^(?=.*\d.*\b)/
+        this.isContainNum = regNum.test(this.password) ? 1 : 0
+        var regEn = /[_a-zA-Z]/
+        this.isContainEn = regEn.test(this.password) ? 1 : 0
+        if (this.password.length >= 6 && regNum.test(this.password) && regEn.test(this.password)) {
+          this.isChecked = true
+        } else {
+          this.isChecked = false
+        }
+      },
+      passwordBlur () {
+        this.isShow = false
       }
     }
   }
@@ -344,6 +375,42 @@
     display: block;
     width: 450px;
     margin: 50px auto 0;
+    position: relative;
+    .v-psd {
+      position: relative;
+      .v-verification {
+        position: absolute;
+        top: 0px;
+        right: -140px;
+        ul {
+          width: 130px;
+          height: 95px;
+          background-color: #fff;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+          padding: 8px 12px;
+          font-size: 12px;
+          color: #222;
+          li {
+            text-align: left;
+            margin-bottom: 5px;
+            margin-right: 0;
+          }
+          p {
+            text-align: left;
+            color: #555;
+            margin-bottom: 5px;
+          }
+          i {
+            color: #e9ebff;
+            font-size: 12px;
+            &.isActive {
+              color: $color-blue;
+            }
+          }
+        }
+      }
+    }
     .v-error {
       margin-top: 10px;
     }
@@ -366,64 +433,60 @@
       height: 40px;
       margin: 40px auto 0;
     }
-  }
-}
-.v-get-password {
-  position: relative;
-  margin-top: 200px;
-  .el-button {
-    margin-top: 15px;
-  }
-  .com-input {
-    &.v-input {
-      width: 450px;
-      margin-bottom: 30px;
-      input {
-        padding: 0 10px !important;
+    .el-button {
+      margin-top: 15px;
+    }
+    .com-input {
+      &.v-input {
+        width: 450px;
+        margin-bottom: 30px;
+        input {
+          padding: 0 10px !important;
+        }
       }
     }
-  }
-  .v-getcode {
-    position: absolute;
-    right: 3px;
-    top: 128px;
-    background-color: #ffd021;
-    display: inline-block;
-    width: 115px;
-    height: 34px;
-    line-height: 34px;
-    text-align: center;
-    font-size: 13px;
-    color: #fff;
-    border-radius: 2px;
-    text-decoration: none;
-    &.prohibit {
-      background-color: #dedede;
-      &:hover {
+    .v-getcode {
+      position: absolute;
+      right: 3px;
+      top: 128px;
+      background-color: #ffd021;
+      display: inline-block;
+      width: 115px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+      border-radius: 2px;
+      text-decoration: none;
+      &.prohibit {
         background-color: #dedede;
+        &:hover {
+          background-color: #dedede;
+        }
+      }
+      .fr {
+        margin-left: 6px;
+        float: none;
       }
     }
-    .fr {
-      margin-left: 6px;
-      float: none;
+  }
+  .v-forgot {
+    .v-success-img {
+      width: 122px;
+      margin-top: 20px;
     }
-  }
-}
-.v-forgot {
-  .v-success-img {
-    width: 122px;
-    margin-top: 20px;
-  }
-  .v-success {
-    font-size: 24px;
-    color: #222;
-  }
-  .v-tip {
-    font-size: 14px;
-    color: #222;
-    margin-top: 5px;
-    .v-red {
-      color: #fc5659;
+    .v-success {
+      font-size: 24px;
+      color: #222;
+    }
+    .v-tip {
+      font-size: 14px;
+      color: #222;
+      margin-top: 5px;
+      .v-red {
+        color: #fc5659;
+      }
     }
   }
 }

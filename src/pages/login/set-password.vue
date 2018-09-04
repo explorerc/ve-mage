@@ -6,7 +6,7 @@
         请勿将密码泄露给第三者，避免造成不必要的损失
       </p>
       <div class="v-psd">
-        <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()" @change="passwordChange()" @blur="passwordBlur()"></com-input>
+        <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()" @change="passwordChange()" @blur="passwordBlur()" :error-tips="errorTips.newPassWord"></com-input>
         <div class="v-verification" v-if="isShow">
           <ul>
             <p>密码至少包含：</p>
@@ -37,7 +37,10 @@
         isContainNum: 0,
         isContainCount: 0,
         isShow: false,
-        isChecked: false
+        isChecked: false,
+        errorTips: {
+          newPassWord: ''
+        }
       }
     },
     components: {
@@ -57,6 +60,7 @@
       messageBoxClick (e) {
         if (e.action === 'confirm') {
           if (!this.isChecked) {
+            this.errorTips = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
             return false
           }
           let data = {
@@ -73,6 +77,7 @@
         }
       },
       passwordFocus () {
+        this.errorTips = ''
         this.isShow = true
       },
       passwordChange () {
