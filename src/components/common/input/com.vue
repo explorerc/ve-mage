@@ -128,6 +128,8 @@ export default {
         ret.paddingRight = '30px'
       } else if (this.maxLength) {
         ret.paddingRight = '45px'
+      } else if (this.type === 'password') {
+        ret.paddingRight = '30px'
       }
       return ret
     }
@@ -152,6 +154,7 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
+    padding: 0 5px;
     &:hover {
       border-color: #40a9ff;
     }
