@@ -7,6 +7,7 @@
     <input
     :type="inputType"
     :style="style"
+    :class="{error:errorMsg}"
     :placeholder="placeholder"
     :disabled="disabled"
     v-model="innerValue"
@@ -172,6 +173,9 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     padding: 0 10px;
+    &.error{
+      border-color: #FC5659;
+    }
     &:hover {
       border-color: #4b5afe;
     }
@@ -247,6 +251,9 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     font-size: inherit;
+    &.error{
+      border-color: #FC5659;
+    }
     &:hover {
       border-color: #4b5afe;
     }
