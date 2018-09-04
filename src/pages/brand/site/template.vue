@@ -21,7 +21,7 @@
           </div>
           <div class="fl">
             <span class="label">微信扫码分享</span>
-            <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.shareData.link}`" >
+            <img :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(this.shareData.link)}`" >
           </div>
         </div>
         <div>

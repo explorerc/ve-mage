@@ -10,8 +10,8 @@
     :placeholder="placeholder"
     :disabled="disabled"
     v-model="innerValue"
-    @focus="showDelete=true"
-    @blur="hideDelete"
+    @focus="focusHandle"
+    @blur="blurHandle"
     >
     <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
     <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
@@ -66,6 +66,14 @@ export default {
     this.inputType = this.getType()
   },
   methods: {
+    focusHandle (e) {
+      this.showDelete = true
+      this.$emit('focus', e)
+    },
+    blurHandle (e) {
+      this.hideDelete()
+      this.$emit('blur', e)
+    },
     empty () {
       this.innerValue = ''
     },
