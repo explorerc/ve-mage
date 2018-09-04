@@ -1,3 +1,4 @@
+@import "./variable";
 $color-ui-components:#4B5AFE;
 .el-select{
   .el-input__inner {
@@ -43,4 +44,39 @@ $color-ui-components:#4B5AFE;
 .el-switch.is-checked .el-switch__core {
   border-color: $color-ui-components;
   background-color: $color-ui-components;
+}
+.el-date-table td.available {
+  color:$color-font;
+}
+.el-date-table td.current:not(.disabled) span {
+  background-color:$color-default;
+  color:$color-font;
+}
+.el-date-table td.today span {
+  color:$color-default;
+}
+.el-date-table td.available:hover {
+  color:$color-default;
+}
+.el-picker-panel__icon-btn:hover {
+  color:$color-default;
+}
+.el-date-picker__header-label.active, .el-date-picker__header-label:hover {
+  color:$color-default;
+}
+.el-button--text:active {
+  color:$color-default;
+}
+.el-button--text,.el-button--text:hover,.el-time-panel__btn.confirm,.el-button.is-active, .el-button.is-plain:active,.el-button.is-plain:focus, .el-button.is-plain:hover,.el-month-table td .cell:hover, .el-month-table td.current:not(.disabled) .cell {
+  color:$color-default;
+}
+.el-button.is-plain:focus, .el-button.is-plain:hover {
+  border-color:$color-default;
+}
+
+.el-input__inner:hover,.el-input.is-active .el-input__inner, .el-input__inner:focus {
+  border-color:$color-blue-hover;
+}
+.el-input__inner:active{
+  border-color:$color-blue-active;
 }

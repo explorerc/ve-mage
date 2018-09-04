@@ -106,25 +106,7 @@
       </div>
     </transition>
     <!-- 测试发送弹窗 -->
-    <transition name='fade'>
-      <div class="modal-cover" v-if='testModal' @click="closeModal">
-        <div class='modal-box'>
-          <h4>短信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
-          <div class='content-box from-box'>
-            <p>每天只允许发送5条测试短信</p>
-            <div class="from-row">
-              <div class="from-title">输入号码：</div>
-              <div class="from-content">
-                <com-input placeholder="请输入手机号码" :value.sync='sendPhone'></com-input>
-              </div>
-            </div>
-          </div>
-          <div class="btn-group">
-            <el-button @click='sendTest'>立即发送<span>({{limitCount}})</span>条</el-button>
-          </div>
-        </div>
-      </div>
-    </transition>
+    <com-test :limitCount='limitCount' v-if='testModal' :msgContent='msgContent' @closeTest='closeTest' :type="'SMS'"></com-test>
     <div class="overview-box">
       <div class="header">短信</div>
       <div class="msg-box">
@@ -136,6 +118,7 @@
 
 <script>
 import createHttp from 'src/api/activity-manger'
+import comTest from '../com-test'
 export default {
   data () {
     return {
@@ -171,7 +154,6 @@ export default {
       pickDate: false,
       msgTag: '',
       msgContent: '',
-      sendPhone: '',
       date: new Date(),
       pickerOptions: {
         disabledDate (time) {
@@ -239,31 +221,13 @@ export default {
       this.testModal = true
       createHttp.msgLimit().then((res) => {
         if (res.code === 200) {
-          this.limitCount = res.data
+          this.limitCount = res.data.toString()
         }
       }).catch((e) => { console.log(e) })
     },
-    sendTest () {
-      const data = {
-        content: this.msgContent,
-        receiverMobile: this.sendPhone
-      }
-      createHttp.sendTestmsg(data).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.limitCount -= 1
-          this.$toast({
-            content: '发送成功',
-            position: 'center'
-          })
-        }
-      }).catch((e) => {
-        console.log(e)
-        this.$toast({
-          content: '发送失败',
-          position: 'center'
-        })
-      })
+    closeTest () {
+      // debugger
+      this.testModal = false
     }
   },
   watch: {
@@ -272,6 +236,9 @@ export default {
         newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
       }
     }
+  },
+  components: {
+    comTest
   }
 }
 </script>
@@ -320,80 +287,6 @@ export default {
   }
 }
 
-.modal-cover {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba($color: #000000, $alpha: 0.5);
-  z-index: 9;
-}
-
-.modal-box {
-  width: 700px;
-  height: 500px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -250px;
-  margin-left: -350px;
-  background: white;
-  border-radius: 10px;
-  border: 1px solid #666;
-  padding: 30px;
-  text-align: center;
-  .top {
-    span {
-      float: left;
-    }
-    span.search {
-      float: right;
-    }
-  }
-  h4 {
-    height: 40px;
-    line-height: 40px;
-    text-align: left;
-    border-bottom: 1px solid #ccc;
-    .close {
-      float: right;
-    }
-  }
-  .content-box {
-    padding: 10px 0px;
-  }
-  .btm {
-    span {
-      float: left;
-    }
-    button {
-      float: right;
-    }
-    i {
-      display: inline-block;
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      margin: 0 3px;
-    }
-  }
-}
-
-.modal-box .list {
-  & > li {
-    height: 50px;
-    line-height: 50px;
-    text-align: left;
-    .choose {
-      cursor: pointer;
-      float: right;
-    }
-  }
-}
-
-.modal-box .right {
-  width: 500px;
-}
 .msg-content {
   width: 400px;
   height: 200px;

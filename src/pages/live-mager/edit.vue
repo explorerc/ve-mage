@@ -1,48 +1,35 @@
 <!--新建/编辑活动-->
 <template>
-  <div class='edit-page'>
-    <div class="edit-title">
-      <span class="title" v-if="activityId">编辑活动</span>
-      <span class="title" v-else>新建活动</span>
-    </div>
-    <div class="tips">
-      <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
-    </div>
-    <div class="content from-box">
+  <div>
+    <div class='edit-page' v-if='!createdSuccess'>
+      <div class="edit-title">
+        <span class="title" v-if="activityId">编辑活动</span>
+        <span class="title" v-else>新建活动</span>
+      </div>
+      <div class="tips">
+        <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
+      </div>
+      <div class="content from-box">
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
-            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp'></com-input>
+            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
+            <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
           </div>
         </div>
-        <div class="from-row">
+        <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
-          <div class="from-content">
-            <el-date-picker v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" >
+          <div class="from-content" :class="{ 'error':dateEmpty }">
+            <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
+            <span class="error-tips" v-if='dateEmpty'>直播标题不能为空</span>
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title"><i class="star">*</i>直播封面：</div>
+          <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <!-- <com-upload accept="png|jpg|jpeg" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @progress="uploadProgress" @load="uploadImgSuccess">
-              <div class="upload-file-box" title="点击上传">
-                <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
-                <i class="iconfont icon-jiahao"></i>
-                <span>分辨率最大1920x1080，支持jpg、jpeg、png格式，文件大小不超过2M</span>
-                <div v-if="poster" class="upload-file-botton">编辑</div>
-                <div class="temp-img" v-if="poster" :style="{backgroundImage:'url('+imgHost+'/'+poster+')'}"></div>
-              </div>
-            </com-upload> -->
-            <ve-upload
-                title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
-                accept="png|jpg|jpeg|bmp|gif"
-                :defaultImg="defaultImg"
-                :fileSize="2048"
-                :errorMsg="uploadImgErrorMsg"
-                @error="uploadError"
-                @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
@@ -51,46 +38,53 @@
             <ol class='tag-list clearfix'>
               <li v-for="item in tagGroup">{{item}}</li>
             </ol>
-            <el-button @click='tagModal=true'>添加标签</el-button>
+            <el-button @click='tagModal=true' round class="add-tag">+</el-button>
             <div class="tag-modal" v-show='tagModal'>
               <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
                 <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
               </el-checkbox-group>
-              <el-button @click="">确定</el-button>
             </div>
+            <span class="error-tips" v-if='tagEmpty'>直播标题不能为空</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播介绍：</div>
-          <div class="from-content">
-            <ve-editer :height="'200'" @ready="editorReady" v-model='editorContent' @change='editorChange' class='editor'></ve-editer>
+          <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
+            <ve-editer height="280" v-model="editorContent" @change="change"></ve-editer>
+            <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
+            <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
+            <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
           </div>
         </div>
         <div class="from-row">
-          <button @click='comfirm' class='creat-btn'>
-            <template v-if="activityId">更新活动</template>
-            <template v-else>创建活动</template>
-          </button>
+          <div class="from-title"></div>
+          <div class="from-content">
+            <button @click='comfirm' class='create-btn' :disabled="outRange">
+              <template v-if="activityId">更新</template>
+              <template v-else>创建</template>
+            </button>
+          </div>
         </div>
+      </div>
     </div>
     <transition name='fade'>
-      <div class="modal-cover" v-if='createdSuccess' @click="closeModal">
-        <div class='created-modal'>
-          <p>直播已创建成功，您可以</p>
-          <div class="btm">
-            <span><a>完善直播设置体验更多有趣的营销玩法</a></span>
-            <span><a>进行直播测试对直播进行预演</a></span>
-          </div>
-          <p><a href="/liveMager">返回直播列表</a></p>
-        </div>
+      <div class="finish-box" v-if='createdSuccess'>
+          <dl>
+            <dt></dt>
+            <dd>直播已{{successTxt}}，您可以</dd>
+            <dd>
+              <button class='finish-button detail'><router-link :to="{ name:'detail',params:{id:finishId} }">活动详情</router-link></button>
+              <button class='finish-button list'><router-link :to="{name:'liveMager'}">活动列表</router-link></button>
+            </dd>
+          </dl>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-  import veEditer from 'components/ve-editer'
   import VeUpload from 'src/components/ve-upload-image'
+  import VeEditer from 'src/components/ve-html5-editer'
   import http from 'src/api/activity-manger'
   export default {
     name: 'edit',
@@ -98,9 +92,15 @@
       return {
         tagModal: false,
         isNew: true, // 是否是新建活动
-        date: new Date(),
+        date: '',
         title: '',
         editorContent: '',
+        outRange: false,
+        titleEmpty: false,
+        descEmpty: false,
+        tagEmpty: false,
+        dateEmpty: false,
+        countCount: 0,
         tagList: [],
         tagGroup: [],
         poster: '',
@@ -113,7 +113,8 @@
           disabledDate (time) {
             return time.getTime() < Date.now() - 8.64e7
           }
-        }
+        },
+        successTxt: ''
       }
     },
     created () {
@@ -123,28 +124,37 @@
         this.queryInfo()
       }
     },
+    watch: {
+      editorContent (newValue, oldValue) {
+        this.$nextTick(() => {
+          this.countCount = document.querySelector('.vue-html5-editor .content').innerText.length
+          this.descEmpty = false
+          if (this.countCount > 1000) {
+            this.outRange = true
+          } else {
+            this.outRange = false
+          }
+        })
+      }
+    },
     methods: {
-      editorChange (res) {
-        // console.log(`长度${res.text.length}`)
-      },
-      editorReady () {
-      },
-      closeModal (e) {
-        if (e.target.className === 'modal-cover') {
-          this.createdSuccess = false
-        }
-      },
+      // change (res) {
+      //   console.log('change')
+      //   // this.editorContent = res
+      // },
+      // closeModal (e) {
+      //   if (e.target.className === 'modal-cover') {
+      //     this.createdSuccess = false
+      //   }
+      // },
       uploadProgress (data) {
-        // console.log('上传进度:', data)
-        // console.log(data)
         this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
         if (this.percentImg === 100) {
           this.percentImg = 0
         }
       },
       uploadImgSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        this.poster = fildObj.data.name
+        this.poster = data.name
       },
       uploadError (data) {
         console.log('上传失败:', data)
@@ -173,13 +183,23 @@
           description: this.editorContent,
           tags: this.tagGroup
         }
-        console.log(data)
-        this.updateWebinfo(this.isNew, data)
+        // console.log(data)
+        this.title.length ? this.titleEmpty = false : this.titleEmpty = true
+        this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true
+        this.editorContent.length ? this.descEmpty = false : this.descEmpty = true
+        this.date.length ? this.dateEmpty = false : this.dateEmpty = true
+        this.$nextTick(() => {
+          if (this.title.length && this.tagGroup.length && this.editorContent.length && this.date.length) {
+            this.updateWebinfo(this.isNew, data)
+          }
+        })
       },
       updateWebinfo (isNew, data) { // 新建 创建活动
         http.updateWebinfo(isNew, data).then((res) => {
           if (res.code === 200) {
             this.createdSuccess = true
+            isNew ? this.successTxt = '创建成功' : this.successTxt = '更新成功'
+            res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
           }
         }).catch((error) => {
           console.log(error)
@@ -192,7 +212,7 @@
       }
     },
     components: {
-      veEditer,
+      VeEditer,
       VeUpload
     }
   }
@@ -201,6 +221,7 @@
 <style lang='scss' scoped>
 @import '~assets/css/variable';
 @import '~assets/css/mixin.scss';
+
 .edit-page {
   border-radius: 5px;
   overflow: hidden;
@@ -269,6 +290,9 @@
         padding-left: 10px;
       }
     }
+    .error input {
+      border-color: $color-error;
+    }
     .el-date-editor.el-input,
     .el-date-editor.el-input__inner {
       width: 440px;
@@ -278,25 +302,99 @@
       color: #888;
       padding-top: 3px;
     }
-    .creat-btn {
+    .create-btn {
+      display: block;
       margin: 0 auto;
       @include primary-button;
+      width: 200px;
+    }
+    .add-tag {
+      margin: 11px 0;
+      padding: 0px;
+      width: 18px;
+      height: 18px;
+      line-height: 17px;
+      text-align: center;
+      border-radius: 20px;
+      border: 1px solid rgba(226, 226, 226, 1);
     }
     .editor {
       width: 729px;
       height: 280px;
     }
+    .content-count {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+    .html-editer .content {
+      width: 727px;
+    }
+    .from-content.editor-content:not(.error):hover .vue-html5-editor {
+      border-color: $color-blue-hover;
+    }
+    .from-content.error {
+      .vue-html5-editor {
+        border-color: $color-error;
+      }
+      .content-count * {
+        color: $color-error;
+      }
+    }
+    .error-tips {
+      color: $color-error;
+      display: block;
+      position: absolute;
+      font-size: 12px;
+    }
   }
 }
-.modal-cover {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba($color: #000000, $alpha: 0.5);
-}
+.finish-box {
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // margin-left: -110px;
+  // margin-right: -225px;
+  margin: 200px auto;
+  width: 450px;
+  height: 220px;
+  dl {
+    text-align: center;
 
+    margin: 0 auto;
+  }
+  dt {
+    width: 122px;
+    height: 90px;
+    background: url('~assets/image/success@2x.png') no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+  }
+  dd:nth-of-type(1) {
+    padding: 20px 0 35px 0;
+  }
+  .finish-button {
+    padding: 0px;
+    width: 200px;
+  }
+  .detail {
+    @include primary-button;
+    margin-right: 8px;
+  }
+  .list {
+    @include default-button;
+    margin-left: 8px;
+  }
+}
+// .modal-cover {
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background: rgba($color: #000000, $alpha: 0.5);
+//   z-index: 9999;
+// }
 .created-modal {
   width: 400px;
   height: 300px;
@@ -411,7 +509,7 @@
   // margin: 20px;
   .from-row {
     display: flex;
-    padding: 10px;
+    padding: 15px 10px;
     .from-title {
       width: 110px;
       text-align: right;

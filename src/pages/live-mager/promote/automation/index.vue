@@ -30,7 +30,7 @@
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small">测试发送</el-button>
+                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
                 <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_ORDER'} }">编辑</router-link></el-button>
                 <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_ORDER", item.type)'>删除</el-button>
               </div>
@@ -64,7 +64,7 @@
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small">测试发送</el-button>
+                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
                 <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_APPLY'} }">编辑</router-link></el-button>
                 <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_APPLY", item.type)'>删除</el-button>
               </div>
@@ -110,7 +110,7 @@
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small">测试发送</el-button>
+                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
                 <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_HOUR'} }">编辑</router-link></el-button>
                 <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_HOUR", item.type)'>删除</el-button>
               </div>
@@ -155,7 +155,7 @@
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small">测试发送</el-button>
+                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
                 <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_MINUTE'} }">编辑</router-link></el-button>
                 <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_MINUTE", item.type)'>删除</el-button>
               </div>
@@ -193,7 +193,7 @@
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small">测试发送</el-button>
+                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
                 <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'SUBSCRIBE'} }">编辑</router-link></el-button>
                 <el-button type="small" @click='del(item.noticeTaskId, "SUBSCRIBE", item.type)'>删除</el-button>
               </div>
@@ -231,7 +231,7 @@
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small">测试发送</el-button>
+                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
                 <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'REPLAY'} }">编辑</router-link></el-button>
                 <el-button type="small" @click='del(item.noticeTaskId, "REPLAY", item.type)'>删除</el-button>
               </div>
@@ -242,32 +242,8 @@
       </div>
     </div>
     <!-- 测试发送弹窗 -->
-    <transition name='fade'>
-      <div class="modal-cover" v-if='testModal' @click="closeModal">
-        <div class='modal-box'>
-          <h4>短信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
-          <div class='content-box'>
-            <p>每天只允许发送5条测试短信</p>
-            <div class="from-row">
-              <div class="from-title">输入号码：</div>
-              <div class="from-content">
-                <com-input :value.sync="titleValue" placeholder="请输入手机号码"></com-input>
-              </div>
-            </div>
-            <div class="from-row">
-              <div class="from-title">短信内容：</div>
-              <div class="from-content">
-                <div class="content-detail">奥斯卡了解到卢卡斯角度看拉升阶段卢卡斯阶段</div>
-              </div>
-            </div>
-          </div>
-          <div class="btn-group">
-            <el-button>编辑</el-button>
-            <el-button>立即发送<span>(10)</span>条</el-button>
-          </div>
-        </div>
-      </div>
-    </transition>
+    <com-test :limitCount='limitCount' v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest' :type="testType" ></com-test>
+
     <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
       <div class="del-footer" slot="footer">
         <com-button @click='delConfirm = false'>取消</com-button>
@@ -279,6 +255,7 @@
 
 <script>
 import comTpl from './com-tpl'
+import comTest from '../com-test'
 import http from 'src/api/activity-manger'
 // import {getMsg} from './tpl'
 export default {
@@ -368,7 +345,12 @@ export default {
         date: '',
         subscribeDate: '',
         triggerType: ''
-      }
+      },
+      testWechat: false,
+      testMsg: false,
+      testType: '',
+      limitCount: '10',
+      qrImgurl: ''
     }
   },
   created () {
@@ -547,10 +529,23 @@ export default {
       }).catch((e) => {
         console.log(e)
       })
+    },
+    testSend (res, idx) {
+      this.testModal = true
+      // this.noticeId = idx http://domain/expand/notice/test-send-qr?noticeTaskId
+      this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
+      this.$nextTick(() => {
+        this.testType = res
+      })
+    },
+    closeTest () {
+      // debugger
+      this.testModal = false
     }
   },
   components: {
-    comTpl
+    comTpl,
+    comTest
   }
 
 }
