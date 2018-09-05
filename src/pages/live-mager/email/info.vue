@@ -45,9 +45,9 @@
           </div>
         </div>
         <div class="step-btns">
-          <el-button v-if="email.status=='AWAIT'" class="live-btn fr" type="primary" plain @click="sendEmail">立即发送</el-button>
-          <el-button v-if="email.status!=='SEND'" class="live-btn fr" type="primary" plain @click="editEmail">编辑邮件</el-button>
-          <el-button class="live-btn fr" type="primary" plain @click="prePage">返回上级</el-button>
+          <button v-if="email.status=='AWAIT'" class="primary-button fr" @click="sendEmail">立即发送</button>
+          <button v-if="email.status!=='SEND'" class="primary-button fr" @click="editEmail">编辑邮件</button>
+          <button class="primary-button fr" @click="prePage">返回上级</button>
         </div>
       </div>
     </div>

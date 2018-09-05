@@ -32,7 +32,13 @@ $color-ui-components:#4B5AFE;
   color: $color-ui-components;
 }
 .el-pagination.is-background .el-pager li.active {
-  background-color: $color-ui-components;
+  background-color: #555;
+  border: none;
+}
+.el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li {
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  color: #555;
 }
 .el-table--enable-row-hover .el-table__body tr:hover>td {
   background-color: #F0F1FE;
@@ -79,4 +85,13 @@ $color-ui-components:#4B5AFE;
 }
 .el-input__inner:active{
   border-color:$color-blue-active;
+}
+.has-gutter{
+  background-color: #f5f5f5 !important;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.el-table th, .el-table tr {
+  background-color: transparent;
 }

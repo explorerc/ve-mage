@@ -28,29 +28,44 @@
           <el-table-column
             prop="statusName"
             label="状态">
+            <template slot-scope="scope">
+              <span v-if="scope.row.status=='DRAFT'" class="cg-status">{{scope.row.statusName}}</span>
+              <span v-if="scope.row.status=='SEND'" class="fs-status">{{scope.row.statusName}}</span>
+              <span v-if="scope.row.status=='AWAIT'" class="dd-status">{{scope.row.statusName}}</span>
+              <!--DRAFT: '草稿',-->
+              <!--SEND: '已发送',-->
+              <!--AWAIT: '等待发送'-->
+              <!--v-if="scope.row.status=='DRAFT'"-->
+            </template>
           </el-table-column>
           <el-table-column
             label="操作">
             <template slot-scope="scope">
-              <el-button
-                type="text" size="small"
-                @click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>
-              <el-button
-                type="text" size="small"
-                v-if="emailList[scope.$index].status==='DRAFT'"
-                @click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>
-              <el-button
-                type="text" size="small"
-                v-else-if="emailList[scope.$index].status!=='SEND'"
-                @click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>
-              <el-button
-                type="text" size="small"
-                v-if="emailList[scope.$index].status!=='SEND'"
-                @click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>
-              <el-button
-                type="text" size="small"
-                v-if="emailList[scope.$index].status!=='SEND'"
-                @click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>
+              <!--<el-button-->
+                <!--type="text" size="small"-->
+                <!--@click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>-->
+              <!--<el-button-->
+                <!--type="text" size="small"-->
+                <!--v-if="emailList[scope.$index].status==='DRAFT'"-->
+                <!--@click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>-->
+              <!--<el-button-->
+                <!--type="text" size="small"-->
+                <!--v-else-if="emailList[scope.$index].status!=='SEND'"-->
+                <!--@click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>-->
+              <!--<el-button-->
+                <!--type="text" size="small"-->
+                <!--v-if="emailList[scope.$index].status!=='SEND'"-->
+                <!--@click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>-->
+              <!--<el-button-->
+                <!--type="text" size="small"-->
+                <!--v-if="emailList[scope.$index].status!=='SEND'"-->
+                <!--@click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>-->
+              <div class="table-handler">
+                <span @click.stop="clickEmail(scope.$index,handleType.info)">查看</span>
+                <span
+                  v-if="emailList[scope.$index].status!=='SEND'"
+                  @click.stop="clickEmail(scope.$index,handleType.delete)">删除</span>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -250,11 +265,24 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
-.email-table-box {
-  font-size: 14px;
-}
-.send-box{
-  display: inline-block;
-}
+  .email-table-box {
+    font-size: 14px;
+  }
+  .send-box{
+    display: inline-block;
+    color: #888;
+    font-size: 14px;
+    line-height: 44px;
+    margin-right: 20px;
+  }
+  .cg-status{
+    color: #1bcab7;
+  }
+  .fs-status{
+    color: #4B5AFE;
+  }
+  .dd-status{
+    color: #FF8b0e;
+  }
 </style>
 
