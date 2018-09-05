@@ -143,7 +143,7 @@ export default {
     color: #1a1a1a;
     .menu-title {
       font-size: 24px;
-      width: 160px;
+      width: 172px;
       text-align: center;
       display: inline-block;
       vertical-align: middle;
@@ -159,7 +159,7 @@ export default {
       position: relative;
       display: inline-block;
       &.close {
-        left: 34px;
+        left: 30px;
         top: 6px;
       }
     }
@@ -259,7 +259,7 @@ export default {
     padding-top: 10px;
     border-right: 0;
     &.el-menu--collapse {
-      width: 90px;
+      width: 100%;
     }
     .is-active {
       .el-submenu__title {
@@ -294,7 +294,10 @@ export default {
       font-size: 16px;
       height: 56px;
       line-height: 56px;
-      padding: 0 34px !important;
+      padding: 0 30px !important;
+      i {
+        color: #f7f7f7;
+      }
       .menu-icon {
         display: inline-block;
         width: 22px;

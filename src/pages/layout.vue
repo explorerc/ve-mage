@@ -61,7 +61,7 @@ export default {
 .left-container {
   width: 220px !important;
   &.close {
-    width: 95px !important;
+    width: 85px !important;
     transition: width 0.5s;
   }
   overflow: visible;
@@ -98,7 +98,7 @@ export default {
   }
 }
 .main-container.close {
-  left: 95px;
+  left: 85px;
 }
 .top-notice {
   width: 100%;
