@@ -14,9 +14,7 @@ $color-ui-components:#4B5AFE;
   .popper__arrow{
     display: none;
   }
-  &.el-popper[x-placement^=bottom] {
-    margin-top: -4px;
-  }
+
   .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
     background:rgba(240,241,254,1);
   }
