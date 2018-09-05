@@ -40,7 +40,7 @@
           <span>活动管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/liveMager">活动列表</el-menu-item>
+          <el-menu-item index="/liveMager/list">活动列表</el-menu-item>
           <el-menu-item index="/liveMager/create">新建活动</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
