@@ -1,7 +1,7 @@
 <template>
   <el-container class="container">
-        <el-aside class="left-container">
-            <com-menu v-if="menuType"></com-menu>
+        <el-aside class="left-container" :class="{close:close}">
+            <com-menu :close.sync="close"></com-menu>
         </el-aside>
         <el-container class="main-box">
             <el-header class="header-container">
@@ -16,7 +16,7 @@
                 </div>
                 <i class="el-icon-close" ></i>
             </div>
-            <section class="main-container">
+            <section class="main-container" :class="{close:close}">
                 <transition name='from-left'>
                     <router-view class="app-view"></router-view>
                 </transition>
@@ -35,10 +35,10 @@ export default {
       name: '',
       timer: '',
       msg: '',
-      menuType: true,
       update: false,
       tipInfo: {},
-      tipType: null
+      tipType: null,
+      close: false
     }
   },
   components: {
@@ -59,14 +59,18 @@ export default {
   min-width: 1340px;
 }
 .left-container {
-  width: 200px !important;
-  overflow: hidden;
+  width: 220px !important;
+  &.close {
+    width: 95px !important;
+    transition: width 0.5s;
+  }
+  overflow: visible;
   height: 100%;
   color: #f5f5f5;
   background-color: #212221;
 }
 .header-container {
-  height: 60px;
+  height: 70px;
   padding-top: 20px;
   text-align: right;
   // margin-right: 10px;
@@ -79,13 +83,15 @@ export default {
 .main-container /deep/ {
   padding: 20px 50px;
   position: absolute;
-  left: 200px;
+  left: 220px;
   right: 0;
-  top: 60px;
+  top: 70px;
   bottom: 0;
-  transition: 0.6s ease-in-out;
   overflow-y: auto;
   min-width: 1160px;
+}
+.main-container.close {
+  left: 95px;
 }
 .top-notice {
   width: 100%;

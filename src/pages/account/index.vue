@@ -401,6 +401,19 @@
         } else if (e.action === 'confirm') {
           if (this.messageBoxType === 'changeMobile') {
             if (this.step === 'initialPhone') {
+              if (!this.phone) {
+                alert(1)
+                return false
+              }
+              let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+              if (!reg.test(parseInt(this.phone))) {
+                alert(1)
+                return false
+              }
+              if (!this.phoneCode) {
+                alert(1)
+                return false
+              }
               let data = {
                 mobile: this.phone,
                 code: this.phoneCode,
@@ -427,6 +440,19 @@
                 }
               })
             } else if (this.step === 'newPhone') {
+              if (!this.newPhone) {
+                alert(1)
+                return false
+              }
+              let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+              if (!reg.test(parseInt(this.newPhone))) {
+                alert(1)
+                return false
+              }
+              if (!this.phoneCode) {
+                alert(1)
+                return false
+              }
               let data = {
                 mobile: this.newPhone,
                 codeToken: this.token,
@@ -455,6 +481,10 @@
             if (!this.newPassword) {
               this.errorTips.newPassword = '请输入新密码'
               return false
+            }
+            let re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
+            if (!re.test(this.newPassword)) {
+              this.errorTips.newPassword = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
             }
             if (!this.reNewPassword) {
               this.errorTips.rePassword = '请输入确认新密码'

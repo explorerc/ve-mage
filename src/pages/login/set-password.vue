@@ -6,7 +6,7 @@
         请勿将密码泄露给第三者，避免造成不必要的损失
       </p>
       <div class="v-psd">
-        <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()" @change="passwordChange()" @blur="passwordBlur()" :error-tips="errorTips.newPassWord"></com-input>
+        <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()" @change="passwordChange()" @blur="passwordBlur()" :error-tips="errorTips"></com-input>
         <div class="v-verification" v-if="isShow">
           <ul>
             <p>密码至少包含：</p>
@@ -38,9 +38,7 @@
         isContainCount: 0,
         isShow: false,
         isChecked: false,
-        errorTips: {
-          newPassWord: ''
-        }
+        errorTips: ''
       }
     },
     components: {
