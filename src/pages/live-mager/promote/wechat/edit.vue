@@ -100,22 +100,8 @@
       </div>
     </transition>
     <!-- 测试发送弹窗 -->
-    <com-test :limitCount='limitCount' :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
-    <!-- <transition name='fade'>
-      <div class="modal-cover" v-if='testModal' @click="closeModal">
-        <div class='modal-box'>
-          <h4>微信测试发送 <span class='close' @click='testModal = false'>×</span></h4>
-          <div class='content-box'>
-            <p>每天只允许发送5条测试消息</p>
-            <div class="from-row">
-              <img :src="imgUrl" class='qrcode'>
-            </div>
-            <p>扫描二维码，授权后，即可收到测试消息</p>
-            <p>当前可发送(<span>{{limitCount}}</span>条)</p>
-          </div>
-        </div>
-      </div>
-    </transition> -->
+    <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
+
     <div class="overview-box">
       <div class="header">微吼服务号</div>
       <div class="msg-box">
@@ -178,7 +164,6 @@
         },
         webinarName: '',
         webinarTime: '',
-        limitCount: '',
         loading: false
       }
     },
@@ -248,12 +233,6 @@
       },
       testSend () {
         this.testModal = true
-        createHttp.wxLimit().then((res) => {
-          if (res.code === 200) {
-            console.log(res)
-            this.limitCount = res.data.toString()
-          }
-        }).catch((e) => { console.log(e) })
         this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
         // const data = {
         //   content: this.wxContent,

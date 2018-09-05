@@ -1,37 +1,47 @@
 <template>
-  <div class="apply-page">
-    <div>活动报名:
-      <el-checkbox v-model="isOpen">开启</el-checkbox>
-      新用户报名观看需要校验手机号，从而帮您获取到更加精准的观众信息
-    </div>
-    <div>报名结束时间：<br>
-      <el-radio v-model="radioTime" label="1">与直播同步关闭</el-radio>
-      <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
-      <span>设置后，报名关闭后，不可再报名，且未报名的用户，无法观看直播</span>
-      <div class="set-time" v-if="pickDate">
-        报名结束时间：
-        <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
-        </el-date-picker>
+  <div class="apply-page live-mager">
+    <div class="live-title">
+      <span class="title">活动报名</span>
+      <el-switch
+        v-model="isOpen"
+        inactive-color="#DEE1FF"
+        active-color="#4B5AFE" @change='openSwitch'>
+      </el-switch>
+      <div class="right-box">
+        <span>最多可添加 <i>5</i> 条信息</span>
+        <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 ? true : false">添加信息</button>
       </div>
     </div>
+    <div class="mager-box border-box">
+      <div class="from-box">
+        <div class="from-row">
+          <div class="from-title">报名结束时间：</div>
+          <div class="from-content">
+            <el-radio v-model="radioTime" label="1">与直播同步关闭</el-radio>
+            <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
+            <div class="set-time" v-if="pickDate">
+              <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+          </div>
+        </div>
+      </div>
     <!-- <div>报名校验:<br>
         <el-radio v-model="queryData.checkField" label="mobile">校验手机号</el-radio>
         <el-radio v-model="queryData.checkField" label="email">校验邮箱</el-radio>
         <span>报名观看需要校验手机号或邮箱，从而帮您获取到更加精准的观众信息</span>
       </div> -->
     <div class="set-info">
-      <div class='title'>
-        <el-button @click='addNew' :disabled="quesData.length === 5 ? true : false">添加信息</el-button><em>最多可设置5条信息</em></div>
       <div class="set-content">
         <ul class='table-title clearfix'>
-          <li>信息类型</li>
+          <li class='spe'>信息类型</li>
           <li>信息标题</li>
           <li>信息描述</li>
           <li>操作</li>
         </ul>
         <ol class='table-content'>
           <!-- <li class='clearfix'>
-              <div>
+              <div class='spe'>
                 <el-select v-model="phone" disabled placeholder="请选择">
                   <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
                   </el-option>
@@ -43,16 +53,17 @@
               <div>
                 <com-input class='inp' value="请输入手机号" disabled :max-length="16"></com-input>
               </div>
-              <div>登陆校验项目</div>
+              <div><div class='tips-box'><i class='el-icon-question tips' @mouseover='showTips=true' @mouseout='showTips=false'></i><div class='tips-txt' v-if='showTips'>1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证</div></div></div>
             </li> -->
           <li class='clearfix' v-for="(item,idx) in quesData" :key="idx">
-            <div v-if="item.type === 'mobile'">
+            <div v-if="item.type === 'mobile'" class='spe moblie'>
+              <i class='star'>*</i>
               <el-select v-model="phone" disabled placeholder="请选择">
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
                 </el-option>
               </el-select>
             </div>
-            <div v-else>
+            <div v-else  class='spe'>
               <el-select v-model="item.type" placeholder="请选择" @change='selectChange(idx,item.type)'>
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
                 </el-option>
@@ -65,19 +76,17 @@
               <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="16" placeholder="请输入信息描述"></com-input>
             </div>
             <div v-if="item.type === 'mobile'">
-              <div>登陆校验项目</div>
+              <div class='tips-box del-box'><i class='tips' @mouseover='showTips=true' @mouseout='showTips=false'></i><div class='tips-txt' v-if='showTips'>1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证</div></div>
             </div>
-            <div v-else>
-              <el-button @click='removeItem(idx)'>删除</el-button>
+            <div v-else class='del-box'>
+              <span @click='removeItem(idx)' class='del'>删除</span>
             </div>
             <section class='select-item clearfix' v-if="item.type === 'select'">
-              <p>选项详情
-                <el-button @click='addItem(idx)' :disabled="item.detail.length === 10 ? true : false">添加选项</el-button>
-              </p>
               <ol>
+                <span class='add-item' @click='addItem(idx)' :disabled="item.detail.length === 10 ? true : false"><i>＋</i>添加选项</span>
                 <li v-for="(option,count) in item.detail" :key='count'>
                   <com-input :value.sync="option.value" :max-length="16" placeholder="请输入选项"></com-input>
-                  <span @click='delItem(idx,count)'>删除</span>
+                  <span @click='delItem(idx,count)' class='del'>删除</span>
                 </li>
               </ol>
             </section>
@@ -85,8 +94,10 @@
         </ol>
       </div>
     </div>
-    <el-button @click='saveLimit'>保存</el-button>
+    <el-button class='primary-button' @click='saveLimit' :disabled="!isOpen">保存</el-button>
   </div>
+  </div>
+
 </template>
 
 <script>
@@ -95,8 +106,8 @@
     data () {
       return {
         activityId: '',
-        isOpen: true,
-        radioTime: '',
+        isOpen: false,
+        radioTime: '1',
         phone: '手机号码',
         pickDate: false,
         date: new Date(),
@@ -114,7 +125,8 @@
           questionId: ''
         },
         questionId: '',
-        saveData: {}
+        saveData: {},
+        showTips: ''
       }
     },
     created () {
@@ -218,6 +230,7 @@
             console.log(res)
             // this.viewLimit = res.data.viewCondition
             if (res.data.viewCondition === 'APPOINT') {
+              this.isOpen = true
               this.queryData = res.data.detail
               this.quesData = res.data.detail.questionList
               if (res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
@@ -278,20 +291,47 @@
             item.verification = 'Y'
           }
         })
-        prepareHttp.saveLimit(this.saveData).then((res) => {
+        this.$nextTick(() => {
+          this.saveLimitfn(this.saveData)
+        })
+      },
+      saveLimitfn (data) {
+        prepareHttp.saveLimit(data).then((res) => {
           if (res.code === 200) {
             // console.log(res)
             this.$toast({
-              content: '保存成功',
+              content: '设置成功',
               position: 'center'
             })
           }
         }).catch((res) => {
           this.$toast({
-            content: '保存失败',
+            content: '设置失败',
             position: 'center'
           })
         })
+      },
+      openSwitch (res) {
+        if (res) {
+          let obj = {
+            title: '手机号码',
+            placeholder: '请输入手机号码',
+            label: '手机号码',
+            type: 'mobile',
+            detail: []
+          }
+          this.quesData.push(obj)
+        } else { // 直接调用接口设置为观看条件为none
+          const data = {
+            'activityId': this.activityId,
+            'viewCondition': 'NONE',
+            'detail': {
+              'finishTime': this.radioTime === '2' ? this.queryData.finishTime : '',
+              'questionList': this.quesData
+            }
+          }
+          this.saveLimitfn(data)
+        }
       }
     },
     watch: {
@@ -309,59 +349,230 @@
     }
   }
 </script>
+<style lang="scss" scoped src="../../css/live.scss">
+</style>
+<style lang="scss">
+.apply-page .el-select .el-input__inner {
+  border: 1px solid #e2d2d2;
+}
+.el-input.is-disabled .el-input__inner {
+  background-color: #fff;
+  color: #555;
+}
 
+.spe.moblie .el-select .el-input__inner {
+  padding-left: 25px;
+}
+</style>
 <style lang='scss' scoped>
-.set-info {
-  .title {
-    text-align: left;
-    em {
-      float: right;
+@import '~assets/css/mixin.scss';
+.live-title {
+  .right-box {
+    float: right;
+    i {
+      color: $color-blue;
+    }
+    span {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      bottom: 8px;
+      margin-right: 10px;
+      color: $color-font-sub;
     }
   }
 }
-
+.live-mager /deep/ {
+  .mager-box {
+    .set-time {
+      margin: 20px 0px 0 0;
+    }
+    .from-box {
+      margin-bottom: 0px;
+    }
+    .from-box .from-row .from-title {
+      width: auto;
+      text-align: left;
+    }
+    .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+      width: 320px;
+    }
+    .set-info {
+      margin: 20px 32px 32px 32px;
+    }
+  }
+}
 .set-content {
-  .table-title li {
-    float: left;
-    width: 250px;
-    text-align: center;
-    margin: 20px 0px;
+  .table-title {
+    height: 61px;
+    background: rgba(245, 245, 245, 1);
+    border-radius: 4px 4px 0px 0px;
+    color: $color-font;
+    li {
+      float: left;
+      width: 300px;
+      text-align: left;
+      margin: 20px 0px;
+      padding-left: 40px;
+      margin-right: 20px;
+      &.spe {
+        width: 180px;
+      }
+    }
   }
   .table-content {
     & > li {
-      margin: 10px 0;
-      border-top: 1px solid #ccc;
-      padding-top: 20px;
+      line-height: 40px;
+      margin: 20px 0;
       & > div {
         float: left;
-        width: 250px;
-        text-align: center;
-        padding-bottom: 20px;
+        width: 300px;
+        text-align: left;
+        margin-right: 20px;
+        &.spe {
+          width: 180px;
+          position: relative;
+          .star {
+            color: #fc5659;
+            position: absolute;
+            top: 3px;
+            z-index: 9;
+            left: 14px;
+          }
+        }
+      }
+      .del {
+        color: $color-font-sub;
+        cursor: pointer;
+        &:hover {
+          color: $color-font;
+        }
+      }
+      .del-box {
+        padding-left: 41px;
+      }
+      .tips-box {
+        position: relative;
+      }
+      .tips {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('~assets/image/quesmark.svg') no-repeat center;
+        background-size: contain;
+        position: relative;
+        top: 5px;
+      }
+      .tips-txt {
+        position: absolute;
+        padding: 14px;
+        color: #fff;
+        width: 282px;
+        height: 114px;
+        background: rgba(34, 34, 34, 0.8);
+        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+        border-radius: 4px;
+        line-height: 22px;
+        top: -38px;
+        right: 266px;
+        z-index: 9;
       }
     }
-    .inp,
+    .inp {
+      width: 300px;
+      height: 40px;
+      line-height: 40px;
+    }
     .el-select {
-      width: 200px;
-      margin: 0 25px;
+      width: 180px;
+      height: 40px;
+      .el-input__inner {
+        border: 1px solid #e2d2d2;
+      }
     }
   }
+
   .select-item {
     clear: both;
-    padding: 0 30px;
+    padding-top: 20px;
     p {
       padding: 10px 0px;
-      border-top: 1px solid #ccc;
     }
     p button {
       float: right;
     }
     li {
       padding: 10px 0px;
+      .del {
+        margin-left: 12px;
+        color: $color-font;
+        &:hover {
+          color: $color-error;
+        }
+      }
+      .com-input {
+        width: 330px;
+      }
+    }
+    ol {
+      position: relative;
+      padding: 35px 30px;
+      width: 450px;
+      background: rgba(245, 245, 245, 1);
+      border-radius: 4px 0px 0px 0px;
+      border: 1px solid rgba(226, 226, 226, 1);
+      &:before {
+        content: '';
+        position: absolute;
+        top: -11px;
+        left: 20px;
+        width: 19px;
+        height: 19px;
+        background: whitesmoke;
+        transform: rotate(45deg);
+        border: 1px solid rgba(226, 226, 226, 1);
+        border-bottom-color: rgba(226, 226, 226, 1);
+        border-bottom: none;
+        border-right: none;
+      }
+      .add-item {
+        cursor: pointer;
+        color: #4b5afe;
+        i {
+          position: relative;
+          top: 1px;
+          font-size: 20px;
+        }
+      }
     }
   }
 }
 
 .apply-page > div {
   margin: 30px 0px;
+}
+.primary-button {
+  padding: 0px;
+  width: 200px;
+  margin: 10px auto 34px auto;
+  display: block;
+}
+/* 设备宽度大于 1600 */
+@media all and (min-width: 1600px) {
+}
+/* 设备宽度小于 1600px */
+@media all and (max-width: 1600px) {
+  .set-content .table-title li.spe,
+  .set-content .table-content .el-select,
+  .set-content .table-content > li > div.spe {
+    width: 130px;
+  }
+  .set-content .table-title li,
+  .set-content .table-content .inp,
+  .set-content .table-content > li > div {
+    width: 240px;
+  }
 }
 </style>

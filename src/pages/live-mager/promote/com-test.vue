@@ -36,14 +36,11 @@ export default {
   name: 'com-test',
   data () {
     return {
-      sendPhone: ''
+      sendPhone: '',
+      limitCount: ''
     }
   },
   props: {
-    limitCount: {
-      type: String,
-      default: ''
-    },
     msgContent: {
       type: String,
       default: ''
@@ -57,13 +54,20 @@ export default {
       default: ''
     },
     noticeId: {
-      type: Number,
-      default: 0
+      type: String,
+      default: ''
+    },
+    isAuto: {
+      type: Boolean,
+      default: false
     }
+  },
+  created () {
+    this.getCount()
   },
   methods: {
     closeModal (e) {
-      if (e.target.className === 'modal-cover') {
+      if (e.target.className === 'modal-cover' || e.target.className === 'close') {
         // this.groudModal = false
         // this.groupIdx = 0
         // this.tagIdx = 0
@@ -71,12 +75,47 @@ export default {
       }
     },
     sendTest () {
+      if (this.isAuto) {
+        this.sendAuto()
+      } else {
+        this.sendTestmsg()
+      }
+    },
+    getCount () {
+      createHttp.msgLimit('sms').then((res) => {
+        if (res.code === 200) {
+          this.limitCount = res.data
+        }
+      }).catch((e) => { console.log(e) })
+    },
+    sendTestmsg () {
       const data = {
         content: this.msgContent,
         receiverMobile: this.sendPhone
       }
       createHttp.sendTestmsg(data).then((res) => {
         console.log(res)
+        if (res.code === 200) {
+          this.limitCount -= 1
+          this.$toast({
+            content: '发送成功',
+            position: 'center'
+          })
+        }
+      }).catch((e) => {
+        console.log(e)
+        this.$toast({
+          content: '发送失败',
+          position: 'center'
+        })
+      })
+    },
+    sendAuto () {
+      const data = {
+        noticeTaskId: this.noticeId,
+        mobile: this.sendPhone
+      }
+      createHttp.autoSendtest(data).then((res) => {
         if (res.code === 200) {
           this.limitCount -= 1
           this.$toast({
@@ -139,6 +178,10 @@ export default {
   }
   .content-box {
     padding: 10px 0px;
+    .qrcode {
+      display: block;
+      margin: 0 auto;
+    }
   }
   .btm {
     span {

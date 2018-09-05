@@ -106,7 +106,7 @@
       </div>
     </transition>
     <!-- 测试发送弹窗 -->
-    <com-test :limitCount='limitCount' v-if='testModal' :msgContent='msgContent' @closeTest='closeTest' :type="'SMS'"></com-test>
+    <com-test  v-if='testModal' :msgContent='msgContent' @closeTest='closeTest' :type="'SMS'"></com-test>
     <div class="overview-box">
       <div class="header">短信</div>
       <div class="msg-box">
@@ -159,8 +159,7 @@ export default {
         disabledDate (time) {
           return time.getTime() < Date.now() - 8.64e7
         }
-      },
-      limitCount: ''
+      }
     }
   },
   created () {
@@ -219,11 +218,6 @@ export default {
     },
     test () {
       this.testModal = true
-      createHttp.msgLimit().then((res) => {
-        if (res.code === 200) {
-          this.limitCount = res.data.toString()
-        }
-      }).catch((e) => { console.log(e) })
     },
     closeTest () {
       // debugger
