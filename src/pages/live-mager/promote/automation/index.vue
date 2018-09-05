@@ -349,7 +349,7 @@ export default {
       testWechat: false,
       testMsg: false,
       testType: '',
-      limitCount: '10',
+      limitCount: '0',
       qrImgurl: ''
     }
   },
@@ -532,15 +532,22 @@ export default {
     },
     testSend (res, idx) {
       this.testModal = true
-      // this.noticeId = idx http://domain/expand/notice/test-send-qr?noticeTaskId
       this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
       this.$nextTick(() => {
         this.testType = res
+        this.getLimit(res.toLowerCase())
       })
     },
     closeTest () {
       // debugger
       this.testModal = false
+    },
+    getLimit (type) {
+      http.msgLimit(type).then((res) => {
+        if (res.code === 200) {
+          this.limitCount = res.data.toString()
+        }
+      }).catch((e) => { console.log(e) })
     }
   },
   components: {

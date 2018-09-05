@@ -247,11 +247,11 @@
         })
       },
       testSend () {
-        this.testModal = true
-        createHttp.wxLimit().then((res) => {
+        createHttp.msgLimit('wechat').then((res) => {
           if (res.code === 200) {
             console.log(res)
             this.limitCount = res.data.toString()
+            this.testModal = true
           }
         }).catch((e) => { console.log(e) })
         this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`

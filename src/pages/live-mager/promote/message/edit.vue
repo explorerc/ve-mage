@@ -218,10 +218,10 @@ export default {
       })
     },
     test () {
-      this.testModal = true
-      createHttp.msgLimit().then((res) => {
+      createHttp.msgLimit('sms').then((res) => {
         if (res.code === 200) {
           this.limitCount = res.data.toString()
+          this.testModal = true
         }
       }).catch((e) => { console.log(e) })
     },

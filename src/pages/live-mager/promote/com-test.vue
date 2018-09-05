@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     closeModal (e) {
-      if (e.target.className === 'modal-cover') {
+      if (e.target.className === 'modal-cover' || e.target.className === 'close') {
         // this.groudModal = false
         // this.groupIdx = 0
         // this.tagIdx = 0
@@ -139,6 +139,10 @@ export default {
   }
   .content-box {
     padding: 10px 0px;
+    .qrcode {
+      display: block;
+      margin: 0 auto;
+    }
   }
   .btm {
     span {
