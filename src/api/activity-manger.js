@@ -419,6 +419,14 @@ const ActivityManger = {
         noticeTaskId: id
       }
     })
+  },
+  // 自动化通知发送测试短信
+  autoSendtest (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/test-send',
+      params: data
+    })
   }
 }
 export default ActivityManger
