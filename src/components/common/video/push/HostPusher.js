@@ -26,7 +26,6 @@ export default class HostPusher extends BasePusher {
           successBK && successBK(result)
         },
         fail: reason => {
-          console.log('xxxxxxxxxxxxxxxxxxxxxx', reason)
           failedBK && failedBK(reason)
         }
       })

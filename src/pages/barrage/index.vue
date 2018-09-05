@@ -25,6 +25,9 @@
       <el-button @click="broadcast">推旁路</el-button>
       <el-button @click="stopBroadcast">取消旁路推流</el-button>
     </div>
+    <div>
+      <div id="my-puller"></div>
+    </div>
     <svg width="400px"
          height="400px">
       <path ref="pathRef"
@@ -39,7 +42,8 @@
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
 // import Progress from '../../components/common/progress/Progress.js'
-import HostPusher from '../../components/common/video/push/HostPusher'
+// import HostPusher from '../../components/common/video/push/HostPusher'
+import LivePuller from '../../components/common/video/pull/LivePuller'
 export default {
   created () {
     this.barrageSystem = new Barrage()
@@ -52,12 +56,18 @@ export default {
 
     let appId = '499279ae'
     let roomId = 'lss_5b3c9d9d'
-    let inavId = 'inav_47d93f42'
+    // let inavId = 'inav_47d93f42'
     let rootEleId = 'my-pusher'
-    let token = 'access:499279ae:4173778b9f647d98'
-    this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
-    this.hostPusher.initHostPusher()
-    this.hostPusher.accountId = 'master'
+    let token = 'access:499279ae:885ba973a5d6ad10'
+    // this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
+    // this.hostPusher.initHostPusher()
+    // this.hostPusher.accountId = 'master'
+
+    // appId, roomId, rootEleId, token
+    rootEleId = 'my-puller'
+    this.puller = new LivePuller(appId, roomId, rootEleId, token)
+    this.puller.initLivePlayer(true)
+    this.puller.accountId = 'xiao2'
   },
   mounted () {
     // let pathRef = this.$refs.pathRef
@@ -79,7 +89,8 @@ export default {
       fps: 0,
       intervalId: 0,
       c: null,
-      hostPusher: null
+      hostPusher: null,
+      puller: null
     }
   },
   methods: {
@@ -139,6 +150,11 @@ export default {
 }
 
 .my-pusher {
+  width: 200px;
+  height: 150px;
+}
+
+.my-puller {
   width: 200px;
   height: 150px;
 }
