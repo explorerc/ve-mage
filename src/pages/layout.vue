@@ -17,7 +17,7 @@
                 <i class="el-icon-close" ></i>
             </div>
             <section class="main-container" :class="{close:close}">
-                <transition name='from-left'>
+                <transition name='fade'>
                     <router-view class="app-view"></router-view>
                 </transition>
             </section>
@@ -89,6 +89,13 @@ export default {
   bottom: 0;
   overflow-y: auto;
   min-width: 1160px;
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
 }
 .main-container.close {
   left: 95px;
