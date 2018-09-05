@@ -86,4 +86,16 @@ export default class BasePusher {
     }
     this.interactor.muteVideo(val)
   }
+
+  getSetting () {
+    return this.interactor.getSetting()
+  }
+
+  changeSetting (val) {
+    let conf = this.getSetting()
+    Object.assign(conf, val)
+    this.interactor.changeSetting({
+      conf: conf
+    })
+  }
 }

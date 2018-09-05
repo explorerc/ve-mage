@@ -24,6 +24,11 @@
       <el-button @click="getDevices">获取设备</el-button>
       <el-button @click="broadcast">推旁路</el-button>
       <el-button @click="stopBroadcast">取消旁路推流</el-button>
+      <el-button @click="getSetting">获取推流配置</el-button>
+      <el-button @click="hideCamera">隐藏摄像头</el-button>
+    </div>
+    <div>
+      <div id="my-pusher2"></div>
     </div>
     <div>
       <div id="my-puller"></div>
@@ -42,8 +47,8 @@
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
 // import Progress from '../../components/common/progress/Progress.js'
-// import HostPusher from '../../components/common/video/push/HostPusher'
-import LivePuller from '../../components/common/video/pull/LivePuller'
+import HostPusher from '../../components/common/video/push/HostPusher'
+// import LivePuller from '../../components/common/video/pull/LivePuller'
 export default {
   created () {
     this.barrageSystem = new Barrage()
@@ -56,18 +61,22 @@ export default {
 
     let appId = '499279ae'
     let roomId = 'lss_5b3c9d9d'
-    // let inavId = 'inav_47d93f42'
+    let inavId = 'inav_47d93f42'
     let rootEleId = 'my-pusher'
     let token = 'access:499279ae:885ba973a5d6ad10'
-    // this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
-    // this.hostPusher.initHostPusher()
-    // this.hostPusher.accountId = 'master'
+    this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
+    this.hostPusher.initHostPusher()
+    this.hostPusher.accountId = 'master'
+
+    this.hostPusher2 = new HostPusher(appId, roomId, inavId, token, 'my-pusher2')
+    this.hostPusher.initHostPusher()
+    this.hostPusher.accountId = 'master2'
 
     // appId, roomId, rootEleId, token
-    rootEleId = 'my-puller'
-    this.puller = new LivePuller(appId, roomId, rootEleId, token)
-    this.puller.initLivePlayer(true)
-    this.puller.accountId = 'xiao2'
+    // rootEleId = 'my-puller'
+    // this.puller = new LivePuller(appId, roomId, rootEleId, token)
+    // this.puller.initLivePlayer(true)
+    // this.puller.accountId = 'xiao2'
   },
   mounted () {
     // let pathRef = this.$refs.pathRef
@@ -90,7 +99,8 @@ export default {
       intervalId: 0,
       c: null,
       hostPusher: null,
-      puller: null
+      puller: null,
+      hostPusher2: null
     }
   },
   methods: {
@@ -137,6 +147,14 @@ export default {
     },
     stopBroadcast () {
       this.hostPusher.stopBroadCast()
+    },
+    getSetting () {
+      console.log(this.hostPusher.getSetting())
+    },
+    hideCamera () {
+      this.hostPusher.changeSetting({
+        video: false
+      })
     }
   }
 }
