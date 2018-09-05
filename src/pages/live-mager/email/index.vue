@@ -42,24 +42,24 @@
             label="操作">
             <template slot-scope="scope">
               <!--<el-button-->
-                <!--type="text" size="small"-->
-                <!--@click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>-->
+              <!--type="text" size="small"-->
+              <!--@click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>-->
               <!--<el-button-->
-                <!--type="text" size="small"-->
-                <!--v-if="emailList[scope.$index].status==='DRAFT'"-->
-                <!--@click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>-->
+              <!--type="text" size="small"-->
+              <!--v-if="emailList[scope.$index].status==='DRAFT'"-->
+              <!--@click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>-->
               <!--<el-button-->
-                <!--type="text" size="small"-->
-                <!--v-else-if="emailList[scope.$index].status!=='SEND'"-->
-                <!--@click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>-->
+              <!--type="text" size="small"-->
+              <!--v-else-if="emailList[scope.$index].status!=='SEND'"-->
+              <!--@click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>-->
               <!--<el-button-->
-                <!--type="text" size="small"-->
-                <!--v-if="emailList[scope.$index].status!=='SEND'"-->
-                <!--@click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>-->
+              <!--type="text" size="small"-->
+              <!--v-if="emailList[scope.$index].status!=='SEND'"-->
+              <!--@click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>-->
               <!--<el-button-->
-                <!--type="text" size="small"-->
-                <!--v-if="emailList[scope.$index].status!=='SEND'"-->
-                <!--@click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>-->
+              <!--type="text" size="small"-->
+              <!--v-if="emailList[scope.$index].status!=='SEND'"-->
+              <!--@click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>-->
               <div class="table-handler">
                 <span @click.stop="clickEmail(scope.$index,handleType.info)">查看</span>
                 <span
@@ -71,7 +71,7 @@
         </el-table>
       </div>
       <div class="pagination-box">
-        <div class="page-pagination" v-if="total>pageSize">
+        <div class="page-pagination">
           <ve-pagination
             :total="total"
             :pageSize="pageSize"
@@ -110,7 +110,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const handleType = {
@@ -126,7 +126,7 @@
   }
   export default {
     name: 'index',
-    components: { VePagination },
+    components: {VePagination},
     data () {
       return {
         pageSize: 10,
@@ -211,6 +211,7 @@
             content: '删除邮件后，邮件内容将无法找回，确认删除？',
             cancelText: '取消',
             confirmText: '删除',
+            width: '400px',
             handleClick: (e) => {
               if (e.action === 'confirm') {
                 this.delEmail()
@@ -268,20 +269,24 @@
   .email-table-box {
     font-size: 14px;
   }
-  .send-box{
+
+  .send-box {
     display: inline-block;
     color: #888;
     font-size: 14px;
     line-height: 44px;
     margin-right: 20px;
   }
-  .cg-status{
+
+  .cg-status {
     color: #1bcab7;
   }
-  .fs-status{
+
+  .fs-status {
     color: #4B5AFE;
   }
-  .dd-status{
+
+  .dd-status {
     color: #FF8b0e;
   }
 </style>

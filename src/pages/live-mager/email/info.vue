@@ -1,6 +1,12 @@
 <template>
   <div class="live-mager edit-step-box">
-    <div class="mager-box">
+    <div class="live-title">
+      <span class="title">查看邮件</span>
+    </div>
+    <div class="tip-box">
+      通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
+    </div>
+    <div class="mager-box border-box">
       <div class="from-box">
         <div class="from-row">
           <div class="from-title">邮件标题：</div>
@@ -9,26 +15,6 @@
         <div class="from-row">
           <div class="from-title">发件人：</div>
           <div class="from-content">{{email.senderName}}</div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">发件状态：</div>
-          <div class="from-content">{{email.statusName}}</div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">发件时间：</div>
-          <div class="from-content">{{email.sendTime}}</div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">邮件摘要：</div>
-          <div class="from-content">
-            <div>{{email.desc}}</div>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">邮件内容：</div>
-          <div class="from-content">
-            <div v-html="email.content"></div>
-          </div>
         </div>
         <div class="from-row">
           <div class="from-title">收件人：</div>
@@ -44,10 +30,34 @@
             </div>
           </div>
         </div>
+        <div class="from-row">
+          <div class="from-title">发件状态：</div>
+          <div class="from-content">
+            <span v-if="email.status=='DRAFT'" class="cg-status"><i class="iconfont icon-shijian"></i>{{email.statusName}}</span>
+            <span v-if="email.status=='SEND'" class="fs-status"><i class="iconfont icon-shijian"></i>{{email.statusName}}</span>
+            <span v-if="email.status=='AWAIT'" class="dd-status"><i class="iconfont icon-shijian"></i>{{email.statusName}}</span>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">发件时间：</div>
+          <div class="from-content">{{email.sendTime}}</div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">邮件摘要：</div>
+          <div class="from-content">
+            <div>{{email.desc}}</div>
+          </div>
+        </div>
+        <div class="from-row">
+          <!--<div class="from-title">邮件内容：</div>-->
+          <!--<div class="from-content">-->
+            <div class="email-info-box" v-html="email.content"></div>
+          <!--</div>-->
+        </div>
         <div class="step-btns">
-          <button v-if="email.status=='AWAIT'" class="primary-button fr" @click="sendEmail">立即发送</button>
-          <button v-if="email.status!=='SEND'" class="primary-button fr" @click="editEmail">编辑邮件</button>
-          <button class="primary-button fr" @click="prePage">返回上级</button>
+          <button v-if="email.status!=='SEND'" class="default-button margin-fl" @click="editEmail">编辑邮件</button>
+          <button v-if="email.status=='AWAIT'" class="primary-button" @click="sendEmail">立即发送</button>
+          <!--<button class="primary-button fr" @click="prePage">返回上级</button>-->
         </div>
       </div>
     </div>
@@ -143,8 +153,67 @@
 </style>
 <style lang="scss" scoped>
 .edit-step-box {
+  .live-mager .mager-box{
+    margin-top: 0;
+  }
   .step-btns {
     margin-top: 20px;
+    text-align: center;
+    .margin-fl {
+      margin: 0 10px;
+    }
+  }
+  .tip-box{
+    margin-bottom: 20px;
+  }
+  .cg-status {
+    color: #1bcab7;
+    i{
+      margin-right: 10px;
+    }
+  }
+  .fs-status {
+    color: #4B5AFE;
+    i{
+      margin-right: 10px;
+    }
+  }
+  .dd-status {
+    color: #FF8b0e;
+    i{
+      margin-right: 10px;
+    }
+  }
+  .email-info-box{
+    position: relative;
+    width: 750px;
+    margin: 20px auto;
+    border: solid 1px #E2E2E2;
+    border-radius: 4px;
+    padding: 20px;
+    overflow: hidden;
+    &:before{
+      display: block;
+      content: '';
+      position: absolute;
+      height: 74px;
+      width: 74px;
+      top: -37px;
+      left: -37px;
+      transform: rotate(45deg);
+      background-color: #FFD021;
+    }
+    &:after{
+      display: block;
+      content: '预览';
+      position: absolute;
+      height: 20px;
+      width: 30px;
+      top: 8px;
+      left: 3px;
+      transform: rotate(-45deg);
+      background-color: #FFD021;
+    }
   }
 }
 </style>
