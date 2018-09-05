@@ -132,7 +132,7 @@ export default [{
     name: 'Site',
     component: Site
   }, {
-    path: '/liveMager',
+    path: '/liveMager/list',
     name: 'liveMager',
     component: LiveMager
   },

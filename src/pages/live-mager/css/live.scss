@@ -8,6 +8,7 @@
   width: 1366px;
   min-width: 1019px;
   color: #222;
+  transition: width .2s;
   /* 设备宽度大于 1600 */
   @media all and (min-width:1600px) {
     width: 1366px;
