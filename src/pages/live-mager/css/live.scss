@@ -152,8 +152,19 @@
     }
   }
   .table-list-box{
+    margin-top: 20px;
     padding: 10px 20px 50px 20px;
     background-color: #fff;
     border-radius: 4px;
+  }
+  .tip-box{
+    height: 50px;
+    line-height: 50px;
+    border: solid 1px #818CFE;
+    background-color: #E9EBFF;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    color: $color-font;
   }
 }

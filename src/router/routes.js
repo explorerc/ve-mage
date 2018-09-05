@@ -123,6 +123,10 @@ export default [{
   name: 'SiteTemplate2',
   component: SiteTemplate2
 }, {
+  path: '/liveMager/emailEdit/:id',
+  name: 'emailEdit',
+  component: EmailEdit
+}, {
   path: '/',
   name: 'Layout',
   component: Layout,
@@ -210,11 +214,6 @@ export default [{
     path: '/liveMager/email/:id',
     name: 'email',
     component: Email
-  },
-  {
-    path: '/liveMager/emailEdit/:id',
-    name: 'emailEdit',
-    component: EmailEdit
   },
   {
     path: '/liveMager/emailInfo/:id',

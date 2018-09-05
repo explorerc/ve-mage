@@ -2,15 +2,12 @@
   <div class="live-mager email-box">
     <div class="live-title">
       <span class="title">邮件邀约</span>
+      <button class="primary-button fr" @click="addEmail">新建邮件</button>
+      <span class="send-box fr">发送限额：2399/10000</span>
     </div>
     <div class="email-table-box" v-ComLoading="loading">
-      <div class="email-setting">
-        邮件邀约：
-        <el-switch
-          v-model="isInvite">
-        </el-switch>
-        <span class="msg-tip">开启后，将可以定制邀约邮件，邀请特定客户群参加直播活动</span>
-        <button class="primary-button fr" @click="addEmail">新建邮件</button>
+      <div class="tip-box">
+        通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
       </div>
       <div class="table-list-box">
         <el-table
@@ -117,7 +114,6 @@
     components: { VePagination },
     data () {
       return {
-        isInvite: false,
         pageSize: 10,
         total: 0,
         currentPage: 1,
@@ -257,10 +253,8 @@
 .email-table-box {
   font-size: 14px;
 }
-
-.email-setting {
-  margin-bottom: 20px;
-  padding: 20px 0;
+.send-box{
+  display: inline-block;
 }
 </style>
 
