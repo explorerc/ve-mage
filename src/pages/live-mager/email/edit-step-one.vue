@@ -1,37 +1,59 @@
 <template>
   <div class="edit-step-box">
-    <div class="mager-box border-box">
+    <header class="email-header">
+      <div class="back-btn" @click="goBack">
+        <i class="iconfont icon-jiantou"></i>
+      </div>
+      <span>步骤1 邮件内容</span>
+    </header>
+    <div class="border-box">
       <div class="edit-content clearfix">
         <div class="edit-content-box fl">
           <ve-html5-editer
             v-model="email.content"></ve-html5-editer>
-          <div style="width: 50%;margin: 0 auto;padding: 20px 0;">
-            <div>为自己发送一封测试邮件</div>
-            <div>
-              <input v-model="testEmail" placeholder="输入邮件地址"/>
-              <el-button class="live-btn" type="primary" plain @click="sendTestEmail">发送测试邮件</el-button>
-            </div>
-          </div>
+          <!--<div style="width: 50%;margin: 0 auto;padding: 20px 0;">-->
+          <!--<div>为自己发送一封测试邮件</div>-->
+          <!--<div>-->
+          <!--<input v-model="testEmail" placeholder="输入邮件地址"/>-->
+          <!--<el-button class="live-btn" type="primary" plain @click="sendTestEmail">发送测试邮件</el-button>-->
+          <!--</div>-->
+          <!--</div>-->
         </div>
         <div class="edit-content-temp fr">
           <div class="temp-title">
-            选择模板
-            <el-button class="live-btn fr" type="primary" plain @click="recoverDefault">恢复默认</el-button>
+            <span>选择模板</span>
+            <button class="default-button fr" @click="recoverDefault">恢复默认</button>
           </div>
           <div class="temp-boxs">
-            <div v-for="(emailItem,idx) in emailList"
-                 :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
-                 @click.stop="changeTemp(idx)">
-              {{emailItem.title}}
+            <!--<div v-for="(emailItem,idx) in emailList"-->
+            <!--:class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"-->
+            <!--@click.stop="changeTemp(idx)">-->
+            <!--{{emailItem.title}}-->
+            <!--</div>-->
+            <div class="temp-item fl active">
+              <div class="temp-item-box"></div>
+              <span class="temp-item-title">一封信</span>
+            </div>
+            <div class="temp-item fl">
+              <div class="temp-item-box"></div>
+              <span class="temp-item-title">展示柜</span>
+            </div>
+            <div class="temp-item fl">
+              <div class="temp-item-box"></div>
+              <span class="temp-item-title">瀑布</span>
+            </div>
+            <div class="temp-item fl">
+              <div class="temp-item-box"></div>
+              <span class="temp-item-title">超市</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="step-btns">
-        <button class="primary-button fl" @click="goLiveManger">返回邮件管理</button>
-        <el-button class="primary-button fr" @click="nextEmail">下一步</el-button>
-        <el-button class="primary-button margin-fl fr" @click="saveEmail">保存草稿</el-button>
-      </div>
+    </div>
+    <div class="email-bottom">
+      <button class="default-button fl" @click="sendTestEmail">发送测试邮件</button>
+      <button class="primary-button fr" @click="nextEmail">下一步</button>
+      <button class="default-button margin-fl fr" @click="saveEmail">保存草稿</button>
     </div>
   </div>
 </template>
@@ -39,7 +61,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VeHtml5Editer from 'src/components/ve-html5-editer'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -59,14 +81,14 @@
         }
       }
     },
-    components: { VeHtml5Editer },
+    components: {VeHtml5Editer},
     computed: mapState('liveMager', {
       emailInfo: state => state.emailInfo
     }),
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
       }
@@ -116,6 +138,7 @@
       },
       queryEmailTemp () {
         LiveHttp.queryEmailTemplateList().then((res) => {
+          if (!res.data.list) return
           this.emailList = res.data.list
           if (!this.email.emailInviteId) { // 如果不是编辑
             this.email.content = this.emailList[0].content
@@ -171,10 +194,14 @@
           })
         })
       },
+      goBack () {
+        this.$router.go(-1)
+      },
       nextEmail () {
         this.storeEmailInfo(this.email)
         // 切换到下一步
-        this.$emit('changeView', 1)
+        // this.$emit('changeView', 1)
+        this.$router.push(`/liveMager/emailEditTwo/${this.$route.params.id}`)
       },
       /* 更换模板 */
       changeTemp (idx) {
@@ -226,8 +253,58 @@
   @import "~assets/css/mixin.scss";
 
   .edit-step-box {
+    min-width: 1366px;
     height: 800px;
     background-color: #fff;
+    color: #222;
+    .email-header {
+      height: 60px;
+      line-height: 60px;
+      background-color: #FFD021;
+      .icon-jiantou {
+        font-size: 22px;
+        vertical-align: -2px;
+      }
+      .back-btn {
+        display: inline-block;
+        padding: 0 15px;
+        background-color: #FFDA51;
+        line-height: 40px;
+        border-radius: 4px;
+        font-size: 18px;
+        text-align: center;
+        margin-left: 20px;
+        margin-right: 10px;
+        &:hover {
+          cursor: pointer;
+          opacity: .9;
+          color: #4B5AFE;
+        }
+      }
+    }
+    .email-bottom {
+      height: 60px;
+      line-height: 60px;
+      border-top: 1px solid #E2E2E2;
+      box-sizing: border-box;
+      box-shadow: 0 0 4px rgba(0, 0, 0, .1);
+      padding: 0 20px;
+      button {
+        margin-top: 10px;
+      }
+      .margin-fl {
+        margin-right: 10px;
+      }
+    }
+    .border-box /deep/ {
+      height: calc(100vh - 120px);
+      .html-editer {
+        height: 100%;
+        .vue-html5-editor .content {
+          background-color: #F5F5F5;
+        }
+      }
+    }
     .step-btns {
       margin: 30px 30px 100px 30px;
       .margin-fl {
@@ -235,32 +312,82 @@
       }
     }
     .edit-content {
-      margin: 20px 0;
+      height: 100%;
+      margin: 0 0 20px 0;
       .edit-content-temp {
-        width: 400px;
-        margin-top: 20px;
+        width: 356px;
+        margin-top: 36px;
+        padding: 0 39px;
+        box-sizing: border-box;
         .temp-title {
-          margin: 0 0 0 20px;
+          span {
+            line-height: 44px;
+            color: #555;
+          }
         }
         .temp-boxs {
-          margin: 20px;
+          margin-top: 20px;
           .temp-item {
-            width: 160px;
-            height: 180px;
-            line-height: 180px;
-            margin: 10px;
+            width: 124px;
+            margin: 10px 15px;
             text-align: center;
-            box-sizing: border-box;
-            border: solid 1px #e5e5e5;
+            &:nth-child(2n) {
+              margin-right: 0;
+            }
+            &:nth-child(2n+1) {
+              margin-left: 0;
+            }
+            .temp-item-box {
+              height: 196px;
+              box-sizing: border-box;
+              border: solid 1px #e5e5e5;
+              border-radius: 4px;
+              background-size: cover;
+              &:hover {
+                cursor: pointer;
+                border-color: #4B5AFE;
+                transition: border-color .2s;
+              }
+            }
+            .temp-item-title {
+              display: block;
+              padding-top: 5px;
+              font-size: 14px;
+              color: #555555;
+            }
+            &:nth-child(1) .temp-item-box {
+              background-image: url("../../../assets/image/email-01.jpg");
+            }
+            &:nth-child(2) .temp-item-box {
+              background-image: url("../../../assets/image/email-02.jpg");
+            }
+            &:nth-child(3) .temp-item-box {
+              background-image: url("../../../assets/image/email-03.jpg");
+            }
+            &:nth-child(4) .temp-item-box {
+              background-image: url("../../../assets/image/email-04.jpg");
+            }
           }
           .active {
-            border-color: red;
+            .temp-item-box {
+              border-color: #4B5AFE;
+            }
           }
         }
       }
-      .edit-content-box {
-        width: calc(100% - 430px);
-        margin-left: 30px;
+      .edit-content-box /deep/ {
+        width: calc(100% - 356px);
+        height: 100%;
+        .vue-html5-editor {
+          height: 100%;
+          border: none;
+          border-right: solid 1px #e5e5e5;
+          border-radius: 0;
+          .content {
+            height: calc(100% - 37px);
+            max-height: calc(100% - 37px);
+          }
+        }
       }
     }
   }
