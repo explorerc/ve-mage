@@ -259,7 +259,7 @@ export default {
     padding-top: 10px;
     border-right: 0;
     &.el-menu--collapse {
-      // width: 96px;
+      width: 90px;
     }
     .is-active {
       .el-submenu__title {
