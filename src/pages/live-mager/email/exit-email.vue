@@ -39,11 +39,13 @@
           background-color: #4B5AFE;
           color: #fff;
           text-align: center;
-          font-size: 30px;
+          .icon-duihao1{
+            font-size: 30px;
+          }
         }
         &:last-child{
           display: block;
-          line-height: 50px;
+          line-height: 60px;
           font-size: 24px;
           text-align: center;
           color: #222;
