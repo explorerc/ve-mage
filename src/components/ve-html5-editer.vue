@@ -150,12 +150,14 @@
     ],
     image: {
       sizeLimit: 512 * 1024,
-      compress: false,
-      width: 500,
-      height: 500,
-      quality: 80,
-      uploadHandler (res) {
-        console.log(res)
+      compress: null,
+      uploadHandler (responseText) {
+        var json = JSON.parse(responseText)
+        if (json.code !== 200) {
+          console.error(json.msg)
+        } else {
+          return json.data.host + '/' + json.data.name
+        }
       },
       upload: {
         url: '/api/upload/image',
