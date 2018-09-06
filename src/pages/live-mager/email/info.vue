@@ -141,7 +141,7 @@
         })
       },
       editEmail () {
-        this.$router.push(`/liveMager/emailEdit/${this.email.activityId}?email=${this.email.emailInviteId}`)
+        this.$router.push(`/liveMager/emailEditOne/${this.email.activityId}?email=${this.email.emailInviteId}`)
       },
       prePage () {
         this.$router.go(-1)

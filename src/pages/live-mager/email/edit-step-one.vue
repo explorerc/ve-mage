@@ -200,8 +200,7 @@
       nextEmail () {
         this.storeEmailInfo(this.email)
         // 切换到下一步
-        // this.$emit('changeView', 1)
-        this.$router.push(`/liveMager/emailEditTwo/${this.$route.params.id}`)
+        this.$router.push(`/liveMager/emailEditTwo/${this.email.activityId}?email=${this.email.emailInviteId}`)
       },
       /* 更换模板 */
       changeTemp (idx) {
