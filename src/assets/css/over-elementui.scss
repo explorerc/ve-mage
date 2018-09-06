@@ -93,3 +93,7 @@ $color-ui-components:#4B5AFE;
 .el-table th, .el-table tr {
   background-color: transparent;
 }
+.has-gutter {
+  background:rgba(245,245,245,1) !important;
+  border-radius:4px 4px 0px 0px;
+}

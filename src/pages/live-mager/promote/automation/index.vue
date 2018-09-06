@@ -1,38 +1,78 @@
 <template>
-  <div class="content">
-    <p>自动化通知：<el-switch v-model="isOpen"></el-switch> 开启自动化通知，自动通知您的观众，提升活动服务体验</p>
-    <div class='preview'>
+  <div class="content live-mager auto-page">
+    <div class="live-title">
+      <span class="title">自动化通知</span>
+      <el-switch
+        v-model="isOpen"
+        inactive-color="#DEE1FF"
+        active-color="#4B5AFE" @change='openSwitch'>
+      </el-switch>
+      <span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>
+    </div>
+    <div class='preview mager-box border-box'>
+      <div class="time-line"></div>
       <p v-if="limit === 'NONE'? true : false">预约阶段</p>
       <p v-else>活动报名阶段</p>
       <div class="detail">
         <div class="block" v-if="limit === 'NONE'? true : false">
           <div class="title clearfix">
             <p>欢迎消息 <span>活动发布后 可以发送邀请消息</span></p>
-            <el-button :disabled='btnStatus.BEFORE_ORDER.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_ORDER'} }">添加短信</router-link></el-button>
-            <el-button :disabled='btnStatus.BEFORE_ORDER.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_ORDER'} }">添加微信</router-link></el-button>
+            <!-- <el-button :disabled='btnStatus.BEFORE_ORDER.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_ORDER'} }">添加短信</router-link></el-button>
+            <el-button :disabled='btnStatus.BEFORE_ORDER.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_ORDER'} }">添加微信</router-link></el-button> -->
           </div>
           <div class="item-box">
 
-            <div class="item" v-for="item in renderData.BEFORE_ORDER">
-              <img src="asd/asdasd.png" v-if="item.type === 'SMS'">
-              <img src="asd/11.png" v-else>
+            <div class="item message">
+              <img src="asd/11.png">
               <div class="txt">
                 <com-tpl
                 :isString="true"
-                :type="item.type"
-                :tpl="item.templateId"
+                :type="'SMS'"
+                :tpl="1"
                 :tag="tplData.tag"
                 :webinarName="tplData.webinarName"
                 :hostName="tplData.hostName"
                 :date="tplData.date"
                 :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_ORDER'"
                 ></com-tpl>
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
-                <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_ORDER'} }">编辑</router-link></el-button>
-                <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_ORDER", item.type)'>删除</el-button>
+                 <el-switch
+                  v-model="itemList['BEFORE_ORDER']['SMS']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_ORDER', 'SMS', itemList['BEFORE_ORDER']['SMS']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_ORDER', 'SMS',itemList['BEFORE_ORDER']['SMS']['noticeTaskId'])">测试发送</el-button>
+              </div>
+            </div>
+
+            <div class="item message">
+              <img src="asd/11.png">
+              <div class="txt">
+                <com-tpl
+                :isString="true"
+                :type="'WECHAT'"
+                :tpl="1"
+                :tag="tplData.tag"
+                :webinarName="tplData.webinarName"
+                :hostName="tplData.hostName"
+                :date="tplData.date"
+                :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_ORDER'"
+                ></com-tpl>
+                <em>自动发送</em>
+              </div>
+              <div class="btn-group">
+                 <el-switch
+                  v-model="itemList['BEFORE_ORDER']['WECHAT']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_ORDER', 'WECHAT',itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_ORDER', 'WECHAT',itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'])">测试发送</el-button>
               </div>
             </div>
 
@@ -42,31 +82,62 @@
         <div class="block" v-else>
           <div class="title clearfix">
             <p>欢迎消息 <span>活动发布后 可以发送邀请消息</span></p>
-            <el-button :disabled='btnStatus.BEFORE_APPLY.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_APPLY'} }">添加短信</router-link></el-button>
-            <el-button :disabled='btnStatus.BEFORE_APPLY.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_APPLY'} }">添加微信</router-link></el-button>
+            <!-- <el-button :disabled='btnStatus.BEFORE_APPLY.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_APPLY'} }">添加短信</router-link></el-button>
+            <el-button :disabled='btnStatus.BEFORE_APPLY.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_APPLY'} }">添加微信</router-link></el-button> -->
           </div>
           <div class="item-box">
 
-            <div class="item" v-for="item in renderData.BEFORE_APPLY">
-              <img src="asd/asdasd.png" v-if="item.type === 'SMS'">
-              <img src="asd/11.png" v-else>
+            <div class="item message">
+              <img src="asd/11.png">
               <div class="txt">
                 <com-tpl
                 :isString="true"
-                :type="item.type"
-                :tpl="item.templateId"
+                :type="'SMS'"
+                :tpl="1"
                 :tag="tplData.tag"
                 :webinarName="tplData.webinarName"
                 :hostName="tplData.hostName"
                 :date="tplData.date"
                 :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_APPLY'"
                 ></com-tpl>
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
-                <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_APPLY'} }">编辑</router-link></el-button>
-                <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_APPLY", item.type)'>删除</el-button>
+                 <el-switch
+                  v-model="itemList['BEFORE_APPLY']['SMS']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_APPLY', 'SMS',itemList['BEFORE_APPLY']['SMS']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_APPLY', 'SMS',itemList['BEFORE_APPLY']['SMS']['noticeTaskId'])">测试发送</el-button>
+              </div>
+            </div>
+
+            <div class="item message">
+              <img src="asd/11.png">
+              <div class="txt">
+                <com-tpl
+                :isString="true"
+                :type="'WECHAT'"
+                :tpl="1"
+                :tag="tplData.tag"
+                :webinarName="tplData.webinarName"
+                :hostName="tplData.hostName"
+                :date="tplData.date"
+                :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_APPLY'"
+                ></com-tpl>
+                <em>自动发送</em>
+              </div>
+              <div class="btn-group">
+                 <el-switch
+                  v-model="itemList['BEFORE_APPLY']['WECHAT']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_APPLY', 'WECHAT', itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_APPLY', 'WECHAT', itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'])">测试发送</el-button>
               </div>
             </div>
 
@@ -76,8 +147,8 @@
         <div class="block">
           <div class="title clearfix">
             <p>开播前{{hourValue}}小时提醒 <span>提醒用户活动即将开始，做好参加准备</span></p>
-            <el-button :disabled='btnStatus.BEFORE_HOUR.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_HOUR'} }">添加短信</router-link></el-button>
-            <el-button :disabled='btnStatus.BEFORE_HOUR.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_HOUR'} }">添加微信</router-link></el-button>
+            <!-- <el-button :disabled='btnStatus.BEFORE_HOUR.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_HOUR'} }">添加短信</router-link></el-button>
+            <el-button :disabled='btnStatus.BEFORE_HOUR.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_HOUR'} }">添加微信</router-link></el-button> -->
             <el-button size="medium" @click='firstSel = true'>编辑提醒时间</el-button>
             <div class="seltime-modal" v-if='firstSel'>
               <div class="title">修改时间：</div>
@@ -85,34 +156,64 @@
                 <el-option v-for="item in hourOptions" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
-              <el-button @click='resetCountDown('hour')'>放弃</el-button>
+              <el-button @click='resetCountDown("hour")'>放弃</el-button>
               <el-button @click='saveCountdown("hour")'>保存</el-button>
             </div>
+
           </div>
           <div class="item-box">
 
-            <div class="item" v-for="item in renderData.BEFORE_HOUR">
-              <img src="asd/asdasd.png" v-if="item.type === 'SMS'">
-              <img src="asd/11.png" v-else>
+            <div class="item message">
+              <img src="asd/11.png">
               <div class="txt">
                 <com-tpl
                 :isString="true"
-                :type="item.type"
-                :tpl="item.templateId"
+                :type="'SMS'"
+                :tpl="3"
                 :tag="tplData.tag"
                 :webinarName="tplData.webinarName"
                 :hostName="tplData.hostName"
                 :date="tplData.date"
-                :triggerType="'BEFORE_HOUR'"
-                :firstCount="tplData.firstCount"
                 :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_HOUR'"
                 ></com-tpl>
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
-                <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_HOUR'} }">编辑</router-link></el-button>
-                <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_HOUR", item.type)'>删除</el-button>
+                 <el-switch
+                  v-model="itemList['BEFORE_HOUR']['sms']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'])">测试发送</el-button>
+              </div>
+            </div>
+
+            <div class="item message">
+              <img src="asd/11.png">
+              <div class="txt">
+                <com-tpl
+                :isString="true"
+                :type="'WECHAT'"
+                :tpl="3"
+                :tag="tplData.tag"
+                :webinarName="tplData.webinarName"
+                :hostName="tplData.hostName"
+                :date="tplData.date"
+                :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_HOUR'"
+                ></com-tpl>
+                <em>自动发送</em>
+              </div>
+              <div class="btn-group">
+                 <el-switch
+                  v-model="itemList['BEFORE_HOUR']['wx']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'])">测试发送</el-button>
               </div>
             </div>
 
@@ -121,8 +222,8 @@
         <div class="block">
           <div class="title clearfix">
             <p>开播前{{minValue}}分钟提醒 <span>活动开始前{{minValue}}分钟，提醒用户活动即将开始，做好参加准备</span></p>
-            <el-button :disabled='btnStatus.BEFORE_MINUTE.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_MINUTE'} }">添加短信</router-link></el-button>
-            <el-button :disabled='btnStatus.BEFORE_MINUTE.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_MINUTE'} }">添加微信</router-link></el-button>
+            <!-- <el-button :disabled='btnStatus.BEFORE_MINUTE.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_MINUTE'} }">添加短信</router-link></el-button>
+            <el-button :disabled='btnStatus.BEFORE_MINUTE.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_MINUTE'} }">添加微信</router-link></el-button> -->
             <el-button size="medium" @click='secondSel = true'>编辑提醒时间</el-button>
             <div class="seltime-modal" v-if='secondSel'>
               <div class="title">修改时间：</div>
@@ -136,28 +237,57 @@
           </div>
           <div class="item-box">
 
-            <div class="item" v-for="item in renderData.BEFORE_MINUTE">
-              <img src="asd/asdasd.png" v-if="item.type === 'SMS'">
-              <img src="asd/11.png" v-else>
+            <div class="item message">
+              <img src="asd/11.png">
               <div class="txt">
                 <com-tpl
                 :isString="true"
-                :type="item.type"
-                :tpl="item.templateId"
+                :type="'SMS'"
+                :tpl="3"
                 :tag="tplData.tag"
                 :webinarName="tplData.webinarName"
                 :hostName="tplData.hostName"
                 :date="tplData.date"
-                :triggerType="'BEFORE_MINUTE'"
-                :firstCount="tplData.firstCount"
                 :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_MINUTE'"
                 ></com-tpl>
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
-                <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'BEFORE_MINUTE'} }">编辑</router-link></el-button>
-                <el-button type="small" @click='del(item.noticeTaskId, "BEFORE_MINUTE", item.type)'>删除</el-button>
+                 <el-switch
+                  v-model="itemList['BEFORE_MINUTE']['SMS']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_MINUTE', 'SMS', itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_MINUTE', 'SMS', itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'])">测试发送</el-button>
+              </div>
+            </div>
+
+            <div class="item message">
+              <img src="asd/11.png">
+              <div class="txt">
+                <com-tpl
+                :isString="true"
+                :type="'WECHAT'"
+                :tpl="3"
+                :tag="tplData.tag"
+                :webinarName="tplData.webinarName"
+                :hostName="tplData.hostName"
+                :date="tplData.date"
+                :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'BEFORE_MINUTE'"
+                ></com-tpl>
+                <em>自动发送</em>
+              </div>
+              <div class="btn-group">
+                 <el-switch
+                  v-model="itemList['BEFORE_MINUTE']['WECHAT']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'BEFORE_MINUTE', 'WECHAT', itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('BEFORE_MINUTE', 'WECHAT', itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'])">测试发送</el-button>
               </div>
             </div>
 
@@ -169,33 +299,62 @@
         <div class="block">
           <div class="title clearfix">
             <p>订阅直播成功消息 <span>观众订阅企业活动信息成功后立即发送</span></p>
-            <el-button :disabled='btnStatus.SUBSCRIBE.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'SUBSCRIBE'} }">添加短信</router-link></el-button>
-            <el-button :disabled='btnStatus.SUBSCRIBE.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'SUBSCRIBE'} }">添加微信</router-link></el-button>
+            <!-- <el-button :disabled='btnStatus.SUBSCRIBE.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'SUBSCRIBE'} }">添加短信</router-link></el-button>
+            <el-button :disabled='btnStatus.SUBSCRIBE.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'SUBSCRIBE'} }">添加微信</router-link></el-button> -->
           </div>
           <div class="item-box">
 
-            <div class="item" v-for="item in renderData.SUBSCRIBE">
-              <img src="asd/asdasd.png" v-if="item.type === 'SMS'">
-              <img src="asd/11.png" v-else>
+            <div class="item message">
+              <img src="asd/11.png">
               <div class="txt">
                 <com-tpl
                 :isString="true"
-                :type="item.type"
-                :tpl="item.templateId"
+                :type="'SMS'"
+                :tpl="4"
                 :tag="tplData.tag"
                 :webinarName="tplData.webinarName"
                 :hostName="tplData.hostName"
                 :date="tplData.date"
-                :triggerType="'SUBSCRIBE'"
-                :firstCount="tplData.firstCount"
                 :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'SUBSCRIBE'"
                 ></com-tpl>
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
-                <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'SUBSCRIBE'} }">编辑</router-link></el-button>
-                <el-button type="small" @click='del(item.noticeTaskId, "SUBSCRIBE", item.type)'>删除</el-button>
+                 <el-switch
+                  v-model="itemList['SUBSCRIBE']['SMS']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'SUBSCRIBE', 'SMS', itemList['SUBSCRIBE']['SMS']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('SUBSCRIBE', 'SMS', itemList['SUBSCRIBE']['SMS']['noticeTaskId'])">测试发送</el-button>
+              </div>
+            </div>
+
+            <div class="item message">
+              <img src="asd/11.png">
+              <div class="txt">
+                <com-tpl
+                :isString="true"
+                :type="'WECHAT'"
+                :tpl="4"
+                :tag="tplData.tag"
+                :webinarName="tplData.webinarName"
+                :hostName="tplData.hostName"
+                :date="tplData.date"
+                :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'SUBSCRIBE'"
+                ></com-tpl>
+                <em>自动发送</em>
+              </div>
+              <div class="btn-group">
+                 <el-switch
+                  v-model="itemList['SUBSCRIBE']['WECHAT']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'SUBSCRIBE', 'WECHAT', itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('SUBSCRIBE', 'WECHAT', itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'])">测试发送</el-button>
               </div>
             </div>
 
@@ -207,33 +366,62 @@
         <div class="block">
           <div class="title clearfix">
             <p>回访设置成功消息 <span>针对未参加活动的用户发送回放消息</span></p>
-            <el-button :disabled='btnStatus.REPLAY.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'REPLAY'} }">添加短信</router-link></el-button>
-            <el-button :disabled='btnStatus.REPLAY.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'REPLAY'} }">添加微信</router-link></el-button>
+            <!-- <el-button :disabled='btnStatus.REPLAY.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'REPLAY'} }">添加短信</router-link></el-button>
+            <el-button :disabled='btnStatus.REPLAY.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'REPLAY'} }">添加微信</router-link></el-button> -->
           </div>
           <div class="item-box">
 
-            <div class="item" v-for="item in renderData.REPLAY">
-              <img src="asd/asdasd.png" v-if="item.type === 'SMS'">
-              <img src="asd/11.png" v-else>
+            <div class="item message">
+              <img src="asd/11.png">
               <div class="txt">
                 <com-tpl
                 :isString="true"
-                :type="item.type"
-                :tpl="item.templateId"
+                :type="'SMS'"
+                :tpl="5"
                 :tag="tplData.tag"
                 :webinarName="tplData.webinarName"
                 :hostName="tplData.hostName"
                 :date="tplData.date"
-                :triggerType="'REPLAY'"
-                :firstCount="tplData.firstCount"
                 :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'REPLAY'"
                 ></com-tpl>
                 <em>自动发送</em>
               </div>
               <div class="btn-group">
-                <el-button type="small" @click="testSend(item.type, item.noticeTaskId)">测试发送</el-button>
-                <el-button type="small"><router-link :to="{ name:item.type === 'SMS' ? 'autoEditmsg' : 'autoEditwx' ,query:{'noticeId':item.noticeTaskId,'timing':'REPLAY'} }">编辑</router-link></el-button>
-                <el-button type="small" @click='del(item.noticeTaskId, "REPLAY", item.type)'>删除</el-button>
+                 <el-switch
+                  v-model="itemList['REPLAY']['SMS']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'REPLAY', 'SMS', itemList['REPLAY']['SMS']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('REPLAY', 'SMS', itemList['REPLAY']['SMS']['noticeTaskId'])">测试发送</el-button>
+              </div>
+            </div>
+
+            <div class="item message">
+              <img src="asd/11.png">
+              <div class="txt">
+                <com-tpl
+                :isString="true"
+                :type="'WECHAT'"
+                :tpl="5"
+                :tag="tplData.tag"
+                :webinarName="tplData.webinarName"
+                :hostName="tplData.hostName"
+                :date="tplData.date"
+                :secondCount="tplData.secondCount"
+                :firstCount="tplData.firstCount"
+                :triggerType="'REPLAY'"
+                ></com-tpl>
+                <em>自动发送</em>
+              </div>
+              <div class="btn-group">
+                 <el-switch
+                  v-model="itemList['REPLAY']['WECHAT']['switch']"
+                  inactive-color="#DEE1FF"
+                  active-color="#4B5AFE" @change="itemSwitch($event,'REPLAY', 'WECHAT', itemList['REPLAY']['WECHAT']['noticeTaskId'])">
+                </el-switch>
+                <el-button type="small default-button" @click="testSend('REPLAY', 'WECHAT', itemList['REPLAY']['WECHAT']['noticeTaskId'])">测试发送</el-button>
               </div>
             </div>
 
@@ -242,7 +430,7 @@
       </div>
     </div>
     <!-- 测试发送弹窗 -->
-    <com-test  v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest' :type="testType"  :isAuto='true' :noticeId="noticeTaskId"></com-test>
+    <com-test  v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest()' :type="testType"  :isAuto='true' :noticeId="noticeTaskId"></com-test>
 
     <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
       <div class="del-footer" slot="footer">
@@ -311,32 +499,6 @@ export default {
         'REPLAY': []
       },
       delData: {},
-      btnStatus: {
-        'BEFORE_ORDER': {
-          'SMS': false,
-          'WECHAT': false
-        },
-        'BEFORE_APPLY': {
-          'SMS': false,
-          'WECHAT': false
-        },
-        'BEFORE_HOUR': {
-          'SMS': false,
-          'WECHAT': false
-        },
-        'BEFORE_MINUTE': {
-          'SMS': false,
-          'WECHAT': false
-        },
-        'SUBSCRIBE': {
-          'SMS': false,
-          'WECHAT': false
-        },
-        'REPLAY': {
-          'SMS': false,
-          'WECHAT': false
-        }
-      },
       tplData: {
         type: 'wx',
         tag: '',
@@ -350,7 +512,69 @@ export default {
       testMsg: false,
       testType: '',
       qrImgurl: '',
-      noticeTaskId: ''
+      noticeTaskId: '',
+      itemList: {
+        'BEFORE_ORDER': {
+          'SMS': {
+            'switch': false,
+            'noticeTaskId': 0
+          },
+          'WECHAT': {
+            'switch': false,
+            'noticeTaskId': 0
+          }
+        },
+        'BEFORE_APPLY': {
+          'SMS': {
+            'switch': false,
+            'noticeTaskId': 0
+          },
+          'WECHAT': {
+            'switch': false,
+            'noticeTaskId': 0
+          }
+        },
+        'BEFORE_HOUR': {
+          'SMS': {
+            'switch': false,
+            'noticeTaskId': 0
+          },
+          'WECHAT': {
+            'switch': false,
+            'noticeTaskId': 0
+          }
+        },
+        'BEFORE_MINUTE': {
+          'SMS': {
+            'switch': false,
+            'noticeTaskId': 0
+          },
+          'WECHAT': {
+            'switch': false,
+            'noticeTaskId': 0
+          }
+        },
+        'SUBSCRIBE': {
+          'SMS': {
+            'switch': false,
+            'noticeTaskId': 0
+          },
+          'WECHAT': {
+            'switch': false,
+            'noticeTaskId': 0
+          }
+        },
+        'REPLAY': {
+          'SMS': {
+            'switch': false,
+            'noticeTaskId': 0
+          },
+          'WECHAT': {
+            'switch': false,
+            'noticeTaskId': 0
+          }
+        }
+      }
     }
   },
   created () {
@@ -364,14 +588,14 @@ export default {
         this.testModal = false
       }
     },
-    del (id, type, msgType) {
-      this.delConfirm = true
-      this.delData = {
-        id: id,
-        type: type,
-        msgType: msgType
-      }
-    },
+    // del (id, type, msgType) {
+    //   this.delConfirm = true
+    //   this.delData = {
+    //     id: id,
+    //     type: type,
+    //     msgType: msgType
+    //   }
+    // },
     getParams () {
       http.autoGetparams(this.activityId).then((res) => {
         console.log(res)
@@ -402,55 +626,63 @@ export default {
               case 'BEFORE_ORDER':
                 this.renderData['BEFORE_ORDER'].push(item)
                 if (item.type === 'SMS') {
-                  this.btnStatus['BEFORE_ORDER']['SMS'] = true
+                  this.itemList['BEFORE_ORDER']['SMS']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
                 }
                 if (item.type === 'WECHAT') {
-                  this.btnStatus['BEFORE_ORDER']['WECHAT'] = true
+                  this.itemList['BEFORE_ORDER']['WECHAT']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
                 }
                 break
               case 'BEFORE_APPLY':
                 this.renderData['BEFORE_APPLY'].push(item)
                 if (item.type === 'SMS') {
-                  this.btnStatus['BEFORE_APPLY']['SMS'] = true
+                  this.itemList['BEFORE_APPLY']['SMS']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
                 }
                 if (item.type === 'WECHAT') {
-                  this.btnStatus['BEFORE_APPLY']['WECHAT'] = true
+                  this.itemList['BEFORE_APPLY']['WECHAT']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
                 }
                 break
               case 'BEFORE_HOUR':
                 this.renderData['BEFORE_HOUR'].push(item)
                 if (item.type === 'SMS') {
-                  this.btnStatus['BEFORE_HOUR']['SMS'] = true
+                  this.itemList['BEFORE_HOUR']['SMS']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
                 }
                 if (item.type === 'WECHAT') {
-                  this.btnStatus['BEFORE_HOUR']['WECHAT'] = true
+                  this.itemList['BEFORE_HOUR']['WECHAT']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
                 }
                 break
               case 'BEFORE_MINUTE':
                 this.renderData['BEFORE_MINUTE'].push(item)
                 if (item.type === 'SMS') {
-                  this.btnStatus['BEFORE_MINUTE']['SMS'] = true
+                  this.itemList['BEFORE_MINUTE']['SMS']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
                 }
                 if (item.type === 'WECHAT') {
-                  this.btnStatus['BEFORE_MINUTE']['WECHAT'] = true
+                  this.itemList['BEFORE_MINUTE']['WECHAT']['switch'] = true
+                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
                 }
                 break
               case 'SUBSCRIBE':
                 this.renderData['SUBSCRIBE'].push(item)
                 if (item.type === 'SMS') {
-                  this.btnStatus['SUBSCRIBE']['SMS'] = true
+                  this.itemList['SUBSCRIBE']['SMS']['switch'] = true
                 }
                 if (item.type === 'WECHAT') {
-                  this.btnStatus['SUBSCRIBE']['WECHAT'] = true
+                  this.itemList['SUBSCRIBE']['WECHAT']['switch'] = true
                 }
                 break
               case 'REPLAY':
                 this.renderData['REPLAY'].push(item)
                 if (item.type === 'SMS') {
-                  this.btnStatus['REPLAY']['SMS'] = true
+                  this.itemList['REPLAY']['SMS']['switch'] = true
                 }
                 if (item.type === 'WECHAT') {
-                  this.btnStatus['REPLAY']['WECHAT'] = true
+                  this.itemList['REPLAY']['WECHAT']['switch'] = true
                 }
                 break
             }
@@ -508,38 +740,69 @@ export default {
         this.selminValue = this.minValue
       }
     },
-    deleteTask () {
-      const id = this.delData.id
-      const type = this.delData.type
-      const msgType = this.delData.msgType
+    openSwitch () {
+
+    },
+    deleteTask (id, step, type) {
       http.autoDeletetask(id).then((res) => {
         if (res.code === 200) {
-          this.renderData[type].forEach((item, idx) => {
+          this.renderData[step].forEach((item, idx) => {
             if (item.noticeTaskId === id) {
-              this.renderData[type].splice(idx, 1)
+              this.renderData[step].splice(idx, 1)
             }
           })
           this.$toast({
             content: '删除成功',
             position: 'center'
           })
-          this.delConfirm = false
-          this.btnStatus[type][msgType] = false
+          this.itemList[step][type]['switch'] = false
         }
       }).catch((e) => {
         console.log(e)
       })
     },
-    testSend (res, idx) {
-      this.testModal = true
-      this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
-      this.$nextTick(() => {
-        this.testType = res
-        this.noticeTaskId = idx.toString()
+    addTask (step, type) {
+      const data = {
+        activityId: this.activityId,
+        templateId: 1, // 写死
+        triggerType: step,
+        type: type
+      }
+      http.autoSavetask(data).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$toast({
+            content: '设置成功',
+            position: 'center'
+          })
+          this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
+          this.itemList[step][type]['switch'] = true
+        }
+      }).catch((e) => {
+        console.log(e)
       })
     },
+    testSend (triggerType, type, idx) {
+      this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
+      this.$nextTick(() => {
+        this.testType = type
+        this.noticeTaskId = idx.toString()
+        this.testModal = true
+      })
+    },
+    itemSwitch (res, step, type, noticeTaskId) {
+      console.log(res)
+      if (res) {
+        // 请求添加
+        this.addTask(step, type)
+      } else {
+        // 请求删除
+        this.deleteTask(noticeTaskId, step, type)
+      }
+      console.log(step)
+      console.log(type)
+    },
     closeTest () {
-      // debugger
       this.testModal = false
     }
   },
@@ -551,10 +814,28 @@ export default {
 }
 </script>
 
-<style lang='scss'>
-@import '~assets/css/variable';
+<style lang="scss" scoped src="../../css/live.scss">
+</style>
+<style lang='scss' scoped>
+@import '~assets/css/mixin.scss';
+.auto-page {
+  .live-title {
+    border-bottom: none;
+
+    span.tips {
+      color: $color-font-sub;
+    }
+    .el-switch {
+      position: relative;
+      bottom: 4px;
+    }
+  }
+}
+
 .content {
-  padding: 50px;
+  .preview {
+    padding: 40px 80px;
+  }
   .preview > p {
     margin-top: 50px;
     font-size: 20px;
@@ -584,34 +865,40 @@ export default {
     .item {
       padding: 10px;
       width: 800px;
-      height: 100px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      height: 80px;
+      background: rgba(245, 245, 245, 1);
+      border-radius: 4px;
+      margin-bottom: 5px;
       img {
         width: 50px;
         height: 50px;
         margin: 13px;
         float: left;
       }
-      .txt {
-        float: left;
-        p {
-          display: inline-block;
-        }
-        p.is-string {
-          width: 400px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
-        em {
-          display: block;
-        }
+    }
+    .txt /deep/ {
+      float: left;
+      p {
+        display: inline-block;
+      }
+      p.is-string {
+        width: 400px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      em {
+        display: block;
       }
     }
     .btn-group {
       float: right;
+      .default-button {
+        width: 110px;
+        padding: 0;
+        height: 34px;
+        line-height: 34px;
+      }
     }
   }
   .seltime-modal {

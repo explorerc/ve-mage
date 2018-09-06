@@ -331,6 +331,7 @@
             }
           }
           this.saveLimitfn(data)
+          this.quesData = []
         }
       }
     },

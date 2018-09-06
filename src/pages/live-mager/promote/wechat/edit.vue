@@ -1,121 +1,110 @@
 <template>
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <p>创建微信通知</p>
-    <div class="from-box">
-      <div class="from-row">
-        <div class="from-title">通知标题：</div>
-        <div class="from-content">
-          <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30"></com-input>
+    <div class="edit-wx-page live-mager">
+      <div class="live-title">
+        <span class="title">创建微信通知</span>
+      </div>
+      <div class='mager-box border-box'>
+        <div class="from-box ">
+          <div class="from-row">
+            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-content">
+              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" class='msg-title'></com-input>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title"><i class="star">*</i>微信内容：</div>
+            <div class="from-content">
+              <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="60"></com-input>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">收信人：</div>
+            <div class="from-content">
+              <el-button class='default-button select-receiver' @click='groudModal = true'>选择收信人</el-button>
+              <div class='tips-box '><i class='tips' @mouseover='showTips=true' @mouseout='showTips=false'></i><div class='tips-txt' v-if='showTips'>微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。</div></div>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title"><i class="star">*</i>发送时间：</div>
+            <div class="from-content">
+              <template>
+                <el-radio v-model="sendSetting" label="SEND">立即发送</el-radio>
+                <el-radio v-model="sendSetting" label="AWAIT">定时发送</el-radio>
+              </template>
+              <!-- <el-select v-model="sendValue" placeholder="请选择">
+                <el-option v-for="item in sendOptions" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select> -->
+            </div>
+          </div>
+          <div class="from-row" v-if='pickDate'>
+            <div class="from-title">选择时间：</div>
+            <div class="from-content">
+              <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              </el-date-picker>
+            </div>
+          </div>
+          <!-- 模拟手机预览 -->
+          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' :webinarName='webinarName' :webinarTime='webinarTime'></com-phone>
+        </div>
+        <div class="btn-group">
+          <el-button class='default-button' @click="testSend">测试发送</el-button>
+          <el-button class='primary-button' @click="save">保存</el-button>
         </div>
       </div>
-      <div class="from-row">
-        <div class="from-title">微信内容：</div>
-        <div class="from-content">
-          <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="200"></com-input>
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title">发送设置：</div>
-        <div class="from-content">
-          <el-select v-model="sendValue" placeholder="请选择">
-            <el-option v-for="item in sendOptions" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </div>
-      </div>
-      <div class="from-row" v-if='pickDate'>
-        <div class="from-title">选择时间：</div>
-        <div class="from-content">
-          <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
-          </el-date-picker>
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title">接收人：</div>
-        <div class="from-content">
-          <el-button @click='groudModal = true'>点击添加</el-button>
-          <ol class='groupList'>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-            <li>客户分组1(345)人 <span>删除</span><span>查看</span></li>
-          </ol>
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title"></div>
-        <div class="from-content">
-          <el-button @click='testSend'>测试</el-button>
-          <el-button @click="save">保存</el-button>
-        </div>
-      </div>
-    </div>
-    <!-- 选择分组弹窗 -->
-    <transition name='fade'>
-      <div class="modal-cover" v-if='groudModal' @click="closeModal">
-        <div class='modal-box'>
-          <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
-          <div class='content-box'>
-            <com-tabs :value.sync="tabValue" position='left' type='card' class='choose-tab'>
-              <com-tab label="分组" :index="1">
-                <div class="right">
-                  <div class='top clearfix'>
-                    <span>分组:<i>123</i>个</span>
-                    <span class='search'><com-input :value.sync="searchTitle" placeholder="请输入关键字" ></com-input>搜索</span>
+      <!-- 选择分组弹窗 -->
+      <transition name='fade'>
+        <div class="modal-cover" v-if='groudModal' @click="closeModal">
+          <div class='modal-box'>
+            <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
+            <div class='content-box'>
+              <com-tabs :value.sync="tabValue" position='left' type='card' class='choose-tab'>
+                <com-tab label="分组" :index="1">
+                  <div class="right">
+                    <div class='top clearfix'>
+                      <span>分组:<i>123</i>个</span>
+                      <span class='search'><com-input :value.sync="searchTitle" placeholder="请输入关键字" ></com-input>搜索</span>
+                    </div>
+                    <ol class='list'>
+                      <li :key='1' :class="{ choosed:groupIdx == 1 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(1)">{{groupIdx === 1 ? '已选择' : '选择'}}</em></li>
+                      <li :key='2' :class="{ choosed:groupIdx == 2 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(2)">{{groupIdx === 2 ? '已选择' : '选择'}}</em></li>
+                      <li :key='3' :class="{ choosed:groupIdx == 3 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(3)">{{groupIdx === 3 ? '已选择' : '选择'}}</em></li>
+                      <li :key='4' :class="{ choosed:groupIdx == 4 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(4)">{{groupIdx === 4 ? '已选择' : '选择'}}</em></li>
+                      <li :key='5' :class="{ choosed:groupIdx == 5 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(5)">{{groupIdx === 5 ? '已选择' : '选择'}}</em></li>
+                    </ol>
+                    <div class='btm clearfix'>
+                      <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
+                      <el-button>确定</el-button>
+                    </div>
                   </div>
-                  <ol class='list'>
-                    <li :key='1' :class="{ choosed:groupIdx == 1 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(1)">{{groupIdx === 1 ? '已选择' : '选择'}}</em></li>
-                    <li :key='2' :class="{ choosed:groupIdx == 2 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(2)">{{groupIdx === 2 ? '已选择' : '选择'}}</em></li>
-                    <li :key='3' :class="{ choosed:groupIdx == 3 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(3)">{{groupIdx === 3 ? '已选择' : '选择'}}</em></li>
-                    <li :key='4' :class="{ choosed:groupIdx == 4 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(4)">{{groupIdx === 4 ? '已选择' : '选择'}}</em></li>
-                    <li :key='5' :class="{ choosed:groupIdx == 5 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(5)">{{groupIdx === 5 ? '已选择' : '选择'}}</em></li>
-                  </ol>
-                  <div class='btm clearfix'>
-                    <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
-                    <el-button>确定</el-button>
+                </com-tab>
+                <com-tab label="标签" :index="2">
+                  <div class="right">
+                    <div class='top clearfix'>
+                      <span>标签:<i>123</i>个</span>
+                      <span class='search'><com-input :value.sync="searchTitle" placeholder="请输入关键字" ></com-input>搜索</span>
+                    </div>
+                    <ol class='list'>
+                      <li :key='10' :class="{ choosed:tagIdx == 1 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(1)">{{tagIdx === 1 ? '已选择' : '选择'}}</em></li>
+                      <li :key='6' :class="{ choosed:tagIdx == 2 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(2)">{{tagIdx === 2 ? '已选择' : '选择'}}</em></li>
+                      <li :key='7' :class="{ choosed:tagIdx == 3 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(3)">{{tagIdx === 3 ? '已选择' : '选择'}}</em></li>
+                      <li :key='8' :class="{ choosed:tagIdx == 4 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(4)">{{tagIdx === 4 ? '已选择' : '选择'}}</em></li>
+                      <li :key='9' :class="{ choosed:tagIdx == 5 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(5)">{{tagIdx === 5 ? '已选择' : '选择'}}</em></li>
+                    </ol>
+                    <div class='btm clearfix'>
+                      <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
+                      <el-button>确定</el-button>
+                    </div>
                   </div>
-                </div>
-              </com-tab>
-              <com-tab label="标签" :index="2">
-                <div class="right">
-                  <div class='top clearfix'>
-                    <span>标签:<i>123</i>个</span>
-                    <span class='search'><com-input :value.sync="searchTitle" placeholder="请输入关键字" ></com-input>搜索</span>
-                  </div>
-                  <ol class='list'>
-                    <li :key='10' :class="{ choosed:tagIdx == 1 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(1)">{{tagIdx === 1 ? '已选择' : '选择'}}</em></li>
-                    <li :key='6' :class="{ choosed:tagIdx == 2 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(2)">{{tagIdx === 2 ? '已选择' : '选择'}}</em></li>
-                    <li :key='7' :class="{ choosed:tagIdx == 3 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(3)">{{tagIdx === 3 ? '已选择' : '选择'}}</em></li>
-                    <li :key='8' :class="{ choosed:tagIdx == 4 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(4)">{{tagIdx === 4 ? '已选择' : '选择'}}</em></li>
-                    <li :key='9' :class="{ choosed:tagIdx == 5 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(5)">{{tagIdx === 5 ? '已选择' : '选择'}}</em></li>
-                  </ol>
-                  <div class='btm clearfix'>
-                    <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
-                    <el-button>确定</el-button>
-                  </div>
-                </div>
-              </com-tab>
-            </com-tabs>
+                </com-tab>
+              </com-tabs>
+            </div>
           </div>
         </div>
-      </div>
-    </transition>
-    <!-- 测试发送弹窗 -->
-    <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
-
-    <div class="overview-box">
-      <div class="header">微吼服务号</div>
-      <div class="msg-box">
-        <div class="msg-title">
-          个人信息通知<span>8月10日</span>
-        </div>
-        <p class="tips">您关注的<span> {{webinarName}} </span>即将开始，赶快参加吧！</p>
-        <p>标题：<span>{{webinarName}}</span></p>
-        <p>时间：<span>{{webinarTime}}</span></p>
-        <p>内容：<span>点击查看详情</span></p>
-        <p>退订</p>
-        <div class="footer">详情</div>
-      </div>
-
+      </transition>
+      <!-- 测试发送弹窗 -->
+      <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
     </div>
   </div>
 </template>
@@ -123,6 +112,7 @@
 <script>
   import createHttp from 'src/api/activity-manger'
   import comTest from '../com-test'
+  import comPhone from '../com-phone'
   export default {
     data () {
       return {
@@ -142,17 +132,18 @@
           value: 2,
           label: '活动推荐'
         }],
-        sendOptions: [{
-          value: 'AWAIT',
-          label: '定时发送'
-        }, {
-          value: 'SEND',
-          label: '立即发送'
-        }, {
-          value: 'DRAFT',
-          label: '暂存为草稿'
-        }],
-        sendValue: '',
+        // sendOptions: [{
+        //   value: 'AWAIT',
+        //   label: '定时发送'
+        // }, {
+        //   value: 'SEND',
+        //   label: '立即发送'
+        // }, {
+        //   value: 'DRAFT',
+        //   label: '暂存为草稿'
+        // }],
+        // sendValue: '',
+        sendSetting: '1',
         wxContent: '',
         qrImgurl: '',
         pickDate: false,
@@ -164,7 +155,8 @@
         },
         webinarName: '',
         webinarTime: '',
-        loading: false
+        loading: false,
+        showTips: false
       }
     },
     created () {
@@ -173,7 +165,7 @@
         createHttp.queryWechat(this.inviteId).then((res) => {
           // console.log(res)
           this.titleValue = res.data.title
-          this.sendValue = res.data.status
+          this.sendSetting = res.data.status
           this.date = res.data.sendTime
           this.wxContent = res.data.desc
         }).catch((e) => {
@@ -211,7 +203,7 @@
           activityId: this.$route.params.id,
           title: this.titleValue,
           groupId: '1', // 分组id
-          status: this.sendValue.toLowerCase(),
+          status: this.sendSetting.toLowerCase(),
           desc: this.wxContent,
           sendTime: this.date
         }
@@ -255,58 +247,111 @@
       }
     },
     watch: {
-      sendValue: {
+      sendSetting: {
         handler (newValue) {
           newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
         }
       }
     },
     components: {
-      comTest
+      comTest,
+      comPhone
     }
   }
 </script>
-
-<style lang='scss' scoped>
-@import '~assets/css/variable';
-.from-box {
-  margin: 20px;
-  .from-row {
-    display: flex;
-    padding: 10px;
-    .from-title {
-      width: 180px;
-      text-align: right;
-      padding-right: 20px;
-      .star {
-        position: relative;
-        top: 3px;
-        color: $color-error;
-        padding-right: 5px;
-      }
-    }
-    .from-content {
-      flex: 1;
-      .input-box {
-        width: 400px;
-      }
-    }
-  }
+<style lang="scss" scoped src="../../css/live.scss">
+</style>
+<style lang="scss">
+.edit-wx-page.live-mager .live-title {
+  border-bottom: none;
+}
+.apply-page .el-select .el-input__inner {
+  border: 1px solid #e2d2d2;
+}
+.el-input.is-disabled .el-input__inner {
+  background-color: #fff;
+  color: #555;
 }
 
-.groupList {
-  li {
-    padding: 0 10px;
-    width: 300px;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin: 5px 0px;
-    span {
-      cursor: pointer;
-      float: right;
+.spe.moblie .el-select .el-input__inner {
+  padding-left: 25px;
+}
+.edit-wx-page.live-mager .from-title {
+  line-height: 40px;
+}
+</style>
+<style lang='scss' scoped>
+@import '~assets/css/mixin.scss';
+
+.edit-wx-page {
+  // height: 730px;
+  position: relative;
+  .select-receiver {
+    padding: 0;
+    margin: 3px 0;
+    width: 100px;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 20px;
+    border: 1px solid rgba(136, 136, 136, 1);
+  }
+  .el-radio {
+    padding: 12px 0;
+    color: $color-font;
+  }
+  .from-title {
+    color: $color-font-sub;
+  }
+  .btn-group {
+    padding: 0;
+    button {
+      width: 140px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+  .mager-box {
+    min-height: 730px;
+  }
+  .form-box {
+    position: relative;
+  }
+  .tips-box {
+    position: relative;
+    display: inline-block;
+    margin-left: 12px;
+  }
+  .tips {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url('~assets/image/quesmark.svg') no-repeat center;
+    background-size: contain;
+    position: relative;
+    top: 5px;
+  }
+  .tips-txt {
+    position: absolute;
+    padding: 14px;
+    color: #fff;
+    width: 282px;
+    background: rgba(34, 34, 34, 0.8);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    line-height: 22px;
+    top: -38px;
+    right: -290px;
+    z-index: 9;
+  }
+  .btn-group {
+    display: block;
+    margin: 0 auto;
+    width: 295px;
+    button {
+      padding: 0px;
+      width: 140px;
+      height: 40px;
+      line-height: 40px;
     }
   }
 }
@@ -320,9 +365,12 @@
   background: rgba($color: #000000, $alpha: 0.5);
   z-index: 9;
 }
+.msg-content,
+.msg-title {
+  width: 440px;
+}
 .msg-content {
-  width: 400px;
-  height: 200px;
+  height: 90px;
 }
 .modal-box {
   width: 700px;
@@ -389,64 +437,15 @@
   width: 500px;
 }
 
-.overview-box {
-  width: 375px;
-  height: 500px;
-  border: 1px solid #ccc;
-  position: absolute;
-  top: 100px;
-  right: 100px;
-  .header,
-  .footer {
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    background: #000000;
-    color: #fff;
-  }
-  .footer {
-    background: #fff;
-    color: #000000;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #ccc;
-  }
-  .msg-box {
-    width: 300px;
-    height: 400px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px auto;
-    position: relative;
-    .msg-title {
-      text-align: left;
-      font-size: 20px;
-      span {
-        display: block;
-        text-align: left;
-        font-size: 14px;
-      }
-    }
-    p {
-      text-align: left;
-      margin: 10px 0px;
-    }
-    p.detal {
-      span {
-        color: #ccc;
-        display: inline-block;
-        text-align: left;
-      }
-    }
-  }
-}
 .qrcode {
   display: block;
   margin: 20px auto;
   width: 200px;
   height: 200px;
   border: 1px solid #ccc;
+}
+.live-mager .mager-box .from-box {
+  margin: 40px 0 0 0;
+  height: 600px;
 }
 </style>
