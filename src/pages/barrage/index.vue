@@ -27,12 +27,18 @@
             stroke-width="10"
             stroke-linecap="round"></path>
     </svg>
+    <div>
+      <el-button @click="counttocount">点我变随机数</el-button>
+      <el-button @click="stoptocount">停止</el-button>
+      <span>{{count}}</span>
+    </div>
   </section>
 </template>
 
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
 // import Progress from '../../components/common/progress/Progress.js'
+import CountTo from '../../utils/countTo'
 export default {
   created () {
     this.barrageSystem = new Barrage()
@@ -63,7 +69,8 @@ export default {
       barrageSystem: null,
       fps: 0,
       intervalId: 0,
-      c: null
+      c: null,
+      count: 0
     }
   },
   methods: {
@@ -101,6 +108,14 @@ export default {
     },
     destroyBarrage () {
       this.barrageSystem.destroy()
+    },
+    counttocount () {
+      CountTo.start(0, Math.random() * 10000, 10, 0.2, i => {
+        this.count = i
+      })
+    },
+    stoptocount () {
+      CountTo.stop()
     }
   }
 }
