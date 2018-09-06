@@ -1,5 +1,5 @@
 <template>
-  <div class="html-editer" >
+  <div class="html-editer">
     <editor
       :content="content"
       :height="editHeight"
@@ -13,6 +13,7 @@
 
 <script>
   import VueHtml5Editor from 'vue-html5-editor'
+
   const colorTemplate = `<div>
     <div>
         <label>
@@ -31,7 +32,7 @@
         <div style="clear: both"></div>
     </div>
 </div>`
-const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
+  const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
     <div>
         <label>{{$parent.locale["heading"]}}:</label>
         <button v-for="h in 6" type="button" @click="setHeading(h)">H{{h}}</button>
@@ -69,7 +70,7 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
           template: colorTemplate,
           data () {
             return {
-            // foreColor,backColor
+              // foreColor,backColor
               command: 'foreColor',
               colors: [
                 '#ffffff', '#000000', '#000033', '#000066', '#000099', '#003300', '#003333', '#003366',
@@ -149,10 +150,19 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
     ],
     image: {
       sizeLimit: 512 * 1024,
-      compress: true,
+      compress: false,
       width: 500,
       height: 500,
-      quality: 80
+      quality: 80,
+      uploadHandler (res) {
+        console.log(res)
+      },
+      upload: {
+        url: '/api/upload/image',
+        headers: {},
+        params: {},
+        fieldName: 'file'
+      }
     },
     visibleModules: [
       'text',
@@ -218,7 +228,7 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
 
   export default {
     name: 've-html5-editer',
-    components: { editor },
+    components: {editor},
     data () {
       return {
         showModuleName: false,
@@ -261,10 +271,10 @@ const fontTemplate = `<div class="dashboard-font" style="line-height: 36px;">
 </script>
 
 <style lang="scss">
-.html-editer {
-  min-width: 480px;
-  .content {
-    max-height: 560px;
+  .html-editer {
+    min-width: 480px;
+    .content {
+      max-height: 560px;
+    }
   }
-}
 </style>
