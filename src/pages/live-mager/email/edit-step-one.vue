@@ -22,7 +22,7 @@
                  :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
                  @click.stop="changeTemp(idx)">
               <div class="temp-item-box" :style="{backgroundColor:emailItem.cover}"></div>
-              <span class="temp-item-title">一封信</span>
+              <span class="temp-item-title">{{emailItem.title}}</span>
             </div>
           </div>
         </div>
