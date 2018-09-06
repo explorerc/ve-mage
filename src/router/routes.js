@@ -45,6 +45,9 @@ const EmailEditTwo = () =>
 /* 邮件邀约--查看 */
 const EmailInfo = () =>
   import('src/pages/live-mager/email/info')
+/* 邮件邀约--退订 */
+const ExitEmail = () =>
+  import('src/pages/live-mager/email/exit-email')
 
 /* 创建 编辑 活动 */
 const edit = () =>
@@ -132,6 +135,10 @@ export default [{
   path: '/liveMager/emailEditTwo/:id',
   name: 'emailEditTwo',
   component: EmailEditTwo
+}, {
+  path: '/exitEmail',
+  name: 'exitEmail',
+  component: ExitEmail
 }, {
   path: '/',
   name: 'Layout',

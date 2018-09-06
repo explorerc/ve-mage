@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>发件人名称：</div>
+            <div class="from-title"><i class="star">*</i>发件人：</div>
             <div class="from-content">
               <com-input
                 placeholder="输入发件人名称"
@@ -31,27 +31,14 @@
                 :max-length="15"></com-input>
             </div>
           </div>
-          <!--<div class="from-row">-->
-          <!--<div class="from-title">邮件摘要：</div>-->
-          <!--<div class="from-content">-->
-          <!--<div style="line-height: 34px;">在收件箱列表中显示的邮件内容摘要</div>-->
-          <!--<com-input-->
-          <!--placeholder="输入发件人名称"-->
-          <!--type="textarea"-->
-          <!--autosize-->
-          <!--class="input-email"-->
-          <!--:error-tips="errorMsg.desc"-->
-          <!--:value.sync="email.desc"-->
-          <!--:max-length="140"></com-input>-->
-          <!--</div>-->
-          <!--</div>-->
           <div class="from-row">
-            <div class="from-title">收件人：</div>
+            <div class="from-title"><i class="star">*</i>收件人：</div>
             <div class="from-content">
               <div>
-                <el-button class="fl" type="primary" plain @click="">选择分组</el-button>
-                <span>总计256名收件人</span>
-                <span class="msg-tip">添加分组后，如果分组内人员发生变化，请删除分组重新添加，以免出现漏发情况</span>
+                <button class="default-button fl" @click="selectPersonShow=true">选择分组</button>
+                <span class="send-span">发送限额：0/400</span>
+                <ve-msg-tips tip-type="html"
+                             tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
               </div>
               <div class="edit-groups">
                 <div class="edit-groups-item">
@@ -90,66 +77,36 @@
       </div>
     </div>
     <div class="email-bottom">
-      <!--<button class="primary-button fl" @click="prePage">上一步</button>-->
       <button class="primary-button fr" @click="send">发送</button>
-      <!--<button class="primary-button margin-fl fr" @click="timerSend">定时发送</button>-->
       <button class="primary-button margin-fl fr" @click="saveEmail">保存草稿</button>
     </div>
-    <!--<message-box-->
-      <!--v-if="timerSendShow"-->
-      <!--width="500px"-->
-      <!--header="邮件推送确认"-->
-      <!--confirmText='确认发送'-->
-      <!--class="msg-box"-->
-      <!--@handleClick="handleClickSendEmail">-->
-      <!--<div class="email-info">-->
-        <!--<div class="email-info-row">-->
-          <!--<span>邮件标题：</span>-->
-          <!--<span>00000</span>-->
-        <!--</div>-->
-        <!--<div class="email-info-row">-->
-          <!--<span>发件人：</span>-->
-          <!--<span>*****</span>-->
-        <!--</div>-->
-        <!--<div class="email-info-row">-->
-          <!--<span>收件人：</span>-->
-          <!--<span>6666666666666</span>-->
-        <!--</div>-->
-        <!--<div class="email-info-row">-->
-          <!--<span>邮件摘要：</span>-->
-          <!--<span>***********************************************************</span>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--&lt;!&ndash;<div class="msg-box-bottom" slot="bottom">&ndash;&gt;-->
-      <!--&lt;!&ndash;<div class="email-timer" v-if="isTimer">&ndash;&gt;-->
-      <!--&lt;!&ndash;<el-date-picker&ndash;&gt;-->
-      <!--&lt;!&ndash;v-model="email.planTime"&ndash;&gt;-->
-      <!--&lt;!&ndash;type="datetime"&ndash;&gt;-->
-      <!--&lt;!&ndash;placeholder="选择日期时间"&ndash;&gt;-->
-      <!--&lt;!&ndash;align="right"&ndash;&gt;-->
-      <!--&lt;!&ndash;format="yyyy-MM-dd HH:mm"&ndash;&gt;-->
-      <!--&lt;!&ndash;value-format="yyyy-MM-dd HH:mm">&ndash;&gt;-->
-      <!--&lt;!&ndash;</el-date-picker>&ndash;&gt;-->
-      <!--&lt;!&ndash;<span class="error-msg" v-if="errorMsg.planTime">{{errorMsg.planTime}}</span>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;<button class="primary-button fr" @click="sendEmail">{{isTimer?'定时发送':'立即发送'}}</button>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</message-box>-->
+    <!-- 选择收件人 -->
+    <message-box
+      v-if="selectPersonShow"
+      width="500px"
+      type="prompt"
+      header="选择观众组"
+      confirmText='确认'
+      class="msg-box"
+      @handleClick="handleSelectPerson">
+    </message-box>
   </div>
 </template>
 
 <script>
+  import VeMsgTips from 'src/components/ve-msg-tips'
   import LiveHttp from 'src/api/activity-manger'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
+    components: {VeMsgTips},
     data () {
       return {
         outValue: '',
-        // timerSendShow: false,
         isTimer: true,
+        selectPersonShow: false,
         sendType: 'AUTO',
         errorMsg: {
           title: '',
@@ -217,6 +174,11 @@
           this.errorMsg.content = ''
         }
       },
+      handleSelectPerson (e) {
+        if (e.action === 'cancel') {
+          this.selectPersonShow = false
+        }
+      },
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
@@ -236,7 +198,6 @@
           this.errorMsg.planTime = '定时时间不能为空'
           return
         }
-        // this.timerSendShow = false
         if (!this.checkParams(this.isTimer)) return
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
@@ -248,10 +209,6 @@
           })
         }
       },
-      // timerSend () {
-      //   this.timerSendShow = true
-      //   this.isTimer = true
-      // },
       send () {
         if (this.sendType === 'AUTO') {
           this.isTimer = false
@@ -264,9 +221,8 @@
       immediatelySend () {
         this.email.planTime = ''
         this.isTimer = false
-        // this.timerSendShow = true
       },
-      checkParams (isTimer) {
+      checkParams () {
         this.errorMsg = {
           title: '',
           content: '',
@@ -289,9 +245,6 @@
         }
         return true
       },
-      // handleClickSendEmail () {
-      //   this.timerSendShow = false
-      // },
       goBack () {
         this.$router.go(-1)
       }
@@ -303,6 +256,13 @@
 <style lang="scss" scoped>
   .edit-step-box {
     background-color: #f5f5f5;
+    .send-span {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      margin: 0 15px;
+      color: #888;
+    }
     .email-header {
       height: 60px;
       line-height: 60px;
