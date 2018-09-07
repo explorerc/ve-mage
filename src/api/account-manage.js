@@ -63,6 +63,13 @@ const Account = {
       url: '/user/business-user/update-password-by-code-token',
       params: data
     })
+  },
+  getIndustryList (data) { // 获取职位下拉菜单
+    return utils.ajax({
+      method: 'post',
+      url: '/common/user/industry-list',
+      params: data
+    })
   }
 }
 export default Account

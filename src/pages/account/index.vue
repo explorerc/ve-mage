@@ -7,31 +7,30 @@
       <p class="v-title">
         基本信息
       </p>
-      <!-- <a href="javascript:;" @click="logOff()">退出登录</a> -->
       <div class="v-editor v-avatar-img" style="height: 125px;">
         <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
       </div>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号：</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称：</span></com-editor>
-      <com-editor :value.sync="accountName" type="input" @saveInfo="save(accountName,'name','company')" clickType="save" :maxLength="40" @cancel="cancel($event,'accountName')"><span class="v-explain">账户名称：</span></com-editor>
+      <com-editor :value.sync="accountName" type="input" @saveInfo="save($event,accountName,'name','company')" clickType="save" :maxLength="40" @cancel="cancel($event,'accountName')" :isEdit="changeState.accountName" @clickSaveBtn="clickChangeState('accountName')"><span class="v-explain">账户名称：</span></com-editor>
       <com-editor :value.sync="state" type="input" @clickSaveBtn="clickSave(state,'popup','state')" clickType="popup" btnName="查看"><span class="v-explain">认证状态：</span></com-editor>
       <com-editor :value.sync="accountPhone" type="input" @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')" clickType="popup"><span class="v-explain">注册手机：</span></com-editor>
-      <com-editor :value.sync="selectIndustry" type="select" :selectValue="industry"  @saveInfo="save(selectIndustry,'industry','company')" clickType="save"><span class="v-explain">所属行业：</span></com-editor>
+      <con-select :value.sync="displayValue" :displayValue="displayValue" type="select" :selectValue="industry" :selectParentId="selectParentId" :selectChildId="selectChildId" clickType="save" :isEdit="changeState.industry" @cancelSelectInfo="cancelSelectInfo($event,'industry')" @clickIndustryModifyBtn="clickIndustryModifyBtn('industry')"  @saveSelectInfo="saveSelectInfo($event,displayValue,'industry','company')"><span class="v-explain">所属行业：</span></con-select>
       <com-editor :value.sync="accountPassword" type="input" @clickSaveBtn="clickSave(accountPassword,'popup','password')" clickType="popup"><span class="v-explain">登录密码：</span></com-editor>
-      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save(companyWebsite,'website','company')" clickType="save" :max-length="40"  @cancel="cancel($event,'companyWebsite')"><span class="v-explain">公司网址：</span></com-editor>
+      <com-editor :value.sync="companyWebsite" type="input" @saveInfo="save($event,companyWebsite,'website','company')" clickType="save" :max-length="40"  @cancel="cancel($event,'website')" :errorTips="errorTips.website" :isEdit="changeState.website" @clickSaveBtn="clickChangeState('website')"><span class="v-explain">公司网址：</span></com-editor>
     </div>
     <div class="v-info">
       <p class="v-title">
         指定联系人
       </p>
-      <com-editor :value.sync="userName" type="input" @saveInfo="save(userName,'name','user')" clickType="save" :max-length="20"  @cancel="cancel($event,'userName')"><span class="v-explain">姓名：</span></com-editor>
-      <com-editor :value.sync="userPost" type="input" @saveInfo="save(userPost,'position','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userPost')"><span class="v-explain">职务：</span></com-editor>
-      <com-editor :value.sync="userPhone" type="input" @saveInfo="save(userPhone,'mobile','user')" clickType="save" :max-length="11" @cancel="cancel($event,'userPhone')"><span class="v-explain">手机：</span></com-editor>
-      <com-editor :value.sync="officeNo" type="input" @saveInfo="save(officeNo,'tel','user')" clickType="save" :max-length="12"  @cancel="cancel($event,'officeNo')"><span class="v-explain">办公电话：</span></com-editor>
-      <com-editor :value.sync="userEmail" type="input" @saveInfo="save(userEmail,'email','user')" clickType="save" @cancel="cancel($event,'userEmail')"><span class="v-explain">邮箱：</span></com-editor>
-      <com-editor :value.sync="userWechat" type="input" @saveInfo="save(userWechat,'wechat','user')" clickType="save" :max-length="40" @cancel="cancel($event,'userWechat')"><span class="v-explain">微信：</span></com-editor>
-      <com-editor :value.sync="userQQ" type="input" @saveInfo="save(userQQ,'qq','user')" clickType="save" :max-length="20" @cancel="cancel($event,'userQQ')"><span class="v-explain">QQ：</span></com-editor>
-      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save(userRemarks,'remark','user')" clickType="save" :max-length="60" @cancel="cancel($event,'userRemarks')"><span class="v-explain">备注：</span></com-editor>
+      <com-editor :value.sync="userName" type="input" @saveInfo="save($event,userName,'name','user')" clickType="save" :max-length="20"  @cancel="cancel($event,'name')" :isEdit="changeState.name" @clickSaveBtn="clickChangeState('name')"><span class="v-explain">姓名：</span></com-editor>
+      <com-editor :value.sync="userPost" type="input" @saveInfo="save($event,userPost,'position','user')" clickType="save" :max-length="20" @cancel="cancel($event,'position')" :isEdit="changeState.position" @clickSaveBtn="clickChangeState('position')"><span class="v-explain">职务：</span></com-editor>
+      <com-editor :value.sync="userPhone" type="input" @saveInfo="save($event,userPhone,'mobile','user')" clickType="save" :max-length="11" @cancel="cancel($event,'mobile')" :errorTips="errorTips.mobile" :isEdit="changeState.mobile" @clickSaveBtn="clickChangeState('mobile')"><span class="v-explain">手机：</span></com-editor>
+      <com-editor :value.sync="officeNo" type="input" @saveInfo="save($event,officeNo,'tel','user')" clickType="save" :max-length="12"  @cancel="cancel($event,'tel')" :errorTips="errorTips.tel" :isEdit="changeState.tel" @clickSaveBtn="clickChangeState('tel')"><span class="v-explain">办公电话：</span></com-editor>
+      <com-editor :value.sync="userEmail" type="input" @saveInfo="save($event,userEmail,'email','user')" clickType="save" @cancel="cancel($event,'email')" :errorTips="errorTips.email" :isEdit="changeState.email" @clickSaveBtn="clickChangeState('email')"><span class="v-explain">邮箱：</span></com-editor>
+      <com-editor :value.sync="userWechat" type="input" @saveInfo="save($event,userWechat,'wechat','user')" clickType="save" :max-length="40" @cancel="cancel($event,'wechat')" :isEdit="changeState.wechat" @clickSaveBtn="clickChangeState('wechat')"><span class="v-explain">微信：</span></com-editor>
+      <com-editor :value.sync="userQQ" type="input" @saveInfo="save($event,userQQ,'qq','user')" clickType="save" :max-length="20" @cancel="cancel($event,'qq')" :errorTips="errorTips.qq" :isEdit="changeState.qq" @clickSaveBtn="clickChangeState('qq')"><span class="v-explain">QQ：</span></com-editor>
+      <com-editor :value.sync="userRemarks" type="input" @saveInfo="save($event,userRemarks,'remark','user')" clickType="save" :max-length="40" @cancel="cancel($event,'remark')" :isEdit="changeState.remark" @clickSaveBtn="clickChangeState('remark')"><span class="v-explain">备注：</span></com-editor>
     </div>
     <message-box v-show="messageBoxShow" @handleClick="messageBoxClick" width="450px" class="message-box" :confirmText="confirmText" type='prompt' :header='messageBoxTitle' :class="[messageBoxType === 'seeState' ? 'v-state' : '']">
       <div v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
@@ -91,8 +90,8 @@
 </template>
 <script>
   import Editor from './info-editor'
+  import SelectEditor from './info-select'
   import account from 'src/api/account-manage'
-  import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import VeUploadTx from 'src/components/ve-upload-tx'
   import { mapMutations, mapState } from 'vuex'
@@ -102,27 +101,17 @@
       return {
         account: '',
         accountName: '',
-        selectIndustry: '',
+        displayValue: '',
+        industryId: 0,
+        selectParentId: 0,
+        selectChildId: 0,
+        industryFirst: '',
+        industrySecond: '',
         accountPhone: '',
         accountPassword: '',
         companyName: '',
         state: '',
-        industry: [{
-          value: '黄金糕',
-          label: '黄金糕'
-        }, {
-          value: '双皮奶',
-          label: '双皮奶'
-        }, {
-          value: '蚵仔煎',
-          label: '蚵仔煎'
-        }, {
-          value: '龙须面',
-          label: '龙须面'
-        }, {
-          value: '北京烤鸭',
-          label: '北京烤鸭'
-        }],
+        industry: [],
         companyWebsite: '',
         userName: '',
         userPost: '',
@@ -163,7 +152,25 @@
         errorTips: {
           oldPassword: '',
           newPassword: '',
-          rePassword: ''
+          rePassword: '',
+          website: '',
+          mobile: '',
+          tel: '',
+          email: '',
+          qq: ''
+        },
+        changeState: {
+          accountName: false,
+          industry: false,
+          website: false,
+          name: false,
+          position: false,
+          mobile: false,
+          tel: false,
+          email: false,
+          wechat: false,
+          qq: false,
+          remark: false
         },
         isShow: false,
         isContainEn: 0,
@@ -172,22 +179,35 @@
       }
     },
     mounted () {
+      // sessionStorage.clear()
       this.getAccount()
-      account.getUserInfo({}).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
-        } else {
-          let resData = res.data
-          this.userName = resData.name ? resData.name : '无'
-          this.userPost = resData.position ? resData.position : '无'
-          this.userPhone = resData.mobile ? resData.mobile : '无'
-          this.officeNo = resData.tel ? resData.tel : '无'
-          this.userEmail = resData.email ? resData.email : '无'
-          this.userWechat = resData.wechat ? resData.wechat : '无'
-          this.userQQ = resData.qq ? resData.qq : '无'
-          this.userRemarks = resData.remark ? resData.remark : '无'
-        }
-      })
+      let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
+      if (contactInfo) {
+        this.userName = contactInfo.name ? contactInfo.name : '无'
+        this.userPost = contactInfo.position ? contactInfo.position : '无'
+        this.userPhone = contactInfo.mobile ? contactInfo.mobile : '无'
+        this.officeNo = contactInfo.tel ? contactInfo.tel : '无'
+        this.userEmail = contactInfo.email ? contactInfo.email : '无'
+        this.userWechat = contactInfo.wechat ? contactInfo.wechat : '无'
+        this.userQQ = contactInfo.qq ? contactInfo.qq : '无'
+        this.userRemarks = contactInfo.remark ? contactInfo.remark : '无'
+      } else {
+        account.getUserInfo({}).then((res) => {
+          if (res.code !== 200) {
+          } else {
+            let resData = res.data
+            this.userName = resData.name ? resData.name : '无'
+            this.userPost = resData.position ? resData.position : '无'
+            this.userPhone = resData.mobile ? resData.mobile : '无'
+            this.officeNo = resData.tel ? resData.tel : '无'
+            this.userEmail = resData.email ? resData.email : '无'
+            this.userWechat = resData.wechat ? resData.wechat : '无'
+            this.userQQ = resData.qq ? resData.qq : '无'
+            this.userRemarks = resData.remark ? resData.remark : '无'
+            sessionStorage.setItem('contactInfo', JSON.stringify(res.data))
+          }
+        })
+      }
       identifyingcodeManage.getCodeId({}).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
@@ -209,6 +229,7 @@
     },
     components: {
       'com-editor': Editor,
+      'con-select': SelectEditor,
       've-upload-tx': VeUploadTx
     },
     created () {
@@ -231,38 +252,46 @@
       ...mapMutations('login', {
         setIsLogin: types.UPDATE_IS_LOGIN
       }),
-      logOff () {
-        loginManage.logOff({}).then((res) => {
-          if (res.code !== 200) {
-            console.log(res.msg)
-          } else {
-            sessionStorage.removeItem('isLogin')
-            sessionStorage.removeItem('userInfo')
-            this.setIsLogin(0)
-            console.log('账号退出成功')
-          }
-        })
-      },
       getAccount () {
-        account.getAccount({}).then((res) => {
-          if (res.code !== 200) {
-            console.log(res.msg)
-          } else {
-            let resData = res.data ? res.data : ''
-            this.account = resData.userName ? resData.userName : '无'
-            this.accountName = resData.name ? resData.userName : '无'
-            this.avatar = resData.avatar ? resData.avatar : '无'
-            this.accountPhone = resData.mobile ? resData.mobile : '无'
-            this.accountPassword = resData.hasPassword ? '已设置' : '未设置'
-            this.companyName = resData.company ? resData.company : '无'
-            this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
-            this.selectIndustry = resData.industry ? resData.industry : '无'
-            this.companyWebsite = res.website ? resData.website : '无'
-            this.licenseCode = res.licenseCode ? resData.licenseCode : '无'
-            this.licensePic = res.licensePic ? resData.licensePic : '无'
-            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
-          }
-        })
+        let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+        if (accountInfo && accountInfo.userName) {
+          this.account = accountInfo.userName ? accountInfo.userName : '无'
+          this.accountName = accountInfo.accountName ? accountInfo.accountName : '无'
+          this.avatar = accountInfo.avatar ? accountInfo.avatar : '无'
+          this.accountPhone = accountInfo.mobile ? accountInfo.mobile : '无'
+          this.accountPassword = accountInfo.hasPassword ? '已设置' : '未设置'
+          this.companyName = accountInfo.company ? accountInfo.company : '无'
+          this.state = accountInfo.verify === 'AWAIT' ? '未认证' : '已认证'
+          this.displayValue = accountInfo.industryFirst ? accountInfo.industryFirst + '/' + accountInfo.industrySecond : '无'
+          this.industryFirst = accountInfo.industryFirst ? accountInfo.industryFirst : ''
+          this.industrySecond = accountInfo.industrySecond ? accountInfo.industrySecond : ''
+          this.selectChildId = accountInfo.industryId ? accountInfo.industryId : 0
+          this.companyWebsite = accountInfo.website ? accountInfo.website : '无'
+          this.licenseCode = accountInfo.licenseCode ? accountInfo.licenseCode : '无'
+          this.licensePic = accountInfo.licensePic ? accountInfo.licensePic : '无'
+        } else {
+          account.getAccount({}).then((res) => {
+            if (res.code !== 200) {
+            } else {
+              let resData = res.data ? res.data : ''
+              this.account = resData.userName ? resData.userName : '无'
+              this.accountName = resData.name ? resData.userName : '无'
+              this.avatar = resData.avatar ? resData.avatar : '无'
+              this.accountPhone = resData.mobile ? resData.mobile : '无'
+              this.accountPassword = resData.hasPassword ? '已设置' : '未设置'
+              this.companyName = resData.company ? resData.company : '无'
+              this.state = resData.verify === 'AWAIT' ? '未认证' : '已认证'
+              this.displayValue = resData.industryFirst ? resData.industryFirst + '/' + resData.industrySecond : '无'
+              this.industryFirst = resData.industryFirst ? resData.industryFirst : ''
+              this.industrySecond = resData.industrySecond ? resData.industrySecond : ''
+              this.selectChildId = resData.industryId ? resData.industryId : 0
+              this.companyWebsite = resData.website ? resData.website : '无'
+              this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
+              this.licensePic = resData.licensePic ? resData.licensePic : '无'
+              sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            }
+          })
+        }
       },
       uploadImgSuccess (data) {
         let companyData = {
@@ -275,67 +304,194 @@
         }
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
-            alert(res.msg)
           } else {
-            this.getAccount()
-            alert('更新成功')
+            let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
+            contactInfo.avatar = data.name
+            sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
+            // this.getAccount()
           }
         })
       },
       uploadError (data) {
         console.log('上传失败:', data)
       },
-      save (val, type, saveType) {
+      saveSelectInfo (initVal, val, type, saveType) {
+        let data = {
+        }
+        if (type === 'industry') {
+          data.industryId = initVal.selectChildId
+        }
+        this.displayValue = initVal.selectParentValue + '/' + initVal.selectChildValue
+        if (saveType === 'company') {
+          account.setCompanyInfo(data).then((res) => {
+            if (res.code !== 200) {
+            } else {
+              this.changeState[type] = false
+              let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+              accountInfo.selectChildId = initVal.selectChildId
+              accountInfo.selectParentId = initVal.selectParentId
+              accountInfo.industrySecond = initVal.selectChildValue
+              accountInfo.industryFirst = initVal.selectParentValue
+              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              // this.getAccount()
+            }
+          })
+        }
+      },
+      save (initVal, val, type, saveType) {
         // 修改选项后点击保存、
+        if (type === 'mobile') {
+          let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+          if (!reg.test(parseInt(val))) {
+            this.errorTips[type] = '手机格式不正确'
+            this.userPhone = initVal
+            this.changeState[type] = true
+            return false
+          } else {
+            this.changeState[type] = false
+            this.errorTips[type] = ''
+          }
+        } else if (type === 'tel') {
+          let reg = /^\d{8,12}$/
+          if (!reg.test(parseInt(val))) {
+            this.errorTips[type] = '办公电话格式不正确'
+            this.officeNo = initVal
+            this.changeState[type] = true
+            return false
+          } else {
+            this.changeState[type] = false
+            this.errorTips[type] = ''
+          }
+        } else if (type === 'email') {
+          let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+          if (!reg.test(val)) {
+            this.errorTips[type] = '邮箱格式不正确'
+            this.userEmail = initVal
+            this.changeState[type] = true
+            return false
+          } else {
+            this.changeState[type] = false
+            this.errorTips[type] = ''
+          }
+        } else if (type === 'qq') {
+          let reg = /^\d{1,20}$/
+          if (!reg.test(parseInt(val))) {
+            this.errorTips[type] = 'QQ格式不正确'
+            this.userQQ = initVal
+            this.changeState[type] = true
+            return false
+          } else {
+            this.changeState[type] = false
+            this.errorTips[type] = ''
+          }
+        } else if (type === 'website') {
+          let reg = /^(http(s)?):\/\/([\w-]+(\.[\w-]+)*\/)*[\w-]+(\.[\w-]+)*\/?(\?([\w-.,@?^=%&:/~+#]*)+)?/
+          if (!reg.test(val)) {
+            this.errorTips[type] = '公司网址格式不正确'
+            this.companyWebsite = initVal
+            this.changeState[type] = true
+            return false
+          } else {
+            this.changeState[type] = false
+            this.errorTips[type] = ''
+          }
+        }
         let valType = type
         let data = {
+        }
+        if (type === 'name' && saveType === 'company') {
+          this.changeState['accountName'] = false
+        } else {
+          this.changeState[type] = false
         }
         data[valType] = val
         if (saveType === 'company') {
           account.setCompanyInfo(data).then((res) => {
             if (res.code !== 200) {
-              alert(res.msg)
             } else {
-              this.getAccount()
-              alert('更新成功')
+              let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+              if (type === 'name') {
+                accountInfo['accountName'] = val
+              } else {
+                accountInfo[valType] = val
+              }
+              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              // this.getAccount()
             }
           })
         } else if (saveType === 'user') {
           account.setUserInfo(data).then((res) => {
             if (res.code !== 200) {
-              alert(res.msg)
             } else {
-              alert('更新成功')
+              let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
+              if (contactInfo) {
+                contactInfo[valType] = val
+                sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
+              }
             }
           })
         }
       },
+      cancelSelectInfo (initVal, type) {
+        this.changeState[type] = false
+        switch (type) {
+          case 'industry': this.displayValue = initVal.initSelectParentValue + '/' + initVal.initSelectChildValue
+        }
+      },
       cancel: function (val, type) {
+        this.changeState[type] = false
         switch (type) {
           case 'accountName' : this.accountName = val
             break
-          case 'companyWebsite' : this.companyWebsite = val
+          case 'website' : this.companyWebsite = val
+            this.errorTips.website = ''
             break
-          case 'userName' : this.userName = val
+          case 'name' : this.userName = val
             break
-          case 'userPost' : this.userPost = val
+          case 'position' : this.userPost = val
             break
-          case 'userPhone' : this.userPhone = val
+          case 'mobile' : this.userPhone = val
+            this.errorTips.mobile = ''
             break
-          case 'officeNo' : this.officeNo = val
+          case 'tel' : this.officeNo = val
+            this.errorTips.tel = ''
             break
-          case 'userEmail' : this.userEmail = val
+          case 'email' : this.userEmail = val
+            this.errorTips.email = ''
             break
-          case 'userWechat' : this.userWechat = val
+          case 'wechat' : this.userWechat = val
             break
-          case 'userQQ' : this.userQQ = val
+          case 'qq' : this.userQQ = val
+            this.errorTips.qq = ''
             break
-          case 'userRemarks' : this.userRemarks = val
+          case 'remark' : this.userRemarks = val
             break
         }
       },
+      clickIndustryModifyBtn (type) {
+        let data = {
+          type: 'BUSINESS'
+        }
+        account.getIndustryList(data).then((res) => {
+          if (res.code !== 200) {
+          } else {
+            this.industry = res.data
+            this.changeState[type] = true
+            for (let i = 0; i < this.industry.length; i++) {
+              for (let j = 0; j < this.industry[i].items.length; j++) {
+                if (this.industry[i].items[j].industryId === this.selectChildId) {
+                  this.selectParentId = this.industry[i].items[j].industryPid
+                }
+              }
+            }
+          }
+        })
+      },
+      clickChangeState (type) {
+        this.changeState[type] = true
+      },
       clickSave (val, type, boxType) {
-        console.log(val + '...' + type)
+        this.isEdit = true
         if (type === 'popup') {
           this.messageBoxShow = true
         }
@@ -396,22 +552,18 @@
       },
       messageBoxClick (e) {
         if (e.action === 'cancel') {
-          console.log('取消或者关闭按钮')
           this.messageBoxShow = false
         } else if (e.action === 'confirm') {
           if (this.messageBoxType === 'changeMobile') {
             if (this.step === 'initialPhone') {
               if (!this.phone) {
-                alert(1)
                 return false
               }
               let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
               if (!reg.test(parseInt(this.phone))) {
-                alert(1)
                 return false
               }
               if (!this.phoneCode) {
-                alert(1)
                 return false
               }
               let data = {
@@ -421,7 +573,13 @@
               }
               account.verifyMobile(data).then((res) => {
                 if (res.code !== 200) {
-                  console.log(res.msg)
+                  clearInterval(this.timerr)
+                  this.isSend = false
+                  this.isProhibit = true
+                  this.second = 60
+                  this.isImg = false
+                  this.phoneKey = ''
+                  this.cap.refresh()
                 } else {
                   this.token = res.data.codeToken
                   this.phone = ''
@@ -441,16 +599,13 @@
               })
             } else if (this.step === 'newPhone') {
               if (!this.newPhone) {
-                alert(1)
                 return false
               }
               let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
               if (!reg.test(parseInt(this.newPhone))) {
-                alert(1)
                 return false
               }
               if (!this.phoneCode) {
-                alert(1)
                 return false
               }
               let data = {
@@ -460,11 +615,16 @@
               }
               account.updateMobile(data).then((res) => {
                 if (res.code !== 200) {
-                  console.log(res.msg)
                 } else {
                   this.phone = ''
                   this.step = 'phoneSuccess'
                   this.confirmText = '完成'
+                  this.accountPhone = this.newPhone
+                  let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+                  if (accountInfo) {
+                    accountInfo.accountPhone = this.newPhone
+                    sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+                  }
                 }
               })
             } else if (this.step === 'phoneSuccess') {
@@ -485,6 +645,7 @@
             let re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
             if (!re.test(this.newPassword)) {
               this.errorTips.newPassword = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
+              return false
             }
             if (!this.reNewPassword) {
               this.errorTips.rePassword = '请输入确认新密码'
@@ -500,24 +661,33 @@
               'oldPassword': this.oldPassword
             }
             account.changePassword(data).then((res) => {
-              if (res.code !== 200) {
-                alert(res.msg)
-              } else {
-                alert('success')
-                this.oldPassword = ''
-                this.newPassword = ''
-                this.reNewPassword = ''
+              if (res.code === 10010) {
+                this.errorTips.oldPassword = '旧密码输入不正确'
+                return false
               }
+              this.$messageBox({
+                header: '提示',
+                content: '修改成功',
+                confirmText: '确定',
+                autoClose: 3, // 60秒
+                width: '500px', // 消息框宽度
+                handleClick: (e) => {
+                  if (e.action === 'cancel') {
+                  } else if (e.action === 'confirm') {
+                  }
+                }
+              })
+              this.oldPassword = ''
+              this.newPassword = ''
+              this.reNewPassword = ''
+              this.messageBoxShow = false
             })
-            this.messageBoxShow = false
           } else if (this.messageBoxType === 'seeState') {
             this.messageBoxShow = false
           }
         }
       },
       isGetCodePermission () {
-        console.log('isImg:' + this.isImg)
-        console.log('phoneStatus:' + this.phoneStatus)
         if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
         } else {
