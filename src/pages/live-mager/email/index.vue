@@ -259,7 +259,7 @@
         this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${email.emailInviteId}`)
       },
       addEmail () {
-        this.$router.push(`/liveMager/emailEdit/${this.activeId}`)
+        this.$router.push(`/liveMager/emailEditOne/${this.activeId}`)
       }
     }
   }
