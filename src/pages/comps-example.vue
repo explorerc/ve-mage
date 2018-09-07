@@ -11,21 +11,11 @@
         @error="upLoadError"/>
     </div>
     <div style="margin-top: 10px;">
-      <!--富文本编辑器组件-->
-      <ve-editer
-        @blur="editerBlur"
-        @focus="editerFocus"
-        @change="editorChange"
-        @ready="editorReady"
-        :img-upload-url="uploadUrl"
-        height="200"
-        v-model="editerContent"></ve-editer>
     </div>
   </div>
 </template>
 
 <script>
-  import veEditer from 'src/components/ve-editer'
   import veUpload from 'src/components/ve-upload-image'
 
   export default {
@@ -38,9 +28,7 @@
         editerContent: ''
       }
     },
-    components: {
-      veEditer, veUpload
-    },
+    components: {veUpload},
     methods: {
       upLoadSuccess (response, file) {
         console.log('success')

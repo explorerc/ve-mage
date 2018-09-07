@@ -62,7 +62,6 @@
     "url-loader": "^1.0.1",
     "vue-html5-editor": "^1.1.1",
     "vue-loader": "^15.2.6",
-    "vue-quill-editor": "^3.0.6",
     "vue-style-loader": "^4.1.1",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^4.16.2",
