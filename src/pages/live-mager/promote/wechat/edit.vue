@@ -18,11 +18,16 @@
               <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="60"></com-input>
             </div>
           </div>
-          <div class="from-row">
+          <div class="from-row" style='padding:4px 12px;'>
             <div class="from-title">收信人：</div>
             <div class="from-content">
-              <el-button class='default-button select-receiver' @click='groudModal = true'>选择收信人</el-button>
+              <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
               <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
+              <div class="edit-groups" v-if="selectedPersonList.length">
+                <span v-for="(person,idx) in selectedPersonList">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
+                </span>
+              </div>
             </div>
           </div>
           <div class="from-row">
@@ -53,56 +58,56 @@
           <el-button class='primary-button' @click="save">保存</el-button>
         </div>
       </div>
-      <!-- 选择分组弹窗 -->
-      <transition name='fade'>
-        <div class="modal-cover" v-if='groudModal' @click="closeModal">
-          <div class='modal-box'>
-            <h4>选择观众组 <span class='close' @click='groudModal = false'>×</span></h4>
-            <div class='content-box'>
-              <com-tabs :value.sync="tabValue" position='left' type='card' class='choose-tab'>
-                <com-tab label="分组" :index="1">
-                  <div class="right">
-                    <div class='top clearfix'>
-                      <span>分组:<i>123</i>个</span>
-                      <span class='search'><com-input :value.sync="searchTitle" placeholder="请输入关键字" ></com-input>搜索</span>
-                    </div>
-                    <ol class='list'>
-                      <li :key='1' :class="{ choosed:groupIdx == 1 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(1)">{{groupIdx === 1 ? '已选择' : '选择'}}</em></li>
-                      <li :key='2' :class="{ choosed:groupIdx == 2 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(2)">{{groupIdx === 2 ? '已选择' : '选择'}}</em></li>
-                      <li :key='3' :class="{ choosed:groupIdx == 3 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(3)">{{groupIdx === 3 ? '已选择' : '选择'}}</em></li>
-                      <li :key='4' :class="{ choosed:groupIdx == 4 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(4)">{{groupIdx === 4 ? '已选择' : '选择'}}</em></li>
-                      <li :key='5' :class="{ choosed:groupIdx == 5 }"><span><i class='icon'></i>企业员工<i>(123)</i></span><em class='choose' @click.prevent="chooseGroup(5)">{{groupIdx === 5 ? '已选择' : '选择'}}</em></li>
-                    </ol>
-                    <div class='btm clearfix'>
-                      <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
-                      <el-button>确定</el-button>
-                    </div>
-                  </div>
-                </com-tab>
-                <com-tab label="标签" :index="2">
-                  <div class="right">
-                    <div class='top clearfix'>
-                      <span>标签:<i>123</i>个</span>
-                      <span class='search'><com-input :value.sync="searchTitle" placeholder="请输入关键字" ></com-input>搜索</span>
-                    </div>
-                    <ol class='list'>
-                      <li :key='10' :class="{ choosed:tagIdx == 1 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(1)">{{tagIdx === 1 ? '已选择' : '选择'}}</em></li>
-                      <li :key='6' :class="{ choosed:tagIdx == 2 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(2)">{{tagIdx === 2 ? '已选择' : '选择'}}</em></li>
-                      <li :key='7' :class="{ choosed:tagIdx == 3 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(3)">{{tagIdx === 3 ? '已选择' : '选择'}}</em></li>
-                      <li :key='8' :class="{ choosed:tagIdx == 4 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(4)">{{tagIdx === 4 ? '已选择' : '选择'}}</em></li>
-                      <li :key='9' :class="{ choosed:tagIdx == 5 }"><span><i class='icon'></i>标签<i>(123)</i></span><em class='choose' @click.prevent="chooseTag(5)">{{tagIdx === 5 ? '已选择' : '选择'}}</em></li>
-                    </ol>
-                    <div class='btm clearfix'>
-                      <span>已选择:<i>啊啊啊</i><i>啊啊啊</i><i>啊啊啊</i></span>
-                      <el-button>确定</el-button>
-                    </div>
-                  </div>
-                </com-tab>
-              </com-tabs>
+      <!-- 选择收件人 -->
+      <message-box
+        v-if="selectPersonShow"
+        width="740px"
+        type="prompt"
+        header="选择观众组"
+        confirmText='确认'
+        class="select-person"
+        @handleClick="handleSelectPerson">
+        <div class="select-person-box">
+          <div class="select-nav fl">
+            <div class="select-item active">
+              <i class="iconfont icon-fenzu"></i>
+              <span>分组</span>
+            </div>
+            <div class="select-item">
+              <i class="iconfont icon-biaoqian"></i>
+              <span>标签</span>
+            </div>
+          </div>
+          <div class="select-content fl">
+            <div class="search-person-box">
+              <com-input type="search"
+                         class="search-com"
+                         :value.sync="searchPerson"
+                         @keyup.native.enter="searchEnter"
+                         placeholder="输入直播名称"></com-input>
+            </div>
+            <div class="select-person-box">
+              <ul>
+                <li
+                  v-for="(person,idx) in personList"
+                  @click.stop="clickRow(idx)"
+                  :class="{active:person.isChecked}"
+                  :key="person.id">
+                  {{person.name}} ({{person.count}}人）
+                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
-      </transition>
+        <div slot="bottom" class="select-bottom">
+          <span class="select-all fl">已选择{{selectedCount}}人：</span>
+          <div class="select-list fl" :title="selectedPersonListStr">
+            {{selectedPersonListStr}}
+          </div>
+          <button class="primary-button" @click="okSelectList">确定</button>
+        </div>
+      </message-box>
       <!-- 测试发送弹窗 -->
       <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
     </div>
@@ -119,7 +124,6 @@
       return {
         inviteId: this.$route.query.id, // 签名列表传过来的id
         activityId: this.$route.params.id,
-        groudModal: false,
         testModal: false,
         tabValue: 1,
         searchTitle: '',
@@ -148,7 +152,7 @@
         wxContent: '',
         qrImgurl: '',
         pickDate: false,
-        date: new Date(),
+        date: new Date().toString(),
         pickerOptions: {
           disabledDate (time) {
             return time.getTime() < Date.now() - 8.64e7
@@ -156,17 +160,24 @@
         },
         webinarName: '',
         webinarTime: '',
-        loading: false
+        loading: false,
+        searchPerson: '',
+        personList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonListStr: '',
+        selectPersonShow: false,
+        selectedCount: 0
       }
     },
     created () {
+      this.queryPersonList()
       if (this.inviteId) {
         this.loading = true
         createHttp.queryWechat(this.inviteId).then((res) => {
           // console.log(res)
           this.titleValue = res.data.title
           this.sendSetting = res.data.status
-          this.date = res.data.sendTime
+          this.date = res.data.sendTime.toString()
           this.wxContent = res.data.desc
         }).catch((e) => {
           console.log(e)
@@ -185,7 +196,6 @@
     methods: {
       closeModal (e) {
         if (e.target.className === 'modal-cover') {
-          this.groudModal = false
           this.testModal = false
           this.groupIdx = 0
           this.tagIdx = 0
@@ -244,6 +254,46 @@
       closeTest () {
       // debugger
         this.testModal = false
+      },
+      /* enter搜索 */
+      searchEnter () {
+        this.queryPersonList()
+      },
+      /* 点击确定 */
+      okSelectList () {
+        this.selectPersonShow = false
+      },
+      /* 点击取消 */
+      handleSelectPerson (e) {
+        if (e.action === 'cancel') {
+          this.selectPersonShow = false
+        }
+      },
+      /* 选中行 */
+      clickRow (idx) {
+        this.personList[idx].isChecked = !this.personList[idx].isChecked
+      },
+      /* 删除标签 */
+      delPerson (idx) {
+        this.selectedPersonList.splice(idx, 1)
+      },
+      /* 查询人员 */
+      queryPersonList () {
+        createHttp.queryPersonList({
+          activityId: this.$route.params.id,
+          name: this.searchPerson
+        }).then((res) => {
+          let temArray = []
+          res.data.forEach((item) => {
+            temArray.push({
+              id: item.id,
+              name: item.name,
+              count: 0,
+              isChecked: false
+            })
+          })
+          this.personList = temArray
+        })
       }
     },
     watch: {
@@ -251,6 +301,21 @@
         handler (newValue) {
           newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
         }
+      },
+      personList: {
+        handler (newArray) {
+          let temArray = []
+          let listStr = ''
+          newArray.forEach((item, idx) => {
+            if (!item.isChecked) return
+            temArray.push(item)
+            this.selectedCount += item.count
+            listStr += `${item.name} (${item.count}人）、`
+          })
+          this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
+          this.selectedPersonList = temArray
+        },
+        deep: true
       }
     },
     components: {
@@ -294,6 +359,7 @@
     height: 34px;
     line-height: 34px;
     border-radius: 20px;
+    margin-right: 10px;
     border: 1px solid rgba(136, 136, 136, 1);
   }
   .el-radio {
@@ -326,6 +392,25 @@
       width: 140px;
       height: 40px;
       line-height: 40px;
+    }
+  }
+  .edit-groups {
+    margin-top: 15px;
+    width: 500px;
+    span {
+      display: inline-block;
+      background-color: #f0f1fe;
+      border-radius: 17px;
+      padding: 8px 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      i {
+        color: #4b5afe;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.8;
+        }
+      }
     }
   }
 }
