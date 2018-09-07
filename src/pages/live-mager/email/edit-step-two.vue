@@ -189,13 +189,9 @@
             if (!item.isChecked) return
             temArray.push(item)
             this.selectedCount += item.count
-            if (idx === newArray.length - 1) {
-              listStr += `${item.name} (${item.count}人）`
-            } else {
-              listStr += `${item.name} (${item.count}人）、`
-            }
+            listStr += `${item.name} (${item.count}人）、`
           })
-          this.selectedPersonListStr = listStr
+          this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
           this.selectedPersonList = temArray
         },
         deep: true
