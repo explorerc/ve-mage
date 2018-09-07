@@ -330,7 +330,7 @@
   }
 </script>
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 .forgot-container /deep/ {
   text-align: center;
   display: block;
