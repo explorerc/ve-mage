@@ -40,17 +40,10 @@
                 <ve-msg-tips tip-type="html"
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
               </div>
-              <div class="edit-groups">
-                <div class="edit-groups-item">
-                  <span>分组1</span>
-                  <span>查看</span>
-                  <span>删除</span>
-                </div>
-                <div class="edit-groups-item">
-                  <span>分组2</span>
-                  <span>查看</span>
-                  <span>删除</span>
-                </div>
+              <div class="edit-groups" v-if="selectedPersonList.length">
+                <span v-for="(person,idx) in selectedPersonList">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
+                </span>
               </div>
             </div>
           </div>
@@ -105,43 +98,24 @@
             </div>
             <div class="select-person-box">
               <ul>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
+                <li
+                  v-for="(person,idx) in personList"
+                  @click.stop="clickRow(idx)"
+                  :class="{active:person.isChecked}"
+                  :key="person.id">
+                  {{person.name}} ({{person.count}}人）
+                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
                 </li>
               </ul>
             </div>
           </div>
         </div>
         <div slot="bottom" class="select-bottom">
-          <span>已选择234人：研发中心 (87人)，研发中心(87人)</span>
-          <button class="primary-button">确定</button>
+          <span class="select-all fl">已选择{{selectedCount}}人：</span>
+          <div class="select-list fl" :title="selectedPersonListStr">
+            {{selectedPersonListStr}}
+          </div>
+          <button class="primary-button" @click="okSelectList">确定</button>
         </div>
       </message-box>
     </div>
@@ -168,6 +142,10 @@
         selectPersonShow: false,
         sendType: 'AUTO',
         searchPerson: '',
+        personList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonListStr: '',
+        selectedCount: 0,
         errorMsg: {
           title: '',
           content: '',
@@ -202,7 +180,25 @@
           this.clearError()
         },
         deep: true
+      },
+      personList: {
+        handler (newArray) {
+          let temArray = []
+          let listStr = ''
+          newArray.forEach((item, idx) => {
+            if (!item.isChecked) return
+            temArray.push(item)
+            this.selectedCount += item.count
+            listStr += `${item.name} (${item.count}人）、`
+          })
+          this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
+          this.selectedPersonList = temArray
+        },
+        deep: true
       }
+    },
+    created () {
+      this.queryPersonList()
     },
     methods: {
       ...mapMutations('liveMager', {
@@ -234,12 +230,45 @@
           this.errorMsg.content = ''
         }
       },
+      /* enter搜索 */
       searchEnter () {
+        this.queryPersonList()
       },
+      /* 点击确定 */
+      okSelectList () {
+        this.selectPersonShow = false
+      },
+      /* 点击取消 */
       handleSelectPerson (e) {
         if (e.action === 'cancel') {
           this.selectPersonShow = false
         }
+      },
+      /* 选中行 */
+      clickRow (idx) {
+        this.personList[idx].isChecked = !this.personList[idx].isChecked
+      },
+      /* 删除标签 */
+      delPerson (idx) {
+        this.selectedPersonList.splice(idx, 1)
+      },
+      /* 查询人员 */
+      queryPersonList () {
+        LiveHttp.queryPersonList({
+          activityId: this.$route.params.id,
+          name: this.searchPerson
+        }).then((res) => {
+          let temArray = []
+          res.data.forEach((item) => {
+            temArray.push({
+              id: item.id,
+              name: item.name,
+              count: 0,
+              isChecked: false
+            })
+          })
+          this.personList = temArray
+        })
       },
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
@@ -407,29 +436,20 @@
       line-height: 40px;
     }
     .edit-groups {
-      margin-top: 40px;
-      .edit-groups-item {
-        margin: 10px 0;
-        line-height: 30px;
-        span {
-          display: inline-block;
-          text-align: center;
-          &:nth-child(1) {
-            width: 200px;
-            border: solid 1px #e5e5e5;
-          }
-          &:nth-child(2) {
-            margin: 0 0 0 20px;
-            padding: 0 5px;
+      margin-top: 15px;
+      width: 500px;
+      span {
+        display: inline-block;
+        background-color: #F0F1FE;
+        border-radius: 17px;
+        padding: 8px 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        i {
+          color: #4B5AFE;
+          &:hover {
             cursor: pointer;
-          }
-          &:nth-child(3) {
-            padding: 0 5px;
-            cursor: pointer;
-          }
-          &:nth-child(2):hover,
-          &:nth-child(3):hover {
-            color: #2878ff;
+            opacity: .8;
           }
         }
       }

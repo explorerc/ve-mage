@@ -427,6 +427,32 @@ const ActivityManger = {
       url: '/expand/notice/test-send',
       params: data
     })
+  },
+  /***
+   * 查询观众组
+   * @param data
+   * @returns {*}
+   */
+  queryPersonList (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/common/group/get-group',
+      params: {
+        inviteId: data
+      }
+    })
+  },
+  /***
+   * 查询测试邮件限额
+   * @param data
+   * @returns {*}
+   */
+  queryTestEmailInfo (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/common/message/limit-num',
+      params: data
+    })
   }
 }
 export default ActivityManger

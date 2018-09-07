@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const HappyPack = require('happypack')
 const os = require('os')
+const vueLoaderConfig = require('./vue-loader.conf')
 const happyThreadPool = HappyPack.ThreadPool({
   size: os.cpus().length
 })
@@ -56,7 +57,9 @@ const webpackConfig = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        include: resolve('src')
+        include: resolve('src'),
+        options: vueLoaderConfig
+
       },
       {
         test: /\.js[x]?$/,
