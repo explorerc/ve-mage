@@ -75,39 +75,99 @@
           </div>
         </div>
       </div>
+      <!-- 选择收件人 -->
+      <message-box
+        v-if="selectPersonShow"
+        width="740px"
+        type="prompt"
+        header="选择观众组"
+        confirmText='确认'
+        class="select-person"
+        @handleClick="handleSelectPerson">
+        <div class="select-person-box">
+          <div class="select-nav fl">
+            <div class="select-item active">
+              <i class="iconfont icon-fenzu"></i>
+              <span>分组</span>
+            </div>
+            <div class="select-item">
+              <i class="iconfont icon-biaoqian"></i>
+              <span>标签</span>
+            </div>
+          </div>
+          <div class="select-content fl">
+            <div class="search-person-box">
+              <com-input type="search"
+                         class="search-com"
+                         :value.sync="searchPerson"
+                         @keyup.native.enter="searchEnter"
+                         placeholder="输入直播名称"></com-input>
+            </div>
+            <div class="select-person-box">
+              <ul>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+                <li>
+                  互联网客户 (460人）
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div slot="bottom" class="select-bottom">
+          <span>已选择234人：研发中心 (87人)，研发中心(87人)</span>
+          <button class="primary-button">确定</button>
+        </div>
+      </message-box>
     </div>
     <div class="email-bottom">
       <button class="primary-button fr" @click="send">发送</button>
       <button class="primary-button margin-fl fr" @click="saveEmail">保存草稿</button>
     </div>
-    <!-- 选择收件人 -->
-    <message-box
-      v-if="selectPersonShow"
-      width="500px"
-      type="prompt"
-      header="选择观众组"
-      confirmText='确认'
-      class="msg-box"
-      @handleClick="handleSelectPerson">
-    </message-box>
   </div>
 </template>
 
 <script>
   import VeMsgTips from 'src/components/ve-msg-tips'
   import LiveHttp from 'src/api/activity-manger'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
-    components: { VeMsgTips },
+    components: {VeMsgTips},
     data () {
       return {
         outValue: '',
         isTimer: true,
         selectPersonShow: false,
         sendType: 'AUTO',
+        searchPerson: '',
         errorMsg: {
           title: '',
           content: '',
@@ -133,7 +193,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
       },
@@ -174,6 +234,8 @@
           this.errorMsg.content = ''
         }
       },
+      searchEnter () {
+      },
       handleSelectPerson (e) {
         if (e.action === 'cancel') {
           this.selectPersonShow = false
@@ -182,7 +244,7 @@
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = { ...this.email, ...res.data }
+            this.email = {...this.email, ...res.data}
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
@@ -251,8 +313,7 @@
     }
   }
 </script>
-<style lang="scss" scoped src="../css/live.scss">
-</style>
+<style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
   .edit-step-box {
     background-color: #f5f5f5;

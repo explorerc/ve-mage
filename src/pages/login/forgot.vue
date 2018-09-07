@@ -3,7 +3,7 @@
     <p class="v-title">
       找回密码
     </p>
-    <com-tabs :value.sync="activeName" customClass="v-forgot" disabled>
+    <com-tabs :value.sync="activeName" class="v-forgot" disabled>
       <com-tab index="first">
         <div slot="label">
           验证身份
