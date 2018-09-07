@@ -1,4 +1,4 @@
-@import "~assets/css/mixin.scss";
+@import "assets/css/mixin.scss";
 
 .live-mager {
   border-radius: 5px;
@@ -9,121 +9,149 @@
   min-width: 1019px;
   color: #222;
   transition: width .2s;
+
   /* 设备宽度大于 1600 */
-  @media all and (min-width:1600px) {
+  @media all and (min-width: 1600px) {
     width: 1366px;
   }
+
   /* 设备宽度小于 1600px */
   @media all and (max-width:1600px) {
     width: 1019px;
   }
+
   .live-title {
     border-bottom: 1px solid $color-bd;
     line-height: 60px;
+
     span.title {
       display: inline-block;
       font-size: 24px;
       padding-right: 10px;
     }
-    .live-btn{
+
+    .live-btn {
       position: relative;
       top: 5px;
     }
   }
-  .border-box{
+
+  .border-box {
     border: solid 1px $color-bd;
     background-color: #fff;
     border-radius: 4px;
     margin-top: -2px;
   }
-  .upload-tips{
+
+  .upload-tips {
     display: inline-block;
     width: 400px;
     vertical-align: top;
     margin-left: 10px;
-    span{
+
+    span {
       display: block;
-      &.error{
+
+      &.error {
         color: $color-red;
         line-height: 30px;
         margin-top: 8px;
       }
     }
   }
-  .search-box{
+
+  .search-box {
     width: 766px;
     float: right;
     text-align: right;
-    .create-btn{
+
+    .create-btn {
       @include primary-button();
     }
-    .el-select:nth-child(1){
+
+    .el-select:nth-child(1) {
       width: 88px;
     }
-    .el-select:nth-child(2){
+
+    .el-select:nth-child(2) {
       width: 174px;
     }
-    .search-com /deep/{
+
+    .search-com /deep/ {
       height: 40px;
       line-height: 40px;
       margin: 0 10px;
-      input{
+
+      input {
         border-radius: 20px;
       }
     }
   }
-  .live-btn{
+
+  .live-btn {
     margin-right: 20px;
   }
+
   .pagination-box {
     width: 100%;
     margin-top: 20px;
     overflow: hidden;
   }
+
   .page-pagination {
     margin: 30px 10px 20px 0;
     text-align: center;
   }
-  .mager-box{
+
+  .mager-box {
     font-size: 14px;
-    .from-box{
+
+    .from-box {
       margin: 20px;
-      .from-row{
+
+      .from-row {
         display: flex;
         padding: 12px;
-        .from-title{
+
+        .from-title {
           width: 180px;
           text-align: right;
           padding-right: 20px;
           color: #555;
-          .star{
+
+          .star {
             position: relative;
             top: 3px;
             color: $color-red;
             padding-right: 5px;
           }
         }
-        .from-content{
+
+        .from-content {
           position: relative;
           flex: 1;
-          .input-box{
+
+          .input-box {
             width: 400px;
           }
         }
       }
     }
   }
-  .upload-video{
+
+  .upload-video {
     position: relative;
   }
-  .play-box{
+
+  .play-box {
     background-color: #e5e5e5;
     width: 600px;
     height: 337.5px;
     line-height: 300px;
     text-align: center;
   }
-  .msg-tip{
+
+  .msg-tip {
     position: relative;
     left: 10px;
     @include border;
@@ -132,43 +160,52 @@
     line-height: 18px;
     font-size: 14px;
   }
-  .email-info{
+
+  .email-info {
     margin: 20px 20px 30px 20px;
     font-size: 14px;
     line-height: 1.5;
-    .email-info-row{
+
+    .email-info-row {
       display: flex;
       text-align: left;
       margin: 10px 0;
-      span{
-        &:nth-child(1){
+
+      span {
+        &:nth-child(1) {
           display: inline-block;
           width: 80px;
           font-weight: bold;
         }
-        &:nth-child(2){
+
+        &:nth-child(2) {
           flex: 1;
         }
       }
     }
   }
-  .table-list-box{
+
+  .table-list-box {
     margin-top: 20px;
     padding: 20px 20px 50px 20px;
     background-color: #fff;
     border-radius: 4px;
-    .table-handler{
+
+    .table-handler {
       display: inline-block;
-      span{
+
+      span {
         position: relative;
         display: inline-block;
         margin: 10px;
         font-size: 14px;
-        &:hover{
+
+        &:hover {
           cursor: pointer;
           color: #818CFE;
         }
-        &:after{
+
+        &:after {
           position: absolute;
           top: 4px;
           right: -12px;
@@ -178,18 +215,21 @@
           height: 14px;
           background-color: #e5e5e5;
         }
-        &:first-child{
+
+        &:first-child {
           margin-left: 0;
         }
-        &:last-child{
-          &:after{
+
+        &:last-child {
+          &:after {
             display: none;
           }
         }
       }
     }
   }
-  .tip-box{
+
+  .tip-box {
     height: 50px;
     line-height: 50px;
     border: solid 1px #818CFE;

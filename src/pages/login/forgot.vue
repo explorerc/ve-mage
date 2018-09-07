@@ -330,7 +330,7 @@
   }
 </script>
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 .forgot-container /deep/ {
   text-align: center;
   display: block;
@@ -372,15 +372,17 @@
       top: -7px;
       left: 34px;
     }
-    .v-icon1,.v-icon2,.v-icon3{
+    .v-icon1,
+    .v-icon2,
+    .v-icon3 {
       display: block;
       position: absolute;
-      color: #4B5AFE;
+      color: #4b5afe;
       top: -26px;
       left: 20px;
       z-index: 2;
     }
-    .v-icon2{
+    .v-icon2 {
       left: 28px;
     }
     .v-circle {

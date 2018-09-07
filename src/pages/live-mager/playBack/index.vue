@@ -482,7 +482,7 @@
 }
 </style>
 <style lang="scss" scoped>
-@import '~assets/css/variable';
+@import 'assets/css/variable.scss';
 
 .black-box {
   margin-top: 20px;

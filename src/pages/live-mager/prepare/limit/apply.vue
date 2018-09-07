@@ -365,7 +365,7 @@
 }
 </style>
 <style lang='scss' scoped>
-@import '~assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 .live-title {
   .right-box {
     float: right;
