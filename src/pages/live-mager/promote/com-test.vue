@@ -1,30 +1,28 @@
 <template>
   <transition name='fade'>
       <div class="modal-cover" @click="closeModal" >
-        <div class='modal-box' v-if="type === 'SMS'">
-          <h4>短信测试发送 <span class='close' @click='closeModal'>×</span></h4>
+        <div class='modal-box phone' v-if="type === 'SMS'">
+          <h4>短信测试发送 <span class='close' @click='closeModal'></span></h4>
           <div class='content-box from-box'>
-            <p>每天只允许发送5条测试短信</p>
-            <div class="from-row">
-              <div class="from-title">输入号码：</div>
-              <div class="from-content">
-                <com-input placeholder="请输入手机号码" :value.sync='sendPhone'></com-input>
-              </div>
+            <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
+            <div>
+              <com-input placeholder="请输入手机号码" :value.sync='sendPhone' ></com-input>
             </div>
           </div>
           <div class="btn-group">
-            <el-button @click='sendTest'>立即发送<span>({{limitCount}})</span>条</el-button>
+            <p>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
+            <el-button class='primary-button fr' @click='sendTest'>立即发送</el-button>
           </div>
         </div>
-        <div class='modal-box' v-else>
-          <h4>微信测试发送 <span class='close' @click='closeModal'>×</span></h4>
+        <div class='modal-box ' v-else>
+          <h4>微信测试发送 <span class='close' @click='closeModal'></span></h4>
           <div class='content-box'>
-            <p>每天只允许发送5条测试消息</p>
+            <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
             <div class="from-row">
               <img :src="imgUrl" class='qrcode'>
             </div>
-            <p>扫描二维码，授权后，即可收到测试消息</p>
-            <p>当前可发送(<span>{{limitCount}}</span>条)</p>
+            <p>扫描二维码，授权后即可收到测试消息</p>
+            <p>微信限额：<span class='limit-count'>{{limitCount}}</span></p>
           </div>
         </div>
       </div>
@@ -136,6 +134,7 @@ export default {
 </script>
 
 <style lang='scss'>
+@import '~assets/css/mixin.scss';
 .modal-cover {
   position: fixed;
   top: 0;
@@ -147,17 +146,17 @@ export default {
 }
 
 .modal-box {
-  width: 700px;
-  height: 500px;
+  overflow: hidden;
+  width: 450px;
+  height: 314px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
   position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -250px;
-  margin-left: -350px;
-  background: white;
-  border-radius: 10px;
-  border: 1px solid #666;
-  padding: 30px;
+  margin-top: -225px;
+  margin-left: -157px;
   text-align: center;
   .top {
     span {
@@ -172,15 +171,54 @@ export default {
     line-height: 40px;
     text-align: left;
     border-bottom: 1px solid #ccc;
+    color: $color-font;
+    font-size: 16px;
+    padding: 0 18px;
+    background: $color-default;
     .close {
-      float: right;
+      cursor: pointer;
+      width: 10px;
+      height: 10px;
+      background: url('~assets/image/close.svg') no-repeat;
+      background-size: contain;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
   .content-box {
     padding: 10px 0px;
+    * {
+      color: $color-font-sub;
+    }
+    p {
+      margin: 10px 0px;
+    }
     .qrcode {
+      width: 110px;
+      height: 110px;
       display: block;
-      margin: 0 auto;
+      margin: 20px auto;
+      border: 1px solid rgba(226, 226, 226, 1);
+    }
+    .limit-count {
+      color: $color-blue;
+    }
+    .color-blue {
+      color: $color-blue;
+      i {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('~assets/image/quesmark-blue.svg') no-repeat center;
+        background-size: contain;
+        margin-right: 10px;
+        position: relative;
+        top: 4px;
+      }
     }
   }
   .btm {
@@ -195,6 +233,31 @@ export default {
       padding: 5px 10px;
       border: 1px solid #ccc;
       margin: 0 3px;
+    }
+  }
+  &.phone {
+    height: 274px;
+    margin-top: -147px;
+    text-align: left;
+    .content-box {
+      padding: 30px;
+      .color-blue i {
+        top: 4px;
+      }
+    }
+    .com-input {
+      width: 390px;
+    }
+    .btn-group {
+      padding: 0px 30px;
+      p {
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+      }
+      .limit-count {
+        color: $color-blue;
+      }
     }
   }
 }
