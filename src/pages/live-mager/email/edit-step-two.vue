@@ -40,7 +40,7 @@
                 <ve-msg-tips tip-type="html"
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
               </div>
-              <div class="edit-groups">
+              <div class="edit-groups" v-if="selectedPersonList.length">
                 <span v-for="(person,idx) in selectedPersonList">{{person.name}} ({{person.count}}人）
                   <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
                 </span>
@@ -246,7 +246,7 @@
       },
       /* 删除标签 */
       delPerson (idx) {
-        this.personList.splice(idx, 1)
+        this.selectedPersonList.splice(idx, 1)
       },
       /* 查询人员 */
       queryPersonList () {
