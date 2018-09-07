@@ -147,12 +147,12 @@
       //     this.createdSuccess = false
       //   }
       // },
-      uploadProgress (data) {
-        this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
-        if (this.percentImg === 100) {
-          this.percentImg = 0
-        }
-      },
+      // uploadProgress (data) {
+      //   this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
+      //   if (this.percentImg === 100) {
+      //     this.percentImg = 0
+      //   }
+      // },
       uploadImgSuccess (data) {
         this.poster = data.name
       },
