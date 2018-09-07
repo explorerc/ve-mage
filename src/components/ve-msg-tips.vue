@@ -1,6 +1,6 @@
 <template>
   <div class="msg-tip-box">
-    <i>?</i>
+    <i>？</i>
     <span v-if="tipType!=='html'">{{tip}}</span>
     <span v-else v-html="tip"></span>
   </div>

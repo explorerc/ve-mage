@@ -449,7 +449,7 @@
           color: #4B5AFE;
           &:hover {
             cursor: pointer;
-            opacity: .8;
+            color: #FC5659;
           }
         }
       }
