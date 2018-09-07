@@ -5,7 +5,7 @@
         </el-aside>
         <el-container class="main-box">
             <el-header class="header-container">
-
+              <com-login :isShow="isShow" @changeState="changeState"></com-login>
             </el-header>
             <div class="top-notice" v-show="msg">
                 <div class="notice-box clearfix">
@@ -28,6 +28,7 @@
 <script>
 
 import menu from './menu'
+import loginReg from './Login-reg'
 
 export default {
   data () {
@@ -38,13 +39,28 @@ export default {
       update: false,
       tipInfo: {},
       tipType: null,
-      close: false
+      close: false,
+      isShow: false // 头像下拉是否显示
     }
   },
+  created: function () {
+    let body = document.querySelector('body')
+    body.addEventListener('click', (e) => {
+      if (e.target.id === 'toggler-div' || e.target.id === 'toggler-img' || e.target.id === 'toggler-span' || e.target.id === 'preventClick') {
+        this.isShow = true
+      } else {
+        this.isShow = false
+      }
+    }, false)
+  },
   components: {
-    'com-menu': menu
+    'com-menu': menu,
+    'com-login': loginReg
   },
   methods: {
+    changeState () {
+      this.isShow = !this.isShow
+    }
   }
 }
 </script>
@@ -73,6 +89,7 @@ export default {
   height: 70px;
   padding-top: 20px;
   text-align: right;
+  position: relative;
   // margin-right: 10px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e2e2;

@@ -104,9 +104,9 @@
             }
           })
         } else if (event.type === 'share') { // 推广
-          this.$router.push(`liveMager/detail/${event.id}?type=tg`)
+          this.$router.push(`/liveMager/detail/${event.id}?type=tg`)
         } else if (event.type === 'info') { // 详情
-          this.$router.push(`liveMager/detail/${event.id}`)
+          this.$router.push(`/liveMager/detail/${event.id}`)
         }
       },
       changePage (currentPage) {

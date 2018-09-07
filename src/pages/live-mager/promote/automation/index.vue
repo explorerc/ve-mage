@@ -157,14 +157,16 @@
               <el-button :disabled='btnStatus.BEFORE_HOUR.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_HOUR'} }">添加微信</router-link></el-button> -->
               <el-button class='primary-button edit-time' @click='firstSel = true'>编辑提醒时间</el-button>
               <div class="seltime-modal" v-if='firstSel'>
-                <div class="title">修改时间：</div>
-                <el-select v-model="selhourValue" placeholder="编辑提醒时间" >
-                  <el-option v-for="item in hourOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-                <div class="btn-group">
-                  <el-button @click='resetCountDown("hour")'>放弃</el-button>
-                  <el-button @click='saveCountdown("hour")'>保存</el-button>
+                <div class="title">修改时间：<i class='close'  @click='resetCountDown("hour")'></i></div>
+                <div class="content">
+                  <el-select v-model="selhourValue" placeholder="编辑提醒时间" >
+                    <el-option v-for="item in hourOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                  <div class="btn-group">
+                    <el-button class='primary-button' @click='saveCountdown("hour")'>保存</el-button>
+                    <span  @click='resetCountDown("hour")'>取消</span>
+                  </div>
                 </div>
               </div>
 
@@ -232,18 +234,18 @@
           <div class="block">
             <div class="title clearfix">
               <p class='block-tips'>开播前{{minValue}}分钟 <span>活动开始前{{minValue}}分钟，提醒用户活动即将开始，做好参加准备</span></p>
-              <!-- <el-button :disabled='btnStatus.BEFORE_MINUTE.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_MINUTE'} }">添加短信</router-link></el-button>
-              <el-button :disabled='btnStatus.BEFORE_MINUTE.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_MINUTE'} }">添加微信</router-link></el-button> -->
               <el-button class='primary-button edit-time' @click='secondSel = true'>编辑提醒时间</el-button>
               <div class="seltime-modal" v-if='secondSel'>
-                <div class="title">修改时间：</div>
-                <el-select v-model="selminValue" placeholder="编辑提醒时间" >
-                  <el-option v-for="item in minOptions" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-                <div class="btn-group">
-                  <el-button @click='resetCountDown("min")'>放弃</el-button>
-                  <el-button @click='saveCountdown("min")'>保存</el-button>
+                <div class="title">修改时间：<i class='close' @click='resetCountDown("min")'></i></div>
+                <div class="content">
+                  <el-select v-model="selminValue" placeholder="编辑提醒时间" >
+                    <el-option v-for="item in minOptions" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                  <div class="btn-group">
+                    <el-button class='primary-button' @click='saveCountdown("min")'>保存</el-button>
+                    <span  @click='resetCountDown("min")'>取消</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -849,6 +851,9 @@ export default {
 </style>
 <style lang="scss">
 .auto-page {
+  .el-select {
+    width: 360px;
+  }
   .el-select .el-input__inner {
     border: 1px solid #e2d2d2;
   }
@@ -1018,21 +1023,49 @@ export default {
     }
   }
   .seltime-modal {
-    width: 300px;
-    height: 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     position: absolute;
     top: 100%;
     right: 0px;
     z-index: 9;
-    background: #fff;
-    padding: 20px;
+    width: 420px;
+    height: 210px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
     .title {
       text-align: left;
+      height: 40px;
+      line-height: 40px;
+      padding: 0px 18px;
+      background-color: $color-default;
+      position: relative;
+      .close {
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
+        background: url('~assets/image/close.svg') no-repeat;
+        background-size: contain;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+    .content {
+      padding: 30px 30px 20px 30px;
     }
     .btn-group {
-      width: 250px;
+      float: right;
+      margin-top: 40px;
+    }
+    .primary-button {
+      padding: 0;
+      width: 120px;
+      height: 40px;
+      line-height: 40px;
+      margin-right: 20px;
     }
   }
 }

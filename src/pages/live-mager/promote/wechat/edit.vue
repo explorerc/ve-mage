@@ -22,7 +22,7 @@
             <div class="from-title">收信人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='groudModal = true'>选择收信人</el-button>
-              <div class='tips-box '><i class='tips' @mouseover='showTips=true' @mouseout='showTips=false'></i><div class='tips-txt' v-if='showTips'>微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。</div></div>
+              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
             </div>
           </div>
           <div class="from-row">
@@ -113,6 +113,7 @@
   import createHttp from 'src/api/activity-manger'
   import comTest from '../com-test'
   import comPhone from '../com-phone'
+  import veTips from 'src/components/ve-msg-tips'
   export default {
     data () {
       return {
@@ -155,8 +156,7 @@
         },
         webinarName: '',
         webinarTime: '',
-        loading: false,
-        showTips: false
+        loading: false
       }
     },
     created () {
@@ -255,7 +255,8 @@
     },
     components: {
       comTest,
-      comPhone
+      comPhone,
+      veTips
     }
   }
 </script>
@@ -315,33 +316,6 @@
   }
   .form-box {
     position: relative;
-  }
-  .tips-box {
-    position: relative;
-    display: inline-block;
-    margin-left: 12px;
-  }
-  .tips {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: url('~assets/image/quesmark.svg') no-repeat center;
-    background-size: contain;
-    position: relative;
-    top: 5px;
-  }
-  .tips-txt {
-    position: absolute;
-    padding: 14px;
-    color: #fff;
-    width: 282px;
-    background: rgba(34, 34, 34, 0.8);
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-    line-height: 22px;
-    top: -38px;
-    right: -290px;
-    z-index: 9;
   }
   .btn-group {
     display: block;

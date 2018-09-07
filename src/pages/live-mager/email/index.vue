@@ -79,38 +79,38 @@
         </div>
       </div>
     </div>
-    <message-box
-      v-if="sendShow"
-      width="500px"
-      header="邮件推送确认"
-      confirmText='确认发送'
-      @handleClick="handleClickSendEmail">
-      <div class="email-info">
-        <div class="email-info-row">
-          <span>邮件标题：</span>
-          <span>{{currentEmail.title}}</span>
-        </div>
-        <div class="email-info-row">
-          <span>发件人：</span>
-          <span>*****</span>
-        </div>
-        <div class="email-info-row">
-          <span>收件人：</span>
-          <span>666</span>
-        </div>
-        <div class="email-info-row">
-          <span>邮件摘要：</span>
-          <span>***********************************************************</span>
-        </div>
-      </div>
-    </message-box>
+    <!--<message-box-->
+      <!--v-if="sendShow"-->
+      <!--width="500px"-->
+      <!--header="邮件推送确认"-->
+      <!--confirmText='确认发送'-->
+      <!--@handleClick="handleClickSendEmail">-->
+      <!--<div class="email-info">-->
+        <!--<div class="email-info-row">-->
+          <!--<span>邮件标题：</span>-->
+          <!--<span>{{currentEmail.title}}</span>-->
+        <!--</div>-->
+        <!--<div class="email-info-row">-->
+          <!--<span>发件人：</span>-->
+          <!--<span>*****</span>-->
+        <!--</div>-->
+        <!--<div class="email-info-row">-->
+          <!--<span>收件人：</span>-->
+          <!--<span>666</span>-->
+        <!--</div>-->
+        <!--<div class="email-info-row">-->
+          <!--<span>邮件摘要：</span>-->
+          <!--<span>***********************************************************</span>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</message-box>-->
   </div>
 </template>
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
-  import {mapMutations} from 'vuex'
+  import { mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const handleType = {
@@ -126,7 +126,7 @@
   }
   export default {
     name: 'index',
-    components: {VePagination},
+    components: { VePagination },
     data () {
       return {
         pageSize: 10,
@@ -259,7 +259,7 @@
         this.$router.push(`/liveMager/emailEdit/${this.activeId}?email=${email.emailInviteId}`)
       },
       addEmail () {
-        this.$router.push(`/liveMager/emailEdit/${this.activeId}`)
+        this.$router.push(`/liveMager/emailEditOne/${this.activeId}`)
       }
     }
   }

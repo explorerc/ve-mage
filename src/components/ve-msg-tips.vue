@@ -1,7 +1,8 @@
 <template>
   <div class="msg-tip-box">
     <i>?</i>
-    <span>{{tip}}</span>
+    <span v-if="tipType!=='html'">{{tip}}</span>
+    <span v-else v-html="tip"></span>
   </div>
 </template>
 
@@ -16,6 +17,10 @@
       tip: {
         type: String,
         default: ''
+      },
+      tipType: {
+        type: String,
+        default: 'text'
       }
     }
   }
@@ -33,8 +38,9 @@
       height: 20px;
       line-height: 20px;
       text-align: center;
-      border: solid 1px #e5e5e5;
+      border: solid 1px rgba(85,85,85,1);;
       border-radius: 50%;
+      color: #555;
     &:hover{
        cursor: pointer;
        opacity: .8;
@@ -46,18 +52,35 @@
       max-width: 400px;
       transform: translateY(-50%);
       margin-top: 10px;
-      padding: 5px;
+      left: 8px;
+      padding: 10px;
       vertical-align: top;
       border-radius: 3px;
-      background-color: rgba(0,0,0,.8);
       color: #fff;
       opacity: 0;
       word-wrap:break-word;
       word-break:break-all;
       z-index: 10;
+      background-color: rgba(49,49,49,1);
+      box-shadow:0px 2px 6px 0px rgba(0,0,0,0.4);
+      line-height: 20px;
+      &:after{
+        display: block;
+        position: absolute;
+        content: '';
+        height: 0px;
+        width: 0px;
+        top: 50%;
+        left: -4px;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        border-top: 4px solid transparent;
+        border-right: 4px solid #313131;
+        border-bottom: 5px solid transparent;
+      }
     }
     i:hover + span{
-      opacity: 1;
+      opacity: .8;
       transition: opacity 1s;
     }
   }

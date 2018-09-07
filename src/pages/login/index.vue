@@ -34,24 +34,24 @@
             <template>
               <el-checkbox v-model="remember">自动登录</el-checkbox>
             </template>
-                </div>
-                <button class="primary-button" @click="accountSubmit">提交</button>
-            </div>
-            <div class="v-mobile" v-show="!isAccount">
-                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
-                <div id="captcha"></div>
-                <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
-                  <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-                </com-input>
-                <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
-					      	<p class="v-error">{{mobileError}}</p>
-					      </div>
-                <button class="primary-button" @click="phoneSubmit">提交</button>
-            </div>
+          </div>
+          <button class="primary-button" @click="accountSubmit">提交</button>
         </div>
-        <div class="v-info">
-          <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+        <div class="v-mobile" v-show="!isAccount">
+          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
+          <div id="captcha"></div>
+          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
+            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+          </com-input>
+          <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
+				  	<p class="v-error">{{mobileError}}</p>
+				  </div>
+          <button class="primary-button" @click="phoneSubmit">提交</button>
         </div>
+      </div>
+      <div class="v-info">
+        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+      </div>
     </div>
   </div>
 </template>

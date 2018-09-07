@@ -65,6 +65,6 @@
 </script>
 
 <style lang='scss'>
-@import '~assets/css/variable';
+@import 'assets/css/variable.scss';
 @import '../../css/live';
 </style>

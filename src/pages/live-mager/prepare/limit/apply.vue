@@ -76,7 +76,7 @@
               <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="16" placeholder="请输入信息描述"></com-input>
             </div>
             <div v-if="item.type === 'mobile'">
-              <div class='tips-box del-box'><i class='tips' @mouseover='showTips=true' @mouseout='showTips=false'></i><div class='tips-txt' v-if='showTips'>1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证</div></div>
+              <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
               <span @click='removeItem(idx)' class='del'>删除</span>
@@ -102,6 +102,7 @@
 
 <script>
   import prepareHttp from 'src/api/activity-manger'
+  import veTips from 'src/components/ve-msg-tips'
   export default {
     data () {
       return {
@@ -125,8 +126,7 @@
           questionId: ''
         },
         questionId: '',
-        saveData: {},
-        showTips: ''
+        saveData: {}
       }
     },
     created () {
@@ -347,6 +347,9 @@
           newValue === '2' ? this.pickDate = true : this.pickDate = false
         }
       }
+    },
+    components: {
+      veTips
     }
   }
 </script>
@@ -366,7 +369,7 @@
 }
 </style>
 <style lang='scss' scoped>
-@import '~assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 .live-title {
   .right-box {
     float: right;
@@ -453,32 +456,6 @@
       }
       .del-box {
         padding-left: 41px;
-      }
-      .tips-box {
-        position: relative;
-      }
-      .tips {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        background: url('~assets/image/quesmark.svg') no-repeat center;
-        background-size: contain;
-        position: relative;
-        top: 5px;
-      }
-      .tips-txt {
-        position: absolute;
-        padding: 14px;
-        color: #fff;
-        width: 282px;
-        height: 114px;
-        background: rgba(34, 34, 34, 0.8);
-        box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
-        border-radius: 4px;
-        line-height: 22px;
-        top: -38px;
-        right: 266px;
-        z-index: 9;
       }
     }
     .inp {
