@@ -66,7 +66,7 @@
             </div>
           </div> -->
           <!-- 模拟手机预览 -->
-          <com-phone  :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx='false'></com-phone>
+          <com-phone :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx='false'></com-phone>
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="test">测试发送</el-button>
@@ -169,7 +169,7 @@ export default {
       pickDate: false,
       msgTag: '',
       msgContent: '',
-      date: new Date(),
+      date: new Date().toString(),
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() < Date.now() - 8.64e7
@@ -183,7 +183,7 @@ export default {
       createHttp.queryMsg(this.inviteId).then((res) => {
         this.titleValue = res.data.title
         this.sendSetting = res.data.status
-        this.date = res.data.sendTime
+        this.date = res.data.sendTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
       }).catch((e) => {

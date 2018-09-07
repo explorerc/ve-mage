@@ -19,8 +19,6 @@
           <div class="block" v-if="limit === 'NONE'? true : false">
             <div class="title clearfix">
               <p class='block-tips'>欢迎消息</p>
-              <!-- <el-button :disabled='btnStatus.BEFORE_ORDER.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_ORDER'} }">添加短信</router-link></el-button>
-              <el-button :disabled='btnStatus.BEFORE_ORDER.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_ORDER'} }">添加微信</router-link></el-button> -->
             </div>
             <div class="item-box">
 
@@ -39,7 +37,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_ORDER'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_ORDER']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -67,7 +65,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_ORDER'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_ORDER']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -86,8 +84,6 @@
           <div class="block" v-else>
             <div class="title clearfix">
               <p class='block-tips'>欢迎消息</p>
-              <!-- <el-button :disabled='btnStatus.BEFORE_APPLY.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_APPLY'} }">添加短信</router-link></el-button>
-              <el-button :disabled='btnStatus.BEFORE_APPLY.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_APPLY'} }">添加微信</router-link></el-button> -->
             </div>
             <div class="item-box">
 
@@ -106,7 +102,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_APPLY'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_APPLY']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -134,7 +130,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_APPLY'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_APPLY']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -153,8 +149,6 @@
           <div class="block">
             <div class="title clearfix">
               <p class='block-tips'>开播前{{hourValue}}小时 <span>提醒用户活动即将开始，做好参加准备</span></p>
-              <!-- <el-button :disabled='btnStatus.BEFORE_HOUR.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'BEFORE_HOUR'} }">添加短信</router-link></el-button>
-              <el-button :disabled='btnStatus.BEFORE_HOUR.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'BEFORE_HOUR'} }">添加微信</router-link></el-button> -->
               <el-button class='primary-button edit-time' @click='firstSel = true'>编辑提醒时间</el-button>
               <div class="seltime-modal" v-if='firstSel'>
                 <div class="title">修改时间：<i class='close'  @click='resetCountDown("hour")'></i></div>
@@ -188,11 +182,11 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_HOUR'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_HOUR']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
-                    v-model="itemList['BEFORE_HOUR']['sms']"
+                    v-model="itemList['BEFORE_HOUR']['SMS']['switch']"
                     inactive-color="#DEE1FF"
                     :width="32"
                     active-color="#FFD021" @change="itemSwitch($event,'BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'], itemList['BEFORE_HOUR']['SMS']['templateId'])">
@@ -216,11 +210,11 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_HOUR'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_HOUR']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
-                    v-model="itemList['BEFORE_HOUR']['wx']"
+                    v-model="itemList['BEFORE_HOUR']['WECHAT']['switch']"
                     inactive-color="#DEE1FF"
                     :width="32"
                     active-color="#FFD021" @change="itemSwitch($event,'BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'], itemList['BEFORE_HOUR']['WECHAT']['templateId'])">
@@ -266,7 +260,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_MINUTE'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_MINUTE']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -294,7 +288,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'BEFORE_MINUTE'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_MINUTE']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -310,13 +304,11 @@
             </div>
           </div>
         </div>
-        <p class='step live'>直播阶段</p>
+        <!-- <p class='step live'>直播阶段</p>
         <div class="detail">
           <div class="block">
             <div class="title clearfix">
               <p class='block-tips'>订阅直播成功消息 <span>观众订阅企业活动信息成功后立即发送</span></p>
-              <!-- <el-button :disabled='btnStatus.SUBSCRIBE.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'SUBSCRIBE'} }">添加短信</router-link></el-button>
-              <el-button :disabled='btnStatus.SUBSCRIBE.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'SUBSCRIBE'} }">添加微信</router-link></el-button> -->
             </div>
             <div class="item-box">
 
@@ -335,7 +327,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'SUBSCRIBE'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_APPLY']['SMS']['templateId']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -363,7 +355,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'SUBSCRIBE'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['BEFORE_APPLY']['SMS']['templateId']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -378,14 +370,12 @@
 
             </div>
           </div>
-        </div>
+        </div> -->
         <p class='step record'>回放阶段</p>
         <div class="detail">
           <div class="block">
             <div class="title clearfix">
               <p class='block-tips'>回放设置成功消息 <span>针对未参加活动的用户发送回放消息</span></p>
-              <!-- <el-button :disabled='btnStatus.REPLAY.SMS' size="medium"><router-link :to="{ name:'autoEditmsg' ,query:{'timing':'REPLAY'} }">添加短信</router-link></el-button>
-              <el-button :disabled='btnStatus.REPLAY.WECHAT' size="medium"><router-link :to="{ name:'autoEditwx' ,query:{'timing':'REPLAY'} }">添加微信</router-link></el-button> -->
             </div>
             <div class="item-box">
 
@@ -404,7 +394,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'REPLAY'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['REPLAY']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -432,7 +422,7 @@
                   :firstCount="tplData.firstCount"
                   :triggerType="'REPLAY'"
                   ></com-tpl>
-                  <em>自动发送</em>
+                  <em>{{itemList['REPLAY']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
                   <el-switch
@@ -453,12 +443,12 @@
     <!-- 测试发送弹窗 -->
     <com-test  v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest()' :type="testType"  :isAuto='true' :noticeId="noticeTaskId"></com-test>
 
-    <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
+    <!-- <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
       <div class="del-footer" slot="footer">
         <com-button @click='delConfirm = false'>取消</com-button>
         <com-button type="primary" @click="deleteTask">确定</com-button>
       </div>
-    </com-dialog>
+    </com-dialog> -->
   </div>
 </template>
 
@@ -475,7 +465,6 @@ export default {
       limit: 'NONE',
       testModal: false,
       titleValue: '',
-      delConfirm: false,
       firstSel: false,
       secondSel: false,
       hourOptions: [{
@@ -539,72 +528,84 @@ export default {
           'SMS': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 1
+            'templateId': 1,
+            'status': '未启用'
           },
           'WECHAT': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 1
+            'templateId': 1,
+            'status': '未启用'
           }
         },
         'BEFORE_APPLY': {
           'SMS': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 2
+            'templateId': 2,
+            'status': '未启用'
           },
           'WECHAT': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 2
+            'templateId': 2,
+            'status': '未启用'
           }
         },
         'BEFORE_HOUR': {
           'SMS': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 3
+            'templateId': 3,
+            'status': '未启用'
           },
           'WECHAT': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 3
+            'templateId': 3,
+            'status': '未启用'
           }
         },
         'BEFORE_MINUTE': {
           'SMS': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 3
+            'templateId': 3,
+            'status': '未启用'
           },
           'WECHAT': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 3
+            'templateId': 3,
+            'status': '未启用'
           }
         },
         'SUBSCRIBE': {
           'SMS': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 4
+            'templateId': 4,
+            'status': '未启用'
           },
           'WECHAT': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 4
+            'templateId': 4,
+            'status': '未启用'
           }
         },
         'REPLAY': {
           'SMS': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 5
+            'templateId': 5,
+            'status': '未启用'
           },
           'WECHAT': {
             'switch': false,
             'noticeTaskId': 0,
-            'templateId': 5
+            'templateId': 5,
+            'status': '未启用'
           }
         }
       }
@@ -661,61 +662,89 @@ export default {
                 if (item.type === 'SMS') {
                   this.itemList['BEFORE_ORDER']['SMS']['switch'] = true
                   this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_ORDER']['SMS']['status'] = status
                 }
                 if (item.type === 'WECHAT') {
                   this.itemList['BEFORE_ORDER']['WECHAT']['switch'] = true
                   this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_ORDER']['WECHAT']['status'] = status
                 }
                 break
               case 'BEFORE_APPLY':
                 this.renderData['BEFORE_APPLY'].push(item)
                 if (item.type === 'SMS') {
                   this.itemList['BEFORE_APPLY']['SMS']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  this.itemList['BEFORE_APPLY']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_APPLY']['SMS']['status'] = status
                 }
                 if (item.type === 'WECHAT') {
                   this.itemList['BEFORE_APPLY']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  this.itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_APPLY']['SMS']['status'] = status
                 }
                 break
               case 'BEFORE_HOUR':
                 this.renderData['BEFORE_HOUR'].push(item)
                 if (item.type === 'SMS') {
                   this.itemList['BEFORE_HOUR']['SMS']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  this.itemList['BEFORE_HOUR']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_HOUR']['SMS']['status'] = status
                 }
                 if (item.type === 'WECHAT') {
                   this.itemList['BEFORE_HOUR']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  this.itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_HOUR']['WECHAT']['status'] = status
                 }
                 break
               case 'BEFORE_MINUTE':
                 this.renderData['BEFORE_MINUTE'].push(item)
                 if (item.type === 'SMS') {
                   this.itemList['BEFORE_MINUTE']['SMS']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  this.itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_MINUTE']['SMS']['status'] = status
                 }
                 if (item.type === 'WECHAT') {
                   this.itemList['BEFORE_MINUTE']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  this.itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['BEFORE_MINUTE']['WECHAT']['status'] = status
                 }
                 break
               case 'SUBSCRIBE':
                 this.renderData['SUBSCRIBE'].push(item)
                 if (item.type === 'SMS') {
                   this.itemList['SUBSCRIBE']['SMS']['switch'] = true
+                  this.itemList['SUBSCRIBE']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['SUBSCRIBE']['SMS']['status'] = status
                 }
                 if (item.type === 'WECHAT') {
                   this.itemList['SUBSCRIBE']['WECHAT']['switch'] = true
+                  this.itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['SUBSCRIBE']['WECHAT']['status'] = status
                 }
                 break
               case 'REPLAY':
                 this.renderData['REPLAY'].push(item)
                 if (item.type === 'SMS') {
                   this.itemList['REPLAY']['SMS']['switch'] = true
+                  this.itemList['REPLAY']['SMS']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['REPLAY']['SMS']['status'] = status
                 }
                 if (item.type === 'WECHAT') {
                   this.itemList['REPLAY']['WECHAT']['switch'] = true
+                  this.itemList['REPLAY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                  const status = this.getStatus(item.status)
+                  this.itemList['REPLAY']['WECHAT']['status'] = status
                 }
                 break
             }
@@ -724,6 +753,27 @@ export default {
       }).catch((e) => {
         console.log(e)
       })
+    },
+    getStatus (status) {
+      let str = ''
+      switch (status) {
+        case 'AWAIT':
+          str = '等待发送'
+          break
+        case 'EXEC':
+          str = '自动执行中'
+          break
+        case 'OVERDUE':
+          str = '已过期'
+          break
+        case 'COMPLETE':
+          str = '成功发送'
+          break
+        default:
+          str = '未启用'
+          break
+      }
+      return str
     },
     findCountdown () {
       http.autoFindconfig(this.activityId).then((res) => {
@@ -885,7 +935,7 @@ export default {
     .time-line {
       position: relative;
       width: 40px;
-      height: 1180px;
+      height: 870px;
       margin-right: 15px;
       &:before {
         content: '';
