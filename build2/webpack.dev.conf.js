@@ -12,10 +12,10 @@ module.exports = {
       errors: true
     },
     historyApiFallback: true,
-    compress: config.compress,
-    host: config.host,
-    open: config.autoOpen,
-    port: config.port,
+    compress: config.local.compress,
+    host: config.local.host,
+    open: config.local.autoOpen,
+    port: config.local.port,
     proxy: config.local.proxyTable
   },
   plugins: [

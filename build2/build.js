@@ -6,7 +6,6 @@ const chalk = require('chalk')
 const spinner = ora('building for ' + process.env.BUILD_ENV + '...')
 spinner.start()
 const config = webpackConfig()
-console.log(config.module.rules[3])
 webpack(config, (err, stats) => {
   spinner.stop()
   if (err) throw err

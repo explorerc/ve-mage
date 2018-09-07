@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const config = require('./config')
@@ -17,6 +18,7 @@ module.exports = {
     chunkFilename: subPath('js/[name].[chunkhash:8].js')
   },
   plugins: [
+    new webpack.NamedModulesPlugin(),
     new MiniCssExtractPlugin({
       filename: subPath('css/[name].css'),
       chunkFilename: subPath('css/[name].[contenthash:5].css')

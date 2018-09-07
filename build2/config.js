@@ -1,5 +1,5 @@
 const config = {
-  buildDetail: false,
+  buildDetail: true,
   local: {
     BUILD_ENV: 'local',
     API_PATH: '/api',
@@ -7,7 +7,7 @@ const config = {
     PUBLIC_PATH: '/',
     IMGHOST: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com',
     compress: true,
-    host: true,
+    host: 'localhost',
     autoOpen: true,
     port: 2333,
     proxyTable: {

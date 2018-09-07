@@ -225,7 +225,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '~assets/css/variable';
+@import 'assets/css/variable.scss';
 .from-box {
   margin: 20px;
   .from-row {

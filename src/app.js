@@ -1,12 +1,8 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex from 'vuex'
-
 import App from './app.vue'
-import createStore from './store'
-import createRouter from './router'
+import store from './store'
+import router from './router'
 import './utils/extend'
-
 import 'assets/css/index.scss'
 import 'assets/fonts/iconfont.scss'
 
@@ -21,8 +17,6 @@ import Button from './components/common/button'
 import Tabs from './components/common/tabs'
 import PlayVideo from './components/common/play-video'
 
-Vue.use(VueRouter)
-Vue.use(Vuex)
 Vue.use(Notification)
 Vue.use(Input)
 Vue.use(MessageBox)
@@ -43,19 +37,9 @@ Vue.filter('isEmpty', function (value, replaceStr) {
   return value || replaceStr
 })
 
-export default () => {
-  const router = createRouter()
-  const store = createStore()
-
-  const app = new Vue({
-    router,
-    store,
-    render: h => h(App)
-  })
-
-  return {
-    app,
-    router,
-    store
-  }
-}
+new Vue({
+  el: '#root',
+  router,
+  store,
+  render: h => h(App)
+})

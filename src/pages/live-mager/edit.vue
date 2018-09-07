@@ -219,8 +219,8 @@
 </script>
 
 <style lang='scss' scoped>
-@import '~assets/css/variable';
-@import '~assets/css/mixin.scss';
+@import 'assets/css/variable.scss';
+@import 'assets/css/mixin.scss';
 
 .edit-page {
   border-radius: 5px;

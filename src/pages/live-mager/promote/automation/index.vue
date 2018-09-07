@@ -552,7 +552,7 @@ export default {
 </script>
 
 <style lang='scss'>
-@import '~assets/css/variable';
+@import 'assets/css/variable.scss';
 .content {
   padding: 50px;
   .preview > p {
