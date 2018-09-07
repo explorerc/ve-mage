@@ -25,7 +25,7 @@ const webpackConfig = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? '' : 'source-map',
   entry: {
-    index: resolve('src/index.js')
+    index: resolve('src/app.js')
   },
   output: {
     filename: subPath('js/[name].[hash:8].js'),
@@ -34,20 +34,11 @@ const webpackConfig = {
   },
   externals: {
     'vue': 'Vue',
-    'vue-router': 'VueRouter',
-    'vuex': 'Vuex',
     'element-ui': 'ELEMENT',
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
-    modules: [
-      resolve('src'),
-      resolve('node_modules')
-    ],
     alias: {
-      // 'vue': 'vue/dist/vue.runtime.min.js',
-      // 'vue-router': 'vue-router/dist/vue-router.min.js',
-      // 'vuex': 'vuex/dist/vuex.min.js',
       'src': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
@@ -66,20 +57,12 @@ const webpackConfig = {
         test: /\.vue$/,
         loader: 'vue-loader',
         include: resolve('src')
-        // exclude: /node_modules/
       },
       {
         test: /\.js[x]?$/,
-        // loader: 'babel-loader',
         loader: 'happypack/loader?id=happy-babel-js',
         include: resolve('src')
       },
-      // {
-      //     test: /\.js$/,
-      //     loader: 'babel-loader',
-      //     include: resolve('src'),
-      //     exclude: /node_modules/
-      // },
       {
         test: /.(png|jpg|gif)$/,
         use: [{
@@ -117,18 +100,18 @@ const webpackConfig = {
   },
   optimization: {
     splitChunks: {
-      chunks: "initial",
       cacheGroups: {
-        vendor: {
-          test: /node_modules\//,
-          name: "vendor",
-          priority: 10
+        common: {
+          name: 'common',
+          chunks: 'async',
+          minChunks: 2,
+          minSize: 0
         },
-        commons: {
-          name: "common",
-          test: /src\//,
-          minChunks: 1,
-          minSize: 30000
+        vender: {
+          name: 'vendor',
+          test: resolve('node_modules'),
+          chunks: 'all',
+          priority: 10
         }
       }
     },

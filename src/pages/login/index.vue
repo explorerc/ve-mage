@@ -341,7 +341,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 .login-container /deep/ {
   height: 100%;
   min-height: 660px;

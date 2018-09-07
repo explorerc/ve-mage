@@ -209,7 +209,7 @@
 </script>
 
 <style lang='scss' scoped>
-@import '~assets/css/variable';
+@import 'assets/css/variable.scss';
 .group {
   span {
     display: inline-block;

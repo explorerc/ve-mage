@@ -97,7 +97,7 @@
   }
 </script>
 <style lang="scss" scoped>
-@import '~assets/css/variable.scss';
+@import 'assets/css/variable.scss';
 .setpsd-container /deep/ {
   width: 100%;
   height: 100%;

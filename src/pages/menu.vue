@@ -256,6 +256,9 @@ export default {
   }
 
   .mark-menu {
+    li {
+      cursor: pointer;
+    }
     padding-top: 10px;
     border-right: 0;
     &.el-menu--collapse {

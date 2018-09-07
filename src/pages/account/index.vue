@@ -788,7 +788,7 @@
   }
 </script>
 <style lang="scss" scoped>
-@import '~assets/css/variable.scss';
+@import 'assets/css/variable.scss';
 .account-container /deep/ {
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
