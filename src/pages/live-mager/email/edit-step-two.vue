@@ -105,42 +105,23 @@
             </div>
             <div class="select-person-box">
               <ul>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
-                </li>
-                <li>
-                  互联网客户 (460人）
+                <li
+                  v-for="(person,idx) in personList"
+                  @click.stop="clickRow(idx)"
+                  :class="{active:person.isChecked}"
+                  :key="person.id">
+                  {{person.name}} ({{person.count}}人）
+                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
                 </li>
               </ul>
             </div>
           </div>
         </div>
         <div slot="bottom" class="select-bottom">
-          <span>已选择234人：研发中心 (87人)，研发中心(87人)</span>
+          <span class="select-all fl">已选择{{selectedCount}}人：</span>
+          <div class="select-list fl">
+            <span v-for="selectItem in selectedPersonList">{{selectItem.name}} ({{selectItem.count}}人）、</span>
+          </div>
           <button class="primary-button">确定</button>
         </div>
       </message-box>
@@ -168,6 +149,9 @@
         selectPersonShow: false,
         sendType: 'AUTO',
         searchPerson: '',
+        personList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedCount: 0,
         errorMsg: {
           title: '',
           content: '',
@@ -202,7 +186,22 @@
           this.clearError()
         },
         deep: true
+      },
+      personList: {
+        handler (newArray) {
+          let temArray = []
+          newArray.forEach((item) => {
+            if (!item.isChecked) return
+            temArray.push(item)
+            this.selectedCount += item.count
+          })
+          this.selectedPersonList = temArray
+        },
+        deep: true
       }
+    },
+    created () {
+      this.queryPersonList()
     },
     methods: {
       ...mapMutations('liveMager', {
@@ -235,11 +234,32 @@
         }
       },
       searchEnter () {
+        this.queryPersonList()
       },
       handleSelectPerson (e) {
         if (e.action === 'cancel') {
           this.selectPersonShow = false
         }
+      },
+      clickRow (idx) {
+        this.personList[idx].isChecked = !this.personList[idx].isChecked
+      },
+      queryPersonList () {
+        LiveHttp.queryPersonList({
+          activityId: this.$route.params.id,
+          name: this.searchPerson
+        }).then((res) => {
+          let temArray = []
+          res.data.forEach((item) => {
+            temArray.push({
+              id: item.id,
+              name: item.name,
+              count: 0,
+              isChecked: false
+            })
+          })
+          this.personList = temArray
+        })
       },
       saveEmail () {
         LiveHttp.saveEmailInfo(this.email).then((res) => {

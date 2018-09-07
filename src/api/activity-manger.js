@@ -427,6 +427,20 @@ const ActivityManger = {
       url: '/expand/notice/test-send',
       params: data
     })
+  },
+  /***
+   * 查询观众组
+   * @param data
+   * @returns {*}
+   */
+  queryPersonList (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/common/group/get-group',
+      params: {
+        inviteId: data
+      }
+    })
   }
 }
 export default ActivityManger
