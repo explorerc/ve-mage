@@ -37,7 +37,7 @@ const Email = () =>
   import('src/pages/live-mager/email/index')
 /* 邮件邀约--添加，编辑 */
 const EmailEditOne = () =>
-  import('src/pages/live-mager/email/edit-step-two')
+  import('src/pages/live-mager/email/edit-step-one')
 const EmailEditTwo = () =>
   import('src/pages/live-mager/email/edit-step-two')
 /* 邮件邀约--查看 */

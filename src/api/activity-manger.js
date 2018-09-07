@@ -441,6 +441,18 @@ const ActivityManger = {
         inviteId: data
       }
     })
+  },
+  /***
+   * 查询测试邮件限额
+   * @param data
+   * @returns {*}
+   */
+  queryTestEmailInfo (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/common/message/limit-num',
+      params: data
+    })
   }
 }
 export default ActivityManger
