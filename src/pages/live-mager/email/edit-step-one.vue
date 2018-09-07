@@ -139,7 +139,6 @@
         })
       },
       emailHandleClick (e) {
-        console.log(e)
         if (e.action === 'cancel') {
           this.testEmailShow = false
         }
