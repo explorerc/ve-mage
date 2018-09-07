@@ -41,16 +41,9 @@
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
               </div>
               <div class="edit-groups">
-                <div class="edit-groups-item">
-                  <span>分组1</span>
-                  <span>查看</span>
-                  <span>删除</span>
-                </div>
-                <div class="edit-groups-item">
-                  <span>分组2</span>
-                  <span>查看</span>
-                  <span>删除</span>
-                </div>
+                <span v-for="(person,idx) in selectedPersonList">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
+                </span>
               </div>
             </div>
           </div>
@@ -122,7 +115,7 @@
           <div class="select-list fl">
             <span v-for="selectItem in selectedPersonList">{{selectItem.name}} ({{selectItem.count}}人）、</span>
           </div>
-          <button class="primary-button">确定</button>
+          <button class="primary-button" @click="okSelectList">确定</button>
         </div>
       </message-box>
     </div>
@@ -233,17 +226,29 @@
           this.errorMsg.content = ''
         }
       },
+      /* enter搜索 */
       searchEnter () {
         this.queryPersonList()
       },
+      /* 点击确定 */
+      okSelectList () {
+        this.selectPersonShow = false
+      },
+      /* 点击取消 */
       handleSelectPerson (e) {
         if (e.action === 'cancel') {
           this.selectPersonShow = false
         }
       },
+      /* 选中行 */
       clickRow (idx) {
         this.personList[idx].isChecked = !this.personList[idx].isChecked
       },
+      /* 删除标签 */
+      delPerson (idx) {
+        this.personList.splice(idx, 1)
+      },
+      /* 查询人员 */
       queryPersonList () {
         LiveHttp.queryPersonList({
           activityId: this.$route.params.id,
@@ -427,29 +432,20 @@
       line-height: 40px;
     }
     .edit-groups {
-      margin-top: 40px;
-      .edit-groups-item {
-        margin: 10px 0;
-        line-height: 30px;
-        span {
-          display: inline-block;
-          text-align: center;
-          &:nth-child(1) {
-            width: 200px;
-            border: solid 1px #e5e5e5;
-          }
-          &:nth-child(2) {
-            margin: 0 0 0 20px;
-            padding: 0 5px;
+      margin-top: 15px;
+      width: 500px;
+      span {
+        display: inline-block;
+        background-color: #F0F1FE;
+        border-radius: 17px;
+        padding: 8px 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        i {
+          color: #4B5AFE;
+          &:hover {
             cursor: pointer;
-          }
-          &:nth-child(3) {
-            padding: 0 5px;
-            cursor: pointer;
-          }
-          &:nth-child(2):hover,
-          &:nth-child(3):hover {
-            color: #2878ff;
+            opacity: .8;
           }
         }
       }
