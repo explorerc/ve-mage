@@ -38,7 +38,7 @@
           <i class="iconfont icon-duihao" v-if="step === 'newPhone'"></i> {{messageBoxExplain}}
         </p>
         <com-input v-if="isOldphone" :value.sync="phone" :placeholder="'输入原有注册手机号'" class="v-input" type="input" :max-length="11"></com-input>
-        <com-input v-if="!isOldphone" :value.sync="newPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11"></com-input>
+        <com-input v-if="!isOldphone" :value.sync="saveNewPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11"></com-input>
         <div id="captcha"  :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6"></com-input>
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
@@ -138,6 +138,7 @@
         phone: '',
         isOldphone: true,
         newPhone: '',
+        saveNewPhone: '',
         token: '',
         codeToken: '',
         phoneStatus: false,
@@ -240,6 +241,9 @@
       },
       newPhone: function () {
         this.checkPhone(this.newPhone)
+      },
+      saveNewPhone: function () {
+        this.checkPhone(this.saveNewPhone)
       },
       phoneStatus: function (val) {
         this.isGetCodePermission()
@@ -598,18 +602,18 @@
                 }
               })
             } else if (this.step === 'newPhone') {
-              if (!this.newPhone) {
+              if (!this.saveNewPhone) {
                 return false
               }
               let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-              if (!reg.test(parseInt(this.newPhone))) {
+              if (!reg.test(parseInt(this.saveNewPhone))) {
                 return false
               }
               if (!this.phoneCode) {
                 return false
               }
               let data = {
-                mobile: this.newPhone,
+                mobile: this.saveNewPhone,
                 codeToken: this.token,
                 code: this.phoneCode
               }
@@ -619,12 +623,14 @@
                   this.phone = ''
                   this.step = 'phoneSuccess'
                   this.confirmText = '完成'
-                  this.accountPhone = this.newPhone
+                  this.accountPhone = this.saveNewPhone
                   let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
                   if (accountInfo) {
-                    accountInfo.accountPhone = this.newPhone
+                    accountInfo.accountPhone = this.saveNewPhone
                     sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
                   }
+                  this.newPhone = this.saveNewPhone
+                  this.saveNewPhone = ''
                 }
               })
             } else if (this.step === 'phoneSuccess') {
@@ -716,7 +722,7 @@
           }
         } else {
           data = {
-            'mobile': this.newPhone,
+            'mobile': this.saveNewPhone,
             'type': 'BUSINESS_USER_UPDATE_MOBILE',
             captcha: this.phoneKey
           }
