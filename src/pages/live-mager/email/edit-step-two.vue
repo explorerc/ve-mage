@@ -112,8 +112,8 @@
         </div>
         <div slot="bottom" class="select-bottom">
           <span class="select-all fl">已选择{{selectedCount}}人：</span>
-          <div class="select-list fl">
-            <span v-for="selectItem in selectedPersonList">{{selectItem.name}} ({{selectItem.count}}人）、</span>
+          <div class="select-list fl" :title="selectedPersonListStr">
+            {{selectedPersonListStr}}
           </div>
           <button class="primary-button" @click="okSelectList">确定</button>
         </div>
@@ -144,6 +144,7 @@
         searchPerson: '',
         personList: [{id: '', name: '', count: 0, isChecked: false}],
         selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonListStr: '',
         selectedCount: 0,
         errorMsg: {
           title: '',
@@ -183,11 +184,18 @@
       personList: {
         handler (newArray) {
           let temArray = []
-          newArray.forEach((item) => {
+          let listStr = ''
+          newArray.forEach((item, idx) => {
             if (!item.isChecked) return
             temArray.push(item)
             this.selectedCount += item.count
+            if (idx === newArray.length - 1) {
+              listStr += `${item.name} (${item.count}人）`
+            } else {
+              listStr += `${item.name} (${item.count}人）、`
+            }
           })
+          this.selectedPersonListStr = listStr
           this.selectedPersonList = temArray
         },
         deep: true
