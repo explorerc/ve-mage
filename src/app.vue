@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import EventBus from 'src/utils/eventBus'
 export default {
-
+  created () {
+    EventBus.$on('auth', () => {
+      this.$router.replace('/login')
+    })
+  }
 }
 </script>
 

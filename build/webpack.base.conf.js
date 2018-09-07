@@ -25,7 +25,7 @@ const webpackConfig = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? '' : 'source-map',
   entry: {
-    index: resolve('src/index.js')
+    index: resolve('src/app.js')
   },
   output: {
     filename: subPath('js/[name].[hash:8].js'),
@@ -38,10 +38,6 @@ const webpackConfig = {
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
-    modules: [
-      resolve('src'),
-      resolve('node_modules')
-    ],
     alias: {
       'src': resolve('src'),
       'assets': resolve('src/assets'),
