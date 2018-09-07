@@ -4,8 +4,7 @@
       "targets": {
         "browsers": ["> 5%", "last 5 versions", "not ie <= 8", "safari >= 7"]
       },
-      "modules": false,
-      "loose": true
+      "modules": false
     }],
     "stage-2"
   ],
