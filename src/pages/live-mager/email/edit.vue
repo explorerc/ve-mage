@@ -2,7 +2,7 @@
   <div class="live-mager">
     <div class="live-title">
       <span class="title">邮件处理</span>
-      <button class="primary-button fr" @click="goBack">返回</button>
+      <!--<button class="primary-button fr" @click="goBack">返回</button>-->
     </div>
     <transition name="fade" mode="out-in">
       <keep-alive>

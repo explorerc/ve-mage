@@ -8,6 +8,7 @@
   width: 1366px;
   min-width: 1019px;
   color: #222;
+  transition: width .2s;
   /* 设备宽度大于 1600 */
   @media all and (min-width:1600px) {
     width: 1366px;
@@ -81,7 +82,7 @@
   }
   .page-pagination {
     margin: 30px 10px 20px 0;
-    float: right;
+    text-align: center;
   }
   .mager-box{
     font-size: 14px;
@@ -94,6 +95,7 @@
           width: 180px;
           text-align: right;
           padding-right: 20px;
+          color: #555;
           .star{
             position: relative;
             top: 3px;
@@ -151,8 +153,50 @@
     }
   }
   .table-list-box{
-    padding: 10px 20px 50px 20px;
+    margin-top: 20px;
+    padding: 20px 20px 50px 20px;
     background-color: #fff;
     border-radius: 4px;
+    .table-handler{
+      display: inline-block;
+      span{
+        position: relative;
+        display: inline-block;
+        margin: 10px;
+        font-size: 14px;
+        &:hover{
+          cursor: pointer;
+          color: #818CFE;
+        }
+        &:after{
+          position: absolute;
+          top: 4px;
+          right: -12px;
+          display: block;
+          content: '';
+          width: 1px;
+          height: 14px;
+          background-color: #e5e5e5;
+        }
+        &:first-child{
+          margin-left: 0;
+        }
+        &:last-child{
+          &:after{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .tip-box{
+    height: 50px;
+    line-height: 50px;
+    border: solid 1px #818CFE;
+    background-color: #E9EBFF;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    color: $color-font;
   }
 }

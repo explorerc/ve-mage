@@ -337,19 +337,21 @@ const ActivityManger = {
   //   })
   // },
   // 获取微信测试限制数量
-  wxLimit () {
-    return utils.ajax({
-      method: 'post',
-      url: '/expand/wechat-invite/limit-num',
-      params: ''
-    })
-  },
+  // wxLimit () {
+  //   return utils.ajax({
+  //     method: 'post',
+  //     url: '/expand/wechat-invite/limit-num',
+  //     params: ''
+  //   })
+  // },
   // 获取短信测试限制数量
-  msgLimit () {
+  msgLimit (type) {
     return utils.ajax({
       method: 'post',
-      url: '/expand/sms-invite/limit-num',
-      params: ''
+      url: '/common/message/limit-num',
+      params: {
+        type: type
+      }
     })
   },
   // 自动化通知获取模板变量
@@ -416,6 +418,14 @@ const ActivityManger = {
       params: {
         noticeTaskId: id
       }
+    })
+  },
+  // 自动化通知发送测试短信
+  autoSendtest (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/expand/notice/test-send',
+      params: data
     })
   }
 }

@@ -73,7 +73,7 @@
         type: String,
         default: '300px'
       },
-      type: {
+      type: { // prompt , error
         type: String,
         default: ''
       }
@@ -134,7 +134,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: .7;
     background: #000;
   }
   .ve-message-box {

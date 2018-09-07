@@ -38,11 +38,16 @@ const setLiveGuided = () =>
 const Email = () =>
   import('src/pages/live-mager/email/index')
 /* 邮件邀约--添加，编辑 */
-const EmailEdit = () =>
-  import('src/pages/live-mager/email/edit')
+const EmailEditOne = () =>
+  import('src/pages/live-mager/email/edit-step-one')
+const EmailEditTwo = () =>
+  import('src/pages/live-mager/email/edit-step-two')
 /* 邮件邀约--查看 */
 const EmailInfo = () =>
   import('src/pages/live-mager/email/info')
+/* 邮件邀约--退订 */
+const ExitEmail = () =>
+  import('src/pages/live-mager/email/exit-email')
 
 /* 创建 编辑 活动 */
 const edit = () =>
@@ -123,6 +128,18 @@ export default [{
   name: 'SiteTemplate2',
   component: SiteTemplate2
 }, {
+  path: '/liveMager/emailEditOne/:id',
+  name: 'emailEditOne',
+  component: EmailEditOne
+}, {
+  path: '/liveMager/emailEditTwo/:id',
+  name: 'emailEditTwo',
+  component: EmailEditTwo
+}, {
+  path: '/exitEmail',
+  name: 'exitEmail',
+  component: ExitEmail
+}, {
   path: '/',
   name: 'Layout',
   component: Layout,
@@ -132,7 +149,7 @@ export default [{
     name: 'Site',
     component: Site
   }, {
-    path: '/liveMager',
+    path: '/liveMager/list',
     name: 'liveMager',
     component: LiveMager
   },
@@ -210,11 +227,6 @@ export default [{
     path: '/liveMager/email/:id',
     name: 'email',
     component: Email
-  },
-  {
-    path: '/liveMager/emailEdit/:id',
-    name: 'emailEdit',
-    component: EmailEdit
   },
   {
     path: '/liveMager/emailInfo/:id',

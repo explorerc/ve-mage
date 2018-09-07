@@ -1,7 +1,7 @@
 <!--新建/编辑活动-->
 <template>
   <div>
-    <div class='edit-page' v-if='!createdSuccess'>
+    <div class='edit-page live-mager' v-if='!createdSuccess'>
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
@@ -227,8 +227,6 @@
   overflow: hidden;
   padding-bottom: 30px;
   margin: 0 auto;
-  width: 1366px;
-  min-width: 1019px;
   color: #222;
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
@@ -247,7 +245,7 @@
     }
   }
   .tips {
-    width: 1020px;
+    width: 100%;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -271,7 +269,7 @@
     }
     font-size: 14px;
     padding: 40px 80px;
-    width: 1020px;
+    width: 100%;
     // height: 860px;
     background: rgba(255, 255, 255, 1);
     border-radius: 4px;

@@ -242,7 +242,7 @@
       </div>
     </div>
     <!-- 测试发送弹窗 -->
-    <com-test :limitCount='limitCount' v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest' :type="testType" ></com-test>
+    <com-test  v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest' :type="testType"  :isAuto='true' :noticeId="noticeTaskId"></com-test>
 
     <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
       <div class="del-footer" slot="footer">
@@ -349,8 +349,8 @@ export default {
       testWechat: false,
       testMsg: false,
       testType: '',
-      limitCount: '10',
-      qrImgurl: ''
+      qrImgurl: '',
+      noticeTaskId: ''
     }
   },
   created () {
@@ -532,10 +532,10 @@ export default {
     },
     testSend (res, idx) {
       this.testModal = true
-      // this.noticeId = idx http://domain/expand/notice/test-send-qr?noticeTaskId
       this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
       this.$nextTick(() => {
         this.testType = res
+        this.noticeTaskId = idx.toString()
       })
     },
     closeTest () {
