@@ -1,50 +1,103 @@
 <template>
-  <div class="content">
-    <div class="from-box">
-      <div class="from-row">
-        <div class="from-title">短信标题：</div>
-        <div class="from-content">
-          {{title}}
+  <!-- <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
+    <div class="overview-wx-page live-mager">
+      <div class="from-box">
+        <div class="from-row">
+          <div class="from-title">短信标题：</div>
+          <div class="from-content">
+            {{title}}
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">收件人：</div>
+          <div class="from-content">
+            {{group}}
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">发送状态：</div>
+          <div class="from-content">
+            <span v-if="status === 'SEND'">已发送</span>
+            <span v-if="status === 'AWAIT'">已定时</span>
+            <span v-if="status === 'DRAFT'">草稿</span>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">发送时间：</div>
+          <div class="from-content">
+            {{date}}
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title"></div>
+          <div class="from-content">
+            <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
+            <el-button v-if="status !== 'SEND'">
+              <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link>
+            </el-button>
+            <el-button v-if="status === 'SEND'" disabled>已发送</el-button>
+            <el-button @click='sendNow' v-else>立即发送</el-button>
+          </div>
         </div>
       </div>
-      <div class="from-row">
-        <div class="from-title">收件人：</div>
-        <div class="from-content">
-          {{group}}
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title">发送状态：</div>
-        <div class="from-content">
-          <span v-if="status === 'SEND'">已发送</span>
-          <span v-if="status === 'AWAIT'">已定时</span>
-          <span v-if="status === 'DRAFT'">草稿</span>
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title">发送时间：</div>
-        <div class="from-content">
-          {{date}}
-        </div>
-      </div>
-      <div class="from-row">
-        <div class="from-title"></div>
-        <div class="from-content">
-          <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
-          <el-button v-if="status !== 'SEND'">
-            <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link>
-          </el-button>
-          <el-button v-if="status === 'SEND'" disabled>已发送</el-button>
-          <el-button @click='sendNow' v-else>立即发送</el-button>
+      <div class="overview-box">
+        <div class="header">短信</div>
+        <div class="msg-box">
+          <div class="msg-title">
+            <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
+            <div class="footer">短信通知将于{{date}}发送</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="overview-box">
-      <div class="header">短信</div>
-      <div class="msg-box">
-        <div class="msg-title">
-          <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
-          <div class="footer">短信通知将于{{date}}发送</div>
+  </div> -->
+  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
+    <div class="overview-wx-page live-mager">
+      <div class="live-title">
+        <span class="title">微信通知</span>
+      </div>
+      <div class='mager-box border-box'>
+        <div class="from-box">
+          <div class="from-row">
+            <div class="from-title">微信标题：</div>
+            <div class="from-content">
+              {{title}}
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">收件人：</div>
+            <div class="from-content">
+              {{group}}
+              <el-button class='send-detail default-button'>发送详情</el-button>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">发送状态：</div>
+            <div class="from-content">
+              <span v-if="status === 'SEND'" class='SEND'><i></i>已发送</span>
+              <span v-if="status === 'AWAIT'" class='AWAIT'><i></i>已定时</span>
+              <span v-if="status === 'DRAFT'" class='DRAFT'><i></i>草稿</span>
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title">发送时间：</div>
+            <div class="from-content">
+              {{date}}
+            </div>
+          </div>
+          <div class="from-row">
+            <div class="from-title"></div>
+          </div>
+          <!-- 模拟手机预览 -->
+          <com-phone :date='date' :wxContent='msgContent' :webinarTime='date' :msgTag='msgTag'></com-phone>
+        </div>
+        <div class="btn-group">
+          <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->
+          <el-button class='default-button'  v-if="status !== 'SEND'">
+            <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑微信</router-link>
+          </el-button>
+          <el-button class='primary-button' v-if="status === 'SEND'" disabled>已发送</el-button>
+          <el-button class='primary-button' @click='sendNow' v-else>正式发送</el-button>
         </div>
       </div>
     </div>
@@ -54,6 +107,7 @@
 <script>
 import { formatDate } from 'src/assets/js/date'
 import queryHttp from 'src/api/activity-manger'
+import comPhone from '../com-phone'
 export default {
   data () {
     return {
@@ -66,6 +120,7 @@ export default {
       time: '',
       date: '',
       msgTag: '',
+      loading: true,
       msgContent: ''
     }
   },
@@ -78,6 +133,7 @@ export default {
       this.date = res.data.sendTime
       this.msgTag = res.data.signature
       this.msgContent = res.data.desc
+      this.loading = false
     }).catch((e) => {
       console.log(e)
     })
@@ -97,14 +153,79 @@ export default {
         console.log(e)
       })
     }
+  },
+  components: {
+    comPhone
   }
 }
 </script>
 
+<style lang="scss" scoped src="../../css/live.scss">
+</style>
 <style lang='scss' scoped>
-@import 'assets/css/variable.scss';
+@import '~assets/css/mixin.scss';
+.overview-wx-page {
+  position: relative;
+
+  .mager-box {
+    height: 730px;
+  }
+  .from-title {
+    color: $color-font-sub;
+    line-height: 40px;
+  }
+  .from-content {
+    color: $color-font;
+    line-height: 40px;
+    .send-detail {
+      padding: 0px;
+      width: 100px;
+      height: 40px;
+      line-height: 40px;
+      margin-left: 10px;
+    }
+    .SEND {
+      color: #4b5afe;
+      i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url('~assets/image/icon_send.svg') no-repeat;
+        background-size: contain;
+        position: relative;
+        top: 3px;
+        margin-right: 5px;
+      }
+    }
+    .AWAIT {
+      color: #975bd5;
+      i {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background: url('~assets/image/icon_time.svg') no-repeat;
+        background-size: contain;
+        position: relative;
+        top: 3px;
+        margin-right: 5px;
+      }
+    }
+  }
+  .btn-group {
+    display: block;
+    margin: 0 auto;
+    width: 295px;
+    button {
+      padding: 0px;
+      width: 140px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+}
 .from-box {
   margin: 20px;
+  height: 600px;
   .from-row {
     display: flex;
     padding: 10px;
@@ -123,61 +244,6 @@ export default {
       flex: 1;
       .input-box {
         width: 400px;
-      }
-    }
-  }
-}
-
-.overview-box {
-  width: 375px;
-  height: 500px;
-  border: 1px solid #ccc;
-  position: absolute;
-  top: 100px;
-  right: 100px;
-  .header,
-  .footer {
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    background: #000000;
-    color: #fff;
-  }
-  .footer {
-    font-size: 14px;
-    background: #fff;
-    color: #000000;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #ccc;
-  }
-  .msg-box {
-    width: 300px;
-    height: 400px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px auto;
-    position: relative;
-    .msg-title {
-      text-align: left;
-      font-size: 20px;
-      span {
-        display: block;
-        text-align: left;
-        font-size: 14px;
-      }
-    }
-    p {
-      text-align: left;
-      margin: 10px 0px;
-    }
-    p.detal {
-      span {
-        color: #ccc;
-        display: inline-block;
-        text-align: left;
       }
     }
   }

@@ -112,3 +112,13 @@
   align-items: $align-items;
   align-content: $align-content;
 }
+button[disabled] {
+  cursor:not-allowed !important;
+  opacity: 0.5 !important;
+  &:active,&:hover {
+    background-color: transparent;
+    color:$color-font-sub;
+    border-color:$color-font-sub;
+  }
+
+}

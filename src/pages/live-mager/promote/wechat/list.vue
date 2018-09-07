@@ -1,32 +1,35 @@
 <template>
   <div class="content" @click.stop='closeAlltool' v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="form-row">
-      <el-button>
-        <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}">新建</router-link>
-      </el-button>
-      <div class="content">
+    <div class="form-row live-mager wechat-list-page">
+      <div class="live-title">
+        <span class="title">微信通知</span>
+        <div class="right-box">
+          <button class="default-button fr" ><router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}">新建微信</router-link></button>
+        </div>
+      </div>
+      <div class="content table">
         <el-table :data="tableData" stripe style="width: 100%">
-          <el-table-column prop='title' label="微信通知标题" width="200">
+          <el-table-column prop='title' label="微信标题" width="300">
           </el-table-column>
-          <el-table-column prop="templateId" label="发送数量" width="200">
+          <el-table-column prop="sendTime" label="发送时间" width="180">
           </el-table-column>
-          <el-table-column prop="sendTime" label="发送时间" width="200">
+          <el-table-column prop="templateId" label="发送数量" width="150">
           </el-table-column>
-          <el-table-column label="观众分组" width="200" prop='groupId'>
-          </el-table-column>
-          <el-table-column label="状态" width="200" prop="status">
+          <!-- <el-table-column label="观众分组" width="200" prop='groupId'>
+          </el-table-column> -->
+          <el-table-column label="状态" width="180" prop="status">
             <template slot-scope="scope">
-              <span v-if="scope.row.status === 'AWAIT'">等待发送</span>
-              <span v-if="scope.row.status === 'SEND'">已发送</span>
-              <span v-if="scope.row.status === 'DRAFT'">草稿</span>
+              <span v-if="scope.row.status === 'AWAIT'" class='await'>等待发送</span>
+              <span v-if="scope.row.status === 'SEND'" class='send'>已发送</span>
+              <span v-if="scope.row.status === 'DRAFT'" class='draft'>草稿</span>
             </template>
             </el-table-column>
           <el-table-column
             label="操作">
             <template slot-scope="scope">
               <div class="tool-box">
-                <span><router-link :to="{ name:'wechatOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
-                <span @click="del(scope.row.inviteId,scope.$index)">删除</span>
+                <span ><router-link :to="{ name:'wechatOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
+                <span class='del-btn' @click="del(scope.row.inviteId,scope.$index)">删除</span>
                 <!-- <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
                 <div class="tool" v-if='moreIdx == scope.$index ? true : false'>
                   <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
@@ -36,16 +39,17 @@
             </template>
           </el-table-column>
         </el-table>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="block">
-        <el-pagination
-          layout="prev, pager, next"
-          :total="total"
-          :current-page='currPage'
-          :page-count='totalPage' @current-change='currentChange'>
-        </el-pagination>
+        <div class="form-row">
+            <div class="pagination-box">
+              <div class="page-pagination">
+                  <ve-pagination
+                    :total="total"
+                    :pageSize="queryData.pageSize"
+                    :currentPage="currPage"
+                    @changePage="currentChange"/>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
     <!-- 删除确认 -->
@@ -60,13 +64,14 @@
 </template>
 <script>
   import createHttp from 'src/api/activity-manger'
+  import VePagination from 'src/components/ve-pagination'
   export default {
     data () {
       return {
         tableData: [{
           activityId: 82,
           createTime: '2018-08-27 12:34:23',
-          groupId: '1',
+          // groupId: '1',
           inviteId: 3,
           sendTime: '2018-08-27 03:37:56',
           status: 'SEND',
@@ -145,12 +150,39 @@
         this.queryData.page = e
         this.queryList()
       }
+    },
+    components: {
+      VePagination
     }
   }
 </script>
 
+<style lang="scss" scoped src="../../css/live.scss">
+</style>
+<style lang="scss">
+.wechat-list-page.live-mager .live-title {
+  border-bottom: none;
+}
+.wechat-list-page.live-mager .el-table th {
+  padding: 0;
+  height: 60px;
+  line-height: 60px;
+  * {
+    color: #222;
+    font-weight: normal;
+  }
+}
+.wechat-list-page.live-mager .page-pagination {
+  float: inherit;
+}
+</style>
 <style lang='scss' scoped>
-@import 'assets/css/variable.scss';
+@import '~assets/css/mixin.scss';
+.live-title {
+  .right-box {
+    float: right;
+  }
+}
 .from-row {
   display: flex;
   padding: 10px;
@@ -197,6 +229,42 @@
     cursor: pointer;
     &:first-child {
       border: none;
+    }
+  }
+}
+.wechat-list-page {
+  .table {
+    padding: 30px;
+    background: #fff;
+    * {
+      color: $color-font;
+    }
+    .tool-box {
+      position: relative;
+      &:before {
+        content: '';
+        width: 1px;
+        height: 13px;
+        background: #e2e2e2;
+        position: absolute;
+        top: 5px;
+        left: 48px;
+      }
+    }
+    span.await {
+      color: $color-default;
+    }
+    span.draft {
+      color: $color-error;
+    }
+    span.send {
+      color: $color-blue;
+    }
+  }
+  .pagination-box {
+    text-align: center;
+    .el-pagination {
+      margin-top: 54px;
     }
   }
 }
