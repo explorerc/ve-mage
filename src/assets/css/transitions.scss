@@ -65,3 +65,19 @@
   transition: .3s;
 }
 
+/* 列表进入划出动画 */
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+  transition: all .5s;
+}
+.list-move,.list-enter-active, .list-leave-active {
+  transition: all .5s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.list-leave-active{
+  position:absolute;
+}
