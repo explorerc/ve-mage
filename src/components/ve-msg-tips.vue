@@ -71,10 +71,11 @@
         height: 0px;
         width: 0px;
         top: 50%;
-        left: -6px;
+        left: -4px;
+        -webkit-transform: translateY(-50%);
         transform: translateY(-50%);
-        border-top: 5px solid transparent;
-        border-right: 8px solid rgba(49,49,49,1);
+        border-top: 4px solid transparent;
+        border-right: 4px solid #313131;
         border-bottom: 5px solid transparent;
       }
     }

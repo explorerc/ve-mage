@@ -1,6 +1,6 @@
 <template>
-  <div CLASS="container">
-    <div style="margin-top: 10px;">
+  <div class="container">
+    <div style="margin: 20px auto;">
       <!--上传文件组件-->
       <ve-upload
         limit-type="jpg|jpeg|png"
