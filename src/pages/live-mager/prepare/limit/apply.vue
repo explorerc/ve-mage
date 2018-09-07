@@ -233,7 +233,10 @@
               this.isOpen = true
               this.queryData = res.data.detail
               this.quesData = res.data.detail.questionList
-              if (res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
+              if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
+                this.queryData.finishTime = ''
+              }
+              if (res.data.detail.finishTime === null) {
                 this.queryData.finishTime = ''
               }
               res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
@@ -243,7 +246,7 @@
           }
         }).catch((res) => {
           this.$toast({
-            content: res.msg,
+            content: res,
             position: 'center'
           })
         })
