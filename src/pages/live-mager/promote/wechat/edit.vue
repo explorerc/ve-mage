@@ -23,11 +23,11 @@
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
               <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
-              <div class="edit-groups" v-if="selectedPersonList.length">
-                <span v-for="(person,idx) in selectedPersonList">{{person.name}} ({{person.count}}人）
+              <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
+                <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
                   <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
                 </span>
-              </div>
+              </transition-group>
             </div>
           </div>
           <div class="from-row">
@@ -275,7 +275,8 @@
       },
       /* 删除标签 */
       delPerson (idx) {
-        this.selectedPersonList.splice(idx, 1)
+        const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
+        this.personList[delIdx].isChecked = false
       },
       /* 查询人员 */
       queryPersonList () {
