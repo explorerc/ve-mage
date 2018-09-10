@@ -100,7 +100,16 @@ const SiteTemplate1 = () =>
 const SiteTemplate2 = () =>
   import('src/pages/brand/site/template2.vue')
 
+/* 直播互动 */
+/* 直播互动--设置 */
+const LiveSettings = () =>
+  import('src/pages/hudong/setting/settings')
+
 export default [{
+  path: '/seting',
+  name: 'seting',
+  component: LiveSettings
+}, {
   path: '/test',
   name: 'Test',
   component: Test
