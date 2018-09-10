@@ -14,20 +14,22 @@ export default class HostPusher extends BasePusher {
     this.type = 'host'
   }
 
-  initHostPusher (successBK = null, failedBK = null) {
+  initHostPusher () {
     let VhallInteraction = window.VhallInteraction
     let VhallSDK = window.Vhall
 
-    VhallSDK.ready(() => {
-      this.interactor = new VhallInteraction({
-        inavId: this.inavId,
-        videoNode: this.rootEleId,
-        success: result => {
-          successBK && successBK(result)
-        },
-        fail: reason => {
-          failedBK && failedBK(reason)
-        }
+    return new Promise((resolve, reject) => {
+      VhallSDK.ready(() => {
+        this.interactor = new VhallInteraction({
+          inavId: this.inavId,
+          videoNode: this.rootEleId,
+          success: result => {
+            resolve(result)
+          },
+          fail: reason => {
+            reject(reason)
+          }
+        })
       })
     })
   }
@@ -48,11 +50,13 @@ export default class HostPusher extends BasePusher {
    * @param {*} [failedBK=null]
    * @memberof HostPusher
    */
-  startBroadCast (successBK = null, failedBK = null) {
-    this.interactor.startBroadCast({
-      roomId: this.roomId,
-      success: () => successBK && successBK(),
-      fail: reason => failedBK && failedBK(reason)
+  startBroadCast () {
+    return new Promise((resolve, reject) => {
+      this.interactor.startBroadCast({
+        roomId: this.roomId,
+        success: () => resolve(),
+        fail: reason => reject(reason)
+      })
     })
   }
 
@@ -63,11 +67,13 @@ export default class HostPusher extends BasePusher {
    * @param {*} [failedBK=null]
    * @memberof HostPusher
    */
-  stopBroadCast (successBK = null, failedBK = null) {
-    this.interactor.stopBroadCast({
-      roomId: this.roomId,
-      success: () => successBK && successBK(),
-      fail: reason => failedBK && failedBK(reason)
+  stopBroadCast () {
+    return new Promise((resolve, reject) => {
+      this.interactor.stopBroadCast({
+        roomId: this.roomId,
+        success: () => resolve(),
+        fail: reason => reject(reason)
+      })
     })
   }
 }
