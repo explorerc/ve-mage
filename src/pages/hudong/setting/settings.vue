@@ -13,13 +13,13 @@
       <div class="form-row" v-if="!setting.pushStreamType">
         <div class="form-title">媒体设备</div>
         <div class="form-content">
-          <button class="default-button fr" @click="deviceShow = true">选择设备</button>
+          <button class="default-button fr" @click="selectDevice">选择设备</button>
         </div>
       </div>
       <div class="form-row" v-else>
         <div class="form-title">推流设置</div>
         <div class="form-content">
-          <button class="default-button fr" @click="pushStreamShow = true">推流设置</button>
+          <button class="default-button fr" @click="pushStreamSet">推流设置</button>
         </div>
       </div>
       <div class="form-row">
@@ -42,8 +42,8 @@
       </div>
       <transition name="left-right">
         <div class="person-count-setting" v-if="setting.isPersonCount">
-          <p>当前真实人数：56 人</p>
-          <p>调整后显示人数：156 人</p>
+          <p>当前真实人数：{{initOnlineNum}} 人</p>
+          <p>调整后显示人数：{{afterPersonCount}} 人</p>
           <p>在
             <el-select v-model="addPersonTime" placeholder="请选择">
               <el-option
@@ -58,8 +58,8 @@
             人
           </p>
           <p class="btn-box">
-            <button class="primary-button">确定</button>
-            <button class="default-button">取消</button>
+            <button class="primary-button" @click="settingOk">{{addPersoning?'正在执行...':'确定'}}</button>
+            <button class="default-button" @click="cancelAddPersonCount">取消</button>
           </p>
         </div>
       </transition>
@@ -73,16 +73,16 @@
       width="442px"
       @handleClick="deviceMsgClick">
       <div class="form-list form-message-box device-box">
-        <div class="video-box" id="videoBoxId"></div>
+        <div class="video-box" style="width: 400px;height: 200px;" id="videoBoxId"></div>
         <div class="form-row">
           <div class="form-title fzr">摄像头</div>
           <div class="form-content">
-            <el-select v-model="addPersonTime" placeholder="请选择">
+            <el-select v-model="camera" placeholder="请选择">
               <el-option
-                v-for="item in options"
-                :key="item.value"
+                v-for="item in cameraDevices"
+                :key="item.deviceId"
                 :label="item.label"
-                :value="item.value">
+                :value="item.deviceId">
               </el-option>
             </el-select>
           </div>
@@ -90,30 +90,17 @@
         <div class="form-row">
           <div class="form-title fzr">麦克风</div>
           <div class="form-content">
-            <el-select v-model="addPersonTime" placeholder="请选择">
+            <el-select v-model="mic" placeholder="请选择">
               <el-option
-                v-for="item in options"
-                :key="item.value"
+                v-for="item in micDevices"
+                :key="item.deviceId"
                 :label="item.label"
-                :value="item.value">
+                :value="item.deviceId">
               </el-option>
             </el-select>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-title fzr">扬声器</div>
-          <div class="form-content">
-            <el-select v-model="addPersonTime" placeholder="请选择">
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-        </div>
-        <p class="update-device fzr">刷新设备</p>
+        <p class="update-device fzr" @click="getDevice">刷新设备</p>
       </div>
     </message-box>
     <!-- 推流设置 -->
@@ -160,7 +147,9 @@
 </template>
 
 <script>
-  // import HostPusher from 'src/components/common/video/push/HostPusher'
+  import HostPusher from 'src/components/common/video/push/HostPusher'
+  import CountTo from 'src/utils/countTo'
+  import LiveHttp from 'src/api/live'
 
   export default {
     name: 'settings',
@@ -169,42 +158,172 @@
         pushStreamShow: false,
         deviceShow: false,
         addPersonCount: '30',
+        addCount: 0,
         rtmpUrl: '',
         streamPlayUrl: '',
+        activityId: '',
+        addPersoning: false,
+        initOnlineNum: 0, // 当前在线人数
         setting: {
           isChart: false, // 是否聊天禁言
           isPersonCount: false, // 是否在线人数
           pushStreamType: 0 // 推流方式
         },
+        cameraDevices: [], // 相机设备
+        micDevices: [], // 麦克风设备
+        camera: '',
+        mic: '',
         options: [
-          { value: 10, label: '10秒' },
-          { value: 30, label: '30秒' },
-          { value: 60, label: '1分钟' },
-          { value: 180, label: '3分钟' },
-          { value: 300, label: '5分钟' },
-          { value: 600, label: '10分钟' },
-          { value: 900, label: '15分钟' },
-          { value: 1800, label: '30分钟' },
-          { value: 2700, label: '45分钟' },
-          { value: 3600, label: '60分钟' },
-          { value: 5400, label: '90分钟' },
-          { value: 7200, label: '120分钟' },
-          { value: 9000, label: '150分钟' },
-          { value: 10800, label: '180分钟' }
+          {value: 10, label: '10秒'},
+          {value: 30, label: '30秒'},
+          {value: 60, label: '1分钟'},
+          {value: 180, label: '3分钟'},
+          {value: 300, label: '5分钟'},
+          {value: 600, label: '10分钟'},
+          {value: 900, label: '15分钟'},
+          {value: 1800, label: '30分钟'},
+          {value: 2700, label: '45分钟'},
+          {value: 3600, label: '60分钟'},
+          {value: 5400, label: '90分钟'},
+          {value: 7200, label: '120分钟'},
+          {value: 9000, label: '150分钟'},
+          {value: 10800, label: '180分钟'}
         ],
         addPersonTime: 30
       }
     },
+    computed: {
+      /* 调整后显示人数 */
+      afterPersonCount () {
+        if (!this.addPersonCount) return this.addCount + parseInt(this.initOnlineNum)
+        return parseInt(this.addPersonCount) + parseInt(this.initOnlineNum)
+      }
+    },
+    watch: {
+      setting: {
+        handler () {
+          this.liveSetting()
+        },
+        deep: true
+      }
+    },
+    created () {
+      const queryId = this.$route.params.id
+      if (!queryId) {
+        this.$router.go(-1)
+      }
+      this.activityId = queryId
+      this.querySettingInfo()
+    },
     methods: {
+      /* 点击确定按钮 */
+      settingOk () {
+        if (this.addPersoning) return
+        this.$emit('settingOk', {
+          cameraDevices: this.camera,
+          micDevices: this.mic,
+          addPersonCount: this.addPersonCount,
+          addPersonTime: this.addPersonTime,
+          ...this.setting
+        })
+        this.addLivePersonCount()
+      },
+      /* 查询设置信息 */
+      querySettingInfo () {
+        LiveHttp.querySettingInfo(this.activityId).then(res => {
+          this.setting = {
+            isChart: res.data.gag === 'Y',
+            isPersonCount: res.data.showOnlineNum === 'Y', // 是否在线人数
+            pushStreamType: res.data.pushType === 'THIRD' // 推流方式
+          }
+          this.initOnlineNum = res.data.initOnlineNum
+        })
+      },
+      /* 点击选择设备 */
+      selectDevice () {
+        this.deviceShow = true
+        this.initPusher()
+      },
+      pushStreamSet () {
+        this.pushStreamShow = true
+        LiveHttp.getPushUrl(this.activityId).then(res => {
+          if (res.code === 200 && res.data) {
+            this.rtmpUrl = res.data.push_address
+            this.streamPlayUrl = res.data.stream_number
+          }
+        })
+      },
+      /* 直播设置 */
+      liveSetting () {
+        LiveHttp.setLiveSetting({
+          activityId: this.activityId,
+          gag: this.setting.isChart ? 'Y' : 'N',
+          pushType: this.setting.pushStreamType ? 'THIRD' : 'BROESER',
+          showOnlineNum: this.setting.isPersonCount ? 'Y' : 'N'
+        })
+      },
+      /* 增加在线人数 */
+      addLivePersonCount () {
+        this.addPersoning = true
+        this.addCount = parseInt(this.addPersonCount)
+        this.addPersonCount = ''
+        CountTo.start(0, this.addCount, this.addPersonTime, 0.1, (count) => {
+          LiveHttp.addLivePersons({
+            activityId: this.activityId,
+            num: count
+          }).catch(() => {
+            CountTo.stop()
+          })
+          if (this.addCount === count) {
+            this.addPersoning = false
+          }
+        })
+      },
+      cancelAddPersonCount () {
+        this.addPersoning = false
+        CountTo.stop()
+      },
+      /* 初始化插件 */
+      initPusher () {
+        this.$nextTick(() => {
+          LiveHttp.getPaasParam(this.activityId).then(res => {
+            let appId = res.data.appId
+            let roomId = res.data.liveRoom
+            let inavId = res.data.hdRoom // 互动id
+            let token = res.data.token
+            let rootEleId = 'videoBoxId'
+            this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
+            this.hostPusher.initHostPusher().then(() => {
+              this.getDevice()
+            }).catch(error => {
+              console.log(error)
+            })
+            this.hostPusher.accountId = res.data.accountId
+          })
+        })
+      },
+      /* 获取设备 */
+      getDevice () {
+        this.hostPusher.getDevices().then(res => {
+          this.cameraDevices = res.cameras
+          this.micDevices = res.mics
+          this.camera = this.camera || this.cameraDevices[0].deviceId
+          this.mic = this.mic || this.micDevices[0].deviceId
+        }).catch(e => {
+          console.log(e)
+        })
+      },
+      /* 切换菜单 */
       changeNav (idx) {
         this.setting.pushStreamType = idx
       },
-      handleMsgClick (e) {
+      handleMsgClick () {
         this.pushStreamShow = false
       },
-      deviceMsgClick (e) {
+      deviceMsgClick () {
         this.deviceShow = false
       },
+      /* 复制 */
       copyInput (type) {
         const copyStr = type ? this.streamPlayUrl : this.rtmpUrl
         copyStr.copyClipboard(() => {
@@ -240,7 +359,7 @@
     height: calc(100% - 20px);
     padding: 20px 0 0;
     border: solid 1px $color-bd;
-    margin: 20px auto;
+    margin: 20px 0;
     font-size: 14px;
     background-color: $color-bg-sub;
   }
@@ -357,8 +476,10 @@
       }
     }
     .video-box {
+      position: relative;
       width: 402px;
       height: 200px;
+      overflow: hidden;
       margin: 0 auto 10px auto;
       background-color: #8E9198;
     }

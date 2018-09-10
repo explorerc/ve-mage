@@ -1,0 +1,52 @@
+import utils from 'src/utils'
+
+/* 直播互动 */
+const LiveManage = {
+  /* 获取第三方推流地址 */
+  getPushUrl (activityId) {
+    return utils.ajax({
+      method: 'post',
+      url: '/initiator/live/get-third-pub-info',
+      params: {
+        activityId: activityId
+      }
+    })
+  },
+  /* 直播设置 */
+  setLiveSetting (params) {
+    return utils.ajax({
+      method: 'post',
+      url: '/initiator/live/set',
+      params: params
+    })
+  },
+  /* 增加在线人数 */
+  addLivePersons (params) {
+    return utils.ajax({
+      method: 'post',
+      url: '/initiator/live/increment-init-user-num',
+      params: params
+    })
+  },
+  /* paas token获取接口 */
+  getPaasParam (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/get-sdk-token',
+      params: {
+        activityId: activityId
+      }
+    })
+  },
+  /* 获取设置信息 */
+  querySettingInfo (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/get-setting',
+      params: {
+        activityId: activityId
+      }
+    })
+  }
+}
+export default LiveManage
