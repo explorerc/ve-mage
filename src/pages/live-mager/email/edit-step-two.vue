@@ -313,6 +313,7 @@
       immediatelySend () {
         this.email.planTime = ''
         this.isTimer = false
+        this.sendEmail()
       },
       checkParams () {
         this.errorMsg = {

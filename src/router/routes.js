@@ -106,8 +106,8 @@ const LiveSettings = () =>
   import('src/pages/hudong/setting/settings')
 
 export default [{
-  path: '/seting',
-  name: 'seting',
+  path: '/setting',
+  name: 'setting',
   component: LiveSettings
 }, {
   path: '/test',
