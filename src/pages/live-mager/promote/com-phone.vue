@@ -95,6 +95,7 @@ export default {
     background-size: 10px 10px;
   }
   .msg-box-overview {
+    word-break: break-all;
     width: 250px;
     height: 517px;
     background: url('~assets/image/phone-wechat.png') no-repeat;

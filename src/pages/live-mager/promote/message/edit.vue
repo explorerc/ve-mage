@@ -9,7 +9,7 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>通知标题：</div>
             <div class="from-content">
-              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30"></com-input>
+              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" :error-tips='errorData.titleError'></com-input>
             </div>
           </div>
           <div class="from-row">
@@ -25,14 +25,14 @@
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信内容：</div>
-            <div class="from-content">
-              <com-input type="textarea" class="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="60"></com-input>
+            <div class="from-content" @click="errorData.msgError=''">
+              <com-input type="textarea" class="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="60" :error-tips='errorData.msgError'  ></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信签名：</div>
             <div class="from-content">
-              <com-input :value.sync="msgTag" placeholder="请输入签名" :max-length="10"></com-input>
+              <com-input :value.sync="msgTag" placeholder="请输入签名" :max-length="10" :error-tips="errorData.tagError" @focus="errorData.tagError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
@@ -181,7 +181,9 @@ export default {
       selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectPersonShow: false,
-      selectedCount: 0
+      selectedCount: 0,
+      errorData: {},
+      isValided: false
     }
   },
   created () {
@@ -239,7 +241,13 @@ export default {
       })
     },
     test () {
-      this.testModal = true
+      this.formValid()
+      // this.testModal = true
+      // this.$nextTick((res) => {
+      //   if (this.isValided) {
+      //     this.testModal = true
+      //   }
+      // })
     },
     closeTest () {
       // debugger
@@ -285,6 +293,17 @@ export default {
         })
         this.personList = temArray
       })
+    },
+    /* 验证 */
+    formValid () {
+      this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
+      this.errorData.msgError = this.msgContent.length ? '' : '请输入短信内容'
+      this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
+      if (this.msgContent.length && this.msgContent.length && this.msgContent.length) {
+        this.isValided = true
+      } else {
+        this.isValided = false
+      }
     }
   },
   watch: {
