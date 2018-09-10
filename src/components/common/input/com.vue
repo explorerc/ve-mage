@@ -169,6 +169,7 @@ export default {
     color: #fc5659;
     padding-left: 10px;
     font-size: 14px;
+    line-height: 20px;
   }
   input {
     display: inline-block;

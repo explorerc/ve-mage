@@ -54,7 +54,7 @@
               </el-option>
             </el-select>
             内增加
-            <com-input :value.sync="addPersonCount"></com-input>
+            <com-input :value.sync="addPersonCount" :error-tips="countError"></com-input>
             人
           </p>
           <p class="btn-box">
@@ -164,6 +164,7 @@
         activityId: '',
         addPersoning: false,
         initOnlineNum: 0, // 当前在线人数
+        countError: '', // 错误信息
         setting: {
           isChart: false, // 是否聊天禁言
           isPersonCount: false, // 是否在线人数
@@ -195,6 +196,7 @@
     computed: {
       /* 调整后显示人数 */
       afterPersonCount () {
+        this.countError = ''
         if (!this.addPersonCount) return this.addCount + parseInt(this.initOnlineNum)
         return parseInt(this.addPersonCount) + parseInt(this.initOnlineNum)
       }
@@ -219,6 +221,13 @@
       /* 点击确定按钮 */
       settingOk () {
         if (this.addPersoning) return
+        if (!this.addPersonCount) {
+          this.countError = '不能为空'
+          return
+        } else if (!/^[0-9]+$/.test(this.addPersonCount)) {
+          this.countError = '格式不正确'
+          return
+        }
         this.$emit('settingOk', {
           cameraDevices: this.camera,
           micDevices: this.mic,
@@ -428,12 +437,8 @@
     p {
       line-height: 40px;
       .com-input /deep/ {
-        width: 60px;
+        width: 80px;
         margin: 0 10px;
-        input {
-          height: 30px;
-          line-height: 30px;
-        }
       }
       .el-select {
         width: 100px;
