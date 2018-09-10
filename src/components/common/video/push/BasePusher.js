@@ -27,12 +27,14 @@ export default class BasePusher {
    * @memberof BasePusher
    */
   getDevices () {
-    if (!this.interactor) {
-      console.warn('尚未初始化互动推流端')
-      return {}
-    }
-
-    return this.interactor.getDevices()
+    return new Promise((resolve, reject) => {
+      if (!this.interactor) {
+        reject(new Error('尚未初始化互动推流端'))
+      }
+      this.interactor.getDevices(d => {
+        resolve(d)
+      })
+    })
   }
 
   /**

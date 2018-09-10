@@ -1,13 +1,9 @@
 <template>
   <section>
-    <canvas ref="cvs"
-            class="cvs"
-            width="400px"
-            height="200px"></canvas>
+    <canvas ref="cvs" class="cvs" width="400px" height="200px"></canvas>
     <!-- width="800px" height="400px" -->
     <div>
-      <el-input clearable
-                v-model="content"></el-input>
+      <el-input clearable v-model="content"></el-input>
       <el-button @click="addBarrage">添加</el-button>
       <span>{{fps}}</span>
     </div>
@@ -33,13 +29,8 @@
     <div>
       <div id="my-puller"></div>
     </div>
-    <svg width="400px"
-         height="400px">
-      <path ref="pathRef"
-            fill="none"
-            stroke="#CCC"
-            stroke-width="10"
-            stroke-linecap="round"></path>
+    <svg width="400px" height="400px">
+      <path ref="pathRef" fill="none" stroke="#CCC" stroke-width="10" stroke-linecap="round"></path>
     </svg>
   </section>
 </template>
@@ -140,7 +131,9 @@ export default {
       this.barrageSystem.destroy()
     },
     getDevices () {
-      this.hostPusher.getDevices()
+      this.hostPusher.getDevices().then(res => {
+        console.log(res)
+      })
     },
     broadcast () {
       this.hostPusher.startBroadCast()

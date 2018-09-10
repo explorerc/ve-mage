@@ -195,7 +195,7 @@
   }
   export default {
     name: 'play-back',
-    components: {VeUploadImage, veMsgTips, VeUploadVideo},
+    components: { VeUploadImage, veMsgTips, VeUploadVideo },
     data () {
       return {
         navIdx: 0,
@@ -227,9 +227,9 @@
         },
         playBackList: [],
         options: [
-          {value: '0', label: '默认回放'},
-          {value: '1', label: '上传视频'},
-          {value: '2', label: '外部链接'}
+          { value: '0', label: '默认回放' },
+          { value: '1', label: '上传视频' },
+          { value: '2', label: '外部链接' }
         ],
         recordId: '',
         activityId: '',
