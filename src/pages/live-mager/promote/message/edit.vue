@@ -9,7 +9,7 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>通知标题：</div>
             <div class="from-content">
-              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" :error-tips='errorData.titleError'></com-input>
+              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" :error-tips='errorData.titleError' @focus="errorData.titleError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
@@ -182,7 +182,11 @@ export default {
       selectedPersonListStr: '',
       selectPersonShow: false,
       selectedCount: 0,
-      errorData: {},
+      errorData: {
+        titleError: '',
+        msgError: '',
+        tagError: ''
+      },
       isValided: false
     }
   },
@@ -242,12 +246,11 @@ export default {
     },
     test () {
       this.formValid()
-      // this.testModal = true
-      // this.$nextTick((res) => {
-      //   if (this.isValided) {
-      //     this.testModal = true
-      //   }
-      // })
+      this.$nextTick((res) => {
+        if (this.isValided) {
+          this.testModal = true
+        }
+      })
     },
     closeTest () {
       // debugger
@@ -299,7 +302,7 @@ export default {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.msgContent.length ? '' : '请输入短信内容'
       this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
-      if (this.msgContent.length && this.msgContent.length && this.msgContent.length) {
+      if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
       } else {
         this.isValided = false

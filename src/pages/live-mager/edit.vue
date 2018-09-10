@@ -23,7 +23,7 @@
             <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
-            <span class="error-tips" v-if='dateEmpty'>直播标题不能为空</span>
+            <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>
         <div class="from-row">
@@ -44,13 +44,13 @@
                 <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
               </el-checkbox-group>
             </div>
-            <span class="error-tips" v-if='tagEmpty'>直播标题不能为空</span>
+            <span class="error-tips" v-if='tagEmpty'>请添加直播标签</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播介绍：</div>
           <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
-            <ve-editer height="280" v-model="editorContent" @change="change"></ve-editer>
+            <ve-editer height="280" v-model="editorContent" ></ve-editer>
             <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
             <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
