@@ -2,8 +2,8 @@
   <section>
     <canvas ref="cvs"
             class="cvs"
-            width="800px"
-            height="400px"></canvas>
+            width="400px"
+            height="200px"></canvas>
     <!-- width="800px" height="400px" -->
     <div>
       <el-input clearable
@@ -19,6 +19,20 @@
       <el-button @click="resumeBarrage">恢复</el-button>
       <el-button @click="destroyBarrage">销毁</el-button>
     </div>
+    <div>
+      <div id="my-pusher"></div>
+      <el-button @click="getDevices">获取设备</el-button>
+      <el-button @click="broadcast">推旁路</el-button>
+      <el-button @click="stopBroadcast">取消旁路推流</el-button>
+      <el-button @click="getSetting">获取推流配置</el-button>
+      <el-button @click="hideCamera">隐藏摄像头</el-button>
+    </div>
+    <div>
+      <div id="my-pusher2"></div>
+    </div>
+    <div>
+      <div id="my-puller"></div>
+    </div>
     <svg width="400px"
          height="400px">
       <path ref="pathRef"
@@ -27,18 +41,14 @@
             stroke-width="10"
             stroke-linecap="round"></path>
     </svg>
-    <div>
-      <el-button @click="counttocount">点我变随机数</el-button>
-      <el-button @click="stoptocount">停止</el-button>
-      <span>{{count}}</span>
-    </div>
   </section>
 </template>
 
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
 // import Progress from '../../components/common/progress/Progress.js'
-import CountTo from '../../utils/countTo'
+import HostPusher from '../../components/common/video/push/HostPusher'
+// import LivePuller from '../../components/common/video/pull/LivePuller'
 export default {
   created () {
     this.barrageSystem = new Barrage()
@@ -47,8 +57,26 @@ export default {
     //   y: 100,
     //   r: 50
     // }
-
     // this.c = new Progress(opt)
+
+    let appId = '499279ae'
+    let roomId = 'lss_5b3c9d9d'
+    let inavId = 'inav_47d93f42'
+    let rootEleId = 'my-pusher'
+    let token = 'access:499279ae:885ba973a5d6ad10'
+    this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
+    this.hostPusher.initHostPusher()
+    this.hostPusher.accountId = 'master'
+
+    this.hostPusher2 = new HostPusher(appId, roomId, inavId, token, 'my-pusher2')
+    this.hostPusher.initHostPusher()
+    this.hostPusher.accountId = 'master2'
+
+    // appId, roomId, rootEleId, token
+    // rootEleId = 'my-puller'
+    // this.puller = new LivePuller(appId, roomId, rootEleId, token)
+    // this.puller.initLivePlayer(true)
+    // this.puller.accountId = 'xiao2'
   },
   mounted () {
     // let pathRef = this.$refs.pathRef
@@ -70,7 +98,9 @@ export default {
       fps: 0,
       intervalId: 0,
       c: null,
-      count: 0
+      hostPusher: null,
+      puller: null,
+      hostPusher2: null
     }
   },
   methods: {
@@ -109,13 +139,22 @@ export default {
     destroyBarrage () {
       this.barrageSystem.destroy()
     },
-    counttocount () {
-      CountTo.start(0, Math.random() * 10000, 10, 0.2, i => {
-        this.count = i
-      })
+    getDevices () {
+      this.hostPusher.getDevices()
     },
-    stoptocount () {
-      CountTo.stop()
+    broadcast () {
+      this.hostPusher.startBroadCast()
+    },
+    stopBroadcast () {
+      this.hostPusher.stopBroadCast()
+    },
+    getSetting () {
+      console.log(this.hostPusher.getSetting())
+    },
+    hideCamera () {
+      this.hostPusher.changeSetting({
+        video: false
+      })
     }
   }
 }
@@ -126,5 +165,15 @@ export default {
   /* width: 800px;
   height: 400px; */
   background-color: pink;
+}
+
+.my-pusher {
+  width: 200px;
+  height: 150px;
+}
+
+.my-puller {
+  width: 200px;
+  height: 150px;
 }
 </style>
