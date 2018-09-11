@@ -472,6 +472,40 @@
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
+    .right:before {
+      left: -26px;
+    }
+    .process .top li {
+      width: 140px;
+      margin: 0 14px;
+    }
+    .process .top dt {
+      width: 80px;
+      height: 80px;
+    }
+    .process .top li.active dt:after {
+      content: '';
+      width: 90px;
+      height: 90px;
+      margin-top: -46px;
+      margin-left: -46px;
+    }
+    .process .top dt:before {
+      width: 70px;
+      right: -80px;
+    }
+    .process .bottom > div ol > li {
+      width: 140px;
+    }
+    .process .bottom > div {
+      margin: 10px 14px;
+    }
+    .middle {
+      width: 375px;
+      ol {
+        margin-top: 20px;
+      }
+    }
   }
 }
 .block {
@@ -619,6 +653,7 @@
 }
 .middle {
   float: left;
+  width: 640px;
   p {
     padding-bottom: 10px;
   }
