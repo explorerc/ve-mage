@@ -9,13 +9,13 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>通知标题：</div>
             <div class="from-content">
-              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" class='msg-title'></com-input>
+              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" class='msg-title' :error-tips="errorData.titleError" @focus="errorData.titleError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>微信内容：</div>
-            <div class="from-content">
-              <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="60"></com-input>
+            <div class="from-content" @click="errorData.msgError=''">
+              <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="60" :error-tips="errorData.msgError" ></com-input>
             </div>
           </div>
           <div class="from-row" style='padding:4px 12px;'>
@@ -23,11 +23,11 @@
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
               <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
-              <div class="edit-groups" v-if="selectedPersonList.length">
-                <span v-for="(person,idx) in selectedPersonList">{{person.name}} ({{person.count}}人）
+              <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
+                <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
                   <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
                 </span>
-              </div>
+              </transition-group>
             </div>
           </div>
           <div class="from-row">
@@ -166,7 +166,13 @@
         selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
         selectedPersonListStr: '',
         selectPersonShow: false,
-        selectedCount: 0
+        selectedCount: 0,
+        errorData: {
+          titleError: '',
+          msgError: '',
+          tagError: ''
+        },
+        isValided: false
       }
     },
     created () {
@@ -234,8 +240,13 @@
         })
       },
       testSend () {
-        this.testModal = true
-        this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
+        this.formValid()
+        this.$nextTick((res) => {
+          if (this.isValided) {
+            this.testModal = true
+            this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
+          }
+        })
         // const data = {
         //   content: this.wxContent,
         //   activityId: this.activityId
@@ -275,7 +286,8 @@
       },
       /* 删除标签 */
       delPerson (idx) {
-        this.selectedPersonList.splice(idx, 1)
+        const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
+        this.personList[delIdx].isChecked = false
       },
       /* 查询人员 */
       queryPersonList () {
@@ -294,6 +306,17 @@
           })
           this.personList = temArray
         })
+      },
+      /* 验证 */
+      formValid () {
+        this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
+        this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
+        // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
+        if (this.titleValue.length && this.wxContent.length) {
+          this.isValided = true
+        } else {
+          this.isValided = false
+        }
       }
     },
     watch: {

@@ -1,87 +1,150 @@
 <!-- 活动详情页面-->
 <template>
-  <div>
-    <div class="desc">
+  <div class='detail-wrap'>
+    <div class="desc clearfix">
       <div class="left">
-        <p>{{desc.title}} <span class="state" :class="desc.stateClass">{{desc.state}}</span> </p>
-        <p>开播时间:{{desc.startTime}}</p>
-        <p>互动标签:<span class="tag" v-for="item in desc.tagList">{{item}}</span></p>
+        <img src="https://cnstatic01.e.vhall.com/static/img/v35-webinar.png">
+        <span class="state" :class="desc.stateClass">{{desc.state}}</span>
+      </div>
+      <div class="middle">
+        <p class='title'>{{desc.title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
+        <p class='desc-label'>互动标签: <span class="tag" v-for="item in desc.tagList">{{item}}</span></p>
+        <p class='desc-label'>开播时间: {{desc.startTime}}</p>
+        <ol class='clearfix'>
+          <li class='icon'><i></i>活动页面</li>
+          <li class='icon copy'><i></i>复制链接</li>
+          <li class='icon offline'><i></i>下线活动</li>
+        </ol>
       </div>
       <div class="right">
-        <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">活动官网</a></span>
+        <!-- <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">活动官网</a></span>
         <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">直播观看页</a></span>
         <span @click='update'>{{state == 1 ? '发布活动' : '下线活动'}}</span>
-        <span><a href="">进入直播间</a></span>
+        <span><a href="">进入直播间</a></span> -->
+        <p class="title">距离直播开始还有</p>
+        <div class="count-box">
+          <com-countdown :endTime="countdownTime">
+            <ol class='clearfix' @timeOut='timeOut' slot='slot1' slot-scope="scoped">
+              <li>{{scoped.day}}<span>天</span></li>
+              <li>{{scoped.hour}}<span>时</span></li>
+              <li>{{scoped.minute}}<span>分</span></li>
+              <li>{{scoped.second}}<span>秒</span></li>
+            </ol>
+          </com-countdown>
+        </div>
+        <el-button class='primary-button'>正式直播</el-button>
       </div>
     </div>
-    <div class="process clearfix">
-      <div>
-        <span>准备</span>
-        <ol>
-          <li v-for='item in cardData.prepare' :key='item.title' v-show="item.checked">{{item.title}}</li>
-        </ol>
+    <div class="block process clearfix">
+      <div class="top clearfix">
+        <ul>
+          <li class='step'>
+            <dl>
+              <dt></dt>
+              <dd>准备</dd>
+            </dl>
+          </li>
+          <li class='step prompt'>
+            <dl>
+              <dt></dt>
+              <dd>推广</dd>
+            </dl>
+          </li>
+          <li class='step brand'>
+            <dl>
+              <dt></dt>
+              <dd>品牌</dd>
+            </dl>
+          </li>
+          <li class='step live active'>
+            <dl>
+              <dt></dt>
+              <dd>直播</dd>
+            </dl>
+          </li>
+          <li class='step disable record'>
+            <dl>
+              <dt></dt>
+              <dd>回放</dd>
+            </dl>
+          </li>
+          <li class='step disable statics'>
+            <dl>
+              <dt></dt>
+              <dd>数据</dd>
+            </dl>
+          </li>
+        </ul>
       </div>
-      <div>
-        <span>营销</span>
-        <ol>
-          <li v-for='item in cardData.marketing' :key='item.title' v-show="item.checked">{{item.title}}</li>
-        </ol>
-      </div>
-      <div>
-        <span>形象</span>
-        <ol>
-          <li v-for='item in cardData.promote' :key='item.title' v-show="item.checked">{{item.title}}</li>
-        </ol>
-      </div>
-      <div>
-        <span>直播</span>
-        <ol>
-          <!-- <li v-for='item in cardData.webinar' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
-          <li>直播监控</li>
-          <li>聊天审核</li>
-        </ol>
-      </div>
-      <div>
-        <span>回放</span>
-        <ol>
-          <!-- <li v-for='item in cardData.record' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
-          <li>设置回放</li>
-        </ol>
-      </div>
-      <div>
-        <span>数据</span>
-        <ol>
-          <!-- <li v-for='item in processData.data' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
-          <li>数据报表</li>
-          <li>详细数据导出</li>
-        </ol>
-        </ol>
+      <div class="bottom clearfix">
+        <div>
+          <!-- <span>准备</span> -->
+          <ol>
+            <li v-for='item in cardData.prepare' :key='item.title' v-show="item.checked">{{item.title}}</li>
+          </ol>
+        </div>
+        <div>
+          <!-- <span>营销</span> -->
+          <ol>
+            <li v-for='item in cardData.marketing' :key='item.title' v-show="item.checked">{{item.title}}</li>
+          </ol>
+        </div>
+        <div>
+          <!-- <span>形象</span> -->
+          <ol>
+            <li v-for='item in cardData.promote' :key='item.title' v-show="item.checked">{{item.title}}</li>
+          </ol>
+        </div>
+        <div>
+          <!-- <span>直播</span> -->
+          <ol>
+            <!-- <li v-for='item in cardData.webinar' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+            <li>直播监控</li>
+            <li>聊天审核</li>
+          </ol>
+        </div>
+        <div>
+          <!-- <span>回放</span> -->
+          <ol>
+            <!-- <li v-for='item in cardData.record' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+            <li>设置回放</li>
+          </ol>
+        </div>
+        <div>
+          <!-- <span>数据</span> -->
+          <ol>
+            <!-- <li v-for='item in processData.data' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+            <li>数据报表</li>
+            <li>详细数据导出</li>
+          </ol>
+          </ol>
+        </div>
       </div>
     </div>
     <div class="fun-card">
+      <p class='block-separte'>准备</p>
       <div class="item prepare">
-        <span>准备</span>
         <div class="card-list clearfix">
           <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
             :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item marketing">
-        <span>营销</span>
+        <p class='block-separte'>营销</p>
         <div class="card-list clearfix">
           <process-card @update:checked='switchBack' v-for="(item,index) in cardData.marketing" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"'
             :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item promote">
-        <span>形象</span>
+        <p class='block-separte'>形象</p>
         <div class="card-list clearfix">
           <process-card @update:checked='switchBack' v-for="(item,index) in cardData.promote" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
             :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item setting">
-        <span>高级设置</span>
+        <p class='block-separte'>高级设置</p>
         <div class="card-list clearfix">
           <!-- <process-card @update:checked='switchBack' v-for="(item,index) in cardData['setting']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-img='item.img'></process-card> -->
         </div>
@@ -93,6 +156,7 @@
 <script>
   import processCard from 'components/process-card'
   import messageBox from 'components/common/message-box'
+  import comCountdown from 'components/com-countDown'
   export default {
     data () {
       return {
@@ -105,7 +169,9 @@
         },
         state: '',
         cardData: {},
-        msgShow: false
+        msgShow: false,
+        activityId: this.$route.params.id,
+        countdownTime: '3600' // 倒计时 秒
       }
     },
     created () {
@@ -370,11 +436,15 @@
           // 隐藏相关项目
           this.cardData[res.part][res.idx]['checked'] = false
         }
+      },
+      timeOut () {
+        console.log('倒计时结束')
       }
     },
     components: {
       processCard,
-      messageBox
+      messageBox,
+      comCountdown
     }
 
   }
@@ -382,56 +452,314 @@
 
 <style lang='scss' scoped>
 @import 'assets/css/variable.scss';
-.state {
-  padding: 3px;
-  border: 1px solid #ccc;
-  display: inline-block;
-}
+@import '~assets/css/mixin.scss';
 
-.live {
-  color: red;
-  border-color: red;
-}
+.detail-wrap {
+  border-radius: 5px;
+  overflow: hidden;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  width: 1366px;
+  min-width: 1019px;
+  color: #222;
+  transition: width 0.2s;
 
-.preview {
-  color: blue;
-  border-color: blue;
-}
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
 
-.record {
-  color: green;
-  border-color: green;
-}
-
-.tag {
-  padding: 3px;
-  border: 1px solid #ccc;
-  display: inline-block;
-  margin: 0 3px;
-}
-
-.right {
-  span {
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
   }
 }
-
+.block {
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(226, 226, 226, 1);
+  margin-top: 50px;
+}
 .process {
-  & > div {
-    margin: 10px 40px;
+  padding: 30px 0;
+  .top {
+    li {
+      text-align: center;
+      float: left;
+      width: 160px;
+      margin: 0 33px;
+    }
+    dt {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto;
+      border-radius: 500px;
+      background: $color-default;
+      position: relative;
+      background-image: url('~assets/image/auto_wechat.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      &:before {
+        content: '';
+        width: 95px;
+        height: 2px;
+        background: $color-default;
+        position: absolute;
+        top: 50%;
+        margin-top: -1px;
+        right: -116px;
+      }
+    }
+    dd {
+      padding-top: 10px;
+      font-size: 22px;
+      color: $color-font;
+    }
+    li {
+      &.disable {
+        dt {
+          background-color: rgba(211, 215, 255, 1);
+          &:before {
+            content: '';
+            background: rgba(211, 215, 255, 1);
+          }
+        }
+      }
+      &.active dt:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -53px;
+        margin-left: -53px;
+        width: 104px;
+        height: 104px;
+        border: 1px solid $color-default;
+        border-radius: 500px;
+      }
+      &:last-child {
+        dt:before {
+          content: '';
+          display: none;
+        }
+      }
+      &.prompt dt {
+        background-image: url('~assets/image/auto_wechat.png');
+      }
+      &.brand dt {
+        background-image: url('~assets/image/auto_wechat.png');
+      }
+      &.live dt {
+        background-image: url('~assets/image/auto_wechat.png');
+      }
+      &.record dt {
+        background-image: url('~assets/image/auto_wechat.png');
+      }
+      &.statics dt {
+        background-image: url('~assets/image/auto_wechat.png');
+      }
+    }
+  }
+  .bottom > div {
+    margin: 10px 33px;
     float: left;
+    ol > li {
+      width: 160px;
+      height: 36px;
+      text-align: center;
+      line-height: 36px;
+      margin-top: 14px;
+      background: rgba(239, 239, 239, 0.7);
+      border-radius: 18px;
+      border: 1px solid rgba(177, 177, 177, 1);
+    }
   }
 }
+.desc {
+  padding-top: 20px;
+}
+.left {
+  float: left;
+  margin-right: 20px;
+  position: relative;
+  img {
+    display: inline-block;
+    width: 300px;
+    height: 169px;
+    border-radius: 5px;
+  }
+  .state {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    text-align: center;
+    line-height: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    font-size: 12px;
+  }
 
-.fun-card {
-  .item > span {
-    display: block;
-    border-bottom: 1px solid #ccc;
+  .live {
+    color: red;
+    border-color: red;
+  }
+
+  .preview {
+    color: blue;
+    border-color: blue;
+  }
+
+  .record {
+    color: green;
+    border-color: green;
+  }
+}
+.middle {
+  float: left;
+  p {
+    padding-bottom: 10px;
+  }
+  .title {
+    font-size: 22px;
+    color: $color-font;
+    margin-right: 8px;
+    .id-tag {
+      padding: 2px 12px;
+      color: $color-font-sub;
+      font-size: 14px;
+      background: rgba(239, 239, 239, 1);
+      border-radius: 10px;
+      i {
+        cursor: pointer;
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: url('~assets/image/icon_activity.png') no-repeat center;
+      }
+    }
+  }
+  .desc-label {
+    color: $color-font-sub;
+    font-size: 14px;
+    .tag {
+      font-size: 12px;
+      padding: 2px 10px;
+      background: rgba(240, 241, 254, 1);
+      border-radius: 12px;
+      border: 1px solid rgba(219, 222, 253, 1);
+      display: inline-block;
+      margin: 0 3px;
+    }
+  }
+  ol {
+    margin-top: 30px;
+    li {
+      cursor: pointer;
+      color: $color-font-sub;
+      font-size: 14px;
+      position: relative;
+      float: left;
+      margin-right: 40px;
+      height: 20px;
+      line-height: 20px;
+      padding-left: 29px;
+      &::before {
+        content: '';
+        width: 1px;
+        height: 16px;
+        background: rgba(216, 216, 216, 1);
+        position: absolute;
+        top: 0;
+        right: -16px;
+      }
+      i {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background: url('~assets/image/icon_activity.png') no-repeat center;
+        background-size: contain;
+        position: absolute;
+        left: 0;
+      }
+      &.copy i {
+        background-image: url('~assets/image/icon_activity.png');
+      }
+      &.offline {
+        &::before {
+          content: '';
+          display: none;
+        }
+        i {
+          background-image: url('~assets/image/icon_activity.png');
+        }
+      }
+    }
+  }
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+  text-align: center;
+  position: relative;
+  &:before {
+    content: '';
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: -107px;
+    background: rgba(226, 226, 226, 1);
+    border-radius: 1px;
+  }
+  .count-box {
+    margin: 13px 0 36px 0;
+    li {
+      float: left;
+      width: 56px;
+      height: 46px;
+      line-height: 46px;
+      text-align: center;
+      background: rgba(38, 38, 38, 1);
+      border-radius: 4px;
+      color: #fff;
+      font-size: 34px;
+      font-family: unset;
+      margin: 0px 6px;
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+  .el-button {
+    padding: 0px;
+    width: 200px;
     height: 40px;
     line-height: 40px;
+    text-align: center;
+  }
+}
+.fun-card {
+}
+.block-separte {
+  margin-top: 40px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: $color-font;
+  padding-left: 20px;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 0px;
+    width: 4px;
+    height: 20px;
+    background: rgba(255, 208, 33, 1);
   }
 }
 </style>
