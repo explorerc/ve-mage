@@ -73,7 +73,7 @@
       width="442px"
       @handleClick="deviceMsgClick">
       <div class="form-list form-message-box device-box">
-        <div class="video-box" style="width: 400px;height: 200px;" id="videoBoxId"></div>
+        <div class="video-box" id="videoBoxId"></div>
         <div class="form-row">
           <div class="form-title fzr">摄像头</div>
           <div class="form-content">
@@ -151,6 +151,10 @@
   import CountTo from 'src/utils/countTo'
   import LiveHttp from 'src/api/live'
 
+  const storageKey = {
+    'CAMERA': 'SELECT_CAMERA',
+    'MIC': 'SELECT_MIC'
+  }
   export default {
     name: 'settings',
     data () {
@@ -296,6 +300,7 @@
       initPusher () {
         this.$nextTick(() => {
           LiveHttp.getPaasParam(this.activityId).then(res => {
+            if (res.code !== 200) return
             let appId = res.data.appId
             let roomId = res.data.liveRoom
             let inavId = res.data.hdRoom // 互动id
@@ -316,8 +321,8 @@
         this.hostPusher.getDevices().then(res => {
           this.cameraDevices = res.cameras
           this.micDevices = res.mics
-          this.camera = this.camera || this.cameraDevices[0].deviceId
-          this.mic = this.mic || this.micDevices[0].deviceId
+          this.camera = sessionStorage.getItem(storageKey.CAMERA) || this.cameraDevices[0].deviceId
+          this.mic = sessionStorage.getItem(storageKey.MIC) || this.micDevices[0].deviceId
         }).catch(e => {
           console.log(e)
         })
@@ -329,8 +334,16 @@
       handleMsgClick () {
         this.pushStreamShow = false
       },
-      deviceMsgClick () {
+      deviceMsgClick (e) {
         this.deviceShow = false
+        if (e.action === 'confirm') {
+          sessionStorage.setItem(storageKey.CAMERA, this.camera)
+          sessionStorage.setItem(storageKey.MIC, this.mic)
+          this.hostPusher.changeSetting({
+            video: this.camera,
+            audio: this.mic
+          })
+        }
       },
       /* 复制 */
       copyInput (type) {
@@ -482,11 +495,11 @@
     }
     .video-box {
       position: relative;
-      width: 402px;
-      height: 200px;
+      width: 400px;
+      height: 300px;
       overflow: hidden;
       margin: 0 auto 10px auto;
-      background-color: #8E9198;
+      background-color: rgba(0, 0, 0, .8);
     }
     .update-device {
       text-align: right;
