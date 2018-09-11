@@ -197,6 +197,19 @@
         addPersonTime: 30
       }
     },
+    props: {
+      paasParams: {
+        type: Object,
+        required: true,
+        default: {
+          appId: '',
+          roomId: '',
+          inavId: '', // 互动id
+          token: '',
+          accountId: ''
+        }
+      }
+    },
     computed: {
       /* 调整后显示人数 */
       afterPersonCount () {
@@ -211,6 +224,9 @@
           this.liveSetting()
         },
         deep: true
+      },
+      paasParams () {
+        this.querySettingInfo()
       }
     },
     created () {
@@ -219,7 +235,6 @@
         this.$router.go(-1)
       }
       this.activityId = queryId
-      this.querySettingInfo()
     },
     methods: {
       /* 点击确定按钮 */
@@ -299,21 +314,17 @@
       /* 初始化插件 */
       initPusher () {
         this.$nextTick(() => {
-          LiveHttp.getPaasParam(this.activityId).then(res => {
-            if (res.code !== 200) return
-            let appId = res.data.appId
-            let roomId = res.data.liveRoom
-            let inavId = res.data.hdRoom // 互动id
-            let token = res.data.token
-            let rootEleId = 'videoBoxId'
-            this.hostPusher = new HostPusher(appId, roomId, inavId, token, rootEleId)
-            this.hostPusher.initHostPusher().then(() => {
-              this.getDevice()
-            }).catch(error => {
-              console.log(error)
-            })
-            this.hostPusher.accountId = res.data.accountId
+          this.hostPusher = new HostPusher(
+            this.paasParams.appId,
+            this.paasParams.roomId,
+            this.paasParams.inavId,
+            this.paasParams.token, 'videoBoxId')
+          this.hostPusher.initHostPusher().then(() => {
+            this.getDevice()
+          }).catch(error => {
+            console.log(error)
           })
+          this.hostPusher.accountId = this.paasParams.accountId
         })
       },
       /* 获取设备 */

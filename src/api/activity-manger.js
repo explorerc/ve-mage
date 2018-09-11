@@ -22,8 +22,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  通过id获取暖场信息
-         */
+   *  通过id获取暖场信息
+   */
   queryWarmInfoById (id) {
     return utils.ajax({
       method: 'post',

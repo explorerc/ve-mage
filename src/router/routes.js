@@ -104,11 +104,24 @@ const SiteTemplate2 = () =>
 /* 直播互动--设置 */
 const LiveSettings = () =>
   import('src/pages/hudong/setting/settings')
+/* 直播互动--视频组件，推拉流，回放 */
+const PlayVideo = () =>
+  import('src/pages/hudong/video/index')
+const Master = () =>
+  import('src/pages/hudong/master')
 
 export default [{
   path: '/setting/:id',
   name: 'setting',
   component: LiveSettings
+}, {
+  path: '/master/:id',
+  name: 'master',
+  component: Master
+}, {
+  path: '/playVideo/:id',
+  name: 'playVideo',
+  component: PlayVideo
 }, {
   path: '/test',
   name: 'Test',
