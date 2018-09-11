@@ -14,7 +14,7 @@
       <div class="time-line fl"></div>
       <div class="fl">
         <p class='step order' v-if="limit === 'NONE'? true : false">预约阶段</p>
-        <p v-else class='steap order'>活动报名阶段</p>
+        <p v-else class='step order'>活动报名阶段</p>
         <div class="detail">
           <div class="block" v-if="limit === 'NONE'? true : false">
             <div class="title clearfix">
@@ -955,8 +955,8 @@ export default {
     position: relative;
     &:before {
       position: absolute;
-      top: 0;
-      left: -52px;
+      top: -7px;
+      left: -55px;
       content: '';
       width: 40px;
       height: 40px;
