@@ -23,6 +23,8 @@ export default class HostPusher extends BasePusher {
         this.interactor = new VhallInteraction({
           inavId: this.inavId,
           videoNode: this.rootEleId,
+          localVideoWidth: '100%',
+          localVideoHeight: '100%',
           success: result => {
             resolve(result)
           },

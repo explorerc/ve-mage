@@ -14,6 +14,8 @@ export default class GuestPusher extends BasePusher {
       this.interactor = new VhallInteractionGuest({
         inavId: this.inavId,
         videoNode: this.rootEleId,
+        localVideoWidth: '100%',
+        localVideoHeight: '100%',
         success: result => {
           successBK && successBK(result)
         },
