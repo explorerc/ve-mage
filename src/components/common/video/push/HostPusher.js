@@ -9,18 +9,18 @@ import BasePusher from './BasePusher'
  * @author zhenliang.sun
  */
 export default class HostPusher extends BasePusher {
-  constructor (appId, roomId, inavId, token, rootEleId) {
+  constructor(appId, roomId, inavId, token, rootEleId) {
     super(appId, roomId, inavId, token, rootEleId)
     this.type = 'host'
   }
 
-  initHostPusher () {
+  initHostPusher(opts = null) {
     let VhallInteraction = window.VhallInteraction
     let VhallSDK = window.Vhall
 
     return new Promise((resolve, reject) => {
       VhallSDK.ready(() => {
-        this.interactor = new VhallInteraction({
+        let def = {
           inavId: this.inavId,
           videoNode: this.rootEleId,
           localVideoWidth: '100%',
@@ -31,12 +31,16 @@ export default class HostPusher extends BasePusher {
           fail: reason => {
             reject(reason)
           }
-        })
+        }
+        if (opts) {
+          Object.assign(def, opts)
+        }
+        this.interactor = new VhallInteraction(def)
       })
     })
   }
 
-  set accountId (val) {
+  set accountId(val) {
     super.accountId = val
     Vhall.config({
       appId: this.appId,
@@ -52,7 +56,7 @@ export default class HostPusher extends BasePusher {
    * @param {*} [failedBK=null]
    * @memberof HostPusher
    */
-  startBroadCast () {
+  startBroadCast() {
     return new Promise((resolve, reject) => {
       this.interactor.startBroadCast({
         roomId: this.roomId,
@@ -69,7 +73,7 @@ export default class HostPusher extends BasePusher {
    * @param {*} [failedBK=null]
    * @memberof HostPusher
    */
-  stopBroadCast () {
+  stopBroadCast() {
     return new Promise((resolve, reject) => {
       this.interactor.stopBroadCast({
         roomId: this.roomId,
