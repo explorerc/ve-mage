@@ -18,12 +18,12 @@
 
   export default {
     name: 'master',
-    components: { Setting, PlayVideo },
+    components: {Setting, PlayVideo},
     data () {
       return {
         activityId: '',
         settingShow: false,
-        playType: 'warm', // 直播(live), 回放(vod), 暖场(warm)
+        playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
         paasParams: {
           appId: '',
           roomId: '',
@@ -39,17 +39,17 @@
         this.$router.go(-1)
       }
       this.activityId = queryId
-      // this.initPusherParams()
       this.initToken()
     },
     methods: {
+      /* 初始化，获取权限 */
       initToken () {
         LiveHttp.getLiveTtoken(this.activityId).then(res => {
           this.settingShow = true
           this.initPusherParams()
         })
       },
-      /* 初始化插件 */
+      /* 初始化推拉流直播插件参数 */
       initPusherParams () {
         LiveHttp.getPaasParam(this.activityId).then(res => {
           this.paasParams = {
@@ -66,22 +66,22 @@
 </script>
 
 <style scoped lang="scss">
-.master-box {
-  .master-play-box {
-    position: relative;
-    height: 800px;
-    .master-box-left {
-      margin-right: 400px;
-      height: 100%;
-    }
-    .master-box-right {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 400px;
-      height: 500px;
-      background-color: #8e9198;
+  .master-box {
+    .master-play-box {
+      position: relative;
+      height: 800px;
+      .master-box-left {
+        margin-right: 400px;
+        height: 100%;
+      }
+      .master-box-right {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 400px;
+        height: 500px;
+        background-color: #8E9198;
+      }
     }
   }
-}
 </style>

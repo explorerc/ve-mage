@@ -1,7 +1,11 @@
 <template>
   <div class="play-container">
     <div class="play-video-box" :id="playBoxId" v-if="playType=='live'"></div>
-    <div class="play-video-box" :id="playBoxId" v-else></div>
+    <div class="play-video-box" :id="playBoxId" v-else-if="playType=='vod'"></div>
+    <div class="play-video-box" :id="playBoxId" v-else>
+      <img v-if="imageSrc" :src="imageSrc">
+    </div>
+    <i class="iconfont icon-bofang" v-if="playBtnShow" @click="playVideo"></i>
   </div>
 </template>
 
@@ -15,7 +19,15 @@
     data () {
       return {
         playComps: {},
-        playBoxId: `play-vides-${Math.random()}`
+        imageUrl: '', // 暖场视频图片
+        recordId: '', // 暖场视频id
+        playBtnShow: false,
+        playBoxId: `play-vides-${Math.random()}`,
+        sdkPlayParam: {
+          appId: '',
+          accountId: '',
+          token: ''
+        }
       }
     },
     props: {
@@ -36,6 +48,11 @@
         }
       }
     },
+    computed: {
+      imageSrc () {
+        return `${this.$imgHost}/${this.imageUrl}`
+      }
+    },
     watch: {
       paasParams () {
         this.initComponent()
@@ -47,24 +64,68 @@
           this.playComps = new LivePuller(this.paasParams.appId, this.paasParams.roomId, this.playBoxId, this.paasParams.token)
           this.initPusher()
         } else if (this.playType === 'warm') { // 暖场
+          ActivityManger.queryPassSdkInfo().then((res) => {
+            this.sdkPlayParam.appId = res.data.appId
+            this.sdkPlayParam.accountId = res.data.accountId
+            this.sdkPlayParam.token = res.data.token
+          })
           this.queryWarmInfo()
         }
       },
+      playVideo () {
+        if (this.playType === 'warm') { // 暖场
+          this.playWarm()
+        }
+      },
+      /* 播放暖场视频 */
+      playWarm () {
+        this.$nextTick(() => {
+          if (!this.recordId) return
+          window.Vhall.ready(() => {
+            window.VhallPlayer.init({
+              recordId: this.recordId,
+              type: 'vod',
+              videoNode: this.playBoxId,
+              complete: () => {
+                this.playBtnShow = false
+                window.VhallPlayer.play()
+              }
+            })
+          })
+          /* 初始化配置 */
+          window.Vhall.config({
+            appId: this.sdkPlayParam.appId, // 应用 ID ,必填
+            accountId: this.sdkPlayParam.accountId, // 第三方用户唯一标识,必填
+            token: this.sdkPlayParam.token // token必填
+          })
+        })
+      },
       queryWarmInfo () {
         ActivityManger.queryWarmInfoById(this.$route.params.id).then((res) => {
-          console.log(res)
+          this.imageUrl = res.data.imgUrl
+          this.recordId = res.data.recordId
+          this.playBtnShow = true
         })
       },
       /* 初始化插件 */
       initPusher () {
         this.$nextTick(() => {
-          this.hostPusher = new HostPusher(
-            this.paasParams.appId,
-            this.paasParams.roomId,
-            this.paasParams.inavId,
-            this.paasParams.token, this.playBoxId)
-          this.hostPusher.initHostPusher().then(() => {
-            this.getDevice()
+          this.hostPusher = new HostPusher(this.paasParams.appId, this.paasParams.roomId, this.paasParams.inavId, this.paasParams.token, this.playBoxId)
+          this.hostPusher.initHostPusher({
+            conf: {
+              videoSize: [400, 225, 400, 225]
+            }
+          }).then(() => {
+            // 开启旁路推流
+            this.hostPusher.stopBroadCast().then(() => {
+              this.hostPusher.startBroadCast().then(() => {
+                console.log('----------成开始推流----------')
+              }).catch(error => {
+                console.error(`旁路推流失败:${error}`)
+              })
+            }).catch(error => {
+              console.error(`停止旁路推流失败:${error}`)
+            })
           }).catch(error => {
             console.log(error)
           })
@@ -77,10 +138,30 @@
 
 <style scoped lang="scss">
   .play-container {
+    position: relative;
     height: 100%;
     .play-video-box {
       height: 100%;
+      overflow: hidden;
       background-color: #313131;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .icon-bofang {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      color: red;
+      font-size: 60px;
+      &:hover {
+        cursor: pointer;
+        opacity: .8;
+      }
     }
   }
 </style>
