@@ -59,6 +59,7 @@
       }
     },
     methods: {
+      /* 初始组件 */
       initComponent () {
         if (this.playType === 'live') { // 直播
           this.playComps = new LivePuller(this.paasParams.appId, this.paasParams.roomId, this.playBoxId, this.paasParams.token)

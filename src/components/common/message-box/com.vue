@@ -128,6 +128,13 @@
   right: 0;
   text-align: center;
   z-index: 1005;
+  &::before{
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+  }
   .ve-modal {
     position: fixed;
     left: 0;
@@ -138,12 +145,9 @@
     background: #000;
   }
   .ve-message-box {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding-bottom: 10px;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
     background-color: #fff;
     border-radius: 4px;
     font-size: 16px;

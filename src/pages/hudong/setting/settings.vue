@@ -511,7 +511,7 @@
     .video-box {
       position: relative;
       width: 400px;
-      height: 300px;
+      height: 225px;
       overflow: hidden;
       margin: 0 auto 10px auto;
       background-color: rgba(0, 0, 0, 0.8);
