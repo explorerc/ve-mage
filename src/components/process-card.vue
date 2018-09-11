@@ -1,15 +1,17 @@
 <template>
   <div class='item'>
     <div class="card">
-      <div class='pic'><img :src="propImg"></div>
+      <div class='pic'>
+        <!-- <img :src="propImg"> -->
+      </div>
       <div class='desc'>
         <span>{{propTitle}}</span>
         <span class='des' v-for='item in propDesc' :key='item'>{{item}}</span>
       </div>
     </div>
     <div class="btm">
-      <el-switch class='switch' v-model="checked" active-color="#13ce66" inactive-color="#ff4949" @change='change' :title='title' v-show='showSwitch'></el-switch>
-      <span class='set'>设置</span>
+      <el-switch class='switch' v-model="checked" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change='change' :title='title' v-show='showSwitch'></el-switch>
+      <!-- <span class='set'>设置</span> -->
     </div>
   </div>
 </template>
@@ -92,34 +94,58 @@
 </script>
 
 <style lang='scss' scoped>
+@import 'assets/css/variable.scss';
+@import '~assets/css/mixin.scss';
 .item {
-  width: 250px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   float: left;
-  margin: 10px;
+  width: 442px;
+  height: 140px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(226, 226, 226, 1);
+  padding: 14px 12px;
+  margin: 10px 0;
+  margin-right: 20px;
+  &:nth-child(3n + 3) {
+    margin-right: 0px;
+  }
+}
+
+/* 设备宽度大于 1600 */
+
+@media all and (min-width: 1600px) {
+}
+
+/* 设备宽度小于 1600px */
+
+@media all and (max-width: 1600px) {
 }
 
 .card {
   width: 100%;
-  height: 100px;
-  padding: 10px;
+  height: 80px;
   .pic {
-    border: 1px solid #ccc;
-    border-radius: 5px;
     float: left;
     width: 70px;
     height: 70px;
     margin: 4px;
+    background: url('~assets/image/auto_wechat.png') no-repeat center;
+    background-size: contain;
+    margin-right: 20px;
   }
   .desc {
     float: left;
+    font-size: 18px;
+    color: $color-font;
+    padding: 10px 0;
     span {
       display: block;
       font-size: 16px;
     }
     span.des {
+      padding-top: 5px;
       font-size: 12px;
+      color: $color-font-sub;
     }
   }
 }
@@ -127,18 +153,8 @@
 .btm {
   width: 100%;
   height: 40px;
-  border-top: 1px solid #ccc;
-  span {
-    font-size: 12px;
-    cursor: pointer;
-    height: 100%;
-    line-height: 40px;
-    float: right;
-    padding: 0 5px;
-    border-left: 1px solid #ccc;
-  }
   .switch {
-    float: left;
+    float: right;
     margin: 10px 0px;
   }
   .more {

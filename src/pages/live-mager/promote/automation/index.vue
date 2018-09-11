@@ -961,14 +961,22 @@ export default {
       width: 40px;
       height: 40px;
       z-index: 9;
-      background: url('~assets/image/auto_wechat.png') no-repeat center;
+      background: url('~assets/image/auto_preview.svg') no-repeat center;
       background-size: contain;
+      background-color: rgba(85, 85, 85, 1);
+      border-radius: 100px;
+      background-size: 26px 25px;
+      background-position: 7px 7px;
     }
     &.live:before {
-      background-image: url('~assets/image/auto_msg.png');
+      background-image: url('~assets/image/auto_live.svg');
+      background-size: 24px 23px;
+      background-position: center;
     }
-    &.live:record {
-      background-image: url('~assets/image/auto_msg.png');
+    &.record:before {
+      background-image: url('~assets/image/auto_record.svg');
+      background-size: 24px 23px;
+      background-position: center;
     }
     &:nth-of-type(1) {
       margin-top: 0px;

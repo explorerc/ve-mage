@@ -6,7 +6,7 @@
           <div class='content-box from-box'>
             <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
             <div>
-              <com-input placeholder="请输入手机号码" :value.sync='sendPhone' ></com-input>
+              <com-input placeholder="请输入手机号码" :value.sync='sendPhone' :error-tips="phoneError" @focus="phoneError = ''"></com-input>
             </div>
           </div>
           <div class="btn-group">
@@ -35,7 +35,8 @@ export default {
   data () {
     return {
       sendPhone: '',
-      limitCount: ''
+      limitCount: '',
+      phoneError: ''
     }
   },
   props: {
@@ -73,10 +74,20 @@ export default {
       }
     },
     sendTest () {
-      if (this.isAuto) {
-        this.sendAuto()
+      // 为空
+      if (!this.sendPhone.length) {
+        this.phoneError = '请输入手机号码'
       } else {
-        this.sendTestmsg()
+        // 校验
+        if (this.validPhone(this.sendPhone)) {
+          if (this.isAuto) {
+            this.sendAuto()
+          } else {
+            this.sendTestmsg()
+          }
+        } else {
+          this.phoneError = '手机号码不符合规范'
+        }
       }
     },
     getCount () {
@@ -128,6 +139,10 @@ export default {
           position: 'center'
         })
       })
+    },
+    validPhone (phone) {
+      var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      return re.test(phone)
     }
   }
 }
