@@ -179,20 +179,20 @@
         camera: '',
         mic: '',
         options: [
-          {value: 10, label: '10秒'},
-          {value: 30, label: '30秒'},
-          {value: 60, label: '1分钟'},
-          {value: 180, label: '3分钟'},
-          {value: 300, label: '5分钟'},
-          {value: 600, label: '10分钟'},
-          {value: 900, label: '15分钟'},
-          {value: 1800, label: '30分钟'},
-          {value: 2700, label: '45分钟'},
-          {value: 3600, label: '60分钟'},
-          {value: 5400, label: '90分钟'},
-          {value: 7200, label: '120分钟'},
-          {value: 9000, label: '150分钟'},
-          {value: 10800, label: '180分钟'}
+          { value: 10, label: '10秒' },
+          { value: 30, label: '30秒' },
+          { value: 60, label: '1分钟' },
+          { value: 180, label: '3分钟' },
+          { value: 300, label: '5分钟' },
+          { value: 600, label: '10分钟' },
+          { value: 900, label: '15分钟' },
+          { value: 1800, label: '30分钟' },
+          { value: 2700, label: '45分钟' },
+          { value: 3600, label: '60分钟' },
+          { value: 5400, label: '90分钟' },
+          { value: 7200, label: '120分钟' },
+          { value: 9000, label: '150分钟' },
+          { value: 10800, label: '180分钟' }
         ],
         addPersonTime: 30
       }
@@ -372,153 +372,153 @@
   }
 </script>
 <style lang="scss">
-  .setting-box-select {
-    .el-select {
-      .el-input__inner {
-        border: solid 1px #e5e5e5;
-      }
-    }
-    .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
-      text-align: center;
+.setting-box-select {
+  .el-select {
+    .el-input__inner {
+      border: solid 1px #e5e5e5;
     }
   }
+  .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
+    text-align: center;
+  }
+}
 </style>
 <style lang="scss" scoped>
-  @import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 
-  .setting-box {
-    width: 100%;
-    max-width: 500px;
-    height: calc(100% - 20px);
-    padding: 20px 0 0;
-    border: solid 1px $color-bd;
-    margin: 20px 0;
+.setting-box {
+  width: 100%;
+  max-width: 500px;
+  height: calc(100% - 20px);
+  padding: 20px 0 0;
+  border: solid 1px $color-bd;
+  margin: 20px 0;
+  font-size: 14px;
+  background-color: $color-bg-sub;
+}
+
+.nav-menu {
+  font-size: 0;
+  border: solid 1px $color-bd;
+  border-radius: 4px;
+  height: 40px;
+  line-height: 38px;
+  span {
+    display: inline-block;
+    width: 84px;
     font-size: 14px;
-    background-color: $color-bg-sub;
+    text-align: center;
+    transition: background-color 0.2s;
+    &.active {
+      background-color: $color-default-active;
+    }
+    &:hover {
+      cursor: pointer;
+      opacity: 0.9;
+    }
   }
+}
 
-  .nav-menu {
-    font-size: 0;
-    border: solid 1px $color-bd;
-    border-radius: 4px;
-    height: 40px;
-    line-height: 38px;
-    span {
-      display: inline-block;
-      width: 84px;
-      font-size: 14px;
-      text-align: center;
-      transition: background-color .2s;
-      &.active {
-        background-color: $color-default-active;
-      }
-      &:hover {
-        cursor: pointer;
-        opacity: .9;
+.form-list {
+  overflow: hidden;
+  .form-row {
+    display: flex;
+    line-height: 40px;
+    padding: 10px 20px;
+    .form-title {
+      width: 140px;
+      padding-right: 10px;
+    }
+    .form-content /deep/ {
+      flex: 1;
+      .el-switch {
+        line-height: 40px;
+        height: 40px;
       }
     }
   }
+}
 
-  .form-list {
-    overflow: hidden;
-    .form-row {
-      display: flex;
-      line-height: 40px;
-      padding: 10px 20px;
-      .form-title {
-        width: 140px;
-        padding-right: 10px;
-      }
-      .form-content /deep/ {
-        flex: 1;
-        .el-switch {
-          line-height: 40px;
-          height: 40px;
-        }
-      }
-    }
-  }
-
-  .person-count-setting {
-    position: relative;
-    padding: 20px;
+.person-count-setting {
+  position: relative;
+  padding: 20px;
+  border-top: solid 1px $color-bd;
+  border-bottom: solid 1px $color-bd;
+  background-color: #fff;
+  &:after {
+    display: block;
+    position: absolute;
+    content: '';
+    top: -8px;
+    right: 34px;
+    height: 14px;
+    width: 14px;
     border-top: solid 1px $color-bd;
-    border-bottom: solid 1px $color-bd;
+    border-right: solid 1px $color-bd;
+    transform: rotate(-45deg);
     background-color: #fff;
-    &:after {
-      display: block;
-      position: absolute;
-      content: '';
-      top: -8px;
-      right: 34px;
-      height: 14px;
-      width: 14px;
-      border-top: solid 1px $color-bd;
-      border-right: solid 1px $color-bd;
-      transform: rotate(-45deg);
-      background-color: #fff;
+  }
+  p {
+    line-height: 40px;
+    .com-input /deep/ {
+      width: 80px;
+      margin: 0 10px;
     }
-    p {
-      line-height: 40px;
-      .com-input /deep/ {
-        width: 80px;
-        margin: 0 10px;
-      }
-      .el-select {
-        width: 100px;
-      }
-    }
-    .btn-box {
-      text-align: center;
-      margin: 20px 0 10px 0;
-      button {
-        margin: 0 10px;
-      }
+    .el-select {
+      width: 100px;
     }
   }
+  .btn-box {
+    text-align: center;
+    margin: 20px 0 10px 0;
+    button {
+      margin: 0 10px;
+    }
+  }
+}
 
-  .form-message-box {
-    margin-top: 20px;
-    .form-row {
-      padding: 10px 0;
-      .form-title {
-        width: 120px;
-      }
-      .com-input {
-        width: 310px;
-      }
-      .default-button {
-        margin-left: 10px;
-      }
+.form-message-box {
+  margin-top: 20px;
+  .form-row {
+    padding: 10px 0;
+    .form-title {
+      width: 120px;
+    }
+    .com-input {
+      width: 310px;
+    }
+    .default-button {
+      margin-left: 10px;
     }
   }
+}
 
-  .device-box /deep/ {
-    margin-top: 10px;
-    .form-row {
-      .form-title {
-        width: 54px;
-        text-align: left;
-      }
-      .el-select {
-        width: 348px;
-      }
+.device-box /deep/ {
+  margin-top: 10px;
+  .form-row {
+    .form-title {
+      width: 54px;
+      text-align: left;
     }
-    .video-box {
-      position: relative;
-      width: 400px;
-      height: 300px;
-      overflow: hidden;
-      margin: 0 auto 10px auto;
-      background-color: rgba(0, 0, 0, .8);
-    }
-    .update-device {
-      text-align: right;
-      color: $color-blue;
-      &:hover {
-        cursor: pointer;
-        color: $color-blue-hover;
-      }
+    .el-select {
+      width: 348px;
     }
   }
+  .video-box {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    overflow: hidden;
+    margin: 0 auto 10px auto;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  .update-device {
+    text-align: right;
+    color: $color-blue;
+    &:hover {
+      cursor: pointer;
+      color: $color-blue-hover;
+    }
+  }
+}
 </style>

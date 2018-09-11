@@ -84,70 +84,45 @@ export default {
   },
   data () {
     return {
-      content: '',
-      barrageSystem: null,
-      fps: 0,
-      intervalId: 0,
-      c: null,
-      hostPusher: null,
-      puller: null,
-      hostPusher2: null
+      cTime: '00:00', // 已播放时间
+      dTime: '00:00', // 总播放时间
+      play: false, // 播放暂停按钮
+      audioHttp: 'http://up.mcyt.net/?down/46426.mp3' // 音频链接
     }
   },
   methods: {
-    startBarrage () {
-      this.barrageSystem.start()
+    // 点击进度条事件
+    playMusic (e) {
+      const music = this.$refs.player // 音频所在对象
+      const barWidth = e.pageX / this.$refs.runfatbar.offsetWidth // 计算点击位置相对父元素总宽的比例
+      this.$refs.runbar.style.width = `${barWidth * 100}%` // 进度条应所在的比例总宽
+      music.currentTime = music.duration * barWidth // 计算点击时应播放所在的时间
+      music.play() // 播放音频
+      this.play = true // 更改播放暂停按钮为播放
     },
-    stopBarrage () {
-      this.barrageSystem.stop()
-      clearInterval(this.intervalId)
+
+    // 点击播放暂停按钮时间
+    audioState () {
+      this.play = !this.play // 更改播放暂停按钮状态
+      const music = this.$refs.player // 音频所在对象
+      if (this.play) {
+        music.play() // 播放音乐
+      } else {
+        music.pause() // 暂停音乐
+      }
     },
-    registBarrage () {
-      // console.log(this.$refs.cvs);
-      this.barrageSystem.registRenderer('normal', this.$refs.cvs, {})
-    },
-    addBarrage () {
-      let color = ['#ffffff', '#ff0000', '#00ff00', '#0000ff']
-      this.intervalId = setInterval(() => {
-        this.barrageSystem.add(Math.random().toFixed(2), 'normal', { 'fillStyle': color[Math.random() * color.length >> 0] })
-        this.barrageSystem.add(Math.random().toFixed(2), 'normal')
-        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
-        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
-        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
-        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
-        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
-        // this.barrageSystem.add(Math.random().toFixed(2), "normal")
-        this.fps = this.barrageSystem.fps
-      }, 50)
-      // this.barrageSystem.add(this.content, 'normal')
-    },
-    pauseBarrage () {
-      this.barrageSystem.pause()
-    },
-    resumeBarrage () {
-      this.barrageSystem.resume()
-    },
-    destroyBarrage () {
-      this.barrageSystem.destroy()
-    },
-    getDevices () {
-      this.hostPusher.getDevices().then(res => {
-        console.log(res)
-      })
-    },
-    broadcast () {
-      this.hostPusher.startBroadCast()
-    },
-    stopBroadcast () {
-      this.hostPusher.stopBroadCast()
-    },
-    getSetting () {
-      console.log(this.hostPusher.getSetting())
-    },
-    hideCamera () {
-      this.hostPusher.changeSetting({
-        video: false
-      })
+
+    // 切换歌曲按钮
+    switchAudio (value) {
+      if (value === 'top') {
+        this.audioHttp = 'http://mp3.henduoge.com/mp3/2018-04-19/1524135488.mp3'
+      } else if (value === 'bottom') {
+        this.audioHttp = 'http://mp3.henduoge.com/mp3/2018-04-20/1524234022.mp3'
+      }
+      this.play = false // 播放按钮为暂停
+      this.$refs.runbar.style.width = 0 // 清空颜色进度条
+      this.$refs.yuanright.style.display = 'none' // 清空圆形颜色进度条
+      this.$refs.yuanleft.style.display = 'none' // 清空圆形颜色进度条
     }
   }
 }
