@@ -14,13 +14,13 @@ export default class HostPusher extends BasePusher {
     this.type = 'host'
   }
 
-  initHostPusher () {
+  initHostPusher (opts = null) {
     let VhallInteraction = window.VhallInteraction
     let VhallSDK = window.Vhall
 
     return new Promise((resolve, reject) => {
       VhallSDK.ready(() => {
-        this.interactor = new VhallInteraction({
+        let def = {
           inavId: this.inavId,
           videoNode: this.rootEleId,
           localVideoWidth: '100%',
@@ -31,7 +31,11 @@ export default class HostPusher extends BasePusher {
           fail: reason => {
             reject(reason)
           }
-        })
+        }
+        if (opts) {
+          Object.assign(def, opts)
+        }
+        this.interactor = new VhallInteraction(def)
       })
     })
   }
@@ -77,5 +81,17 @@ export default class HostPusher extends BasePusher {
         fail: reason => reject(reason)
       })
     })
+  }
+
+  stop () {
+    super.stop()
+    this.stopBroadCast().then((res, rej) => {
+      this.interactor.exit()
+    })
+  }
+
+  destroy () {
+    super.destroy()
+    console.log('Paas 还未提供该方法使用')
   }
 }

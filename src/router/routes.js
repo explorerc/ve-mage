@@ -101,27 +101,20 @@ const SiteTemplate2 = () =>
   import('src/pages/site/template2.vue')
 
 /* 直播互动 */
-/* 直播互动--设置 */
-const LiveSettings = () =>
-  import('src/pages/hudong/setting/settings')
-/* 直播互动--视频组件，推拉流，回放 */
-const PlayVideo = () =>
-  import('src/pages/hudong/video/index')
+/* 直播互动--发起端 */
 const Master = () =>
   import('src/pages/hudong/master')
-
+/* 直播--观看端 */
+const Watcher = () =>
+  import('src/pages/hudong/watch/index')
 export default [{
-  path: '/setting/:id',
-  name: 'setting',
-  component: LiveSettings
+  path: '/watcher/:id',
+  name: 'watcher',
+  component: Watcher
 }, {
   path: '/master/:id',
   name: 'master',
   component: Master
-}, {
-  path: '/playVideo/:id',
-  name: 'playVideo',
-  component: PlayVideo
 }, {
   path: '/test',
   name: 'Test',

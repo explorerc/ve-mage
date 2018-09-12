@@ -179,20 +179,20 @@
         camera: '',
         mic: '',
         options: [
-          {value: 10, label: '10秒'},
-          {value: 30, label: '30秒'},
-          {value: 60, label: '1分钟'},
-          {value: 180, label: '3分钟'},
-          {value: 300, label: '5分钟'},
-          {value: 600, label: '10分钟'},
-          {value: 900, label: '15分钟'},
-          {value: 1800, label: '30分钟'},
-          {value: 2700, label: '45分钟'},
-          {value: 3600, label: '60分钟'},
-          {value: 5400, label: '90分钟'},
-          {value: 7200, label: '120分钟'},
-          {value: 9000, label: '150分钟'},
-          {value: 10800, label: '180分钟'}
+          { value: 10, label: '10秒' },
+          { value: 30, label: '30秒' },
+          { value: 60, label: '1分钟' },
+          { value: 180, label: '3分钟' },
+          { value: 300, label: '5分钟' },
+          { value: 600, label: '10分钟' },
+          { value: 900, label: '15分钟' },
+          { value: 1800, label: '30分钟' },
+          { value: 2700, label: '45分钟' },
+          { value: 3600, label: '60分钟' },
+          { value: 5400, label: '90分钟' },
+          { value: 7200, label: '120分钟' },
+          { value: 9000, label: '150分钟' },
+          { value: 10800, label: '180分钟' }
         ],
         addPersonTime: 30
       }
@@ -319,7 +319,11 @@
             this.paasParams.roomId,
             this.paasParams.inavId,
             this.paasParams.token, 'videoBoxId')
-          this.hostPusher.initHostPusher().then(() => {
+          this.hostPusher.initHostPusher({
+            conf: {
+              videoSize: [400, 225, 400, 225]
+            }
+          }).then(() => {
             this.getDevice()
           }).catch(error => {
             console.log(error)
@@ -384,15 +388,13 @@
   }
 </style>
 <style lang="scss" scoped>
-  @import "assets/css/mixin.scss";
+  @import 'assets/css/mixin.scss';
 
   .setting-box {
     width: 100%;
     max-width: 500px;
     height: calc(100% - 20px);
     padding: 20px 0 0;
-    border: solid 1px $color-bd;
-    margin: 20px 0;
     font-size: 14px;
     background-color: $color-bg-sub;
   }
@@ -408,13 +410,13 @@
       width: 84px;
       font-size: 14px;
       text-align: center;
-      transition: background-color .2s;
+      transition: background-color 0.2s;
       &.active {
         background-color: $color-default-active;
       }
       &:hover {
         cursor: pointer;
-        opacity: .9;
+        opacity: 0.9;
       }
     }
   }
@@ -507,10 +509,10 @@
     .video-box {
       position: relative;
       width: 400px;
-      height: 300px;
+      height: 225px;
       overflow: hidden;
       margin: 0 auto 10px auto;
-      background-color: rgba(0, 0, 0, .8);
+      background-color: rgba(0, 0, 0, 0.8);
     }
     .update-device {
       text-align: right;
