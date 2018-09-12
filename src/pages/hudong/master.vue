@@ -18,7 +18,7 @@
 
   export default {
     name: 'master',
-    components: {Setting, PlayVideo},
+    components: { Setting, PlayVideo },
     data () {
       return {
         activityId: '',
