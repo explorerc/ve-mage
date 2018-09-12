@@ -2,7 +2,7 @@
   <div class="master-box">
     <div class="master-play-box clearfix">
       <div class="master-box-left">
-        <play-video role="master" :play-type="playType" :paasParams="paasParams"></play-video>
+        <play-video role="watcher" :play-type="playType" :paasParams="paasParams"></play-video>
       </div>
       <div class="master-box-right">
         <setting v-if="settingShow" :paasParams="paasParams"></setting>
@@ -13,11 +13,11 @@
 
 <script>
   import LiveHttp from 'src/api/live'
-  import Setting from './setting/settings' // 直播设置
-  import PlayVideo from './video/index' // 直播推流回放组件
+  import Setting from '../setting/settings' // 直播设置
+  import PlayVideo from '../video/index' // 直播推流回放组件
 
   export default {
-    name: 'master',
+    name: 'watch',
     components: {Setting, PlayVideo},
     data () {
       return {

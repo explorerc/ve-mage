@@ -31,6 +31,10 @@
       }
     },
     props: {
+      role: {
+        type: String,
+        default: 'watcher' // 发起端(master), 观看(watcher)
+      },
       playType: {
         type: String,
         required: true,
@@ -61,9 +65,13 @@
     methods: {
       /* 初始组件 */
       initComponent () {
+        debugger
         if (this.playType === 'live') { // 直播
-          this.playComps = new LivePuller(this.paasParams.appId, this.paasParams.roomId, this.playBoxId, this.paasParams.token)
-          this.initPusher()
+          if (this.role === 'master') { // 主持人互动端
+            this.initPusher()
+          } else if (this.role === 'watcher') { // 观看端
+            this.initPuller()
+          }
         } else if (this.playType === 'warm') { // 暖场
           ActivityManger.queryPassSdkInfo().then((res) => {
             this.sdkPlayParam.appId = res.data.appId
@@ -71,6 +79,7 @@
             this.sdkPlayParam.token = res.data.token
           })
           this.queryWarmInfo()
+        } else if (this.playType === 'vod') { // 回放
         }
       },
       playVideo () {
@@ -108,13 +117,23 @@
           this.playBtnShow = true
         })
       },
-      /* 初始化插件 */
+      /* 初始拉流播放插件 */
+      initPuller () {
+        this.$nextTick(() => {
+          this.playComps = new LivePuller(this.paasParams.appId, this.paasParams.roomId, this.playBoxId, this.paasParams.token)
+          this.playComps.initLivePlayer(true, () => {
+            console.log('----------开始播放----------')
+          })
+          this.playComps.accountId = this.paasParams.accountId
+        })
+      },
+      /* 初始互动播放插件 */
       initPusher () {
         this.$nextTick(() => {
           this.hostPusher = new HostPusher(this.paasParams.appId, this.paasParams.roomId, this.paasParams.inavId, this.paasParams.token, this.playBoxId)
           this.hostPusher.initHostPusher({
             conf: {
-              videoSize: [400, 225, 400, 225]
+              videoSize: [800, 450, 800, 450]
             }
           }).then(() => {
             // 开启旁路推流
