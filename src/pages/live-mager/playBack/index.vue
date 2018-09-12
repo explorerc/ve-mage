@@ -406,7 +406,7 @@
             offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
             offlineTime: this.playBack.outLineTime
           }).then((res) => {
-            console.log(res)
+            if (res.code !== 200) return
             this.playBack.replayId = replayId
           })
         }
