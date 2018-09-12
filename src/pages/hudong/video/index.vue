@@ -8,6 +8,9 @@
       <img v-if="imageSrc" :src="imageSrc">
     </div>
     <i class="iconfont icon-bofang" v-if="playBtnShow" @click="playVideo"></i>
+    <div class="control-box">
+
+    </div>
   </div>
 </template>
 
@@ -207,6 +210,11 @@
         cursor: pointer;
         opacity: .8;
       }
+    }
+    .control-box{
+      position: absolute;
+      left: 0;
+      bottom: 0;
     }
   }
 </style>
