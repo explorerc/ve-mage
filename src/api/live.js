@@ -80,6 +80,34 @@ const LiveManage = {
         Authorization: token
       }
     })
+  },
+  /* 获取参会信息 */
+  async queryRegActivity (activityId) {
+    const promsObj = await new Promise((resolve, reject) => {
+      utils.ajax({
+        method: 'get',
+        url: '/frontend/user/reg-activity',
+        params: {
+          activityId: activityId
+        }
+      }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+    return promsObj
+  },
+  /* 根据参会信息获取paas参数 */
+  queryPaasParams (activityId, activityUserId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/frontend/live/sdk-token',
+      params: {
+        activityId: activityId,
+        activityUserId: activityUserId
+      }
+    })
   }
 }
 export default LiveManage

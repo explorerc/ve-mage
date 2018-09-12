@@ -30,6 +30,7 @@
         recordId: '', // 视频id
         outLineLink: '', // 外链
         playBoxId: `play-vides-${Math.random()}`,
+        activityId: '',
         sdkPlayParam: {
           appId: '',
           accountId: '',
@@ -72,6 +73,13 @@
         }
       }
     },
+    created () {
+      const queryId = this.$route.params.id
+      if (!queryId) {
+        this.$router.go(-1)
+      }
+      this.activityId = queryId
+    },
     methods: {
       /* 初始组件 */
       initComponent () {
@@ -90,7 +98,7 @@
       },
       /* 初始化直播 */
       initLivePlay () {
-        LiveHttp.getPaasParam(this.$route.params.id).then(res => {
+        LiveHttp.getPaasParam(this.activityId).then(res => {
           this.paasParams = {
             appId: res.data.appId,
             roomId: res.data.liveRoom,
@@ -106,8 +114,7 @@
         })
       },
       initPlayBack () {
-        ActivityManger.queryPlayBackInfoById(this.$route.params.id).then(res => {
-          console.log(res)
+        ActivityManger.queryPlayBackInfoById(this.activityId).then(res => {
           if (!(res.code === 200 && res.data)) return
           this.imageUrl = res.data.cover
           if (res.data.replay.type === 'LINK') { // 外链
@@ -120,34 +127,36 @@
       },
       /* 播放暖场视频 */
       playBackVideo () {
-        ActivityManger.queryPassSdkInfo().then((res) => {
-          this.sdkPlayParam.appId = res.data.appId
-          this.sdkPlayParam.accountId = res.data.accountId
-          this.sdkPlayParam.token = res.data.token
-          this.$nextTick(() => {
-            if (!this.recordId) return
-            window.Vhall.ready(() => {
-              window.VhallPlayer.init({
-                recordId: this.recordId,
-                type: 'vod',
-                videoNode: this.playBoxId,
-                complete: () => {
-                  this.playBtnShow = false
-                  window.VhallPlayer.play()
-                }
+        LiveHttp.queryRegActivity(this.activityId).then(res => {
+          LiveHttp.queryPaasParams(this.activityId, res.data.activityUserId).then((res) => {
+            const appId = res.data.appId
+            const accountId = res.data.accountId
+            const token = res.data.token
+            this.$nextTick(() => {
+              if (!this.recordId) return
+              window.Vhall.ready(() => {
+                window.VhallPlayer.init({
+                  recordId: this.recordId,
+                  type: 'vod',
+                  videoNode: this.playBoxId,
+                  complete: () => {
+                    this.playBtnShow = false
+                    window.VhallPlayer.play()
+                  }
+                })
               })
-            })
-            /* 初始化配置 */
-            window.Vhall.config({
-              appId: this.sdkPlayParam.appId, // 应用 ID ,必填
-              accountId: this.sdkPlayParam.accountId, // 第三方用户唯一标识,必填
-              token: this.sdkPlayParam.token // token必填
+              /* 初始化配置 */
+              window.Vhall.config({
+                appId: appId, // 应用 ID ,必填
+                accountId: accountId, // 第三方用户唯一标识,必填
+                token: token // token必填
+              })
             })
           })
         })
       },
       queryWarmInfo () {
-        ActivityManger.queryWarmInfoById(this.$route.params.id).then((res) => {
+        ActivityManger.queryWarmInfoById(this.activityId).then((res) => {
           this.imageUrl = res.data.imgUrl
           this.recordId = res.data.recordId
           this.playBtnShow = true

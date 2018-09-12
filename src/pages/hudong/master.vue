@@ -24,7 +24,7 @@
         activityId: '',
         settingShow: false,
         startInit: false,
-        playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+        playType: 'vod', // 直播(live), 回放(vod), 暖场(warm)
         paasParams: {
           appId: '',
           roomId: '',
@@ -47,8 +47,8 @@
       initToken () {
         LiveHttp.getLiveTtoken(this.activityId).then(res => {
           this.settingShow = true
+          this.startInit = true
           if (this.playType === 'live') {
-            this.startInit = true
             this.initPusherParams()
           }
         })
