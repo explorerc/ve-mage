@@ -70,6 +70,8 @@
       startInit (newVal) {
         if (newVal) {
           this.initComponent()
+        } else {
+          this.stopPlay()
         }
       }
     },
@@ -204,6 +206,11 @@
         }).catch(error => {
           console.error(`停止旁路推流失败:${error}`)
         })
+      },
+      stopPlay () {
+        if (this.playType === 'live') { // 直播
+          this.hostPusher.stop()
+        }
       }
     }
   }

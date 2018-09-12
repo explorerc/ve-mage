@@ -5,8 +5,12 @@
         <play-video role="master" :play-type="playType" :startInit="startInit"></play-video>
       </div>
       <div class="master-box-right">
-        <div></div>
-        <setting v-if="settingShow" :paasParams="paasParams"></setting>
+        <div class="master-header">
+          <button class="primary-button" @click="playVideo">{{startInit?'结束直播':'开始直播'}}</button>
+        </div>
+        <div class="master-content">
+          <setting v-if="settingShow" :paasParams="paasParams"></setting>
+        </div>
       </div>
     </div>
   </div>
@@ -48,7 +52,6 @@
       initToken () {
         LiveHttp.getLiveTtoken(this.activityId).then(res => {
           this.settingShow = true
-          this.startInit = true
           if (this.playType === 'live') {
             this.initPusherParams()
           }
@@ -65,12 +68,17 @@
             accountId: res.data.accountId
           }
         })
+      },
+      playVideo () {
+        this.startInit = !this.startInit
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
+  @import "assets/css/mixin.scss";
+
   .master-box {
     .master-play-box {
       position: relative;
@@ -86,6 +94,12 @@
         width: 400px;
         height: 500px;
         background-color: #8E9198;
+        .master-header {
+          height: 80px;
+        }
+        .master-content {
+          height: calc(100% - 80px);
+        }
       }
     }
   }
