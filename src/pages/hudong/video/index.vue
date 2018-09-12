@@ -1,7 +1,9 @@
 <template>
   <div class="play-container">
     <div class="play-video-box" :id="playBoxId" v-if="playType=='live'"></div>
-    <div class="play-video-box" :id="playBoxId" v-else-if="playType=='vod'"></div>
+    <div class="play-video-box" :id="playBoxId" v-else-if="playType=='vod'">
+      <div v-html="this.outLineLink" style="width:100%;height: 100%;"></div>
+    </div>
     <div class="play-video-box" :id="playBoxId" v-else>
       <img v-if="imageSrc" :src="imageSrc">
     </div>
@@ -19,9 +21,10 @@
     data () {
       return {
         playComps: {},
-        imageUrl: '', // 暖场视频图片
-        recordId: '', // 暖场视频id
         playBtnShow: false,
+        imageUrl: '',
+        recordId: '', // 视频id
+        outLineLink: '', // 外链
         playBoxId: `play-vides-${Math.random()}`,
         sdkPlayParam: {
           appId: '',
@@ -38,7 +41,7 @@
       playType: {
         type: String,
         required: true,
-        default: 'live' // 直播(live), 回放(vod), 暖场(warm)
+        default: '' // 直播(live), 回放(vod), 暖场(warm)
       },
       paasParams: {
         type: Object,
@@ -65,6 +68,7 @@
     methods: {
       /* 初始组件 */
       initComponent () {
+        debugger
         if (this.playType === 'live') { // 直播
           if (this.role === 'master') { // 主持人互动端
             this.initPusher()
@@ -72,40 +76,54 @@
             this.initPuller()
           }
         } else if (this.playType === 'warm') { // 暖场
-          ActivityManger.queryPassSdkInfo().then((res) => {
-            this.sdkPlayParam.appId = res.data.appId
-            this.sdkPlayParam.accountId = res.data.accountId
-            this.sdkPlayParam.token = res.data.token
-          })
           this.queryWarmInfo()
         } else if (this.playType === 'vod') { // 回放
+          this.initPlayBack()
         }
       },
       playVideo () {
         if (this.playType === 'warm') { // 暖场
-          this.playWarm()
+          this.playBackVideo()
         }
       },
+      initPlayBack () {
+        ActivityManger.queryPlayBackInfoById(this.$route.params.id).then(res => {
+          console.log(res)
+          if (!(res.code === 200 && res.data)) return
+          this.imageUrl = res.data.cover
+          if (res.data.replay.type === 'LINK') { // 外链
+            this.outLineLink = res.data.replay.link
+          } else if (res.data.replay.type === 'VIDEO') { // 回放视频
+            this.recordId = res.data.replay.video
+            this.playBackVideo()
+          }
+        })
+      },
       /* 播放暖场视频 */
-      playWarm () {
-        this.$nextTick(() => {
-          if (!this.recordId) return
-          window.Vhall.ready(() => {
-            window.VhallPlayer.init({
-              recordId: this.recordId,
-              type: 'vod',
-              videoNode: this.playBoxId,
-              complete: () => {
-                this.playBtnShow = false
-                window.VhallPlayer.play()
-              }
+      playBackVideo () {
+        ActivityManger.queryPassSdkInfo().then((res) => {
+          this.sdkPlayParam.appId = res.data.appId
+          this.sdkPlayParam.accountId = res.data.accountId
+          this.sdkPlayParam.token = res.data.token
+          this.$nextTick(() => {
+            if (!this.recordId) return
+            window.Vhall.ready(() => {
+              window.VhallPlayer.init({
+                recordId: this.recordId,
+                type: 'vod',
+                videoNode: this.playBoxId,
+                complete: () => {
+                  this.playBtnShow = false
+                  window.VhallPlayer.play()
+                }
+              })
             })
-          })
-          /* 初始化配置 */
-          window.Vhall.config({
-            appId: this.sdkPlayParam.appId, // 应用 ID ,必填
-            accountId: this.sdkPlayParam.accountId, // 第三方用户唯一标识,必填
-            token: this.sdkPlayParam.token // token必填
+            /* 初始化配置 */
+            window.Vhall.config({
+              appId: this.sdkPlayParam.appId, // 应用 ID ,必填
+              accountId: this.sdkPlayParam.accountId, // 第三方用户唯一标识,必填
+              token: this.sdkPlayParam.token // token必填
+            })
           })
         })
       },
@@ -136,19 +154,27 @@
             }
           }).then(() => {
             // 开启旁路推流
-            this.hostPusher.stopBroadCast().then(() => {
-              this.hostPusher.startBroadCast().then(() => {
-                console.log('----------成开始推流----------')
-              }).catch(error => {
-                console.error(`旁路推流失败:${error}`)
-              })
-            }).catch(error => {
-              console.error(`停止旁路推流失败:${error}`)
-            })
+            this.pullBroadCast()
           }).catch(error => {
             console.log(error)
           })
           this.hostPusher.accountId = this.paasParams.accountId
+        })
+      },
+      pullBroadCast () {
+        this.hostPusher.stopBroadCast().then(() => {
+          this.hostPusher.startBroadCast().then(() => {
+            console.log('----------旁路推流成功----------')
+          }).catch(error => {
+            console.error(`旁路推流失败:${error}`)
+            // 旁路推流失败,延迟递归继续旁路推流
+            let st = setTimeout(() => {
+              clearTimeout(st)
+              this.pullBroadCast()
+            }, 500)
+          })
+        }).catch(error => {
+          console.error(`停止旁路推流失败:${error}`)
         })
       }
     }
