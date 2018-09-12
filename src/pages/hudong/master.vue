@@ -5,6 +5,7 @@
         <play-video role="master" :play-type="playType" :startInit="startInit"></play-video>
       </div>
       <div class="master-box-right">
+        <div></div>
         <setting v-if="settingShow" :paasParams="paasParams"></setting>
       </div>
     </div>
@@ -24,7 +25,7 @@
         activityId: '',
         settingShow: false,
         startInit: false,
-        playType: 'vod', // 直播(live), 回放(vod), 暖场(warm)
+        playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
         paasParams: {
           appId: '',
           roomId: '',
