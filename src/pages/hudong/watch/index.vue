@@ -2,10 +2,7 @@
   <div class="master-box">
     <div class="master-play-box clearfix">
       <div class="master-box-left">
-        <play-video role="watcher" :play-type="playType" :paasParams="paasParams"></play-video>
-      </div>
-      <div class="master-box-right">
-        <setting v-if="settingShow" :paasParams="paasParams"></setting>
+        <play-video role="watcher" :play-type="playType" :startInit="startInit"></play-video>
       </div>
     </div>
   </div>
@@ -13,24 +10,16 @@
 
 <script>
   import LiveHttp from 'src/api/live'
-  import Setting from '../setting/settings' // 直播设置
   import PlayVideo from '../video/index' // 直播推流回放组件
 
   export default {
     name: 'watch',
-    components: {Setting, PlayVideo},
+    components: {PlayVideo},
     data () {
       return {
         activityId: '',
-        settingShow: false,
         playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
-        paasParams: {
-          appId: '',
-          roomId: '',
-          inavId: '', // 互动id
-          token: '',
-          accountId: ''
-        }
+        startInit: false
       }
     },
     created () {
@@ -45,20 +34,7 @@
       /* 初始化，获取权限 */
       initToken () {
         LiveHttp.getLiveTtoken(this.activityId).then(res => {
-          this.settingShow = true
-          this.initPusherParams()
-        })
-      },
-      /* 初始化推拉流直播插件参数 */
-      initPusherParams () {
-        LiveHttp.getPaasParam(this.activityId).then(res => {
-          this.paasParams = {
-            appId: res.data.appId,
-            roomId: res.data.liveRoom,
-            inavId: res.data.hdRoom, // 互动id
-            token: res.data.token,
-            accountId: res.data.accountId
-          }
+          this.startInit = true
         })
       }
     }
