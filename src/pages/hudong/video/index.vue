@@ -65,7 +65,6 @@
     methods: {
       /* 初始组件 */
       initComponent () {
-        debugger
         if (this.playType === 'live') { // 直播
           if (this.role === 'master') { // 主持人互动端
             this.initPusher()
