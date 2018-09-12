@@ -32,6 +32,11 @@ export default class BasePuller {
     callBK && callBK()
   }
 
+  resume (callBK = null) {
+    this.player.play()
+    callBK && callBK()
+  }
+
   /**
    *
    *

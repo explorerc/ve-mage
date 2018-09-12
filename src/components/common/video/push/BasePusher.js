@@ -100,4 +100,12 @@ export default class BasePusher {
       conf: conf
     })
   }
+
+  stop () {
+
+  }
+
+  destroy () {
+
+  }
 }
