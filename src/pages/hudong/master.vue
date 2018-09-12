@@ -9,7 +9,19 @@
           <button class="primary-button" @click="playVideo">{{startInit?'结束直播':'开始直播'}}</button>
         </div>
         <div class="master-content">
-          <setting v-if="settingShow" :paasParams="paasParams"></setting>
+          <div class="content-box">
+            <setting v-if="settingShow" :paasParams="paasParams"></setting>
+          </div>
+          <div class="content-menu">
+            <span>聊天</span>
+            <span>成员</span>
+            <span>数据</span>
+            <span>商品展示</span>
+            <div class="menu-bottom">
+              <span>分享</span>
+              <span @click="clickSetting">设置</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -48,10 +60,12 @@
       this.initToken()
     },
     methods: {
+      clickSetting () {
+        this.settingShow = true
+      },
       /* 初始化，获取权限 */
       initToken () {
         LiveHttp.getLiveTtoken(this.activityId).then(res => {
-          this.settingShow = true
           if (this.playType === 'live') {
             this.initPusherParams()
           }
@@ -84,21 +98,59 @@
       position: relative;
       height: 800px;
       .master-box-left {
-        margin-right: 400px;
+        margin-right: 450px;
         height: 100%;
       }
       .master-box-right {
         position: absolute;
         top: 0;
         right: 0;
-        width: 400px;
-        height: 500px;
-        background-color: #8E9198;
+        width: 450px;
+        height: 900px;
+        background-color: #fff;
         .master-header {
           height: 80px;
         }
         .master-content {
+          display: flex;
           height: calc(100% - 80px);
+          border-top: solid 1px $color-bd;
+          border-bottom: solid 1px $color-bd;
+          box-sizing: border-box;
+          .content-menu {
+            position: relative;
+            height: 100%;
+            width: 80px;
+            text-align: center;
+            background-color: #fff;
+            span {
+              display: block;
+              font-size: 12px;
+              padding: 8px 0;
+              border-bottom: solid 1px $color-bd;
+              &:hover{
+                cursor: pointer;
+                color: $color-default-hover;
+              }
+            }
+            .menu-bottom {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              border-top: solid 1px $color-bd;
+              span:last-child {
+                border: none;
+              }
+            }
+          }
+          .content-box {
+            height: 100%;
+            flex: 1;
+            border-left: solid 1px $color-bd;
+            border-right: solid 1px $color-bd;
+            box-sizing: border-box;
+          }
         }
       }
     }
