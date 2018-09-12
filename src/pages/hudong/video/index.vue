@@ -15,6 +15,7 @@
 </template>
 
 <script>
+  import LiveHttp from 'src/api/live'
   import ActivityManger from 'src/api/activity-manger'
   import LivePuller from 'src/components/common/video/pull/LivePuller'
   import HostPusher from 'src/components/common/video/push/HostPusher'
@@ -33,6 +34,13 @@
           appId: '',
           accountId: '',
           token: ''
+        },
+        paasParams: {
+          appId: '',
+          roomId: '',
+          inavId: '',
+          token: '',
+          accountId: ''
         }
       }
     },
@@ -46,16 +54,10 @@
         required: true,
         default: '' // 直播(live), 回放(vod), 暖场(warm)
       },
-      paasParams: {
-        type: Object,
+      startInit: {
+        type: Boolean,
         required: true,
-        default: {
-          appId: '',
-          roomId: '',
-          inavId: '',
-          token: '',
-          accountId: ''
-        }
+        default: false
       }
     },
     computed: {
@@ -64,20 +66,17 @@
       }
     },
     watch: {
-      paasParams () {
-        this.initComponent()
+      startInit (newVal) {
+        if (newVal) {
+          this.initComponent()
+        }
       }
     },
     methods: {
       /* 初始组件 */
       initComponent () {
-        debugger
         if (this.playType === 'live') { // 直播
-          if (this.role === 'master') { // 主持人互动端
-            this.initPusher()
-          } else if (this.role === 'watcher') { // 观看端
-            this.initPuller()
-          }
+          this.initLivePlay()
         } else if (this.playType === 'warm') { // 暖场
           this.queryWarmInfo()
         } else if (this.playType === 'vod') { // 回放
@@ -88,6 +87,23 @@
         if (this.playType === 'warm') { // 暖场
           this.playBackVideo()
         }
+      },
+      /* 初始化直播 */
+      initLivePlay () {
+        LiveHttp.getPaasParam(this.$route.params.id).then(res => {
+          this.paasParams = {
+            appId: res.data.appId,
+            roomId: res.data.liveRoom,
+            inavId: res.data.hdRoom, // 互动id
+            token: res.data.token,
+            accountId: res.data.accountId
+          }
+          if (this.role === 'master') { // 主持人互动端
+            this.initPusher()
+          } else if (this.role === 'watcher') { // 观看端
+            this.initPuller()
+          }
+        })
       },
       initPlayBack () {
         ActivityManger.queryPlayBackInfoById(this.$route.params.id).then(res => {
@@ -211,7 +227,7 @@
         opacity: .8;
       }
     }
-    .control-box{
+    .control-box {
       position: absolute;
       left: 0;
       bottom: 0;

@@ -2,7 +2,7 @@
   <div class="master-box">
     <div class="master-play-box clearfix">
       <div class="master-box-left">
-        <play-video role="master" :play-type="playType" :paasParams="paasParams"></play-video>
+        <play-video role="master" :play-type="playType" :startInit="startInit"></play-video>
       </div>
       <div class="master-box-right">
         <setting v-if="settingShow" :paasParams="paasParams"></setting>
@@ -18,11 +18,12 @@
 
   export default {
     name: 'master',
-    components: { Setting, PlayVideo },
+    components: {Setting, PlayVideo},
     data () {
       return {
         activityId: '',
         settingShow: false,
+        startInit: false,
         playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
         paasParams: {
           appId: '',
@@ -46,7 +47,10 @@
       initToken () {
         LiveHttp.getLiveTtoken(this.activityId).then(res => {
           this.settingShow = true
-          this.initPusherParams()
+          if (this.playType === 'live') {
+            this.startInit = true
+            this.initPusherParams()
+          }
         })
       },
       /* 初始化推拉流直播插件参数 */
