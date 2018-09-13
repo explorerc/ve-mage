@@ -55,12 +55,12 @@
               <dd>品牌</dd>
             </dl>
           </li>
-          <li class='step live active'>
+          <!-- <li class='step live active'>
             <dl>
               <dt></dt>
               <dd>直播</dd>
             </dl>
-          </li>
+          </li> -->
           <li class='step disable record'>
             <dl>
               <dt></dt>
@@ -79,40 +79,40 @@
         <div>
           <!-- <span>准备</span> -->
           <ol>
-            <li v-for='item in cardData.prepare' :key='item.title' v-show="item.checked">{{item.title}}</li>
+            <li v-for='item in cardData.prepare' :key='item.title' v-show="item.switch">{{item.title}}</li>
           </ol>
         </div>
         <div>
           <!-- <span>营销</span> -->
           <ol>
-            <li v-for='item in cardData.marketing' :key='item.title' v-show="item.checked">{{item.title}}</li>
+            <li v-for='item in cardData.brand' :key='item.title' v-show="item.switch">{{item.title}}</li>
           </ol>
         </div>
         <div>
           <!-- <span>形象</span> -->
           <ol>
-            <li v-for='item in cardData.promote' :key='item.title' v-show="item.checked">{{item.title}}</li>
+            <li v-for='item in cardData.promote' :key='item.title' v-show="item.switch">{{item.title}}</li>
           </ol>
         </div>
-        <div>
-          <!-- <span>直播</span> -->
+        <!-- <div>
+          <span>直播</span>
           <ol>
-            <!-- <li v-for='item in cardData.webinar' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
             <li>直播监控</li>
             <li>聊天审核</li>
           </ol>
-        </div>
+        </div> -->
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <!-- <li v-for='item in cardData.record' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+            <!-- <li v-for='item in cardData.record' :key='item.title' v-show="item.switch">{{item.title}}</li> -->
+            <li v-for='item in cardData.record' :key='item.title' v-show="item.switch">{{item.title}}</li>
             <li>设置回放</li>
           </ol>
         </div>
         <div>
           <!-- <span>数据</span> -->
           <ol>
-            <!-- <li v-for='item in processData.data' :key='item.title' v-show="item.checked">{{item.title}}</li> -->
+            <!-- <li v-for='item in processData.data' :key='item.title' v-show="item.switch">{{item.title}}</li> -->
             <li>数据报表</li>
             <li>详细数据导出</li>
           </ol>
@@ -122,29 +122,31 @@
     </div>
     <div class="fun-card">
       <p class='block-separte'>准备</p>
-      <div class="item prepare">
-        <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
-            :prop-img='item.img'></process-card>
+        <div class="item prepare">
+          <div class="card-list clearfix">
+            <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
+              :prop-img='item.img'></process-card>
+          </div>
         </div>
-      </div>
       <div class="item marketing">
-        <p class='block-separte'>营销</p>
+        <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.marketing" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"'
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.brand" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"'
             :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item promote">
-        <p class='block-separte'>形象</p>
+        <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.promote" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.promote" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
             :prop-img='item.img'></process-card>
         </div>
       </div>
       <div class="item setting">
-        <p class='block-separte'>高级设置</p>
+        <p class='block-separte'>回放</p>
         <div class="card-list clearfix">
+          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.record" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
+            :prop-img='item.img'></process-card>
           <!-- <process-card @update:checked='switchBack' v-for="(item,index) in cardData['setting']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-img='item.img'></process-card> -->
         </div>
       </div>
@@ -184,194 +186,259 @@
       // this.state = 1
 
       // 假数据 返回的card 数据
+      // this.cardData = {
+      //   'prepare': [{
+      //     title: '基本信息',
+      //     img: '',
+      //     switch: false,
+      //     checked: true,
+      //     desc: [
+      //       '基本信息内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '观看限制',
+      //     img: '',
+      //     switch: false,
+      //     checked: true,
+      //     desc: [
+      //       '观看限制内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '角色设置',
+      //     img: '',
+      //     checked: true,
+      //     switch: false,
+      //     desc: [
+      //       '角色设置内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '暖场设置',
+      //     img: '',
+      //     switch: true,
+      //     checked: true,
+      //     desc: [
+      //       '暖场设置内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '预约报名',
+      //     img: '',
+      //     switch: false,
+      //     checked: true,
+      //     desc: [
+      //       '预约报名内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '通知提醒',
+      //     img: '',
+      //     switch: true,
+      //     checked: true,
+      //     desc: [
+      //       '通知提醒内容1'
+      //     ]
+      //   }
+      //   ],
+      //   'marketing': [{
+      //     title: '幸运大转盘',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '幸运大转盘内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '红包雨',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '红包雨内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '瓜分大奖',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '瓜分大奖内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '暖场设置',
+      //     img: '',
+      //     checked: true,
+      //     link: '/liveMager/warmField/',
+      //     desc: [
+      //       '暖场设置内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '观看奖励',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '观看奖励内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '有奖答题',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '有奖答题内容1'
+      //     ]
+      //   }
+      //   ],
+      //   'promote': [{
+      //     title: '活动官网',
+      //     img: '',
+      //     checked: true,
+      //     switch: false,
+      //     desc: [
+      //       '活动官网内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '直播观看页',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '直播观看页内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '广告设置',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '广告设置内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '播放器',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '播放器内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '分享设置',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '分享设置内容1'
+      //     ]
+      //   }
+      //   ],
+      //   'setting': [{
+      //     title: '网页嵌入',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '网页嵌入内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '直播工具配置',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '直播工具配置内容1'
+      //     ]
+      //   },
+      //   {
+      //     title: '角色设置',
+      //     img: '',
+      //     checked: true,
+      //     desc: [
+      //       '角色设置内容1'
+      //     ]
+      //   }
+      //   ]
+      // }
       this.cardData = {
-        'prepare': [{
-          title: '基本信息',
-          img: '',
-          switch: false,
-          checked: true,
-          desc: [
-            '基本信息内容1',
-            '基本信息内容2'
-          ]
-        },
-        {
-          title: '观看限制',
-          img: '',
-          switch: false,
-          checked: true,
-          desc: [
-            '观看限制内容1',
-            '观看限制内容2'
-          ]
-        },
-        {
-          title: '角色设置',
-          img: '',
-          checked: true,
-          switch: false,
-          desc: [
-            '角色设置内容1',
-            '角色设置内容2'
-          ]
-        },
-        {
-          title: '暖场设置',
-          img: '',
-          switch: true,
-          checked: true,
-          desc: [
-            '暖场设置内容1',
-            '暖场设置内容2'
-          ]
-        },
-        {
-          title: '预约报名',
-          img: '',
-          switch: false,
-          checked: true,
-          desc: [
-            '预约报名内容1',
-            '预约报名内容2'
-          ]
-        },
-        {
-          title: '通知提醒',
-          img: '',
-          switch: true,
-          checked: true,
-          desc: [
-            '通知提醒内容1',
-            '通知提醒内容2'
-          ]
-        }
+        'prepare': [
+          {
+            title: '基本信息',
+            desc: '',
+            link: '/liveMager/edit/',
+            switch: true
+          },
+          {
+            title: '活动报名',
+            desc: '已设置',
+            link: '/liveMager/prepare/limit-apply/',
+            switch: true
+          },
+          {
+            title: '暖场设置',
+            desc: '"asdasdasd.mp4"',
+            link: '/liveMager/warmField/',
+            switch: true
+          }
         ],
-        'marketing': [{
-          title: '幸运大转盘',
-          img: '',
-          checked: true,
-          desc: [
-            '幸运大转盘内容1',
-            '幸运大转盘内容2'
-          ]
-        },
-        {
-          title: '红包雨',
-          img: '',
-          checked: true,
-          desc: [
-            '红包雨内容1'
-          ]
-        },
-        {
-          title: '瓜分大奖',
-          img: '',
-          checked: true,
-          desc: [
-            '瓜分大奖内容1',
-            '瓜分大奖内容2'
-          ]
-        },
-        {
-          title: '暖场设置',
-          img: '',
-          checked: true,
-          desc: [
-            '暖场设置内容1',
-            '暖场设置内容2'
-          ]
-        },
-        {
-          title: '观看奖励',
-          img: '',
-          checked: true,
-          desc: [
-            '观看奖励内容1',
-            '观看奖励内容2'
-          ]
-        },
-        {
-          title: '有奖答题',
-          img: '',
-          checked: true,
-          desc: [
-            '有奖答题内容1',
-            '有奖答题内容2'
-          ]
-        }
+        'brand': [
+          {
+            title: '活动官网',
+            desc: '已发布',
+            link: '',
+            switch: true
+          },
+          {
+            title: '直播引导页',
+            desc: '已发布',
+            link: '/setLiveGuided/',
+            switch: true
+          },
+          {
+            title: '观看页',
+            desc: '"定制直播观看页面"',
+            link: '/master/',
+            switch: true
+          }
         ],
-        'promote': [{
-          title: '活动官网',
-          img: '',
-          checked: true,
-          switch: false,
-          desc: [
-            '活动官网内容1',
-            '活动官网内容2'
-          ]
-        },
-        {
-          title: '直播观看页',
-          img: '',
-          checked: true,
-          desc: [
-            '直播观看页内容1'
-          ]
-        },
-        {
-          title: '广告设置',
-          img: '',
-          checked: true,
-          desc: [
-            '广告设置内容1',
-            '广告设置内容2'
-          ]
-        },
-        {
-          title: '播放器',
-          img: '',
-          checked: true,
-          desc: [
-            '播放器内容1',
-            '播放器内容2'
-          ]
-        },
-        {
-          title: '分享设置',
-          img: '',
-          checked: true,
-          desc: [
-            '分享设置内容1',
-            '分享设置内容2'
-          ]
-        }
+        'promote': [
+          {
+            title: '自动化通知',
+            desc: '',
+            link: '/liveMager/promote/auto/preview/',
+            switch: true
+          },
+          {
+            title: '推广传单',
+            desc: '',
+            switch: true
+          },
+          {
+            title: '邮箱',
+            desc: '""',
+            link: '/liveMager/email/',
+            switch: true
+          },
+          {
+            title: '短信',
+            desc: '""',
+            link: '/liveMager/promote/msg/list/',
+            switch: true
+          },
+          {
+            title: '微信',
+            desc: '""',
+            link: '/liveMager/promote/wechat/list/',
+            switch: true
+          }
         ],
-        'setting': [{
-          title: '网页嵌入',
-          img: '',
-          checked: true,
-          desc: [
-            '网页嵌入内容1',
-            '网页嵌入内容2'
-          ]
-        },
-        {
-          title: '直播工具配置',
-          img: '',
-          checked: true,
-          desc: [
-            '直播工具配置内容1'
-          ]
-        },
-        {
-          title: '角色设置',
-          img: '',
-          checked: true,
-          desc: [
-            '角色设置内容1',
-            '角色设置内容2'
-          ]
-        }
+        'record': [
+          {
+            title: '回放',
+            desc: '已设置',
+            link: '/liveMager/playBack/',
+            switch: true
+          }
         ]
       }
     },
@@ -424,6 +491,9 @@
             console.log(e)
             if (e.action === 'cancel') {
             } else if (e.action === 'confirm') {
+              this.$router.push({
+                path: `/master/${this.activityId}`
+              })
               // this.state = 0
             }
           }

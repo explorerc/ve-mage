@@ -159,7 +159,6 @@
           emailTemplateId: 1,
           title: '',
           content: '',
-          desc: '',
           senderName: '',
           planTime: ''
         }
@@ -293,11 +292,11 @@
         if (!this.checkParams(this.isTimer)) return
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
-            this.$router.go(-1)
+            this.$router.push(`/liveMager/email/${this.email.activityId}`)
           })
         } else { // 保存并发送
           LiveHttp.saveAndsendEmail(this.email).then((res) => {
-            this.$router.go(-1)
+            this.$router.push(`/liveMager/email/${this.email.activityId}`)
           })
         }
       },
@@ -319,7 +318,6 @@
         this.errorMsg = {
           title: '',
           content: '',
-          desc: '',
           senderName: '',
           planTime: ''
         }
@@ -331,9 +329,6 @@
           return false
         } else if (!this.email.content) {
           this.errorMsg.content = '邮件内容不能为空'
-          return false
-        } else if (!this.email.desc) {
-          this.errorMsg.desc = '邮件摘要不能为空'
           return false
         }
         return true
