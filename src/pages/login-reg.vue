@@ -1,7 +1,7 @@
 <template>
   <div class="v-login-reg" @click="changeState">
     <div class="v-info" id="toggler-div">
-      <img :src="avatarImg" alt="" class="v-avatar" id="toggler-img">
+      <img :src="avatarImg" alt="" class="v-avatar" id="toggler-img" @avatarChange="avatarChange($event)">
       <span class="v-name" id="toggler-span">{{name}}</span>
     </div>
     <ul class="v-select" v-show="isShow">
@@ -22,6 +22,7 @@ import loginManage from 'src/api/login-manage'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 import account from 'src/api/account-manage'
+import EventBus from 'src/utils/eventBus'
 export default {
   props: {
     isShow: { // 头像下拉是否显示
@@ -44,6 +45,14 @@ export default {
     avatarImg: function () {
       return this.avatar ? this.$imgHost + '/' + this.avatar : ''
     }
+  },
+  created () {
+    debugger
+    console.log('666' + this.avatar)
+    EventBus.$on('avatarChange', (val) => {
+      debugger
+      this.avatar = val ? '' : this.$imgHost + '/' + val
+    })
   },
   mounted () {
     let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))

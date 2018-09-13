@@ -25,7 +25,22 @@ router.beforeResolve((to, from, next) => {
         if (accountInfo.hasPassword) {
           next()
         } else {
-          next('/setPassword')
+          account.getAccount({}).then((res) => {
+            if (res.code !== 200) {
+              next('/login')
+              return false
+            } else {
+              if (res.data.hasPassword) {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+                sessionStorage.setItem('isLogin', true)
+                next()
+                return false
+              } else {
+                next('/setPassword')
+                return false
+              }
+            }
+          })
         }
       } else {
         account.getAccount({}).then((res) => {

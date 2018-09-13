@@ -8,7 +8,7 @@
         基本信息
       </p>
       <div class="v-editor v-avatar-img" style="height: 125px;">
-        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
+        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="2048" @success="uploadImgSuccess" @error="uploadError"/>
       </div>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号：</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称：</span></com-editor>
@@ -97,6 +97,7 @@
   import VeUploadTx from 'src/components/ve-upload-tx'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -303,6 +304,7 @@
         }
       },
       uploadImgSuccess (data) {
+        debugger
         let companyData = {
           avatar: ''
         }
@@ -314,9 +316,8 @@
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
           } else {
-            let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
-            contactInfo.avatar = data.name
-            sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
+            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            EventBus.$emit('avatarChange', data.name)
             // this.getAccount()
           }
         })
