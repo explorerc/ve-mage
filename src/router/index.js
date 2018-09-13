@@ -15,45 +15,32 @@ const router = new Router({
 router.beforeResolve((to, from, next) => {
   if (to.meta.noLogin) { // 不需要登录
     next()
+    return false
   } else {
-    if (to.meta.noAuth) { // 不需要验证是否设置密码
+    if (to.meta.noAuth) { // 不需要验证是否这只密码
       next()
+      return false
     } else {
-      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
       let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
-      if (isLogin && accountInfo) {
-        if (accountInfo.hasPassword) {
+      let userInfo = sessionStorage.getItem('userInfo')
+      if (isLogin && userInfo && userInfo.hasPassword) {
+        if (userInfo.hasPassword) {
           next()
+          return false
         } else {
-          account.getAccount({}).then((res) => {
-            if (res.code !== 200) {
-              next('/login')
-              return false
-            } else {
-              if (res.data.hasPassword) {
-                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-                sessionStorage.setItem('isLogin', true)
-                next()
-                return false
-              } else {
-                next('/setPassword')
-                return false
-              }
-            }
-          })
+          next('/setPassword')
+          return false
         }
       } else {
-        account.getAccount({}).then((res) => {
+        account.getUserInfo({}).then((res) => {
           if (res.code !== 200) {
             next('/login')
+            return false
           } else {
-            if (res.data.hasPassword) {
-              sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-              sessionStorage.setItem('isLogin', true)
-              next()
-            } else {
-              next('/setPassword')
-            }
+            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            sessionStorage.setItem('isLogin', true)
+            next()
+            return false
           }
         })
       }
