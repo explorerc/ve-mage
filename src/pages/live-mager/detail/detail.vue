@@ -385,7 +385,7 @@
           {
             title: '活动官网',
             desc: '已发布',
-            link: '',
+            link: '/liveMager/site/',
             switch: true
           },
           {
