@@ -182,6 +182,7 @@
           } else {
             sessionStorage.setItem('isLogin', true)
             sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            debugger
             this.setIsLogin(1)
             this.$router.replace('/setAccount')
           }
