@@ -6,7 +6,7 @@
       </div>
       <div class="master-box-right">
         <div class="master-header">
-          <button class="primary-button" @click="starAndEndtLive">{{startInit?'结束直播':'开始直播'}}</button>
+          <button class="primary-button" @click="starAndEndtLive">{{liveBtnShow?'结束直播':'开始直播'}}</button>
         </div>
         <div class="master-content">
           <div class="content-box">
@@ -48,6 +48,9 @@
         settingShow: false,
         startInit: false,
         playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+        activityInfo: {
+          status: ''
+        },
         paasParams: {
           appId: '',
           roomId: '',
@@ -55,6 +58,11 @@
           token: '',
           accountId: ''
         }
+      }
+    },
+    computed: {
+      liveBtnShow () {
+        return this.activityInfo.status !== 'FINISH'
       }
     },
     created () {
@@ -70,7 +78,7 @@
         await this.initToken()
         /* 查询详情 */
         await LiveHttp.queryActivityInfo(this.activityId).then(res => {
-          this.startInit = res.data.activity.status === 'FINISH'
+          this.activityInfo = res.data.activity
         })
       },
       clickSetting () {
@@ -99,7 +107,7 @@
       /* 开始结束直播 */
       starAndEndtLive () {
         this.startInit = !this.startInit
-        if (this.startInit) {
+        if (this.liveBtnShow) {
           LiveHttp.startLive(this.activityId).then(res => {
             if (res.code === 200) {
               this.$toast({
