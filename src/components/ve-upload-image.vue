@@ -200,7 +200,7 @@
       width: 60px;
       height: 60px;
       margin: 20px auto 10px auto;
-      background-image: url('./static/image/upload-image-icon@2x.png');
+      background-image: url('../assets/image/upload-image-icon@2x.png');
       background-size: cover;
     }
   }

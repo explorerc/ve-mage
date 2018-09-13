@@ -1,6 +1,6 @@
 <template>
   <div class="edit-container" v-show="showWrap" @click="hide" @mouseover="over">
-    <div class="edit-content" :class="[{active:showEdit},{follow:follow}]" :style="styles" @click.stop="()=>{}">
+    <div class="edit-content" :class="[{active:showEdit},{follow:follow}]" @click.stop="()=>{}">
       <slot></slot>
     </div>
   </div>
@@ -39,10 +39,10 @@ export default {
   methods: {
     show (rect) {
       this.scrollStart = document.documentElement.scrollTop
-      if (this.follow) {
-        this.rect = rect
-      }
-      this.$emit('show', this.rect)
+      // if (this.follow) {
+      //   this.rect = rect
+      // }
+      this.$emit('show')
       this.showWrap = true
       setTimeout(() => {
         this.showEdit = true
@@ -89,6 +89,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.2);
   .edit-content {
     position: absolute;
+    padding-top: 70px !important;
     right: 0;
     height: 100%;
     width: 460px;

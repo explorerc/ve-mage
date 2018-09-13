@@ -50,7 +50,7 @@
           <span>营销管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/brand/site">活动官网</el-menu-item>
+          <el-menu-item index="/site">活动官网</el-menu-item>
           <el-menu-item index="">直播引导页</el-menu-item>
         </el-menu-item-group>
       </el-submenu>

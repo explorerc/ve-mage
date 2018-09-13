@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.conf')
-const config = require('./config');
+const config = require('./config')
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
@@ -43,7 +43,8 @@ const webpackConfig = merge(baseConfig, {
     hot: true,
     contentBase: resolve('dist'),
     open: false,
-    host: '0.0.0.0',
+    https: false,
+    host: 'localhost',
     port: 2333,
     overlay: {
       warnings: false,
@@ -55,4 +56,4 @@ const webpackConfig = merge(baseConfig, {
   }
 })
 
-module.exports = webpackConfig;
+module.exports = webpackConfig

@@ -117,7 +117,7 @@
                 '1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'
               ],
               fontSizeList: [
-                '12px', '14px', '16px', '18px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px', '38px', '40px'
+                '12px', '14px', '16px', '18px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px', '38px', '40px', '42px', '44px', '46px', '50px', '56px', '60px', '66px', '70px', '76px', '80px', '86px', '100px'
               ]
             }
           },
@@ -273,10 +273,10 @@
 </script>
 
 <style lang="scss">
-  .html-editer {
-    min-width: 480px;
-    .content {
-      max-height: 560px;
-    }
+.html-editer {
+  min-width: 480px;
+  .content {
+    max-height: 560px;
   }
+}
 </style>

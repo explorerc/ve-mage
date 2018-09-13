@@ -201,7 +201,7 @@
       width: 60px;
       height: 60px;
       margin: 15px auto 10px auto;
-      background-image: url('./static/image/upload-video-icon@2x.png');
+      background-image: url('../assets/image/upload-video-icon@2x.png');
       background-size: cover;
     }
   }
@@ -215,7 +215,7 @@
       width: 60px;
       height: 60px;
       margin: 18px auto 6px auto;
-      background-image: url('./static/image/mp4_icon@2x.png');
+      background-image: url('../assets/image/mp4_icon@2x.png');
       background-size: cover;
       color: #fff;
       line-height: 74px;
@@ -249,7 +249,7 @@
       }
     }
     .mp4-eror {
-      background-image: url('./static/image/mp4_error_icon@2x.png');
+      background-image: url('../assets/image/mp4_error_icon@2x.png');
     }
     .file-name {
       color: #222;

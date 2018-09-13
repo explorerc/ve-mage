@@ -123,7 +123,7 @@
   text-align: center;
   overflow: hidden;
   box-sizing: border-box;
-  background-image: url("./static/image/avatar@2x.png");
+  background-image: url("../assets/image/avatar@2x.png");
   background-position: center center;
   background-size: cover;
   cursor: pointer;

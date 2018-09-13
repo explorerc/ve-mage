@@ -65,6 +65,7 @@ export default {
       max-height: 100%;
       position: absolute;
       top: 50%;
+      left: 0;
       transform: translateY(-50%);
     }
   }

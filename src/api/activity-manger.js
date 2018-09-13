@@ -2,8 +2,8 @@ import utils from 'src/utils'
 
 const ActivityManger = {
   /**
-         *  查询直播列表
-         */
+   *  查询直播列表
+   */
   queryList (data) {
     return utils.ajax({
       method: 'post',
@@ -12,23 +12,23 @@ const ActivityManger = {
     })
   },
   /**
-         *  通过id删除活动
-         */
+   *  通过id删除活动
+   */
   deleteById (id) {
     return utils.ajax({
       method: 'post',
       url: '/manage/base-manage/del-activity',
-      params: { id: id }
+      params: {id: id}
     })
   },
   /**
-         *  通过id获取暖场信息
-         */
+   *  通过id获取暖场信息
+   */
   queryWarmInfoById (id) {
     return utils.ajax({
       method: 'post',
       url: '/manage/warm-up-manage/get',
-      params: { activityId: id }
+      params: {activityId: id}
     })
   },
   /**
@@ -42,18 +42,18 @@ const ActivityManger = {
     })
   },
   /**
-         *  通过id获取活动提醒
-         */
+   *  通过id获取活动提醒
+   */
   queryReminderInfoById (id) {
     return utils.ajax({
       method: 'post',
       url: '/',
-      params: { id: id }
+      params: {id: id}
     })
   },
   /**
-         *  保存活动提醒信息
-         */
+   *  保存活动提醒信息
+   */
   saveReminderInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -62,18 +62,18 @@ const ActivityManger = {
     })
   },
   /**
-         *  角色列表
-         */
+   *  角色列表
+   */
   roleList (id) {
     return utils.ajax({
       method: 'GET',
       url: '/manage/role-manage/list-role',
-      params: { activityId: id }
+      params: {activityId: id}
     })
   },
   /**
-         * 删除助理
-         */
+   * 删除助理
+   */
   delAss (data) {
     return utils.ajax({
       method: 'POST',
@@ -82,8 +82,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  编辑 添加助理
-         */
+   *  编辑 添加助理
+   */
   handleAss (isNew, data) {
     return utils.ajax({
       method: 'POST',
@@ -92,18 +92,18 @@ const ActivityManger = {
     })
   },
   /**
-         * 获取观看条件
-         */
+   * 获取观看条件
+   */
   getLimit (id) {
     return utils.ajax({
       method: 'GET',
       url: '/manage/view-limit/get-limit',
-      params: { activityId: id }
+      params: {activityId: id}
     })
   },
   /**
-         * 保存观看条件
-         */
+   * 保存观看条件
+   */
   saveLimit (data) {
     return utils.ajax({
       method: 'POST',
@@ -112,18 +112,18 @@ const ActivityManger = {
     })
   },
   /**
-         * 获取互动信息
-         */
+   * 获取互动信息
+   */
   webinarInfo (id) {
     return utils.ajax({
       method: 'GET',
       url: '/manage/base-manage/detail-activity',
-      params: { id: id }
+      params: {id: id}
     })
   },
   /**
-         * 更新/创建活动
-         */
+   * 更新/创建活动
+   */
   updateWebinfo (isNew, data) {
     return utils.ajax({
       method: 'POST',
@@ -132,8 +132,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  获取邮件列表
-         */
+   *  获取邮件列表
+   */
   queryEmailList (data) {
     return utils.ajax({
       method: 'post',
@@ -142,23 +142,23 @@ const ActivityManger = {
     })
   },
   /**
-         *  通过id删除邮件
-         */
+   *  通过id删除邮件
+   */
   deleteEmailById (id) {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/delete',
-      params: { emailInviteId: id }
+      params: {emailInviteId: id}
     })
   },
   /**
-         *  通过邮件id查询邮件详细
-         */
+   *  通过邮件id查询邮件详细
+   */
   queryEmailInfoById (id) {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/query',
-      params: { emailInviteId: id }
+      params: {emailInviteId: id}
     })
   },
   /**
@@ -172,8 +172,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  发送邮件
-         */
+   *  发送邮件
+   */
   sendEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -182,8 +182,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  发送定时邮件
-         */
+   *  发送定时邮件
+   */
   sendTimerEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -192,8 +192,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  发送测试邮件
-         */
+   *  发送测试邮件
+   */
   sendTestEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -202,8 +202,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  发送邮件
-         */
+   *  发送邮件
+   */
   saveAndsendEmail (data) {
     return utils.ajax({
       method: 'post',
@@ -212,8 +212,8 @@ const ActivityManger = {
     })
   },
   /**
-         *  保存草稿
-         */
+   *  保存草稿
+   */
   saveEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -462,6 +462,20 @@ const ActivityManger = {
       method: 'post',
       url: '/common/message/limit-num',
       params: data
+    })
+  },
+  /***
+   * 查询默认回放信息
+   * @param data
+   * @returns {*}
+   */
+  queryPlayBackInfoById (activityId) {
+    return utils.ajax({
+      method: 'post',
+      url: '/frontend/replay/default-replay',
+      params: {
+        activityId: activityId
+      }
     })
   }
 }
