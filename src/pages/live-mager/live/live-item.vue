@@ -11,15 +11,15 @@
     </div>
     <div class="live-bottom">
       <!-- 开播 -->
-      <span class="item" @click.stop="handleClick(action.play)">
+      <span class="item" @click.stop="handleClick(action.play)" title="开播">
         <i class="iconfont icon-shipin"></i>
       </span>
       <!-- 推广 -->
-      <span class="item" @click.stop="handleClick(action.share)">
+      <span class="item" @click.stop="handleClick(action.share)" title="推广">
         <i class="iconfont icon-fasong"></i>
       </span>
       <!-- 详情 -->
-      <span class="item" @click.stop="handleClick(action.info)">
+      <span class="item" @click.stop="handleClick(action.info)" title="详情">
         <i class="iconfont icon-xiangqingjieshao"></i>
       </span>
       <!-- 更多 -->

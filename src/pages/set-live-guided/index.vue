@@ -183,6 +183,15 @@
 </script>
 <style lang="scss" scoped>
 .set-live-guided-container {
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  margin: 0 auto;
   .pull-left {
     float: left;
   }

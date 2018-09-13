@@ -98,7 +98,7 @@ export default {
   }
 }
 .main-container /deep/ {
-  padding: 20px 50px;
+  padding: 20px 0px;
   position: absolute;
   left: 220px;
   right: 0;

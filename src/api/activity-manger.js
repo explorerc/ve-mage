@@ -18,7 +18,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/manage/base-manage/del-activity',
-      params: {id: id}
+      params: {
+        id: id
+      }
     })
   },
   /**
@@ -28,7 +30,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/manage/warm-up-manage/get',
-      params: {activityId: id}
+      params: {
+        activityId: id
+      }
     })
   },
   /**
@@ -48,7 +52,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/',
-      params: {id: id}
+      params: {
+        id: id
+      }
     })
   },
   /**
@@ -68,7 +74,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/role-manage/list-role',
-      params: {activityId: id}
+      params: {
+        activityId: id
+      }
     })
   },
   /**
@@ -98,7 +106,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/view-limit/get-limit',
-      params: {activityId: id}
+      params: {
+        activityId: id
+      }
     })
   },
   /**
@@ -118,7 +128,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'GET',
       url: '/manage/base-manage/detail-activity',
-      params: {id: id}
+      params: {
+        id: id
+      }
     })
   },
   /**
@@ -148,7 +160,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/delete',
-      params: {emailInviteId: id}
+      params: {
+        emailInviteId: id
+      }
     })
   },
   /**
@@ -158,7 +172,9 @@ const ActivityManger = {
     return utils.ajax({
       method: 'post',
       url: '/expand/email-invite/query',
-      params: {emailInviteId: id}
+      params: {
+        emailInviteId: id
+      }
     })
   },
   /**
@@ -426,6 +442,16 @@ const ActivityManger = {
       method: 'post',
       url: '/expand/notice/test-send',
       params: data
+    })
+  },
+  // 详情页面获取活动信息
+  getDetails (id) {
+    return utils.ajax({
+      method: 'get',
+      url: 'manage/activity-detail/index',
+      params: {
+        activityId: id
+      }
     })
   },
   /***

@@ -90,7 +90,9 @@
     methods: {
       handleClick (event) {
         console.log(event)
-        if (event.type === 'delete') { // 编辑删除
+        if (event.type === 'play') { // 开播
+          this.$router.push(`/master/${event.id}`)
+        } else if (event.type === 'delete') { // 编辑删除
           this.$messageBox({
             header: '删除活动',
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',
@@ -104,7 +106,7 @@
             }
           })
         } else if (event.type === 'share') { // 推广
-          this.$router.push(`/liveMager/detail/${event.id}?type=tg`)
+          this.$router.push(`/liveMager/detail/${event.id}#tg`)
         } else if (event.type === 'info') { // 详情
           this.$router.push(`/liveMager/detail/${event.id}`)
         }

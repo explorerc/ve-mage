@@ -73,8 +73,8 @@
             <dt></dt>
             <dd>直播已{{successTxt}}，您可以</dd>
             <dd>
-              <button class='finish-button detail'><router-link :to="{ name:'detail',params:{id:finishId} }">活动详情</router-link></button>
-              <button class='finish-button list'><router-link :to="{name:'liveMager'}">活动列表</router-link></button>
+              <router-link  class='finish-button detail' :to="{ name:'detail',params:{id:finishId} }">活动详情</router-link>
+              <router-link class='finish-button list' :to="{name:'liveMager'}">活动列表</router-link>
             </dd>
           </dl>
       </div>
@@ -372,6 +372,7 @@
     padding: 20px 0 35px 0;
   }
   .finish-button {
+    display: inline-block;
     padding: 0px;
     width: 200px;
   }

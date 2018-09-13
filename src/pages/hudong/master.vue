@@ -6,11 +6,14 @@
       </div>
       <div class="master-box-right">
         <div class="master-header">
-          <button class="primary-button" @click="playVideo">{{startInit?'结束直播':'开始直播'}}</button>
+          <button class="primary-button" v-if="liveBtnShow" @click="starAndEndtLive(true)">开始直播</button>
+          <button class="primary-button" v-else @click="starAndEndtLive(false)">结束直播</button>
         </div>
         <div class="master-content">
           <div class="content-box">
-            <setting v-if="settingShow" :paasParams="paasParams"></setting>
+            <transition name="left-right">
+              <setting v-if="settingShow" :paasParams="paasParams"></setting>
+            </transition>
           </div>
           <div class="content-menu">
             <span>聊天</span>
@@ -32,7 +35,11 @@
   import LiveHttp from 'src/api/live'
   import Setting from './setting/settings' // 直播设置
   import PlayVideo from './video/index' // 直播推流回放组件
-
+  // {value: '', label: '全部'},
+  // {value: 'PREPARE', label: '预告'},
+  // {value: 'LIVING', label: '直播中'},
+  // {value: 'FINISH', label: '已结束'},
+  // {value: 'PLAYBACK', label: '回放'}
   export default {
     name: 'master',
     components: {Setting, PlayVideo},
@@ -42,6 +49,9 @@
         settingShow: false,
         startInit: false,
         playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+        activityInfo: {
+          status: ''
+        },
         paasParams: {
           appId: '',
           roomId: '',
@@ -51,21 +61,42 @@
         }
       }
     },
+    computed: {
+      liveBtnShow () {
+        const status = this.activityInfo.status
+        if (status === 'PREPARE' || status === 'FINISH') {
+          return true
+        }
+        return false
+      }
+    },
     created () {
       const queryId = this.$route.params.id
       if (!queryId) {
         this.$router.go(-1)
       }
       this.activityId = queryId
-      this.initToken()
+      this.initPage()
     },
     methods: {
+      async initPage () {
+        await this.initToken()
+        /* 查询详情 */
+        await LiveHttp.queryActivityInfo(this.activityId).then(res => {
+          this.activityInfo = res.data.activity
+          if (this.activityInfo.status === 'LIVING') {
+            this.startInit = true
+          } else {
+            this.startInit = false
+          }
+        })
+      },
       clickSetting () {
         this.settingShow = true
       },
       /* 初始化，获取权限 */
       initToken () {
-        LiveHttp.getLiveTtoken(this.activityId).then(res => {
+        return LiveHttp.getLiveTtoken(this.activityId).then(res => {
           if (this.playType === 'live') {
             this.initPusherParams()
           }
@@ -83,15 +114,41 @@
           }
         })
       },
-      playVideo () {
-        this.startInit = !this.startInit
+      /* 开始结束直播 */
+      starAndEndtLive (type) {
+        this.startInit = type
+        if (this.startInit) {
+          this.activityInfo.status = 'LIVING'
+          LiveHttp.startLive(this.activityId).then(res => {
+            if (res.code === 200) {
+              this.$toast({
+                header: `提示`,
+                content: '成功开始直播',
+                autoClose: 1000,
+                position: 'top-center'
+              })
+            }
+          })
+        } else {
+          this.activityInfo.status = 'FINISH'
+          LiveHttp.stopLive(this.activityId).then(res => {
+            if (res.code === 200) {
+              this.$toast({
+                header: `提示`,
+                content: '成功结束直播',
+                autoClose: 1000,
+                position: 'top-center'
+              })
+            }
+          })
+        }
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  @import "assets/css/mixin.scss";
+  @import 'assets/css/mixin.scss';
 
   .master-box {
     .master-play-box {
@@ -128,7 +185,7 @@
               font-size: 12px;
               padding: 8px 0;
               border-bottom: solid 1px $color-bd;
-              &:hover{
+              &:hover {
                 cursor: pointer;
                 color: $color-default-hover;
               }

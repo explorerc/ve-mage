@@ -25,7 +25,7 @@
       background-color="#212221"
       text-color="#fff"
       active-text-color="#fff" >
-      <el-submenu index="1">
+      <!-- <el-submenu index="1">
         <template slot="title">
           <i class="menu-icon icon_console"></i>
           <span>控制台</span>
@@ -33,8 +33,8 @@
         <el-menu-item-group>
           <el-menu-item index="">点点滴滴</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="2">
+      </el-submenu> -->
+      <el-submenu index="1">
         <template slot="title">
           <i class="menu-icon icon_activity"></i>
           <span>活动管理</span>
@@ -44,7 +44,7 @@
           <el-menu-item index="/liveMager/create">新建活动</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="3">
+      <!-- <el-submenu index="3">
         <template slot="title">
           <i class="menu-icon icon_marketing"></i>
           <span>营销管理</span>
@@ -53,8 +53,8 @@
           <el-menu-item index="/site">活动官网</el-menu-item>
           <el-menu-item index="">直播引导页</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="4">
+      </el-submenu> -->
+      <!-- <el-submenu index="4">
         <template slot="title">
           <i class="menu-icon icon_spread"></i>
           <span>推广中心</span>
@@ -62,8 +62,8 @@
         <el-menu-item-group>
           <el-menu-item index="/setAccount">账户信息</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="5">
+      </el-submenu> -->
+      <!-- <el-submenu index="5">
         <template slot="title">
           <i class="menu-icon icon_crm"></i>
           <span>客户管理</span>
@@ -71,8 +71,8 @@
         <el-menu-item-group>
           <el-menu-item index="/setAccount">账户信息</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
-      <el-submenu index="6">
+      </el-submenu> -->
+      <!-- <el-submenu index="6">
         <template slot="title">
           <i class="menu-icon icon_data"></i>
           <span>数据中心</span>
@@ -80,8 +80,8 @@
         <el-menu-item-group>
           <el-menu-item index="/setAccount">账户信息</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
-       <el-submenu index="7">
+      </el-submenu> -->
+       <el-submenu index="2">
         <template slot="title">
           <i class="menu-icon icon_account"></i>
           <span>账户管理</span>

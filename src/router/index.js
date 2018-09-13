@@ -5,7 +5,22 @@ import account from 'src/api/account-manage'
 Vue.use(Router)
 const router = new Router({
   routes,
-  mode: 'history'
+  mode: 'history',
+  scrollBehavior (to, from, savedPosition) {
+    debugger
+    // return 期望滚动到哪个的位置
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (to.hash) {
+        return {
+          selector: to.hash
+        }
+      } else {
+        return { x: 0, y: 0 }
+      }
+    }
+  }
 })
 
 router.beforeResolve((to, from, next) => {
