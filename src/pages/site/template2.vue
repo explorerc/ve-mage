@@ -27,13 +27,6 @@
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
       <com-block1 :edit="editAble" :max="5" v-model="data.section5Data.block1"></com-block1>
     </com-panel>
-    <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
-      <com-share :edit="editAble" :share="shareData" v-model="data.section6Data.share"></com-share>
-    </com-panel>
-    <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
-      <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
-        <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
-    </com-panel>
     <div class="support">微吼直播提供技术支持</div>
   </div>
 </template>
@@ -291,7 +284,11 @@ export default {
       margin-top: 50px;
       text-align: left;
       width: 650px;
-      min-height: 85px;
+      min-height: 60px;
+      .font-editer {
+        height: 400px;
+        background-color: #dadada;
+      }
     }
     .block1-container {
       margin-top: 20px;
@@ -299,13 +296,32 @@ export default {
     }
     .block1-group {
       .block1-item {
-        min-width: 130px;
-        margin-right: 100px;
+        margin-right: 80px;
         img {
-          width: 85px;
-          height: auto;
-          margin: auto;
-          margin-bottom: 10px;
+          width: 130px;
+        }
+      }
+    }
+  }
+  .section5Data {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    .panel {
+      padding-bottom: 40px;
+    }
+    .font-container {
+      margin-top: 100px;
+      text-align: left;
+      width: 650px;
+      min-height: 85px;
+    }
+    .block1-group {
+      .block1-item {
+        width: 250px;
+        height: 320px;
+        img {
+          width: 100%;
         }
       }
     }
@@ -339,49 +355,6 @@ export default {
           width: 100%;
           height: 310px;
         }
-      }
-    }
-  }
-  .section6 {
-    width: 100%;
-    height: 270px;
-    .panel {
-      padding-top: 50px;
-      text-align: center;
-    }
-    .share-group {
-      li {
-        margin-right: 50px;
-        .share-item {
-          font-size: 18px;
-        }
-      }
-    }
-  }
-  .section7 {
-    width: 100%;
-    height: 300px;
-    .panel {
-      text-align: center;
-    }
-    .font-content {
-      margin-top: 70px;
-      text-align: left;
-      width: 650px;
-      min-height: 100px;
-    }
-    .btn {
-      display: block;
-      margin-top: 24px;
-      .btn-content {
-        display: inline-block;
-        position: relative;
-      }
-      .com-button {
-        min-width: 200px;
-        height: 40px;
-        border-radius: 20px;
-        font-size: 16px;
       }
     }
   }
