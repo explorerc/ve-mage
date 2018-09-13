@@ -23,7 +23,7 @@
         </div>
         <div class="master-content">
           <div class="content-box">
-            <transition name="left-right">
+            <transition name="fade" mode="out-in">
               <setting v-if="settingShow" :paasParams="paasParams"></setting>
             </transition>
           </div>
