@@ -108,6 +108,45 @@ const LiveManage = {
         activityUserId: activityUserId
       }
     })
+  },
+  /* 开始直播 */
+  startLive (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/start-live',
+      params: {
+        activityId: activityId
+      },
+      headers: {
+        Authorization: token
+      }
+    })
+  },
+  /* 结束直播 */
+  stopLive (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/stop-live',
+      params: {
+        activityId: activityId
+      },
+      headers: {
+        Authorization: token
+      }
+    })
+  },
+  /* 查询活动信息 */
+  queryActivityInfo (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/info',
+      params: {
+        activityId: activityId
+      },
+      headers: {
+        Authorization: token
+      }
+    })
   }
 }
 export default LiveManage

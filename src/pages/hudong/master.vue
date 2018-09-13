@@ -6,7 +6,7 @@
       </div>
       <div class="master-box-right">
         <div class="master-header">
-          <button class="primary-button" @click="playVideo">{{startInit?'结束直播':'开始直播'}}</button>
+          <button class="primary-button" @click="starAndEndtLive">{{startInit?'结束直播':'开始直播'}}</button>
         </div>
         <div class="master-content">
           <div class="content-box">
@@ -57,15 +57,22 @@
         this.$router.go(-1)
       }
       this.activityId = queryId
-      this.initToken()
+      this.initPage()
     },
     methods: {
+      async initPage () {
+        await this.initToken()
+        /* 查询详情 */
+        await LiveHttp.queryActivityInfo(this.activityId).then(res => {
+          this.startInit = res.data.activity.status !== 'FINISH'
+        })
+      },
       clickSetting () {
         this.settingShow = true
       },
       /* 初始化，获取权限 */
       initToken () {
-        LiveHttp.getLiveTtoken(this.activityId).then(res => {
+        return LiveHttp.getLiveTtoken(this.activityId).then(res => {
           if (this.playType === 'live') {
             this.initPusherParams()
           }
@@ -83,8 +90,32 @@
           }
         })
       },
-      playVideo () {
+      /* 开始结束直播 */
+      starAndEndtLive () {
         this.startInit = !this.startInit
+        if (this.startInit) {
+          LiveHttp.startLive(this.activityId).then(res => {
+            if (res.code === 200) {
+              this.$toast({
+                header: `提示`,
+                content: '成功开始直播',
+                autoClose: 1000,
+                position: 'top-center'
+              })
+            }
+          })
+        } else {
+          LiveHttp.stopLive(this.activityId).then(res => {
+            if (res.code === 200) {
+              this.$toast({
+                header: `提示`,
+                content: '成功结束直播',
+                autoClose: 1000,
+                position: 'top-center'
+              })
+            }
+          })
+        }
       }
     }
   }
@@ -128,7 +159,7 @@
               font-size: 12px;
               padding: 8px 0;
               border-bottom: solid 1px $color-bd;
-              &:hover{
+              &:hover {
                 cursor: pointer;
                 color: $color-default-hover;
               }
