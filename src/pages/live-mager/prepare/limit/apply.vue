@@ -9,7 +9,7 @@
       </el-switch>
       <div class="right-box">
         <span>最多可添加 <i>5</i> 条信息</span>
-        <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 ? true : false">添加信息</button>
+        <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 || !isOpen ? true : false">添加信息</button>
       </div>
     </div>
     <div class="mager-box border-box">
@@ -137,10 +137,10 @@
         value: 'text',
         txt: '文本'
       },
-      {
-        value: 'mobile',
-        txt: '手机'
-      },
+      // {
+      //   value: 'mobile',
+      //   txt: '手机'
+      // },
       {
         value: 'integer',
         txt: '数字'

@@ -428,6 +428,16 @@ const ActivityManger = {
       params: data
     })
   },
+  // 详情页面获取活动信息
+  getDetails (id) {
+    return utils.ajax({
+      method: 'get',
+      url: 'manage/activity-detail/index',
+      params: {
+        activityId: id
+      }
+    })
+  },
   /***
    * 查询观众组
    * @param data
