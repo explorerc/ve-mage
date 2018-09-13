@@ -7,7 +7,6 @@ const router = new Router({
   routes,
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
-    debugger
     // return 期望滚动到哪个的位置
     if (savedPosition) {
       return savedPosition
