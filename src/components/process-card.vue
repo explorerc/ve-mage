@@ -119,6 +119,9 @@
 /* 设备宽度小于 1600px */
 
 @media all and (max-width: 1600px) {
+  .item {
+    width: 326px;
+  }
 }
 
 .card {

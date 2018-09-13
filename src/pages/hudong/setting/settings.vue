@@ -395,8 +395,6 @@
     max-width: 500px;
     height: calc(100% - 20px);
     padding: 20px 0 0;
-    border: solid 1px $color-bd;
-    margin: 20px 0;
     font-size: 14px;
     background-color: $color-bg-sub;
   }

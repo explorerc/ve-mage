@@ -91,14 +91,14 @@ const PlayBack = () =>
   import('src/pages/live-mager/playBack')
 /* 活动官网 */
 const Site = () =>
-  import('src/pages/brand/site')
+  import('src/pages/site')
 /* 活动官网模板 */
 const SiteTemplate = () =>
-  import('src/pages/brand/site/template.vue')
+  import('src/pages/site/template.vue')
 const SiteTemplate1 = () =>
-  import('src/pages/brand/site/template1.vue')
+  import('src/pages/site/template1.vue')
 const SiteTemplate2 = () =>
-  import('src/pages/brand/site/template2.vue')
+  import('src/pages/site/template2.vue')
 
 /* 直播互动 */
 /* 直播互动--发起端 */
@@ -120,19 +120,19 @@ export default [{
   name: 'Test',
   component: Test
 }, {
-  path: '/brand/site/edit/:id',
+  path: '/site/edit/:id',
   name: 'SiteTemplate',
   component: SiteTemplate
 }, {
-  path: '/brand/site/preview/:id',
+  path: '/site/preview/:id',
   name: 'SiteTemplate',
   component: SiteTemplate
 }, {
-  path: '/brand/template/0478320',
+  path: '/template/0478320',
   name: 'SiteTemplate1',
   component: SiteTemplate1
 }, {
-  path: '/brand/template/0478321',
+  path: '/template/0478321',
   name: 'SiteTemplate2',
   component: SiteTemplate2
 }, {
@@ -153,7 +153,7 @@ export default [{
   component: Layout,
   redirect: 'setAccount',
   children: [{
-    path: 'brand/site/:id',
+    path: 'site/:id',
     name: 'Site',
     component: Site
   }, {

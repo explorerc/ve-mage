@@ -80,6 +80,73 @@ const LiveManage = {
         Authorization: token
       }
     })
+  },
+  /* 获取参会信息 */
+  async queryRegActivity (activityId) {
+    const promsObj = await new Promise((resolve, reject) => {
+      utils.ajax({
+        method: 'get',
+        url: '/frontend/user/reg-activity',
+        params: {
+          activityId: activityId
+        }
+      }).then(res => {
+        resolve(res)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+    return promsObj
+  },
+  /* 根据参会信息获取paas参数 */
+  queryPaasParams (activityId, activityUserId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/frontend/live/sdk-token',
+      params: {
+        activityId: activityId,
+        activityUserId: activityUserId
+      }
+    })
+  },
+  /* 开始直播 */
+  startLive (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/start-live',
+      params: {
+        activityId: activityId
+      },
+      headers: {
+        Authorization: token
+      }
+    })
+  },
+  /* 结束直播 */
+  stopLive (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/stop-live',
+      params: {
+        activityId: activityId
+      },
+      headers: {
+        Authorization: token
+      }
+    })
+  },
+  /* 查询活动信息 */
+  queryActivityInfo (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/initiator/live/info',
+      params: {
+        activityId: activityId
+      },
+      headers: {
+        Authorization: token
+      }
+    })
   }
 }
 export default LiveManage

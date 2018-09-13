@@ -82,4 +82,16 @@ export default class HostPusher extends BasePusher {
       })
     })
   }
+
+  stop () {
+    super.stop()
+    this.stopBroadCast().then((res, rej) => {
+      this.interactor.exit()
+    })
+  }
+
+  destroy () {
+    super.destroy()
+    console.log('Paas 还未提供该方法使用')
+  }
 }
