@@ -804,7 +804,7 @@
     color: #222;
   }
   .v-info {
-    width: 1020px;
+    width: 100%;
     margin: 35px auto 0;
     border: 1px solid #e2e2e2;
     text-align: center;
