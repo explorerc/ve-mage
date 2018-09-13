@@ -1,6 +1,6 @@
 <template>
   <div class='item'>
-    <router-link :to="`${propLink + activityId}`">
+    <router-link :to="`${propLink + activityId}`"  target="_blank">
       <div class="card">
         <div class='pic'>
           <!-- <img :src="propImg"> -->
