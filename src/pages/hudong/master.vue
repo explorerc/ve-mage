@@ -59,7 +59,7 @@
   }
   export default {
     name: 'master',
-    components: {Setting, PlayVideo},
+    components: { Setting, PlayVideo },
     data () {
       return {
         activityId: '',
@@ -165,83 +165,83 @@
 </script>
 
 <style scoped lang="scss">
-  @import 'assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 
-  .master-box {
-    height: 100vh;
-    .master-play-box {
-      position: relative;
+.master-box {
+  height: 100vh;
+  .master-play-box {
+    position: relative;
+    height: 100%;
+    .master-box-left {
+      margin-right: 450px;
+      height: calc(100% - 50px);
+      .play-header {
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+      }
+    }
+    .master-box-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 450px;
       height: 100%;
-      .master-box-left {
-        margin-right: 450px;
-        height: calc(100% - 50px);
-        .play-header{
-          height: 50px;
-          line-height: 50px;
+      background-color: #fff;
+      border-left: solid 2px $color-bd;
+      .master-header {
+        margin: 0 20px;
+        display: flex;
+        justify-content: space-around;
+        height: 80px;
+        .header-item {
+          width: 120px;
+          margin-top: 10px;
           text-align: center;
         }
       }
-      .master-box-right {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 450px;
-        height: 100%;
-        background-color: #fff;
-        border-left: solid 2px $color-bd;
-        .master-header {
-          margin: 0 20px;
-          display: flex;
-          justify-content: space-around;
-          height: 80px;
-          .header-item{
-            width: 120px;
-            margin-top: 10px;
-            text-align: center;
+      .master-content {
+        display: flex;
+        height: calc(100% - 80px);
+        border-top: solid 1px $color-bd;
+        border-bottom: solid 1px $color-bd;
+        box-sizing: border-box;
+        .content-menu {
+          position: relative;
+          height: 100%;
+          width: 80px;
+          text-align: center;
+          background-color: #fff;
+          span {
+            display: block;
+            font-size: 12px;
+            padding: 8px 0;
+            border-bottom: solid 1px $color-bd;
+            &:hover {
+              cursor: pointer;
+              color: $color-default-hover;
+            }
+          }
+          .menu-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            border-top: solid 1px $color-bd;
+            span:last-child {
+              border: none;
+            }
           }
         }
-        .master-content {
-          display: flex;
-          height: calc(100% - 80px);
-          border-top: solid 1px $color-bd;
-          border-bottom: solid 1px $color-bd;
+        .content-box {
+          height: 100%;
+          flex: 1;
+          border-left: solid 1px $color-bd;
+          border-right: solid 1px $color-bd;
           box-sizing: border-box;
-          .content-menu {
-            position: relative;
-            height: 100%;
-            width: 80px;
-            text-align: center;
-            background-color: #fff;
-            span {
-              display: block;
-              font-size: 12px;
-              padding: 8px 0;
-              border-bottom: solid 1px $color-bd;
-              &:hover {
-                cursor: pointer;
-                color: $color-default-hover;
-              }
-            }
-            .menu-bottom {
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              width: 100%;
-              border-top: solid 1px $color-bd;
-              span:last-child {
-                border: none;
-              }
-            }
-          }
-          .content-box {
-            height: 100%;
-            flex: 1;
-            border-left: solid 1px $color-bd;
-            border-right: solid 1px $color-bd;
-            box-sizing: border-box;
-          }
         }
       }
     }
   }
+}
 </style>
