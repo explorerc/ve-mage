@@ -1,18 +1,20 @@
 <template>
   <div class='item'>
-    <div class="card">
-      <div class='pic'>
-        <!-- <img :src="propImg"> -->
+    <router-link :to="`${propLink + activityId}`">
+      <div class="card">
+        <div class='pic'>
+          <!-- <img :src="propImg"> -->
+        </div>
+        <div class='desc'>
+          <span>{{propTitle}}</span>
+          <span class='des'>{{propDesc}}</span>
+        </div>
       </div>
-      <div class='desc'>
-        <span>{{propTitle}}</span>
-        <span class='des' v-for='item in propDesc' :key='item'>{{item}}</span>
+      <div class="btm">
+        <el-switch class='switch' v-model="checked" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change='change' :title='title' v-show='showSwitch'></el-switch>
+        <!-- <span class='set'>设置</span> -->
       </div>
-    </div>
-    <div class="btm">
-      <el-switch class='switch' v-model="checked" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change='change' :title='title' v-show='showSwitch'></el-switch>
-      <!-- <span class='set'>设置</span> -->
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -21,6 +23,7 @@
     name: 'process-card',
     data () {
       return {
+        activityId: this.$route.params.id,
         img: '',
         idx: '',
         title: '',
@@ -39,15 +42,17 @@
       this.showSwitch = this.propSwitch
     },
     props: {
+      propLink: {
+        type: String,
+        default: ''
+      },
       propTitle: {
         type: String,
         default: '默认标题'
       },
       propDesc: {
-        type: Array,
-        default: function () {
-          return ['默认描述1', '默认描述2']
-        }
+        type: String,
+        default: ''
       },
       propImg: {
         type: String,
