@@ -12,11 +12,9 @@
         <p class='desc-label'>互动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
-        <!-- <span><a :href="this.state == 1 ? `baidu.com/${this.id}` : `xinlang.com/${this.id}`">活动官网</a></span>
-        <span><a :href="this.state == 1 ? `baidu.com/${this.id}` : `xinlang.com/${this.id}`">直播观看页</a></span> -->
-          <li class='icon'><i></i><router-link :to="this.state == 1 ? `baidu.com/${this.activityId}` : `xinlang.com/${this.activityId}`"></router-link>活动页面</li>
+          <li class='icon'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
           <li class='icon copy'><i></i>复制链接</li>
-          <li class='icon offline' @click='update'><i></i>{{state == 1 ? '发布活动' : '下线活动'}}</li>
+          <li class='icon offline' @click='update'><i></i>{{state === 1 ? '发布活动' : '下线活动'}}</li>
         </ol>
       </div>
       <div class="right">
@@ -132,176 +130,172 @@
               :prop-img='item.img'></process-card>
           </div> -->
           <div class="card-list clearfix">
-            <div class='item'>
+            <div class='item' @click="linkTo($event,'/liveMager/edit/')">
               <!-- 基本信息 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>基本信息</span>
-                    <span class='des'>编辑活动基本信息</span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
-                  <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"></el-switch>
-                  <!-- <span class='set'>设置</span> -->
+                <div class='desc'>
+                  <span>基本信息</span>
+                  <span class='des'>编辑活动基本信息</span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+                <!-- <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop=""></el-switch> -->
+                <!-- <span class='set'>设置</span> -->
+              </div>
             </div>
-            <div class='item'>
+            <div class='item' @click="linkTo($event,'/liveMager/prepare/limit-apply/')">
               <!-- 活动报名 -->
-              <router-link :to="`/liveMager/prepare/limit-apply/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>活动报名</span>
-                    <span class='des'>
-                      <!-- 未设置未开启 -->
-                      <template v-if="!dataPrepare[1].isSet && !dataPrepare[1].switch">开启后收集目标观众信息</template>
-                      <!-- 未设置已开启 -->
-                      <template v-if="dataPrepare[1].isSet && !dataPrepare[1].switch">暂未设置</template>
-                      <!-- 已设置已开启 -->
-                      <template v-if="dataPrepare[1].isSet && dataPrepare[1].switch">已设置活动报名</template>
-                      <!-- 已设置未开启 -->
-                      <template v-if="dataPrepare[1].isSet && !dataPrepare[1].switch">已设置活动报名</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
-                  <el-switch class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"></el-switch>
-                  <!-- <span class='set'>设置</span> -->
+                <div class='desc'>
+                  <span>活动报名</span>
+                  <span class='des'>
+                    <!-- 未设置未开启 -->
+                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息</template>
+                    <!-- 未设置已开启 -->
+                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">暂未设置</template>
+                    <!-- 已设置已开启 -->
+                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">已设置活动报名</template>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">已设置活动报名</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+                <el-switch  class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
             </div>
-            <div class='item'>
+            <div class='item' @click="linkTo($event,'/liveMager/warmField/')">
               <!-- 暖场设置 -->
-              <router-link :to="`/liveMager/warmField/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>暖场设置</span>
-                    <span class='des'>
-                      <!-- 未设置未开启 -->
-                      <template v-if="!dataPrepare[2].isSet && !dataPrepare[2].switch">为活动设置暖场视频</template>
-                      <!-- 未设置已开启 -->
-                      <template v-if="dataPrepare[2].isSet && !dataPrepare[2].switch">暂未设置</template>
-                      <!-- 已设置已开启 -->
-                      <template v-if="dataPrepare[2].isSet && dataPrepare[2].switch">{{dataPrepare[2].desc}}</template>
-                      <!-- 已设置未开启 -->
-                      <template v-if="dataPrepare[2].isSet && !dataPrepare[2].switch">{{dataPrepare[2].desc}}</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
-                  <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"></el-switch>
-                  <!-- <span class='set'>设置</span> -->
+                <div class='desc'>
+                  <span>暖场设置</span>
+                  <span class='des'>
+                    <!-- 未设置未开启 -->
+                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">为活动设置暖场视频</template>
+                    <!-- 未设置已开启 -->
+                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">暂未设置</template>
+                    <!-- 已设置已开启 -->
+                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">{{dataPrepare[2].desc}}</template>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">{{dataPrepare[2].desc}}</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+                <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop=""></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
             </div>
           </div>
         </div>
       <div class="item marketing">
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
-         
-            <div class='item'>
+
+            <div class='item' @click="linkTo($event,'/liveMager/edit/')">
               <!-- 自动化通知 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>自动化通知</span>
-                    <span class='des'>
-                      <!-- 未设置未开启 -->
-                      <template v-if="!dataPromote[0].isSet && !dataPromote[0].switch">设置自动化活动通知提醒</template>
-                      <!-- 未设置已开启 -->
-                      <template v-if="dataPromote[0].isSet && !dataPromote[0].switch">暂未设置</template>
-                      <!-- 已设置已开启 -->
-                      <template v-if="dataPromote[0].isSet && dataPromote[0].switch">{{dataPromote[0].desc}}</template>
-                      <!-- 已设置未开启 -->
-                      <template v-if="dataPromote[0].isSet && !dataPromote[0].switch">{{dataPromote[0].desc}}</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
-                  <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"></el-switch>
-                  <!-- <span class='set'>设置</span> -->
+                <div class='desc'>
+                  <span>自动化通知</span>
+                  <span class='des'>
+                    <!-- 未设置未开启 -->
+                    <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === false">设置自动化活动通知提醒</template>
+                    <!-- 未设置已开启 -->
+                    <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === true">暂未设置</template>
+                    <!-- 已设置已开启 -->
+                    <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === true">
+                      <template v-if="dataPromote[0].desc === 'NONE'">预约</template>
+                      <template v-if="dataPromote[0].desc === 'PREPARE'">报名</template>
+                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                    </template>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === false">
+                      <template v-if="dataPromote[0].desc === 'NONE'">预约</template>
+                      <template v-if="dataPromote[0].desc === 'PREPARE'">报名</template>
+                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                    </template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+                <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop=""></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
             </div>
-            
-            <div class='item'>
+
+            <div class='item' @click="linkTo($event,'/liveMager/email/')">
               <!-- 邮箱 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>邮箱</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataPromote[1].isSet">已设置邮件邀约</template>
-                      <!-- 未设置 -->
-                      <template v-else>通过邮件进行活动推广</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>邮箱</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataPromote[1].isSet">已设置邮件邀约</template>
+                    <!-- 未设置 -->
+                    <template v-else>通过邮件进行活动推广</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
 
-            <div class='item'>
+            <div class='item' @click="linkTo($event,'/liveMager/promote/msg/list/')">
               <!-- 短信 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>短信</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataPromote[2].isSet">已设置短信通知</template>
-                      <!-- 未设置 -->
-                      <template v-else>通过短信进行活动推广</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>短信</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataPromote[2].isSet">已设置短信通知</template>
+                    <!-- 未设置 -->
+                    <template v-else>通过短信进行活动推广</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
 
-            <div class='item'>
+            <div class='item' @click="linkTo($event,'/liveMager/promote/wechat/list/')">
               <!-- 微信 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>微信</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataPromote[3].isSet">已设置微信通知</template>
-                      <!-- 未设置 -->
-                      <template v-else>通过微信进行活动推广</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>微信</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataPromote[3].isSet">已设置微信通知</template>
+                    <!-- 未设置 -->
+                    <template v-else>通过微信进行活动推广</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
 
         </div>
@@ -309,71 +303,65 @@
       <div class="item promote">
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-            
-           <div class='item'>
+
+           <div class='item' @click="linkTo($event,'/site/')">
               <!-- 活动官网 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>活动官网</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataBrand[0].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
-                      <!-- 未设置 -->
-                      <template v-else>最精简的活动品牌页</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>活动官网</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataBrand[0].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <!-- 未设置 -->
+                    <template v-else>最精简的活动品牌页</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
 
-             <div class='item'>
+             <div class='item' @click="linkTo($event,'/setLiveGuided/')">
               <!-- 直播引导页 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>直播引导页</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataBrand[1].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
-                      <!-- 未设置 -->
-                      <template v-else>最精简的活动品牌页</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>直播引导页</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataBrand[1].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <!-- 未设置 -->
+                    <template v-else>最精简的活动品牌页</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
 
-             <div class='item'>
+             <div class='item' @click="linkTo($event,'/master/')">
               <!-- 观看页 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>观看页</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataBrand[2].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
-                      <!-- 未设置 -->
-                      <template v-else>订制直播观看页面</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>观看页</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataBrand[2].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <!-- 未设置 -->
+                    <template v-else>订制直播观看页面</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
 
         </div>
@@ -381,26 +369,24 @@
       <div class="item setting">
         <p class='block-separte'>回放</p>
         <div class="card-list clearfix">
-          <div class='item'>
+          <div class='item' @click="linkTo($event,'/liveMager/playBack/')">
               <!-- 观看页 -->
-              <router-link :to="`/liveMager/edit/${activityId}`" >
-                <div class="card">
-                  <div class='pic'>
-                    <!-- <img :src="propImg"> -->
-                  </div>
-                  <div class='desc'>
-                    <span>观看页</span>
-                    <span class='des'>
-                      <!-- 已设置 -->
-                      <template v-if="dataRecord[0].isSet">已设置默认回放</template>
-                      <!-- 未设置 -->
-                      <template v-else>设置活动后的回放视频</template>
-                    </span>
-                  </div>
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
                 </div>
-                <div class="btm">
+                <div class='desc'>
+                  <span>观看页</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataRecord[0].isSet">已设置默认回放</template>
+                    <!-- 未设置 -->
+                    <template v-else>设置活动后的回放视频</template>
+                  </span>
                 </div>
-              </router-link>
+              </div>
+              <div class="btm">
+              </div>
             </div>
         </div>
       </div>
@@ -435,87 +421,96 @@
       }
     },
     created () {
-      this.cardData = {
-        'prepare': [
-          {
-            title: '基本信息',
-            desc: '',
-            link: '/liveMager/edit/',
-            switch: true
-          },
-          {
-            title: '活动报名',
-            desc: '已设置',
-            link: '/liveMager/prepare/limit-apply/',
-            switch: true
-          },
-          {
-            title: '暖场设置',
-            desc: '"asdasdasd.mp4"',
-            link: '/liveMager/warmField/',
-            switch: true
-          }
-        ],
-        'brand': [
-          {
-            title: '活动官网',
-            desc: '已发布',
-            link: '',
-            switch: true
-          },
-          {
-            title: '直播引导页',
-            desc: '已发布',
-            link: '/setLiveGuided/',
-            switch: true
-          },
-          {
-            title: '观看页',
-            desc: '"定制直播观看页面"',
-            link: '/master/',
-            switch: true
-          }
-        ],
-        'promote': [
-          {
-            title: '自动化通知',
-            desc: '',
-            link: '/liveMager/promote/auto/preview/',
-            switch: true
-          },
-          {
-            title: '邮箱',
-            desc: '""',
-            link: '/liveMager/email/',
-            switch: true
-          },
-          {
-            title: '短信',
-            desc: '""',
-            link: '/liveMager/promote/msg/list/',
-            switch: true
-          },
-          {
-            title: '微信',
-            desc: '""',
-            link: '/liveMager/promote/wechat/list/',
-            switch: true
-          }
-        ],
-        'record': [
-          {
-            title: '回放',
-            desc: '已设置',
-            link: '/liveMager/playBack/',
-            switch: true
-          }
-        ]
-      }
+      // this.cardData = {
+      //   'prepare': [
+      //     {
+      //       title: '基本信息',
+      //       desc: '',
+      //       link: '/liveMager/edit/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '活动报名',
+      //       desc: '已设置',
+      //       link: '/liveMager/prepare/limit-apply/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '暖场设置',
+      //       desc: '"asdasdasd.mp4"',
+      //       link: '/liveMager/warmField/',
+      //       switch: true
+      //     }
+      //   ],
+      //   'brand': [
+      //     {
+      //       title: '活动官网',
+      //       desc: '已发布',
+      //       link: '',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '直播引导页',
+      //       desc: '已发布',
+      //       link: '/setLiveGuided/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '观看页',
+      //       desc: '"定制直播观看页面"',
+      //       link: '/master/',
+      //       switch: true
+      //     }
+      //   ],
+      //   'promote': [
+      //     {
+      //       title: '自动化通知',
+      //       desc: '',
+      //       link: '/liveMager/promote/auto/preview/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '邮箱',
+      //       desc: '""',
+      //       link: '/liveMager/email/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '短信',
+      //       desc: '""',
+      //       link: '/liveMager/promote/msg/list/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '微信',
+      //       desc: '""',
+      //       link: '/liveMager/promote/wechat/list/',
+      //       switch: true
+      //     }
+      //   ],
+      //   'record': [
+      //     {
+      //       title: '回放',
+      //       desc: '已设置',
+      //       link: '/liveMager/playBack/',
+      //       switch: true
+      //     }
+      //   ]
+      // }
     },
     mounted () {
       this.getDetails()
     },
     methods: {
+      linkTo (e, link) {
+        console.log(e.target.className)
+        if (e.target.className.search('switch') > -1) {
+          console.log('no')
+        } else {
+          console.log('yes')
+          this.$router.push(`/liveMager/prepare/limit-apply/${this.activityId}`)
+        }
+      },
       update () {
         // debugger // eslint-disable-line
         if (this.state === '预约') {
@@ -656,7 +651,7 @@
     .process .top li {
       width: 140px;
       // margin: 0 14px;
-      margin:0 31px;
+      margin: 0 31px;
     }
     .process .top dt {
       width: 80px;
@@ -678,7 +673,7 @@
     }
     .process .bottom > div {
       // margin: 10px 14px;
-      margin:10px 31px;
+      margin: 10px 31px;
     }
     .middle {
       width: 375px;
@@ -702,7 +697,7 @@
       float: left;
       width: 160px;
       // margin: 0 33px;
-      margin:0 55px;
+      margin: 0 55px;
     }
     dt {
       width: 90px;
@@ -718,14 +713,14 @@
       &:before {
         content: '';
         // width: 95px;
-        width:130px;
+        width: 130px;
         height: 2px;
         background: $color-default;
         position: absolute;
         top: 50%;
         margin-top: -1px;
         // right: -116px;
-        right:-152px;
+        right: -152px;
       }
     }
     dd {
@@ -780,7 +775,7 @@
   }
   .bottom > div {
     // margin: 10px 33px;
-    margin:10px 55px;
+    margin: 10px 55px;
     float: left;
     ol > li {
       width: 160px;
@@ -983,6 +978,7 @@
   }
 }
 .card-list .item {
+  cursor: pointer;
   float: left;
   width: 442px;
   height: 140px;
@@ -1013,6 +1009,8 @@
 .card {
   width: 100%;
   height: 80px;
+  padding: 18px 5px;
+  padding-bottom: 0px;
   .pic {
     float: left;
     width: 70px;
@@ -1026,7 +1024,7 @@
     float: left;
     font-size: 18px;
     color: $color-font;
-    padding: 10px 0;
+    padding: 15px 0;
     span {
       display: block;
       font-size: 16px;
