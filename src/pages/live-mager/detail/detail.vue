@@ -3,27 +3,26 @@
   <div class='detail-wrap'>
     <div class="desc clearfix">
       <div class="left">
-        <img src="https://cnstatic01.e.vhall.com/static/img/v35-webinar.png">
-        <span class="state" :class="desc.stateClass">{{desc.state}}</span>
+        <img v-if="poster" :src="`${imgHost + poster}`">
+        <img v-else src="https://cnstatic01.e.vhall.com/static/img/v35-webinar.png">
+        <span class="state" :class="stateClass">{{state}}</span>
       </div>
       <div class="middle">
-        <p class='title'>{{desc.title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
-        <p class='desc-label'>互动标签: <span class="tag" v-for="item in desc.tagList">{{item}}</span></p>
-        <p class='desc-label'>开播时间: {{desc.startTime}}</p>
+        <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
+        <p class='desc-label'>互动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
+        <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
-          <li class='icon'><i></i>活动页面</li>
+        <!-- <span><a :href="this.state == 1 ? `baidu.com/${this.id}` : `xinlang.com/${this.id}`">活动官网</a></span>
+        <span><a :href="this.state == 1 ? `baidu.com/${this.id}` : `xinlang.com/${this.id}`">直播观看页</a></span> -->
+          <li class='icon'><i></i><router-link :to="this.state == 1 ? `baidu.com/${this.activityId}` : `xinlang.com/${this.activityId}`"></router-link>活动页面</li>
           <li class='icon copy'><i></i>复制链接</li>
-          <li class='icon offline'><i></i>下线活动</li>
+          <li class='icon offline' @click='update'><i></i>{{state == 1 ? '发布活动' : '下线活动'}}</li>
         </ol>
       </div>
       <div class="right">
-        <!-- <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">活动官网</a></span>
-        <span><a :href="this.state == 1 ? `baidu.com/${this.desc.id}` : `xinlang.com/${this.desc.id}`">直播观看页</a></span>
-        <span @click='update'>{{state == 1 ? '发布活动' : '下线活动'}}</span>
-        <span><a href="">进入直播间</a></span> -->
         <p class="title">距离直播开始还有</p>
         <div class="count-box">
-          <com-countdown :endTime="countdownTime">
+          <com-countdown :endTime.sync="countdownTime">
             <ol class='clearfix' @timeOut='timeOut' slot='slot1' slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
               <li>{{scoped.hour}}<span>时</span></li>
@@ -32,7 +31,7 @@
             </ol>
           </com-countdown>
         </div>
-        <el-button class='primary-button'>正式直播</el-button>
+        <el-button class='primary-button' @click='turnOn'>正式直播</el-button>
       </div>
     </div>
     <div class="block process clearfix">
@@ -154,52 +153,36 @@
 </template>
 
 <script>
+  import http from 'src/api/activity-manger'
   import processCard from 'components/process-card'
   import messageBox from 'components/common/message-box'
   import comCountdown from 'components/com-countDown'
   export default {
     data () {
       return {
-        desc: {
-          title: '',
-          id: '',
-          tagList: [],
-          startTime: '',
-          stateClass: ''
-        },
+        title: '',
+        id: '',
+        poster: '',
+        tagList: [],
+        startTime: '',
+        stateClass: '',
         state: '',
         cardData: {},
         msgShow: false,
         activityId: this.$route.params.id,
-        countdownTime: '3600' // 倒计时 秒
+        imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+        countdownTime: '' // 倒计时 秒
       }
     },
     created () {
       // 假数据
-      this.desc.title = '2018GIMIC互联网大会'
-      this.desc.id = this.$route.params.id
-      this.desc.tagList = ['科技', '发布会', '标签三']
-      this.desc.startTime = '2018-07-09 09:30:00'
-      this.desc.state = 1
-      this.state = 1
-      switch (this.desc.state) {
-        case (1):
-          this.desc.state = '直播'
-          this.desc.stateClass = 'live'
-          break
-        case (2):
-          this.desc.state = '回放'
-          this.desc.stateClass = 'record'
-          break
-        case (3):
-          this.desc.state = '结束'
-          this.desc.stateClass = 'ended'
-          break
-        case (4):
-          this.desc.state = '预约'
-          this.desc.stateClass = 'preview'
-          break
-      }
+      // this.title = '2018GIMIC互联网大会'
+      // this.id = this.$route.params.id
+      // this.tagList = ['科技', '发布会', '标签三']
+      // this.startTime = '2018-07-09 09:30:00'
+      // this.state = 1
+      // this.state = 1
+
       // 假数据 返回的card 数据
       this.cardData = {
         'prepare': [{
@@ -392,12 +375,16 @@
         ]
       }
     },
+    mounted () {
+      this.getDetails()
+    },
     methods: {
       update () {
         // debugger // eslint-disable-line
-        if (this.state === 1) {
+        if (this.state === '预约') {
           this.$messageBox({
             header: '提示',
+            width: '200',
             content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
             cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
             confirmText: '立即发布',
@@ -405,13 +392,14 @@
               console.log(e)
               if (e.action === 'cancel') {
               } else if (e.action === 'confirm') {
-                this.state = 0
+                // this.state = 0
               }
             }
           })
         } else {
           this.$messageBox({
             header: '提示',
+            width: '200',
             content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
             cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
             confirmText: '立即下线',
@@ -419,11 +407,27 @@
               console.log(e)
               if (e.action === 'cancel') {
               } else if (e.action === 'confirm') {
-                this.state = 1
+                // this.state = 1
               }
             }
           })
         }
+      },
+      turnOn () {
+        this.$messageBox({
+          header: '提示',
+          width: '200',
+          content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
+          cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认开播',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+              // this.state = 0
+            }
+          }
+        })
       },
       switchBack (res) {
         //  debugger // eslint-disable-line
@@ -436,6 +440,36 @@
           // 隐藏相关项目
           this.cardData[res.part][res.idx]['checked'] = false
         }
+      },
+      getDetails () {
+        http.getDetails(this.activityId).then((res) => {
+          // console.log(res)
+          // this.countdownTime = res.data.activity.countDown.toString()
+          this.title = res.data.activity.title
+          // this.tagList = res.data.activity.countDown
+          this.startTime = res.data.activity.startTime
+          this.poster = res.data.activity.imgUrl
+          switch (res.data.activity.status) {
+            case ('LIVING'):
+              this.state = '直播'
+              this.stateClass = 'live'
+              break
+            case ('PLAYBACK'):
+              this.state = '回放'
+              this.stateClass = 'record'
+              break
+            case ('FINISH'):
+              this.state = '结束'
+              this.stateClass = 'ended'
+              break
+            case ('PREPARE'):
+              this.state = '预约'
+              this.stateClass = 'preview'
+              break
+          }
+        }).catch((e) => {
+          console.log(e)
+        })
       },
       timeOut () {
         console.log('倒计时结束')
@@ -472,6 +506,40 @@
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
+    .right:before {
+      left: -26px;
+    }
+    .process .top li {
+      width: 140px;
+      margin: 0 14px;
+    }
+    .process .top dt {
+      width: 80px;
+      height: 80px;
+    }
+    .process .top li.active dt:after {
+      content: '';
+      width: 90px;
+      height: 90px;
+      margin-top: -46px;
+      margin-left: -46px;
+    }
+    .process .top dt:before {
+      width: 70px;
+      right: -80px;
+    }
+    .process .bottom > div ol > li {
+      width: 140px;
+    }
+    .process .bottom > div {
+      margin: 10px 14px;
+    }
+    .middle {
+      width: 375px;
+      ol {
+        margin-top: 20px;
+      }
+    }
   }
 }
 .block {
@@ -600,25 +668,27 @@
     background: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     font-size: 12px;
+    color: #fff;
   }
 
-  .live {
-    color: red;
-    border-color: red;
-  }
+  // .live {
+  //   color: red;
+  //   border-color: red;
+  // }
 
-  .preview {
-    color: blue;
-    border-color: blue;
-  }
+  // .preview {
+  //   color: blue;
+  //   border-color: blue;
+  // }
 
-  .record {
-    color: green;
-    border-color: green;
-  }
+  // .record {
+  //   color: green;
+  //   border-color: green;
+  // }
 }
 .middle {
   float: left;
+  width: 640px;
   p {
     padding-bottom: 10px;
   }
