@@ -18,7 +18,7 @@
 
   export default {
     name: 'master',
-    components: {Setting, PlayVideo},
+    components: { Setting, PlayVideo },
     data () {
       return {
         activityId: '',
@@ -70,22 +70,22 @@
 </script>
 
 <style scoped lang="scss">
-  .master-box {
-    .master-play-box {
-      position: relative;
-      height: 800px;
-      .master-box-left {
-        margin-right: 400px;
-        height: 100%;
-      }
-      .master-box-right {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 400px;
-        height: 500px;
-        background-color: #8E9198;
-      }
+.master-box {
+  .master-play-box {
+    position: relative;
+    height: 800px;
+    .master-box-left {
+      margin-right: 400px;
+      height: 100%;
+    }
+    .master-box-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 400px;
+      height: 500px;
+      background-color: #8e9198;
     }
   }
+}
 </style>
