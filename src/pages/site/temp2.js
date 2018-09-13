@@ -158,31 +158,44 @@ export default function () {
         type: 'bottom',
         showBtn: true,
         list: [{
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
-          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png',
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/5d/6f/5d6f1b6c8d5d15b01e3706aee6a51c6e.png',
           btn: {
-            text: 'asdasd'
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
           }
         },
         {
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
-          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png',
-          btn: {}
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/a5/d9/a5d9d730afcd0fb313a96698b4ccfbff.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
         },
         {
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
-          btn: {}
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/6e/fd/6efde297788e07ed52ebbdcae37f3c2a.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
         },
         {
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
-          btn: {}
-        },
-        {
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
-          btn: {}
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/74/20/7420f7d9f309487302e424ec5a80a3ad.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
         }
         ]
       }
@@ -196,52 +209,53 @@ export default function () {
       },
       font: {
         enable: true,
-        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">相关活动直播</span></div>`
+        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">活动图集</span></div>`
       },
       block1: {
         enable: true,
         type: 'bottom',
-        showBtn: false,
+        showBtn: true,
         list: [{
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
-          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png'
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/5d/6f/5d6f1b6c8d5d15b01e3706aee6a51c6e.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
         },
         {
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
-          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png'
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/a5/d9/a5d9d730afcd0fb313a96698b4ccfbff.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
         },
         {
-          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png'
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/6e/fd/6efde297788e07ed52ebbdcae37f3c2a.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
+        },
+        {
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          img: 'mp-dev/74/20/7420f7d9f309487302e424ec5a80a3ad.png',
+          btn: {
+            enable: true,
+            text: '了解详情',
+            bgColor: 'rgba(253,101,76,1)',
+            fontColor: 'rgba(255,255,255,1)'
+          }
         }
         ]
-      }
-    },
-    section7Data: {
-      panel: {
-        enable: true,
-        bgType: 'color',
-        videoType: 'upload',
-        color: 'rgba(255, 255, 255, 1)'
-      }
-    },
-    section8Data: {
-      panel: {
-        enable: true,
-        bgType: 'color',
-        videoType: 'upload',
-        color: 'rgba(19,16,49,1)'
-      },
-      font: {
-        enable: true,
-        content: `<div style="text-align: center;"><span style="color: rgb(255, 255, 255); font-family: PingFangSC-Regular, &quot;PingFang SC&quot;; background-color: transparent; font-size: 20px;">想了解更多信息吗？</span></div><div style="text-align: center;"><br></div><div style="text-align: center;"><span style="background-color: transparent;"><font color="#ffffff" face="PingFangSC-Regular, PingFang SC" style="font-size: 20px;">了解微吼直播助您一臂之力。[18年、350万场、25万+客户的选择]&nbsp;</font></span></div><div style="text-align: center;"><span style="background-color: transparent;"><font color="#ffffff" face="PingFangSC-Regular, PingFang SC" style="font-size: 20px;">400-888-9970</font><br></span></div>`
-      },
-      btn: {
-        bgColor: 'rgba(255,208,33,1)',
-        fontColor: 'rgba(34,34,34,1)',
-        text: '立即了解',
-        link: '',
-        enable: true
       }
     }
   }

@@ -318,6 +318,7 @@ export default {
     }
     .block1-group {
       .block1-item {
+        border: 1px solid rgba(226, 226, 226, 1);
         width: 250px;
         height: 320px;
         img {

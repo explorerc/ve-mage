@@ -1,5 +1,5 @@
 <template>
-  <div class="btn-container" >
+  <div class="btn-container" v-if="value.enable">
     <div ref="target" class="btn-content">
       <a target="_black" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
     </div>

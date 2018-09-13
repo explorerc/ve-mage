@@ -8,8 +8,7 @@
             <div class="content" :class="{top:value.type==='top'}" v-html="item.content">
             </div>
             <!-- <com-font :class="{content:true,top:value.type==='top'}" :edit="edit" v-model="item.content"></com-font> -->
-            <div v-if="value.showBtn">123123123</div>
-            <com-btn v-if="value.showBtn" v-model="item.btn"></com-btn>
+            <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
           </a>
         </li>
       </ul>
@@ -43,7 +42,20 @@
                <com-editer class="font-editer" v-model="item.content" ></com-editer>
             </div>
             <div>
-               <com-input placeholder="按钮链接" v-model="item.link"></com-input>
+               <com-input placeholder="跳转链接" v-model="item.link"></com-input>
+            </div>
+            <div v-if="value.showBtn">
+              <div>
+                按钮背景色
+                <el-color-picker show-alpha v-model="item.btn.bgColor"></el-color-picker>
+              </div>
+              <div>
+                按钮文字色
+                <el-color-picker show-alpha v-model="item.btn.fontColor"></el-color-picker>
+              </div>
+              <div>
+                <com-input placeholder="按钮文字" v-model="item.btn.text"></com-input>
+              </div>
             </div>
           </div>
         </li>
