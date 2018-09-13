@@ -34,7 +34,11 @@
   import LiveHttp from 'src/api/live'
   import Setting from './setting/settings' // 直播设置
   import PlayVideo from './video/index' // 直播推流回放组件
-
+  // {value: '', label: '全部'},
+  // {value: 'PREPARE', label: '预告'},
+  // {value: 'LIVING', label: '直播中'},
+  // {value: 'FINISH', label: '已结束'},
+  // {value: 'PLAYBACK', label: '回放'}
   export default {
     name: 'master',
     components: {Setting, PlayVideo},
@@ -66,7 +70,7 @@
         await this.initToken()
         /* 查询详情 */
         await LiveHttp.queryActivityInfo(this.activityId).then(res => {
-          this.startInit = res.data.activity.status !== 'FINISH'
+          this.startInit = res.data.activity.status === 'FINISH'
         })
       },
       clickSetting () {
