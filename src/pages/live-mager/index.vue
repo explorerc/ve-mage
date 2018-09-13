@@ -49,22 +49,22 @@
 
   export default {
     name: 'index',
-    components: { LiveTable, VePagination },
+    components: {LiveTable, VePagination},
     data () {
       return {
         show: false,
         pageSize: 8,
         loading: false,
         optionsStates: [
-          { value: '', label: '全部' },
-          { value: 'PREPARE', label: '预告' },
-          { value: 'LIVING', label: '直播中' },
-          { value: 'FINISH', label: '已结束' },
-          { value: 'PLAYBACK', label: '回放' }
+          {value: '', label: '全部'},
+          {value: 'PREPARE', label: '预告'},
+          {value: 'LIVING', label: '直播中'},
+          {value: 'FINISH', label: '已结束'},
+          {value: 'PLAYBACK', label: '回放'}
         ],
         optionsOrder: [
-          { value: 'createTime', label: '按创建时间排序' },
-          { value: 'startTime', label: '按直播开始时间排序' }
+          {value: 'createTime', label: '按创建时间排序'},
+          {value: 'startTime', label: '按直播开始时间排序'}
         ],
         searchParams: {
           status: '',
@@ -90,7 +90,9 @@
     methods: {
       handleClick (event) {
         console.log(event)
-        if (event.type === 'delete') { // 编辑删除
+        if (event.type === 'play') { // 开播
+          this.$router.push(`/master/${event.id}`)
+        } else if (event.type === 'delete') { // 编辑删除
           this.$messageBox({
             header: '删除活动',
             content: '活动删除后，所有数据将一并删除，并且不可恢复。确定要删除吗？',

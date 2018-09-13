@@ -10,7 +10,9 @@
         </div>
         <div class="master-content">
           <div class="content-box">
-            <setting v-if="settingShow" :paasParams="paasParams"></setting>
+            <transition name="left-right">
+              <setting v-if="settingShow" :paasParams="paasParams"></setting>
+            </transition>
           </div>
           <div class="content-menu">
             <span>聊天</span>
