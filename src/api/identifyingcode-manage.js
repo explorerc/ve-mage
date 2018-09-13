@@ -5,14 +5,20 @@ const IdentifyingcodeManage = {
     return utils.ajax({
       method: 'post',
       url: '/common/message/get-captchaid',
-      params: data
+      params: data,
+      headers: {
+        noAlert: true
+      }
     })
   },
   getCode (data) {
     return utils.ajax({
       method: 'post',
       url: '/common/message/send-code',
-      params: data
+      params: data,
+      headers: {
+        noAlert: true
+      }
     })
   }
 }

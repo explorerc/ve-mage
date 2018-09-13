@@ -66,7 +66,7 @@
           }
           account.setPassword(data).then((res) => {
             if (res.code !== 200) {
-              alert(res.msg)
+              this.errorTips = res.msg
             } else {
               this.isWarning = false
               this.$router.replace('/setAccount')
