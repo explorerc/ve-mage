@@ -6,7 +6,7 @@
       </div>
       <div class="master-box-right">
         <div class="master-header">
-          <button class="primary-button" @click="starAndEndtLive">{{startInit?'结束直播':'开始直播'}}</button>
+          <button class="primary-button" @click="starAndEndtLive">{{liveBtnShow?'结束直播':'开始直播'}}</button>
         </div>
         <div class="master-content">
           <div class="content-box">
@@ -41,13 +41,16 @@
   // {value: 'PLAYBACK', label: '回放'}
   export default {
     name: 'master',
-    components: {Setting, PlayVideo},
+    components: { Setting, PlayVideo },
     data () {
       return {
         activityId: '',
         settingShow: false,
         startInit: false,
         playType: 'live', // 直播(live), 回放(vod), 暖场(warm)
+        activityInfo: {
+          status: ''
+        },
         paasParams: {
           appId: '',
           roomId: '',
@@ -55,6 +58,11 @@
           token: '',
           accountId: ''
         }
+      }
+    },
+    computed: {
+      liveBtnShow () {
+        return this.activityInfo.status !== 'FINISH'
       }
     },
     created () {
@@ -70,7 +78,7 @@
         await this.initToken()
         /* 查询详情 */
         await LiveHttp.queryActivityInfo(this.activityId).then(res => {
-          this.startInit = res.data.activity.status === 'FINISH'
+          this.activityInfo = res.data.activity
         })
       },
       clickSetting () {
@@ -99,7 +107,7 @@
       /* 开始结束直播 */
       starAndEndtLive () {
         this.startInit = !this.startInit
-        if (this.startInit) {
+        if (this.liveBtnShow) {
           LiveHttp.startLive(this.activityId).then(res => {
             if (res.code === 200) {
               this.$toast({
@@ -128,68 +136,68 @@
 </script>
 
 <style scoped lang="scss">
-  @import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 
-  .master-box {
-    .master-play-box {
-      position: relative;
-      height: 800px;
-      .master-box-left {
-        margin-right: 450px;
-        height: 100%;
+.master-box {
+  .master-play-box {
+    position: relative;
+    height: 800px;
+    .master-box-left {
+      margin-right: 450px;
+      height: 100%;
+    }
+    .master-box-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 450px;
+      height: 900px;
+      background-color: #fff;
+      .master-header {
+        height: 80px;
       }
-      .master-box-right {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 450px;
-        height: 900px;
-        background-color: #fff;
-        .master-header {
-          height: 80px;
+      .master-content {
+        display: flex;
+        height: calc(100% - 80px);
+        border-top: solid 1px $color-bd;
+        border-bottom: solid 1px $color-bd;
+        box-sizing: border-box;
+        .content-menu {
+          position: relative;
+          height: 100%;
+          width: 80px;
+          text-align: center;
+          background-color: #fff;
+          span {
+            display: block;
+            font-size: 12px;
+            padding: 8px 0;
+            border-bottom: solid 1px $color-bd;
+            &:hover {
+              cursor: pointer;
+              color: $color-default-hover;
+            }
+          }
+          .menu-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            border-top: solid 1px $color-bd;
+            span:last-child {
+              border: none;
+            }
+          }
         }
-        .master-content {
-          display: flex;
-          height: calc(100% - 80px);
-          border-top: solid 1px $color-bd;
-          border-bottom: solid 1px $color-bd;
+        .content-box {
+          height: 100%;
+          flex: 1;
+          border-left: solid 1px $color-bd;
+          border-right: solid 1px $color-bd;
           box-sizing: border-box;
-          .content-menu {
-            position: relative;
-            height: 100%;
-            width: 80px;
-            text-align: center;
-            background-color: #fff;
-            span {
-              display: block;
-              font-size: 12px;
-              padding: 8px 0;
-              border-bottom: solid 1px $color-bd;
-              &:hover {
-                cursor: pointer;
-                color: $color-default-hover;
-              }
-            }
-            .menu-bottom {
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              width: 100%;
-              border-top: solid 1px $color-bd;
-              span:last-child {
-                border: none;
-              }
-            }
-          }
-          .content-box {
-            height: 100%;
-            flex: 1;
-            border-left: solid 1px $color-bd;
-            border-right: solid 1px $color-bd;
-            box-sizing: border-box;
-          }
         }
       }
     }
   }
+}
 </style>
