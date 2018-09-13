@@ -60,7 +60,7 @@ export const ajax = (options) => {
     return res.data
   }).catch((data) => {
     Loading(false)
-    if (options.headers.noAlert) {
+    if (options.headers && options.headers.noAlert) {
       return Promise.resolve(data)
     }
     MessageBox({
