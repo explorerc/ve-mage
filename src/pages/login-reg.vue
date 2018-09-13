@@ -47,11 +47,8 @@ export default {
     }
   },
   created () {
-    debugger
-    console.log('666' + this.avatar)
     EventBus.$on('avatarChange', (val) => {
-      debugger
-      this.avatar = val ? '' : this.$imgHost + '/' + val
+      this.avatar = val
     })
   },
   mounted () {
