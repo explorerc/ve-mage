@@ -392,8 +392,7 @@
 
   .setting-box {
     width: 100%;
-    max-width: 500px;
-    height: calc(100% - 20px);
+    height: 100%;
     padding: 20px 0 0;
     font-size: 14px;
     background-color: $color-bg-sub;
