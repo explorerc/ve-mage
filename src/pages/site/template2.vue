@@ -303,7 +303,7 @@ export default {
       }
     }
   }
-  .section5Data {
+  .section5 {
     width: 100%;
     height: auto;
     text-align: center;
@@ -322,38 +322,6 @@ export default {
         height: 320px;
         img {
           width: 100%;
-        }
-      }
-    }
-  }
-  .section5 {
-    width: 100%;
-    height: auto;
-    text-align: center;
-    .panel {
-      padding-bottom: 40px;
-    }
-    .font-container {
-      margin-top: 100px;
-      text-align: left;
-      width: 650px;
-      min-height: 85px;
-    }
-    .block1-group {
-      &.width3 {
-        .block1-item {
-          width: 346px;
-          img {
-            height: 200px;
-          }
-        }
-      }
-      .block1-item {
-        width: 540px;
-        margin-right: 40px;
-        img {
-          width: 100%;
-          height: 310px;
         }
       }
     }

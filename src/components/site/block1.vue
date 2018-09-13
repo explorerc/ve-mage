@@ -8,7 +8,8 @@
             <div class="content" :class="{top:value.type==='top'}" v-html="item.content">
             </div>
             <!-- <com-font :class="{content:true,top:value.type==='top'}" :edit="edit" v-model="item.content"></com-font> -->
-            <com-btn v-if="value.showBtn" :edit="edit" v-model="value.btn"></com-btn>
+            <div v-if="value.showBtn">123123123</div>
+            <com-btn v-if="value.showBtn" v-model="item.btn"></com-btn>
           </a>
         </li>
       </ul>

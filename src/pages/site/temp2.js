@@ -156,22 +156,33 @@ export default function () {
       block1: {
         enable: true,
         type: 'bottom',
-        showBtn: false,
+        showBtn: true,
         list: [{
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
-          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png'
+          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png',
+          btn: {
+            text: 'asdasd'
+          }
         },
         {
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
-          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png'
+          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png',
+          btn: {}
         },
         {
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png'
+          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          btn: {}
         },
         {
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png'
+          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          btn: {}
+        },
+        {
+          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
+          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          btn: {}
         }
         ]
       }

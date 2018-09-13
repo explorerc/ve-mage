@@ -38,7 +38,7 @@
       accept="png|jpg|jpeg|bmp|gif|mp4"
       uploadTxt="xxx"
       actionUrl="/api/upload/image"
-      inputName="resfile"
+      inputName="file"
       :fileSize="fileSize"
       :exParams="exParams"
 
