@@ -16,7 +16,7 @@
       <h3 class="fwn">我的模版</h3>
       <div class="group-content" >
         <div class="template-block" v-if="this.data.tid">
-          <img src="../../../assets/image/tp3.png" alt="">
+          <img src="" alt="">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="goEdit">编辑</a>
@@ -33,7 +33,7 @@
       <h3 class="fwn">模板库</h3>
       <div class="group-content fs0">
         <div class="template-block">
-          <img src="../../../assets/image/tp1.png" alt="">
+          <img src="" alt="">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template1')">使用</a>
@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="template-block">
-          <img src="../../../assets/image/tp2.png" alt="">
+          <img src="" alt="">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template2')">使用</a>
@@ -86,13 +86,13 @@ export default {
     goEdit () {
       let tid = this.data.tid
       if (tid) {
-        this.$router.push(`/brand/site/edit/${this.$route.params.id}`)
+        this.$router.push(`/site/edit/${this.$route.params.id}`)
       }
     },
     goPreview () {
       let tid = this.data.tid
       if (tid) {
-        this.$router.push(`/brand/site/preview/${this.$route.params.id}`)
+        this.$router.push(`/site/preview/${this.$route.params.id}`)
       }
     },
     updateState () {
@@ -109,7 +109,7 @@ export default {
       })
     },
     showPreview (tid) {
-      this.$router.push(`/brand/site/preview/${this.$route.params.id}?tid=${tid}`)
+      this.$router.push(`/site/preview/${this.$route.params.id}?tid=${tid}`)
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
