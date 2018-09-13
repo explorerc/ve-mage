@@ -179,7 +179,6 @@
           height: 50px;
           line-height: 50px;
           text-align: center;
-          border-right: solid 1px $color-bd;
         }
       }
       .master-box-right {
@@ -189,6 +188,7 @@
         width: 450px;
         height: 100%;
         background-color: #fff;
+        border-left: solid 2px $color-bd;
         .master-header {
           margin: 0 20px;
           display: flex;
