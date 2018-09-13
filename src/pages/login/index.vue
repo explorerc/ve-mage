@@ -181,8 +181,7 @@
             this.accountOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
-            debugger
+            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
             this.$router.replace('/setAccount')
           }
@@ -210,7 +209,7 @@
             this.mobileOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
             this.isSend = true
             this.isProhibit = true
