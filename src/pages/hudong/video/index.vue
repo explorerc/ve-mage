@@ -11,7 +11,7 @@
       <img v-if="imageSrc" :src="imageSrc">
     </div>
     <i class="iconfont icon-bofang" v-if="playBtnShow" @click="playVideo"></i>
-    <div class="control-video-box" v-if="playType=='vod'||playType=='warm'">
+    <div class="control-video-box" v-if="(playType=='vod'&&!outLineLink)||playType=='warm'">
       <video-control
         :currentTime="currentTime"
         :totalTime="totalTime"
