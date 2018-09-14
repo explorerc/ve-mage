@@ -228,8 +228,7 @@
         prepareHttp.getLimit(this.activityId).then((res) => {
           if (res.code === 200) {
             console.log(res)
-            // this.viewLimit = res.data.viewCondition
-            if (res.data.viewCondition === 'APPOINT') {
+            if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
               this.isOpen = true
               this.queryData = res.data.detail
               this.quesData = res.data.detail.questionList
@@ -240,43 +239,15 @@
                 this.queryData.finishTime = ''
               }
               res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
-            } else if (res.data.viewCondition === 'NONE') {
+            } else {
               this.isOpen = false
             }
           }
         }).catch((res) => {
-          this.$toast({
-            content: res,
-            position: 'center'
-          })
+          console.log(res)
         })
       },
       saveLimit () {
-        // {
-        //   "finishTime": "报名结束时间",
-        //   "questionList": [
-        //       {
-        //           "title": "标题"
-        //           "type": "类型 text mobile email name integer select radio checkbox"
-        //           "style": "样式"
-        //           "placeholder": "输入框提示"
-        //           "verification": "是否需要校验  Y 需要校验   其他不需要"
-        //           "required": "是否可为空  Y 不可为空   其他可以为空"
-        //           "detail": "详细数据结构"
-        //       },
-        //   ]
-        // }
-        // let detail = []
-        // if (this.radioTime === '2') {
-        //   detail['finishTime'] = this.queryData.finishTime
-        // }
-        // detail['questionId'] = this.questionId
-        // detail['checkField'] = this.queryData.checkField // email|mobile
-        // let data = {
-        //   activityId: this.activityId,
-        //   viewCondition: 'APPOINT',
-        //   detail: detail
-        // }
         this.saveData = {
           'activityId': this.activityId,
           'viewCondition': 'APPOINT',

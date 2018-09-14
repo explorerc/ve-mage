@@ -20,7 +20,7 @@ module.exports = {
     "no-alert": 0,
     "no-spaced-func": 2,
     "no-var": 0,
-    "no-debugger": 0,
+    "no-debugger": 'off',
     "no-useless-constructor": 'off'
   },
   globals: {
