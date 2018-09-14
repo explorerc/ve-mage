@@ -3,11 +3,13 @@
     <div class="master-play-box clearfix">
       <div class="master-box-left">
         <div class="play-header">当前画面为摄像头回显画面，您还未开始直播，如需开播，请点击【开始直播】</div>
-        <play-video
-          role="master"
-          :play-type="playType"
-          :startInit="startInit"
-          @startPull="startPull"></play-video>
+        <div class="play-video-box">
+          <play-video
+            role="master"
+            :play-type="playType"
+            :startInit="startInit"
+            @startPull="startPull"></play-video>
+        </div>
       </div>
       <div class="master-box-right">
         <div class="master-header">

@@ -1,7 +1,7 @@
 <template>
   <div class="control-box">
     <div class="progress-box">
-      <el-slider v-model="progress"></el-slider>
+      <el-slider v-model="progress" @change="changeVal"></el-slider>
     </div>
     <div class="time-box">
       <span>{{currentDate}}</span>/<span>{{allDate}}</span>
@@ -56,14 +56,11 @@
           this.progress = newVal
         },
         immediate: true
-      },
-      progress (newVal) {
-        this.changeVal(newVal)
       }
     },
     methods: {
-      changeVal (newVal) {
-        this.$emit('change', newVal)
+      changeVal () {
+        this.$emit('change', this.progress)
       },
       muteEvent () {
         this.mute = !this.mute

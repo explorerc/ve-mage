@@ -1,18 +1,23 @@
 @import "assets/css/mixin.scss";
+
 .master-box {
   height: 100vh;
   box-sizing: border-box;
   padding-left: 20px;
+  overflow: hidden;
   .master-play-box {
     position: relative;
     height: 100%;
     .master-box-left {
       margin-right: 450px;
       height: 100%;
-      .play-header{
+      .play-header {
         height: 50px;
         line-height: 50px;
         text-align: center;
+      }
+      .play-video-box {
+        height: calc(100% - 50px);
       }
     }
     .master-box-right {
@@ -28,7 +33,7 @@
         display: flex;
         justify-content: space-around;
         height: 80px;
-        .header-item{
+        .header-item {
           width: 120px;
           margin-top: 10px;
           text-align: center;
@@ -77,27 +82,28 @@
     }
   }
 }
-.watcher{
-  .master-box{
+
+.watcher {
+  .master-box {
     height: 80vh;
-    .master-header{
+    .master-header {
       height: 100px;
       line-height: 100px;
-      .header-logo{
+      .header-logo {
         margin-top: 20px;
         width: 100px;
         height: 60px;
       }
-      .header-info{
+      .header-info {
         vertical-align: top;
         display: inline-block;
         line-height: 1;
         margin-left: 10px;
-        h3{
+        h3 {
           margin-top: 8px;
           line-height: 50px;
         }
-        span{
+        span {
           display: inline-block;
           padding: 4px 8px;
           border: solid 1px $color-bd;
@@ -105,35 +111,35 @@
           font-size: 12px;
         }
       }
-      .header-btns{
+      .header-btns {
         width: 400px;
-        button:nth-child(2){
+        button:nth-child(2) {
           margin: 0 5px;
         }
       }
     }
-    .master-play-box{
+    .master-play-box {
       height: calc(100% - 100px);
-      .master-box-right{
-        .master-content{
+      .master-box-right {
+        .master-content {
           height: 100%;
         }
       }
     }
   }
-  .activity-info{
+  .activity-info {
     margin: 20px;
     border: solid 1px $color-bd;
-    .activity-menu{
+    .activity-menu {
       line-height: 50px;
       border-bottom: solid 1px $color-bd;
-      .menu-item{
+      .menu-item {
         display: inline-block;
         height: 100%;
         padding: 0 20px;
       }
     }
-    .activity-content{
+    .activity-content {
       padding: 20px;
       box-sizing: border-box;
     }

@@ -40,8 +40,8 @@
         outLineLink: '', // 外链
         playBoxId: `play-vides-${Math.random()}`,
         activityId: '',
-        currentTime: 1000,
-        totalTime: 3601,
+        currentTime: 0,
+        totalTime: 10000,
         setIntervalHandler: 0,
         sdkPlayParam: {
           appId: '',
@@ -264,8 +264,10 @@
         } else if (this.playType === 'vod') { // 回放
         }
       },
-      changeProgress (e) {
-        console.log(e)
+      changeProgress (progress) {
+        if (window.VhallPlayer) {
+          window.VhallPlayer.seek(this.totalTime * progress / 100)
+        }
       }
     }
   }
