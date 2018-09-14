@@ -8,7 +8,7 @@
         基本信息
       </p>
       <div class="v-editor v-avatar-img" style="height: 125px;">
-        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="1024" @success="uploadImgSuccess"/>
+        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"  :defaultImg="defaultImg" :fileSize="2048" @success="uploadImgSuccess" @error="uploadError"/>
       </div>
       <com-editor :value.sync="account" type="readOnly"><span class="v-explain">账号：</span></com-editor>
       <com-editor :value.sync="companyName"  type="readOnly"><span class="v-explain">公司名称：</span></com-editor>
@@ -37,10 +37,11 @@
         <p class="v-explain" :style="{color:fontColor}">
           <i class="iconfont icon-duihao" v-if="step === 'newPhone'"></i> {{messageBoxExplain}}
         </p>
-        <com-input v-if="isOldphone" :value.sync="phone" :placeholder="'输入原有注册手机号'" class="v-input" type="input" :max-length="11"></com-input>
-        <com-input v-if="!isOldphone" :value.sync="saveNewPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11"></com-input>
+        <com-input v-if="isOldphone" :value.sync="phone" :placeholder="'输入原有注册手机号'" class="v-input" type="input" :max-length="11" :errorTips="errorTips.oldPhone" @focus="phoneFocus('oldphone')"></com-input>
+        <com-input v-if="!isOldphone" :value.sync="saveNewPhone" :placeholder="'输入新手机号'" class="v-input" type="input" :max-length="11" :errorTips="errorTips.newPhone" @focus="phoneFocus('newphone')"></com-input>
         <div id="captcha"  :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
-        <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6"></com-input>
+        <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6" @focus="codeFocus"></com-input>
+        <p class="v-error" v-if="phoneCodeError">{{phoneCodeTip}}</p>
         <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
       </div>
       <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
@@ -53,9 +54,9 @@
         </p>
       </div>
       <div v-else-if="messageBoxType === 'changePassword'">
-        <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30" :error-tips="errorTips.oldPassword" @focus="passwordFocus('oldPassword')"></com-input>
+        <com-input :value.sync="oldPassword" placeholder="请输入旧密码" class="v-input" type="password" :max-length="30" :errorTips="errorTips.oldPassword" @focus="passwordFocus('oldPassword')"></com-input>
         <div class="v-psd">
-          <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"  @focus="passwordFocus('newPassword')" @change="passwordChange()" @blur="passwordBlur()" :error-tips="errorTips.newPassword"></com-input>
+          <com-input :value.sync="newPassword" placeholder="请输入新密码" class="v-input" type="password" :max-length="30"  @focus="passwordFocus('newPassword')" @change="passwordChange()" @blur="passwordBlur()" :errorTips="errorTips.newPassword"></com-input>
           <div class="v-verification" v-if="isShow">
             <ul>
               <p>密码至少包含：</p>
@@ -71,7 +72,7 @@
             </ul>
           </div>
         </div>
-        <com-input :value.sync="reNewPassword" placeholder="请再次输入新密码" class="v-input" type="password" :max-length="30" :error-tips="errorTips.rePassword" @focus="passwordFocus('reNewPassword')"></com-input>
+        <com-input :value.sync="reNewPassword" placeholder="请再次输入新密码" class="v-input" type="password" :max-length="30" :errorTips="errorTips.rePassword" @focus="passwordFocus('reNewPassword')"></com-input>
       </div>
       <div v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
@@ -96,6 +97,7 @@
   import VeUploadTx from 'src/components/ve-upload-tx'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -158,7 +160,9 @@
           mobile: '',
           tel: '',
           email: '',
-          qq: ''
+          qq: '',
+          newPhone: '',
+          oldPhone: ''
         },
         changeState: {
           accountName: false,
@@ -176,7 +180,9 @@
         isShow: false,
         isContainEn: 0,
         isContainNum: 0,
-        isContainCount: 0
+        isContainCount: 0,
+        phoneCodeError: false, // 验证码错误是否显示
+        phoneCodeTip: '' // 验证码错误提示
       }
     },
     mounted () {
@@ -309,9 +315,8 @@
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
           } else {
-            let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
-            contactInfo.avatar = data.name
-            sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
+            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            EventBus.$emit('avatarChange', data.name)
             // this.getAccount()
           }
         })
@@ -348,7 +353,7 @@
           let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
           if (!reg.test(parseInt(val))) {
             this.errorTips[type] = '手机格式不正确'
-            this.userPhone = initVal
+            // this.userPhone = initVal
             this.changeState[type] = true
             return false
           } else {
@@ -359,7 +364,7 @@
           let reg = /^\d{8,12}$/
           if (!reg.test(parseInt(val))) {
             this.errorTips[type] = '办公电话格式不正确'
-            this.officeNo = initVal
+            // this.officeNo = initVal
             this.changeState[type] = true
             return false
           } else {
@@ -370,7 +375,7 @@
           let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
           if (!reg.test(val)) {
             this.errorTips[type] = '邮箱格式不正确'
-            this.userEmail = initVal
+            // this.userEmail = initVal
             this.changeState[type] = true
             return false
           } else {
@@ -381,7 +386,7 @@
           let reg = /^\d{1,20}$/
           if (!reg.test(parseInt(val))) {
             this.errorTips[type] = 'QQ格式不正确'
-            this.userQQ = initVal
+            // this.userQQ = initVal
             this.changeState[type] = true
             return false
           } else {
@@ -392,7 +397,7 @@
           let reg = /^(http(s)?):\/\/([\w-]+(\.[\w-]+)*\/)*[\w-]+(\.[\w-]+)*\/?(\?([\w-.,@?^=%&:/~+#]*)+)?/
           if (!reg.test(val)) {
             this.errorTips[type] = '公司网址格式不正确'
-            this.companyWebsite = initVal
+            // this.companyWebsite = initVal
             this.changeState[type] = true
             return false
           } else {
@@ -498,6 +503,12 @@
         this.isEdit = true
         if (type === 'popup') {
           this.messageBoxShow = true
+          this.errorTips.oldPhone = ''
+          this.errorTips.newPhone = ''
+          this.phoneCodeError = false
+          this.errorTips.oldPassword = ''
+          this.errorTips.newPassword = ''
+          this.errorTips.rePassword = ''
         }
         switch (boxType) {
           case 'mobliePhone' : this.messageBoxType = 'changeMobile'
@@ -505,6 +516,7 @@
             this.phone = val
             this.messageBoxExplain = '为了保证您的账号安全，更换手机前请先进行安全验证'
             this.isOldphone = true
+            this.phoneCode = ''
             // step: 'initialPhone',  更改手机步骤验证原有手机（initialPhone）、验证新手机（newPhone）、更换成功（phoneSuccess）
             this.step = 'initialPhone'
             let _self = this
@@ -561,13 +573,17 @@
           if (this.messageBoxType === 'changeMobile') {
             if (this.step === 'initialPhone') {
               if (!this.phone) {
+                this.errorTips.oldPhone = '请输入手机号'
                 return false
               }
               let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
               if (!reg.test(parseInt(this.phone))) {
+                this.errorTips.oldPhone = '手机格式不正确'
                 return false
               }
               if (!this.phoneCode) {
+                this.phoneCodeError = true
+                this.phoneCodeTip = '请输入验证码'
                 return false
               }
               let data = {
@@ -577,14 +593,11 @@
               }
               account.verifyMobile(data).then((res) => {
                 if (res.code !== 200) {
-                  clearInterval(this.timerr)
-                  this.isSend = false
-                  this.isProhibit = true
-                  this.second = 60
-                  this.isImg = false
-                  this.phoneKey = ''
-                  this.cap.refresh()
+                  this.phoneCodeError = true
+                  this.phoneCodeTip = res.msg
                 } else {
+                  this.phoneCodeError = false
+                  this.phoneCodeTip = res.msg
                   this.token = res.data.codeToken
                   this.phone = ''
                   this.fontColor = '#4B5AFE'
@@ -603,13 +616,17 @@
               })
             } else if (this.step === 'newPhone') {
               if (!this.saveNewPhone) {
+                this.errorTips.newPhone = '请输入新手机号'
                 return false
               }
               let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
               if (!reg.test(parseInt(this.saveNewPhone))) {
+                this.errorTips.newPhone = '新手机号格式不正确'
                 return false
               }
               if (!this.phoneCode) {
+                this.phoneCodeError = true
+                this.phoneCodeTip = '请输入验证码'
                 return false
               }
               let data = {
@@ -619,6 +636,8 @@
               }
               account.updateMobile(data).then((res) => {
                 if (res.code !== 200) {
+                  this.phoneCodeError = true
+                  this.phoneCodeTip = res.msg
                 } else {
                   this.phone = ''
                   this.step = 'phoneSuccess'
@@ -694,7 +713,7 @@
         }
       },
       isGetCodePermission () {
-        if (this.isImg && this.phoneStatus) {
+        if (this.isImg && this.phoneStatus && !this.isSend) {
           this.isProhibit = false
         } else {
           this.isProhibit = true
@@ -728,8 +747,23 @@
           }
         }
         identifyingcodeManage.getCode(data).then((res) => {
-          if (res.code !== 200) {
-            this.error = res.msg
+          if (res.code === 10001) {
+            this.phoneCodeError = true
+            this.phoneCodeTip = res.msg
+            this.opacity = 1
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          } else if (res.code === 10050) {
+            this.phoneCodeError = true
+            this.phoneCodeTip = '动态码输入过于频繁'
+          } else if (res.code !== 200) {
+            this.phoneCodeError = true
+            this.phoneCodeTip = res.msg
             this.opacity = 1
             clearInterval(this.timerr)
             this.isSend = false
@@ -739,6 +773,8 @@
             this.phoneKey = ''
             this.cap.refresh()
           } else {
+            this.phoneCodeError = false
+            this.phoneCodeTip = res.msg
             this.isSend = true
             this.isProhibit = true
             clearInterval(this.timerr)
@@ -757,6 +793,10 @@
           }
         })
       },
+      codeFocus () {
+        this.phoneCodeError = false
+        this.phoneCodeTip = ''
+      },
       passwordFocus (val) {
         this.errorTips.newPassword = ''
         switch (val) {
@@ -766,6 +806,14 @@
             this.isShow = true
             break
           case 'reNewPassword': this.errorTips.rePassword = ''
+            break
+        }
+      },
+      phoneFocus (val) {
+        switch (val) {
+          case 'oldphone': this.errorTips.oldPhone = ''
+            break
+          case 'newphone': this.errorTips.newPhone = ''
             break
         }
       },
@@ -793,10 +841,16 @@
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
+    .v-info .v-editor {
+      width: 452px;
+    }
   }
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
+    .v-info .v-editor {
+      width: 375px;
+    }
   }
   margin: 0 auto;
   .v-account-title {
@@ -825,7 +879,6 @@
     }
     .v-editor {
       display: inline-block;
-      width: 375px;
       height: 42px;
       line-height: 42px;
       text-align: left;
@@ -955,6 +1008,12 @@
           line-height: 40px;
         }
       }
+    }
+    .v-error {
+      position: absolute;
+      top: 266px;
+      left: 20px;
+      color: #fc5659;
     }
     .phone-code-btn {
       background-color: #ffd021;

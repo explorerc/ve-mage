@@ -2,7 +2,7 @@
   <div class="template-container">
     <div class="header">
       <div v-if="!ptid" class="title">{{title}}-<span>{{publishState}}</span></div>
-      <router-link class="back" :to="`/site/${tid}`">返回</router-link>
+      <router-link class="back" :to="`/liveMager/site/${tid}`">返回</router-link>
       <div class="preview-group" v-if="isPreview&&!ptid">
         <a @click="platform='PC'">电脑版</a>
         <a @click="platform='H5'">手机版</a>

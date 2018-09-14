@@ -139,7 +139,6 @@
         if (res.code !== 200) {
           console.log(res.msg)
         } else {
-          debugger
           this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
           this.title = res.data.title ? res.data.title : ''
           this.showType = res.data.showType ? res.data.showType : ''

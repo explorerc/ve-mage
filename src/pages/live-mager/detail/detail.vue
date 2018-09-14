@@ -130,7 +130,7 @@
               :prop-img='item.img'></process-card>
           </div> -->
           <div class="card-list clearfix">
-            <div class='item' @click="linkTo($event,'/liveMager/edit/')">
+            <div class='item base' @click="linkTo($event,'/liveMager/edit/')">
               <!-- 基本信息 -->
               <div class="card">
                 <div class='pic'>
@@ -146,7 +146,7 @@
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
-            <div class='item' @click="linkTo($event,'/liveMager/prepare/limit-apply/')">
+            <div class='item apply' @click="linkTo($event,'/liveMager/prepare/limit-apply/')">
               <!-- 活动报名 -->
               <div class="card">
                 <div class='pic'>
@@ -171,7 +171,7 @@
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
-            <div class='item' @click="linkTo($event,'/liveMager/warmField/')">
+            <div class='item wram' @click="linkTo($event,'/liveMager/warmField/')">
               <!-- 暖场设置 -->
               <div class="card">
                 <div class='pic'>
@@ -202,7 +202,7 @@
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
 
-            <div class='item' @click="linkTo($event,'/liveMager/edit/')">
+            <div class='item automaze' @click="linkTo($event,'/liveMager/edit/')">
               <!-- 自动化通知 -->
               <div class="card">
                 <div class='pic'>
@@ -238,7 +238,7 @@
               </div>
             </div>
 
-            <div class='item' @click="linkTo($event,'/liveMager/email/')">
+            <div class='item mail' @click="linkTo($event,'/liveMager/email/')">
               <!-- 邮箱 -->
               <div class="card">
                 <div class='pic'>
@@ -258,7 +258,7 @@
               </div>
             </div>
 
-            <div class='item' @click="linkTo($event,'/liveMager/promote/msg/list/')">
+            <div class='item message' @click="linkTo($event,'/liveMager/promote/msg/list/')">
               <!-- 短信 -->
               <div class="card">
                 <div class='pic'>
@@ -278,7 +278,7 @@
               </div>
             </div>
 
-            <div class='item' @click="linkTo($event,'/liveMager/promote/wechat/list/')">
+            <div class='item wechat' @click="linkTo($event,'/liveMager/promote/wechat/list/')">
               <!-- 微信 -->
               <div class="card">
                 <div class='pic'>
@@ -304,7 +304,7 @@
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
 
-           <div class='item' @click="linkTo($event,'/site/')">
+           <div class='item site' @click="linkTo($event,'/site/')">
               <!-- 活动官网 -->
               <div class="card">
                 <div class='pic'>
@@ -324,7 +324,7 @@
               </div>
             </div>
 
-             <div class='item' @click="linkTo($event,'/setLiveGuided/')">
+             <div class='item guide' @click="linkTo($event,'/setLiveGuided/')">
               <!-- 直播引导页 -->
               <div class="card">
                 <div class='pic'>
@@ -344,7 +344,7 @@
               </div>
             </div>
 
-             <div class='item' @click="linkTo($event,'/master/')">
+             <div class='item watch' @click="linkTo($event,'/setLiveWatch/')">
               <!-- 观看页 -->
               <div class="card">
                 <div class='pic'>
@@ -369,7 +369,7 @@
       <div class="item setting">
         <p class='block-separte'>回放</p>
         <div class="card-list clearfix">
-          <div class='item' @click="linkTo($event,'/liveMager/playBack/')">
+          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')">
               <!-- 观看页 -->
               <div class="card">
                 <div class='pic'>
@@ -506,9 +506,10 @@
         console.log(e.target.className)
         if (e.target.className.search('switch') > -1) {
           console.log('no')
+          this.$router.push(link + this.activityId)
         } else {
           console.log('yes')
-          this.$router.push(`/liveMager/prepare/limit-apply/${this.activityId}`)
+          this.$router.push(link + this.activityId)
         }
       },
       update () {
@@ -1036,7 +1037,39 @@
     }
   }
 }
-
+.item.base .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.apply .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.wram .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.automaze .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.mail .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.message .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.wechat .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.site .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.guide .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.watch .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.record .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
 .btm {
   width: 100%;
   height: 40px;

@@ -124,7 +124,7 @@ export default {
   }
   .com-input {
     .error-msg {
-      top: 28px;
+      top: 38px;
     }
   }
   .el-select {

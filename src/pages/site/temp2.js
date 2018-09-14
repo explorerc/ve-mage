@@ -122,27 +122,72 @@ export default function () {
         showBtn: false,
         list: [{
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">23980</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">参会人数</span></font></div>`,
-          img: 'mp-dev/e9/e5/e9e5062d529ec4f7b313c9e7ed23f6f6.png'
+          img: 'mp-dev/37/f0/37f040e3680a251c591f27aa50a0c128.png'
         },
         {
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">800+</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">参会嘉宾</span></font></div>`,
-          img: 'mp-dev/01/64/0164aa3faff67c016a677302bf707620.png'
+          img: 'mp-dev/4a/1a/4a1a24f9a54223c6ca24f0274438dfe4.png'
         },
         {
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">10+</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">合作媒体</span></font></div>`,
-          img: 'mp-dev/29/5d/295d84071aba5eff8b5de9d65643bb1a.png'
+          img: 'mp-dev/08/c6/08c621efe516c70234316340c745f726.png'
         }, {
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">490</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">主题演讲</span></font></div>`,
-          img: 'mp-dev/6b/fc/6bfc1b57671bc1110599dbe03801820b.png'
+          img: 'mp-dev/bb/7b/bb7b8af386ac2cb6b9de200309d48f63.png'
         },
         {
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">8</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">合作企业</span></font></div>`,
-          img: 'mp-dev/1a/1f/1a1f1b53388bc9fffb6623bd25cff33a.png'
+          img: 'mp-dev/e4/b4/e4b4d7bed817cb066e463859afdbca31.png'
         }
         ]
       }
     },
     section5Data: {
+      panel: {
+        enable: true,
+        bgType: 'color',
+        videoType: 'upload',
+        color: 'rgba(255, 255, 255, 1)'
+      },
+      font: {
+        enable: true,
+        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">参会嘉宾</span></div>`
+      },
+      block1: {
+        enable: true,
+        type: 'bottom',
+        showBtn: true,
+        list: [{
+          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
+          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png',
+          btn: {
+            text: 'asdasd'
+          }
+        },
+        {
+          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
+          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png',
+          btn: {}
+        },
+        {
+          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
+          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          btn: {}
+        },
+        {
+          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
+          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          btn: {}
+        },
+        {
+          content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
+          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          btn: {}
+        }
+        ]
+      }
+    },
+    section6Data: {
       panel: {
         enable: true,
         bgType: 'color',
@@ -171,9 +216,8 @@ export default function () {
         }
         ]
       }
-
     },
-    section6Data: {
+    section7Data: {
       panel: {
         enable: true,
         bgType: 'color',
@@ -181,7 +225,7 @@ export default function () {
         color: 'rgba(255, 255, 255, 1)'
       }
     },
-    section7Data: {
+    section8Data: {
       panel: {
         enable: true,
         bgType: 'color',

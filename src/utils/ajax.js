@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import EventBus from 'src/utils/eventBus'
+// import EventBus from 'src/utils/eventBus'
 import {
   Loading
 } from 'components/common/loading'
@@ -60,19 +60,15 @@ export const ajax = (options) => {
     return res.data
   }).catch((data) => {
     Loading(false)
-    console.log('出错了', data)
-    switch (data.code) {
-      case 10030:
-        EventBus.$emit('auth')
-        break
-      default:
-        MessageBox({
-          header: '提示',
-          content: data.msg,
-          autoClose: 10,
-          confirmText: '知道了'
-        })
+    if (options.headers && options.headers.noAlert) {
+      return Promise.resolve(data)
     }
+    MessageBox({
+      header: '提示',
+      content: data.msg,
+      autoClose: 10,
+      confirmText: '知道了'
+    })
     return Promise.resolve(data)
   })
 }

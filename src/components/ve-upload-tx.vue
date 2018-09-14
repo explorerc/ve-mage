@@ -96,6 +96,7 @@
         this.$emit('success', fildObj)
       },
       uploadError (data) {
+        debugger
         this.fileSrc = ''
         this.$emit('error', data)
       }
@@ -123,7 +124,7 @@
   text-align: center;
   overflow: hidden;
   box-sizing: border-box;
-  background-image: url("../assets/image/avatar@2x.png");
+  background-image: url('../assets/image/avatar@2x.png');
   background-position: center center;
   background-size: cover;
   cursor: pointer;

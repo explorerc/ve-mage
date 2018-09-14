@@ -153,7 +153,7 @@ export default [{
   component: Layout,
   redirect: 'setAccount',
   children: [{
-    path: 'site/:id',
+    path: '/liveMager/site/:id',
     name: 'Site',
     component: Site
   }, {
