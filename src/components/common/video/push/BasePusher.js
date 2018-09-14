@@ -110,7 +110,7 @@ export default class BasePusher {
   }
 
   /**
-   * cam.show() cam.reset(conf) cam.destory()
+   * cam.show() cam.reset(conf) cam.destroy()
    * {'rate':[5,8],discription:'Low'},{'rate':[10,15],discription:'Noraml'}
    *  conf: {
         video: {
