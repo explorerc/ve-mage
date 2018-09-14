@@ -454,6 +454,44 @@ const ActivityManger = {
       }
     })
   },
+  // 详情页面子模块开关 设置子模块开关
+  detailSwitch (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/manage/submodule-manage/edit',
+      params: data
+    })
+  },
+  // 查询子模块开关
+  querySwitch (id) {
+    return utils.ajax({
+      method: 'get',
+      url: '/manage/submodule-manage/get',
+      params: {
+        activityId: id
+      }
+    })
+  },
+  // 发布活动
+  publishActive (id) {
+    return utils.ajax({
+      method: 'get',
+      url: '/manage/base-manage/published',
+      params: {
+        activityId: id
+      }
+    })
+  },
+  // 下线活动
+  offlineActive (id) {
+    return utils.ajax({
+      method: 'get',
+      url: '/manage/base-manage/down',
+      params: {
+        activityId: id
+      }
+    })
+  },
   /***
    * 查询观众组
    * @param data
