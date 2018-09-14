@@ -182,6 +182,7 @@
           return
         }
         this.testEmailShow = false
+        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         LiveHttp.sendTestEmailInfo({
           content: this.email.content,
           receiverEmail: this.testEmailAddress
