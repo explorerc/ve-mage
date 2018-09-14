@@ -58,7 +58,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VeHtml5Editer from 'src/components/ve-html5-editer'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
@@ -81,14 +81,14 @@
         }
       }
     },
-    components: { VeHtml5Editer },
+    components: {VeHtml5Editer},
     computed: mapState('liveMager', {
       emailInfo: state => state.emailInfo
     }),
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
       },
@@ -198,6 +198,7 @@
       },
       /* 保存草稿 */
       saveEmail () {
+        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           // 回写邮件id
           this.email.emailInviteId = res.data.emailInviteId

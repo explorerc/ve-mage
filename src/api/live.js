@@ -147,6 +147,16 @@ const LiveManage = {
         Authorization: token
       }
     })
+  },
+  /* 观看端--活动信息获取 */
+  queryWatchActivityInfo (activityId) {
+    return utils.ajax({
+      method: 'get',
+      url: '/frontend/live/info',
+      params: {
+        activityId: activityId
+      }
+    })
   }
 }
 export default LiveManage

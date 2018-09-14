@@ -34,11 +34,12 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>收件人：</div>
             <div class="from-content">
-              <div>
+              <div :class="{error:errorMsg.groupIds}">
                 <button class="default-button fl" @click="selectPersonShow=true">选择分组</button>
                 <span class="send-span">发送限额：0/400</span>
                 <ve-msg-tips tip-type="html"
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
+                <span class="error-msg" v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
               </div>
               <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
                 <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
@@ -49,7 +50,7 @@
           </div>
           <div class="from-row">
             <div class="from-title">发送时间：</div>
-            <div class="from-content">
+            <div :class="{'from-content':true,error:errorMsg.planTime}">
               <div class="send-type-box">
                 <el-radio v-model="sendType" label="AUTO">立即发送</el-radio>
                 <el-radio v-model="sendType" label="ONCE">定时发送</el-radio>
@@ -129,12 +130,12 @@
 <script>
   import VeMsgTips from 'src/components/ve-msg-tips'
   import LiveHttp from 'src/api/activity-manger'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
-    components: { VeMsgTips },
+    components: {VeMsgTips},
     data () {
       return {
         outValue: '',
@@ -142,8 +143,8 @@
         selectPersonShow: false,
         sendType: 'AUTO',
         searchPerson: '',
-        personList: [{ id: '', name: '', count: 0, isChecked: false }],
-        selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+        personList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
         selectedPersonListStr: '',
         selectedCount: 0,
         errorMsg: {
@@ -151,7 +152,8 @@
           content: '',
           desc: '',
           senderName: '',
-          planTime: ''
+          planTime: '',
+          groupIds: ''
         },
         email: {
           activityId: '',
@@ -160,7 +162,8 @@
           title: '',
           content: '',
           senderName: '',
-          planTime: ''
+          planTime: '',
+          groupIds: ''
         }
       }
     },
@@ -170,7 +173,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
         },
         immediate: true
       },
@@ -184,19 +187,26 @@
         handler (newArray) {
           let temArray = []
           let listStr = ''
+          let groupIdsStr = ''
           newArray.forEach((item, idx) => {
             if (!item.isChecked) return
             temArray.push(item)
             this.selectedCount += item.count
             listStr += `${item.name} (${item.count}人）、`
+            groupIdsStr += `${item.id},`
           })
           this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
+          this.email.groupIds = groupIdsStr.substring(0, groupIdsStr.length - 1)
           this.selectedPersonList = temArray
         },
         deep: true
       }
     },
     created () {
+      if (!this.email.content) {
+        this.$router.go(-1)
+        return
+      }
       this.queryPersonList()
     },
     methods: {
@@ -220,6 +230,11 @@
         } else {
           return
         }
+        if (this.email.groupIds) {
+          this.errorMsg.groupIds = ''
+        } else {
+          return
+        }
         if (this.email.desc) {
           this.errorMsg.desc = ''
         } else {
@@ -236,6 +251,9 @@
       /* 点击确定 */
       okSelectList () {
         this.selectPersonShow = false
+        if (this.email.groupIds) {
+          this.errorMsg.groupIds = ''
+        }
       },
       /* 点击取消 */
       handleSelectPerson (e) {
@@ -271,9 +289,10 @@
         })
       },
       saveEmail () {
+        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = { ...this.email, ...res.data }
+            this.email = {...this.email, ...res.data}
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
@@ -290,6 +309,7 @@
           return
         }
         if (!this.checkParams(this.isTimer)) return
+        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
@@ -327,8 +347,8 @@
         } else if (!this.email.senderName) {
           this.errorMsg.senderName = '发件人不能为空'
           return false
-        } else if (!this.email.content) {
-          this.errorMsg.content = '邮件内容不能为空'
+        } else if (!this.email.groupIds) {
+          this.errorMsg.groupIds = '请选择收件人'
           return false
         }
         return true

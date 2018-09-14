@@ -157,7 +157,7 @@
               <el-button
                 type="text" size="small"
                 v-if="playBackList[scope.$index].replayId == playBack.replayId"
-                @click.stop="">默认回放
+                @click.stop="cancelPlayBack(scope.$index)">取消默认回放
               </el-button>
               <el-button
                 type="text" size="small"
@@ -195,7 +195,7 @@
   }
   export default {
     name: 'play-back',
-    components: { VeUploadImage, veMsgTips, VeUploadVideo },
+    components: {VeUploadImage, veMsgTips, VeUploadVideo},
     data () {
       return {
         navIdx: 0,
@@ -227,9 +227,9 @@
         },
         playBackList: [],
         options: [
-          { value: '0', label: '默认回放' },
-          { value: '1', label: '上传视频' },
-          { value: '2', label: '外部链接' }
+          {value: '0', label: '默认回放'},
+          {value: '1', label: '上传视频'},
+          {value: '2', label: '外部链接'}
         ],
         recordId: '',
         activityId: '',
@@ -324,6 +324,13 @@
       playBackSetting (idx) {
         this.playBackShow = true
         this.selectRowIdx = idx
+      },
+      cancelPlayBack (idx) {
+        PlayBackHttp.cancelPlayBackConfig(this.activityId).then(res => {
+          if (res.code === 200) {
+            this.playBack.replayId = ''
+          }
+        })
       },
       /* 更多 */
       handlerMore (idx, type) {
