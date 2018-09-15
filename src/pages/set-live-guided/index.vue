@@ -3,115 +3,115 @@
     <p class="v-title">
       直播引导页
     </p>
-    <div class="v-edit pull-left">
-      <div class="input-form v-label clearfix" >
-        <p class="v-info-label pull-left">
-          观看条件：
-        </p>
-        <p class="v-info pull-left">
-          {{viewCondition === 'APPOINT'? '报名':'预约'}}
-        </p>
-      </div>
-      <div class="input-form v-label clearfix" >
-        <p class="v-info-label pull-left">
-          引导标题：
-        </p>
-        <p class="v-info pull-left">
-          <com-input :value.sync="title" placeholder="标题" :max-length="15" ></com-input>
-        </p>
-      </div>
-      <div class="input-form v-label clearfix" >
-        <p class="v-info-label pull-left">
-          引导图片：
-        </p>
-        <p class="v-info pull-left">
-          为了保证显示效果，请上传不大于1920x1080大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M
-        <com-upload
-        accept="png|jpg|jpeg|bmp|gif"
-        actionUrl="/api/upload/image"
-        inputName="file"
-        :fileSize="2048"
-        @error="uploadError"
-        @load="uploadImgSuccess"
-        >
-        <div class="test-upload">上传引导图</div>
-        </com-upload>
-        </p>
-      </div>
-      <div class="input-form v-label clearfix" >
-        <p class="v-info-label pull-left">
-          辅助信息：
-        </p>
-        <p class="v-info pull-left">
-          <el-radio v-model="showType" label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
-          <el-radio v-model="showType" label='DESCRIPTION'>显示直播简介</el-radio>
-          <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="description">
-          </el-input>
-        </p>
-      </div>
-      <a href="javascript:;" class="v-save" @click="save()">保存</a>
-    </div>
-    <div class="v-show pull-left">
-      <p class="v-sub-title">
-        预览
-      </p>
-      <com-tabs :value.sync="tabValue" >
-        <com-tab label="手机" :index="1">
-          <div class="v-phone">
-            <div class="v-img">
-              <img :src="$imgHost + '/' + imgUrl" alt="">
-            </div>
-            <div class="v-phone-info">
-              <p class="v-phone-title">
-                {{title}}
-              </p>
-              <div v-if="showType === 'DESCRIPTION'" class="v-phone-description">
-                <p>
-                  {{description}}
-                </p>
-              </div>
-              <div class="v-phone-operation">
-                <div v-if="showType === 'COUNTDOWN'" class="v-phone-countdown">
-                  5天23小时44分钟12秒
-                </div>
-                <a href="javascript:;" class="v-phone-enroll">
-                  {{viewCondition === 'APPOINT'? '报名':'预约'}}
-                </a>
-              </div>
-            </div>
+    <div class="v-content">
+      <div class="v-set clearfix">
+        <div class="v-edit pull-left">
+          <div class="input-form v-label clearfix" >
+            <p class="v-info-label pull-left">
+              观看条件：
+            </p>
+            <p class="v-info pull-left" style="margin-top: 6px;">
+              {{viewCondition === 'APPOINT'? '报名':'预约'}}
+            </p>
           </div>
-        </com-tab>
-        <com-tab label="电脑" :index="2">
-          <div class="v-pc clearfix">
-            <div class="v-img pull-left">
-              <img :src="$imgHost + '/' + imgUrl" alt="">
-            </div>
-            <div class="v-pc-info pull-left">
-              <p class="v-pc-title">
-                {{title}}
-              </p>
-              <div v-if="showType === 'DESCRIPTION'" class="v-pc-description">
-                <p>
-                  {{description}}
-                </p>
-              </div>
-              <div class="v-pc-operation">
-                <div v-if="showType === 'COUNTDOWN'" class="v-pc-countdown">
-                  5天23小时44分钟12秒
-                </div>
-                <a href="javascript:;" class="v-pc-enroll">
-                  报名
-                </a>
-              </div>
-            </div>
+          <div class="input-form v-label clearfix" >
+            <p class="v-info-label pull-left">
+              引导标题：
+            </p>
+            <p class="v-info pull-left">
+              <com-input :value.sync="title" placeholder="标题" :max-length="15" ></com-input>
+            </p>
           </div>
-        </com-tab>
-      </com-tabs>
+          <div class="input-form v-label clearfix" >
+            <p class="v-info-label pull-left">
+              引导图片：
+            </p>
+            <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          </div>
+          <div class="input-form v-label clearfix" >
+            <p class="v-info-label pull-left">
+              辅助信息：
+            </p>
+            <p class="v-info pull-left" style="width: 350px; margin-top: 10px;">
+              <el-radio v-model="showType" label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
+              <el-radio v-model="showType" label='DESCRIPTION'>显示直播简介</el-radio>
+              <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="description" :maxlength=50>
+              </el-input>
+            </p>
+          </div>
+        </div>
+        <div class="v-show pull-right">
+          <com-tabs :value.sync="tabValue" >
+            <com-tab label="手机预览" :index="1" class="clearfix">
+              <div class="v-phone pull-right">
+                <div class="v-img">
+                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                </div>
+                <div class="v-phone-info">
+                  <p class="v-phone-title">
+                    {{title}}
+                  </p>
+                  <div class="v-phone-operation">
+                    <div v-if="showType === 'DESCRIPTION'" class="v-phone-description">
+                      <p class="v-description">
+                        {{description}}
+                      </p>
+                    </div>
+                    <div v-if="showType === 'COUNTDOWN'" class="v-phone-countdown">
+                      <p class="v-count-title">
+                        距离直播开始还有
+                      </p>
+                      <div class="v-cutdown-content">
+                        <span class="v-red">05</span>天<span class="v-red">23</span>小时<span class="v-red">44</span>分钟<span class="v-red">25</span>秒
+                      </div>
+                    </div>
+                    <span href="javascript:;" class="v-phone-enroll">
+                      {{viewCondition === 'APPOINT'? '报名':'预约'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </com-tab>
+            <com-tab label="电脑预览" :index="2" class="clearfix">
+              <div class="v-pc  pull-right clearfix">
+                <div class="v-img pull-left">
+                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                </div>
+                <div class="v-pc-info pull-left">
+                  <p class="v-pc-title">
+                    {{title}}
+                  </p>
+                  <div v-if="showType === 'DESCRIPTION'" class="v-pc-description">
+                    <p>
+                      {{description}}
+                    </p>
+                  </div>
+                  <div class="v-pc-operation" v-else>
+                    <p class="v-count-title">
+                      距离直播开始还有
+                    </p>
+                    <div class="v-cutdown-content">
+                      <span class="v-red">05</span>天<span class="v-red">23</span>小时<span class="v-red">44</span>分钟<span class="v-red">25</span>秒
+                    </div>
+                  </div>
+                  <span href="javascript:;" class="v-pc-enroll">
+                    报名
+                  </span>
+                </div>
+              </div>
+            </com-tab>
+          </com-tabs>
+        </div>
+      </div>
+      <button @click='save' class='primary-button v-share-button'>
+        保存
+      </button>
     </div>
   </div>
 </template>
 <script>
   import liveGuidedManage from 'src/api/set-live-guided-manage'
+  import VeUpload from 'src/components/ve-upload-image'
   export default {
     data () {
       return {
@@ -121,10 +121,17 @@
         showType: '', // 显示倒计时|显示简介
         description: '', // 简介
         tabValue: 1, // 预览页签选择
-        imgUrl: ''// 引导图片
+        imgUrl: '', // 引导图片
+        uploadImgErrorMsg: ''
       }
     },
     components: {
+      VeUpload
+    },
+    computed: {
+      defaultImg () {
+        return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+      }
     },
     created () {
       this.activityId = this.$route.params.id
@@ -154,9 +161,7 @@
     },
     methods: {
       uploadImgSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        console.log(fildObj)
-        this.imgUrl = fildObj.data.name
+        this.imgUrl = data.name
       },
       uploadError (data) {
         console.log('上传失败:', data)
@@ -173,7 +178,17 @@
           if (res.code !== 200) {
             console.log(res.msg)
           } else {
-            alert('保存成功')
+            this.$messageBox({
+              header: '提示',
+              content: '保存成功',
+              confirmText: '确定',
+              width: '400px', // 消息框宽度
+              handleClick: (e) => {
+                if (e.action === 'confirm') {
+                  // console.log('点击了确定按钮')
+                }
+              }
+            })
           }
         })
       }
@@ -181,7 +196,8 @@
   }
 </script>
 <style lang="scss" scoped>
-.set-live-guided-container {
+@import '~assets/css/mixin.scss';
+.set-live-guided-container /deep/ {
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -197,120 +213,218 @@
   .pull-right {
     float: right;
   }
-  .v-div {
-    padding: 30px;
-    .v-title {
-      font-size: 18px;
-      width: 100%;
-      border-bottom: 1px solid #666;
+  .v-title {
+    font-size: 24px;
+    color: #222;
+  }
+  .v-content {
+    margin-top: 26px;
+    width: 100%;
+    min-height: 835px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    .v-set {
+      width: 920px;
+      margin: 60px auto 0;
     }
-    .v-edit {
-      width: 665px;
+  }
+  .v-edit {
+    .input-form {
+      position: relative;
+      margin-bottom: 30px;
       .v-info-label {
-        width: 80px;
-        height: 100%;
+        font-size: 14px;
+        color: #555;
+        width: 70px;
+        padding-top: 6px;
+        margin-right: 17px;
+      }
+      .v-notes {
+        font-size: 14px;
+        color: #888888;
+        padding-left: 87px;
+        margin: 10px auto 0;
       }
       .v-info {
-        max-width: 450px;
+        font-size: 14px;
+        color: #555;
+        width: 330px;
+        .com-input {
+          width: 100%;
+        }
+        .el-textarea {
+          margin-top: 10px;
+        }
       }
-      .v-save {
-        display: block;
-        width: 155px;
-        height: 45px;
-        text-align: center;
-        line-height: 45px;
-        text-decoration: none;
-        color: #fff;
-        background-color: #666;
-        margin-left: 80px;
+      .ve-upload-box {
+        width: 330px;
+        .upload-file-box {
+          width: 290px;
+          span {
+            line-height: 14px;
+          }
+        }
       }
     }
-    .v-show {
-      width: 690px;
-      .v-phone {
-        border: 1px solid #666;
-        width: 333px;
-        height: 620px;
-        .v-img {
+    .v-save {
+      display: block;
+      width: 155px;
+      height: 45px;
+      text-align: center;
+      line-height: 45px;
+      text-decoration: none;
+      color: #fff;
+      background-color: #666;
+      margin-left: 80px;
+    }
+  }
+  .primary-button {
+    margin: 50px auto;
+    display: block;
+    width: 200px;
+  }
+  .v-show {
+    width: 462px;
+    .com-tabs {
+      height: 554px;
+    }
+    .v-phone {
+      width: 250px;
+      height: 499px;
+      background: url('~assets/image/phone-wechat.png');
+      background-size: cover;
+      background-position: center center;
+      position: relative;
+      margin-right: 75px;
+      .v-img {
+        width: 229px;
+        height: 286px;
+        margin-left: 11px;
+        margin-top: 45px;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        img {
           width: 100%;
-          height: 333px;
-          img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-        .v-phone-info {
-          .v-phone-title {
-            font-size: 12px;
-            text-align: left;
-            border-bottom: 1px solid #666;
-          }
-          .v-phone-description {
-            font-size: 12px;
-            text-align: center;
-            border-bottom: 1px solid #666;
-            height: 100px;
-          }
-          .v-phone-countdown {
-            width: 255px;
-            height: 50px;
-            border: 1px solid #666;
-            margin: 5px auto;
-          }
-          .v-phone-enroll {
-            display: block;
-            width: 255px;
-            height: 35px;
-            border: 1px solid #666;
-            margin: 10px auto;
-            text-decoration: none;
-            text-align: center;
-            line-height: 35px;
-          }
+          height: 100%;
         }
       }
-      .v-pc {
-        width: 650px;
-        height: 365px;
-        border: 1px solid #666;
-        .v-img {
-          width: 420px;
-          height: 236px;
-          img {
-            width: 100%;
-            height: 100%;
+      .v-phone-info {
+        width: 228px;
+        height: 122px;
+        margin-left: 11px;
+        background-color: #fff;
+        border-radius: 0 0 5px 5px;
+        .v-phone-title {
+          font-size: 16px;
+          text-align: center;
+        }
+        .v-phone-operation {
+          height: 96px;
+          border-radius: 0 0 5px 5px;
+        }
+        .v-phone-description {
+          width: 210px;
+          font-size: 12px;
+          text-align: center;
+          margin: 0 auto 30px;
+        }
+        .v-phone-countdown {
+          text-align: center;
+          font-size: 20px;
+          transform: scale(0.5);
+          -webkit-transform-origin: top left;
+          .v-count-title {
+            color: #555;
+            width: 165px;
+            margin: 5px 0 0 149px;
+          }
+          .v-cutdown-content {
+            width: 250px;
+            margin: 10px 0 0 107px;
+            .v-red {
+              color: #fc5659;
+              font-size: 26px;
+            }
           }
         }
-        .v-pc-info {
-          width: 228px;
+        .v-phone-enroll {
+          display: block;
+          width: 280px;
+          height: 52px;
+          line-height: 52px;
+          background-color: #ffd021;
+          border-radius: 50px;
+          margin: -20px 0 0 50px;
+          text-decoration: none;
           text-align: center;
-          .v-pc-title {
-            font-size: 12px;
-            text-align: left;
-            border-bottom: 1px solid #666;
+          color: #222;
+          transform: scale(0.5);
+          -webkit-transform-origin: top left;
+        }
+      }
+    }
+    .v-pc {
+      width: 462px;
+      height: 349px;
+      background: url('~assets/image/mac_bg@2x.png');
+      background-position: center center;
+      background-size: cover;
+      position: relative;
+      padding: 16px 0 0 12px;
+      .v-img {
+        width: 50%;
+        height: 266px;
+        border-radius: 1px 0 0 1px;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .v-pc-info {
+        width: 47%;
+        height: 266px;
+        border-radius: 1px 0 0 1px;
+        overflow: hidden;
+        background-color: #fff;
+        .v-pc-title {
+          font-size: 20px;
+          text-align: center;
+          margin-top: 55px;
+        }
+        .v-pc-description {
+          font-size: 12px;
+          text-align: center;
+          padding-top: 10px;
+        }
+        .v-pc-operation {
+          font-size: 12px;
+          text-align: center;
+          .v-count-title {
+            margin: 8px 0;
           }
-          .v-pc-description {
-            font-size: 12px;
-            text-align: center;
-            border-bottom: 1px solid #666;
-            height: 100px;
+          .v-red {
+            font-size: 18px;
+            color: #fc5659;
           }
-          .v-pc-countdown {
-            width: 200px;
-            height: 50px;
-            border: 1px solid #666;
-            margin: 5px auto;
-          }
-          .v-pc-enroll {
-            display: block;
-            width: 200px;
-            height: 35px;
-            border: 1px solid #666;
-            margin: 10px auto;
-            text-decoration: none;
-            text-align: center;
-            line-height: 35px;
-          }
+        }
+        .v-pc-countdown {
+          width: 200px;
+          height: 50px;
+          border: 1px solid #666;
+          margin: 5px auto;
+        }
+        .v-pc-enroll {
+          display: block;
+          width: 160px;
+          height: 35px;
+          line-height: 35px;
+          background-color: #ffd021;
+          border-radius: 50px;
+          margin: 30px auto 0;
+          text-decoration: none;
+          text-align: center;
         }
       }
     }

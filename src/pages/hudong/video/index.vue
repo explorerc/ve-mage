@@ -30,7 +30,7 @@
 
   export default {
     name: 'index',
-    components: {VideoControl},
+    components: { VideoControl },
     data () {
       return {
         playComps: {},
@@ -272,67 +272,67 @@
 </script>
 
 <style scoped lang="scss">
-  .play-container {
-    position: relative;
+.play-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  .play-video-box {
     height: 100%;
     overflow: hidden;
-    .play-video-box {
-      height: 100%;
-      overflow: hidden;
-      background-color: #313131;
-      img {
-        width: 100%;
-        height: 100%;
-      }
-      .end-box {
-        display: block;
-        color: red;
-        line-height: 500px;
-        text-align: center;
-      }
-    }
-    .icon-bofang {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
-      color: red;
-      font-size: 60px;
-      &:hover {
-        cursor: pointer;
-        opacity: .8;
-      }
-    }
-    .control-video-box {
-      position: absolute;
-      left: 0;
-      bottom: 0;
+    background-color: #313131;
+    img {
       width: 100%;
-      height: 50px;
-      //animation: control-animation-hide 1s linear;
+      height: 100%;
     }
-    /*&:hover {*/
-    /*.control-box {*/
-    /*//animation: control-animation-show .5s linear both;*/
-    /*}*/
-    /*}*/
-    @keyframes control-animation-show {
-      from {
-        bottom: -50px;
-      }
-      to {
-        bottom: 0;
-      }
-    }
-    @keyframes control-animation-hide {
-      from {
-        bottom: 0;
-      }
-      to {
-        bottom: -50px;
-      }
+    .end-box {
+      display: block;
+      color: red;
+      line-height: 500px;
+      text-align: center;
     }
   }
+  .icon-bofang {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    color: red;
+    font-size: 60px;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+  .control-video-box {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    //animation: control-animation-hide 1s linear;
+  }
+  /*&:hover {*/
+  /*.control-box {*/
+  /*//animation: control-animation-show .5s linear both;*/
+  /*}*/
+  /*}*/
+  @keyframes control-animation-show {
+    from {
+      bottom: -50px;
+    }
+    to {
+      bottom: 0;
+    }
+  }
+  @keyframes control-animation-hide {
+    from {
+      bottom: 0;
+    }
+    to {
+      bottom: -50px;
+    }
+  }
+}
 </style>
