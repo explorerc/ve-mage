@@ -1,19 +1,18 @@
 <template>
   <div class="site-container">
     <div class="group">
-      <h3>活动官网</h3>
-      <div class="group-content">
-        <span class="state">是否开启</span>
-        <el-switch
+      <div class="title">活动官网 <el-switch
           v-model="enable"
+          inactive-color="#DEE1FF"
+          :width="32"
+          active-color="#FFD021"
           @change="updateState"
-          active-color="#13ce66"
-          inactive-color="#ff4949">
+        >
         </el-switch>
       </div>
     </div>
     <div class="group">
-      <h3 class="fwn">我的模版</h3>
+      <div class="fwn">我的模版</div>
       <div class="group-content" >
         <div class="template-block" v-if="this.data.tid">
           <img src="" alt="">
@@ -30,7 +29,7 @@
       </div>
     </div>
     <div class="group">
-      <h3 class="fwn">模板库</h3>
+      <div class="fwn">模板库</div>
       <div class="group-content fs0">
         <div class="template-block">
           <img src="" alt="">
@@ -131,6 +130,30 @@ export default {
 
 <style scoped lang="scss">
 .site-container {
+  padding-top: 56px;
+  padding-left: 100px;
+  .group {
+    .title {
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+    .fwn {
+      font-size: 16px;
+      padding-left: 8px;
+      margin-bottom: 17px;
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 2px;
+        height: 18px;
+        background-color: #ffd021;
+        vertical-align: middle;
+        position: relative;
+        left: -8px;
+        top: -2px;
+      }
+    }
+  }
   .group-content {
     padding: 25px 0;
     &:first-of-type {

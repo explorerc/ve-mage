@@ -27,6 +27,22 @@
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
       <com-block1 :edit="editAble" :max="5" v-model="data.section5Data.block1"></com-block1>
     </com-panel>
+    <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
+      <com-font :edit="editAble" v-model="data.section6Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="5" v-model="data.section6Data.block1"></com-block1>
+    </com-panel>
+    <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
+      <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section7Data.block1"></com-block1>
+    </com-panel>
+    <com-panel class="section8" :edit="editAble" v-model="data.section8Data.panel">
+      <com-font :edit="editAble" v-model="data.section8Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section8Data.block1"></com-block1>
+    </com-panel>
+    <com-panel class="section9" :max="10" :edit="editAble" v-model="data.section9Data.panel">
+      <com-font :edit="editAble" v-model="data.section9Data.font"></com-font>
+        <com-btn class="btn" :edit="editAble" v-model="data.section9Data.btn"></com-btn>
+    </com-panel>
     <div class="support">微吼直播提供技术支持</div>
   </div>
 </template>
@@ -219,7 +235,8 @@ export default {
     .font-des {
       display: block;
       margin: auto;
-      width: 900px;
+      width: 70%;
+      min-width: 900px;
       min-height: 150px;
       margin-bottom: 70px;
     }
@@ -308,7 +325,7 @@ export default {
     height: auto;
     text-align: center;
     .panel {
-      padding-bottom: 40px;
+      padding-bottom: 80px;
     }
     .font-container {
       margin-top: 100px;
@@ -324,6 +341,145 @@ export default {
         img {
           width: 100%;
         }
+      }
+    }
+  }
+  .section6 {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    .panel {
+      padding-bottom: 40px;
+    }
+    .font-container {
+      margin-top: 50px;
+      text-align: left;
+      width: 650px;
+      min-height: 82px;
+    }
+    .block1-group {
+      width: 1070px;
+      margin: auto;
+      .block1-item {
+        display: block;
+        margin: auto;
+        margin-bottom: 80px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        &.left {
+          img {
+            margin-right: 0;
+            margin-left: 80px;
+          }
+        }
+        .content {
+          width: auto;
+        }
+        img {
+          width: 500px;
+          height: 500px;
+          margin-right: 80px;
+        }
+      }
+    }
+  }
+  .section7 {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    .panel {
+      padding-bottom: 40px;
+    }
+    .font-container {
+      margin-top: 100px;
+      text-align: left;
+      width: 650px;
+      min-height: 85px;
+    }
+    .block1-group {
+      &.width3 {
+        .block1-item {
+          width: 346px;
+          img {
+            height: 200px;
+          }
+        }
+      }
+      .block1-item {
+        width: 540px;
+        margin-right: 40px;
+        img {
+          width: 100%;
+          height: 310px;
+        }
+      }
+    }
+  }
+  .section8 {
+    width: 100%;
+    height: auto;
+    text-align: center;
+    .panel {
+      padding-bottom: 40px;
+    }
+    .font-container {
+      margin-top: 100px;
+      text-align: left;
+      width: 650px;
+      min-height: 95px;
+    }
+    .block1-group {
+      width: 1124px;
+      .block1-item {
+        width: 200px;
+        height: 100px;
+        margin-right: 30px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(226, 226, 226, 1);
+        &:nth-of-type(5) {
+          margin-right: 0;
+        }
+        img {
+          width: 100px;
+          display: block;
+          margin: auto;
+        }
+      }
+    }
+  }
+  .section9 {
+    width: 100%;
+    height: 300px;
+    .panel {
+      text-align: center;
+      padding-top: 70px;
+    }
+    .font-content {
+      text-align: left;
+      width: 650px;
+      min-height: 100px;
+    }
+    .font-editer {
+      height: 400px;
+      background-color: #dadada;
+    }
+    .btn {
+      display: block;
+      margin-top: 24px;
+      text-align: left;
+      text-align: center;
+      .btn-content {
+        display: inline-block;
+        position: relative;
+      }
+      .com-button {
+        border: 2px solid rgba(253, 253, 253, 1);
+        min-width: 200px;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 20px;
+        font-size: 16px;
       }
     }
   }

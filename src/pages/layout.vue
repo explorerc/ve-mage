@@ -98,11 +98,11 @@ export default {
   }
 }
 .main-container /deep/ {
-  padding: 20px 0px;
+  padding: 0;
   position: absolute;
   left: 220px;
   right: 0;
-  top: 70px;
+  top: 60px;
   bottom: 0;
   overflow-y: auto;
   min-width: 1160px;
