@@ -121,7 +121,6 @@ export default {
     height: 60px;
     z-index: 1;
     overflow: hidden;
-    position: absolute;
     .logo {
       width: 100px;
       height: 100%;
