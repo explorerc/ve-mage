@@ -10,8 +10,7 @@
       </div>
       <a @click="doSave" class="save" v-if="!isPreview&&!ptid">保存</a>
     </div>
-    <component v-if="platform==='PC'" class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
-    <div v-if="platform==='H5'" class="template-content">手机端预览</div>
+    <component :platform="platform" class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
   </div>
 </template>
 
@@ -41,7 +40,7 @@ export default {
   },
   mounted () {
     if (this.$route.path.indexOf('edit') === -1) {
-      // this.isPreview = true
+      this.isPreview = true
     }
     this.init()
   },
