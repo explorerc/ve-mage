@@ -448,7 +448,7 @@ const ActivityManger = {
   getDetails (id) {
     return utils.ajax({
       method: 'get',
-      url: 'manage/activity-detail/index',
+      url: '/manage/activity-detail/index',
       params: {
         activityId: id
       }
