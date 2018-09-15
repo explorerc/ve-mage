@@ -1,6 +1,6 @@
 <!-- 活动详情页面-->
 <template>
-  <div class='detail-wrap'>
+  <div class='detail-wrap' v-if="dataPrepare[0]">
     <div class="desc clearfix">
       <div class="left">
         <img v-if="poster" :src="`${imgHost + poster}`">
