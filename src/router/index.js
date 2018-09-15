@@ -22,25 +22,27 @@ router.beforeResolve((to, from, next) => {
       return false
     } else {
       let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
-      let userInfo = sessionStorage.getItem('userInfo')
-      if (isLogin && userInfo && userInfo.hasPassword) {
-        if (userInfo.hasPassword) {
+      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+      if (isLogin && accountInfo) {
+        if (accountInfo.hasPassword) {
           next()
           return false
-        } else {
-          next('/setPassword')
-          return false
         }
+        next('/setPassword')
+        return false
       } else {
-        account.getUserInfo({}).then((res) => {
+        account.getAccount({}).then((res) => {
           if (res.code !== 200) {
             next('/login')
             return false
           } else {
-            sessionStorage.setItem('userInfo', JSON.stringify(res.data))
-            sessionStorage.setItem('isLogin', true)
-            next()
-            return false
+            if (res.data.hasPassword) {
+              sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              sessionStorage.setItem('isLogin', true)
+              next()
+            } else {
+              next('/setPassword')
+            }
           }
         })
       }
