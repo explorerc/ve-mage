@@ -14,7 +14,7 @@
     <div class="group">
       <div class="fwn">我的模版</div>
       <div class="group-content" >
-        <div class="template-block" v-if="this.data.tid">
+        <div class="template-block" style="" v-if="this.data.tid">
           <img src="" alt="">
           <div class="option-wrap">
             <div class="option-group">
@@ -32,19 +32,19 @@
       <div class="fwn">模板库</div>
       <div class="group-content fs0">
         <div class="template-block">
-          <img src="" alt="">
+          <img src="~assets/image/site_tp1.png" alt="">
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template1')">使用</a>
+              <a @click="useTemplate('template1')">使用模版</a>
               <a @click="showPreview('0478320')">预览</a>
             </div>
           </div>
         </div>
         <div class="template-block">
-          <img src="" alt="">
+          <img src="~assets/image/site_tp2.png" alt="">
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template2')">使用</a>
+              <a @click="useTemplate('template2')">使用模版</a>
               <a @click="showPreview('0478321')">预览</a>
             </div>
           </div>
@@ -135,11 +135,11 @@ export default {
   .group {
     .title {
       font-size: 24px;
-      margin-bottom: 25px;
     }
     .fwn {
       font-size: 16px;
       padding-left: 8px;
+      margin-top: 25px;
       margin-bottom: 17px;
       &::before {
         content: '';
@@ -155,7 +155,6 @@ export default {
     }
   }
   .group-content {
-    padding: 25px 0;
     &:first-of-type {
       padding: 35px 0;
     }
@@ -164,10 +163,10 @@ export default {
     }
     .template-block {
       display: inline-block;
-      width: 290px;
-      height: 195px;
+      width: 225px;
+      height: 280px;
       border: 1px solid #dadada;
-      margin-right: 25px;
+      margin-right: 40px;
       font-size: 14px;
       position: relative;
       img {
@@ -180,7 +179,7 @@ export default {
         }
       }
       .option-wrap {
-        background-color: rgba(0, 0, 0, 0.5);
+        background: rgba(34, 34, 34, 0.7);
         display: none;
         position: absolute;
         top: 0;
@@ -189,14 +188,26 @@ export default {
         height: 100%;
         .option-group {
           position: absolute;
-          right: 0;
-          bottom: 0;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           a {
-            background-color: white;
-            padding: 10px 15px;
-            border-right: 1px solid #dadada;
-            float: left;
+            width: 120px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            display: inline-block;
+            border-radius: 20px;
+            border: 1px solid white;
+            color: white;
             cursor: pointer;
+            &:first-child {
+              margin-bottom: 30px;
+            }
+            &:hover {
+              border-color: #ffd021;
+              color: #ffd021;
+            }
           }
         }
       }
