@@ -11,7 +11,7 @@
         <el-table :data="tableData" stripe style="width: 100%">
           <el-table-column prop='title' label="短信标题" width="300">
           </el-table-column>
-          <el-table-column prop="sendTime" label="发送时间" width="180">
+          <el-table-column prop="planTime" label="发送时间" width="180">
           </el-table-column>
           <el-table-column prop="templateId" label="发送数量" width="150">
           </el-table-column>
@@ -74,7 +74,7 @@
           createTime: '2018-08-27 12:34:23',
           groupId: '1',
           inviteId: 3,
-          sendTime: '2018-08-27 03:37:56',
+          planTime: '2018-08-27 03:37:56',
           status: 'SEND',
           templateId: 1,
           title: '23123'

@@ -19,9 +19,10 @@
         </ol>
       </div>
       <div class="right">
-        <p class="title">距离直播开始还有</p>
+        <p class="title" v-if="!countDownstatus">距离直播开始还有</p>
+        <p class="title" v-else>直播已开始</p>
         <div class="count-box">
-          <com-countdown :endTime.sync="countdownTime">
+          <com-countdown :endTime.sync="countdownTime" >
             <ol class='clearfix' @timeOut='timeOut' slot='slot1' slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
               <li>{{scoped.hour}}<span>时</span></li>
@@ -419,6 +420,7 @@
         activityId: this.$route.params.id,
         imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
         countdownTime: '', // 倒计时 秒
+        countDownstatus: false,
         dataPrepare: [],
         dataBrand: [],
         dataPromote: [],
@@ -593,7 +595,13 @@
       getDetails () {
         http.getDetails(this.activityId).then((res) => {
           // console.log(res)
-          this.countdownTime = res.data.activity.countDown.toString()
+          if (res.data.activity.countDown.toString() > 0) {
+            this.countDownstatus = false
+            this.countdownTime = res.data.activity.countDown.toString()
+          } else {
+            this.countDownstatus = true
+            this.countdownTime = '0'
+          }
           this.title = res.data.activity.title
           // this.tagList = res.data.activity.countDown
           this.startTime = res.data.activity.startTime
@@ -690,6 +698,7 @@
       },
       timeOut () {
         console.log('倒计时结束')
+        this.countDownstatus = true
       }
     },
     components: {
