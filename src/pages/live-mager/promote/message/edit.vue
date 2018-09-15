@@ -224,7 +224,7 @@ export default {
         title: this.titleValue,
         groupId: '1', // 分组id
         status: this.sendSetting.toLowerCase(),
-        sendTime: this.date,
+        planTime: this.date,
         desc: this.msgContent,
         signature: this.msgTag
       }
