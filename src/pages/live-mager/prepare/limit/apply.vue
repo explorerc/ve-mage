@@ -207,7 +207,7 @@
         console.log(idx)
         this.quesData[idx]['detail'].push({
           value: '',
-          key: this.quesData[idx]['detail'].length ? this.quesData[idx]['detail'].length - 1 : 0
+          key: this.quesData[idx]['detail'].length === 0 ? 0 : this.quesData[idx]['detail'].length
         })
       },
       delItem (idx, count) {
