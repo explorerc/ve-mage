@@ -169,7 +169,7 @@ export default {
       pickDate: false,
       msgTag: '',
       msgContent: '',
-      date: new Date().toString(),
+      date: '',
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() < Date.now() - 8.64e7
