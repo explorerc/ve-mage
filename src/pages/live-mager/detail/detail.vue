@@ -304,8 +304,7 @@
       <div class="item promote">
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-
-           <div class='item site' @click="linkTo($event,'/site/', dataBrand[2].switch)">
+           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[2].switch)">
               <!-- 活动官网 -->
               <div class="card">
                 <div class='pic'>
