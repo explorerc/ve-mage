@@ -92,6 +92,6 @@ export default class HostPusher extends BasePusher {
 
   destroy () {
     super.destroy()
-    console.log('Paas 还未提供该方法使用')
+    this.interactor.destroy()
   }
 }

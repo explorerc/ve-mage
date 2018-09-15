@@ -461,7 +461,7 @@ export default {
   data () {
     return {
       activityId: this.$route.params.id,
-      isOpen: true,
+      isOpen: false,
       limit: 'NONE',
       testModal: false,
       titleValue: '',
@@ -615,6 +615,7 @@ export default {
     this.getParams()
     this.getList()
     this.findCountdown()
+    this.getSwitchinfo()
   },
   methods: {
     closeModal (e) {
@@ -823,8 +824,27 @@ export default {
         this.selminValue = this.minValue
       }
     },
-    openSwitch () {
-
+    openSwitch (type) {
+      const data = {
+        activityId: this.activityId,
+        submodule: 'EXPAND_NOTICE',
+        enabled: type ? 'Y' : 'N'
+      }
+      http.detailSwitch(data).then((res) => {
+        if (res.code === 200) {
+          this.$toast({
+            content: '设置成功'
+          })
+        }
+      })
+    },
+    getSwitchinfo () {
+      http.querySwitch(this.activityId).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.isOpen = res.data.EXPAND_NOTICE === 'Y'
+        }
+      })
     },
     deleteTask (id, step, type) {
       http.autoDeletetask(id).then((res) => {

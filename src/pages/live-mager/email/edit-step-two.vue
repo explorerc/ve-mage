@@ -34,11 +34,12 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>收件人：</div>
             <div class="from-content">
-              <div>
+              <div :class="{error:errorMsg.groupIds}">
                 <button class="default-button fl" @click="selectPersonShow=true">选择分组</button>
                 <span class="send-span">发送限额：0/400</span>
                 <ve-msg-tips tip-type="html"
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
+                <span class="error-msg" v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
               </div>
               <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
                 <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
@@ -49,7 +50,7 @@
           </div>
           <div class="from-row">
             <div class="from-title">发送时间：</div>
-            <div class="from-content">
+            <div :class="{'from-content':true,error:errorMsg.planTime}">
               <div class="send-type-box">
                 <el-radio v-model="sendType" label="AUTO">立即发送</el-radio>
                 <el-radio v-model="sendType" label="ONCE">定时发送</el-radio>
@@ -151,7 +152,8 @@
           content: '',
           desc: '',
           senderName: '',
-          planTime: ''
+          planTime: '',
+          groupIds: ''
         },
         email: {
           activityId: '',
@@ -160,7 +162,8 @@
           title: '',
           content: '',
           senderName: '',
-          planTime: ''
+          planTime: '',
+          groupIds: ''
         }
       }
     },
@@ -184,19 +187,26 @@
         handler (newArray) {
           let temArray = []
           let listStr = ''
+          let groupIdsStr = ''
           newArray.forEach((item, idx) => {
             if (!item.isChecked) return
             temArray.push(item)
             this.selectedCount += item.count
             listStr += `${item.name} (${item.count}人）、`
+            groupIdsStr += `${item.id},`
           })
           this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
+          this.email.groupIds = groupIdsStr.substring(0, groupIdsStr.length - 1)
           this.selectedPersonList = temArray
         },
         deep: true
       }
     },
     created () {
+      if (!this.email.content) {
+        this.$router.go(-1)
+        return
+      }
       this.queryPersonList()
     },
     methods: {
@@ -220,6 +230,11 @@
         } else {
           return
         }
+        if (this.email.groupIds) {
+          this.errorMsg.groupIds = ''
+        } else {
+          return
+        }
         if (this.email.desc) {
           this.errorMsg.desc = ''
         } else {
@@ -236,6 +251,9 @@
       /* 点击确定 */
       okSelectList () {
         this.selectPersonShow = false
+        if (this.email.groupIds) {
+          this.errorMsg.groupIds = ''
+        }
       },
       /* 点击取消 */
       handleSelectPerson (e) {
@@ -271,6 +289,7 @@
         })
       },
       saveEmail () {
+        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
             this.email = { ...this.email, ...res.data }
@@ -290,6 +309,7 @@
           return
         }
         if (!this.checkParams(this.isTimer)) return
+        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
@@ -327,8 +347,8 @@
         } else if (!this.email.senderName) {
           this.errorMsg.senderName = '发件人不能为空'
           return false
-        } else if (!this.email.content) {
-          this.errorMsg.content = '邮件内容不能为空'
+        } else if (!this.email.groupIds) {
+          this.errorMsg.groupIds = '请选择收件人'
           return false
         }
         return true
@@ -341,115 +361,115 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
-  .edit-step-box {
-    background-color: #f5f5f5;
-    .send-span {
-      display: inline-block;
-      height: 40px;
-      line-height: 40px;
-      margin: 0 15px;
-      color: #888;
+.edit-step-box {
+  background-color: #f5f5f5;
+  .send-span {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 15px;
+    color: #888;
+  }
+  .email-header {
+    height: 60px;
+    line-height: 60px;
+    background-color: #ffd021;
+    .icon-jiantou {
+      font-size: 22px;
+      vertical-align: -2px;
     }
-    .email-header {
-      height: 60px;
-      line-height: 60px;
-      background-color: #ffd021;
-      .icon-jiantou {
-        font-size: 22px;
-        vertical-align: -2px;
+    .back-btn {
+      display: inline-block;
+      padding: 0 15px;
+      background-color: #ffda51;
+      line-height: 40px;
+      border-radius: 4px;
+      font-size: 18px;
+      text-align: center;
+      margin-left: 20px;
+      margin-right: 10px;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+        color: #4b5afe;
       }
-      .back-btn {
-        display: inline-block;
-        padding: 0 15px;
-        background-color: #ffda51;
-        line-height: 40px;
-        border-radius: 4px;
-        font-size: 18px;
-        text-align: center;
-        margin-left: 20px;
-        margin-right: 10px;
+    }
+  }
+  .live-mager {
+    padding-bottom: 0;
+    height: calc(100vh - 120px);
+    overflow: hidden;
+    .border-box {
+      margin-top: 50px;
+      height: 2000px;
+    }
+  }
+  .email-bottom {
+    height: 60px;
+    width: 100%;
+    line-height: 60px;
+    border-top: 1px solid #e2e2e2;
+    box-sizing: border-box;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    background-color: #fff;
+    button {
+      margin-top: 10px;
+    }
+    .margin-fl {
+      margin-right: 10px;
+    }
+  }
+  .send-type-box {
+    height: 30px;
+    margin-top: 13px;
+  }
+  .msg-box {
+    z-index: 1000;
+  }
+  .step-btns {
+    margin: 30px 30px 100px 30px;
+    .margin-fl {
+      margin: 0 20px;
+    }
+  }
+  .input-email {
+    width: 400px;
+  }
+  .msg-box-bottom {
+    height: 40px;
+    .email-timer {
+      display: inline-block;
+      margin-right: 23px;
+    }
+    .error-msg {
+      display: block;
+      position: absolute;
+      color: #fc5659;
+      font-size: 14px;
+    }
+  }
+  .from-title {
+    line-height: 40px;
+  }
+  .edit-groups {
+    margin-top: 15px;
+    width: 500px;
+    span {
+      display: inline-block;
+      background-color: #f0f1fe;
+      border-radius: 17px;
+      padding: 8px 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      i {
+        color: #4b5afe;
         &:hover {
           cursor: pointer;
-          opacity: 0.9;
-          color: #4b5afe;
-        }
-      }
-    }
-    .live-mager {
-      padding-bottom: 0;
-      height: calc(100vh - 120px);
-      overflow: hidden;
-      .border-box {
-        margin-top: 50px;
-        height: 2000px;
-      }
-    }
-    .email-bottom {
-      height: 60px;
-      width: 100%;
-      line-height: 60px;
-      border-top: 1px solid #e2e2e2;
-      box-sizing: border-box;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-      padding: 0 20px;
-      background-color: #fff;
-      button {
-        margin-top: 10px;
-      }
-      .margin-fl {
-        margin-right: 10px;
-      }
-    }
-    .send-type-box {
-      height: 30px;
-      margin-top: 13px;
-    }
-    .msg-box {
-      z-index: 1000;
-    }
-    .step-btns {
-      margin: 30px 30px 100px 30px;
-      .margin-fl {
-        margin: 0 20px;
-      }
-    }
-    .input-email {
-      width: 400px;
-    }
-    .msg-box-bottom {
-      height: 40px;
-      .email-timer {
-        display: inline-block;
-        margin-right: 23px;
-      }
-      .error-msg {
-        display: block;
-        position: absolute;
-        color: #fc5659;
-        font-size: 14px;
-      }
-    }
-    .from-title {
-      line-height: 40px;
-    }
-    .edit-groups {
-      margin-top: 15px;
-      width: 500px;
-      span {
-        display: inline-block;
-        background-color: #f0f1fe;
-        border-radius: 17px;
-        padding: 8px 10px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        i {
-          color: #4b5afe;
-          &:hover {
-            cursor: pointer;
-            opacity: 0.8;
-          }
+          opacity: 0.8;
         }
       }
     }
   }
+}
 </style>

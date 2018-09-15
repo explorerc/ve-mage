@@ -304,7 +304,6 @@
         }
       },
       uploadImgSuccess (data) {
-        debugger
         let companyData = {
           avatar: ''
         }
@@ -759,9 +758,20 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
-          } else if (res.code !== 200) {
+          } else if (res.code === 10050) {
             this.phoneCodeError = true
             this.phoneCodeTip = '动态码输入过于频繁'
+          } else if (res.code !== 200) {
+            this.phoneCodeError = true
+            this.phoneCodeTip = res.msg
+            this.opacity = 1
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
           } else {
             this.phoneCodeError = false
             this.phoneCodeTip = res.msg

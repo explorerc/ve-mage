@@ -4,12 +4,19 @@
     <div class="play-video-box" :id="playBoxId" v-else-if="playType=='vod'">
       <div v-html="this.outLineLink" style="width:100%;height: 100%;"></div>
     </div>
+    <div class="play-video-box" :id="playBoxId" v-else-if="playType=='end'">
+      <span class="end-box">直播已结束</span>
+    </div>
     <div class="play-video-box" :id="playBoxId" v-else>
       <img v-if="imageSrc" :src="imageSrc">
     </div>
     <i class="iconfont icon-bofang" v-if="playBtnShow" @click="playVideo"></i>
-    <div class="control-box">
-
+    <div class="control-video-box" v-if="(playType=='vod'&&!outLineLink)||playType=='warm'">
+      <video-control
+        :currentTime="currentTime"
+        :totalTime="totalTime"
+        @mute="mutoAuto"
+        @change="changeProgress"></video-control>
     </div>
   </div>
 </template>
@@ -19,9 +26,11 @@
   import ActivityManger from 'src/api/activity-manger'
   import LivePuller from 'src/components/common/video/pull/LivePuller'
   import HostPusher from 'src/components/common/video/push/HostPusher'
+  import VideoControl from './control'
 
   export default {
     name: 'index',
+    components: { VideoControl },
     data () {
       return {
         playComps: {},
@@ -31,6 +40,9 @@
         outLineLink: '', // 外链
         playBoxId: `play-vides-${Math.random()}`,
         activityId: '',
+        currentTime: 0,
+        totalTime: 10000,
+        setIntervalHandler: 0,
         sdkPlayParam: {
           appId: '',
           accountId: '',
@@ -53,7 +65,7 @@
       playType: {
         type: String,
         required: true,
-        default: '' // 直播(live), 回放(vod), 暖场(warm)
+        default: '' // 直播(live), 回放(vod), 暖场(warm), 结束(end)
       },
       startInit: {
         type: Boolean,
@@ -75,6 +87,16 @@
         }
       }
     },
+    beforeDestroy () {
+      console.log('--video-com--beforeDestroy')
+      clearInterval(this.setIntervalHandler)
+      // 发起端直播
+      if (this.hostPusher) this.hostPusher.destroy()
+      // 观看端直播
+      if (this.playComps) this.playComps.destroy()
+      // 回放和暖场视频
+      if (window.VhallPlayer) window.VhallPlayer.destroy()
+    },
     created () {
       const queryId = this.$route.params.id
       if (!queryId) {
@@ -91,7 +113,11 @@
           this.queryWarmInfo()
         } else if (this.playType === 'vod') { // 回放
           this.initPlayBack()
+        } else if (this.playType === 'end') { // 结束
+          this.playEnd()
         }
+      },
+      playEnd () {
       },
       playVideo () {
         if (this.playType === 'warm') { // 暖场
@@ -121,8 +147,9 @@
           this.imageUrl = res.data.cover
           if (res.data.replay.type === 'LINK') { // 外链
             this.outLineLink = res.data.replay.link
-          } else if (res.data.replay.type === 'VIDEO') { // 回放视频
+          } else if (res.data.replay.type === 'VIDEO' || res.data.replay.type === 'SLICE') { // 回放视频
             this.recordId = res.data.replay.video
+            this.totalTime = res.data.replay.duration
             this.playBackVideo()
           }
         })
@@ -144,6 +171,7 @@
                   complete: () => {
                     this.playBtnShow = false
                     window.VhallPlayer.play()
+                    this.dealWithVideo()
                   }
                 })
               })
@@ -157,11 +185,22 @@
           })
         })
       },
+      dealWithVideo () {
+        clearInterval(this.setIntervalHandler)
+        this.setIntervalHandler = setInterval(() => {
+          this.currentTime = window.VhallPlayer.getCurrentTime()
+          if (this.totalTime === this.currentTime) {
+            clearInterval(this.setIntervalHandler)
+          }
+        }, 1000)
+      },
       queryWarmInfo () {
         ActivityManger.queryWarmInfoById(this.activityId).then((res) => {
           this.imageUrl = res.data.imgUrl
           this.recordId = res.data.recordId
+          this.totalTime = parseInt(res.data.record.duration)
           this.playBtnShow = true
+          this.playBackVideo()
         })
       },
       /* 初始拉流播放插件 */
@@ -194,6 +233,7 @@
       pullBroadCast () {
         this.hostPusher.stopBroadCast().then(() => {
           this.hostPusher.startBroadCast().then(() => {
+            this.$emit('startPull')
             console.log('----------旁路推流成功----------')
           }).catch(error => {
             console.error(`旁路推流失败:${error}`)
@@ -211,42 +251,90 @@
         if (this.playType === 'live') { // 直播
           this.hostPusher.stop()
         }
+      },
+      /* 开启，禁止声音 */
+      mutoAuto (e) {
+        if (this.playType === 'live') { // 直播
+          if (this.role === 'master') { // 主持人互动端
+            this.hostPusher.mute(e)
+          } else if (this.role === 'watcher') { // 观看端
+            this.playComps.volume = e ? 0 : 50
+          }
+        } else if (this.playType === 'warm') { // 暖场
+        } else if (this.playType === 'vod') { // 回放
+        }
+      },
+      changeProgress (progress) {
+        if (window.VhallPlayer) {
+          window.VhallPlayer.seek(this.totalTime * progress / 100)
+        }
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-  .play-container {
-    position: relative;
+.play-container {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  .play-video-box {
     height: 100%;
-    .play-video-box {
+    overflow: hidden;
+    background-color: #313131;
+    img {
+      width: 100%;
       height: 100%;
-      overflow: hidden;
-      background-color: #313131;
-      img {
-        width: 100%;
-        height: 100%;
-      }
     }
-    .icon-bofang {
+    .end-box {
       display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
       color: red;
-      font-size: 60px;
-      &:hover {
-        cursor: pointer;
-        opacity: .8;
-      }
+      line-height: 500px;
+      text-align: center;
     }
-    .control-box {
-      position: absolute;
-      left: 0;
+  }
+  .icon-bofang {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    color: red;
+    font-size: 60px;
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+  .control-video-box {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    //animation: control-animation-hide 1s linear;
+  }
+  /*&:hover {*/
+  /*.control-box {*/
+  /*//animation: control-animation-show .5s linear both;*/
+  /*}*/
+  /*}*/
+  @keyframes control-animation-show {
+    from {
+      bottom: -50px;
+    }
+    to {
       bottom: 0;
     }
   }
+  @keyframes control-animation-hide {
+    from {
+      bottom: 0;
+    }
+    to {
+      bottom: -50px;
+    }
+  }
+}
 </style>

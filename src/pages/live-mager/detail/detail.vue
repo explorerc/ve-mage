@@ -12,11 +12,10 @@
         <p class='desc-label'>互动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
-        <!-- <span><a :href="this.state == 1 ? `baidu.com/${this.id}` : `xinlang.com/${this.id}`">活动官网</a></span>
-        <span><a :href="this.state == 1 ? `baidu.com/${this.id}` : `xinlang.com/${this.id}`">直播观看页</a></span> -->
-          <li class='icon'><i></i><router-link :to="this.state == 1 ? `baidu.com/${this.activityId}` : `xinlang.com/${this.activityId}`"></router-link>活动页面</li>
-          <li class='icon copy'><i></i>复制链接</li>
-          <li class='icon offline' @click='update'><i></i>{{state == 1 ? '发布活动' : '下线活动'}}</li>
+          <li class='icon'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
+          <li class='icon copy' @click='copy'><i></i>复制链接<input type="text" :value="`www.baidu.com/${this.activityId}`" id='copyContent' style='position:absolute;opacity:0;'></li>
+          <li class='icon offline' @click='offlineActive' v-if="isPublished"><i></i>下线活动</li>
+          <li class='icon offline' @click='publishActive' v-else><i></i>发布活动</li>
         </ol>
       </div>
       <div class="right">
@@ -37,37 +36,37 @@
     <div class="block process clearfix">
       <div class="top clearfix">
         <ul>
-          <li class='step'>
+          <li class='step highlight' :class="{ 'active':this.currStep === 'notPublish' }">
             <dl>
               <dt></dt>
               <dd>准备</dd>
             </dl>
           </li>
-          <li class='step prompt'>
-            <dl>
-              <dt></dt>
-              <dd>推广</dd>
-            </dl>
-          </li>
-          <li class='step brand'>
+          <li class='step prompt' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }" >
             <dl>
               <dt></dt>
               <dd>品牌</dd>
             </dl>
           </li>
-          <!-- <li class='step live active'>
+          <li class='step brand' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
+            <dl>
+              <dt></dt>
+              <dd>推广</dd>
+            </dl>
+          </li>
+          <li class='step live ' :class="{ 'highlight':this.currStep.search('live') > -1, 'active':this.currStep === 'isPublish live' }">
             <dl>
               <dt></dt>
               <dd>直播</dd>
             </dl>
-          </li> -->
-          <li class='step disable record'>
+          </li>
+          <li class='step record' :class="{ 'highlight':this.currStep.search('playback') > -1, 'active':this.currStep === 'isPublish live end playback' }">
             <dl>
               <dt></dt>
               <dd>回放</dd>
             </dl>
           </li>
-          <li class='step disable statics'>
+          <li class='step statics' :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}">
             <dl>
               <dt></dt>
               <dd>数据</dd>
@@ -79,40 +78,44 @@
         <div>
           <!-- <span>准备</span> -->
           <ol>
-            <li v-for='item in cardData.prepare' :key='item.title' v-show="item.switch">{{item.title}}</li>
+            <li v-show="dataPrepare[0].switch">基本信息</li>
+            <li v-show="dataPrepare[1].switch">活动报名</li>
+            <li v-show="dataPrepare[2].switch">暖场设置</li>
           </ol>
         </div>
         <div>
-          <!-- <span>营销</span> -->
+          <!-- <span>品牌</span> -->
           <ol>
-            <li v-for='item in cardData.brand' :key='item.title' v-show="item.switch">{{item.title}}</li>
+            <li v-show="dataBrand[0].switch">活动官网</li>
+            <li v-show="dataBrand[1].switch">直播引导页</li>
+            <li v-show="dataBrand[2].switch">观看页</li>
           </ol>
         </div>
         <div>
-          <!-- <span>形象</span> -->
+          <!-- <span>推广</span> -->
           <ol>
-            <li v-for='item in cardData.promote' :key='item.title' v-show="item.switch">{{item.title}}</li>
+            <li v-show="dataPromote[0].switch">自动化通知</li>
+            <li v-show="dataPromote[1].switch">邮箱</li>
+            <li v-show="dataPromote[2].switch">短信</li>
+            <li v-show="dataPromote[3].switch">微信</li>
           </ol>
         </div>
-        <!-- <div>
-          <span>直播</span>
+        <div>
+          <!-- <span>直播</span> -->
           <ol>
-            <li>直播监控</li>
-            <li>聊天审核</li>
+            <!-- <li>直播监控</li> -->
+            <!-- <li>聊天审核</li> -->
           </ol>
-        </div> -->
+        </div>
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <!-- <li v-for='item in cardData.record' :key='item.title' v-show="item.switch">{{item.title}}</li> -->
-            <li v-for='item in cardData.record' :key='item.title' v-show="item.switch">{{item.title}}</li>
-            <li>设置回放</li>
+            <li v-show="dataRecord[0].switch">设置回放</li>
           </ol>
         </div>
         <div>
           <!-- <span>数据</span> -->
           <ol>
-            <!-- <li v-for='item in processData.data' :key='item.title' v-show="item.switch">{{item.title}}</li> -->
             <li>数据报表</li>
             <li>详细数据导出</li>
           </ol>
@@ -121,33 +124,273 @@
       </div>
     </div>
     <div class="fun-card">
-      <p class='block-separte'>准备</p>
         <div class="item prepare">
-          <div class="card-list clearfix">
+        <p class='block-separte'>准备</p>
+          <!-- <div class="card-list clearfix">
             <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
               :prop-img='item.img'></process-card>
+          </div> -->
+          <div class="card-list clearfix">
+            <div class='item base' @click="linkTo($event,'/liveMager/edit/')">
+              <!-- 基本信息 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>基本信息</span>
+                  <span class='des'>编辑活动基本信息</span>
+                </div>
+              </div>
+              <div class="btm">
+                <!-- <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop="" @change='switchChange('APPOINT',dataBrand[2].switch)'></el-switch> -->
+                <!-- <span class='set'>设置</span> -->
+              </div>
+            </div>
+            <div class='item apply' @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">
+              <!-- 活动报名 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>活动报名</span>
+                  <span class='des'>
+                    <!-- 未设置未开启 -->
+                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息</template>
+                    <!-- 未设置已开启 -->
+                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">暂未设置</template>
+                    <!-- 已设置已开启 -->
+                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">已设置活动报名</template>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">已设置活动报名</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+                <el-switch  class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('APPOINT', dataPrepare[1].switch)"></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
+            </div>
+            <div class='item wram' @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">
+              <!-- 暖场设置 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>暖场设置</span>
+                  <span class='des'>
+                    <!-- 未设置未开启 -->
+                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">为活动设置暖场视频</template>
+                    <!-- 未设置已开启 -->
+                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">暂未设置</template>
+                    <!-- 已设置已开启 -->
+                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">{{dataPrepare[2].desc}}</template>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">{{dataPrepare[2].desc}}</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+                <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"  @change="switchChange('WARMUP',dataPrepare[2].switch)"></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
+            </div>
           </div>
         </div>
       <div class="item marketing">
-        <p class='block-separte'>品牌</p>
+        <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.brand" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"marketing"'
-            :prop-img='item.img'></process-card>
+
+            <div class='item automaze' @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">
+              <!-- 自动化通知 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>自动化通知</span>
+                  <span class='des'>
+                    <!-- 未设置未开启 -->
+                    <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === false">设置自动化活动通知提醒</template>
+                    <!-- 未设置已开启 -->
+                    <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === true">暂未设置</template>
+                    <!-- 已设置已开启 -->
+                    <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === true">
+                      <template v-if="dataPromote[0].desc === 'NONE'">预约</template>
+                      <template v-if="dataPromote[0].desc === 'PREPARE'">报名</template>
+                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                    </template>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === false">
+                      <template v-if="dataPromote[0].desc === 'NONE'">预约</template>
+                      <template v-if="dataPromote[0].desc === 'PREPARE'">报名</template>
+                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                    </template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+                <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch)"></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
+            </div>
+
+            <div class='item mail' @click="linkTo($event,'/liveMager/email/')">
+              <!-- 邮箱 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>邮箱</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataPromote[1].isSet">已设置邮件邀约</template>
+                    <!-- 未设置 -->
+                    <template v-else>通过邮件进行活动推广</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+              </div>
+            </div>
+
+            <div class='item message' @click="linkTo($event,'/liveMager/promote/msg/list/')">
+              <!-- 短信 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>短信</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataPromote[2].isSet">已设置短信通知</template>
+                    <!-- 未设置 -->
+                    <template v-else>通过短信进行活动推广</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+              </div>
+            </div>
+
+            <div class='item wechat' @click="linkTo($event,'/liveMager/promote/wechat/list/')">
+              <!-- 微信 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>微信</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataPromote[3].isSet">已设置微信通知</template>
+                    <!-- 未设置 -->
+                    <template v-else>通过微信进行活动推广</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+              </div>
+            </div>
+
         </div>
       </div>
       <div class="item promote">
-        <p class='block-separte'>推广</p>
+        <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.promote" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
-            :prop-img='item.img'></process-card>
+
+           <div class='item site' @click="linkTo($event,'/site/', dataBrand[2].switch)">
+              <!-- 活动官网 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>活动官网</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataBrand[0].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <!-- 未设置 -->
+                    <template v-else>最精简的活动品牌页</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+                <el-switch class='switch' v-model="dataBrand[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[2].switch)"></el-switch>
+                <!-- <span class='set'>设置</span> -->
+              </div>
+            </div>
+
+             <div class='item guide' @click="linkTo($event,'/setLiveGuided/')">
+              <!-- 直播引导页 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>直播引导页</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataBrand[1].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <!-- 未设置 -->
+                    <template v-else>最精简的活动品牌页</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+              </div>
+            </div>
+
+             <div class='item watch' @click="linkTo($event,'/setLiveWatch/')">
+              <!-- 观看页 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>观看页</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataBrand[2].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <!-- 未设置 -->
+                    <template v-else>订制直播观看页面</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+              </div>
+            </div>
+
         </div>
       </div>
       <div class="item setting">
         <p class='block-separte'>回放</p>
         <div class="card-list clearfix">
-          <process-card @update:checked='switchBack' v-for="(item,index) in cardData.record" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"promote"'
-            :prop-img='item.img'></process-card>
-          <!-- <process-card @update:checked='switchBack' v-for="(item,index) in cardData['setting']" :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"setting"' :prop-img='item.img'></process-card> -->
+          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')">
+              <!-- 观看页 -->
+              <div class="card">
+                <div class='pic'>
+                  <!-- <img :src="propImg"> -->
+                </div>
+                <div class='desc'>
+                  <span>设置回放</span>
+                  <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="dataRecord[0].isSet">已设置默认回放</template>
+                    <!-- 未设置 -->
+                    <template v-else>设置活动后的回放视频</template>
+                  </span>
+                </div>
+              </div>
+              <div class="btm">
+              </div>
+            </div>
         </div>
       </div>
     </div>
@@ -169,283 +412,114 @@
         startTime: '',
         stateClass: '',
         state: '',
+        currStep: '',
         cardData: {},
         msgShow: false,
+        isPublished: false,
         activityId: this.$route.params.id,
         imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
-        countdownTime: '' // 倒计时 秒
+        countdownTime: '', // 倒计时 秒
+        dataPrepare: [],
+        dataBrand: [],
+        dataPromote: [],
+        dataRecord: []
       }
     },
     created () {
-      // 假数据
-      // this.title = '2018GIMIC互联网大会'
-      // this.id = this.$route.params.id
-      // this.tagList = ['科技', '发布会', '标签三']
-      // this.startTime = '2018-07-09 09:30:00'
-      // this.state = 1
-      // this.state = 1
-
-      // 假数据 返回的card 数据
       // this.cardData = {
-      //   'prepare': [{
-      //     title: '基本信息',
-      //     img: '',
-      //     switch: false,
-      //     checked: true,
-      //     desc: [
-      //       '基本信息内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '观看限制',
-      //     img: '',
-      //     switch: false,
-      //     checked: true,
-      //     desc: [
-      //       '观看限制内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '角色设置',
-      //     img: '',
-      //     checked: true,
-      //     switch: false,
-      //     desc: [
-      //       '角色设置内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '暖场设置',
-      //     img: '',
-      //     switch: true,
-      //     checked: true,
-      //     desc: [
-      //       '暖场设置内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '预约报名',
-      //     img: '',
-      //     switch: false,
-      //     checked: true,
-      //     desc: [
-      //       '预约报名内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '通知提醒',
-      //     img: '',
-      //     switch: true,
-      //     checked: true,
-      //     desc: [
-      //       '通知提醒内容1'
-      //     ]
-      //   }
+      //   'prepare': [
+      //     {
+      //       title: '基本信息',
+      //       desc: '',
+      //       link: '/liveMager/edit/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '活动报名',
+      //       desc: '已设置',
+      //       link: '/liveMager/prepare/limit-apply/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '暖场设置',
+      //       desc: '"asdasdasd.mp4"',
+      //       link: '/liveMager/warmField/',
+      //       switch: true
+      //     }
       //   ],
-      //   'marketing': [{
-      //     title: '幸运大转盘',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '幸运大转盘内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '红包雨',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '红包雨内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '瓜分大奖',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '瓜分大奖内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '暖场设置',
-      //     img: '',
-      //     checked: true,
-      //     link: '/liveMager/warmField/',
-      //     desc: [
-      //       '暖场设置内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '观看奖励',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '观看奖励内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '有奖答题',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '有奖答题内容1'
-      //     ]
-      //   }
+      //   'brand': [
+      //     {
+      //       title: '活动官网',
+      //       desc: '已发布',
+      //       link: '',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '直播引导页',
+      //       desc: '已发布',
+      //       link: '/setLiveGuided/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '观看页',
+      //       desc: '"定制直播观看页面"',
+      //       link: '/master/',
+      //       switch: true
+      //     }
       //   ],
-      //   'promote': [{
-      //     title: '活动官网',
-      //     img: '',
-      //     checked: true,
-      //     switch: false,
-      //     desc: [
-      //       '活动官网内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '直播观看页',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '直播观看页内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '广告设置',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '广告设置内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '播放器',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '播放器内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '分享设置',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '分享设置内容1'
-      //     ]
-      //   }
+      //   'promote': [
+      //     {
+      //       title: '自动化通知',
+      //       desc: '',
+      //       link: '/liveMager/promote/auto/preview/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '邮箱',
+      //       desc: '""',
+      //       link: '/liveMager/email/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '短信',
+      //       desc: '""',
+      //       link: '/liveMager/promote/msg/list/',
+      //       switch: true
+      //     },
+      //     {
+      //       title: '微信',
+      //       desc: '""',
+      //       link: '/liveMager/promote/wechat/list/',
+      //       switch: true
+      //     }
       //   ],
-      //   'setting': [{
-      //     title: '网页嵌入',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '网页嵌入内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '直播工具配置',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '直播工具配置内容1'
-      //     ]
-      //   },
-      //   {
-      //     title: '角色设置',
-      //     img: '',
-      //     checked: true,
-      //     desc: [
-      //       '角色设置内容1'
-      //     ]
-      //   }
+      //   'record': [
+      //     {
+      //       title: '回放',
+      //       desc: '已设置',
+      //       link: '/liveMager/playBack/',
+      //       switch: true
+      //     }
       //   ]
       // }
-      this.cardData = {
-        'prepare': [
-          {
-            title: '基本信息',
-            desc: '',
-            link: '/liveMager/edit/',
-            switch: true
-          },
-          {
-            title: '活动报名',
-            desc: '已设置',
-            link: '/liveMager/prepare/limit-apply/',
-            switch: true
-          },
-          {
-            title: '暖场设置',
-            desc: '"asdasdasd.mp4"',
-            link: '/liveMager/warmField/',
-            switch: true
-          }
-        ],
-        'brand': [
-          {
-            title: '活动官网',
-            desc: '已发布',
-            link: '/liveMager/site/',
-            switch: true
-          },
-          {
-            title: '直播引导页',
-            desc: '已发布',
-            link: '/setLiveGuided/',
-            switch: true
-          },
-          {
-            title: '观看页',
-            desc: '"定制直播观看页面"',
-            link: '/master/',
-            switch: true
-          }
-        ],
-        'promote': [
-          {
-            title: '自动化通知',
-            desc: '',
-            link: '/liveMager/promote/auto/preview/',
-            switch: true
-          },
-          {
-            title: '推广传单',
-            desc: '',
-            switch: true
-          },
-          {
-            title: '邮箱',
-            desc: '""',
-            link: '/liveMager/email/',
-            switch: true
-          },
-          {
-            title: '短信',
-            desc: '""',
-            link: '/liveMager/promote/msg/list/',
-            switch: true
-          },
-          {
-            title: '微信',
-            desc: '""',
-            link: '/liveMager/promote/wechat/list/',
-            switch: true
-          }
-        ],
-        'record': [
-          {
-            title: '回放',
-            desc: '已设置',
-            link: '/liveMager/playBack/',
-            switch: true
-          }
-        ]
-      }
     },
     mounted () {
       this.getDetails()
     },
     methods: {
+      linkTo (e, link, status) {
+        console.log(e.target.className)
+        if (e.target.className.search('switch') > -1) {
+          // 如果开着状态则不跳转
+          if (!status && e.target.className.search('input') > -1) {
+            setTimeout(() => {
+              this.$router.push(link + this.activityId)
+            }, 500)
+          }
+        } else {
+          this.$router.push(link + this.activityId)
+        }
+      },
       update () {
         // debugger // eslint-disable-line
         if (this.state === '预约') {
@@ -499,26 +573,36 @@
           }
         })
       },
-      switchBack (res) {
-        //  debugger // eslint-disable-line
-        console.log(res)
-        if (res.type) {
-          // 添加显示相关项目
-          // debugger // eslint-disable-line
-          this.cardData[res.part][res.idx]['checked'] = true
-        } else {
-          // 隐藏相关项目
-          this.cardData[res.part][res.idx]['checked'] = false
+      switchChange (type, status) {
+        const data = {
+          activityId: this.activityId,
+          submodule: type,
+          enabled: status ? 'Y' : 'N'
         }
+        http.detailSwitch(data).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            this.$toast({
+              'content': '设置成功'
+            })
+          } else {
+            console.log('设置失败')
+          }
+        })
       },
       getDetails () {
         http.getDetails(this.activityId).then((res) => {
           // console.log(res)
-          // this.countdownTime = res.data.activity.countDown.toString()
+          this.countdownTime = res.data.activity.countDown.toString()
           this.title = res.data.activity.title
           // this.tagList = res.data.activity.countDown
           this.startTime = res.data.activity.startTime
           this.poster = res.data.activity.imgUrl
+          this.dataPrepare = res.data.prepare
+          this.dataBrand = res.data.brand
+          this.dataPromote = res.data.promote
+          this.dataRecord = res.data.record
+          this.isPublished = res.data.activity.published === 'Y'
           switch (res.data.activity.status) {
             case ('LIVING'):
               this.state = '直播'
@@ -537,8 +621,71 @@
               this.stateClass = 'preview'
               break
           }
+          this.getStep() // 获取当前阶段
         }).catch((e) => {
           console.log(e)
+        })
+      },
+      publishActive () { // 发布活动
+        http.publishActive(this.activityId).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            this.$toast({
+              content: '活动发布成功',
+              position: 'center'
+            })
+            this.isPublished = true
+            this.currStep = 'isPublish'
+          }
+        })
+      },
+      offlineActive () { // 下线活动
+        http.offlineActive(this.activityId).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            this.$toast({
+              content: '活动下线成功',
+              position: 'center'
+            })
+            this.isPublished = false
+            if (this.currStep.search('live') === -1) {
+              this.currStep = 'notPublish'
+            }
+          }
+        })
+      },
+      getStep () { // 获取当前活动阶段
+        switch (this.state) {
+          case '预约':
+            if (this.isPublished) {
+              this.currStep = 'isPublish'
+              console.log('发布页面后，直播未开始')
+            } else {
+              this.currStep = 'notPublish'
+              console.log('活动未发布')
+            }
+            break
+          case '直播':
+            this.currStep = 'isPublish live'
+            console.log('直播中')
+            break
+          case '结束':
+            this.currStep = 'isPublish live end'
+            console.log('直播结束，但未设置回放')
+            break
+          case '回放':
+            this.currStep = 'isPublish live end playback'
+            console.log('直播结束，已设置回放')
+            break
+        }
+      },
+      copy () { // 复制功能
+        let inp = document.getElementById('copyContent')
+        inp.select()
+        document.execCommand('Copy')
+        this.$toast({
+          content: '复制成功',
+          position: 'center'
         })
       },
       timeOut () {
@@ -582,6 +729,7 @@
     .process .top li {
       width: 140px;
       margin: 0 14px;
+      // margin: 0 31px;
     }
     .process .top dt {
       width: 80px;
@@ -595,14 +743,15 @@
       margin-left: -46px;
     }
     .process .top dt:before {
-      width: 70px;
-      right: -80px;
+      width: 100px;
+      right: -110px;
     }
-    .process .bottom > div ol > li {
+    .process .bottom > div ol {
       width: 140px;
     }
     .process .bottom > div {
       margin: 10px 14px;
+      // margin: 10px 31px;
     }
     .middle {
       width: 375px;
@@ -626,13 +775,14 @@
       float: left;
       width: 160px;
       margin: 0 33px;
+      // margin: 0 55px;
     }
     dt {
       width: 90px;
       height: 90px;
       margin: 0 auto;
       border-radius: 500px;
-      background: $color-default;
+      background-color: rgba(211, 215, 255, 1);
       position: relative;
       background-image: url('~assets/image/auto_wechat.png');
       background-repeat: no-repeat;
@@ -641,12 +791,14 @@
       &:before {
         content: '';
         width: 95px;
+        // width: 130px;
         height: 2px;
-        background: $color-default;
         position: absolute;
+        background: rgba(211, 215, 255, 1);
         top: 50%;
         margin-top: -1px;
         right: -116px;
+        // right: -152px;
       }
     }
     dd {
@@ -655,12 +807,12 @@
       color: $color-font;
     }
     li {
-      &.disable {
+      &.highlight {
         dt {
-          background-color: rgba(211, 215, 255, 1);
+          background-color: $color-default;
           &:before {
             content: '';
-            background: rgba(211, 215, 255, 1);
+            background: $color-default;
           }
         }
       }
@@ -701,9 +853,11 @@
   }
   .bottom > div {
     margin: 10px 33px;
+    // margin: 10px 55px;
+    width: 160px;
     float: left;
     ol > li {
-      width: 160px;
+      width: 100%;
       height: 36px;
       text-align: center;
       line-height: 36px;
@@ -900,6 +1054,114 @@
     width: 4px;
     height: 20px;
     background: rgba(255, 208, 33, 1);
+  }
+}
+.card-list .item {
+  cursor: pointer;
+  float: left;
+  width: 442px;
+  height: 140px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(226, 226, 226, 1);
+  padding: 14px 12px;
+  margin: 10px 0;
+  margin-right: 20px;
+  &:nth-child(3n + 3) {
+    margin-right: 0px;
+  }
+}
+
+/* 设备宽度大于 1600 */
+
+@media all and (min-width: 1600px) {
+}
+
+/* 设备宽度小于 1600px */
+
+@media all and (max-width: 1600px) {
+  .card-list .item {
+    width: 326px;
+  }
+}
+
+.card {
+  width: 100%;
+  height: 80px;
+  padding: 18px 5px;
+  padding-bottom: 0px;
+  .pic {
+    float: left;
+    width: 70px;
+    height: 70px;
+    margin: 4px;
+    background: url('~assets/image/auto_wechat.png') no-repeat center;
+    background-size: contain;
+    margin-right: 20px;
+  }
+  .desc {
+    float: left;
+    font-size: 18px;
+    color: $color-font;
+    padding: 15px 0;
+    span {
+      display: block;
+      font-size: 16px;
+    }
+    span.des {
+      padding-top: 5px;
+      font-size: 12px;
+      color: $color-font-sub;
+    }
+  }
+}
+.item.base .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.apply .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.wram .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.automaze .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.mail .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.message .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.wechat .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.site .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.guide .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.watch .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.item.record .card .pic {
+  background-image: url('~assets/image/auto_msg.png');
+}
+.btm {
+  width: 100%;
+  height: 40px;
+  .switch {
+    float: right;
+    margin: 10px 0px;
+  }
+  .more {
+    position: relative;
+  }
+  .show-more {
+    position: absolute;
+    top: 100%;
+    right: 0;
   }
 }
 </style>

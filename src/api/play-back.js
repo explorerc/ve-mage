@@ -67,6 +67,18 @@ const PlayBack = {
     })
   },
   /**
+   *  取消默认回放
+   */
+  cancelPlayBackConfig (activityId) {
+    return utils.ajax({
+      method: 'post',
+      url: '/manage/replay-manage/cancel-default',
+      params: {
+        activityId: activityId
+      }
+    })
+  },
+  /**
    *  下载回放视频
    */
   downloadVideo (id) {

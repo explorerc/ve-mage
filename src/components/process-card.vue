@@ -99,79 +99,79 @@
 </script>
 
 <style lang='scss' scoped>
-@import 'assets/css/variable.scss';
-@import '~assets/css/mixin.scss';
-.item {
-  float: left;
-  width: 442px;
-  height: 140px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  border: 1px solid rgba(226, 226, 226, 1);
-  padding: 14px 12px;
-  margin: 10px 0;
-  margin-right: 20px;
-  &:nth-child(3n + 3) {
-    margin-right: 0px;
-  }
-}
+// @import 'assets/css/variable.scss';
+// @import '~assets/css/mixin.scss';
+// .item {
+//   float: left;
+//   width: 442px;
+//   height: 140px;
+//   background: rgba(255, 255, 255, 1);
+//   border-radius: 4px;
+//   border: 1px solid rgba(226, 226, 226, 1);
+//   padding: 14px 12px;
+//   margin: 10px 0;
+//   margin-right: 20px;
+//   &:nth-child(3n + 3) {
+//     margin-right: 0px;
+//   }
+// }
 
-/* 设备宽度大于 1600 */
+// /* 设备宽度大于 1600 */
 
-@media all and (min-width: 1600px) {
-}
+// @media all and (min-width: 1600px) {
+// }
 
-/* 设备宽度小于 1600px */
+// /* 设备宽度小于 1600px */
 
-@media all and (max-width: 1600px) {
-  .item {
-    width: 326px;
-  }
-}
+// @media all and (max-width: 1600px) {
+//   .item {
+//     width: 326px;
+//   }
+// }
 
-.card {
-  width: 100%;
-  height: 80px;
-  .pic {
-    float: left;
-    width: 70px;
-    height: 70px;
-    margin: 4px;
-    background: url('~assets/image/auto_wechat.png') no-repeat center;
-    background-size: contain;
-    margin-right: 20px;
-  }
-  .desc {
-    float: left;
-    font-size: 18px;
-    color: $color-font;
-    padding: 10px 0;
-    span {
-      display: block;
-      font-size: 16px;
-    }
-    span.des {
-      padding-top: 5px;
-      font-size: 12px;
-      color: $color-font-sub;
-    }
-  }
-}
+// .card {
+//   width: 100%;
+//   height: 80px;
+//   .pic {
+//     float: left;
+//     width: 70px;
+//     height: 70px;
+//     margin: 4px;
+//     background: url('~assets/image/auto_wechat.png') no-repeat center;
+//     background-size: contain;
+//     margin-right: 20px;
+//   }
+//   .desc {
+//     float: left;
+//     font-size: 18px;
+//     color: $color-font;
+//     padding: 10px 0;
+//     span {
+//       display: block;
+//       font-size: 16px;
+//     }
+//     span.des {
+//       padding-top: 5px;
+//       font-size: 12px;
+//       color: $color-font-sub;
+//     }
+//   }
+// }
 
-.btm {
-  width: 100%;
-  height: 40px;
-  .switch {
-    float: right;
-    margin: 10px 0px;
-  }
-  .more {
-    position: relative;
-  }
-  .show-more {
-    position: absolute;
-    top: 100%;
-    right: 0;
-  }
-}
+// .btm {
+//   width: 100%;
+//   height: 40px;
+//   .switch {
+//     float: right;
+//     margin: 10px 0px;
+//   }
+//   .more {
+//     position: relative;
+//   }
+//   .show-more {
+//     position: absolute;
+//     top: 100%;
+//     right: 0;
+//   }
+// }
 </style>

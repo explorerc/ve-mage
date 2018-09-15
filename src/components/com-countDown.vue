@@ -33,7 +33,7 @@
     mounted () {
       // console.log(this)
       // debugger
-      // this.countDown(this.endTime)
+      this.countDown(this.endTime)
     },
     // computed:{
     //   djs(){
@@ -47,6 +47,7 @@
     // },
     watch: {
       endTime (value) {
+        console.log(value)
         this.countDown(value)
       }
     },

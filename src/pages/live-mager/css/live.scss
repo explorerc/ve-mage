@@ -112,7 +112,6 @@
       .from-row {
         display: flex;
         padding: 12px;
-
         .from-title {
           width: 180px;
           text-align: right;
@@ -126,11 +125,22 @@
             padding-right: 5px;
           }
         }
-
+        .error /deep/{
+          .el-input__inner {
+            border: 1px solid $color-red;
+          }
+          .default-button{
+            border: 1px solid $color-red;
+          }
+        }
         .from-content {
           position: relative;
           flex: 1;
-
+          .error-msg{
+            display: block;
+            color: $color-red;
+            margin-left: 10px;
+          }
           .input-box {
             width: 400px;
           }

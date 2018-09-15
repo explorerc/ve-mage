@@ -108,4 +108,45 @@ export default class BasePusher {
   destroy () {
 
   }
+
+  /**
+   * cam.show() cam.reset(conf) cam.destroy()
+   * {'rate':[5,8],discription:'Low'},{'rate':[10,15],discription:'Noraml'}
+   *  conf: {
+        video: {
+          deviceId: '1312312313123'
+        },
+        audio: {
+          deviceId: '1312312313123'
+        },
+        videoSize: [320, 180, 320, 180],
+        videoFrameRate: [5, 8]
+      },
+   *
+   * @param {*} conf
+   * @param {*} nodeId
+   * @param {*} [successBK=null]
+   * @param {*} [failedBK=null]
+   * @returns
+   * @memberof BasePusher
+   */
+  createPreview (conf, nodeId, successBK = null, failedBK = null) {
+    if (!this.interactor) {
+      console.log('尚未初始化互动推流端')
+      return null
+    }
+
+    let cam = this.interactor.camerasPreview({
+      conf: conf,
+      videoNode: nodeId,
+      success: () => {
+        successBK && successBK()
+      },
+      fail: reason => {
+        failedBK && failedBK(reason)
+      }
+    })
+
+    return cam
+  }
 }

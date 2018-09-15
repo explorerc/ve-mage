@@ -157,7 +157,7 @@
               <el-button
                 type="text" size="small"
                 v-if="playBackList[scope.$index].replayId == playBack.replayId"
-                @click.stop="">默认回放
+                @click.stop="cancelPlayBack(scope.$index)">取消默认回放
               </el-button>
               <el-button
                 type="text" size="small"
@@ -325,6 +325,13 @@
         this.playBackShow = true
         this.selectRowIdx = idx
       },
+      cancelPlayBack (idx) {
+        PlayBackHttp.cancelPlayBackConfig(this.activityId).then(res => {
+          if (res.code === 200) {
+            this.playBack.replayId = ''
+          }
+        })
+      },
       /* 更多 */
       handlerMore (idx, type) {
         this.selectRowIdx = idx
@@ -479,157 +486,157 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-  .list-box .el-table .cell {
-    overflow: visible;
-  }
+.list-box .el-table .cell {
+  overflow: visible;
+}
 </style>
 <style lang="scss" scoped>
-  @import 'assets/css/variable.scss';
+@import 'assets/css/variable.scss';
 
-  .black-box {
-    margin-top: 20px;
-    .el-date-editor {
-      margin-left: 10px;
-    }
-    .play-content {
-      .out-line {
-        margin: 10px 0;
-        span {
-          display: inline-block;
-          margin-right: 20px;
-        }
-        .out-line-input {
-          width: 400px;
-        }
-      }
-      .play-box {
-        display: inline-block;
-        width: 474px;
-        min-height: 266.6px;
-        line-height: 266px;
-        vertical-align: top;
-        background-color: #666666;
-        color: #fff;
-        .iframe-box {
-          height: 100%;
-          width: 100%;
-        }
-      }
-    }
+.black-box {
+  margin-top: 20px;
+  .el-date-editor {
+    margin-left: 10px;
   }
-
-  .list-box {
-    margin: 10px 0;
-  }
-
-  .step-btns {
-    margin-left: 150px;
-  }
-
-  .play-back-img {
-    width: 200px;
-    height: 130px;
-  }
-
-  .table-nav {
-    display: inline-block;
-    margin: 10px 0;
-    font-size: 0;
-    border: solid 1px #e5e5e5;
-    span {
-      display: inline-block;
-      width: 120px;
-      line-height: 34px;
-      text-align: center;
-      font-size: 14px;
-      &.active {
-        background-color: $color-bg-btn;
-      }
-      &:hover {
-        cursor: pointer;
-        opacity: 0.8;
-      }
-    }
-  }
-
-  .more {
-    display: inline-block;
-    position: relative;
-    padding: 0 5px;
-    font-size: 12px;
-    color: #409eff;
-    cursor: pointer;
-    text-align: center;
-    &:hover .more-menu {
-      display: block;
-    }
-    .more-menu {
-      display: none;
-      position: absolute;
-      top: -30px;
-      left: 34px;
-      width: 50px;
-      z-index: 9999999;
-      color: #666;
-      border: solid 1px #e5e5e5;
+  .play-content {
+    .out-line {
+      margin: 10px 0;
       span {
-        display: block;
-        padding: 0;
-        &:hover {
-          color: #409eff;
-        }
+        display: inline-block;
+        margin-right: 20px;
+      }
+      .out-line-input {
+        width: 400px;
       }
     }
-  }
-
-  .prop-input {
-    text-align: left;
-    margin: 20px;
-    font-size: 14px;
-    .com-input {
-      width: 258px;
-      margin: 5px 0;
-    }
-  }
-
-  .message-box-content {
-    text-align: left;
-    .from-title {
-      width: 100px !important;
-    }
-    .upload-tips {
-      width: 273px !important;
-    }
-  }
-
-  .video-modal-box {
-    .video-modal {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 10;
-    }
-    .video-content {
-      position: absolute;
-      width: 800px;
-      height: 450px;
-      line-height: 450px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .play-box {
+      display: inline-block;
+      width: 474px;
+      min-height: 266.6px;
+      line-height: 266px;
       vertical-align: top;
-      background-color: #333333;
+      background-color: #666666;
       color: #fff;
-      text-align: center;
-      z-index: 11;
       .iframe-box {
         height: 100%;
         width: 100%;
       }
     }
   }
+}
+
+.list-box {
+  margin: 10px 0;
+}
+
+.step-btns {
+  margin-left: 150px;
+}
+
+.play-back-img {
+  width: 200px;
+  height: 130px;
+}
+
+.table-nav {
+  display: inline-block;
+  margin: 10px 0;
+  font-size: 0;
+  border: solid 1px #e5e5e5;
+  span {
+    display: inline-block;
+    width: 120px;
+    line-height: 34px;
+    text-align: center;
+    font-size: 14px;
+    &.active {
+      background-color: $color-bg-btn;
+    }
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+}
+
+.more {
+  display: inline-block;
+  position: relative;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #409eff;
+  cursor: pointer;
+  text-align: center;
+  &:hover .more-menu {
+    display: block;
+  }
+  .more-menu {
+    display: none;
+    position: absolute;
+    top: -30px;
+    left: 34px;
+    width: 50px;
+    z-index: 9999999;
+    color: #666;
+    border: solid 1px #e5e5e5;
+    span {
+      display: block;
+      padding: 0;
+      &:hover {
+        color: #409eff;
+      }
+    }
+  }
+}
+
+.prop-input {
+  text-align: left;
+  margin: 20px;
+  font-size: 14px;
+  .com-input {
+    width: 258px;
+    margin: 5px 0;
+  }
+}
+
+.message-box-content {
+  text-align: left;
+  .from-title {
+    width: 100px !important;
+  }
+  .upload-tips {
+    width: 273px !important;
+  }
+}
+
+.video-modal-box {
+  .video-modal {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+  }
+  .video-content {
+    position: absolute;
+    width: 800px;
+    height: 450px;
+    line-height: 450px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    vertical-align: top;
+    background-color: #333333;
+    color: #fff;
+    text-align: center;
+    z-index: 11;
+    .iframe-box {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
 </style>

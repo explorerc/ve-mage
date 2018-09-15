@@ -3,137 +3,134 @@
     <p class="v-title">
       直播观看页
     </p>
-    <com-tabs :value.sync="tabValue" >
-      <com-tab label="品牌" :index="1">
-        <div class="v-brand clearfix">
-          <div class="v-set pull-left">
-            <div class="input-form v-label clearfix" >
-              <p class="v-info-label pull-left">
-                背景图片：
-              </p>
-              <p class="v-info pull-left">
-                为了保证显示效果，请上传不大于1920x1080大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M
-                <br/>
-                背景图片，只对PC页面生效
-              </p>
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadBgSuccess">
-                <div class="btn-upload">背景图片</div>
-              </com-upload>
-            </div>
-            <div class="input-form v-label clearfix" >
-              <p class="v-info-label pull-left">
-                logo图片：
-              </p>
-              <p class="v-info pull-left">
-                为了保证显示效果，请上传不大于140x50大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M
-                <br/>
-                Logo图片只对PC页面生效
-              </p>
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadLogoSuccess">
-                <div class="btn-upload">背景图片</div>
-              </com-upload>
-            </div>
-            <a href="javascript:;" class="v-save" @click="brandClick()">
-              保存
-            </a>
-          </div>
-          <div class="v-show pull-left">
-            <p>预览</p>
-            <div class="v-pc" :style="{ backgroundImage: 'url(' + $imgHost + '/' + bgImgUrl + ')'}">
-              <div class="v-content">
-                <img :src="$imgHost + '/' + logoImgUrl" alt="logo">
+    <div class="v-content">
+      <com-tabs :value.sync="tabValue" >
+        <com-tab label="品牌" :index="1">
+          <div class="v-brand clearfix">
+            <div class="v-set pull-left">
+              <div class="input-form v-label clearfix" >
+                <p class="v-info-label pull-left">
+                  背景图片：
+                </p>
+                <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultBgImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadBgSuccess"></ve-upload>
+                <p class="v-notes">
+                  注：背景图片，只对PC页面生效
+                </p>
               </div>
-            </div>
-          </div>
-        </div>
-      </com-tab>
-      <com-tab label="分享" :index="2">
-        <div class="v-share clearfix">
-          <div class="v-set pull-left">
-            <div class="input-form v-label clearfix" >
-              <p class="v-info-label pull-left">
-                分享图标：
-              </p>
-              <p class="v-info pull-left">
-                为了保证显示效果，请上传不大于***X***大小的图片，支持jpg、jpeg、png格式，文件大小不超过2M
-              </p>
-              <com-upload accept="png|jpg|jpeg|bmp|gif" actionUrl="/api/upload/image" inputName="file" :fileSize="2048" @error="uploadError" @load="uploadShareSuccess">
-                <div class="btn-upload">修改</div>
-              </com-upload>
-            </div>
-            <div class="input-form v-label clearfix" >
-              <p class="v-info-label pull-left">
-                分享标题：
-              </p>
-              <p class="v-info pull-left">
-                <com-input :value.sync="shareTitle" placeholder="标题" :max-length="30" ></com-input>
-              </p>
-            </div>
-            <div class="input-form v-label clearfix" >
-              <p class="v-info-label pull-left">
-                分享简介：
-              </p>
-              <p class="v-info pull-left">
-                <el-input type="textarea" :rows="5" placeholder="请输入分享简介" v-model="shareIntroduction" :max-length="120">
-                </el-input>
-              </p>
-            </div>
-            <div class="input-form v-label clearfix" >
-              <p class="v-info-label pull-left">
-                应用页面：
-              </p>
-              <p class="v-info pull-left">
-                <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
-                <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
-                <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
-              </p>
-            </div>
-            <a href="javascript:;" class="v-save" @click="shareClick()">
-              保存
-            </a>
-          </div>
-          <div class="v-show pull-left">
-            <p>预览</p>
-            <div class="v-title">
-              分享给好友
-            </div>
-            <div class="clearfix">
-              <img src="" alt="头像" class="v-avatar pull-left">
-              <div class="pull-left v-share-friend clearfix">
-                <div class="pull-left">
-                  <p class="v-share-title">
-                    {{shareTitle}}
-                  </p>
-                  <p class="v-introduction">
-                    {{shareIntroduction}}
-                  </p>
-                </div>
-                <div class="pull-left">
-                  <img :src="$imgHost + '/' + shareImgUrl" alt="分享图标" class="v-show-img">
-                </div>
-              </div>
-            </div>
-            <div class="v-title">
-              分享到朋友圈
-            </div>
-            <div class="v-share-friend-circle clearfix">
-              <img src="" alt="头像" class="v-avatar">
-              <span>微信昵称</span>
-              <div class="v-content clearfix">
-                <img :src="$imgHost + '/' + shareImgUrl" alt="分享图标" class="v-show-img pull-left">
-                <p class="v-introduction pull-left">
-                  {{shareIntroduction}}
+              <div class="input-form v-label clearfix" >
+                <p class="v-info-label pull-left">
+                  logo图片：
+                </p>
+                <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultLogoImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadLogoSuccess"></ve-upload>
+                <p class="v-notes">
+                  注：logo图片，只对PC页面生效
                 </p>
               </div>
             </div>
+            <div class="v-show pull-right">
+              <div class="v-pc" :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
+                <div class="clearfix" style="padding-left: 30px;">
+                  <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                  <div class="pull-left">
+                    <p class="v-live-title">
+                      {{activityTitle}}
+                    </p>
+                    <img src="../../assets/image/mac-icon@2x.png" alt="" class="v-pc-icon">
+                  </div>
+                </div>
+                <div class="v-show-content">
+                </div>
+              </div>
+              <p class="v-preview">品牌预览</p>
+            </div>
           </div>
-        </div>
-      </com-tab>
-    </com-tabs>
+          <button @click='brandClick' class='primary-button'>
+            保存
+          </button>
+        </com-tab>
+        <com-tab label="分享" :index="2">
+          <div class="v-share clearfix">
+            <div class="v-set pull-left">
+              <div class="input-form v-label clearfix" >
+                <p class="v-info-label pull-left">
+                  分享图标：
+                </p>
+                <ve-upload title="建议图片不小于80*80px<br/>支持jpg、jpeg、png格式，文件大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultShareImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadShareSuccess"></ve-upload>
+              </div>
+              <div class="input-form v-label clearfix" >
+                <p class="v-info-label pull-left">
+                  分享标题：
+                </p>
+                <p class="v-info pull-left">
+                  <com-input :value.sync="shareTitle" placeholder="标题" :max-length="30" ></com-input>
+                  <p class="v-notes" style="margin-top: 0;">
+                    注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字
+                  </p>
+                </p>
+              </div>
+              <div class="input-form v-label clearfix" >
+                <p class="v-info-label pull-left">
+                  分享简介：
+                </p>
+                <p class="v-info pull-left">
+                  <el-input type="textarea" :rows="5" placeholder="请输入分享简介" v-model="shareIntroduction" :max-length="120">
+                  </el-input>
+                </p>
+              </div>
+              <div class="input-form v-label clearfix" >
+                <p class="v-info-label pull-left">
+                  应用页面：
+                </p>
+                <p class="v-info pull-left">
+                  <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
+                  <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
+                  <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
+                </p>
+              </div>
+            </div>
+            <div class="v-show pull-left">
+              <div class="clearfix">
+                <div class="pull-left v-share-friend clearfix">
+                  <p class="v-share-title">
+                    {{shareTitle}}
+                  </p>
+                  <div class="v-show-content">
+                    <div class="v-introduction">
+                      {{shareIntroduction}}
+                    </div>
+                      <img :src="defaultShareImg" alt="分享图片" class="v-show-img">
+                  </div>
+                </div>
+                <img :src="avatarImg" alt="头像" class="v-avatar pull-left">
+              </div>
+              <p class="v-preview">预览</p>
+              <!-- <div class="v-title">
+                分享到朋友圈
+              </div>
+              <div class="v-share-friend-circle clearfix">
+                <img src="" alt="头像" class="v-avatar">
+                <span>微信昵称</span>
+                <div class="v-content clearfix">
+                  <img :src="defaultShareImg" alt="分享图标" class="v-show-img pull-left">
+                  <p class="v-introduction pull-left">
+                    {{shareIntroduction}}
+                  </p>
+                </div>
+              </div> -->
+            </div>
+          </div>
+          <button @click='shareClick' class='primary-button v-share-button'>
+            保存
+          </button>
+        </com-tab>
+      </com-tabs>
+    </div>
   </div>
 </template>
 <script>
   import liveWatchManage from 'src/api/set-live-watch-manage'
+  import VeUpload from 'src/components/ve-upload-image'
+import account from 'src/api/account-manage'
   export default {
     data () {
       return {
@@ -146,10 +143,14 @@
         shareIntroduction: '', // 分享简介
         isShowWatch: true, // 是否在直播观看页显示
         isShowOfficialWebsite: true, // 是否在活动官网显示
-        isShowGuided: true// 是否在直播引导页显示
+        isShowGuided: true, // 是否在直播引导页显示
+        uploadImgErrorMsg: '', // 上传图片错误提示
+        avatar: '',
+        activityTitle: '' // 活动标题
       }
     },
     components: {
+      VeUpload
     },
     created () {
       this.activityId = this.$route.params.id
@@ -160,6 +161,20 @@
         this.$router.go(-1)
         return
       }
+      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+      if (accountInfo && accountInfo.userName) {
+        this.name = accountInfo.name
+        this.avatar = accountInfo.avatar
+      } else {
+        account.getAccount({}).then((res) => {
+          if (res.code !== 200) {
+          } else {
+            this.name = res.data.name
+            this.avatar = res.data.avatar
+            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+          }
+        })
+      }
       liveWatchManage.getLiveShare(data).then((res) => {
         if (res.code !== 200) {
           console.log(res.msg)
@@ -168,10 +183,11 @@
             this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
             this.shareTitle = res.data.title ? res.data.title : ''
             this.shareIntroduction = res.data.description ? res.data.description : ''
-            this.isShowWatch = !!res.page.live_route
-            this.isShowOfficialWebsite = !!res.page.officia_route
-            this.isShowGuided = !!res.page.guide_route
+            this.isShowWatch = res.data.page.indexOf('live_route') > -1
+            this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
+            this.isShowGuided = res.data.page.indexOf('guide_route') > -1
             this.tabValue = 1
+            this.activityTitle = res.data.title ? res.data.title : ''
           }
         }
       })
@@ -187,25 +203,36 @@
         }
       })
     },
+    computed: {
+      defaultBgImg () {
+        return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
+      },
+      defaultLogoImg () {
+        return this.logoImgUrl ? this.$imgHost + '/' + this.logoImgUrl : ''
+      },
+      defaultShareImg () {
+        return this.shareImgUrl ? this.$imgHost + '/' + this.shareImgUrl : ''
+      },
+      avatarImg: function () {
+        return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      }
+    },
     mounted () {
     },
     watch: {
     },
     methods: {
       uploadBgSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        this.bgImgUrl = fildObj.data.name
+        this.bgImgUrl = data.name
       },
       uploadError (data) {
         console.log('上传失败:', data)
       },
       uploadLogoSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        this.logoImgUrl = fildObj.data.name
+        this.logoImgUrl = data.name
       },
       uploadShareSuccess (data) {
-        const fildObj = JSON.parse(data.data)
-        this.shareImgUrl = fildObj.data.name
+        this.shareImgUrl = data.name
       },
       brandClick () { // 品牌设置保存
         let data = {
@@ -217,7 +244,17 @@
           if (res.code !== 200) {
             console.log(res.msg)
           } else {
-            alert('保存成功')
+            this.$messageBox({
+              header: '提示',
+              content: '保存成功',
+              confirmText: '确定',
+              width: '400px', // 消息框宽度
+              handleClick: (e) => {
+                if (e.action === 'confirm') {
+                  // console.log('点击了确定按钮')
+                }
+              }
+            })
           }
         })
       },
@@ -242,7 +279,17 @@
           if (res.code !== 200) {
             console.log(res.msg)
           } else {
-            alert('保存成功')
+            this.$messageBox({
+              header: '提示',
+              content: '保存成功',
+              confirmText: '确定',
+              width: '400px', // 消息框宽度
+              handleClick: (e) => {
+                if (e.action === 'confirm') {
+                  // console.log('点击了确定按钮')
+                }
+              }
+            })
           }
         })
       }
@@ -250,6 +297,7 @@
   }
 </script>
 <style lang="scss" scoped>
+@import '~assets/css/mixin.scss';
 .set-live-watch-container /deep/ {
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
@@ -260,111 +308,215 @@
     width: 1019px;
   }
   margin: 0 auto;
+  .v-title {
+    font-size: 24px;
+    color: #222;
+  }
+  .v-content {
+    margin-top: 26px;
+    width: 100%;
+    min-height: 835px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    .tab-header-wrap {
+      border-bottom: 1px solid #e2e2e2;
+      .tab-item {
+        height: 60px;
+        line-height: 60px;
+        border-radius: 1.5px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0);
+        margin: 0 22px;
+        font-size: 18px;
+        color: #555;
+        &.active {
+          border-color: #4b5afe;
+          color: #555;
+        }
+      }
+    }
+    .v-brand {
+      width: 920px;
+      margin: 60px auto 0;
+    }
+    .v-set {
+      .input-form {
+        position: relative;
+        margin-bottom: 30px;
+        .v-info-label {
+          font-size: 14px;
+          color: #555;
+          width: 70px;
+          padding-top: 6px;
+          margin-right: 17px;
+        }
+        .v-notes {
+          font-size: 14px;
+          color: #888888;
+          padding-left: 87px;
+          margin: 10px auto 0;
+        }
+      }
+    }
+    .ve-upload-box {
+      width: 330px;
+      .upload-file-box {
+        width: 290px;
+        span {
+          line-height: 14px;
+        }
+      }
+    }
+    .primary-button {
+      width: 200px;
+      display: block;
+      margin: 80px auto 40px;
+    }
+  }
   .pull-left {
     float: left;
   }
   .pull-right {
     float: right;
   }
-  .v-title {
-    font-size: 18px;
-    width: 100%;
-    border-bottom: 1px solid #666;
-  }
-  .v-set {
-    width: 600px;
-    .v-info-label {
-      width: 80px;
-    }
-    .v-info {
-      width: 375px;
-    }
-  }
   .v-show {
-    width: 630px;
+    width: 462px;
+    height: 349px;
+    padding-top: 32px;
+    background: url('~assets/image/mac_bg@2x.png');
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    .v-logo {
+      display: block;
+      width: 27px;
+      height: 13px;
+      margin: 3px 6px 0 0;
+    }
+    .v-live-title {
+      font-size: 16px;
+      transform: scale(0.5);
+      -webkit-transform-origin: top left;
+      color: #fff;
+    }
+    .v-pc-icon {
+      display: block;
+      width: 87px;
+      margin-top: -10px;
+    }
     .v-pc {
-      width: 620px;
-      height: 340px;
+      width: 438px;
+      height: 250px;
       background-position: center;
       background-size: cover;
-      padding: 25px 0;
-      .v-content {
-        width: 515px;
-        height: 310px;
-        margin: 0 auto;
-        background-color: #999;
+      padding-top: 10px;
+      margin-left: 12px;
+      .v-show-content {
+        width: 376px;
+        height: 199px;
+        margin: 6px auto 0;
+        background: url('~assets/image/pc_content@2x.png') center center;
+        background-size: cover;
         position: relative;
-        img {
-          display: block;
-          width: 140px;
-          height: 50px;
-          position: absolute;
-          top: 15px;
-          left: 15px;
-        }
       }
+    }
+    .v-preview {
+      font-size: 18px;
+      color: #555;
+      padding: 83px 0 0 0px;
+      text-align: center;
     }
   }
   .v-share {
+    width: 810px;
+    margin: 60px auto;
+    .com-input {
+      width: 440px;
+    }
+    .el-textarea {
+      width: 440px;
+    }
+    .v-notes {
+      position: absolute;
+      top: 42px;
+      left: 0;
+      margin: 0;
+    }
     .v-show {
-      width: 360px;
-      margin: 5px auto;
-      .v-title {
-        height: 35px;
-        border: 1px solid #666;
-        margin: 5px auto;
+      width: 250px;
+      height: 499px;
+      background: url('~assets/image/phone-wechat.png');
+      background-size: cover;
+      background-position: center center;
+      margin-left: 33px;
+      position: relative;
+      .v-share-friend {
+        width: 173px;
+        height: 78px;
+        border: 1px solid #dadada;
+        border-radius: 3px 3px 1px 1px;
+        background-color: #fff;
+        margin: 65px 3px 0 25px;
+        .v-share-title {
+          text-align: left;
+          width: 302px;
+          font-size: 22px;
+          min-height: 32px;
+          transform: scale(0.5);
+          -webkit-transform-origin: top left;
+          margin: 5px 0 0 5px;
+          word-break: break-all;
+          line-height: 22px;
+        }
+        .v-show-content {
+          position: relative;
+          .v-show-img {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            top: 0px;
+            right: 5px;
+          }
+          .v-introduction {
+            width: 228px;
+            margin: -15px 0 0 6px;
+            max-height: 63px;
+            word-break: break-all;
+            font-size: 16px;
+            color: #555;
+            transform: scale(0.5);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-transform-origin: top left;
+            -webkit-box-orient: vertical;
+          }
+        }
       }
       .v-avatar {
         display: inline-block;
-        width: 35px;
-        height: 35px;
+        width: 22px;
+        height: 22px;
         border: 1px solid #666;
-      }
-      .v-share-friend {
-        width: 315px;
-        height: 108px;
-        border: 1px solid #666;
-        margin-left: 10px;
-        .v-show-img {
-          display: inline-block;
-          width: 80px;
-          height: 80px;
-          margin: 15px 0 0 35px;
-        }
-        .v-share-title,
-        .v-introduction {
-          width: 190px;
-          word-break: break-all;
-        }
-      }
-      .v-share-friend-circle {
-        .v-avatar {
-          display: inline-block;
-          vertical-align: middle;
-        }
-        span {
-          display: inline-block;
-          vertical-align: middle;
-        }
-        .v-content {
-          width: 315px;
-          height: 77px;
-          border: 1px solid #666;
-          margin-left: 45px;
-          .v-show-img {
-            display: inline-block;
-            width: 45px;
-            height: 45px;
-            margin: 15px 15px 0;
-          }
-          .v-introduction {
-            width: 190px;
-            word-break: break-all;
-            margin-top: 10px;
-          }
-        }
+        border-radius: 1px;
+        margin: 65px 25px 0 0px;
       }
     }
+    .v-preview {
+      font-size: 18px;
+      color: #555;
+      text-align: center;
+      position: absolute;
+      bottom: -40px;
+      left: 0;
+      right: 0;
+      padding: 0;
+    }
+  }
+  .v-share-button {
+    margin-top: 134px;
   }
   .btn-upload {
     display: block;
