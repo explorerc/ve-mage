@@ -1,5 +1,5 @@
 <template>
-  <span :endTime="endTime" :endText="endText">
+  <span >
     <template v-if="!this.$scopedSlots.slot1">{{showTime.day}}天{{showTime.hour}}小时{{showTime.minute}}分钟{{showTime.second}}秒</template>
     <slot name='slot1' :day="showTime.day" :hour="showTime.hour" :minute="showTime.minute" :second="showTime.second"></slot>
   </span>
