@@ -17,7 +17,7 @@
                 <i class="el-icon-close" ></i>
             </div>
             <section class="main-container" :class="{close:close}">
-                <transition name='fade'>
+                <transition >
                     <router-view class="app-view"></router-view>
                 </transition>
             </section>
