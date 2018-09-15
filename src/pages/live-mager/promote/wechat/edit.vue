@@ -148,11 +148,11 @@
         //   label: '暂存为草稿'
         // }],
         // sendValue: '',
-        sendSetting: '1',
+        sendSetting: 'SEND',
         wxContent: '',
         qrImgurl: '',
         pickDate: false,
-        date: new Date().toString(),
+        date: '',
         pickerOptions: {
           disabledDate (time) {
             return time.getTime() < Date.now() - 8.64e7
@@ -183,7 +183,7 @@
           // console.log(res)
           this.titleValue = res.data.title
           this.sendSetting = res.data.status
-          this.date = res.data.sendTime.toString()
+          this.date = res.data.planTime.toString()
           this.wxContent = res.data.desc
         }).catch((e) => {
           console.log(e)
@@ -221,7 +221,7 @@
           groupId: '1', // 分组id
           status: this.sendSetting.toLowerCase(),
           desc: this.wxContent,
-          sendTime: this.date
+          planTime: this.date
         }
         // 更新
         createHttp.saveWechat(data).then((res) => {

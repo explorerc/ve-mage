@@ -2,7 +2,7 @@
   <div class="content" @click.stop='closeAlltool' v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
-        <span class="title">微信通知</span>
+        <span class="title">短信通知</span>
         <div class="right-box">
           <button class="default-button fr" ><router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }">新建微信</router-link></button>
         </div>
