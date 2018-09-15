@@ -20,7 +20,7 @@
 <script>
 import brandService from 'src/api/brand-manage'
 import activityService from 'src/api/activity-manger'
-
+import liveWatchManage from 'src/api/set-live-watch-manage'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
 
@@ -33,6 +33,12 @@ export default {
     return {
       com: '',
       isPreview: false,
+      share: {
+        des: '',
+        title: '',
+        imgUrl: '',
+        link: 'http://www.baidu.com'
+      },
       data: {},
       ptid: this.$route.query.tid,
       tid: this.$route.params.id,
@@ -54,6 +60,18 @@ export default {
       } else {
         activityService.webinarInfo(this.tid).then(res => {
           ({ title: this.title, published: this.published } = res.data)
+          this.share.title = res.data.title
+          this.share.des = res.data.description
+          this.share.imgUrl = res.data.imgUrl
+          liveWatchManage.getLiveShare({
+            activityId: this.tid
+          }).then((res) => {
+            if (res.data && res.data['officia_route']) {
+              this.share.title = res.data.title
+              this.share.des = res.data.description
+              this.share.imgUrl = res.data.imgUrl
+            }
+          })
         })
         brandService.getSiteData({
           __loading: true,
