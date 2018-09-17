@@ -23,8 +23,8 @@
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userCompany" placeholder="输入公司名称" :maxLength="40" @inputFocus="inputFocus()"></com-input>
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
             <div id="captcha"></div>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
-              <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态码" :maxLength="6" @inputFocus="inputFocus()">
+              <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
             </com-input>
             <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:opacity}">
 					  	<p class="v-error">{{error}}</p>
@@ -166,7 +166,7 @@
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
             if (res.code === 10050) {
-              this.error = '动态码输入过于频繁'
+              this.error = '验证码输入过于频繁'
             } else {
               this.error = res.msg
             }

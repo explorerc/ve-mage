@@ -42,7 +42,7 @@
         <div id="captcha"  :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6" @focus="codeFocus"></com-input>
         <p class="v-error" v-if="phoneCodeError">{{phoneCodeTip}}</p>
-        <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+        <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
       </div>
       <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
         <img src="../../assets/image/success@2x.png" alt="成功" class="v-success-img">
@@ -783,7 +783,7 @@
             this.cap.refresh()
           } else if (res.code === 10050) {
             this.phoneCodeError = true
-            this.phoneCodeTip = '动态码输入过于频繁'
+            this.phoneCodeTip = '验证码输入过于频繁'
           } else if (res.code !== 200) {
             this.phoneCodeError = true
             this.phoneCodeTip = res.msg
@@ -865,7 +865,7 @@
   @media all and (min-width: 1600px) {
     width: 1366px;
     .v-info .v-editor {
-      width: 452px;
+      width: 453px;
     }
   }
   /* 设备宽度小于 1600px */

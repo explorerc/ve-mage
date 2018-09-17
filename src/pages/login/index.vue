@@ -40,8 +40,8 @@
         <div class="v-mobile" v-show="!isAccount">
           <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
           <div id="captcha"></div>
-          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
-            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="验证码" :maxLength="6" @inputFocus="inputFocus()">
+            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
           </com-input>
           <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
 				  	<p class="v-error">{{mobileError}}</p>
@@ -251,7 +251,7 @@
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
             if (res.code === 10050) {
-              this.mobileError = '动态码输入过于频繁'
+              this.mobileError = '验证码输入过于频繁'
             } else {
               this.mobileError = res.msg
             }
