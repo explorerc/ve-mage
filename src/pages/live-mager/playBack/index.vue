@@ -1,5 +1,5 @@
 <template>
-  <div class="live-mager">
+  <div class="live-mager play-back">
     <div class="live-title" style="margin-top: 30px;">
       <span class="title">活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
@@ -135,6 +135,9 @@
             <div class="from-content">
               <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
+              <div class="from-msg-tip">
+                <ve-msg-tips tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<br/><iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
+              </div>
             </div>
           </div>
           <div class="from-row" v-if="playBackMode==0">
@@ -804,4 +807,11 @@
       }
     }
   }
+
+  .play-back /deep/{
+    .ve-message-box__wrapper .ve-message-box{
+       overflow: visible;
+    }
+  }
+
 </style>
