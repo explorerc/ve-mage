@@ -108,7 +108,8 @@
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
         activityId: this.$route.params.id,
-        imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+        imgHost: process.env.IMGHOST + '/',
+        // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
         pickerOptions: {
           disabledDate (time) {
             return time.getTime() < Date.now() - 8.64e7
