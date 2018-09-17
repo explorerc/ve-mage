@@ -63,7 +63,7 @@
 
   export default {
     name: 'warm-field',
-    components: {VeUploadImage, VeUploadVideo},
+    components: { VeUploadImage, VeUploadVideo },
     data () {
       return {
         warm: {
