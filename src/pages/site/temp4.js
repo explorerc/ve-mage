@@ -43,26 +43,23 @@ export default function () {
       }
     },
     section2Data: {
-      panel: {
-        bgType: 'img',
-        videoType: 'upload',
-        img: 'mp-dev/5a/09/5a09f6f7b86feb4c7b8f24843f967a36.jpg',
-        color: 'rgba(0, 0, 0, 1)',
-        enable: true
-      },
       block2: {
         enable: true,
-        data: [{
-          content: `2323232323`,
-          img: 'mp-dev/75/a7/75a75a0b12ea9a5e139f76907cfa8f66.png'
+        showBtn: false,
+        list: [{
+          type: 'top',
+          content: ``,
+          img: 'mp-dev/0e/fb/0efb22f13b5ca9cb61830c665384649f.png'
         },
         {
+          type: 'top',
           content: ``,
-          img: 'mp-dev/a4/14/a414ee46e4d89ca8babe205b43ef63c5.png'
+          img: 'mp-dev/12/63/12635437ef35eee8199ce7aae644158f.png'
         },
         {
+          type: 'top',
           content: ``,
-          img: 'mp-dev/96/40/96403e82bea01d08f54e750eb2877ae2.png'
+          img: 'mp-dev/75/28/75281a91887ce76c3d14eb539c18eda5.png'
         }
         ]
       },

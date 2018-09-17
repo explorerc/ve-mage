@@ -4,9 +4,9 @@
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
-    <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
+    <div class="section2" :edit="editAble" >
       <com-block2 :edit="editAble" :max="3" v-model="data.section2Data.block2"></com-block2>
-    </com-panel>
+    </div>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
       <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
       <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
@@ -157,6 +157,15 @@ export default {
   .section2 {
     width: 100%;
     height: 820px;
+    .block2-content {
+      height: 590px;
+      .el-carousel {
+        height: 100%;
+        .el-carousel__container {
+          height: 100% !important;
+        }
+      }
+    }
   }
   .section3 {
     width: 100%;

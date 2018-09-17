@@ -2,39 +2,61 @@
   <div class="block2-container" v-if="value.enable">
     <div ref="target" class="block2-content">
       <el-carousel trigger="click" :autoplay="autoplay" :height="height" :interval="4000">
-        <el-carousel-item v-for="(item,index) in value.data" :key="'block2_item_'+index">
+        <el-carousel-item v-for="(item,index) in value.list" :key="'block2_item_'+index">
           <a target="_black" :href="item.link | voidLink">
-            <div class="block2-item" :style="{'background-image':`url(${host+item.img})`}" >
-              <div class="block2-item-content" v-html="item.content"></div>
-              <!-- <com-font :edit="edit" v-model="item.content"></com-font> -->
+            <img v-if="item.img" class="img" :src="host+item.img">
+            <div class="content"  v-html="item.content">
             </div>
+            <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
           </a>
         </el-carousel-item>
       </el-carousel>
     </div>
-    <com-edit ref="editTarget" class="block2-edit" @show="showHandle" @hide="hideHandle">
+    <com-edit ref="editTarget" class="block2-edit">
       <com-button class="add-btn" @click="addBlock">添加图块</com-button>
+      <div>
+         <el-checkbox v-model="value.showBtn">是否显示按钮</el-checkbox>
+      </div>
       <ul class="block2-edit-group">
-        <li v-for="(item,index) in value.data" :key="'block2_edit_item'+index">
+        <li v-for="(item,index) in value.list" :key="'block2_edit_item'+index">
           <div class="block2-title" @click="titleClick(index)">{{`图块${index+1}`}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
           <div class="block2-content" :class="{active:active===index}">
+            <div>
+        <el-radio v-model="item.type" label="top">图片上</el-radio>
+        <el-radio v-model="item.type" label="bottom">图片下</el-radio>
+        <el-radio v-model="item.type" label="right">图片右</el-radio>
+        <el-radio v-model="item.type" label="bottom">图片左</el-radio>
+      </div>
             <div>
               <com-upload
       accept="png|jpg|jpeg|bmp|gif"
       uploadTxt="上传"
       actionUrl="/api/upload/image"
       inputName="file"
-      :fileSize="2048"
+      :fileSize="2048000"
       :exParams="{}"
       @load="uploadLoad($event,index)"
       >
       </com-upload>
             </div>
             <div>
-               <com-editer height="400" class="font-editer" v-model="item.content" ></com-editer>
+               <com-editer class="font-editer" v-model="item.content" ></com-editer>
             </div>
             <div>
-               <com-input placeholder="按钮链接" v-model="item.link"></com-input>
+               <com-input placeholder="跳转链接" v-model="item.link"></com-input>
+            </div>
+            <div v-if="value.showBtn">
+              <div>
+                按钮背景色
+                <el-color-picker show-alpha v-model="item.btn.bgColor"></el-color-picker>
+              </div>
+              <div>
+                按钮文字色
+                <el-color-picker show-alpha v-model="item.btn.fontColor"></el-color-picker>
+              </div>
+              <div>
+                <com-input placeholder="按钮文字" v-model="item.btn.text"></com-input>
+              </div>
             </div>
           </div>
         </li>
@@ -98,6 +120,7 @@ export default {
       }
     },
     uploadLoad (data, index) {
+      debugger
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
         this.value.data[index].img = `${ret.data.name}`
@@ -129,7 +152,6 @@ export default {
     }
   }
   .block2-edit {
-    padding: 20px 5px;
     .add-btn {
       width: 100%;
       margin-bottom: 10px;
