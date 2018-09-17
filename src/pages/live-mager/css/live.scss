@@ -152,6 +152,12 @@
           .input-box {
             width: 400px;
           }
+          .from-msg-tip{
+            position: absolute;
+            top: -2px;
+            width: 100%;
+            left: 200px;
+          }
         }
       }
     }
@@ -209,7 +215,22 @@
     padding: 0 20px 50px 20px;
     background-color: #fff;
     border-radius: 4px;
-
+    .play-back-cover{
+      position: relative;
+      .play-back-default{
+        display: inline-block;
+        position: absolute;
+        top: -8px;
+        left: -10px;
+        background-color: $color-blue;
+        color: #fff;
+        font-size: 10px;
+        padding: 0 4px;
+        border-radius: 4px;
+        line-height: 18px;
+        opacity: .9;
+      }
+    }
     .table-handler {
       display: inline-block;
 
