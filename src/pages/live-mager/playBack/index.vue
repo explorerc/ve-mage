@@ -116,7 +116,7 @@
       @handleClick="renameHandleClick">
       <div class="prop-input">
         输入新的视频标题：
-        <com-input :value.sync="newTitle"/>
+        <com-input placeholder="请输入标题" :error-tips="newTitleError" :value.sync="newTitle"/>
       </div>
     </message-box>
     <!-- 添加视频 -->
@@ -490,10 +490,14 @@
       },
       /* 重命名 */
       renameHandleClick (e) {
-        this.renameShow = false
         if (e.action === 'confirm') {
+          if (!this.newTitle) {
+            this.newTitleError = '标题不能为空'
+            return
+          }
           this.updataTitle()
         }
+        this.renameShow = false
       },
       /* 设置默认回放 */
       savePlayBackConfig (e) {
