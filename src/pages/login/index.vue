@@ -125,10 +125,13 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     mounted () {},
     watch: {
       phoneStatus: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
@@ -210,7 +213,6 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
-            this.mobileError = res.msg
             this.mobileOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
@@ -248,7 +250,11 @@
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
-            this.mobileError = res.msg
+            if (res.code === 10050) {
+              this.mobileError = '动态码输入过于频繁'
+            } else {
+              this.mobileError = res.msg
+            }
             this.mobileOpacity = 1
             clearInterval(this.timerr)
             this.isSend = false
@@ -276,9 +282,21 @@
           }
         })
       },
-      isGetCodePermission () {
+      isGetCodePermission (val) {
         if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }
         } else {
           this.isProhibit = true
         }

@@ -109,6 +109,9 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     mounted () {
     },
     watch: {
@@ -116,16 +119,28 @@
         console.log(1)
       },
       phoneStatus: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
       }
     },
     methods: {
-      isGetCodePermission () {
+      isGetCodePermission (val) {
         if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }
         } else {
           this.isProhibit = true
         }
@@ -150,7 +165,11 @@
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
-            this.error = res.msg
+            if (res.code === 10050) {
+              this.error = '动态码输入过于频繁'
+            } else {
+              this.error = res.msg
+            }
             this.opacity = 1
             clearInterval(this.timerr)
             this.isSend = false

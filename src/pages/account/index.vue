@@ -241,6 +241,9 @@
     },
     created () {
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     watch: {
       phone: function () {
         this.checkPhone(this.phone)
@@ -252,7 +255,7 @@
         this.checkPhone(this.saveNewPhone)
       },
       phoneStatus: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
@@ -263,7 +266,6 @@
         setIsLogin: types.UPDATE_IS_LOGIN
       }),
       getAccount () {
-        debugger
         let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
         if (accountInfo && accountInfo.userName) {
           this.account = accountInfo.userName ? accountInfo.userName : '无'
@@ -276,7 +278,7 @@
           this.displayValue = accountInfo.industryFirst ? accountInfo.industryFirst + '/' + accountInfo.industrySecond : '无'
           this.industryFirst = accountInfo.industryFirst ? accountInfo.industryFirst : ''
           this.industrySecond = accountInfo.industrySecond ? accountInfo.industrySecond : ''
-          this.selectChildId = accountInfo.industryId ? accountInfo.industryId : 0
+          this.selectChildId = accountInfo.industryId ? parseInt(accountInfo.industryId) : 0
           this.companyWebsite = accountInfo.website ? accountInfo.website : '无'
           this.licenseCode = accountInfo.licenseCode ? accountInfo.licenseCode : '无'
           this.licensePic = accountInfo.licensePic ? accountInfo.licensePic : '无'
@@ -295,7 +297,7 @@
               this.displayValue = resData.industryFirst ? resData.industryFirst + '/' + resData.industrySecond : '无'
               this.industryFirst = resData.industryFirst ? resData.industryFirst : ''
               this.industrySecond = resData.industrySecond ? resData.industrySecond : ''
-              this.selectChildId = resData.industryId ? resData.industryId : 0
+              this.selectChildId = resData.industryId ? parseInt(resData.industryId) : 0
               this.companyWebsite = resData.website ? resData.website : '无'
               this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
               this.licensePic = resData.licensePic ? resData.licensePic : '无'
@@ -334,7 +336,7 @@
         let data = {
         }
         if (type === 'industry') {
-          data.industryId = initVal.selectChildId
+          data.industryId = parseInt(initVal.selectChildId)
         }
         this.displayValue = initVal.selectParentValue + '/' + initVal.selectChildValue
         if (saveType === 'company') {
@@ -343,7 +345,7 @@
             } else {
               this.changeState[type] = false
               let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              accountInfo.selectChildId = initVal.selectChildId
+              accountInfo.selectChildId = parseInt(initVal.selectChildId)
               accountInfo.selectParentId = initVal.selectParentId
               accountInfo.industrySecond = initVal.selectChildValue
               accountInfo.industryFirst = initVal.selectParentValue
@@ -720,9 +722,22 @@
           }
         }
       },
-      isGetCodePermission () {
-        if (this.isImg && this.phoneStatus && !this.isSend) {
+      isGetCodePermission (val) {
+        // if (this.isImg && this.phoneStatus && !this.isSend) {
+        if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }
         } else {
           this.isProhibit = true
         }
