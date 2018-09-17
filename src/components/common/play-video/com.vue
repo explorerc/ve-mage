@@ -80,7 +80,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
-      z-index: 10;
+      z-index: 3000;
     }
     .video-content {
       position: absolute;
@@ -94,7 +94,7 @@
       background-color: #333333;
       color: #fff;
       text-align: center;
-      z-index: 11;
+      z-index: 3001;
       .iframe-box {
         height: 100%;
         width: 100%;

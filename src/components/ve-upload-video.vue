@@ -41,7 +41,7 @@
         fileName: '',
         record_id: '',
         fileRealSize: 0,
-        isConvert: false,
+        isConvert: true,
         uploadId: 'upload_video_' + Math.random()
       }
     },
@@ -98,7 +98,7 @@
       deleteVideo () {
         this.percentVideo = 0
         this.errorTxt = ''
-        this.isConvert = false
+        this.isConvert = true
         this.$emit('handleClick', {
           type: 'delete',
           detail: '删除'

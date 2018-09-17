@@ -101,4 +101,10 @@ $color-ui-components:#4B5AFE;
   font-weight: 400;
   color: #222;
 }
+.el-table {
+  overflow: visible;
+  .el-table__body-wrapper {
+    overflow: visible;
+  }
+}
 
