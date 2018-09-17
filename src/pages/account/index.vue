@@ -263,10 +263,11 @@
         setIsLogin: types.UPDATE_IS_LOGIN
       }),
       getAccount () {
+        debugger
         let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
         if (accountInfo && accountInfo.userName) {
           this.account = accountInfo.userName ? accountInfo.userName : '无'
-          this.accountName = accountInfo.accountName ? accountInfo.accountName : '无'
+          this.accountName = accountInfo.name ? accountInfo.name : '无'
           this.avatar = accountInfo.avatar ? accountInfo.avatar : '无'
           this.accountPhone = accountInfo.mobile ? accountInfo.mobile : '无'
           this.accountPassword = accountInfo.hasPassword ? '已设置' : '未设置'
@@ -285,7 +286,7 @@
             } else {
               let resData = res.data ? res.data : ''
               this.account = resData.userName ? resData.userName : '无'
-              this.accountName = resData.name ? resData.userName : '无'
+              this.accountName = resData.name ? resData.name : '无'
               this.avatar = resData.avatar ? resData.avatar : '无'
               this.accountPhone = resData.mobile ? resData.mobile : '无'
               this.accountPassword = resData.hasPassword ? '已设置' : '未设置'
@@ -424,11 +425,7 @@
             if (res.code !== 200) {
             } else {
               let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              if (type === 'name') {
-                accountInfo['accountName'] = val
-              } else {
-                accountInfo[valType] = val
-              }
+              accountInfo[valType] = val
               account.getAccount({}).then((res) => {
                 if (res.code !== 200) {
                 } else {
