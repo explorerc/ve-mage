@@ -116,7 +116,7 @@
       @handleClick="renameHandleClick">
       <div class="prop-input">
         输入新的视频标题：
-        <com-input :value.sync="newTitle"/>
+        <com-input placeholder="请输入标题" :error-tips="newTitleError" :value.sync="newTitle"/>
       </div>
     </message-box>
     <!-- 添加视频 -->
@@ -145,7 +145,8 @@
                 accept="mp4"
                 :fileSize="204800"
                 :errorMsg="recordIdError"
-                :sdk="sdkUploadParam"
+                :sdk="sdkParam"
+                @handleClick="handleVideoClick"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
@@ -239,7 +240,7 @@
   }
   export default {
     name: 'play-back',
-    components: { VeUploadImage, veMsgTips, VeUploadVideo, VePagination },
+    components: {VeUploadImage, veMsgTips, VeUploadVideo, VePagination},
     data () {
       return {
         navIdx: 0,
@@ -248,10 +249,12 @@
         playBackShow: false,
         newTitle: '',
         selectRowIdx: 0,
-        sdkUploadParam: { // sdk上传插件初始化参数
-          sing: '',
+        sdkParam: { // sdk上传插件初始化参数
+          sign: '',
           signed_at: '',
-          app_id: ''
+          app_id: '',
+          fileName: '',
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -275,9 +278,9 @@
         playBackList: [],
         isLoadingList: false,
         options: [
-          { value: '0', label: '默认回放' },
-          { value: '1', label: '上传视频' },
-          { value: '2', label: '外部链接' }
+          {value: '0', label: '默认回放'},
+          {value: '1', label: '上传视频'},
+          {value: '2', label: '外部链接'}
         ],
         recordId: '',
         activityId: '',
@@ -348,11 +351,9 @@
             this.$nextTick(() => {
               // 初始化pass上传插件
               // this.initVhallUpload()
-              this.sdkUploadParam = {
-                sign: res.data.sign,
-                signed_at: res.data.signedAt,
-                app_id: res.data.appId
-              }
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
               this.sdkPlayParam = {
                 app_id: res.data.appId,
                 accountId: res.data.accountId,
@@ -489,10 +490,14 @@
       },
       /* 重命名 */
       renameHandleClick (e) {
-        this.renameShow = false
         if (e.action === 'confirm') {
+          if (!this.newTitle) {
+            this.newTitleError = '标题不能为空'
+            return
+          }
           this.updataTitle()
         }
+        this.renameShow = false
       },
       /* 设置默认回放 */
       savePlayBackConfig (e) {
@@ -575,8 +580,33 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
-      uploadVideoSuccess (recordId) {
+      uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId
+        this.sdkParam.fileName = fileName
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.$playVideo({
+            ...this.sdkPlayParam
+          })
+        } else if (e.type === 'delete') { // 删除
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.recordId = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+              }
+            }
+          })
+        }
       }
     }
   }

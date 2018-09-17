@@ -315,7 +315,13 @@
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
           } else {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            account.getAccount({}).then((res) => {
+              if (res.code !== 200) {
+              } else {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              }
+            })
+            // sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
             EventBus.$emit('avatarChange', data.name)
             // this.getAccount()
           }
@@ -341,7 +347,12 @@
               accountInfo.selectParentId = initVal.selectParentId
               accountInfo.industrySecond = initVal.selectChildValue
               accountInfo.industryFirst = initVal.selectParentValue
-              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              account.getAccount({}).then((res) => {
+                if (res.code !== 200) {
+                } else {
+                  sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+                }
+              })
               // this.getAccount()
             }
           })
