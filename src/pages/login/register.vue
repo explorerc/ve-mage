@@ -109,6 +109,9 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     mounted () {
     },
     watch: {

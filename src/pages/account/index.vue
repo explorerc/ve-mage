@@ -241,6 +241,9 @@
     },
     created () {
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     watch: {
       phone: function () {
         this.checkPhone(this.phone)

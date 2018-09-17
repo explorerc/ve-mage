@@ -125,6 +125,9 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     mounted () {},
     watch: {
       phoneStatus: function (val) {
