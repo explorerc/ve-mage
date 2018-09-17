@@ -95,7 +95,7 @@
   import account from 'src/api/account-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import VeUploadTx from 'src/components/ve-upload-tx'
-  import { mapMutations, mapState } from 'vuex'
+  import {mapMutations, mapState} from 'vuex'
   import * as types from 'src/store/mutation-types'
   import EventBus from 'src/utils/eventBus'
   export default {
