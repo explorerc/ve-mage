@@ -164,11 +164,12 @@
   .msg-tip {
     position: relative;
     left: 10px;
+    top: -3px;
     @include border;
     padding: 5px 10px;
     margin-right: 10px;
     line-height: 18px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .email-info {

@@ -179,7 +179,7 @@
             <div class="from-content">
               <div class="from-content">
                 <ve-upload-image
-                  title="点击上传封面"
+                  title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
                   accept="png|jpg|jpeg"
                   :defaultImg="defaultImg"
                   :fileSize="1024"
@@ -193,19 +193,6 @@
             <div class="from-content">
               <el-radio v-model="outLineMode" label="0">与活动同步下线</el-radio>
               <el-radio v-model="outLineMode" label="1">指定下线时间</el-radio>
-              <transition name="left-right">
-                <div class="black-box" v-if="outLineMode==1">
-                  设置下线时间
-                  <el-date-picker
-                    v-model="playBack.outLineTime"
-                    type="datetime"
-                    placeholder="选择日期时间"
-                    align="right"
-                    format="yyyy-MM-dd HH:mm"
-                    value-format="yyyy-MM-dd HH:mm">
-                  </el-date-picker>
-                </div>
-              </transition>
             </div>
           </div>
           <transition name="left-right">
@@ -221,6 +208,7 @@
                     format="yyyy-MM-dd HH:mm"
                     value-format="yyyy-MM-dd HH:mm">
                   </el-date-picker>
+                  <span class="status-error" v-if="outLineError">{{outLineError}}</span>
                 </div>
               </div>
             </div>
@@ -275,6 +263,7 @@
           recordId: '',
           outLineLink: ''
         },
+        outLineError: '',
         playBackList: [],
         isLoadingList: false,
         options: [
@@ -311,6 +300,9 @@
         } else { // 定时下线
           this.playBack.outLineMode = outLineMode.TIMING
         }
+      },
+      'playBack.outLineTime' (newVal) {
+        this.outLineError = newVal ? '' : this.outLineError
       }
     },
     created () {
@@ -439,7 +431,7 @@
         const playBack = this.playBackList[this.selectRowIdx]
         PlayBackHttp.downloadVideo(playBack.replayId).then((res) => {
           console.log(res)
-          if (res.data.downloadUrl) {
+          if (res.data.code === 200 && res.data.downloadUrl) {
             let dl = document.createElement('a')
             dl.href = res.data.downloadUrl
             dl.click()
@@ -482,6 +474,11 @@
         if (e.action === 'confirm') {
           if (this.outLineMode === '0') {
             this.playBack.outLineTime = ''
+          } else {
+            if (!this.playBack.outLineTime) {
+              this.outLineError = '请填写下线时间'
+              return
+            }
           }
           const replayId = this.playBackList[this.selectRowIdx].replayId
           PlayBackHttp.savePlayBackConfig({
@@ -583,9 +580,9 @@
   }
 
   .black-box {
-    margin-top: 20px;
+    height: 60px;
     .el-date-editor {
-      margin-left: 10px;
+      width: 100%;
     }
     .play-content {
       .out-line {
