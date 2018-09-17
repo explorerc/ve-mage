@@ -131,25 +131,26 @@
       <div class="mager-box message-box-content">
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title">视频类型：</div>
+            <div class="from-title"><i class="star">*</i>视频类型：</div>
             <div class="from-content">
               <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
             </div>
           </div>
           <div class="from-row" v-if="playBackMode==0">
-            <div class="from-title">上传视频：</div>
+            <div class="from-title"><i class="star">*</i>上传视频：</div>
             <div class="from-content">
               <ve-upload-video
                 title="视频仅支持mp4格式，文件大小不超过200M"
                 accept="mp4"
                 :fileSize="204800"
+                :errorMsg="recordIdError"
                 :sdk="sdkUploadParam"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
           <div class="from-row input-box" v-else>
-            <div class="from-title">视频链接：</div>
+            <div class="from-title"><i class="star">*</i>视频链接：</div>
             <div class="from-content">
               <div class="black-box">
                 <com-input class="out-line-input" :value.sync="outLineLink"
@@ -158,7 +159,7 @@
             </div>
           </div>
           <div class="from-row input-box">
-            <div class="from-title">视频标题：</div>
+            <div class="from-title"><i class="star">*</i>视频标题：</div>
             <div class="from-content">
               <div class="black-box">
                 <com-input placeholder="请输入标题" :max-length="30" :value.sync="newTitle"/>
@@ -269,6 +270,8 @@
           outLineLink: ''
         },
         outLineError: '',
+        recordIdError: '',
+        newTitleError: '',
         playBackList: [],
         isLoadingList: false,
         options: [
@@ -448,10 +451,23 @@
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
             this.outLineLink = ''
+            if (!this.recordId) {
+              this.recordIdError = '视频不能为空'
+              return
+            }
           } else if (this.playBackMode === '1') {
             this.recordId = ''
             if (!this.preViewOutLine()) return
           }
+          if (!this.newTitle) {
+            this.newTitleError = '视频标题不能为空'
+            return
+          }
+          // outLineError: '',
+          //   recordIdError: '',
+          //   newTitleError: '',
+          let t = true
+          if (t) return
           PlayBackHttp.createPlayBack({
             activityId: this.activityId,
             title: this.newTitle,
