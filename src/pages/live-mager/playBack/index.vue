@@ -153,7 +153,7 @@
             <div class="from-title"><i class="star">*</i>视频链接：</div>
             <div class="from-content">
               <div class="black-box">
-                <com-input class="out-line-input" :value.sync="outLineLink"
+                <com-input class="out-line-input" :error-tips="outLineError" :value.sync="outLineLink"
                            placeholder="请输入链接"></com-input>
               </div>
             </div>
@@ -162,7 +162,7 @@
             <div class="from-title"><i class="star">*</i>视频标题：</div>
             <div class="from-content">
               <div class="black-box">
-                <com-input placeholder="请输入标题" :max-length="30" :value.sync="newTitle"/>
+                <com-input placeholder="请输入标题" :error-tips="newTitleError" :max-length="30" :value.sync="newTitle"/>
               </div>
             </div>
           </div>
@@ -311,6 +311,15 @@
       },
       'playBack.outLineTime' (newVal) {
         this.outLineError = newVal ? '' : this.outLineError
+      },
+      outLineLink (newVal) {
+        this.outLineError = newVal ? '' : this.outLineError
+      },
+      recordId (newVal) {
+        this.recordIdError = newVal ? '' : this.recordIdError
+      },
+      newTitle (newVal) {
+        this.newTitleError = newVal ? '' : this.newTitleError
       }
     },
     created () {
@@ -463,11 +472,6 @@
             this.newTitleError = '视频标题不能为空'
             return
           }
-          // outLineError: '',
-          //   recordIdError: '',
-          //   newTitleError: '',
-          let t = true
-          if (t) return
           PlayBackHttp.createPlayBack({
             activityId: this.activityId,
             title: this.newTitle,
@@ -549,16 +553,15 @@
         })
       },
       preViewOutLine () {
+        if (!this.outLineLink) {
+          this.outLineError = '视频链接不能为空'
+          return false
+        }
         const reg = /^<embed|<iframe.*(embed>|iframe>)$/
         if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = this.outLineLink
         } else {
-          this.$toast({
-            header: `提示`,
-            content: '格式不正确',
-            autoClose: 2000,
-            position: 'top-center'
-          })
+          this.outLineError = '格式不正确'
           return false
         }
         return true
