@@ -146,10 +146,21 @@
           <el-table-column
             prop="duration"
             label="时长">
+            <template slot-scope="scope">
+              {{scope.row.duration | isEmpty}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="generateTime"
             label="生成时间">
+          </el-table-column>
+          <el-table-column
+            label="回放状态">
+            <template slot-scope="scope">
+              <span class="status-success" v-if="scope.row.status=='SUCCESS'">生成成功</span>
+              <span class="status-error" v-else-if="scope.row.status=='FAIL'">生成失败</span>
+              <span class="status-default" v-else>生成中</span>
+            </template>
           </el-table-column>
           <el-table-column
             label="操作">
@@ -492,7 +503,15 @@
 </style>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
-
+.status-default{
+  color: $color-blue;
+}
+.status-success{
+  color: $color-success;
+}
+.status-error{
+  color: $color-error;
+}
 .black-box {
   margin-top: 20px;
   .el-date-editor {
