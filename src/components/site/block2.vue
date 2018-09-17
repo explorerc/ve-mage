@@ -1,13 +1,15 @@
 <template>
   <div class="block2-container" v-if="value.enable">
     <div ref="target" class="block2-content">
-      <el-carousel trigger="click" :autoplay="autoplay" :height="height" :interval="4000">
-        <el-carousel-item v-for="(item,index) in value.list" :key="'block2_item_'+index">
-          <a target="_black" :href="item.link | voidLink">
+      <el-carousel trigger="click" :class="widthClass" :autoplay="autoplay" :height="height" :interval="value.loop">
+        <el-carousel-item :class="item.type"  v-for="(item,index) in value.list" :key="'block2_item_'+index">
+          <a target="_black" :href="item.link | voidLink" >
+            <div v-if="item.bgColor" class="left-area" :style="{backgroundColor:item.bgColor}"></div>
             <img v-if="item.img" class="img" :src="host+item.img">
-            <div class="content"  v-html="item.content">
+            <div class="content"  >
+              <div v-html="item.content"></div>
+              <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
             </div>
-            <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
           </a>
         </el-carousel-item>
       </el-carousel>
@@ -28,6 +30,10 @@
         <el-radio v-model="item.type" label="bottom">图片左</el-radio>
       </div>
             <div>
+              <div>
+                图块颜色
+                <el-color-picker show-alpha v-model="item.bgColor"></el-color-picker>
+              </div>
               <com-upload
       accept="png|jpg|jpeg|bmp|gif"
       uploadTxt="上传"
@@ -66,6 +72,7 @@
 </template>
 
 <script>
+import ComBtn from 'components/site/button'
 import ComEditer from 'src/components/ve-html5-editer'
 import ComFont from 'components/site/font'
 import editMixin from './mixin'
@@ -73,7 +80,7 @@ import ComEdit from './edit'
 export default {
   mixins: [editMixin],
   components: {
-    ComEdit, ComEditer, ComFont
+    ComEdit, ComEditer, ComFont, ComBtn
   },
   props: {
     min: {
@@ -120,10 +127,9 @@ export default {
       }
     },
     uploadLoad (data, index) {
-      debugger
       let ret = JSON.parse(data.data)
       if (ret.code === 200) {
-        this.value.data[index].img = `${ret.data.name}`
+        this.value.list[index].img = `${ret.data.name}`
       }
     },
     hideHandle () {
@@ -131,6 +137,11 @@ export default {
     },
     showHandle (rect) {
       this.autoplay = false
+    }
+  },
+  computed: {
+    widthClass () {
+      return `width${this.value.list.length}`
     }
   }
 }

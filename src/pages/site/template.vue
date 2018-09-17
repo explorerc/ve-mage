@@ -12,7 +12,7 @@
     </div>
     <component v-if="platform==='PC'" class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
     <div v-if="platform==='H5'" class="template-content">
-      <iframe src="http://localhost:8866/site/131" frameborder="0" class="h5-preview"></iframe>
+      <iframe src="http://localhost:8866/site/47" frameborder="0" class="h5-preview"></iframe>
     </div>
   </div>
 </template>

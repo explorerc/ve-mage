@@ -5,15 +5,16 @@
       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
     <div class="section2" :edit="editAble" >
-      <com-block2 :edit="editAble" :max="3" v-model="data.section2Data.block2"></com-block2>
+      <com-block2 :edit="editAble" :max="3" v-model="data.section2Data.block2">
+      </com-block2>
     </div>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
-      <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
       <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
+      <div class="bg"></div>
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
+      <com-video :edit="editAble" v-model="data.section4Data.video"></com-video>
     </com-panel>
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
@@ -156,13 +157,37 @@ export default {
   }
   .section2 {
     width: 100%;
-    height: 820px;
     .block2-content {
-      height: 590px;
+      height: 600px;
       .el-carousel {
         height: 100%;
         .el-carousel__container {
           height: 100% !important;
+          .el-carousel__item {
+            &.top {
+              .content {
+                position: absolute;
+                top: 200px;
+                left: 170px;
+                .btn-container {
+                  width: 200px;
+                  height: 40px;
+                  font-size: 16px;
+                  border: 1px solid rgba(255, 255, 255, 1);
+                  background-color: transparent;
+                  margin-top: 40px;
+                }
+              }
+            }
+          }
+          .left-area {
+            width: 400px;
+            height: 100%;
+            position: absolute;
+          }
+          img {
+            margin-left: 350px;
+          }
         }
       }
     }
@@ -171,65 +196,53 @@ export default {
     width: 100%;
     height: auto;
     text-align: center;
-    .panel {
-      padding-bottom: 80px;
-    }
-    .font-container {
-      margin-top: 100px;
-      text-align: left;
-      width: 650px;
-      min-height: 85px;
-    }
+    padding-top: 100px;
+    padding-bottom: 100px;
     .block1-group {
-      &.width3 {
-        .block1-item {
-          width: 346px;
-          img {
-            height: 192px;
+      .block1-item {
+        max-width: 1280px;
+        &.left {
+          .content {
+            padding-right: 510px;
           }
         }
-      }
-      .block1-item {
-        width: 540px;
-        margin-right: 40px;
         img {
-          width: 100%;
-          height: 300px;
+          width: 395px;
+          height: 320px;
         }
       }
     }
   }
   .section4 {
     width: 100%;
-    height: auto;
+    height: 820px;
     text-align: center;
+    overflow: hidden;
+    .bg {
+      position: absolute;
+      width: 939px;
+      left: 32%;
+      height: 2000px;
+      top: -538px;
+      background-color: white;
+      transform: rotateZ(-38deg);
+    }
     .panel {
-      padding-bottom: 20px;
+      padding-bottom: 0;
     }
     .font-container {
       margin-top: 50px;
       text-align: left;
       width: 650px;
-      min-height: 85px;
+      min-height: 100px;
     }
-    .block1-group {
-      &.width3 {
-        .block1-item {
-          width: 340px;
-          height: 245px;
-          img {
-            height: 100%;
-          }
-        }
-      }
-      .block1-item {
-        width: 540px;
-        height: 350px;
-        margin-right: 40px;
-        img {
-          width: 100%;
-          height: 100%;
-        }
+    .video-container {
+      margin-top: 10px;
+      width: 1100px;
+      height: 610px;
+      margin: auto;
+      .video-content {
+        height: 100%;
       }
     }
   }
