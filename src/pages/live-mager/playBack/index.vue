@@ -124,6 +124,7 @@
       v-show="addVideoShow"
       width="646px"
       header="添加视频"
+      type="prompt"
       cancelText="取消"
       confirmText='确定'
       @handleClick="addVideohandleClick">
@@ -196,7 +197,7 @@
             </div>
           </div>
           <transition name="left-right">
-            <div class="from-row" v-if="outLineMode==1">
+            <div class="from-row input-box" v-if="outLineMode==1">
               <div class="from-title"><i class="star">*</i>下线时间：</div>
               <div class="from-content">
                 <div class="black-box">
