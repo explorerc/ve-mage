@@ -152,8 +152,8 @@
             <div class="from-title">视频链接：</div>
             <div class="from-content">
               <div class="black-box">
-                 <com-input class="out-line-input" :value.sync="outLineLink"
-                         placeholder="请输入链接"></com-input>
+                <com-input class="out-line-input" :value.sync="outLineLink"
+                           placeholder="请输入链接"></com-input>
               </div>
             </div>
           </div>
@@ -238,7 +238,7 @@
   }
   export default {
     name: 'play-back',
-    components: { VeUploadImage, veMsgTips, VeUploadVideo, VePagination },
+    components: {VeUploadImage, veMsgTips, VeUploadVideo, VePagination},
     data () {
       return {
         navIdx: 0,
@@ -272,9 +272,9 @@
         playBackList: [],
         isLoadingList: false,
         options: [
-          { value: '0', label: '默认回放' },
-          { value: '1', label: '上传视频' },
-          { value: '2', label: '外部链接' }
+          {value: '0', label: '默认回放'},
+          {value: '1', label: '上传视频'},
+          {value: '2', label: '外部链接'}
         ],
         recordId: '',
         activityId: '',
