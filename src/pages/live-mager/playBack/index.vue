@@ -131,34 +131,39 @@
       <div class="mager-box message-box-content">
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title">视频类型：</div>
+            <div class="from-title"><i class="star">*</i>视频类型：</div>
             <div class="from-content">
               <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
             </div>
           </div>
           <div class="from-row" v-if="playBackMode==0">
-            <div class="from-title">上传视频：</div>
+            <div class="from-title"><i class="star">*</i>上传视频：</div>
             <div class="from-content">
               <ve-upload-video
                 title="视频仅支持mp4格式，文件大小不超过200M"
                 accept="mp4"
                 :fileSize="204800"
+                :errorMsg="recordIdError"
                 :sdk="sdkUploadParam"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
-          <div class="from-row" v-else>
-            <div class="from-title">视频链接：</div>
+          <div class="from-row input-box" v-else>
+            <div class="from-title"><i class="star">*</i>视频链接：</div>
             <div class="from-content">
-              <com-input class="out-line-input" :value.sync="outLineLink"
-                         placeholder="请输入链接"></com-input>
+              <div class="black-box">
+                <com-input class="out-line-input" :error-tips="outLineError" :value.sync="outLineLink"
+                           placeholder="请输入链接"></com-input>
+              </div>
             </div>
           </div>
-          <div class="from-row">
-            <div class="from-title">视频标题：</div>
+          <div class="from-row input-box">
+            <div class="from-title"><i class="star">*</i>视频标题：</div>
             <div class="from-content">
-              <com-input :value.sync="newTitle"/>
+              <div class="black-box">
+                <com-input placeholder="请输入标题" :error-tips="newTitleError" :max-length="30" :value.sync="newTitle"/>
+              </div>
             </div>
           </div>
         </div>
@@ -265,6 +270,8 @@
           outLineLink: ''
         },
         outLineError: '',
+        recordIdError: '',
+        newTitleError: '',
         playBackList: [],
         isLoadingList: false,
         options: [
@@ -304,6 +311,15 @@
       },
       'playBack.outLineTime' (newVal) {
         this.outLineError = newVal ? '' : this.outLineError
+      },
+      outLineLink (newVal) {
+        this.outLineError = newVal ? '' : this.outLineError
+      },
+      recordId (newVal) {
+        this.recordIdError = newVal ? '' : this.recordIdError
+      },
+      newTitle (newVal) {
+        this.newTitleError = newVal ? '' : this.newTitleError
       }
     },
     created () {
@@ -444,9 +460,17 @@
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
             this.outLineLink = ''
+            if (!this.recordId) {
+              this.recordIdError = '视频不能为空'
+              return
+            }
           } else if (this.playBackMode === '1') {
             this.recordId = ''
             if (!this.preViewOutLine()) return
+          }
+          if (!this.newTitle) {
+            this.newTitleError = '视频标题不能为空'
+            return
           }
           PlayBackHttp.createPlayBack({
             activityId: this.activityId,
@@ -529,16 +553,15 @@
         })
       },
       preViewOutLine () {
+        if (!this.outLineLink) {
+          this.outLineError = '视频链接不能为空'
+          return false
+        }
         const reg = /^<embed|<iframe.*(embed>|iframe>)$/
         if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = this.outLineLink
         } else {
-          this.$toast({
-            header: `提示`,
-            content: '格式不正确',
-            autoClose: 2000,
-            position: 'top-center'
-          })
+          this.outLineError = '格式不正确'
           return false
         }
         return true

@@ -150,7 +150,6 @@
         this.type = type
       },
       accountSubmit () {
-        this.setIsLogin(1)
         this.checkAccountForm()
         if (this.accountError) {
           return false
@@ -181,7 +180,7 @@
             this.accountOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
             this.setIsLogin(1)
             this.$router.replace('/setAccount')
           }

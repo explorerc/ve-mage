@@ -184,7 +184,7 @@
   }
   .error-msg {
     display: block;
-    color: #fc5659;
+    color: #fc5659 !important;
     line-height: 24px;
   }
   .upload-file-box {
