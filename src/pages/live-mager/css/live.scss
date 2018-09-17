@@ -141,6 +141,9 @@
         .from-content {
           position: relative;
           flex: 1;
+          .error{
+            border-color: $color-red;
+          }
           .error-msg{
             display: block;
             color: $color-red;

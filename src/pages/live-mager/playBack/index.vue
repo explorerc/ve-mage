@@ -3,7 +3,7 @@
     <div class="live-title" style="margin-top: 30px;">
       <span class="title">活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
-      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoShow=true">添加视频</button>
+      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoClickShow">添加视频</button>
     </div>
     <transition name="fade">
       <div class="video-modal-box" v-if="prePlayShow">
@@ -124,6 +124,7 @@
       v-show="addVideoShow"
       width="646px"
       header="添加视频"
+      type="prompt"
       cancelText="取消"
       confirmText='确定'
       @handleClick="addVideohandleClick">
@@ -143,7 +144,9 @@
                 title="视频仅支持mp4格式，文件大小不超过200M"
                 accept="mp4"
                 :fileSize="204800"
+                :class="{error:recordIdError}"
                 :sdk="sdkUploadParam"
+                @handleClick="handleVideoClick"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
@@ -152,6 +155,7 @@
             <div class="from-content">
               <div class="black-box">
                 <com-input class="out-line-input" :value.sync="outLineLink"
+                           :error-tips="outLineError"
                            placeholder="请输入链接"></com-input>
               </div>
             </div>
@@ -160,7 +164,8 @@
             <div class="from-title"><i class="star">*</i>视频标题：</div>
             <div class="from-content">
               <div class="black-box">
-                <com-input placeholder="请输入视频标题" :max-length="30" :value.sync="newTitle"/>
+                <com-input placeholder="请输入视频标题"
+                           :max-length="30" :error-tips="newTitleError" :value.sync="newTitle"/>
               </div>
             </div>
           </div>
@@ -212,7 +217,7 @@
                     format="yyyy-MM-dd HH:mm"
                     value-format="yyyy-MM-dd HH:mm">
                   </el-date-picker>
-                  <span class="status-error" v-if="outLineError">{{outLineError}}</span>
+                  <span class="error-msg" v-if="outLineError">{{outLineError}}</span>
                 </div>
               </div>
             </div>
@@ -247,9 +252,12 @@
         newTitle: '',
         selectRowIdx: 0,
         sdkUploadParam: { // sdk上传插件初始化参数
-          sing: '',
+          sign: '',
           signed_at: '',
-          app_id: ''
+          app_id: '',
+          fileName: '',
+          fileSize: '',
+          recordId: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -267,7 +275,9 @@
           recordId: '',
           outLineLink: ''
         },
-        outLineError: '',
+        outLineError: '', // 外部引用异常
+        recordIdError: '', // 引视频上传异常
+        newTitleError: '', // 视频标题异常提示
         playBackList: [],
         isLoadingList: false,
         options: [
@@ -307,6 +317,15 @@
       },
       'playBack.outLineTime' (newVal) {
         this.outLineError = newVal ? '' : this.outLineError
+      },
+      outLineLink (newVal) {
+        this.outLineError = newVal ? '' : this.outLineError
+      },
+      recordId (newVal) {
+        this.recordIdError = newVal ? '' : this.recordIdError
+      },
+      newTitle (newVal) {
+        this.newTitleError = newVal ? '' : this.newTitleError
       }
     },
     created () {
@@ -318,6 +337,7 @@
         PlayBackHttp.queryPlayBack({
           activityId: this.activityId
         }).then((res) => {
+          if (res.code !== 200) return
           this.playBack = {
             replayId: res.data.replayId,
             outLineMode: res.data.offlineType,
@@ -335,11 +355,9 @@
             this.$nextTick(() => {
               // 初始化pass上传插件
               // this.initVhallUpload()
-              this.sdkUploadParam = {
-                sign: res.data.sign,
-                signed_at: res.data.signedAt,
-                app_id: res.data.appId
-              }
+              this.sdkUploadParam.sign = res.data.sign
+              this.sdkUploadParam.signed_at = res.data.signedAt
+              this.sdkUploadParam.app_id = res.data.appId
               this.sdkPlayParam = {
                 app_id: res.data.appId,
                 accountId: res.data.accountId,
@@ -354,6 +372,12 @@
       changePage (currentPage) {
         this.page = currentPage
         this.queryPlayBackList()
+      },
+      addVideoClickShow () {
+        this.addVideoShow = true
+        this.recordId = ''
+        this.sdkUploadParam.recordId = ''
+        this.sdkUploadParam.fileName = ''
       },
       queryPlayBackList () {
         if (this.isLoadingList) return
@@ -444,12 +468,23 @@
       },
       /* 添加视频 */
       addVideohandleClick (e) {
+        // outLineError: '', // 外部引用异常
+        //   recordIdError: '', // 引视频上传异常
+        //   newTitleError: '', // 视频标题异常提示
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
             this.outLineLink = ''
+            if (!this.recordId) {
+              this.recordIdError = '请点击上传视频'
+              return
+            }
           } else if (this.playBackMode === '1') {
             this.recordId = ''
             if (!this.preViewOutLine()) return
+          }
+          if (!this.newTitle) {
+            this.newTitleError = '视频标题不能为空'
+            return
           }
           PlayBackHttp.createPlayBack({
             activityId: this.activityId,
@@ -536,12 +571,7 @@
         if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = this.outLineLink
         } else {
-          this.$toast({
-            header: `提示`,
-            content: '格式不正确',
-            autoClose: 2000,
-            position: 'top-center'
-          })
+          this.outLineError = '格式不正确'
           return false
         }
         return true
@@ -555,8 +585,38 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
-      uploadVideoSuccess (recordId) {
+      uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId
+        this.sdkUploadParam.recordId = recordId
+        this.sdkUploadParam.fileName = fileName
+      },
+      /* 播放器进行播放,预览 */
+      prePlayVideo () {
+        this.$playVideo({
+          ...this.sdkPlayParam
+        })
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.prePlayVideo()
+        } else if (e.type === 'delete') { // 删除
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.sdkUploadParam.fileName = ''
+                this.sdkUploadParam.fileSize = ''
+                this.sdkUploadParam.recordId = ''
+              }
+            }
+          })
+        }
       }
     }
   }
