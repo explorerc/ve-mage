@@ -71,7 +71,7 @@
         opacity: 0,
         error: '',
         show: false,
-        closeTime: 60
+        closeTime: 0
       }
     },
     components: {
@@ -191,7 +191,6 @@
           'code': this.code
         }
         loginManage.register(data).then((res) => {
-          this.closeTime = 60
           if (res.code !== 200) {
             clearInterval(this.timerr)
             this.isSend = false
@@ -203,6 +202,7 @@
             this.error = res.msg
             this.opacity = 1
           } else {
+            this.closeTime = 60
             this.show = true
           }
         })
@@ -211,7 +211,9 @@
         if (e.action === 'cancel') {
           console.log('取消或者关闭按钮')
           this.show = false
+          this.closeTime = 0
         } else if (e.action === 'confirm') {
+          this.closeTime = 0
           this.show = false
         }
       },
