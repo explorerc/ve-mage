@@ -854,6 +854,7 @@
   }
   margin: 0 auto;
   .v-account-title {
+    line-height: 60px;
     font-size: 24px;
     color: #222;
   }
