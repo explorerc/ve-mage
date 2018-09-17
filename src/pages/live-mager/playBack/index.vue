@@ -1,9 +1,9 @@
 <template>
-  <div class="live-mager">
+  <div class="live-mager play-back">
     <div class="live-title" style="margin-top: 30px;">
       <span class="title">活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
-      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoShow=true">添加视频</button>
+      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoClickShow">添加视频</button>
     </div>
     <transition name="fade">
       <div class="video-modal-box" v-if="prePlayShow">
@@ -31,9 +31,10 @@
           style="width: 100%">
           <el-table-column
             label="缩略图">
-            <template slot-scope="scope">
+            <div slot-scope="scope" class="play-back-cover">
+              <span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>
               <img class="play-back-img" :src="playBackList[scope.$index].pic">
-            </template>
+            </div>
           </el-table-column>
           <el-table-column
             prop="title"
@@ -116,7 +117,7 @@
       @handleClick="renameHandleClick">
       <div class="prop-input">
         输入新的视频标题：
-        <com-input :value.sync="newTitle"/>
+        <com-input placeholder="请输入标题" :error-tips="newTitleError" :value.sync="newTitle"/>
       </div>
     </message-box>
     <!-- 添加视频 -->
@@ -124,40 +125,51 @@
       v-show="addVideoShow"
       width="646px"
       header="添加视频"
+      type="prompt"
       cancelText="取消"
       confirmText='确定'
       @handleClick="addVideohandleClick">
       <div class="mager-box message-box-content">
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title">视频类型：</div>
+            <div class="from-title"><i class="star">*</i>视频类型：</div>
             <div class="from-content">
               <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
+              <div class="from-msg-tip">
+                <ve-msg-tips
+                  tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<br/><iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
+              </div>
             </div>
           </div>
           <div class="from-row" v-if="playBackMode==0">
-            <div class="from-title">上传视频：</div>
+            <div class="from-title"><i class="star">*</i>上传视频：</div>
             <div class="from-content">
               <ve-upload-video
                 title="视频仅支持mp4格式，文件大小不超过200M"
                 accept="mp4"
                 :fileSize="204800"
-                :sdk="sdkUploadParam"
+                :errorMsg="recordIdError"
+                :sdk="sdkParam"
+                @handleClick="handleVideoClick"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
-          <div class="from-row" v-else>
-            <div class="from-title">视频链接：</div>
+          <div class="from-row input-box" v-else>
+            <div class="from-title"><i class="star">*</i>视频链接：</div>
             <div class="from-content">
-              <com-input class="out-line-input" :value.sync="outLineLink"
-                         placeholder="请输入链接"></com-input>
+              <div class="black-box">
+                <com-input class="out-line-input" :error-tips="outLineError" :value.sync="outLineLink"
+                           placeholder="请输入链接"></com-input>
+              </div>
             </div>
           </div>
-          <div class="from-row">
-            <div class="from-title">视频标题：</div>
+          <div class="from-row input-box">
+            <div class="from-title"><i class="star">*</i>视频标题：</div>
             <div class="from-content">
-              <com-input :value.sync="newTitle"/>
+              <div class="black-box">
+                <com-input placeholder="请输入标题" :error-tips="newTitleError" :max-length="30" :value.sync="newTitle"/>
+              </div>
             </div>
           </div>
         </div>
@@ -196,7 +208,7 @@
             </div>
           </div>
           <transition name="left-right">
-            <div class="from-row" v-if="outLineMode==1">
+            <div class="from-row input-box" v-if="outLineMode==1">
               <div class="from-title"><i class="star">*</i>下线时间：</div>
               <div class="from-content">
                 <div class="black-box">
@@ -242,10 +254,12 @@
         playBackShow: false,
         newTitle: '',
         selectRowIdx: 0,
-        sdkUploadParam: { // sdk上传插件初始化参数
-          sing: '',
+        sdkParam: { // sdk上传插件初始化参数
+          sign: '',
           signed_at: '',
-          app_id: ''
+          app_id: '',
+          fileName: '',
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -264,6 +278,8 @@
           outLineLink: ''
         },
         outLineError: '',
+        recordIdError: '',
+        newTitleError: '',
         playBackList: [],
         isLoadingList: false,
         options: [
@@ -303,6 +319,15 @@
       },
       'playBack.outLineTime' (newVal) {
         this.outLineError = newVal ? '' : this.outLineError
+      },
+      outLineLink (newVal) {
+        this.outLineError = newVal ? '' : this.outLineError
+      },
+      recordId (newVal) {
+        this.recordIdError = newVal ? '' : this.recordIdError
+      },
+      newTitle (newVal) {
+        this.newTitleError = newVal ? '' : this.newTitleError
       }
     },
     created () {
@@ -331,11 +356,9 @@
             this.$nextTick(() => {
               // 初始化pass上传插件
               // this.initVhallUpload()
-              this.sdkUploadParam = {
-                sign: res.data.sign,
-                signed_at: res.data.signedAt,
-                app_id: res.data.appId
-              }
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
               this.sdkPlayParam = {
                 app_id: res.data.appId,
                 accountId: res.data.accountId,
@@ -438,14 +461,33 @@
           }
         })
       },
+      addVideoClickShow () {
+        this.recordId = ''
+        this.outLineLink = ''
+        this.newTitle = ''
+        this.recordIdError = ''
+        this.outLineError = ''
+        this.newTitleError = ''
+        this.addVideoShow = true
+      },
       /* 添加视频 */
       addVideohandleClick (e) {
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
             this.outLineLink = ''
+            this.outLineError = ''
+            if (!this.recordId) {
+              this.recordIdError = '视频不能为空'
+              return
+            }
           } else if (this.playBackMode === '1') {
             this.recordId = ''
+            this.recordIdError = ''
             if (!this.preViewOutLine()) return
+          }
+          if (!this.newTitle) {
+            this.newTitleError = '视频标题不能为空'
+            return
           }
           PlayBackHttp.createPlayBack({
             activityId: this.activityId,
@@ -464,10 +506,14 @@
       },
       /* 重命名 */
       renameHandleClick (e) {
-        this.renameShow = false
         if (e.action === 'confirm') {
+          if (!this.newTitle) {
+            this.newTitleError = '标题不能为空'
+            return
+          }
           this.updataTitle()
         }
+        this.renameShow = false
       },
       /* 设置默认回放 */
       savePlayBackConfig (e) {
@@ -528,16 +574,15 @@
         })
       },
       preViewOutLine () {
+        if (!this.outLineLink) {
+          this.outLineError = '视频链接不能为空'
+          return false
+        }
         const reg = /^<embed|<iframe.*(embed>|iframe>)$/
         if (reg.test(this.outLineLink)) {
           this.playBack.outLineLink = this.outLineLink
         } else {
-          this.$toast({
-            header: `提示`,
-            content: '格式不正确',
-            autoClose: 2000,
-            position: 'top-center'
-          })
+          this.outLineError = '格式不正确'
           return false
         }
         return true
@@ -551,8 +596,33 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
-      uploadVideoSuccess (recordId) {
+      uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId
+        this.sdkParam.fileName = fileName
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.$playVideo({
+            ...this.sdkPlayParam
+          })
+        } else if (e.type === 'delete') { // 删除
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.recordId = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+              }
+            }
+          })
+        }
       }
     }
   }
@@ -560,194 +630,201 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-.list-box .el-table .cell {
-  overflow: visible;
-}
+  .list-box .el-table .cell {
+    overflow: visible;
+  }
 </style>
 <style lang="scss" scoped>
-@import 'assets/css/variable.scss';
+  @import 'assets/css/variable.scss';
 
-.status-default {
-  color: $color-blue;
-}
-
-.status-success {
-  color: $color-success;
-}
-
-.status-error {
-  color: $color-error;
-}
-
-.black-box {
-  height: 60px;
-  .el-date-editor {
-    width: 100%;
+  .status-default {
+    color: $color-blue;
   }
-  .play-content {
-    .out-line {
-      margin: 10px 0;
-      span {
-        display: inline-block;
-        margin-right: 20px;
+
+  .status-success {
+    color: $color-success;
+  }
+
+  .status-error {
+    color: $color-error;
+  }
+
+  .black-box {
+    height: 60px;
+    .el-date-editor {
+      width: 100%;
+    }
+    .play-content {
+      .out-line {
+        margin: 10px 0;
+        span {
+          display: inline-block;
+          margin-right: 20px;
+        }
+        .out-line-input {
+          width: 400px;
+        }
       }
-      .out-line-input {
-        width: 400px;
+      .play-box {
+        display: inline-block;
+        width: 474px;
+        min-height: 266.6px;
+        line-height: 266px;
+        vertical-align: top;
+        background-color: #666666;
+        color: #fff;
+        .iframe-box {
+          height: 100%;
+          width: 100%;
+        }
       }
     }
-    .play-box {
+  }
+
+  .list-box {
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 4px;
+    .list-header {
+      border-bottom: solid 1px $color-bd;
+    }
+  }
+
+  .step-btns {
+    margin-left: 150px;
+  }
+
+  .play-back-img {
+    width: 104px;
+    height: 58px;
+  }
+
+  .table-nav {
+    display: inline-block;
+    margin: 0 20px;
+    font-size: 0;
+    span {
+      position: relative;
       display: inline-block;
-      width: 474px;
-      min-height: 266.6px;
-      line-height: 266px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 14px;
+      padding: 10px 8px 8px 8px;
+      margin: 0 5px -1px 5px;
+      &:after {
+        display: block;
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $color-blue;
+        border-radius: 1px;
+        transition: width .3s;
+      }
+      &.active {
+        &:after {
+          width: 100%;
+          box-shadow: 0 0 1px $color-blue;
+        }
+      }
+      &:hover {
+        cursor: pointer;
+        color: $color-blue;
+      }
+    }
+  }
+
+  .more {
+    display: inline-block;
+    position: relative;
+    padding: 10px 5px;
+    font-size: 12px;
+    color: #409eff;
+    cursor: pointer;
+    text-align: center;
+    &:hover .more-menu {
+      display: block;
+    }
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: 36px;
+      left: -22px;
+      width: 80px;
+      z-index: 9999999;
+      color: #666;
+      border: solid 1px #e5e5e5;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 5px 0;
+      span {
+        display: block;
+        padding: 5px 0;
+        &:hover {
+          color: #409eff;
+          background-color: #F0F1FE;
+        }
+      }
+    }
+  }
+
+  .prop-input {
+    text-align: left;
+    margin: 20px;
+    font-size: 14px;
+    .com-input {
+      width: 258px;
+      margin: 5px 0;
+    }
+  }
+
+  .message-box-content {
+    text-align: left;
+    .from-title {
+      width: 102px !important;
+    }
+    .upload-tips {
+      width: 273px !important;
+    }
+  }
+
+  .video-modal-box {
+    .video-modal {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+    .video-content {
+      position: absolute;
+      width: 800px;
+      height: 450px;
+      line-height: 450px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       vertical-align: top;
-      background-color: #666666;
+      background-color: #333333;
       color: #fff;
+      text-align: center;
+      z-index: 11;
       .iframe-box {
         height: 100%;
         width: 100%;
       }
     }
   }
-}
 
-.list-box {
-  margin: 10px 0;
-  background-color: #fff;
-  border-radius: 4px;
-  .list-header {
-    border-bottom: solid 1px $color-bd;
-  }
-}
-
-.step-btns {
-  margin-left: 150px;
-}
-
-.play-back-img {
-  width: 104px;
-  height: 58px;
-}
-
-.table-nav {
-  display: inline-block;
-  margin: 0 20px;
-  font-size: 0;
-  span {
-    position: relative;
-    display: inline-block;
-    line-height: 34px;
-    text-align: center;
-    font-size: 14px;
-    padding: 10px 8px 8px 8px;
-    margin: 0 5px -1px 5px;
-    &:after {
-      display: block;
-      position: absolute;
-      content: '';
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: $color-blue;
-      border-radius: 1px;
-      transition: width 0.3s;
-    }
-    &.active {
-      &:after {
-        width: 100%;
-        box-shadow: 0 0 1px $color-blue;
-      }
-    }
-    &:hover {
-      cursor: pointer;
-      color: $color-blue;
+  .play-back /deep/ {
+    .ve-message-box__wrapper .ve-message-box {
+      overflow: visible;
     }
   }
-}
 
-.more {
-  display: inline-block;
-  position: relative;
-  padding: 10px 5px;
-  font-size: 12px;
-  color: #409eff;
-  cursor: pointer;
-  text-align: center;
-  &:hover .more-menu {
-    display: block;
-  }
-  .more-menu {
-    display: none;
-    position: absolute;
-    top: 36px;
-    left: -22px;
-    width: 80px;
-    z-index: 9999999;
-    color: #666;
-    border: solid 1px #e5e5e5;
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 5px 0;
-    span {
-      display: block;
-      padding: 5px 0;
-      &:hover {
-        color: #409eff;
-        background-color: #f0f1fe;
-      }
-    }
-  }
-}
-
-.prop-input {
-  text-align: left;
-  margin: 20px;
-  font-size: 14px;
-  .com-input {
-    width: 258px;
-    margin: 5px 0;
-  }
-}
-
-.message-box-content {
-  text-align: left;
-  .from-title {
-    width: 102px !important;
-  }
-  .upload-tips {
-    width: 273px !important;
-  }
-}
-
-.video-modal-box {
-  .video-modal {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-  }
-  .video-content {
-    position: absolute;
-    width: 800px;
-    height: 450px;
-    line-height: 450px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    vertical-align: top;
-    background-color: #333333;
-    color: #fff;
-    text-align: center;
-    z-index: 11;
-    .iframe-box {
-      height: 100%;
-      width: 100%;
-    }
-  }
-}
 </style>

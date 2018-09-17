@@ -69,6 +69,12 @@
               this.errorTips = res.msg
             } else {
               this.isWarning = false
+
+              let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+              if (accountInfo) {
+                accountInfo.hasPassword = true
+                sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              }
               this.$router.replace('/setAccount')
             }
           })
