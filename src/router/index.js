@@ -21,7 +21,6 @@ router.beforeResolve((to, from, next) => {
       next()
       return false
     } else {
-      debugger
       let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
       let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
       if (isLogin && accountInfo) {
