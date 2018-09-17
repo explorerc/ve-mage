@@ -19,7 +19,7 @@
 </template>
 <script>
 import loginManage from 'src/api/login-manage'
-import { mapMutations, mapState } from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 import account from 'src/api/account-manage'
 import EventBus from 'src/utils/eventBus'
