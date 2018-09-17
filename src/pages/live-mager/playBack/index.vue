@@ -583,7 +583,9 @@
       /* 预览，删除触发 */
       handleVideoClick (e) {
         if (e.type === 'pre-view') { // 预览
-          this.prePlayVideo()
+          this.$playVideo({
+            ...this.sdkPlayParam
+          })
         } else if (e.type === 'delete') { // 删除
           this.$messageBox({
             header: '删除此视频',
