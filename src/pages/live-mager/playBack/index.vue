@@ -3,7 +3,7 @@
     <div class="live-title" style="margin-top: 30px;">
       <span class="title">活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
-      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoShow=true">添加视频</button>
+      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoClickShow">添加视频</button>
     </div>
     <transition name="fade">
       <div class="video-modal-box" v-if="prePlayShow">
@@ -137,7 +137,8 @@
               <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
               <div class="from-msg-tip">
-                <ve-msg-tips tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<br/><iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
+                <ve-msg-tips
+                  tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<br/><iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
               </div>
             </div>
           </div>
@@ -460,17 +461,28 @@
           }
         })
       },
+      addVideoClickShow () {
+        this.recordId = ''
+        this.outLineLink = ''
+        this.newTitle = ''
+        this.recordIdError = ''
+        this.outLineError = ''
+        this.newTitleError = ''
+        this.addVideoShow = true
+      },
       /* 添加视频 */
       addVideohandleClick (e) {
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
             this.outLineLink = ''
+            this.outLineError = ''
             if (!this.recordId) {
               this.recordIdError = '视频不能为空'
               return
             }
           } else if (this.playBackMode === '1') {
             this.recordId = ''
+            this.recordIdError = ''
             if (!this.preViewOutLine()) return
           }
           if (!this.newTitle) {
@@ -809,9 +821,9 @@
     }
   }
 
-  .play-back /deep/{
-    .ve-message-box__wrapper .ve-message-box{
-       overflow: visible;
+  .play-back /deep/ {
+    .ve-message-box__wrapper .ve-message-box {
+      overflow: visible;
     }
   }
 
