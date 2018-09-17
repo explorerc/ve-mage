@@ -31,9 +31,10 @@
           style="width: 100%">
           <el-table-column
             label="缩略图">
-            <template slot-scope="scope">
+            <div slot-scope="scope" class="play-back-cover">
+              <span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>
               <img class="play-back-img" :src="playBackList[scope.$index].pic">
-            </template>
+            </div>
           </el-table-column>
           <el-table-column
             prop="title"
