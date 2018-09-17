@@ -145,7 +145,8 @@ export default {
       msgDelete: false,
       loading: false,
       copyDataval: 'www.baidu.com',
-      imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+      imgHost: process.env.IMGHOST + '/',
+      // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
       percentImg: 0 // 图片上传进度
     }
   },
