@@ -145,7 +145,8 @@
                 accept="mp4"
                 :fileSize="204800"
                 :errorMsg="recordIdError"
-                :sdk="sdkUploadParam"
+                :sdk="sdkParam"
+                @handleClick="handleVideoClick"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
@@ -248,10 +249,12 @@
         playBackShow: false,
         newTitle: '',
         selectRowIdx: 0,
-        sdkUploadParam: { // sdk上传插件初始化参数
-          sing: '',
+        sdkParam: { // sdk上传插件初始化参数
+          sign: '',
           signed_at: '',
-          app_id: ''
+          app_id: '',
+          fileName: '',
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -348,11 +351,9 @@
             this.$nextTick(() => {
               // 初始化pass上传插件
               // this.initVhallUpload()
-              this.sdkUploadParam = {
-                sign: res.data.sign,
-                signed_at: res.data.signedAt,
-                app_id: res.data.appId
-              }
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
               this.sdkPlayParam = {
                 app_id: res.data.appId,
                 accountId: res.data.accountId,
@@ -575,8 +576,31 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
-      uploadVideoSuccess (recordId) {
+      uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId
+        this.sdkParam.fileName = fileName
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.prePlayVideo()
+        } else if (e.type === 'delete') { // 删除
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.recordId = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+              }
+            }
+          })
+        }
       }
     }
   }
