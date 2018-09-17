@@ -15,7 +15,7 @@
       <div class="fwn">我的模版</div>
       <div class="group-content" >
         <div class="template-block" style="" v-if="this.data.tid">
-          <img src="" alt="">
+          <img :src="this[`t${data.tid}`]" >
           <div class="option-wrap">
             <div class="option-group">
               <a @click="goEdit">编辑</a>
@@ -32,7 +32,7 @@
       <div class="fwn">模板库</div>
       <div class="group-content fs0">
         <div class="template-block">
-          <img src="~assets/image/site_tp1.png" alt="">
+          <img :src="t0478320" alt="">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template1')">使用模版</a>
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="template-block">
-          <img src="~assets/image/site_tp2.png" alt="">
+          <img :src="t0478321" >
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template2')">使用模版</a>
@@ -62,7 +62,9 @@ export default {
   data () {
     return {
       enable: false,
-      data: {}
+      data: {},
+      t0478320: require('assets/image/site_tp1.png'),
+      t0478321: require('assets/image/site_tp2.png')
     }
   },
   mounted () {

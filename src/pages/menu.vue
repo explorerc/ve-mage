@@ -176,7 +176,7 @@ export default {
         width: 22px;
         height: 2px;
         background-color: #1a1a1a;
-        top: 0;
+        top: -1px;
         left: 0;
         transform-style: preserve-3d;
         transition: all 0.2s;
@@ -184,7 +184,7 @@ export default {
           transition-delay: 0s;
         }
         &:nth-child(2) {
-          top: 7px;
+          top: 6px;
           transition-delay: 0.1s;
         }
         &:nth-child(3) {

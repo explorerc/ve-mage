@@ -108,12 +108,7 @@
 
     .from-box {
       margin: 20px;
-      .input-box{
-        margin-top: 10px;
-        .black-box{
-          margin-top: -10px;
-        }
-      }
+
       .from-row {
         display: flex;
         padding: 12px;
@@ -141,9 +136,6 @@
         .from-content {
           position: relative;
           flex: 1;
-          .error{
-            border-color: $color-red;
-          }
           .error-msg{
             display: block;
             color: $color-red;

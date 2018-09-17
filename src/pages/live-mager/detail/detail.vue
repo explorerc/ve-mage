@@ -1,6 +1,6 @@
 <!-- 活动详情页面-->
 <template>
-  <div class='detail-wrap'>
+  <div class='detail-wrap' v-if="dataPrepare[0]">
     <div class="desc clearfix">
       <div class="left">
         <img v-if="poster" :src="`${imgHost + poster}`">
@@ -305,8 +305,7 @@
       <div class="item promote">
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-
-           <div class='item site' @click="linkTo($event,'/site/', dataBrand[2].switch)">
+           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[2].switch)">
               <!-- 活动官网 -->
               <div class="card">
                 <div class='pic'>
