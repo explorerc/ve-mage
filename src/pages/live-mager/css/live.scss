@@ -108,7 +108,12 @@
 
     .from-box {
       margin: 20px;
-
+      .input-box{
+        margin-top: 10px;
+        .black-box{
+          margin-top: -10px;
+        }
+      }
       .from-row {
         display: flex;
         padding: 12px;
@@ -164,11 +169,12 @@
   .msg-tip {
     position: relative;
     left: 10px;
+    top: -3px;
     @include border;
     padding: 5px 10px;
     margin-right: 10px;
     line-height: 18px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .email-info {
@@ -197,7 +203,7 @@
 
   .table-list-box {
     margin-top: 20px;
-    padding: 20px 20px 50px 20px;
+    padding: 0 20px 50px 20px;
     background-color: #fff;
     border-radius: 4px;
 
