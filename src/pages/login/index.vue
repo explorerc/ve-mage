@@ -62,6 +62,7 @@
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
+  import account from 'src/api/account-manage'
   export default {
     data () {
       return {
@@ -180,7 +181,12 @@
             this.accountOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            account.getAccount({}).then((res) => {
+              if (res.code !== 200) {
+              } else {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              }
+            })
             this.setIsLogin(1)
             this.$router.replace('/setAccount')
           }

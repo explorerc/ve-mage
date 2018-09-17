@@ -315,12 +315,11 @@
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
           } else {
-            account.getAccount({}).then((res) => {
-              if (res.code !== 200) {
-              } else {
-                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-              }
-            })
+            let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+            if (accountInfo) {
+              accountInfo.avatar = data.name
+              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+            }
             // sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
             EventBus.$emit('avatarChange', data.name)
             // this.getAccount()
@@ -347,12 +346,7 @@
               accountInfo.selectParentId = initVal.selectParentId
               accountInfo.industrySecond = initVal.selectChildValue
               accountInfo.industryFirst = initVal.selectParentValue
-              account.getAccount({}).then((res) => {
-                if (res.code !== 200) {
-                } else {
-                  sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-                }
-              })
+              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
               // this.getAccount()
             }
           })
@@ -435,7 +429,13 @@
               } else {
                 accountInfo[valType] = val
               }
-              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              account.getAccount({}).then((res) => {
+                if (res.code !== 200) {
+                } else {
+                  sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+                }
+              })
+              // sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
               // this.getAccount()
             }
           })
@@ -657,7 +657,7 @@
                   let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
                   if (accountInfo) {
                     accountInfo.accountPhone = this.saveNewPhone
-                    sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+                    sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
                   }
                   this.newPhone = this.saveNewPhone
                   this.saveNewPhone = ''
