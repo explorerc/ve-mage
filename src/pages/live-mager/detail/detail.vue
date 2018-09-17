@@ -417,7 +417,8 @@
         msgShow: false,
         isPublished: false,
         activityId: this.$route.params.id,
-        imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+        imgHost: process.env.IMGHOST + '/',
+        // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
         countdownTime: '', // 倒计时 秒
         countDownstatus: false,
         dataPrepare: [],
