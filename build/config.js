@@ -8,7 +8,7 @@ const config = {
     IMGHOST: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com',
     proxyTable: {
       '/api': {
-        target: 'http://dev-api-zhike.vhall.domain',
+        target: 'http://dev-api-zhike.vhall.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
@@ -21,15 +21,15 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//dev-zhike.vhall.domain/'
+    PUBLIC_PATH: '//dev-zhike.vhall.com/'
     //PUBLIC_PATH: '//127.0.0.1:8088/'
   },
   test: {
     BUILD_ENV: 'test',
-    API_PATH: '//t-api-class.e.vhall.com',
+    API_PATH: '/api',
     SUB_DIR: 'static',
-    IMGHOST: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//t-static01-class.e.vhall.com/vhallclass/'
+    IMGHOST: 'http://test-zhike.oss-cn-beijing.aliyuncs.com',
+    PUBLIC_PATH: '//test-zhike.vhall.com/'
   },
   prod: {
     BUILD_ENV: 'prod',
