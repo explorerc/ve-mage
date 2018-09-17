@@ -63,9 +63,10 @@ export const ajax = (options) => {
     if (options.headers && options.headers.noAlert) {
       return Promise.resolve(data)
     }
+    let errorMsg = data.msg || '网络异常'
     MessageBox({
       header: '提示',
-      content: data.msg,
+      content: errorMsg,
       autoClose: 10,
       confirmText: '知道了'
     })
