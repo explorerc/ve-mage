@@ -156,11 +156,11 @@
       },
       /* 开始结束直播 */
       starAndEndtLive (type) {
-        this.startInit = type
-        if (this.startInit) {
-          this.activityInfo.status = playStatus.LIVING
+        if (!this.startInit) {
           LiveHttp.startLive(this.activityId).then(res => {
             if (res.code === 200) {
+              this.activityInfo.status = playStatus.LIVING
+              this.startInit = type
               this.$toast({
                 header: `提示`,
                 content: '成功开始直播',
@@ -171,9 +171,10 @@
           })
         } else {
           clearInterval(this.setIntervalHandler)
-          this.activityInfo.status = playStatus.FINISH
           LiveHttp.stopLive(this.activityId).then(res => {
             if (res.code === 200) {
+              this.activityInfo.status = playStatus.FINISH
+              this.startInit = type
               this.$toast({
                 header: `提示`,
                 content: '成功结束直播',
