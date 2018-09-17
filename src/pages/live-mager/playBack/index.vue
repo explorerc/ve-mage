@@ -1,9 +1,9 @@
 <template>
-  <div class="live-mager">
+  <div class="live-mager play-back">
     <div class="live-title" style="margin-top: 30px;">
       <span class="title">活动回放</span>
       <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
-      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoShow=true">添加视频</button>
+      <button class="primary-button fr" style="margin-top: 10px;" @click="addVideoClickShow">添加视频</button>
     </div>
     <transition name="fade">
       <div class="video-modal-box" v-if="prePlayShow">
@@ -31,9 +31,10 @@
           style="width: 100%">
           <el-table-column
             label="缩略图">
-            <template slot-scope="scope">
+            <div slot-scope="scope" class="play-back-cover">
+              <span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>
               <img class="play-back-img" :src="playBackList[scope.$index].pic">
-            </template>
+            </div>
           </el-table-column>
           <el-table-column
             prop="title"
@@ -116,7 +117,7 @@
       @handleClick="renameHandleClick">
       <div class="prop-input">
         输入新的视频标题：
-        <com-input :value.sync="newTitle"/>
+        <com-input placeholder="请输入标题" :error-tips="newTitleError" :value.sync="newTitle"/>
       </div>
     </message-box>
     <!-- 添加视频 -->
@@ -135,6 +136,10 @@
             <div class="from-content">
               <el-radio v-model="playBackMode" label="0">上传视频</el-radio>
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
+              <div class="from-msg-tip">
+                <ve-msg-tips
+                  tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<br/><iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
+              </div>
             </div>
           </div>
           <div class="from-row" v-if="playBackMode==0">
@@ -145,7 +150,8 @@
                 accept="mp4"
                 :fileSize="204800"
                 :errorMsg="recordIdError"
-                :sdk="sdkUploadParam"
+                :sdk="sdkParam"
+                @handleClick="handleVideoClick"
                 @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
@@ -248,10 +254,12 @@
         playBackShow: false,
         newTitle: '',
         selectRowIdx: 0,
-        sdkUploadParam: { // sdk上传插件初始化参数
-          sing: '',
+        sdkParam: { // sdk上传插件初始化参数
+          sign: '',
           signed_at: '',
-          app_id: ''
+          app_id: '',
+          fileName: '',
+          fileSize: ''
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -348,11 +356,9 @@
             this.$nextTick(() => {
               // 初始化pass上传插件
               // this.initVhallUpload()
-              this.sdkUploadParam = {
-                sign: res.data.sign,
-                signed_at: res.data.signedAt,
-                app_id: res.data.appId
-              }
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
               this.sdkPlayParam = {
                 app_id: res.data.appId,
                 accountId: res.data.accountId,
@@ -455,17 +461,28 @@
           }
         })
       },
+      addVideoClickShow () {
+        this.recordId = ''
+        this.outLineLink = ''
+        this.newTitle = ''
+        this.recordIdError = ''
+        this.outLineError = ''
+        this.newTitleError = ''
+        this.addVideoShow = true
+      },
       /* 添加视频 */
       addVideohandleClick (e) {
         if (e.action === 'confirm') {
           if (this.playBackMode === '0') {
             this.outLineLink = ''
+            this.outLineError = ''
             if (!this.recordId) {
               this.recordIdError = '视频不能为空'
               return
             }
           } else if (this.playBackMode === '1') {
             this.recordId = ''
+            this.recordIdError = ''
             if (!this.preViewOutLine()) return
           }
           if (!this.newTitle) {
@@ -489,10 +506,14 @@
       },
       /* 重命名 */
       renameHandleClick (e) {
-        this.renameShow = false
         if (e.action === 'confirm') {
+          if (!this.newTitle) {
+            this.newTitleError = '标题不能为空'
+            return
+          }
           this.updataTitle()
         }
+        this.renameShow = false
       },
       /* 设置默认回放 */
       savePlayBackConfig (e) {
@@ -575,8 +596,33 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
-      uploadVideoSuccess (recordId) {
+      uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId
+        this.sdkParam.fileName = fileName
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.$playVideo({
+            ...this.sdkPlayParam
+          })
+        } else if (e.type === 'delete') { // 删除
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.recordId = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+              }
+            }
+          })
+        }
       }
     }
   }
@@ -774,4 +820,11 @@
       }
     }
   }
+
+  .play-back /deep/ {
+    .ve-message-box__wrapper .ve-message-box {
+      overflow: visible;
+    }
+  }
+
 </style>
