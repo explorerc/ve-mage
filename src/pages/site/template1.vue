@@ -40,7 +40,6 @@ import ComPanel from 'components/site/panel'
 import ComFont from 'components/site/font'
 import ComBtn from 'components/site/button'
 import ComBlock1 from 'components/site/block1'
-import ComBlock2 from 'components/site/block2'
 import ComShare from 'components/site/share'
 import ComVideo from 'components/site/video'
 
@@ -48,7 +47,7 @@ import defaultData from './templateData'
 
 export default {
   components: {
-    ComLogo, ComNav, ComPanel, ComFont, ComBtn, ComBlock1, ComShare, ComBlock2, ComVideo
+    ComLogo, ComNav, ComPanel, ComFont, ComBtn, ComBlock1, ComShare, ComVideo
   },
   data () {
     return {

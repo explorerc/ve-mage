@@ -106,7 +106,6 @@ export default {
       this.list = []
       this.queue = []
       this.error = []
-
       let fileSize = this.fileSize * 1000
       Array.prototype.forEach.call(this.$refs.upload.files, (item, index) => {
         if (item.size > fileSize) {

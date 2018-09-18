@@ -15,7 +15,7 @@
       <div class="fwn">我的模版</div>
       <div class="group-content" >
         <div class="template-block" style="" v-if="this.data.tid">
-          <img src="" alt="">
+          <img :src="this[`t${data.tid}`]" >
           <div class="option-wrap">
             <div class="option-group">
               <a @click="goEdit">编辑</a>
@@ -32,7 +32,7 @@
       <div class="fwn">模板库</div>
       <div class="group-content fs0">
         <div class="template-block">
-          <img src="~assets/image/site_tp1.png" alt="">
+          <img :src="t0478320" alt="">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template1')">使用模版</a>
@@ -41,11 +41,29 @@
           </div>
         </div>
         <div class="template-block">
-          <img src="~assets/image/site_tp2.png" alt="">
+          <img :src="t0478321" >
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template2')">使用模版</a>
               <a @click="showPreview('0478321')">预览</a>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="template-block">
+          <img :src="t0478322" >
+          <div class="option-wrap">
+            <div class="option-group">
+              <a @click="useTemplate('template2')">使用模版</a>
+              <a @click="showPreview('0478322')">预览</a>
+            </div>
+          </div>
+        </div> -->
+        <div class="template-block">
+          <img :src="t0478323" >
+          <div class="option-wrap">
+            <div class="option-group">
+              <a @click="useTemplate('template4')">使用模版</a>
+              <a @click="showPreview('0478323')">预览</a>
             </div>
           </div>
         </div>
@@ -62,7 +80,11 @@ export default {
   data () {
     return {
       enable: false,
-      data: {}
+      data: {},
+      t0478320: require('assets/image/site_tp1.png'),
+      t0478321: require('assets/image/site_tp2.png'),
+      t0478322: require('assets/image/site_tp1.png'),
+      t0478323: require('assets/image/site_tp4.png')
     }
   },
   mounted () {
@@ -169,11 +191,14 @@ export default {
       margin-right: 40px;
       font-size: 14px;
       position: relative;
+      overflow: hidden;
+      border-radius: 4px;
       img {
         width: 100%;
         height: 100%;
       }
       &:hover {
+        border-color: transparent;
         .option-wrap {
           display: block;
         }
@@ -186,6 +211,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
+        border: 2px solid #ffd021;
         .option-group {
           position: absolute;
           top: 50%;

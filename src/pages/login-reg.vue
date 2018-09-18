@@ -80,7 +80,8 @@ export default {
         if (res.code !== 200) {
         } else {
           sessionStorage.removeItem('isLogin')
-          sessionStorage.removeItem('userInfo')
+          sessionStorage.removeItem('accountInfo')
+          sessionStorage.removeItem('contactInfo')
           this.setIsLogin(0)
           this.$router.replace('/login')
         }

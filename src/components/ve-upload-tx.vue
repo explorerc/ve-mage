@@ -96,7 +96,6 @@
         this.$emit('success', fildObj)
       },
       uploadError (data) {
-        debugger
         this.fileSrc = ''
         this.$emit('error', data)
       }
