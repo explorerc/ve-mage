@@ -64,7 +64,7 @@
   }
   export default {
     name: 'watch',
-    components: { PlayVideo },
+    components: {PlayVideo},
     data () {
       return {
         activityId: '',

@@ -1,12 +1,12 @@
 export default function () {
   return {
-    tid: '0478320',
+    tid: '0478322',
     section1Data: {
       panel: {
         bgType: 'color',
         videoType: 'upload',
         img: '',
-        color: 'rgba(255, 255, 255, 1)',
+        color: 'rgba(4,4,4,1)',
         enable: true
       },
       logo: {
@@ -17,21 +17,25 @@ export default function () {
       nav: {
         enable: true,
         data: {
-          fontColor: 'rgba(34, 34, 34, 1)',
+          fontColor: 'rgba(255, 255, 255, 1)',
           list: [{
             text: '首页',
             type: '_blank'
           },
           {
-            text: '活动协议',
+            text: '大会简介',
             type: '_blank'
+          },
+          {
+            text: '参会嘉宾',
+            type: '_blank'
+          },
+          {
+            text: '合作伙伴',
+            type: '_self'
           },
           {
             text: '联系我们',
-            type: '_blank'
-          },
-          {
-            text: '立即报名',
             type: '_self'
           }
           ]
@@ -39,28 +43,47 @@ export default function () {
       }
     },
     section2Data: {
-      panel: {
-        bgType: 'img',
-        videoType: 'upload',
-        img: 'mp-dev/5a/09/5a09f6f7b86feb4c7b8f24843f967a36.jpg',
-        color: 'rgba(0, 0, 0, 1)',
-        enable: true
-      },
-      font: {
+      block2: {
         enable: true,
-        content: `<h1 style="text-align: center; line-height: 1.8;">
-        <font color="#ffffff" style="font-size: 42px;">2018第六届设计金鹰奖大展</font>
-        </h1><div style="text-align: center; line-height: 1.8;">
-        <font color="#ffffff"><span style="font-size: 18px;">2018年9月8日-9月11日，北京798艺术区</span><br></font>
-        </div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff">
-        <span style="font-size: 18px;">第六届设计金鹰奖大展是由微吼直播主办，邀请业内知人士参与评审的年度盛会</span><br></font></div>`
-      },
-      btn: {
-        bgColor: 'rgba(255,208,33,1)',
-        fontColor: 'rgba(34,34,34,1)',
-        text: '活动报名',
-        link: '',
-        enable: true
+        showBtn: true,
+        loop: 4000,
+        list: [{
+          type: 'top',
+          content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
+          bgColor: 'rgba(30,101,231,1)',
+          img: 'mp-dev/e0/27/e0275781f06d37be8702af0ec5251d77.jpg',
+          btn: {
+            enable: true,
+            text: '活动报名',
+            fontColor: 'rgba(255,255,255,1)',
+            bgColor: 'rgba(30,101,231,1)'
+          }
+        },
+        {
+          type: 'top',
+          content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
+          bgColor: 'rgba(30,101,231,1)',
+          img: 'mp-dev/24/4f/244f152e80275cadca49d81ab8a0bfbf.jpg',
+          btn: {
+            enable: true,
+            text: '活动报名',
+            fontColor: 'rgba(255,255,255,1)',
+            bgColor: 'rgba(30,101,231,1)'
+          }
+        },
+        {
+          type: 'top',
+          content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
+          bgColor: 'rgba(30,101,231,1)',
+          img: 'mp-dev/2d/fa/2dfa13f2ed7804703184615aad1675f0.jpg',
+          btn: {
+            enable: true,
+            text: '活动报名',
+            fontColor: 'rgba(255,255,255,1)',
+            bgColor: 'rgba(30,101,231,1)'
+          }
+        }
+        ]
       }
     },
     section3Data: {
@@ -70,26 +93,15 @@ export default function () {
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
-      font: {
-        enable: true,
-        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">查看即将举行的设计会议</span></div>`
-      },
       block1: {
         enable: true,
         showBtn: false,
         list: [{
-          type: 'bottom',
-          content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px; background-color: rgb(255, 255, 255);">2018轰动设计奖活动</span></font><br></div>`,
-          img: 'mp-dev/ae/c4/aec40149927f09c88c6c2f04a63afe48.jpg',
+          type: 'left',
+          content: `<span style="font-size: 32px;">大会简介</span><div><span style="font-size: 32px;"><br></span><div><br></div><div><span style="font-size: 16px;">世界互联网内容营销会议及博览会是一个可以让您在内容营销行业中学习和与最优秀和最聪明人士建立联系的活动。您将获得所需的所有材料，以便将内容营销策略反馈给您的团队以及实施内容营销计划，从而拓展您的业务并激励您的受众。</span><br></div><div><br></div><div><span style="font-size: 40px;"><font color="#009db5">___</font></span></div><div style="line-height: 1;"><br></div><div><span style="font-size: 18px;">2018年9月8日-12日 上午9:00</span><br></div><div><span style="font-size: 18px;">中国北京国家会议中心</span><br></div></div>`,
+          img: 'mp-dev/b6/55/b655f298223cd5815874cef86141a353.png',
           btn: {}
-        },
-        {
-          type: 'bottom',
-          content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px; background-color: rgb(255, 255, 255);">2018知舍设计奖活动</span></font><br></div>`,
-          img: 'mp-dev/a3/49/a349361cba21c6aae90ae6f9d36d67ad.jpg',
-          btn: {}
-        }
-        ]
+        }]
       }
     },
     section4Data: {
@@ -97,34 +109,17 @@ export default function () {
         enable: true,
         bgType: 'color',
         videoType: 'upload',
-        color: 'rgba(247,247,247,1);'
+        color: 'rgba(30,101,231,1)'
       },
       font: {
         enable: true,
-        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">您可以在许多地方看到我们</span></div>`
+        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 34px;">感动人心，创造不同，体验创造者</span></div>`
       },
-      block1: {
-        enable: true,
-        showBtn: false,
-        list: [{
-          type: 'top',
-          content: `<span style="font-size: 22px;">站酷客户端 - 站酷(ZCOOL)- 设计 师互动平台</span><div><br></div><div><span style="font-size: 16px;">站酷网，是综合性"设计师社区"，2006年8月创立于北京。站酷网聚集了中国部分设计师、艺术院校师生、潮流艺术家等年轻创意设计人群。现有注册设计师/艺术家200万，日上传原创作...</span><br></div><div><span style="font-size: 16px;"><br></span></div><div><br></div><div><span style="font-size: 16px;"><font color="#003399"><a href="http://www.baidu.com">了解详情 &gt;</a></font></span></div>`,
-          img: '',
-          btn: {}
-        },
-        {
-          type: 'top',
-          content: `<span style="font-size: 22px;">壹度创意规划设计网:休闲农业与乡 村旅游策划者与引领者</span><div><br></div><div><span style="font-size: 16px;">容以专业的精神致力于园区景观设计及品牌营销,以专注的态度研究田园综合体、特色小镇...的城市空间,需要学科之间的交叉融合,也需要更多的人加入到公众参与的设计活动中...</span><br></div><div><span style="font-size: 16px;"><br></span></div><div><br></div><div><span style="font-size: 16px;"><font color="#003399"><a href="http://www.baidu.com">了解详情 &gt;</a></font></span></div>`,
-          img: '',
-          btn: {}
-        },
-        {
-          type: 'top',
-          content: `<span style="font-size: 22px;">设计癖 | 关注设计癖 发现好设计</span><div><span style="font-size: 22px;"><br></span><div><br></div><div><span style="font-size: 16px;">图品汇为您优选500万张原创设计癖PSD模板,免抠素材元素,背景素材,图品汇已为50万设计师提高了10倍效率,10万设计师迅速定稿,业绩迅速上升!</span><br></div><div><span style="font-size: 16px;"><br></span></div><div><br></div><div><span style="font-size: 16px;"><font color="#003399"><a href="http://www.baidu.com">了解详情 &gt;</a></font></span></div></div>`,
-          img: '',
-          btn: {}
-        }
-        ]
+      video: {
+        videoType: 'upload',
+        recordId: 'a534a675',
+        url: "<iframe src='http://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
+        enable: true
       }
     },
     section5Data: {

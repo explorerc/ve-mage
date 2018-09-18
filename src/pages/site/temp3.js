@@ -1,6 +1,6 @@
 export default function () {
   return {
-    tid: '0478320',
+    tid: '0478322',
     section1Data: {
       panel: {
         bgType: 'color',

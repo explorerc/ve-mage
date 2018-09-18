@@ -12,7 +12,7 @@
     </div>
     <component v-if="platform==='PC'" class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
     <div v-if="platform==='H5'" class="template-content">
-      <iframe src="http://localhost:8866/site/131" frameborder="0" class="h5-preview"></iframe>
+      <iframe src="http://localhost:8866/site/47" frameborder="0" class="h5-preview"></iframe>
     </div>
   </div>
 </template>
@@ -23,11 +23,15 @@ import activityService from 'src/api/activity-manger'
 import liveWatchManage from 'src/api/set-live-watch-manage'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
+import temp3 from './template3.vue'
+import temp4 from './template4.vue'
 
 export default {
   components: {
     't0478320': temp1,
-    't0478321': temp2
+    't0478321': temp2,
+    't0478322': temp3,
+    't0478323': temp4
   },
   data () {
     return {
@@ -49,7 +53,7 @@ export default {
   },
   mounted () {
     if (this.$route.path.indexOf('edit') === -1) {
-      this.isPreview = true
+      // this.isPreview = true
     }
     this.init()
   },
@@ -59,7 +63,7 @@ export default {
         this.com = `t${this.ptid}`
       } else {
         activityService.webinarInfo(this.tid).then(res => {
-          ({ title: this.title, published: this.published } = res.data)
+          ({title: this.title, published: this.published} = res.data)
           this.share.title = res.data.title
           this.share.des = res.data.description
           this.share.imgUrl = res.data.imgUrl
