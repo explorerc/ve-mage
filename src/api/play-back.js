@@ -79,6 +79,18 @@ const PlayBack = {
     })
   },
   /**
+   * 重新生成回放
+   */
+  resetMakePlayBack (replayId) {
+    return utils.ajax({
+      method: 'post',
+      url: '/manage/replay-manage/recreate-replay',
+      params: {
+        replayId: replayId
+      }
+    })
+  },
+  /**
    *  下载回放视频
    */
   downloadVideo (id) {

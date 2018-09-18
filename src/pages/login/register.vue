@@ -23,8 +23,8 @@
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userCompany" placeholder="输入公司名称" :maxLength="40" @inputFocus="inputFocus()"></com-input>
             <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userPhone" @changeInput="checkPhone" placeholder="输入手机号" :maxLength="11" @inputFocus="inputFocus()"></com-input>
             <div id="captcha"></div>
-            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
-              <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+            <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态码" :maxLength="6" @inputFocus="inputFocus()">
+              <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
             </com-input>
             <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:opacity}">
 					  	<p class="v-error">{{error}}</p>
@@ -71,7 +71,7 @@
         opacity: 0,
         error: '',
         show: false,
-        closeTime: 60
+        closeTime: 0
       }
     },
     components: {
@@ -109,6 +109,9 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     mounted () {
     },
     watch: {
@@ -116,16 +119,28 @@
         console.log(1)
       },
       phoneStatus: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
       }
     },
     methods: {
-      isGetCodePermission () {
+      isGetCodePermission (val) {
         if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }
         } else {
           this.isProhibit = true
         }
@@ -150,7 +165,11 @@
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
-            this.error = res.msg
+            if (res.code === 10050) {
+              this.error = '验证码输入过于频繁'
+            } else {
+              this.error = res.msg
+            }
             this.opacity = 1
             clearInterval(this.timerr)
             this.isSend = false
@@ -191,7 +210,6 @@
           'code': this.code
         }
         loginManage.register(data).then((res) => {
-          this.closeTime = 60
           if (res.code !== 200) {
             clearInterval(this.timerr)
             this.isSend = false
@@ -203,6 +221,7 @@
             this.error = res.msg
             this.opacity = 1
           } else {
+            this.closeTime = 60
             this.show = true
           }
         })
@@ -211,7 +230,9 @@
         if (e.action === 'cancel') {
           console.log('取消或者关闭按钮')
           this.show = false
+          this.closeTime = 0
         } else if (e.action === 'confirm') {
+          this.closeTime = 0
           this.show = false
         }
       },

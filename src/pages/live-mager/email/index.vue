@@ -266,28 +266,28 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
-  .email-table-box {
-    font-size: 14px;
-  }
+.email-table-box {
+  font-size: 14px;
+}
 
-  .send-box {
-    display: inline-block;
-    color: #888;
-    font-size: 14px;
-    line-height: 44px;
-    margin-right: 20px;
-  }
+.send-box {
+  display: inline-block;
+  color: #888;
+  font-size: 14px;
+  line-height: 44px;
+  margin-right: 20px;
+}
 
-  .cg-status {
-    color: #1bcab7;
-  }
+.cg-status {
+  color: #1bcab7;
+}
 
-  .fs-status {
-    color: #4B5AFE;
-  }
+.fs-status {
+  color: #4b5afe;
+}
 
-  .dd-status {
-    color: #FF8b0e;
-  }
+.dd-status {
+  color: #ff8b0e;
+}
 </style>
 
