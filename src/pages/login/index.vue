@@ -216,7 +216,12 @@
             this.mobileOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            account.getAccount({}).then((res) => {
+              if (res.code !== 200) {
+              } else {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              }
+            })
             this.setIsLogin(1)
             this.isSend = true
             this.isProhibit = true

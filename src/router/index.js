@@ -14,6 +14,21 @@ const router = new Router({
 
 router.beforeResolve((to, from, next) => {
   if (to.meta.noLogin) { // 不需要登录
+    let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
+    if (to.name === 'login') {
+      if (isLogin) {
+        next('/setAccount')
+      } else {
+        account.getAccount({}).then((res) => {
+          if (res.code !== 200) {
+            next('/login')
+            return false
+          } else {
+            next('/setAccount')
+          }
+        })
+      }
+    }
     next()
     return false
   } else {
