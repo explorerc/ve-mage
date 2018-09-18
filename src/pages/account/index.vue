@@ -95,7 +95,7 @@
   import account from 'src/api/account-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import VeUploadTx from 'src/components/ve-upload-tx'
-  import {mapMutations, mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import EventBus from 'src/utils/eventBus'
   export default {
@@ -278,7 +278,7 @@
           this.displayValue = accountInfo.industryFirst ? accountInfo.industryFirst + '/' + accountInfo.industrySecond : '无'
           this.industryFirst = accountInfo.industryFirst ? accountInfo.industryFirst : ''
           this.industrySecond = accountInfo.industrySecond ? accountInfo.industrySecond : ''
-          this.selectChildId = accountInfo.industryId ? parseInt(accountInfo.industryId) : 0
+          this.selectChildId = accountInfo.selectChildId ? parseInt(accountInfo.selectChildId) : 0
           this.companyWebsite = accountInfo.website ? accountInfo.website : '无'
           this.licenseCode = accountInfo.licenseCode ? accountInfo.licenseCode : '无'
           this.licensePic = accountInfo.licensePic ? accountInfo.licensePic : '无'
@@ -297,7 +297,7 @@
               this.displayValue = resData.industryFirst ? resData.industryFirst + '/' + resData.industrySecond : '无'
               this.industryFirst = resData.industryFirst ? resData.industryFirst : ''
               this.industrySecond = resData.industrySecond ? resData.industrySecond : ''
-              this.selectChildId = resData.industryId ? parseInt(resData.industryId) : 0
+              this.selectChildId = resData.selectChildId ? parseInt(resData.selectChildId) : 0
               this.companyWebsite = resData.website ? resData.website : '无'
               this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
               this.licensePic = resData.licensePic ? resData.licensePic : '无'
@@ -349,6 +349,7 @@
               accountInfo.selectParentId = initVal.selectParentId
               accountInfo.industrySecond = initVal.selectChildValue
               accountInfo.industryFirst = initVal.selectParentValue
+              this.selectChildId = parseInt(initVal.selectChildId)
               sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
               // this.getAccount()
             }
@@ -454,7 +455,7 @@
       cancelSelectInfo (initVal, type) {
         this.changeState[type] = false
         switch (type) {
-          case 'industry': this.displayValue = initVal.initSelectParentValue + '/' + initVal.initSelectChildValue
+          case 'industry': this.selectChildId = initVal.initSelectChildId
         }
       },
       cancel: function (val, type) {
@@ -496,6 +497,7 @@
           } else {
             this.industry = res.data
             this.changeState[type] = true
+            console.log(this.selectChildId)
             for (let i = 0; i < this.industry.length; i++) {
               for (let j = 0; j < this.industry[i].items.length; j++) {
                 if (this.industry[i].items[j].industryId === this.selectChildId) {

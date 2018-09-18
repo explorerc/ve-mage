@@ -60,7 +60,7 @@
   import MyInput from './login-input'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import {mapMutations, mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import account from 'src/api/account-manage'
   export default {
@@ -216,7 +216,12 @@
             this.mobileOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            account.getAccount({}).then((res) => {
+              if (res.code !== 200) {
+              } else {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              }
+            })
             this.setIsLogin(1)
             this.isSend = true
             this.isProhibit = true
