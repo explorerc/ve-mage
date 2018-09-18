@@ -10,7 +10,7 @@ export default function () {
         enable: true
       },
       logo: {
-        url: 'mp-dev/ae/57/ae578b4c70a4232d5326c5365e9f2685.png',
+        url: require('assets/image/tp_logo.png'),
         link: '',
         enable: true
       },
@@ -42,7 +42,7 @@ export default function () {
       panel: {
         bgType: 'img',
         videoType: 'upload',
-        img: 'mp-dev/5a/09/5a09f6f7b86feb4c7b8f24843f967a36.jpg',
+        img: require('assets/image/tp_section2.jpg'),
         color: 'rgba(0, 0, 0, 1)',
         enable: true
       },
@@ -80,13 +80,13 @@ export default function () {
         list: [{
           type: 'bottom',
           content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px; background-color: rgb(255, 255, 255);">2018轰动设计奖活动</span></font><br></div>`,
-          img: 'mp-dev/ae/c4/aec40149927f09c88c6c2f04a63afe48.jpg',
+          img: require('assets/image/tp_section3_1.jpg'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px; background-color: rgb(255, 255, 255);">2018知舍设计奖活动</span></font><br></div>`,
-          img: 'mp-dev/a3/49/a349361cba21c6aae90ae6f9d36d67ad.jpg',
+          img: require('assets/image/tp_section3_2.jpg'),
           btn: {}
         }
         ]
@@ -144,19 +144,19 @@ export default function () {
         list: [{
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
-          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png',
+          img: require('assets/image/tp_section5_1.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
-          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png',
+          img: require('assets/image/tp_section5_2.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          img: require('assets/image/tp_section5_3.png'),
           btn: {}
         }
         ]

@@ -5,10 +5,10 @@
         <el-carousel-item :class="item.type"  v-for="(item,index) in value.list" :key="'block2_item_'+index">
           <a target="_black" :href="item.link | voidLink" >
             <div v-if="item.bgColor" class="left-area" :style="{backgroundColor:item.bgColor}"></div>
-            <img v-if="item.img" class="img" :src="host+item.img">
+            <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="content"  >
               <div v-html="item.content"></div>
-              <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
+              <com-btn v-if="value.showBtn" :edit="value.enable" v-model="item.btn"></com-btn>
             </div>
           </a>
         </el-carousel-item>

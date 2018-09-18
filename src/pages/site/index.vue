@@ -49,7 +49,7 @@
             </div>
           </div>
         </div>
-        <div class="template-block">
+        <!-- <div class="template-block">
           <img :src="t0478322" >
           <div class="option-wrap">
             <div class="option-group">
@@ -57,12 +57,12 @@
               <a @click="showPreview('0478322')">预览</a>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="template-block">
           <img :src="t0478323" >
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template2')">使用模版</a>
+              <a @click="useTemplate('template4')">使用模版</a>
               <a @click="showPreview('0478323')">预览</a>
             </div>
           </div>
@@ -84,7 +84,7 @@ export default {
       t0478320: require('assets/image/site_tp1.png'),
       t0478321: require('assets/image/site_tp2.png'),
       t0478322: require('assets/image/site_tp1.png'),
-      t0478323: require('assets/image/site_tp2.png')
+      t0478323: require('assets/image/site_tp4.png')
     }
   },
   mounted () {
@@ -198,6 +198,7 @@ export default {
         height: 100%;
       }
       &:hover {
+        border-color: transparent;
         .option-wrap {
           display: block;
         }
@@ -210,6 +211,7 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
+        border: 2px solid #ffd021;
         .option-group {
           position: absolute;
           top: 50%;

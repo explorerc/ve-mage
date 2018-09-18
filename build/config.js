@@ -4,7 +4,7 @@ const config = {
     BUILD_ENV: 'local',
     API_PATH: '/api',
     SUB_DIR: '',
-    PUBLIC_PATH: '/',
+    PUBLIC_PATH: '//localhost:2333/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
     proxyTable: {
       '/api': {

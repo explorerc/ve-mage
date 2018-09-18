@@ -11,7 +11,7 @@
       <a @click="doSave" class="save" v-if="!isPreview&&!ptid">保存</a>
     </div>
     <component v-if="platform==='PC'" class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
-    <div v-if="platform==='H5'" class="template-content">
+    <div v-if="platform==='H5'" class="template-content h5-wrap">
       <iframe src="http://localhost:8866/site/47" frameborder="0" class="h5-preview"></iframe>
     </div>
   </div>
@@ -53,7 +53,7 @@ export default {
   },
   mounted () {
     if (this.$route.path.indexOf('edit') === -1) {
-      // this.isPreview = true
+      this.isPreview = true
     }
     this.init()
   },
@@ -168,12 +168,23 @@ export default {
   }
   .template-content {
     margin-top: 54px;
+    &.h5-wrap {
+      width: 416px;
+      height: 817px;
+      background-image: url('~assets/image/phone-msg.png');
+      background-size: 100% 100%;
+      margin: auto;
+      margin-top: 64px;
+      padding-top: 76px;
+      padding-left: 3px;
+    }
     .h5-preview {
       width: 375px;
       height: 667px;
       display: block;
       margin: auto;
       border: 0;
+      border-radius: 4px;
     }
   }
 }

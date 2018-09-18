@@ -10,7 +10,7 @@ export default function () {
         enable: true
       },
       logo: {
-        url: 'mp-dev/ae/57/ae578b4c70a4232d5326c5365e9f2685.png',
+        url: require('assets/image/tp_logo.png'),
         link: '',
         enable: true
       },
@@ -50,7 +50,7 @@ export default function () {
       panel1: {
         bgType: 'img',
         videoType: 'upload',
-        img: 'mp-dev/5a/09/5a09f6f7b86feb4c7b8f24843f967a36.jpg',
+        img: require('assets/image/tp_bg_2.jpg'),
         color: 'rgba(0, 0, 0, 1)',
         enable: true
       },
@@ -122,30 +122,30 @@ export default function () {
         list: [{
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">23980</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">参会人数</span></font></div>`,
-          img: 'mp-dev/37/f0/37f040e3680a251c591f27aa50a0c128.png',
+          img: require('assets/image/tp_icon1.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">800+</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">参会嘉宾</span></font></div>`,
-          img: 'mp-dev/4a/1a/4a1a24f9a54223c6ca24f0274438dfe4.png',
+          img: require('assets/image/tp_icon2.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">10+</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">合作媒体</span></font></div>`,
-          img: 'mp-dev/08/c6/08c621efe516c70234316340c745f726.png',
+          img: require('assets/image/tp_icon3.png'),
           btn: {}
         }, {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">490</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">主题演讲</span></font></div>`,
-          img: 'mp-dev/bb/7b/bb7b8af386ac2cb6b9de200309d48f63.png',
+          img: require('assets/image/tp_icon4.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">8</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">合作企业</span></font></div>`,
-          img: 'mp-dev/e4/b4/e4b4d7bed817cb066e463859afdbca31.png',
+          img: require('assets/image/tp_icon5.png'),
           btn: {}
         }
         ]
@@ -168,7 +168,7 @@ export default function () {
         list: [{
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
-          img: 'mp-dev/5d/6f/5d6f1b6c8d5d15b01e3706aee6a51c6e.png',
+          img: require('assets/image/tp_head1.png'),
           btn: {
             enable: true,
             text: '了解详情',
@@ -179,7 +179,7 @@ export default function () {
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
-          img: 'mp-dev/a5/d9/a5d9d730afcd0fb313a96698b4ccfbff.png',
+          img: require('assets/image/tp_head2.png'),
           btn: {
             enable: true,
             text: '了解详情',
@@ -190,7 +190,7 @@ export default function () {
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
-          img: 'mp-dev/6e/fd/6efde297788e07ed52ebbdcae37f3c2a.png',
+          img: require('assets/image/tp_head3.png'),
           btn: {
             enable: true,
             text: '了解详情',
@@ -201,7 +201,7 @@ export default function () {
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
-          img: 'mp-dev/74/20/7420f7d9f309487302e424ec5a80a3ad.png',
+          img: require('assets/image/tp_head4.png'),
           btn: {
             enable: true,
             text: '了解详情',
@@ -229,7 +229,7 @@ export default function () {
         list: [{
           type: 'right',
           content: `<div><span style="font-size: 24px;"><br></span></div><span style="font-size: 24px;"><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div>壹度创意规划设计网:休闲农业与乡</span><div><span style="font-size: 24px;">村旅游策划者与引领者</span></div><div><br></div><div><br></div><div><div><br></div><div><font color="#555555" style="font-size: 16px;">2018年5月10-12日，第九届中国数据库技术大会（DTCC2018）将如约而至。本届大会以“数领先机•智赢未来”为主题，设定2大主会场及</font></div><div><font color="#555555" style="font-size: 16px;">22个技术专场，邀请来自国内外互联网、金融、教育等行业百余位技术专家</font><br></div></div>`,
-          img: 'mp-dev/c5/79/c579df9ff3deab07bf46d25d3a54065c.png',
+          img: require('assets/image/tp_img1.png'),
           btn: {
             enable: true,
             text: '',
@@ -240,7 +240,7 @@ export default function () {
         {
           type: 'left',
           content: `<div><span style="font-size: 24px;"><br></span></div><span style="font-size: 24px;"><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div><div style="text-align: right;">壹度创意规划设计网:休闲农业与乡</div><div style="text-align: right;">村旅游策划者与引领者</div></span><div><br></div><div><br></div><div><br></div><div><div><br></div><div><font color="#555555" style="font-size: 16px;">2018年5月10-12日，第九届中国数据库技术大会（DTCC2018）将如约而至。本届大会以“数领先机•智赢未来”为主题，设定2大主会场及</font></div><div><font color="#555555" style="font-size: 16px;">22个技术专场，邀请来自国内外互联网、金融、教育等行业百余位技术专家</font><br></div></div>`,
-          img: 'mp-dev/16/53/1653fa343f16e0f99ca19d6dca1927b0.png',
+          img: require('assets/image/tp_img2.png'),
           btn: {
             enable: true,
             text: '',
@@ -251,7 +251,7 @@ export default function () {
         {
           type: 'right',
           content: `<div><span style="font-size: 24px;"><br></span></div><span style="font-size: 24px;"><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div>壹度创意规划设计网:休闲农业与乡</span><div><span style="font-size: 24px;">村旅游策划者与引领者</span></div><div><br></div><div><br></div><div><br></div><div><div><br></div><div><font color="#555555" style="font-size: 16px;">2018年510-12日，第九届中国数据库技术大会（DTCC2018）将如约而至。本届大会以“数领先机•智赢未来”为主题，设定2大主会场及</font></div><div><font color="#555555" style="font-size: 16px;">22个技术专场，邀请来自国内外互联网、金融、教育等行业百余位技术专家</font><br></div></div>`,
-          img: 'mp-dev/15/a5/15a5855b32f7b467b50117e6f8502e02.png',
+          img: require('assets/image/tp_img3.png'),
           btn: {
             enable: true,
             text: '',
@@ -279,19 +279,19 @@ export default function () {
         list: [{
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
-          img: 'mp-dev/ab/d0/abd0695b42b4ce76d53f9959f8075b7f.png',
+          img: require('assets/image/tp_section5_1.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
-          img: 'mp-dev/68/52/685264b32a8959d80981476278ba61bf.png',
+          img: require('assets/image/tp_section5_2.png'),
           btn: {}
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
-          img: 'mp-dev/d2/56/d2566c76f136d573c2b85e1472c8cd26.png',
+          img: require('assets/image/tp_section5_3.png'),
           btn: {}
         }
         ]
@@ -314,61 +314,61 @@ export default function () {
         list: [{
           type: 'top',
           content: ``,
-          img: 'mp-dev/0e/fb/0efb22f13b5ca9cb61830c665384649f.png',
+          img: require('assets/image/tp_logo1.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/12/63/12635437ef35eee8199ce7aae644158f.png',
+          img: require('assets/image/tp_logo2.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/75/28/75281a91887ce76c3d14eb539c18eda5.png',
+          img: require('assets/image/tp_logo3.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/20/70/2070b9903c2546d255ce75b21e300306.png',
+          img: require('assets/image/tp_logo4.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/3b/4b/3b4b5b4b5524649e5aecf11ea8620849.png',
+          img: require('assets/image/tp_logo5.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/32/8b/328ba6e2a6cd950cfcbb45ec1fe1b5ef.png',
+          img: require('assets/image/tp_logo6.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/22/a3/22a3b0b620784b45084e5b0a2feaa30a.png',
+          img: require('assets/image/tp_logo7.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/2b/31/2b3119da69785f9b4f8793ee5c8e0ada.png',
+          img: require('assets/image/tp_logo8.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/3b/4b/3b4b5b4b5524649e5aecf11ea8620849.png',
+          img: require('assets/image/tp_logo9.png'),
           btn: {}
         },
         {
           type: 'top',
           content: ``,
-          img: 'mp-dev/87/b0/87b08793b3b5094c541e973e793b9b40.png',
+          img: require('assets/image/tp_logo10.png'),
           btn: {}
         }
         ]

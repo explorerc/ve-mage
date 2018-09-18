@@ -8,9 +8,11 @@
       <com-block2 :edit="editAble" :max="3" v-model="data.section2Data.block2">
       </com-block2>
     </div>
-    <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
+    <div class="section3" >
+      <com-panel :edit="editAble" v-model="data.section3Data.panel">
+      </com-panel>
       <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
-    </com-panel>
+    </div>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
       <div class="bg"></div>
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
@@ -21,7 +23,8 @@
       <com-block1 :edit="editAble" :max="3" v-model="data.section5Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
-      <com-share :edit="editAble" :share="shareData" v-model="data.section6Data.share"></com-share>
+      <com-font :edit="editAble" v-model="data.section6Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section6Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
@@ -158,7 +161,7 @@ export default {
   .section2 {
     width: 100%;
     .block2-content {
-      height: 600px;
+      height: 660px;
       .el-carousel {
         height: 100%;
         .el-carousel__container {
@@ -172,10 +175,15 @@ export default {
                 .btn-container {
                   width: 200px;
                   height: 40px;
+                  padding: 0;
                   font-size: 16px;
                   border: 1px solid rgba(255, 255, 255, 1);
                   background-color: transparent;
                   margin-top: 40px;
+                  .com-button {
+                    padding: 0;
+                    line-height: 36px;
+                  }
                 }
               }
             }
@@ -186,7 +194,6 @@ export default {
             position: absolute;
           }
           img {
-            margin-left: 350px;
           }
         }
       }
@@ -198,7 +205,18 @@ export default {
     text-align: center;
     padding-top: 100px;
     padding-bottom: 100px;
+    position: relative;
+    .panel-container {
+      position: absolute;
+      top: 160px;
+      right: 0;
+      display: none;
+      width: 92px;
+      height: 240px;
+      z-index: 5;
+    }
     .block1-group {
+      position: relative;
       .block1-item {
         max-width: 1280px;
         &.left {
@@ -231,10 +249,10 @@ export default {
       padding-bottom: 0;
     }
     .font-container {
-      margin-top: 50px;
+      margin-top: 60px;
       text-align: left;
       width: 650px;
-      min-height: 100px;
+      min-height: 90px;
     }
     .video-container {
       margin-top: 10px;
@@ -260,43 +278,78 @@ export default {
       min-height: 85px;
     }
     .block1-group {
-      &.width3 {
-        .block1-item {
-          width: 346px;
-          img {
-            height: 200px;
-          }
-        }
-      }
       .block1-item {
-        width: 540px;
-        margin-right: 40px;
+        width: 370px;
+        height: 270px;
+        margin-right: 0;
         img {
           width: 100%;
-          height: 310px;
+          height: 100%;
+        }
+        .block1-bg {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.3);
+          padding: 20px;
+          &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 20px;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            border: 1px solid white;
+          }
+        }
+        .btn-container {
+          width: 100px;
+          height: 34px;
+          font-size: 14px;
+          position: absolute;
+          bottom: 65px;
+          left: 83px;
         }
       }
     }
   }
   .section6 {
     width: 100%;
-    height: 270px;
+    height: auto;
+    text-align: center;
     .panel {
-      padding-top: 50px;
-      text-align: center;
+      padding-bottom: 40px;
     }
-    .share-group {
-      li {
-        margin-right: 50px;
-        .share-item {
-          font-size: 18px;
+    .font-container {
+      margin-top: 100px;
+      text-align: left;
+      width: 650px;
+      min-height: 95px;
+    }
+    .block1-group {
+      width: 1124px;
+      .block1-item {
+        width: 100px;
+        height: 100px;
+        margin-right: 90px;
+        margin-bottom: 30px;
+        &:nth-of-type(6) {
+          margin-right: 0;
+        }
+        img {
+          width: 100px;
+          display: block;
+          margin: auto;
         }
       }
     }
   }
   .section7 {
     width: 100%;
-    height: 300px;
+    height: 330px;
     .panel {
       text-align: center;
     }
@@ -305,6 +358,10 @@ export default {
       text-align: left;
       width: 650px;
       min-height: 100px;
+    }
+    .font-editer {
+      height: 400px;
+      background-color: #dadada;
     }
     .btn {
       display: block;
@@ -316,8 +373,8 @@ export default {
       .com-button {
         min-width: 200px;
         height: 40px;
-        border-radius: 20px;
         font-size: 16px;
+        border: 1px solid white;
       }
     }
   }
