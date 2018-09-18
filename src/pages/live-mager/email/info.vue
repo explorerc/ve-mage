@@ -66,7 +66,7 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import {mapState, mapMutations} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const statusType = {
@@ -99,7 +99,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...newVal}
+          this.email = { ...newVal }
         },
         immediate: true
       }
@@ -153,7 +153,7 @@
 </style>
 <style lang="scss" scoped>
 .edit-step-box {
-  .live-mager .mager-box{
+  .live-mager .mager-box {
     margin-top: 0;
   }
   .step-btns {
@@ -163,36 +163,36 @@
       margin: 0 10px;
     }
   }
-  .tip-box{
+  .tip-box {
     margin-bottom: 20px;
   }
   .cg-status {
     color: #1bcab7;
-    i{
+    i {
       margin-right: 10px;
     }
   }
   .fs-status {
-    color: #4B5AFE;
-    i{
+    color: #4b5afe;
+    i {
       margin-right: 10px;
     }
   }
   .dd-status {
-    color: #FF8b0e;
-    i{
+    color: #ff8b0e;
+    i {
       margin-right: 10px;
     }
   }
-  .email-info-box{
+  .email-info-box {
     position: relative;
     width: 750px;
     margin: 20px auto;
-    border: solid 1px #E2E2E2;
+    border: solid 1px #e2e2e2;
     border-radius: 4px;
     padding: 20px;
     overflow: hidden;
-    &:before{
+    &:before {
       display: block;
       content: '';
       position: absolute;
@@ -201,9 +201,9 @@
       top: -37px;
       left: -37px;
       transform: rotate(45deg);
-      background-color: #FFD021;
+      background-color: #ffd021;
     }
-    &:after{
+    &:after {
       display: block;
       content: '预览';
       position: absolute;
@@ -212,7 +212,7 @@
       top: 8px;
       left: 3px;
       transform: rotate(-45deg);
-      background-color: #FFD021;
+      background-color: #ffd021;
     }
   }
 }

@@ -95,7 +95,7 @@
   import account from 'src/api/account-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import VeUploadTx from 'src/components/ve-upload-tx'
-  import {mapMutations, mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import EventBus from 'src/utils/eventBus'
   export default {
@@ -349,6 +349,7 @@
               accountInfo.selectParentId = initVal.selectParentId
               accountInfo.industrySecond = initVal.selectChildValue
               accountInfo.industryFirst = initVal.selectParentValue
+              this.selectChildId = parseInt(initVal.selectChildId)
               sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
               // this.getAccount()
             }
@@ -454,7 +455,7 @@
       cancelSelectInfo (initVal, type) {
         this.changeState[type] = false
         switch (type) {
-          case 'industry': this.displayValue = initVal.initSelectParentValue + '/' + initVal.initSelectChildValue
+          case 'industry': this.selectChildId = initVal.initSelectChildId
         }
       },
       cancel: function (val, type) {
@@ -494,12 +495,12 @@
         account.getIndustryList(data).then((res) => {
           if (res.code !== 200) {
           } else {
-            this.industry = res.data
-            this.changeState[type] = true
             for (let i = 0; i < this.industry.length; i++) {
               for (let j = 0; j < this.industry[i].items.length; j++) {
                 if (this.industry[i].items[j].industryId === this.selectChildId) {
                   this.selectParentId = this.industry[i].items[j].industryPid
+                  this.industry = res.data
+                  this.changeState[type] = true
                 }
               }
             }

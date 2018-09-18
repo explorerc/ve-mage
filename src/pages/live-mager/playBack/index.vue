@@ -245,7 +245,7 @@
   }
   export default {
     name: 'play-back',
-    components: {VeUploadImage, veMsgTips, VeUploadVideo, VePagination},
+    components: { VeUploadImage, veMsgTips, VeUploadVideo, VePagination },
     data () {
       return {
         navIdx: 0,
@@ -283,9 +283,9 @@
         playBackList: [],
         isLoadingList: false,
         options: [
-          {value: '0', label: '默认回放'},
-          {value: '1', label: '上传视频'},
-          {value: '2', label: '外部链接'}
+          { value: '0', label: '默认回放' },
+          { value: '1', label: '上传视频' },
+          { value: '2', label: '外部链接' }
         ],
         recordId: '',
         activityId: '',
@@ -630,201 +630,200 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-  .list-box .el-table .cell {
-    overflow: visible;
-  }
+.list-box .el-table .cell {
+  overflow: visible;
+}
 </style>
 <style lang="scss" scoped>
-  @import 'assets/css/variable.scss';
+@import 'assets/css/variable.scss';
 
-  .status-default {
-    color: $color-blue;
+.status-default {
+  color: $color-blue;
+}
+
+.status-success {
+  color: $color-success;
+}
+
+.status-error {
+  color: $color-error;
+}
+
+.black-box {
+  height: 60px;
+  .el-date-editor {
+    width: 100%;
   }
-
-  .status-success {
-    color: $color-success;
-  }
-
-  .status-error {
-    color: $color-error;
-  }
-
-  .black-box {
-    height: 60px;
-    .el-date-editor {
-      width: 100%;
-    }
-    .play-content {
-      .out-line {
-        margin: 10px 0;
-        span {
-          display: inline-block;
-          margin-right: 20px;
-        }
-        .out-line-input {
-          width: 400px;
-        }
-      }
-      .play-box {
-        display: inline-block;
-        width: 474px;
-        min-height: 266.6px;
-        line-height: 266px;
-        vertical-align: top;
-        background-color: #666666;
-        color: #fff;
-        .iframe-box {
-          height: 100%;
-          width: 100%;
-        }
-      }
-    }
-  }
-
-  .list-box {
-    margin: 10px 0;
-    background-color: #fff;
-    border-radius: 4px;
-    .list-header {
-      border-bottom: solid 1px $color-bd;
-    }
-  }
-
-  .step-btns {
-    margin-left: 150px;
-  }
-
-  .play-back-img {
-    width: 104px;
-    height: 58px;
-  }
-
-  .table-nav {
-    display: inline-block;
-    margin: 0 20px;
-    font-size: 0;
-    span {
-      position: relative;
-      display: inline-block;
-      line-height: 34px;
-      text-align: center;
-      font-size: 14px;
-      padding: 10px 8px 8px 8px;
-      margin: 0 5px -1px 5px;
-      &:after {
-        display: block;
-        position: absolute;
-        content: '';
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: $color-blue;
-        border-radius: 1px;
-        transition: width .3s;
-      }
-      &.active {
-        &:after {
-          width: 100%;
-          box-shadow: 0 0 1px $color-blue;
-        }
-      }
-      &:hover {
-        cursor: pointer;
-        color: $color-blue;
-      }
-    }
-  }
-
-  .more {
-    display: inline-block;
-    position: relative;
-    padding: 10px 5px;
-    font-size: 12px;
-    color: #409eff;
-    cursor: pointer;
-    text-align: center;
-    &:hover .more-menu {
-      display: block;
-    }
-    .more-menu {
-      display: none;
-      position: absolute;
-      top: 36px;
-      left: -22px;
-      width: 80px;
-      z-index: 9999999;
-      color: #666;
-      border: solid 1px #e5e5e5;
-      background-color: #fff;
-      border-radius: 4px;
-      padding: 5px 0;
+  .play-content {
+    .out-line {
+      margin: 10px 0;
       span {
-        display: block;
-        padding: 5px 0;
-        &:hover {
-          color: #409eff;
-          background-color: #F0F1FE;
-        }
+        display: inline-block;
+        margin-right: 20px;
+      }
+      .out-line-input {
+        width: 400px;
       }
     }
-  }
-
-  .prop-input {
-    text-align: left;
-    margin: 20px;
-    font-size: 14px;
-    .com-input {
-      width: 258px;
-      margin: 5px 0;
-    }
-  }
-
-  .message-box-content {
-    text-align: left;
-    .from-title {
-      width: 102px !important;
-    }
-    .upload-tips {
-      width: 273px !important;
-    }
-  }
-
-  .video-modal-box {
-    .video-modal {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 10;
-    }
-    .video-content {
-      position: absolute;
-      width: 800px;
-      height: 450px;
-      line-height: 450px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .play-box {
+      display: inline-block;
+      width: 474px;
+      min-height: 266.6px;
+      line-height: 266px;
       vertical-align: top;
-      background-color: #333333;
+      background-color: #666666;
       color: #fff;
-      text-align: center;
-      z-index: 11;
       .iframe-box {
         height: 100%;
         width: 100%;
       }
     }
   }
+}
 
-  .play-back /deep/ {
-    .ve-message-box__wrapper .ve-message-box {
-      overflow: visible;
+.list-box {
+  margin: 10px 0;
+  background-color: #fff;
+  border-radius: 4px;
+  .list-header {
+    border-bottom: solid 1px $color-bd;
+  }
+}
+
+.step-btns {
+  margin-left: 150px;
+}
+
+.play-back-img {
+  width: 104px;
+  height: 58px;
+}
+
+.table-nav {
+  display: inline-block;
+  margin: 0 20px;
+  font-size: 0;
+  span {
+    position: relative;
+    display: inline-block;
+    line-height: 34px;
+    text-align: center;
+    font-size: 14px;
+    padding: 10px 8px 8px 8px;
+    margin: 0 5px -1px 5px;
+    &:after {
+      display: block;
+      position: absolute;
+      content: '';
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: $color-blue;
+      border-radius: 1px;
+      transition: width 0.3s;
+    }
+    &.active {
+      &:after {
+        width: 100%;
+        box-shadow: 0 0 1px $color-blue;
+      }
+    }
+    &:hover {
+      cursor: pointer;
+      color: $color-blue;
     }
   }
+}
 
+.more {
+  display: inline-block;
+  position: relative;
+  padding: 10px 5px;
+  font-size: 12px;
+  color: #409eff;
+  cursor: pointer;
+  text-align: center;
+  &:hover .more-menu {
+    display: block;
+  }
+  .more-menu {
+    display: none;
+    position: absolute;
+    top: 36px;
+    left: -22px;
+    width: 80px;
+    z-index: 9999999;
+    color: #666;
+    border: solid 1px #e5e5e5;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px 0;
+    span {
+      display: block;
+      padding: 5px 0;
+      &:hover {
+        color: #409eff;
+        background-color: #f0f1fe;
+      }
+    }
+  }
+}
+
+.prop-input {
+  text-align: left;
+  margin: 20px;
+  font-size: 14px;
+  .com-input {
+    width: 258px;
+    margin: 5px 0;
+  }
+}
+
+.message-box-content {
+  text-align: left;
+  .from-title {
+    width: 102px !important;
+  }
+  .upload-tips {
+    width: 273px !important;
+  }
+}
+
+.video-modal-box {
+  .video-modal {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+  }
+  .video-content {
+    position: absolute;
+    width: 800px;
+    height: 450px;
+    line-height: 450px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    vertical-align: top;
+    background-color: #333333;
+    color: #fff;
+    text-align: center;
+    z-index: 11;
+    .iframe-box {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.play-back /deep/ {
+  .ve-message-box__wrapper .ve-message-box {
+    overflow: visible;
+  }
+}
 </style>
