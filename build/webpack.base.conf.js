@@ -140,7 +140,8 @@ const webpackConfig = {
         BUILD_ENV: JSON.stringify(config[process.env.BUILD_ENV].BUILD_ENV),
         API_PATH: JSON.stringify(config[process.env.BUILD_ENV].API_PATH),
         SUB_DIR: JSON.stringify(config[process.env.BUILD_ENV].SUB_DIR),
-        PUBLIC_PATH: JSON.stringify(config[process.env.BUILD_ENV].PUBLIC_PATH)
+        PUBLIC_PATH: JSON.stringify(config[process.env.BUILD_ENV].PUBLIC_PATH),
+        MOBILE_HOST: JSON.stringify(config[process.env.BUILD_ENV].MOBILE_HOST)
       }
     }),
     new CopyWebpackPlugin([{
