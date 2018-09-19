@@ -12,7 +12,7 @@
     </div>
     <component v-if="platform==='PC'" class="template-content" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
     <div v-if="platform==='H5'" class="template-content h5-wrap">
-      <iframe src="http://localhost:8866/site/47" frameborder="0" class="h5-preview"></iframe>
+      <iframe :src="`${this.mobileHost}site/${this.tid}`" frameborder="0" class="h5-preview"></iframe>
     </div>
   </div>
 </template>
@@ -41,12 +41,13 @@ export default {
         des: '',
         title: '',
         imgUrl: '',
-        link: 'http://www.baidu.com'
+        link: location.href
       },
       data: {},
       ptid: this.$route.query.tid,
       tid: this.$route.params.id,
       title: '',
+      mobileHost: process.env.MOBILE_HOST,
       published: 'N',
       platform: 'PC'
     }

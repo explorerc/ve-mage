@@ -70,6 +70,6 @@ export const ajax = (options) => {
       autoClose: 10,
       confirmText: '知道了'
     })
-    return Promise.resolve(data)
+    return new Promise(() => {})
   })
 }
