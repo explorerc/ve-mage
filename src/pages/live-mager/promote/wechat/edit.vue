@@ -244,7 +244,7 @@
         this.$nextTick((res) => {
           if (this.isValided) {
             this.testModal = true
-            this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
+            this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/api/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
           }
         })
         // const data = {
