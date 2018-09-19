@@ -32,7 +32,7 @@
 
   export default {
     name: 've-upload-video',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         tipTxt: '',
@@ -41,7 +41,7 @@
         fileName: '',
         record_id: '',
         fileRealSize: 0,
-        isConvert: false,
+        isConvert: true,
         uploadId: 'upload_video_' + Math.random()
       }
     },
@@ -98,7 +98,7 @@
       deleteVideo () {
         this.percentVideo = 0
         this.errorTxt = ''
-        this.isConvert = false
+        this.isConvert = true
         this.$emit('handleClick', {
           type: 'delete',
           detail: '删除'
@@ -184,7 +184,7 @@
   }
   .error-msg {
     display: block;
-    color: #fc5659;
+    color: #fc5659 !important;
     line-height: 24px;
   }
   .upload-file-box {

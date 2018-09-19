@@ -42,7 +42,7 @@
         <div id="captcha"  :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode" placeholder="输入验证码" class="v-input phone-code" type="input" :max-length="6" @focus="codeFocus"></com-input>
         <p class="v-error" v-if="phoneCodeError">{{phoneCodeTip}}</p>
-        <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+        <a href="javascript:;" class="phone-code-btn" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
       </div>
       <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
         <img src="../../assets/image/success@2x.png" alt="成功" class="v-success-img">
@@ -95,7 +95,7 @@
   import account from 'src/api/account-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
   import VeUploadTx from 'src/components/ve-upload-tx'
-  import { mapMutations, mapState } from 'vuex'
+  import {mapMutations, mapState} from 'vuex'
   import * as types from 'src/store/mutation-types'
   import EventBus from 'src/utils/eventBus'
   export default {
@@ -241,6 +241,9 @@
     },
     created () {
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     watch: {
       phone: function () {
         this.checkPhone(this.phone)
@@ -252,7 +255,7 @@
         this.checkPhone(this.saveNewPhone)
       },
       phoneStatus: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
@@ -266,7 +269,7 @@
         let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
         if (accountInfo && accountInfo.userName) {
           this.account = accountInfo.userName ? accountInfo.userName : '无'
-          this.accountName = accountInfo.accountName ? accountInfo.accountName : '无'
+          this.accountName = accountInfo.name ? accountInfo.name : '无'
           this.avatar = accountInfo.avatar ? accountInfo.avatar : '无'
           this.accountPhone = accountInfo.mobile ? accountInfo.mobile : '无'
           this.accountPassword = accountInfo.hasPassword ? '已设置' : '未设置'
@@ -275,7 +278,7 @@
           this.displayValue = accountInfo.industryFirst ? accountInfo.industryFirst + '/' + accountInfo.industrySecond : '无'
           this.industryFirst = accountInfo.industryFirst ? accountInfo.industryFirst : ''
           this.industrySecond = accountInfo.industrySecond ? accountInfo.industrySecond : ''
-          this.selectChildId = accountInfo.industryId ? accountInfo.industryId : 0
+          this.selectChildId = accountInfo.selectChildId ? parseInt(accountInfo.selectChildId) : 0
           this.companyWebsite = accountInfo.website ? accountInfo.website : '无'
           this.licenseCode = accountInfo.licenseCode ? accountInfo.licenseCode : '无'
           this.licensePic = accountInfo.licensePic ? accountInfo.licensePic : '无'
@@ -285,7 +288,7 @@
             } else {
               let resData = res.data ? res.data : ''
               this.account = resData.userName ? resData.userName : '无'
-              this.accountName = resData.name ? resData.userName : '无'
+              this.accountName = resData.name ? resData.name : '无'
               this.avatar = resData.avatar ? resData.avatar : '无'
               this.accountPhone = resData.mobile ? resData.mobile : '无'
               this.accountPassword = resData.hasPassword ? '已设置' : '未设置'
@@ -294,7 +297,7 @@
               this.displayValue = resData.industryFirst ? resData.industryFirst + '/' + resData.industrySecond : '无'
               this.industryFirst = resData.industryFirst ? resData.industryFirst : ''
               this.industrySecond = resData.industrySecond ? resData.industrySecond : ''
-              this.selectChildId = resData.industryId ? resData.industryId : 0
+              this.selectChildId = resData.selectChildId ? parseInt(resData.selectChildId) : 0
               this.companyWebsite = resData.website ? resData.website : '无'
               this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
               this.licensePic = resData.licensePic ? resData.licensePic : '无'
@@ -315,7 +318,12 @@
         account.setCompanyInfo(companyData).then((res) => {
           if (res.code !== 200) {
           } else {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+            if (accountInfo) {
+              accountInfo.avatar = data.name
+              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+            }
+            // sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
             EventBus.$emit('avatarChange', data.name)
             // this.getAccount()
           }
@@ -328,7 +336,7 @@
         let data = {
         }
         if (type === 'industry') {
-          data.industryId = initVal.selectChildId
+          data.industryId = parseInt(initVal.selectChildId)
         }
         this.displayValue = initVal.selectParentValue + '/' + initVal.selectChildValue
         if (saveType === 'company') {
@@ -337,10 +345,11 @@
             } else {
               this.changeState[type] = false
               let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              accountInfo.selectChildId = initVal.selectChildId
+              accountInfo.selectChildId = parseInt(initVal.selectChildId)
               accountInfo.selectParentId = initVal.selectParentId
               accountInfo.industrySecond = initVal.selectChildValue
               accountInfo.industryFirst = initVal.selectParentValue
+              this.selectChildId = parseInt(initVal.selectChildId)
               sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
               // this.getAccount()
             }
@@ -419,12 +428,14 @@
             if (res.code !== 200) {
             } else {
               let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              if (type === 'name') {
-                accountInfo['accountName'] = val
-              } else {
-                accountInfo[valType] = val
-              }
-              sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              accountInfo[valType] = val
+              account.getAccount({}).then((res) => {
+                if (res.code !== 200) {
+                } else {
+                  sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+                }
+              })
+              // sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
               // this.getAccount()
             }
           })
@@ -444,7 +455,7 @@
       cancelSelectInfo (initVal, type) {
         this.changeState[type] = false
         switch (type) {
-          case 'industry': this.displayValue = initVal.initSelectParentValue + '/' + initVal.initSelectChildValue
+          case 'industry': this.selectChildId = initVal.initSelectChildId
         }
       },
       cancel: function (val, type) {
@@ -486,6 +497,7 @@
           } else {
             this.industry = res.data
             this.changeState[type] = true
+            console.log(this.selectChildId)
             for (let i = 0; i < this.industry.length; i++) {
               for (let j = 0; j < this.industry[i].items.length; j++) {
                 if (this.industry[i].items[j].industryId === this.selectChildId) {
@@ -646,7 +658,7 @@
                   let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
                   if (accountInfo) {
                     accountInfo.accountPhone = this.saveNewPhone
-                    sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+                    sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
                   }
                   this.newPhone = this.saveNewPhone
                   this.saveNewPhone = ''
@@ -712,9 +724,22 @@
           }
         }
       },
-      isGetCodePermission () {
-        if (this.isImg && this.phoneStatus && !this.isSend) {
+      isGetCodePermission (val) {
+        // if (this.isImg && this.phoneStatus && !this.isSend) {
+        if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }
         } else {
           this.isProhibit = true
         }
@@ -760,7 +785,7 @@
             this.cap.refresh()
           } else if (res.code === 10050) {
             this.phoneCodeError = true
-            this.phoneCodeTip = '动态码输入过于频繁'
+            this.phoneCodeTip = '验证码输入过于频繁'
           } else if (res.code !== 200) {
             this.phoneCodeError = true
             this.phoneCodeTip = res.msg
@@ -842,7 +867,7 @@
   @media all and (min-width: 1600px) {
     width: 1366px;
     .v-info .v-editor {
-      width: 452px;
+      width: 453px;
     }
   }
   /* 设备宽度小于 1600px */

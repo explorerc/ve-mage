@@ -30,7 +30,7 @@
 
   export default {
     name: 'index',
-    components: { VideoControl },
+    components: {VideoControl},
     data () {
       return {
         playComps: {},

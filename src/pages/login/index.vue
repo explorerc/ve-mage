@@ -40,8 +40,8 @@
         <div class="v-mobile" v-show="!isAccount">
           <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
           <div id="captcha"></div>
-          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="动态密码" :maxLength="6" @inputFocus="inputFocus()">
-            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取动态码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="验证码" :maxLength="6" @inputFocus="inputFocus()">
+            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
           </com-input>
           <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
 				  	<p class="v-error">{{mobileError}}</p>
@@ -60,8 +60,9 @@
   import MyInput from './login-input'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import { mapMutations, mapState } from 'vuex'
+  import {mapMutations, mapState} from 'vuex'
   import * as types from 'src/store/mutation-types'
+  import account from 'src/api/account-manage'
   export default {
     data () {
       return {
@@ -124,10 +125,13 @@
         }
       })
     },
+    destroyed () {
+      clearInterval(this.timerr)
+    },
     mounted () {},
     watch: {
       phoneStatus: function (val) {
-        this.isGetCodePermission()
+        this.isGetCodePermission(true)
       },
       isImg: function (val) {
         this.isGetCodePermission()
@@ -150,7 +154,6 @@
         this.type = type
       },
       accountSubmit () {
-        this.setIsLogin(1)
         this.checkAccountForm()
         if (this.accountError) {
           return false
@@ -181,7 +184,12 @@
             this.accountOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            account.getAccount({}).then((res) => {
+              if (res.code !== 200) {
+              } else {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              }
+            })
             this.setIsLogin(1)
             this.$router.replace('/setAccount')
           }
@@ -205,11 +213,15 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
-            this.mobileError = res.msg
             this.mobileOpacity = 1
           } else {
             sessionStorage.setItem('isLogin', true)
-            // sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+            account.getAccount({}).then((res) => {
+              if (res.code !== 200) {
+              } else {
+                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              }
+            })
             this.setIsLogin(1)
             this.isSend = true
             this.isProhibit = true
@@ -243,7 +255,11 @@
         }
         identifyingcodeManage.getCode(data).then((res) => {
           if (res.code !== 200) {
-            this.mobileError = res.msg
+            if (res.code === 10050) {
+              this.mobileError = '验证码输入过于频繁'
+            } else {
+              this.mobileError = res.msg
+            }
             this.mobileOpacity = 1
             clearInterval(this.timerr)
             this.isSend = false
@@ -271,9 +287,21 @@
           }
         })
       },
-      isGetCodePermission () {
+      isGetCodePermission (val) {
         if (this.isImg && this.phoneStatus) {
           this.isProhibit = false
+          if (this.second > 0) {
+            this.isSend = false
+            this.isProhibit = false
+            this.second = 60
+            this.mobileOpacity = 1
+            clearInterval(this.timerr)
+            if (val) {
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }
         } else {
           this.isProhibit = true
         }

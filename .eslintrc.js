@@ -21,7 +21,8 @@ module.exports = {
     "no-spaced-func": 2,
     "no-var": 0,
     "no-debugger": 'off',
-    "no-useless-constructor": 'off'
+    "no-useless-constructor": 'off',
+    "object-curly-spacing": 1
   },
   globals: {
     Vhall: true,
