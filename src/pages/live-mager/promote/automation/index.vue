@@ -886,7 +886,7 @@ export default {
       })
     },
     testSend (triggerType, type, idx) {
-      this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
+      this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/api/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
       this.$nextTick(() => {
         this.testType = type
         this.noticeTaskId = idx.toString()
