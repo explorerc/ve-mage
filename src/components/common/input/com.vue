@@ -220,7 +220,9 @@ export default {
     &.area {
       transform: none;
       top: auto;
-      bottom: 10px;
+      bottom: 0;
+      line-height: normal;
+      right: -46px;
     }
   }
   .icon-search {

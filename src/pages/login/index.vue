@@ -60,7 +60,7 @@
   import MyInput from './login-input'
   import loginManage from 'src/api/login-manage'
   import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import {mapMutations, mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
   import account from 'src/api/account-manage'
   export default {

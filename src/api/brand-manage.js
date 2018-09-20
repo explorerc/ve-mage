@@ -15,6 +15,13 @@ const Brand = {
       params: data
     })
   },
+  updateSiteTDK (data) {
+    return utils.ajax({
+      method: 'post',
+      url: '/manage/template-manage/set-tdk',
+      params: data
+    })
+  },
   getSiteData (data) {
     return utils.ajax({
       url: '/manage/template-manage/get',

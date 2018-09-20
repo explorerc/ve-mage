@@ -124,7 +124,7 @@ export default {
             position: 'center'
           })
           // 跳转到列表页面
-          this.$router.push({name: 'auto', params: {id: this.activityId}})
+          this.$router.push({ name: 'auto', params: { id: this.activityId } })
         }
       }).catch((e) => {
         console.log(e)

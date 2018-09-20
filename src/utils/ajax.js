@@ -11,7 +11,7 @@ import {
 const BASE_URL = process.env.API_PATH
 
 const defaultOptions = {
-  timeout: 10000,
+  timeout: 20000,
   responseType: 'json',
   withCredentials: true,
   headers: {
