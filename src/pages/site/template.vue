@@ -173,10 +173,10 @@ export default {
           this.com = `t${data.tid}`
           data.editAble = true
           this.data = data
-          this.siteTitle = res.data.title
-          this.keyWords = res.data.keyword
-          this.siteDes = res.data.description
-          this.icon = res.data.icon
+          this.siteTitle = res.data.title || ''
+          this.keyWords = res.data.keyword || ''
+          this.siteDes = res.data.description || ''
+          this.icon = res.data.icon || ''
           setTimeout(() => {
             this.changed = false
           }, 500)
