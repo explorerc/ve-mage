@@ -1034,6 +1034,9 @@
           line-height: 40px;
         }
       }
+      &.phone-code .limit {
+        display: none;
+      }
     }
     .v-error {
       position: absolute;
@@ -1059,10 +1062,18 @@
       top: 226px;
       right: 43px;
       &.prohibit {
-        background-color: #dedede;
+        background-color: #ffd021;
+        opacity: 0.8;
         &:hover {
-          background-color: #dedede;
+          background-color: #ffd021;
+          opacity: 0.8;
         }
+      }
+      &:hover {
+        background-color: #fdd43f;
+      }
+      &:active {
+        background-color: #eec11a;
       }
       .fr {
         margin-left: 6px;
