@@ -18,7 +18,8 @@
         <a >分享</a>
       </div>
       <a @click="doReset" class="reset" v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
-      <a @click="doSave" class="save" v-if="!isPreview&&!ptid">保存</a>
+      <a @click="doSave" class="save" v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
+      <a @click="doSaveTDK" class="save" v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
     </div>
     <div class="template-content" v-show="cType==='tp'" >
       <component v-if="platform==='PC'" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
@@ -29,25 +30,37 @@
     <div class="template-content" v-show="cType==='tdk'" >
       <div class="content from-box">
         <div class="from-row">
-          <div class="from-title"><i class="star">*</i>直播标题：</div>
+          <div class="from-title"><i class="star">*</i>官网标题:</div>
           <div class="from-content">
-            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
-            <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
+            <com-input ref="siteRef" :value.sync="siteTitle" placeholder="请输入官网标题" :max-length="30" class='inp' :errorTips="siteTitleError" @focus='siteTitleError = ""'
+            @blur="()=>{
+              if(this.siteTitle.length===0){
+                this.siteTitleError='必须填写官网标题'
+              }
+              }"></com-input>
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title"><i class="star"></i>直播封面：</div>
+          <div class="from-title"><i class="star">*</i>推广关键字:</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <com-input :value.sync="keyWords" placeholder="请输入推广关键字,以空格分割" :max-length="30" class='inp' :errorTips="keyWordsError"  @focus='keyWordsError = ""'
+            @blur="()=>{
+              if(this.keyWords.trim().length===0){
+                this.keyWordsError='必须填写推广关键字'
+              }
+              }"></com-input>
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title"><i class="star">*</i>直播介绍：</div>
-          <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
-            <textarea></textarea>
-            <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
-            <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
-            <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
+          <div class="from-title">收藏图标:</div>
+          <div class="from-content">
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="500" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">网页描述:</div>
+          <div class="from-content editor-content" style='position:relative;'>
+            <com-input type="textarea" :value.sync="siteDes" :rows="5" placeholder="请输入网页描述信息" :max-length="60" class='inp' style="height: 100px;" ></com-input>
           </div>
         </div>
       </div>
@@ -80,10 +93,12 @@ export default {
   },
   data () {
     return {
-      outRange: false,
-      titleEmpty: false,
-      descEmpty: false,
-      countCount: 0,
+      siteTitle: '',
+      siteTitleError: '',
+      keyWords: '',
+      keyWordsError: '',
+      siteDes: '',
+      icon: '',
       uploadImgErrorMsg: '',
       options: [
         {
@@ -126,7 +141,7 @@ export default {
   },
   methods: {
     uploadImgSuccess (data) {
-      this.poster = data.name
+      this.icon = data.name
     },
     uploadError (data) {
       console.log('上传失败:', data)
@@ -158,6 +173,10 @@ export default {
           this.com = `t${data.tid}`
           data.editAble = true
           this.data = data
+          this.siteTitle = res.data.title
+          this.keyWords = res.data.keyword
+          this.siteDes = res.data.description
+          this.icon = res.data.icon
           setTimeout(() => {
             this.changed = false
           }, 500)
@@ -186,6 +205,26 @@ export default {
         this.$router.replace(`/liveMager/site/${this.tid}`)
       }
     },
+    doSaveTDK () {
+      if (!this.siteTitleError && !this.keyWordsError) {
+        this.keyWords = this.keyWords.trim().replace(/(\s)(\1)+/g, ($0, $1) => {
+          return $1
+        })
+        brandService.updateSiteTDK({
+          __loading: true,
+          activityId: this.tid,
+          title: this.siteTitle,
+          keyword: this.keyWords,
+          description: this.siteDes,
+          icon: this.icon
+        }).then(data => {
+          this.$toast({
+            content: '保存成功',
+            autoClose: 500
+          })
+        })
+      }
+    },
     doSave (callback) {
       brandService.updateSiteData({
         __loading: true,
@@ -199,9 +238,16 @@ export default {
         setTimeout(() => {
           this.changed = false
         }, 500)
-        setTimeout(() => {
-          callback && callback()
-        }, 500)
+        if (typeof callback === 'function') {
+          setTimeout(() => {
+            callback()
+          }, 500)
+        } else {
+          this.cType = 'tdk'
+          this.$nextTick(() => {
+            this.$refs.siteRef.$el.querySelector('input').focus()
+          })
+        }
       })
     },
     doReset () {
@@ -235,7 +281,11 @@ export default {
       })
     },
     changeType (value) {
-      console.log(value)
+      if (value === 'tdk') {
+        this.$nextTick(() => {
+          this.$refs.siteRef.$el.querySelector('input').focus()
+        })
+      }
     }
   },
   watch: {
@@ -253,13 +303,48 @@ export default {
       return this.published === 'N' ? '未发布' : '已发布'
     },
     defaultImg () {
-      return this.poster ? `${this.$imgHost}/${this.poster}` : ''
+      return this.icon ? `${this.$imgHost}/${this.icon}` : ''
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+@import 'assets/css/variable.scss';
+.from-box {
+  // margin: 20px;
+  .from-row {
+    display: flex;
+    padding: 15px 10px;
+    .from-title {
+      width: 150px;
+      text-align: right;
+      padding-right: 15px;
+      line-height: 40px;
+      .star {
+        position: relative;
+        top: 3px;
+        color: $color-red;
+        padding-right: 5px;
+      }
+    }
+    .from-content {
+      flex: 1;
+      .input-box {
+        width: 400px;
+      }
+    }
+  }
+  .inp {
+    width: 440px;
+    height: 40px;
+    line-height: 40px;
+    input {
+      padding-left: 10px;
+    }
+  }
+}
+
 .template-container {
   min-width: 1280px;
   overflow: auto;
@@ -338,6 +423,11 @@ export default {
   }
   .template-content {
     margin-top: 54px;
+    .content {
+      margin: auto;
+      margin-top: 100px;
+      width: 800px;
+    }
     .h5-wrap {
       width: 416px;
       height: 817px;
