@@ -79,43 +79,43 @@
 </script>
 
 <style scoped lang="scss">
-  .control-box {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    animation: control-animation-hide 1s linear;
-    background-color: rgba(0, 0, 0, .5);
-    padding: 0 80px;
-    text-align: right;
-    color: #fff;
-    .time-box {
-      display: inline-block;
-      font-size: 14px;
-      span:last-child {
-        color: #ccc;
-      }
-    }
-    .auto-box {
-      display: inline-block;
-    }
-    .progress-box {
-      display: inline-block;
-      height: 100%;
-      width: 500px;
-      line-height: 0;
-      vertical-align: middle;
-      position: relative;
-      top: 5px;
-      margin-right: 10px;
-    }
-    .iconfont {
-      vertical-align: middle;
-      font-size: 20px;
-      color: rgb(255, 208, 33);
-      &:hover {
-        cursor: pointer;
-        opacity: .8;
-      }
+.control-box {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  animation: control-animation-hide 1s linear;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0 80px;
+  text-align: right;
+  color: #fff;
+  .time-box {
+    display: inline-block;
+    font-size: 14px;
+    span:last-child {
+      color: #ccc;
     }
   }
+  .auto-box {
+    display: inline-block;
+  }
+  .progress-box {
+    display: inline-block;
+    height: 100%;
+    width: 500px;
+    line-height: 0;
+    vertical-align: middle;
+    position: relative;
+    top: 5px;
+    margin-right: 10px;
+  }
+  .iconfont {
+    vertical-align: middle;
+    font-size: 20px;
+    color: rgb(255, 208, 33);
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+}
 </style>

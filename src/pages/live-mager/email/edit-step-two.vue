@@ -130,12 +130,12 @@
 <script>
   import VeMsgTips from 'src/components/ve-msg-tips'
   import LiveHttp from 'src/api/activity-manger'
-  import {mapState, mapMutations} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
-    components: {VeMsgTips},
+    components: { VeMsgTips },
     data () {
       return {
         outValue: '',
@@ -143,8 +143,8 @@
         selectPersonShow: false,
         sendType: 'AUTO',
         searchPerson: '',
-        personList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        personList: [{ id: '', name: '', count: 0, isChecked: false }],
+        selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
         selectedPersonListStr: '',
         selectedCount: 0,
         errorMsg: {
@@ -173,7 +173,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...this.email, ...newVal}
+          this.email = { ...this.email, ...newVal }
         },
         immediate: true
       },
@@ -292,7 +292,7 @@
         this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           if (res.code === 200) {
-            this.email = {...this.email, ...res.data}
+            this.email = { ...this.email, ...res.data }
             this.storeEmailInfo(this.email)
             this.$toast({
               header: `提示`,
