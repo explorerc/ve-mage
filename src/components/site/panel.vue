@@ -108,7 +108,7 @@ export default {
       if (!this.$refs.target) return
       if (data.bgType === 'color') {
         this.$refs.target.style.cssText = `background-color:${data.color}`
-      } else if (data.bgType === 'img') {
+      } else if (data.bgType === 'img' && data.img) {
         this.$refs.target.style.cssText = `background-image:url(${data.img.indexOf('mp') === 0 ? this.host + data.img : data.img})`
       } else if (data.bgType === 'video' && data.video) {
         if (data.videoType === 'upload') {

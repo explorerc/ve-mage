@@ -15,7 +15,28 @@
       <div class="preview-group" v-if="isPreview&&!ptid">
         <a @click="platform='PC'">电脑版</a>
         <a @click="platform='H5'">手机版</a>
-        <a >分享</a>
+        <a @click="editShare=true">分享</a>
+        <div v-show="editShare" class="share-box">
+          <div class="share-box-title"><i class="iconfont icon-close" @click="editShare=false"></i></div>
+          <div class="share-content">
+            <div class="left">
+              <span>分享到:</span>
+              <div>
+                <div class="icon share-sina" @click="doSina">微博</div>
+                <div class="icon share-qq" @click="doQQ">QQ</div>
+                <div class="icon share-qq-space" @click="doQQSpace">QQ空间</div>
+              </div>
+            </div>
+            <div class="right">
+              <span>微信扫码分享：</span>
+              <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+            </div>
+            <div class="bottom">
+              <div class="label">页面地址:</div>
+              <com-input class="page-url" :value="`${this.protocol+this.pcHOST}site/${this.tid}`" disabled></com-input><com-button @click="copyLink">复制</com-button>
+            </div>
+          </div>
+        </div>
       </div>
       <a @click="doReset" class="reset" v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
       <a @click="doSave" class="save" v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
@@ -93,6 +114,8 @@ export default {
   },
   data () {
     return {
+      protocol: location.protocol,
+      editShare: false,
       siteTitle: '',
       siteTitleError: '',
       keyWords: '',
@@ -110,6 +133,7 @@ export default {
           value: 'tdk'
         }
       ],
+      host: process.env.IMGHOST + '/',
       cType: 'tp',
       t0478320: temp1Data,
       t0478321: temp2Data,
@@ -121,13 +145,14 @@ export default {
         des: '',
         title: '',
         imgUrl: '',
-        link: location.href
+        link: `${location.protocol + process.env.PC_HOST}site/${this.$route.params.id}`
       },
       data: {},
       ptid: this.$route.query.tid,
       tid: this.$route.params.id,
       title: '',
       mobileHost: process.env.MOBILE_HOST,
+      pcHOST: process.env.PC_HOST,
       published: 'N',
       platform: 'PC',
       changed: undefined
@@ -140,6 +165,9 @@ export default {
     this.init()
   },
   methods: {
+    copyLink () {
+      this.share.link.copyClipboard()
+    },
     uploadImgSuccess (data) {
       this.icon = data.name
     },
@@ -154,14 +182,14 @@ export default {
           ({title: this.title, published: this.published} = res.data)
           this.share.title = res.data.title
           this.share.des = ''
-          this.share.imgUrl = res.data.imgUrl
+          this.share.imgUrl = res.data.imgUrl ? this.host + res.data.imgUrl : ''
           liveWatchManage.getLiveShare({
             activityId: this.tid
           }).then((res) => {
-            if (res.data && res.data['officia_route']) {
+            if (res.data && res.data.page.indexOf('officia_route') !== -1) {
               this.share.title = res.data.title
               this.share.des = res.data.description
-              this.share.imgUrl = res.data.imgUrl
+              this.share.imgUrl = this.host + res.data.imgUrl
             }
           })
         })
@@ -204,6 +232,9 @@ export default {
       } else {
         this.$router.replace(`/liveMager/site/${this.tid}`)
       }
+    },
+    showShare () {
+
     },
     doSaveTDK () {
       if (!this.siteTitleError && !this.keyWordsError) {
@@ -286,6 +317,25 @@ export default {
           this.$refs.siteRef.$el.querySelector('input').focus()
         })
       }
+    },
+    doSina () {
+      window.open(`
+      http://v.t.sina.com.cn/share/share.php?
+      url=${encodeURIComponent(this.share.link)}
+      &title=${encodeURIComponent(this.share.des)}
+      &pic=${encodeURIComponent(this.share.imgUrl)}
+      &appkey=&searchPic=false
+      `)
+    },
+    doQQSpace () {
+      window.open(`
+      http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?desc=${encodeURIComponent(this.share.des)}&url=${encodeURIComponent(this.share.link)}&src%3Dsharemodclk131212&pics=${encodeURIComponent(this.share.imgUrl)}
+      `)
+    },
+    doQQ () {
+      window.open(`
+      http://connect.qq.com/widget/shareqq/index.html?url=${encodeURIComponent(this.share.link)}&title=${encodeURIComponent(this.share.title)}&desc=${encodeURIComponent(this.share.des)}&pics=${encodeURIComponent(this.share.imgUrl)}
+      `)
     }
   },
   watch: {
@@ -412,6 +462,83 @@ export default {
       right: 0;
       height: 100%;
       border-left: 1px solid #999;
+
+      .share-box {
+        width: 446px;
+        height: 290px;
+        position: absolute;
+        right: 0;
+        top: 54px;
+        background-color: white;
+        border: 1px solid #999;
+        border-top: 0;
+        .share-box-title {
+          height: 40px;
+          .icon-close {
+            cursor: pointer;
+            float: right;
+            margin-right: 15px;
+          }
+        }
+        .share-content {
+          padding: 0 25px 25px;
+          height: 250px;
+          text-align: left;
+          font-size: 14px;
+          line-height: normal;
+          .left {
+            float: left;
+            width: 240px;
+            span {
+              display: inline-block;
+              margin-bottom: 10px;
+            }
+            .icon {
+              display: inline-block;
+              width: 56px;
+              height: 56px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 48px 48px;
+              text-align: center;
+              line-height: 130px;
+              cursor: pointer;
+            }
+            .share-sina {
+              background-image: url('~assets/image/sina.png');
+            }
+            .share-qq {
+              background-image: url('~assets/image/qq.png');
+            }
+            .share-qq-space {
+              background-image: url('~assets/image/qq_space.png');
+            }
+          }
+          .right {
+            margin-left: 240px;
+            margin-bottom: 20px;
+            span {
+              display: inline-block;
+              margin-bottom: 10px;
+            }
+            img {
+              display: block;
+              width: 100px;
+              height: 100px;
+            }
+          }
+          .bottom {
+            text-align: left;
+            .label {
+              margin-bottom: 10px;
+            }
+            .page-url {
+              width: 290px;
+              margin-right: 10px;
+            }
+          }
+        }
+      }
       a {
         padding: 0 18px;
         height: 100%;

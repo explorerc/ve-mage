@@ -7,6 +7,7 @@ const config = {
     PUBLIC_PATH: '//localhost:2333/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
     MOBILE_HOST: '//localhost:8866/',
+    PC_HOST: '//localhost:6688/',
     proxyTable: {
       '/api': {
         target: 'http://dev-api-zhike.vhall.com',
