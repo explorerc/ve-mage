@@ -506,6 +506,9 @@
           padding: 0 10px !important;
         }
       }
+      &.phone-code .limit {
+        display: none;
+      }
     }
     .v-getcode {
       position: absolute;
@@ -522,10 +525,18 @@
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {
-        background-color: #dedede;
+        background-color: #ffd021;
+        opacity: 0.8;
         &:hover {
-          background-color: #dedede;
+          background-color: #ffd021;
+          opacity: 0.8;
         }
+      }
+      &:hover {
+        background-color: #fdd43f;
+      }
+      &:active {
+        background-color: #eec11a;
       }
       .fr {
         margin-left: 6px;
