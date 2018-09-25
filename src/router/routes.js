@@ -100,22 +100,7 @@ const SiteTemplate1 = () =>
 const SiteTemplate2 = () =>
   import('src/pages/site/template2.vue')
 
-/* 直播互动 */
-/* 直播互动--发起端 */
-const Master = () =>
-  import('src/pages/hudong/master')
-/* 直播--观看端 */
-const Watcher = () =>
-  import('src/pages/hudong/watch/index')
 export default [{
-  path: '/watcher/:id',
-  name: 'watcher',
-  component: Watcher
-}, {
-  path: '/master/:id',
-  name: 'master',
-  component: Master
-}, {
   path: '/test',
   name: 'Test',
   component: Test
