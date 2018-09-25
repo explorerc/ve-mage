@@ -17,6 +17,7 @@ import Button from './components/common/button'
 import Tabs from './components/common/tabs'
 import PlayVideo from './components/common/play-video'
 import Checkbox from './components/common/checkbox'
+import Ajax from './utils/_ajax'
 
 Vue.use(Notification)
 Vue.use(Input)
@@ -29,6 +30,7 @@ Vue.use(Button)
 Vue.use(Tabs)
 Vue.use(PlayVideo)
 Vue.use(Checkbox)
+Vue.use(Ajax)
 
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'

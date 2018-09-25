@@ -1,30 +1,42 @@
 <template>
   <div class="template-container">
     <div class="header">
-      <div v-if="!ptid" class="title">{{title}}-<span>{{publishState}}</span></div>
-      <a @click="goBack" class="back">返回</a>
-      <el-select v-model="cType" class="type-select"  @change="changeType">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-         >
+      <div v-if="!ptid"
+           class="title">{{title}}-
+        <span>{{publishState}}</span>
+      </div>
+      <a @click="goBack"
+         class="back">返回</a>
+      <el-select v-model="cType"
+                 class="type-select"
+                 @change="changeType">
+        <el-option v-for="item in options"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
         </el-option>
       </el-select>
-      <div class="preview-group" v-if="isPreview&&!ptid">
+      <div class="preview-group"
+           v-if="isPreview&&!ptid">
         <a @click="platform='PC'">电脑版</a>
         <a @click="platform='H5'">手机版</a>
         <a @click="editShare=true">分享</a>
-        <div v-show="editShare" class="share-box">
-          <div class="share-box-title"><i class="iconfont icon-close" @click="editShare=false"></i></div>
+        <div v-show="editShare"
+             class="share-box">
+          <div class="share-box-title">
+            <i class="iconfont icon-close"
+               @click="editShare=false"></i>
+          </div>
           <div class="share-content">
             <div class="left">
               <span>分享到:</span>
               <div>
-                <div class="icon share-sina" @click="doSina">微博</div>
-                <div class="icon share-qq" @click="doQQ">QQ</div>
-                <div class="icon share-qq-space" @click="doQQSpace">QQ空间</div>
+                <div class="icon share-sina"
+                     @click="doSina">微博</div>
+                <div class="icon share-qq"
+                     @click="doQQ">QQ</div>
+                <div class="icon share-qq-space"
+                     @click="doQQSpace">QQ空间</div>
               </div>
             </div>
             <div class="right">
@@ -33,28 +45,52 @@
             </div>
             <div class="bottom">
               <div class="label">页面地址:</div>
-              <com-input class="page-url" :value="`${this.protocol+this.pcHOST}site/${this.tid}`" disabled></com-input><com-button @click="copyLink">复制</com-button>
+              <com-input class="page-url"
+                         :value="`${this.protocol+this.pcHOST}site/${this.tid}`"
+                         disabled></com-input>
+              <com-button @click="copyLink">复制</com-button>
             </div>
           </div>
         </div>
       </div>
-      <a @click="doReset" class="reset" v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
-      <a @click="doSave" class="save" v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
-      <a @click="doSaveTDK" class="save" v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
+      <a @click="doReset"
+         class="reset"
+         v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
+      <a @click="doSave"
+         class="save"
+         v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
+      <a @click="doSaveTDK"
+         class="save"
+         v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
     </div>
-    <div class="template-content" v-show="cType==='tp'" >
-      <component v-if="platform==='PC'" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
-      <div v-if="platform==='H5'" class="h5-wrap">
-        <iframe :src="`${this.mobileHost}site/${this.tid}`" frameborder="0" class="h5-preview"></iframe>
+    <div class="template-content"
+         v-show="cType==='tp'">
+      <component v-if="platform==='PC'"
+                 :editAble="!isPreview"
+                 v-model="data"
+                 v-bind:is="com"></component>
+      <div v-if="platform==='H5'"
+           class="h5-wrap">
+        <iframe :src="`${this.mobileHost}site/${this.tid}`"
+                frameborder="0"
+                class="h5-preview"></iframe>
       </div>
     </div>
-    <div class="template-content" v-show="cType==='tdk'" >
+    <div class="template-content"
+         v-show="cType==='tdk'">
       <div class="content from-box">
         <div class="from-row">
-          <div class="from-title"><i class="star">*</i>官网标题:</div>
+          <div class="from-title">
+            <i class="star">*</i>官网标题:</div>
           <div class="from-content">
-            <com-input ref="siteRef" :value.sync="siteTitle" placeholder="请输入官网标题" :max-length="30" class='inp' :errorTips="siteTitleError" @focus='siteTitleError = ""'
-            @blur="()=>{
+            <com-input ref="siteRef"
+                       :value.sync="siteTitle"
+                       placeholder="请输入官网标题"
+                       :max-length="30"
+                       class='inp'
+                       :errorTips="siteTitleError"
+                       @focus='siteTitleError = ""'
+                       @blur="()=>{
               if(this.siteTitle.length===0){
                 this.siteTitleError='必须填写官网标题'
               }
@@ -62,10 +98,16 @@
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title"><i class="star">*</i>推广关键字:</div>
+          <div class="from-title">
+            <i class="star">*</i>推广关键字:</div>
           <div class="from-content">
-            <com-input :value.sync="keyWords" placeholder="请输入推广关键字,以空格分割" :max-length="30" class='inp' :errorTips="keyWordsError"  @focus='keyWordsError = ""'
-            @blur="()=>{
+            <com-input :value.sync="keyWords"
+                       placeholder="请输入推广关键字,以空格分割"
+                       :max-length="30"
+                       class='inp'
+                       :errorTips="keyWordsError"
+                       @focus='keyWordsError = ""'
+                       @blur="()=>{
               if(this.keyWords.trim().length===0){
                 this.keyWordsError='必须填写推广关键字'
               }
@@ -75,18 +117,31 @@
         <div class="from-row">
           <div class="from-title">收藏图标:</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="500" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
+                       accept="png|jpg|jpeg|bmp|gif"
+                       :defaultImg="defaultImg"
+                       :fileSize="500"
+                       :errorMsg="uploadImgErrorMsg"
+                       @error="uploadError"
+                       @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title">网页描述:</div>
-          <div class="from-content editor-content" style='position:relative;'>
-            <com-input type="textarea" :value.sync="siteDes" :rows="5" placeholder="请输入网页描述信息" :max-length="60" class='inp' style="height: 100px;" ></com-input>
+          <div class="from-content editor-content"
+               style='position:relative;'>
+            <com-input type="textarea"
+                       :value.sync="siteDes"
+                       :rows="5"
+                       placeholder="请输入网页描述信息"
+                       :max-length="60"
+                       class='inp'
+                       style="height: 100px;"></com-input>
           </div>
         </div>
       </div>
     </div>
-    </div>
+  </div>
   </div>
 </template>
 
@@ -179,7 +234,7 @@ export default {
         this.com = `t${this.ptid}`
       } else {
         activityService.webinarInfo(this.tid).then(res => {
-          ({title: this.title, published: this.published} = res.data)
+          ({ title: this.title, published: this.published } = res.data)
           this.share.title = res.data.title
           this.share.des = ''
           this.share.imgUrl = res.data.imgUrl ? this.host + res.data.imgUrl : ''

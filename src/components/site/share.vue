@@ -1,52 +1,66 @@
 <template>
-  <div class="share-container" v-if="value.enable">
-    <div v-if="showDialog" class="_dialog-container" @click="closeDialog">
-      <div class="_dialog" @click.stop="">
-        <div class="_dialog-header">分享到微信<i class="iconfont icon-close" @click="closeDialog"></i></div>
+  <div class="share-container"
+       v-if="value.enable">
+    <div v-if="showDialog"
+         class="_dialog-container"
+         @click="closeDialog">
+      <div class="_dialog"
+           @click.stop="">
+        <div class="_dialog-header">分享到微信
+          <i class="iconfont icon-close"
+             @click="closeDialog"></i>
+        </div>
         <div class="_dialog-content">
           <div class="title">{{share.title}}</div>
-          <div  class="des">{{share.des}}</div>
-          <div  class="qr">
-            <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.share.link}`" >
+          <div class="des">{{share.des}}</div>
+          <div class="qr">
+            <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.share.link}`">
           </div>
-          <div  class="ps">使用微信扫一扫</div>
+          <div class="ps">使用微信扫一扫</div>
         </div>
       </div>
     </div>
-    <div ref="target" class="share" >
+    <div ref="target"
+         class="share">
       <ul class="share-group">
         <li v-if="value.wx">
-          <a class="share-item" @click="doWX">
+          <a class="share-item"
+             @click="doWX">
             <div class="icon wx"></div>
             <span>微信好友</span>
           </a>
         </li>
         <li v-if="value.wxSpace">
-          <a class="share-item" @click="doWXSpace">
+          <a class="share-item"
+             @click="doWXSpace">
             <div class="icon wx-space"></div>
             <span>微信朋友圈</span>
           </a>
         </li>
         <li v-if="value.qq">
-          <a class="share-item" @click="doQQ">
+          <a class="share-item"
+             @click="doQQ">
             <div class="icon qq"></div>
             <span>QQ好友</span>
           </a>
         </li>
         <li v-if="value.qqSpace">
-          <a class="share-item" @click="doQQSpace">
+          <a class="share-item"
+             @click="doQQSpace">
             <div class="icon qq-space"></div>
             <span>QQ空间</span>
           </a>
         </li>
         <li v-if="value.sina">
-          <a class="share-item" @click="doSina">
+          <a class="share-item"
+             @click="doSina">
             <div class="icon sina"></div>
             <span>新浪微博</span>
           </a>
         </li>
         <li v-if="value.copy">
-          <a class="share-item" @click="doCopy">
+          <a class="share-item"
+             @click="doCopy">
             <div class="icon copy"></div>
             <span>复制链接</span>
           </a>
@@ -57,44 +71,32 @@
       <ul class="edit-share-group">
         <li>
           <span class="label">新浪微博</span>
-          <el-switch
-            v-model="value.sina"
-            >
+          <el-switch v-model="value.sina">
           </el-switch>
         </li>
         <li>
-           <span class="label">QQ空间</span>
-          <el-switch
-            v-model="value.qqSpace"
-            >
+          <span class="label">QQ空间</span>
+          <el-switch v-model="value.qqSpace">
           </el-switch>
-          </li>
-          <li>
-           <span class="label">QQ好友</span>
-          <el-switch
-            v-model="value.qq"
-            >
+        </li>
+        <li>
+          <span class="label">QQ好友</span>
+          <el-switch v-model="value.qq">
           </el-switch>
-          </li>
-          <li>
-           <span class="label">朋友圈</span>
-          <el-switch
-            v-model="value.wxSpace"
-            >
+        </li>
+        <li>
+          <span class="label">朋友圈</span>
+          <el-switch v-model="value.wxSpace">
           </el-switch>
-          </li>
-          <li>
-           <span class="label">微信好友</span>
-          <el-switch
-            v-model="value.wx"
-            >
+        </li>
+        <li>
+          <span class="label">微信好友</span>
+          <el-switch v-model="value.wx">
           </el-switch>
-          </li>
-          <li>
-           <span class="label">复制链接</span>
-          <el-switch
-            v-model="value.copy"
-            >
+        </li>
+        <li>
+          <span class="label">复制链接</span>
+          <el-switch v-model="value.copy">
           </el-switch>
         </li>
       </ul>
@@ -213,17 +215,19 @@ export default {
           padding-bottom: 25px;
         }
         .qr {
-          display: inline-block;
-          border-radius: 6px;
+          display: block;
+          width: 185px;
+          height: 185px;
           padding: 5px;
           border: 5px #bbda80 solid;
+          margin: auto;
           img {
             width: 162px;
             height: 162px;
           }
         }
         .ps {
-          padding-top: 5px;
+          padding-top: 15px;
           font-size: 14px;
           text-align: center;
         }
