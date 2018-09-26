@@ -138,7 +138,7 @@
               <el-radio v-model="playBackMode" label="1">链接引用</el-radio>
               <div class="from-msg-tip">
                 <ve-msg-tips
-                  tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<br/><iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
+                  tip='您可以直接引用视频网站上的资源，将播放地址复制到输入框。比如爱奇艺或腾讯视频“分享”中的“通用代码”，示例如下：<iframe frameborder="0" width="640" height="498" src="https://v.qq.com/iframe/player.html?vid=zxxx7hcc6iu&tiny=0&auto=0" allowfullscreen></iframe>'></ve-msg-tips>
               </div>
             </div>
           </div>
@@ -237,7 +237,10 @@
   import VePagination from 'src/components/ve-pagination'
   import veMsgTips from 'src/components/ve-msg-tips'
   import PlayBackHttp from 'src/api/play-back'
-  import LiveHttp from 'src/api/activity-manger'
+  import ActivityHttp from 'src/api/activity-manger'
+  import LiveHttp from 'src/api/live'
+  import ChatConfig from 'src/api/chat-config'
+  import ChatService from 'components/chat/ChatService.js'
 
   const outLineMode = {
     'FOREVER': 'NEVER',
@@ -350,7 +353,8 @@
         }).then(() => {
           this.queryPlayBackList()
           /* 获取pass信息 */
-          LiveHttp.queryPassSdkInfo().then((res) => {
+          ActivityHttp.queryPassSdkInfo().then((res) => {
+            console.log(res)
             // this.vhallParams = res.data
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
@@ -368,6 +372,26 @@
               }
             })
           })
+        })
+        this.initMsgServe()
+      },
+      async initMsgServe () {
+        const regActivity = await LiveHttp.queryRegActivity(this.activityId).then(res => {
+          return res.data
+        })
+        const roomInfo = await LiveHttp.queryPaasParams(this.activityId, regActivity.activityUserId).then(res => {
+          return res.data
+        })
+        ChatService.OBJ.init({
+          accountId: roomInfo.accountId,
+          token: roomInfo.token,
+          appId: roomInfo.appId,
+          channelId: roomInfo.channelRoom
+        })
+        /* 监听下载消息 */
+        ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
+          console.log(msg)
+          this.downLoadVideo()
         })
       },
       changePage (currentPage) {
@@ -630,200 +654,200 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-.list-box .el-table .cell {
-  overflow: visible;
-}
+  .list-box .el-table .cell {
+    overflow: visible;
+  }
 </style>
 <style lang="scss" scoped>
-@import 'assets/css/variable.scss';
+  @import 'assets/css/variable.scss';
 
-.status-default {
-  color: $color-blue;
-}
-
-.status-success {
-  color: $color-success;
-}
-
-.status-error {
-  color: $color-error;
-}
-
-.black-box {
-  height: 60px;
-  .el-date-editor {
-    width: 100%;
+  .status-default {
+    color: $color-blue;
   }
-  .play-content {
-    .out-line {
-      margin: 10px 0;
-      span {
-        display: inline-block;
-        margin-right: 20px;
+
+  .status-success {
+    color: $color-success;
+  }
+
+  .status-error {
+    color: $color-error;
+  }
+
+  .black-box {
+    height: 60px;
+    .el-date-editor {
+      width: 100%;
+    }
+    .play-content {
+      .out-line {
+        margin: 10px 0;
+        span {
+          display: inline-block;
+          margin-right: 20px;
+        }
+        .out-line-input {
+          width: 400px;
+        }
       }
-      .out-line-input {
-        width: 400px;
+      .play-box {
+        display: inline-block;
+        width: 474px;
+        min-height: 266.6px;
+        line-height: 266px;
+        vertical-align: top;
+        background-color: #666666;
+        color: #fff;
+        .iframe-box {
+          height: 100%;
+          width: 100%;
+        }
       }
     }
-    .play-box {
+  }
+
+  .list-box {
+    margin: 10px 0;
+    background-color: #fff;
+    border-radius: 4px;
+    .list-header {
+      border-bottom: solid 1px $color-bd;
+    }
+  }
+
+  .step-btns {
+    margin-left: 150px;
+  }
+
+  .play-back-img {
+    width: 104px;
+    height: 58px;
+  }
+
+  .table-nav {
+    display: inline-block;
+    margin: 0 20px;
+    font-size: 0;
+    span {
+      position: relative;
       display: inline-block;
-      width: 474px;
-      min-height: 266.6px;
-      line-height: 266px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 14px;
+      padding: 10px 8px 8px 8px;
+      margin: 0 5px -1px 5px;
+      &:after {
+        display: block;
+        position: absolute;
+        content: '';
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $color-blue;
+        border-radius: 1px;
+        transition: width 0.3s;
+      }
+      &.active {
+        &:after {
+          width: 100%;
+          box-shadow: 0 0 1px $color-blue;
+        }
+      }
+      &:hover {
+        cursor: pointer;
+        color: $color-blue;
+      }
+    }
+  }
+
+  .more {
+    display: inline-block;
+    position: relative;
+    padding: 10px 5px;
+    font-size: 12px;
+    color: #409eff;
+    cursor: pointer;
+    text-align: center;
+    &:hover .more-menu {
+      display: block;
+    }
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: 36px;
+      left: -22px;
+      width: 80px;
+      z-index: 9999999;
+      color: #666;
+      border: solid 1px #e5e5e5;
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 5px 0;
+      span {
+        display: block;
+        padding: 5px 0;
+        &:hover {
+          color: #409eff;
+          background-color: #f0f1fe;
+        }
+      }
+    }
+  }
+
+  .prop-input {
+    text-align: left;
+    margin: 20px;
+    font-size: 14px;
+    .com-input {
+      width: 258px;
+      margin: 5px 0;
+    }
+  }
+
+  .message-box-content {
+    text-align: left;
+    .from-title {
+      width: 102px !important;
+    }
+    .upload-tips {
+      width: 273px !important;
+    }
+  }
+
+  .video-modal-box {
+    .video-modal {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+    .video-content {
+      position: absolute;
+      width: 800px;
+      height: 450px;
+      line-height: 450px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       vertical-align: top;
-      background-color: #666666;
+      background-color: #333333;
       color: #fff;
+      text-align: center;
+      z-index: 11;
       .iframe-box {
         height: 100%;
         width: 100%;
       }
     }
   }
-}
 
-.list-box {
-  margin: 10px 0;
-  background-color: #fff;
-  border-radius: 4px;
-  .list-header {
-    border-bottom: solid 1px $color-bd;
-  }
-}
-
-.step-btns {
-  margin-left: 150px;
-}
-
-.play-back-img {
-  width: 104px;
-  height: 58px;
-}
-
-.table-nav {
-  display: inline-block;
-  margin: 0 20px;
-  font-size: 0;
-  span {
-    position: relative;
-    display: inline-block;
-    line-height: 34px;
-    text-align: center;
-    font-size: 14px;
-    padding: 10px 8px 8px 8px;
-    margin: 0 5px -1px 5px;
-    &:after {
-      display: block;
-      position: absolute;
-      content: '';
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: $color-blue;
-      border-radius: 1px;
-      transition: width 0.3s;
-    }
-    &.active {
-      &:after {
-        width: 100%;
-        box-shadow: 0 0 1px $color-blue;
-      }
-    }
-    &:hover {
-      cursor: pointer;
-      color: $color-blue;
+  .play-back /deep/ {
+    .ve-message-box__wrapper .ve-message-box {
+      overflow: visible;
     }
   }
-}
-
-.more {
-  display: inline-block;
-  position: relative;
-  padding: 10px 5px;
-  font-size: 12px;
-  color: #409eff;
-  cursor: pointer;
-  text-align: center;
-  &:hover .more-menu {
-    display: block;
-  }
-  .more-menu {
-    display: none;
-    position: absolute;
-    top: 36px;
-    left: -22px;
-    width: 80px;
-    z-index: 9999999;
-    color: #666;
-    border: solid 1px #e5e5e5;
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 5px 0;
-    span {
-      display: block;
-      padding: 5px 0;
-      &:hover {
-        color: #409eff;
-        background-color: #f0f1fe;
-      }
-    }
-  }
-}
-
-.prop-input {
-  text-align: left;
-  margin: 20px;
-  font-size: 14px;
-  .com-input {
-    width: 258px;
-    margin: 5px 0;
-  }
-}
-
-.message-box-content {
-  text-align: left;
-  .from-title {
-    width: 102px !important;
-  }
-  .upload-tips {
-    width: 273px !important;
-  }
-}
-
-.video-modal-box {
-  .video-modal {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-  }
-  .video-content {
-    position: absolute;
-    width: 800px;
-    height: 450px;
-    line-height: 450px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    vertical-align: top;
-    background-color: #333333;
-    color: #fff;
-    text-align: center;
-    z-index: 11;
-    .iframe-box {
-      height: 100%;
-      width: 100%;
-    }
-  }
-}
-
-.play-back /deep/ {
-  .ve-message-box__wrapper .ve-message-box {
-    overflow: visible;
-  }
-}
 </style>
