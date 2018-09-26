@@ -68,7 +68,8 @@
         app_id: '',
         fileName: '',
         fileSize: '',
-        recordId: ''
+        recordId: '',
+        transcode_status: 0
       }
     },
     watch: {
@@ -86,6 +87,7 @@
           if (!newVal.sign) return
           this.fileName = newVal.fileName
           this.fileRealSize = (newVal.fileSize / 1024).toFixed(2)
+          this.isConvert = !newVal.transcode_status
           this.initPage()
         },
         deep: true
@@ -98,7 +100,6 @@
       deleteVideo () {
         this.percentVideo = 0
         this.errorTxt = ''
-        this.isConvert = true
         this.$emit('handleClick', {
           type: 'delete',
           detail: '删除'
@@ -143,7 +144,7 @@
             saveSuccess: (res) => {
               this.record_id = res.record_id
               this.isConvert = true
-              this.$emit('success', this.record_id, this.fileName)
+              this.$emit('success', this.record_id, this.fileName, this.fileRealSize * 1024)
             },
             error: (msg, file, e) => {
               this.errorTxt = msg
@@ -157,129 +158,129 @@
 </script>
 
 <style lang="scss" scoped>
-.fade-enter-active {
-  transition: all 0.3s ease;
-}
-
-.fade-leave-active {
-  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.ve-upload-box {
-  position: relative;
-  width: 440px;
-  height: 140px;
-  border: 1px dashed #e2e2e2;
-  border-radius: 4px;
-  background-color: #f7f7f7;
-  text-align: center;
-  overflow: hidden;
-  .hide {
-    display: none;
+  .fade-enter-active {
+    transition: all 0.3s ease;
   }
-  .error-msg {
-    display: block;
-    color: #fc5659 !important;
-    line-height: 24px;
+
+  .fade-leave-active {
+    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
   }
-  .upload-file-box {
-    width: 400px;
-    padding-bottom: 40px;
-    cursor: pointer;
-    span {
-      font-size: 14px;
-      line-height: 20px;
-      color: #888;
-    }
-    .upload-video-icon {
-      display: block;
-      width: 60px;
-      height: 60px;
-      margin: 15px auto 10px auto;
-      background-image: url('../assets/image/upload-video-icon@2x.png');
-      background-size: cover;
-    }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
   }
-  .ve-upload-video {
+
+  .ve-upload-box {
     position: relative;
-    width: 100%;
-    height: 100%;
-    font-size: 14px;
-    .mp4-video-icon {
+    width: 440px;
+    height: 140px;
+    border: 1px dashed #e2e2e2;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    text-align: center;
+    overflow: hidden;
+    .hide {
+      display: none;
+    }
+    .error-msg {
       display: block;
-      width: 60px;
-      height: 60px;
-      margin: 18px auto 6px auto;
-      background-image: url('../assets/image/mp4_icon@2x.png');
-      background-size: cover;
-      color: #fff;
-      line-height: 74px;
-    }
-    .upload-video {
-      position: absolute;
-      top: 0;
-      font-size: 12px;
-      color: #555;
-      &:hover {
-        cursor: pointer;
-        color: #ffd021;
-      }
-    }
-    .upload-delete {
-      right: 15px;
-    }
-    .upload-pre-view {
-      display: block;
-      right: 50px;
-      padding-right: 10px;
-      &:before {
-        display: block;
-        content: '';
-        position: absolute;
-        top: 3px;
-        right: -1px;
-        width: 1px;
-        height: 12px;
-        background-color: #e2e2e2;
-      }
-    }
-    .mp4-eror {
-      background-image: url('../assets/image/mp4_error_icon@2x.png');
-    }
-    .file-name {
-      color: #222;
-    }
-    .file-size {
-      display: block;
-      color: #888;
+      color: #fc5659 !important;
       line-height: 24px;
     }
-    .file-convert {
-      display: block;
-      color: #4b5afe;
-      line-height: 24px;
-    }
-    .percent-box {
-      position: absolute;
-      height: 4px;
-      width: 100%;
-      bottom: 15px;
-      left: 0;
-      background-color: #e2e2e2;
+    .upload-file-box {
+      width: 400px;
+      padding-bottom: 40px;
+      cursor: pointer;
       span {
+        font-size: 14px;
+        line-height: 20px;
+        color: #888;
+      }
+      .upload-video-icon {
         display: block;
-        font-size: 0;
-        width: 20px;
-        height: 100%;
-        background-color: #ffd021;
-        transition: width 0.2s;
+        width: 60px;
+        height: 60px;
+        margin: 15px auto 10px auto;
+        background-image: url('../assets/image/upload-video-icon@2x.png');
+        background-size: cover;
+      }
+    }
+    .ve-upload-video {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      .mp4-video-icon {
+        display: block;
+        width: 60px;
+        height: 60px;
+        margin: 18px auto 6px auto;
+        background-image: url('../assets/image/mp4_icon@2x.png');
+        background-size: cover;
+        color: #fff;
+        line-height: 74px;
+      }
+      .upload-video {
+        position: absolute;
+        top: 0;
+        font-size: 12px;
+        color: #555;
+        &:hover {
+          cursor: pointer;
+          color: #ffd021;
+        }
+      }
+      .upload-delete {
+        right: 15px;
+      }
+      .upload-pre-view {
+        display: block;
+        right: 50px;
+        padding-right: 10px;
+        &:before {
+          display: block;
+          content: '';
+          position: absolute;
+          top: 3px;
+          right: -1px;
+          width: 1px;
+          height: 12px;
+          background-color: #e2e2e2;
+        }
+      }
+      .mp4-eror {
+        background-image: url('../assets/image/mp4_error_icon@2x.png');
+      }
+      .file-name {
+        color: #222;
+      }
+      .file-size {
+        display: block;
+        color: #888;
+        line-height: 24px;
+      }
+      .file-convert {
+        display: block;
+        color: #4b5afe;
+        line-height: 24px;
+      }
+      .percent-box {
+        position: absolute;
+        height: 4px;
+        width: 100%;
+        bottom: 15px;
+        left: 0;
+        background-color: #e2e2e2;
+        span {
+          display: block;
+          font-size: 0;
+          width: 20px;
+          height: 100%;
+          background-color: #ffd021;
+          transition: width 0.2s;
+        }
       }
     }
   }
-}
 </style>

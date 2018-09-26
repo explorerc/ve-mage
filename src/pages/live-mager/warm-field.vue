@@ -79,7 +79,8 @@
           signed_at: '',
           app_id: '',
           fileName: '',
-          fileSize: ''
+          fileSize: '',
+          transcode_status: 0
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -145,6 +146,7 @@
             this.sdkPlayParam.recordId = res.data.recordId
             this.sdkParam.fileName = res.data.filename
             this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+            this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
           }
         }).then(() => {
           /* 获取pass信息 */
@@ -191,9 +193,12 @@
         this.warm.playCover = data.name
       },
       /* 上传视频成功 */
-      uploadVideoSuccess (recordId, fileName) {
+      uploadVideoSuccess (recordId, fileName, fileSize) {
         this.warm.recordId = recordId
         this.warm.filename = fileName
+        this.sdkParam.fileName = fileName
+        this.sdkParam.fileSize = fileSize
+        this.sdkPlayParam.recordId = recordId
       },
       /* 预览，删除触发 */
       handleVideoClick (e) {
@@ -211,8 +216,10 @@
               if (e.action === 'confirm') {
                 this.warm.recordId = ''
                 this.warm.filename = ''
+                this.sdkPlayParam.recordId = ''
                 this.sdkParam.fileName = ''
                 this.sdkParam.fileSize = ''
+                this.sdkParam.transcode_status = 0
               }
             }
           })
@@ -228,11 +235,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>
