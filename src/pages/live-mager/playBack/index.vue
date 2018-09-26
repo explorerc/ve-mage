@@ -298,7 +298,7 @@
         recordId: '',
         activityId: '',
         page: 1,
-        pageSize: 5,
+        pageSize: 8,
         total: 0,
         outLineLink: '',
         outLineMode: '0',
@@ -395,7 +395,6 @@
         })
         /* 监听下载消息 */
         ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
-          console.log(msg)
           this.downLoadVideo()
         })
       },

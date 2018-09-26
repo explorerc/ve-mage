@@ -7,5 +7,5 @@ export default {
   gagAll: 'GAG_ALL', // 全体禁言
   beginLive: 'BEGIN_LIVE', // 开始直播
   endLive: 'FINISH_LIVE', // 结束直播
-  download: 'DOWN_LOAD' // 回放下载
+  download: 'DOWNLOAD' // 回放下载
 }
