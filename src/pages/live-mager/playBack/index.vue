@@ -29,13 +29,13 @@
         <el-table
           :data="playBackList"
           style="width: 100%">
-          <el-table-column
-            label="缩略图">
-            <div slot-scope="scope" class="play-back-cover">
-              <span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>
-              <img class="play-back-img" :src="playBackList[scope.$index].pic">
-            </div>
-          </el-table-column>
+          <!--<el-table-column-->
+            <!--label="缩略图">-->
+            <!--<div slot-scope="scope" class="play-back-cover">-->
+              <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
+              <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
+            <!--</div>-->
+          <!--</el-table-column>-->
           <el-table-column
             prop="title"
             label="片段名">
@@ -81,12 +81,17 @@
                   v-else
                   @click.stop="playBackSetting(scope.$index)">设为默认回放
                 </el-button>
+                <el-button
+                  type="text" size="small"
+                  style="color: blue;"
+                  @click.stop="handlerMore(scope.$index, 1)">预览
+                </el-button>
                 <div class="more">
                   <span>更多</span>
                   <div class="more-menu">
                   <span @click="handlerMore(scope.$index, 0)"
                         :class="{disabled:playBackList[scope.$index].type=='LINK'}">下载</span>
-                    <span @click="handlerMore(scope.$index, 1)">预览</span>
+                    <!--<span @click="handlerMore(scope.$index, 1)">预览</span>-->
                     <span @click="handlerMore(scope.$index, 2)">重命名</span>
                     <span @click="handlerMore(scope.$index, 3)">删除</span>
                   </div>
