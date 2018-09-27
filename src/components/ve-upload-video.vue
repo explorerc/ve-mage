@@ -1,11 +1,14 @@
 <template>
-  <div class="ve-upload-box">
+  <div class="ve-upload-box" v-ComLoading="loading" com-loading-text="上传准备中...">
     <transition name="fade">
       <div class="ve-upload-video" v-if="fileName">
         <span :class='{"mp4-video-icon":true,"mp4-eror":errorTxt}'>.Mp4</span>
         <span class="file-name">{{fileName}}</span>
         <span class="error-msg" v-if="errorTxt">{{errorTxt}}</span>
-        <span class="file-size" v-else-if="!isConvert">{{fileRealSize}}M</span>
+        <span class="file-size"
+              v-else-if="!isConvert&&percentVideo!=100&&percentVideo!=0">{{fileRealSize}}M/{{(fileRealSize*percentVideo/100).toFixed(2)}}M</span>
+        <span class="file-size"
+              v-else-if="!isConvert&&(percentVideo==100||percentVideo==0)">{{fileRealSize}}M</span>
         <span class="file-convert" v-else="isConvert">上传成功，转码中…</span>
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
@@ -42,6 +45,7 @@
         record_id: '',
         fileRealSize: 0,
         isConvert: true,
+        loading: false,
         uploadId: 'upload_video_' + Math.random()
       }
     },
@@ -127,16 +131,23 @@
               if (file.type !== 'video/mp4') {
                 this.errorTxt = '不支持该视频格式，请上传mp4格式视频'
                 return false
-              } else if (this.fileRealSize > this.videoSize) {
-                this.errorTxt = '视频太大，请不要大于200M'
+              } else if (this.fileRealSize > this.fileSize / 1024) {
+                this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
                 return false
               }
+              console.log(this.fileSize)
+              this.loading = true
               this.errorTxt = ''
               this.percentVideo = 0
+              this.isConvert = false
+              this.fileRealSize = this.fileRealSize.toFixed(2)
               return true
             },
             progress: (percent) => {
-              this.percentVideo = parseFloat(percent.replace('%', ''))
+              this.loading = false
+              const temPercent = parseFloat(percent.replace('%', ''))
+              if (this.percentVideo >= temPercent) return
+              this.percentVideo = temPercent
             },
             uploadSuccess () {
               document.getElementById('confirmUpload').click()
@@ -147,6 +158,7 @@
               this.$emit('success', this.record_id, this.fileName, this.fileRealSize * 1024)
             },
             error: (msg, file, e) => {
+              this.loading = false
               this.errorTxt = msg
               this.$emit('error', msg)
             }
@@ -269,7 +281,7 @@
         position: absolute;
         height: 4px;
         width: 100%;
-        bottom: 15px;
+        bottom: 18px;
         left: 0;
         background-color: #e2e2e2;
         span {

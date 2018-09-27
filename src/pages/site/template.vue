@@ -1,99 +1,153 @@
 <template>
   <div class="template-container">
     <div class="header">
-      <div v-if="!ptid" class="title">{{title}}-<span>{{publishState}}</span></div>
-      <a @click="goBack" class="back">返回</a>
-      <el-select v-model="cType" class="type-select"  @change="changeType">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-         >
+      <div v-if="!ptid"
+           class="title">{{title}}-
+        <span>{{publishState}}</span>
+      </div>
+      <a @click="goBack"
+         class="back">返回</a>
+      <el-select v-model="cType"
+                 class="type-select"
+                 @change="changeType">
+        <el-option v-for="item in options"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
         </el-option>
       </el-select>
-      <div class="preview-group" v-if="isPreview&&!ptid">
+      <div class="preview-group"
+           v-if="isPreview&&!ptid">
         <a @click="platform='PC'">电脑版</a>
         <a @click="platform='H5'">手机版</a>
         <a @click="editShare=true">分享</a>
-        <div v-show="editShare" class="share-box">
-          <div class="share-box-title"><i class="iconfont icon-close" @click="editShare=false"></i></div>
+        <div v-show="editShare"
+             class="share-box">
+          <div class="share-box-title">
+            <i class="iconfont icon-close"
+               @click="editShare=false"></i>
+          </div>
           <div class="share-content">
             <div class="left">
               <span>分享到:</span>
               <div>
-                <div class="icon share-sina" @click="doSina">微博</div>
-                <div class="icon share-qq" @click="doQQ">QQ</div>
-                <div class="icon share-qq-space" @click="doQQSpace">QQ空间</div>
+                <div class="icon share-sina"
+                     @click="doSina">微博</div>
+                <div class="icon share-qq"
+                     @click="doQQ">QQ</div>
+                <div class="icon share-qq-space"
+                     @click="doQQSpace">QQ空间</div>
               </div>
             </div>
             <div class="right">
               <span>微信扫码分享：</span>
               <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
             </div>
-            <div class="bottom">
-              <div class="label">页面地址:</div>
-              <com-input class="page-url" :value="`${this.protocol+this.pcHOST}site/${this.tid}`" disabled></com-input><com-button @click="copyLink">复制</com-button>
+              <div class="bottom">
+                <div class="label">页面地址:</div>
+                <com-input class="page-url"
+                           :value="`${this.protocol+this.pcHOST}site/${this.tid}`"
+                           disabled></com-input>
+                <com-button @click="copyLink">复制</com-button>
+              </div>
             </div>
           </div>
         </div>
+        <a @click="doReset"
+           class="reset"
+           v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
+        <a @click="doSave"
+           class="save"
+           v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
+        <a @click="doSaveTDK"
+           class="save"
+           v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
       </div>
-      <a @click="doReset" class="reset" v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
-      <a @click="doSave" class="save" v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
-      <a @click="doSaveTDK" class="save" v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
-    </div>
-    <div class="template-content" v-show="cType==='tp'" >
-      <component v-if="platform==='PC'" :editAble="!isPreview" v-model="data" v-bind:is="com"></component>
-      <div v-if="platform==='H5'" class="h5-wrap">
-        <iframe :src="`${this.mobileHost}site/${this.tid}`" frameborder="0" class="h5-preview"></iframe>
+      <div class="template-content"
+           v-show="cType==='tp'">
+        <component v-if="platform==='PC'"
+                   :editAble="!isPreview"
+                   v-model="data"
+                   v-bind:is="com"></component>
+        <div v-if="platform==='H5'"
+             class="h5-wrap">
+          <iframe :src="`${this.mobileHost}site/${this.tid}`"
+                  frameborder="0"
+                  class="h5-preview"></iframe>
+        </div>
       </div>
-    </div>
-    <div class="template-content" v-show="cType==='tdk'" >
-      <div class="content from-box">
-        <div class="from-row">
-          <div class="from-title"><i class="star">*</i>官网标题:</div>
-          <div class="from-content">
-            <com-input ref="siteRef" :value.sync="siteTitle" placeholder="请输入官网标题" :max-length="30" class='inp' :errorTips="siteTitleError" @focus='siteTitleError = ""'
-            @blur="()=>{
+      <div class="template-content"
+           v-show="cType==='tdk'">
+        <div class="content from-box">
+          <div class="from-row">
+            <div class="from-title">
+              <i class="star">*</i>官网标题:</div>
+            <div class="from-content">
+              <com-input ref="siteRef"
+                         :value.sync="siteTitle"
+                         placeholder="请输入官网标题"
+                         :max-length="30"
+                         class='inp'
+                         :errorTips="siteTitleError"
+                         @focus='siteTitleError = ""'
+                         @blur="()=>{
               if(this.siteTitle.length===0){
                 this.siteTitleError='必须填写官网标题'
               }
               }"></com-input>
+            </div>
           </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title"><i class="star">*</i>推广关键字:</div>
-          <div class="from-content">
-            <com-input :value.sync="keyWords" placeholder="请输入推广关键字,以空格分割" :max-length="30" class='inp' :errorTips="keyWordsError"  @focus='keyWordsError = ""'
-            @blur="()=>{
+          <div class="from-row">
+            <div class="from-title">
+              <i class="star">*</i>推广关键字:</div>
+            <div class="from-content">
+              <com-input :value.sync="keyWords"
+                         placeholder="请输入推广关键字,以空格分割"
+                         :max-length="30"
+                         class='inp'
+                         :errorTips="keyWordsError"
+                         @focus='keyWordsError = ""'
+                         @blur="()=>{
               if(this.keyWords.trim().length===0){
                 this.keyWordsError='必须填写推广关键字'
               }
               }"></com-input>
+            </div>
           </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">收藏图标:</div>
-          <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="500" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          <div class="from-row">
+            <div class="from-title">收藏图标:</div>
+            <div class="from-content">
+              <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
+                         accept="png|jpg|jpeg|bmp|gif"
+                         :defaultImg="defaultImg"
+                         :fileSize="500"
+                         :errorMsg="uploadImgErrorMsg"
+                         @error="uploadError"
+                         @success="uploadImgSuccess"></ve-upload>
+            </div>
           </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">网页描述:</div>
-          <div class="from-content editor-content" style='position:relative;'>
-            <com-input type="textarea" :value.sync="siteDes" :rows="5" placeholder="请输入网页描述信息" :max-length="60" class='inp' style="height: 100px;" ></com-input>
+          <div class="from-row">
+            <div class="from-title">网页描述:</div>
+            <div class="from-content editor-content"
+                 style='position:relative;'>
+              <com-input type="textarea"
+                         :value.sync="siteDes"
+                         :rows="5"
+                         placeholder="请输入网页描述信息"
+                         :max-length="60"
+                         class='inp'
+                         style="height: 100px;"></com-input>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
 
 <script>
-import brandService from 'src/api/brand-manage'
+import brandService from 'src/api/brand-service'
 import activityService from 'src/api/activity-manger'
-import liveWatchManage from 'src/api/set-live-watch-manage'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
 import temp3 from './template3.vue'
@@ -183,9 +237,9 @@ export default {
           this.share.title = res.data.title
           this.share.des = ''
           this.share.imgUrl = res.data.imgUrl ? this.host + res.data.imgUrl : ''
-          liveWatchManage.getLiveShare({
+          this.$get(brandService.GET_LIVE_SHARE, {
             activityId: this.tid
-          }).then((res) => {
+          }).then(res => {
             if (res.data && res.data.page.indexOf('officia_route') !== -1) {
               this.share.title = res.data.title
               this.share.des = res.data.description
@@ -193,8 +247,7 @@ export default {
             }
           })
         })
-        brandService.getSiteData({
-          __loading: true,
+        this.$config({ loading: true }).$get(brandService.GET_SITE_DATA, {
           activityId: this.tid
         }).then(res => {
           let data = JSON.parse(res.data.value)
@@ -241,14 +294,13 @@ export default {
         this.keyWords = this.keyWords.trim().replace(/(\s)(\1)+/g, ($0, $1) => {
           return $1
         })
-        brandService.updateSiteTDK({
-          __loading: true,
+        this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE_TDK, {
           activityId: this.tid,
           title: this.siteTitle,
           keyword: this.keyWords,
           description: this.siteDes,
           icon: this.icon
-        }).then(data => {
+        }).then(res => {
           this.$toast({
             content: '保存成功',
             autoClose: 500
@@ -257,11 +309,10 @@ export default {
       }
     },
     doSave (callback) {
-      brandService.updateSiteData({
-        __loading: true,
+      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.tid,
         template: JSON.stringify(this.data)
-      }).then(data => {
+      }).then(res => {
         this.$toast({
           content: '保存成功',
           autoClose: 500
@@ -292,7 +343,7 @@ export default {
           if (e.action === 'cancel') {
           } else if (e.action === 'confirm') {
             let resetData = this[`t${this.data.tid}`]()
-            brandService.updateSiteData({
+            this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
               activityId: this.tid,
               template: JSON.stringify(resetData)
             }).then(res => {

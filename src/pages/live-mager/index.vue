@@ -22,6 +22,7 @@
         <com-input type="search"
                    class="search-com"
                    :value.sync="searchParams.keyword"
+                   :maxLength="30"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
         <button class="primary-button" @click="createLive">创建直播</button>
@@ -30,7 +31,7 @@
     <div class="mager-box">
       <live-table :tableList="tableList" @handleClick="handleClick"/>
       <div class="pagination-box">
-        <div class="page-pagination">
+        <div class="page-pagination" v-if="total>pageSize">
           <ve-pagination
             :total="total"
             :pageSize="pageSize"
@@ -53,7 +54,7 @@
     data () {
       return {
         show: false,
-        pageSize: 8,
+        pageSize: 16,
         loading: false,
         optionsStates: [
           { value: '', label: '全部' },
@@ -71,7 +72,7 @@
           sortBy: 'createTime',
           keyword: '',
           page: 1,
-          pageSize: 8
+          pageSize: 16
         },
         tableList: [],
         total: 0

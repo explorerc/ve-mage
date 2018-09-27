@@ -1,12 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 // import EventBus from 'src/utils/eventBus'
-import {
-  Loading
-} from 'components/common/loading'
-import {
-  MessageBox
-} from 'components/common/message-box'
+import { Loading } from 'components/common/loading'
+import { MessageBox } from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -21,7 +17,7 @@ const defaultOptions = {
 
 axios.interceptors.request.use(
   config => {
-    if (config.params.__loading) {
+    if (config.params && config.params.__loading) {
       Loading(true)
       delete config.params.__loading
     }
@@ -48,28 +44,31 @@ axios.interceptors.response.use(
       return Promise.reject(res.data)
     }
     return res
-  }, error => {
+  },
+  error => {
     return Promise.reject(error)
   }
 )
 
-export const ajax = (options) => {
+export const ajax = options => {
   options.url = options.abPath || BASE_URL + options.url
   let _options = Object.assign({}, defaultOptions, options)
-  return axios(_options).then((res) => {
-    return res.data
-  }).catch((data) => {
-    Loading(false)
-    if (options.headers && options.headers.noAlert) {
-      return Promise.resolve(data)
-    }
-    let errorMsg = data.msg || '网络异常'
-    MessageBox({
-      header: '提示',
-      content: errorMsg,
-      autoClose: 10,
-      confirmText: '知道了'
+  return axios(_options)
+    .then(res => {
+      return res.data
     })
-    return new Promise(() => {})
-  })
+    .catch(data => {
+      Loading(false)
+      if (options.headers && options.headers.noAlert) {
+        return Promise.resolve(data)
+      }
+      let errorMsg = data.msg || '网络异常'
+      MessageBox({
+        header: '提示',
+        content: errorMsg,
+        autoClose: 10,
+        confirmText: '知道了'
+      })
+      return new Promise(() => {})
+    })
 }

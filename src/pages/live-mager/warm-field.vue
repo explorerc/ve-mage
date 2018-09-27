@@ -38,7 +38,7 @@
             <div class="from-content">
               <ve-upload-image
                 title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
-                accept="png|jpg|jpeg|bmp|gif"
+                accept="png|jpg|jpeg|bmp"
                 :defaultImg="defaultImg"
                 :fileSize="2048"
                 :errorMsg="uploadImgErrorMsg"
@@ -91,7 +91,6 @@
         },
         isSwitch: false,
         loading: false,
-        videoSize: '200', // 视频限制大小，单位兆
         percentVideo: 0, // 上传进度
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '', // 上传错误信息
@@ -168,8 +167,21 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
+      checkoutParams () {
+        if (!this.warm.recordId) {
+          this.$toast({
+            header: `提示`,
+            content: '请上传暖场视频',
+            autoClose: 2000,
+            position: 'right-top'
+          })
+          return false
+        }
+        return true
+      },
       /* 保存暖场信息 */
       saveWarm () {
+        if (!this.checkoutParams()) return
         LiveHttp.saveAndEditWarmInfo({
           activityId: this.warm.activityId,
           recordId: this.warm.recordId,
@@ -226,7 +238,7 @@
         }
       },
       uploadError (data) {
-        this.uploadImgErrorMsg = '上传图片失败'
+        this.uploadImgErrorMsg = data.msg
       }
     }
   }
