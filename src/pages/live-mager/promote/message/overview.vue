@@ -89,7 +89,7 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :date='date' :wxContent='msgContent' :webinarTime='date' :msgTag='msgTag'></com-phone>
+          <com-phone :titleValue='title' :date='date' :wxContent='msgContent' :webinarTime='webinarTime' :msgTag='msgTag' :webinarName='webinarName'></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->
@@ -105,8 +105,9 @@
 </template>
 
 <script>
-import { formatDate } from 'src/assets/js/date'
-import queryHttp from 'src/api/activity-manger'
+import {formatDate} from 'src/assets/js/date'
+// import queryHttp from 'src/api/activity-manger'
+import noticeService from 'src/api/notice-service'
 import comPhone from '../com-phone'
 export default {
   data () {
@@ -114,44 +115,70 @@ export default {
       activityId: this.$route.params.id,
       id: this.$route.query.id,
       webinarName: '',
+      webinarTime: '',
       title: '',
       group: '',
       status: '',
       time: '',
       date: '',
       msgTag: '',
-      loading: true,
+      loading: false,
       msgContent: ''
     }
   },
   created () {
-    queryHttp.queryMsg(this.id).then((res) => {
-      console.log(res)
+    this.$config({loading: true}).$get(noticeService.GET_QUERY_MSG, {
+      inviteId: this.id
+    }).then((res) => {
       this.group = res.data.groupId
       this.title = res.data.title
       this.status = res.data.status
       this.date = res.data.sendTime
       this.msgTag = res.data.signature
       this.msgContent = res.data.desc
-      this.loading = false
-    }).catch((e) => {
-      console.log(e)
     })
+    this.$config().$get(noticeService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.webinarName = res.data.title
+      this.webinarTime = res.data.startTime
+    })
+    // queryHttp.queryMsg(this.id).then((res) => {
+    //   console.log(res)
+    //   this.group = res.data.groupId
+    //   this.title = res.data.title
+    //   this.status = res.data.status
+    //   this.date = res.data.sendTime
+    //   this.msgTag = res.data.signature
+    //   this.msgContent = res.data.desc
+    //   this.loading = false
+    // }).catch((e) => {
+    //   console.log(e)
+    // })
   },
   methods: {
     sendNow () {
-      queryHttp.sendMsg(this.id).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            content: '发送成功'
-          })
-          this.status = 'SEND'
-          this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$config().$post(noticeService.POST_SEND_MSG, {
+        inviteId: this.id
+      }).then((res) => {
+        this.$toast({
+          content: '发送成功'
+        })
+        this.status = 'SEND'
+        this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
       })
+      // queryHttp.sendMsg(this.id).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       content: '发送成功'
+      //     })
+      //     this.status = 'SEND'
+      //     this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     }
   },
   components: {

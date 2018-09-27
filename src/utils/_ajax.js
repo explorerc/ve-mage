@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import { Loading } from 'components/common/loading'
-import { MessageBox } from 'components/common/message-box'
+import {Loading} from 'components/common/loading'
+import {MessageBox} from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -76,7 +76,7 @@ class $Http {
           return Promise.reject(data)
         } else if (
           Object.prototype.toString.call(this.config.handlers) ===
-            '[object Array]' &&
+          '[object Array]' &&
           ~this.config.handlers.indexOf(data.code)
         ) {
           return Promise.reject(data)
@@ -89,7 +89,7 @@ class $Http {
             confirmText: '知道了'
           })
         }
-        return new Promise(() => {})
+        return new Promise(() => { })
       })
   }
 }

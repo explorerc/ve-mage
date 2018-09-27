@@ -101,7 +101,8 @@
 </template>
 
 <script>
-  import prepareHttp from 'src/api/activity-manger'
+  // import prepareHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   import veTips from 'src/components/ve-msg-tips'
   export default {
     data () {
@@ -225,27 +226,46 @@
         this.quesData.push(obj)
       },
       getLimit () {
-        prepareHttp.getLimit(this.activityId).then((res) => {
-          if (res.code === 200) {
-            console.log(res)
-            if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
-              this.isOpen = true
-              this.queryData = res.data.detail
-              this.quesData = res.data.detail.questionList
-              if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
-                this.queryData.finishTime = ''
-              }
-              if (res.data.detail.finishTime === null) {
-                this.queryData.finishTime = ''
-              }
-              res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
-            } else {
-              this.isOpen = false
-            }
-          }
-        }).catch((res) => {
+        this.$config().$get(activityService.GET_LIMIT, {
+          activityId: this.activityId
+        }).then((res) => {
           console.log(res)
+          if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
+            this.isOpen = true
+            this.queryData = res.data.detail
+            this.quesData = res.data.detail.questionList
+            if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
+              this.queryData.finishTime = ''
+            }
+            if (res.data.detail.finishTime === null) {
+              this.queryData.finishTime = ''
+            }
+            res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
+          } else {
+            this.isOpen = false
+          }
         })
+        // prepareHttp.getLimit(this.activityId).then((res) => {
+        //   if (res.code === 200) {
+        //     console.log(res)
+        //     if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
+        //       this.isOpen = true
+        //       this.queryData = res.data.detail
+        //       this.quesData = res.data.detail.questionList
+        //       if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
+        //         this.queryData.finishTime = ''
+        //       }
+        //       if (res.data.detail.finishTime === null) {
+        //         this.queryData.finishTime = ''
+        //       }
+        //       res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
+        //     } else {
+        //       this.isOpen = false
+        //     }
+        //   }
+        // }).catch((res) => {
+        //   console.log(res)
+        // })
       },
       saveLimit () {
         this.saveData = {
@@ -270,20 +290,26 @@
         })
       },
       saveLimitfn (data) {
-        prepareHttp.saveLimit(data).then((res) => {
-          if (res.code === 200) {
-            // console.log(res)
-            this.$toast({
-              content: '设置成功',
-              position: 'center'
-            })
-          }
-        }).catch((res) => {
+        this.$config().$post(activityService.SAVE_LIMIT, data).then((res) => {
           this.$toast({
-            content: '设置失败',
+            content: '设置成功',
             position: 'center'
           })
         })
+        // prepareHttp.saveLimit(data).then((res) => {
+        //   if (res.code === 200) {
+        //     // console.log(res)
+        //     this.$toast({
+        //       content: '设置成功',
+        //       position: 'center'
+        //     })
+        //   }
+        // }).catch((res) => {
+        //   this.$toast({
+        //     content: '设置失败',
+        //     position: 'center'
+        //   })
+        // })
       },
       openSwitch (res) {
         if (res) {

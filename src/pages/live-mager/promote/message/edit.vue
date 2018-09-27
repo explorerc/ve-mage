@@ -132,7 +132,8 @@
 </template>
 
 <script>
-import createHttp from 'src/api/activity-manger'
+// import createHttp from 'src/api/activity-manger'
+import noticeService from 'src/api/notice-service'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
 export default {
@@ -177,8 +178,8 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      personList: [{id: '', name: '', count: 0, isChecked: false}],
+      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectPersonShow: false,
       selectedCount: 0,
@@ -193,15 +194,24 @@ export default {
   created () {
     this.queryPersonList()
     if (this.inviteId) {
-      createHttp.queryMsg(this.inviteId).then((res) => {
+      this.$config().$get(noticeService.GET_QUERY_MSG, {
+        inviteId: this.inviteId
+      }).then((res) => {
         this.titleValue = res.data.title
         this.sendSetting = res.data.status
         this.date = res.data.sendTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
-      }).catch((e) => {
-        console.log(e)
       })
+      // createHttp.queryMsg(this.inviteId).then((res) => {
+      //   this.titleValue = res.data.title
+      //   this.sendSetting = res.data.status
+      //   this.date = res.data.sendTime.toString()
+      //   this.msgContent = res.data.desc
+      //   this.msgTag = res.data.signature
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     }
   },
   methods: {
@@ -229,20 +239,29 @@ export default {
         signature: this.msgTag
       }
       // 更新
-      createHttp.saveMsg(data).then((res) => {
+      this.$config().$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
           content: '保存成功',
           position: 'center'
         })
         // 跳转到列表页面
-        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
-      }).catch((res) => {
-        this.$toast({
-          content: '保存失败',
-          position: 'center'
-        })
+        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
       })
+      // createHttp.saveMsg(data).then((res) => {
+      //   // console.log(res)
+      //   this.$toast({
+      //     content: '保存成功',
+      //     position: 'center'
+      //   })
+      //   // 跳转到列表页面
+      //   this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
+      // }).catch((res) => {
+      //   this.$toast({
+      //     content: '保存失败',
+      //     position: 'center'
+      //   })
+      // })
     },
     test () {
       this.formValid()
@@ -281,7 +300,7 @@ export default {
     },
     /* 查询人员 */
     queryPersonList () {
-      createHttp.queryPersonList({
+      this.$config().$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id,
         name: this.searchPerson
       }).then((res) => {
@@ -296,6 +315,21 @@ export default {
         })
         this.personList = temArray
       })
+      // createHttp.queryPersonList({
+      //   activityId: this.$route.params.id,
+      //   name: this.searchPerson
+      // }).then((res) => {
+      //   let temArray = []
+      //   res.data.forEach((item) => {
+      //     temArray.push({
+      //       id: item.id,
+      //       name: item.name,
+      //       count: 0,
+      //       isChecked: false
+      //     })
+      //   })
+      //   this.personList = temArray
+      // })
     },
     /* 验证 */
     formValid () {

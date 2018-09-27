@@ -64,7 +64,8 @@
 </template>
 
 <script>
-  import createHttp from 'src/api/activity-manger'
+  import noticeService from 'src/api/notice-service'
+  // import createHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
   export default {
     data () {
@@ -109,16 +110,26 @@
       },
       confirmDel (e) {
         if (e.action === 'confirm') {
-          createHttp.deleteMsg(this.delId).then((res) => {
+          this.$config().$post(noticeService.POST_DELETE_MSG, {
+            inviteId: this.delId
+          }).then((res) => {
             this.tableData.splice(this.delIdx, 1)
             this.$toast({
               content: '删除成功',
               position: 'center'
             })
             this.delConfirm = false
-          }).catch((e) => {
-            console.log(e)
           })
+          // createHttp.deleteMsg(this.delId).then((res) => {
+          //   this.tableData.splice(this.delIdx, 1)
+          //   this.$toast({
+          //     content: '删除成功',
+          //     position: 'center'
+          //   })
+          //   this.delConfirm = false
+          // }).catch((e) => {
+          //   console.log(e)
+          // })
         }
         this.delConfirm = false
       },
@@ -138,18 +149,24 @@
         }
       },
       queryList () {
-        this.loading = true
-        createHttp.queryMsglist(this.queryData).then((res) => {
+        this.$config({loading: true}).$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
           console.log(res)
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
           this.total = parseInt(res.data.total)
-          this.loading = false
-        }).catch((e) => {
-          console.log(e)
-          this.loading = false
         })
+        // createHttp.queryMsglist(this.queryData).then((res) => {
+        //   console.log(res)
+        //   this.tableData = res.data.list
+        //   this.currPage = parseInt(res.data.currPage)
+        //   this.totalPage = parseInt(res.data.totalPage)
+        //   this.total = parseInt(res.data.total)
+        //   this.loading = false
+        // }).catch((e) => {
+        //   console.log(e)
+        //   this.loading = false
+        // })
       },
       currentChange (e) {
         this.queryData.page = e

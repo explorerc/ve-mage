@@ -455,7 +455,9 @@
 <script>
 import comTpl from './com-tpl'
 import comTest from '../com-test'
-import http from 'src/api/activity-manger'
+// import http from 'src/api/activity-manger'
+import noticeService from 'src/api/notice-service'
+import activityService from 'src/api/activity-service'
 // import {getMsg} from './tpl'
 export default {
   data () {
@@ -632,128 +634,241 @@ export default {
     //   }
     // },
     getParams () {
-      http.autoGetparams(this.activityId).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.hourValue = res.data.firstCount
-          this.selhourValue = res.data.firstCount
-          this.minValue = res.data.secondCount
-          this.selminValue = res.data.secondCount
-          this.limit = res.data.webinarLimit
-
-          this.tplData.tag = res.data.tag
-          this.tplData.webinarName = res.data.webinarName
-          this.tplData.date = res.data.date
-          this.tplData.hostName = res.data.hostName
-          this.tplData.firstCount = res.data.firstCount
-          this.tplData.secondCount = res.data.secondCount
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$get(noticeService.GET_AUTO_PARAMS, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.hourValue = res.data.firstCount
+        this.selhourValue = res.data.firstCount
+        this.minValue = res.data.secondCount
+        this.selminValue = res.data.secondCount
+        this.limit = res.data.webinarLimit
+        this.tplData.tag = res.data.tag
+        this.tplData.webinarName = res.data.webinarName
+        this.tplData.date = res.data.date
+        this.tplData.hostName = res.data.hostName
+        this.tplData.firstCount = res.data.firstCount
+        this.tplData.secondCount = res.data.secondCount
       })
+      // http.autoGetparams(this.activityId).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.hourValue = res.data.firstCount
+      //     this.selhourValue = res.data.firstCount
+      //     this.minValue = res.data.secondCount
+      //     this.selminValue = res.data.secondCount
+      //     this.limit = res.data.webinarLimit
+
+      //     this.tplData.tag = res.data.tag
+      //     this.tplData.webinarName = res.data.webinarName
+      //     this.tplData.date = res.data.date
+      //     this.tplData.hostName = res.data.hostName
+      //     this.tplData.firstCount = res.data.firstCount
+      //     this.tplData.secondCount = res.data.secondCount
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     getList () {
-      http.autoList(this.activityId).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          res.data.forEach(item => {
-            switch (item.triggerType) {
-              case 'BEFORE_ORDER':
-                this.renderData['BEFORE_ORDER'].push(item)
-                if (item.type === 'SMS') {
-                  this.itemList['BEFORE_ORDER']['SMS']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_ORDER']['SMS']['status'] = status
-                }
-                if (item.type === 'WECHAT') {
-                  this.itemList['BEFORE_ORDER']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_ORDER']['WECHAT']['status'] = status
-                }
-                break
-              case 'BEFORE_APPLY':
-                this.renderData['BEFORE_APPLY'].push(item)
-                if (item.type === 'SMS') {
-                  this.itemList['BEFORE_APPLY']['SMS']['switch'] = true
-                  this.itemList['BEFORE_APPLY']['SMS']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_APPLY']['SMS']['status'] = status
-                }
-                if (item.type === 'WECHAT') {
-                  this.itemList['BEFORE_APPLY']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_APPLY']['SMS']['status'] = status
-                }
-                break
-              case 'BEFORE_HOUR':
-                this.renderData['BEFORE_HOUR'].push(item)
-                if (item.type === 'SMS') {
-                  this.itemList['BEFORE_HOUR']['SMS']['switch'] = true
-                  this.itemList['BEFORE_HOUR']['SMS']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_HOUR']['SMS']['status'] = status
-                }
-                if (item.type === 'WECHAT') {
-                  this.itemList['BEFORE_HOUR']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_HOUR']['WECHAT']['status'] = status
-                }
-                break
-              case 'BEFORE_MINUTE':
-                this.renderData['BEFORE_MINUTE'].push(item)
-                if (item.type === 'SMS') {
-                  this.itemList['BEFORE_MINUTE']['SMS']['switch'] = true
-                  this.itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_MINUTE']['SMS']['status'] = status
-                }
-                if (item.type === 'WECHAT') {
-                  this.itemList['BEFORE_MINUTE']['WECHAT']['switch'] = true
-                  this.itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['BEFORE_MINUTE']['WECHAT']['status'] = status
-                }
-                break
-              case 'SUBSCRIBE':
-                this.renderData['SUBSCRIBE'].push(item)
-                if (item.type === 'SMS') {
-                  this.itemList['SUBSCRIBE']['SMS']['switch'] = true
-                  this.itemList['SUBSCRIBE']['SMS']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['SUBSCRIBE']['SMS']['status'] = status
-                }
-                if (item.type === 'WECHAT') {
-                  this.itemList['SUBSCRIBE']['WECHAT']['switch'] = true
-                  this.itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['SUBSCRIBE']['WECHAT']['status'] = status
-                }
-                break
-              case 'REPLAY':
-                this.renderData['REPLAY'].push(item)
-                if (item.type === 'SMS') {
-                  this.itemList['REPLAY']['SMS']['switch'] = true
-                  this.itemList['REPLAY']['SMS']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['REPLAY']['SMS']['status'] = status
-                }
-                if (item.type === 'WECHAT') {
-                  this.itemList['REPLAY']['WECHAT']['switch'] = true
-                  this.itemList['REPLAY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-                  const status = this.getStatus(item.status)
-                  this.itemList['REPLAY']['WECHAT']['status'] = status
-                }
-                break
-            }
-          })
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$config({loading: true}).$get(noticeService.GET_AUTO_LIST, {
+        activityId: this.activityId
+      }).then((res) => {
+        res.data.forEach(item => {
+          switch (item.triggerType) {
+            case 'BEFORE_ORDER':
+              this.renderData['BEFORE_ORDER'].push(item)
+              if (item.type === 'SMS') {
+                this.itemList['BEFORE_ORDER']['SMS']['switch'] = true
+                this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_ORDER']['SMS']['status'] = status
+              }
+              if (item.type === 'WECHAT') {
+                this.itemList['BEFORE_ORDER']['WECHAT']['switch'] = true
+                this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_ORDER']['WECHAT']['status'] = status
+              }
+              break
+            case 'BEFORE_APPLY':
+              this.renderData['BEFORE_APPLY'].push(item)
+              if (item.type === 'SMS') {
+                this.itemList['BEFORE_APPLY']['SMS']['switch'] = true
+                this.itemList['BEFORE_APPLY']['SMS']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_APPLY']['SMS']['status'] = status
+              }
+              if (item.type === 'WECHAT') {
+                this.itemList['BEFORE_APPLY']['WECHAT']['switch'] = true
+                this.itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_APPLY']['SMS']['status'] = status
+              }
+              break
+            case 'BEFORE_HOUR':
+              this.renderData['BEFORE_HOUR'].push(item)
+              if (item.type === 'SMS') {
+                this.itemList['BEFORE_HOUR']['SMS']['switch'] = true
+                this.itemList['BEFORE_HOUR']['SMS']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_HOUR']['SMS']['status'] = status
+              }
+              if (item.type === 'WECHAT') {
+                this.itemList['BEFORE_HOUR']['WECHAT']['switch'] = true
+                this.itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_HOUR']['WECHAT']['status'] = status
+              }
+              break
+            case 'BEFORE_MINUTE':
+              this.renderData['BEFORE_MINUTE'].push(item)
+              if (item.type === 'SMS') {
+                this.itemList['BEFORE_MINUTE']['SMS']['switch'] = true
+                this.itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_MINUTE']['SMS']['status'] = status
+              }
+              if (item.type === 'WECHAT') {
+                this.itemList['BEFORE_MINUTE']['WECHAT']['switch'] = true
+                this.itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['BEFORE_MINUTE']['WECHAT']['status'] = status
+              }
+              break
+            case 'SUBSCRIBE':
+              this.renderData['SUBSCRIBE'].push(item)
+              if (item.type === 'SMS') {
+                this.itemList['SUBSCRIBE']['SMS']['switch'] = true
+                this.itemList['SUBSCRIBE']['SMS']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['SUBSCRIBE']['SMS']['status'] = status
+              }
+              if (item.type === 'WECHAT') {
+                this.itemList['SUBSCRIBE']['WECHAT']['switch'] = true
+                this.itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['SUBSCRIBE']['WECHAT']['status'] = status
+              }
+              break
+            case 'REPLAY':
+              this.renderData['REPLAY'].push(item)
+              if (item.type === 'SMS') {
+                this.itemList['REPLAY']['SMS']['switch'] = true
+                this.itemList['REPLAY']['SMS']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['REPLAY']['SMS']['status'] = status
+              }
+              if (item.type === 'WECHAT') {
+                this.itemList['REPLAY']['WECHAT']['switch'] = true
+                this.itemList['REPLAY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+                const status = this.getStatus(item.status)
+                this.itemList['REPLAY']['WECHAT']['status'] = status
+              }
+              break
+          }
+        })
       })
+      // http.autoList(this.activityId).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     res.data.forEach(item => {
+      //       switch (item.triggerType) {
+      //         case 'BEFORE_ORDER':
+      //           this.renderData['BEFORE_ORDER'].push(item)
+      //           if (item.type === 'SMS') {
+      //             this.itemList['BEFORE_ORDER']['SMS']['switch'] = true
+      //             this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_ORDER']['SMS']['status'] = status
+      //           }
+      //           if (item.type === 'WECHAT') {
+      //             this.itemList['BEFORE_ORDER']['WECHAT']['switch'] = true
+      //             this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_ORDER']['WECHAT']['status'] = status
+      //           }
+      //           break
+      //         case 'BEFORE_APPLY':
+      //           this.renderData['BEFORE_APPLY'].push(item)
+      //           if (item.type === 'SMS') {
+      //             this.itemList['BEFORE_APPLY']['SMS']['switch'] = true
+      //             this.itemList['BEFORE_APPLY']['SMS']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_APPLY']['SMS']['status'] = status
+      //           }
+      //           if (item.type === 'WECHAT') {
+      //             this.itemList['BEFORE_APPLY']['WECHAT']['switch'] = true
+      //             this.itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_APPLY']['SMS']['status'] = status
+      //           }
+      //           break
+      //         case 'BEFORE_HOUR':
+      //           this.renderData['BEFORE_HOUR'].push(item)
+      //           if (item.type === 'SMS') {
+      //             this.itemList['BEFORE_HOUR']['SMS']['switch'] = true
+      //             this.itemList['BEFORE_HOUR']['SMS']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_HOUR']['SMS']['status'] = status
+      //           }
+      //           if (item.type === 'WECHAT') {
+      //             this.itemList['BEFORE_HOUR']['WECHAT']['switch'] = true
+      //             this.itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_HOUR']['WECHAT']['status'] = status
+      //           }
+      //           break
+      //         case 'BEFORE_MINUTE':
+      //           this.renderData['BEFORE_MINUTE'].push(item)
+      //           if (item.type === 'SMS') {
+      //             this.itemList['BEFORE_MINUTE']['SMS']['switch'] = true
+      //             this.itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_MINUTE']['SMS']['status'] = status
+      //           }
+      //           if (item.type === 'WECHAT') {
+      //             this.itemList['BEFORE_MINUTE']['WECHAT']['switch'] = true
+      //             this.itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['BEFORE_MINUTE']['WECHAT']['status'] = status
+      //           }
+      //           break
+      //         case 'SUBSCRIBE':
+      //           this.renderData['SUBSCRIBE'].push(item)
+      //           if (item.type === 'SMS') {
+      //             this.itemList['SUBSCRIBE']['SMS']['switch'] = true
+      //             this.itemList['SUBSCRIBE']['SMS']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['SUBSCRIBE']['SMS']['status'] = status
+      //           }
+      //           if (item.type === 'WECHAT') {
+      //             this.itemList['SUBSCRIBE']['WECHAT']['switch'] = true
+      //             this.itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['SUBSCRIBE']['WECHAT']['status'] = status
+      //           }
+      //           break
+      //         case 'REPLAY':
+      //           this.renderData['REPLAY'].push(item)
+      //           if (item.type === 'SMS') {
+      //             this.itemList['REPLAY']['SMS']['switch'] = true
+      //             this.itemList['REPLAY']['SMS']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['REPLAY']['SMS']['status'] = status
+      //           }
+      //           if (item.type === 'WECHAT') {
+      //             this.itemList['REPLAY']['WECHAT']['switch'] = true
+      //             this.itemList['REPLAY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
+      //             const status = this.getStatus(item.status)
+      //             this.itemList['REPLAY']['WECHAT']['status'] = status
+      //           }
+      //           break
+      //       }
+      //     })
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     getStatus (status) {
       let str = ''
@@ -777,15 +892,21 @@ export default {
       return str
     },
     findCountdown () {
-      http.autoFindconfig(this.activityId).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.hourValue = res.data.prehour
-          this.minValue = res.data.preminute
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$get(noticeService.GET_AUTO_CONFIG, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.hourValue = res.data.prehour
+        this.minValue = res.data.preminute
       })
+      // http.autoFindconfig(this.activityId).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.hourValue = res.data.prehour
+      //     this.minValue = res.data.preminute
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     saveCountdown (type) {
       this.firstSel = false
@@ -796,24 +917,37 @@ export default {
         preminute: this.minValue
 
       }
-      http.autoSaveconfig(data).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            content: '设置成功',
-            position: 'center'
-          })
-          if (type === 'hour') {
-            this.hourValue = this.selhourValue
-            this.tplData.firstCount = this.selhourValue
-          } else {
-            this.minValue = this.selminValue
-            this.tplData.secondCount = this.selminValue
-          }
+      this.$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
+        this.$toast({
+          content: '设置成功',
+          position: 'center'
+        })
+        if (type === 'hour') {
+          this.hourValue = this.selhourValue
+          this.tplData.firstCount = this.selhourValue
+        } else {
+          this.minValue = this.selminValue
+          this.tplData.secondCount = this.selminValue
         }
-      }).catch((e) => {
-        console.log(e)
       })
+      // http.autoSaveconfig(data).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       content: '设置成功',
+      //       position: 'center'
+      //     })
+      //     if (type === 'hour') {
+      //       this.hourValue = this.selhourValue
+      //       this.tplData.firstCount = this.selhourValue
+      //     } else {
+      //       this.minValue = this.selminValue
+      //       this.tplData.secondCount = this.selminValue
+      //     }
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     resetCountDown (type) {
       if (type === 'hour') {
@@ -830,39 +964,63 @@ export default {
         submodule: 'EXPAND_NOTICE',
         enabled: type ? 'Y' : 'N'
       }
-      http.detailSwitch(data).then((res) => {
-        if (res.code === 200) {
-          this.$toast({
-            content: '设置成功'
-          })
-        }
+      this.$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$toast({
+          content: '设置成功'
+        })
       })
+      // http.detailSwitch(data).then((res) => {
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       content: '设置成功'
+      //     })
+      //   }
+      // })
     },
     getSwitchinfo () {
-      http.querySwitch(this.activityId).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.isOpen = res.data.EXPAND_NOTICE === 'Y'
-        }
+      this.$get(activityService.GET_QUERY_SWITCH, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.isOpen = res.data.EXPAND_NOTICE === 'Y'
       })
+      // http.querySwitch(this.activityId).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.isOpen = res.data.EXPAND_NOTICE === 'Y'
+      //   }
+      // })
     },
     deleteTask (id, step, type) {
-      http.autoDeletetask(id).then((res) => {
-        if (res.code === 200) {
-          this.renderData[step].forEach((item, idx) => {
-            if (item.noticeTaskId === id) {
-              this.renderData[step].splice(idx, 1)
-            }
-          })
-          this.$toast({
-            content: '设置成功',
-            position: 'center'
-          })
-          this.itemList[step][type]['switch'] = false
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$post(noticeService.POST_DELETE_AUTO_TASK, {
+        noticeTaskId: id
+      }).then((res) => {
+        this.renderData[step].forEach((item, idx) => {
+          if (item.noticeTaskId === id) {
+            this.renderData[step].splice(idx, 1)
+          }
+        })
+        this.$toast({
+          content: '设置成功',
+          position: 'center'
+        })
+        this.itemList[step][type]['switch'] = false
       })
+      // http.autoDeletetask(id).then((res) => {
+      //   if (res.code === 200) {
+      //     this.renderData[step].forEach((item, idx) => {
+      //       if (item.noticeTaskId === id) {
+      //         this.renderData[step].splice(idx, 1)
+      //       }
+      //     })
+      //     this.$toast({
+      //       content: '设置成功',
+      //       position: 'center'
+      //     })
+      //     this.itemList[step][type]['switch'] = false
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     addTask (step, type, templateId) {
       const data = {
@@ -871,19 +1029,27 @@ export default {
         triggerType: step,
         type: type
       }
-      http.autoSavetask(data).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            content: '设置成功',
-            position: 'center'
-          })
-          this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
-          this.itemList[step][type]['switch'] = true
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
+        this.$toast({
+          content: '设置成功',
+          position: 'center'
+        })
+        this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
+        this.itemList[step][type]['switch'] = true
       })
+      // http.autoSavetask(data).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       content: '设置成功',
+      //       position: 'center'
+      //     })
+      //     this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
+      //     this.itemList[step][type]['switch'] = true
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     testSend (triggerType, type, idx) {
       this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/api/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`

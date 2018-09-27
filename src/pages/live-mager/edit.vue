@@ -85,7 +85,8 @@
 <script>
   import VeUpload from 'src/components/ve-upload-image'
   import VeEditer from 'src/components/ve-html5-editer'
-  import http from 'src/api/activity-manger'
+  // import http from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   export default {
     name: 'edit',
     data () {
@@ -164,15 +165,24 @@
         console.log(e)
       },
       queryInfo () {
-        http.webinarInfo(this.activityId).then((res) => {
-          if (res.code === 200) {
-            this.date = res.data.startTime
-            this.title = res.data.title
-            this.poster = res.data.imgUrl
-            this.editorContent = res.data.description
-            this.tagGroup = res.data.tags
-          }
-        }).catch(() => {})
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
+          id: this.activityId
+        }).then((res) => {
+          this.date = res.data.startTime
+          this.title = res.data.title
+          this.poster = res.data.imgUrl
+          this.editorContent = res.data.description
+          this.tagGroup = res.data.tags
+        })
+        // http.webinarInfo(this.activityId).then((res) => {
+        //   if (res.code === 200) {
+        //     this.date = res.data.startTime
+        //     this.title = res.data.title
+        //     this.poster = res.data.imgUrl
+        //     this.editorContent = res.data.description
+        //     this.tagGroup = res.data.tags
+        //   }
+        // }).catch(() => {})
       },
       comfirm () {
         // 提交数据
@@ -196,15 +206,28 @@
         })
       },
       updateWebinfo (isNew, data) { // 新建 创建活动
-        http.updateWebinfo(isNew, data).then((res) => {
-          if (res.code === 200) {
+        if (isNew) {
+          this.$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
-            isNew ? this.successTxt = '创建成功' : this.successTxt = '更新成功'
+            this.successTxt = '创建成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
-          }
-        }).catch((error) => {
-          console.log(error)
-        })
+          })
+        } else {
+          this.$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
+            this.createdSuccess = true
+            this.successTxt = '更新成功'
+            res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+          })
+        }
+        // http.updateWebinfo(isNew, data).then((res) => {
+        //   if (res.code === 200) {
+        //     this.createdSuccess = true
+        //     isNew ? this.successTxt = '创建成功' : this.successTxt = '更新成功'
+        //     res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+        //   }
+        // }).catch((error) => {
+        //   console.log(error)
+        // })
       }
     },
     computed: {

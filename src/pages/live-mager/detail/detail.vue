@@ -398,7 +398,8 @@
 </template>
 
 <script>
-  import http from 'src/api/activity-manger'
+  // import http from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   import processCard from 'components/process-card'
   import messageBox from 'components/common/message-box'
   import comCountdown from 'components/com-countDown'
@@ -523,7 +524,6 @@
         }
       },
       update () {
-        // debugger // eslint-disable-line
         if (this.state === '预约') {
           this.$messageBox({
             header: '提示',
@@ -581,20 +581,29 @@
           submodule: type,
           enabled: status ? 'Y' : 'N'
         }
-        http.detailSwitch(data).then((res) => {
+        this.$config().$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           console.log(res)
           if (res.code === 200) {
             this.$toast({
               'content': '设置成功'
             })
-          } else {
-            console.log('设置失败')
           }
         })
+        // http.detailSwitch(data).then((res) => {
+        //   console.log(res)
+        //   if (res.code === 200) {
+        //     this.$toast({
+        //       'content': '设置成功'
+        //     })
+        //   } else {
+        //     console.log('设置失败')
+        //   }
+        // })
       },
       getDetails () {
-        http.getDetails(this.activityId).then((res) => {
-          // console.log(res)
+        this.$config({loading: true}).$get(activityService.GET_DETAILS, {
+          activityId: this.activityId
+        }).then((res) => {
           if (res.data.activity.countDown.toString() > 0) {
             this.countDownstatus = false
             this.countdownTime = res.data.activity.countDown.toString()
@@ -630,37 +639,97 @@
               break
           }
           this.getStep() // 获取当前阶段
-        }).catch((e) => {
-          console.log(e)
         })
+        // http.getDetails(this.activityId).then((res) => {
+        //   // console.log(res)
+        //   if (res.data.activity.countDown.toString() > 0) {
+        //     this.countDownstatus = false
+        //     this.countdownTime = res.data.activity.countDown.toString()
+        //   } else {
+        //     this.countDownstatus = true
+        //     this.countdownTime = '0'
+        //   }
+        //   this.title = res.data.activity.title
+        //   // this.tagList = res.data.activity.countDown
+        //   this.startTime = res.data.activity.startTime
+        //   this.poster = res.data.activity.imgUrl
+        //   this.dataPrepare = res.data.prepare
+        //   this.dataBrand = res.data.brand
+        //   this.dataPromote = res.data.promote
+        //   this.dataRecord = res.data.record
+        //   this.isPublished = res.data.activity.published === 'Y'
+        //   switch (res.data.activity.status) {
+        //     case ('LIVING'):
+        //       this.state = '直播'
+        //       this.stateClass = 'live'
+        //       break
+        //     case ('PLAYBACK'):
+        //       this.state = '回放'
+        //       this.stateClass = 'record'
+        //       break
+        //     case ('FINISH'):
+        //       this.state = '结束'
+        //       this.stateClass = 'ended'
+        //       break
+        //     case ('PREPARE'):
+        //       this.state = '预约'
+        //       this.stateClass = 'preview'
+        //       break
+        //   }
+        //   this.getStep() // 获取当前阶段
+        // }).catch((e) => {
+        //   console.log(e)
+        // })
       },
       publishActive () { // 发布活动
-        http.publishActive(this.activityId).then((res) => {
-          console.log(res)
-          if (res.code === 200) {
-            this.$toast({
-              content: '活动发布成功',
-              position: 'center'
-            })
-            this.isPublished = true
-            this.currStep = 'isPublish'
-          }
+        this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.$toast({
+            content: '活动发布成功',
+            position: 'center'
+          })
+          this.isPublished = true
+          this.currStep = 'isPublish'
         })
+        // http.publishActive(this.activityId).then((res) => {
+        //   console.log(res)
+        //   if (res.code === 200) {
+        //     this.$toast({
+        //       content: '活动发布成功',
+        //       position: 'center'
+        //     })
+        //     this.isPublished = true
+        //     this.currStep = 'isPublish'
+        //   }
+        // })
       },
       offlineActive () { // 下线活动
-        http.offlineActive(this.activityId).then((res) => {
-          console.log(res)
-          if (res.code === 200) {
-            this.$toast({
-              content: '活动下线成功',
-              position: 'center'
-            })
-            this.isPublished = false
-            if (this.currStep.search('live') === -1) {
-              this.currStep = 'notPublish'
-            }
+        this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.$toast({
+            content: '活动下线成功',
+            position: 'center'
+          })
+          this.isPublished = false
+          if (this.currStep.search('live') === -1) {
+            this.currStep = 'notPublish'
           }
         })
+        // http.offlineActive(this.activityId).then((res) => {
+        //   console.log(res)
+        //   if (res.code === 200) {
+        //     this.$toast({
+        //       content: '活动下线成功',
+        //       position: 'center'
+        //     })
+        //     this.isPublished = false
+        //     if (this.currStep.search('live') === -1) {
+        //       this.currStep = 'notPublish'
+        //     }
+        //   }
+        // })
       },
       getStep () { // 获取当前活动阶段
         switch (this.state) {

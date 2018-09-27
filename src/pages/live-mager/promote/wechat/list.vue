@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-  import createHttp from 'src/api/activity-manger'
+  import noticeService from 'src/api/notice-service'
   import VePagination from 'src/components/ve-pagination'
   export default {
     data () {
@@ -109,16 +109,21 @@
       },
       confirmDel (e) {
         if (e.action === 'confirm') {
-          createHttp.deleteWechat(this.delId).then((res) => {
+          this.$config().$post(noticeService.POST_DELETE_WECHAT, {
+            inviteId: this.delId
+          }).then((res) => {
             this.tableData.splice(this.delIdx, 1)
             this.$toast({
               content: '删除成功',
               position: 'center'
             })
             this.delConfirm = false
-          }).catch((e) => {
-            console.log(e)
           })
+          // createHttp.deleteWechat(this.delId).then((res) => {
+
+          // }).catch((e) => {
+          //   console.log(e)
+          // })
         }
         this.delConfirm = false
       },
@@ -133,18 +138,23 @@
         }
       },
       queryList () {
-        this.loading = true
-        createHttp.queryWechatlist(this.queryData).then((res) => {
-          console.log(res)
+        this.$config({loading: true}).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
           this.total = parseInt(res.data.total)
-          this.loading = false
-        }).catch((e) => {
-          console.log(e)
-          this.loading = false
         })
+        // createHttp.queryWechatlist(this.queryData).then((res) => {
+        //   console.log(res)
+        //   this.tableData = res.data.list
+        //   this.currPage = parseInt(res.data.currPage)
+        //   this.totalPage = parseInt(res.data.totalPage)
+        //   this.total = parseInt(res.data.total)
+        //   this.loading = false
+        // }).catch((e) => {
+        //   console.log(e)
+        //   this.loading = false
+        // })
       },
       currentChange (e) {
         this.queryData.page = e

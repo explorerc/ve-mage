@@ -115,7 +115,8 @@
 </template>
 
 <script>
-  import createHttp from 'src/api/activity-manger'
+  // import createHttp from 'src/api/activity-manger'
+  import noticeService from 'src/api/notice-service'
   import comTest from '../com-test'
   import comPhone from '../com-phone'
   import veTips from 'src/components/ve-msg-tips'
@@ -162,8 +163,8 @@
         webinarTime: '',
         loading: false,
         searchPerson: '',
-        personList: [{ id: '', name: '', count: 0, isChecked: false }],
-        selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+        personList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
         selectedPersonListStr: '',
         selectPersonShow: false,
         selectedCount: 0,
@@ -178,25 +179,33 @@
     created () {
       this.queryPersonList()
       if (this.inviteId) {
-        this.loading = true
-        createHttp.queryWechat(this.inviteId).then((res) => {
-          // console.log(res)
+        this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
+          inviteId: this.inviteId
+        }).then((res) => {
           this.titleValue = res.data.title
           this.sendSetting = res.data.status
           this.date = res.data.planTime.toString()
           this.wxContent = res.data.desc
-        }).catch((e) => {
-          console.log(e)
         })
-        createHttp.webinarInfo(this.activityId).then((res) => {
-          if (res.code === 200) {
-            this.webinarName = res.data.title
-            this.webinarTime = res.data.startTime
-            this.loading = false
-          }
-        }).catch((e) => {
-          this.loading = false
+        // createHttp.queryWechat(this.inviteId).then((res) => {
+        //   // console.log(res)
+
+        // }).catch((e) => {
+        //   console.log(e)
+        // })
+        this.$config({loading: true}).$get(noticeService.GET_WEBINAR_INFO, {
+          id: this.activityId
+        }).then((res) => {
+          this.webinarName = res.data.title
+          this.webinarTime = res.data.startTime
         })
+        // createHttp.webinarInfo(this.activityId).then((res) => {
+        //   if (res.code === 200) {
+        //     this.loading = false
+        //   }
+        // }).catch((e) => {
+        //   this.loading = false
+        // })
       }
     },
     methods: {
@@ -224,20 +233,23 @@
           planTime: this.date
         }
         // 更新
-        createHttp.saveWechat(data).then((res) => {
+        this.$config().$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
             content: '保存成功',
             position: 'center'
           })
           // 跳转到列表页面
-          this.$router.push({ name: 'promoteWechat', params: { id: this.activityId } })
-        }).catch((res) => {
-          this.$toast({
-            content: '保存失败',
-            position: 'center'
-          })
+          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
         })
+        // createHttp.saveWechat(data).then((res) => {
+
+        // }).catch((res) => {
+        //   this.$toast({
+        //     content: '保存失败',
+        //     position: 'center'
+        //   })
+        // })
       },
       testSend () {
         this.formValid()
@@ -291,7 +303,7 @@
       },
       /* 查询人员 */
       queryPersonList () {
-        createHttp.queryPersonList({
+        this.$config().$get(noticeService.GET_PERSON_LIST, {
           activityId: this.$route.params.id,
           name: this.searchPerson
         }).then((res) => {
@@ -306,6 +318,11 @@
           })
           this.personList = temArray
         })
+        // createHttp.queryPersonList({
+
+        // }).then((res) => {
+
+        // })
       },
       /* 验证 */
       formValid () {
