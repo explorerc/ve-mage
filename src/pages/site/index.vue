@@ -1,20 +1,20 @@
 <template>
   <div class="site-container">
     <div class="group">
-      <div class="title">活动官网 <el-switch
-          v-model="enable"
-          inactive-color="#DEE1FF"
-          :width="32"
-          active-color="#FFD021"
-          @change="updateState"
-        >
+      <div class="title">活动官网 <el-switch v-model="enable"
+                   inactive-color="#DEE1FF"
+                   :width="32"
+                   active-color="#FFD021"
+                   @change="updateState">
         </el-switch>
       </div>
     </div>
     <div class="group">
       <div class="fwn">我的模版</div>
-      <div class="group-content" >
-        <div class="template-block" style="" v-if="this.data.tid">
+      <div class="group-content">
+        <div class="template-block"
+             style=""
+             v-if="this.data.tid">
           <img :src="this[`t${data.tid}`]" >
           <div class="option-wrap">
             <div class="option-group">
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import brandService from 'src/api/brand-manage'
+import brandService from 'src/api/brand-service'
 import defaultData from './templateData'
 
 export default {
@@ -92,8 +92,7 @@ export default {
   },
   methods: {
     init () {
-      brandService.getSiteData({
-        __loading: true,
+      this.$config({ loading: true }).$get(brandService.GET_SITE_DATA, {
         activityId: this.$route.params.id
       }).then(res => {
         if (res.data.enabled === 'Y') {
@@ -117,12 +116,11 @@ export default {
       }
     },
     updateState () {
-      brandService.updateSiteState({
-        __loading: true,
+      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
-      }).then(data => {
+      }).then(res => {
         this.$toast({
           content: '保存成功',
           autoClose: 2000
@@ -134,11 +132,10 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      brandService.updateSiteData({
-        __loading: true,
+      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
-      }).then(data => {
+      }).then(res => {
         this.data = temData
         this.$toast({
           content: '设置成功',

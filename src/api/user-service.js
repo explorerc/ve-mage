@@ -12,5 +12,7 @@ export default {
   POST_VERIFY_MOBILE: '/common/message/verify-code',
   POST_UPDATE_MOBILE: '/user/business-user/update-mobile',
   POST_BACK_PASSWORD: '/user/business-user/update-password-by-code-token',
-  GET_INDUSTRIES: '/common/user/industry-list'
+  GET_INDUSTRIES: '/common/user/industry-list',
+  GET_CODE: '/common/message/send-code',
+  GET_CAPTCHA_ID: '/common/message/get-captchaid'
 }

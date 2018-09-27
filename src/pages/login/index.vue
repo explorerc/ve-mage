@@ -101,11 +101,9 @@
 <script>
 import MyInput from './login-input'
 import userService from 'src/api/user-service'
-
-import identifyingcodeManage from 'src/api/identifyingcode-manage'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
-import account from 'src/api/account-manage'
+
 export default {
   data () {
     return {
@@ -139,33 +137,30 @@ export default {
     isLogin: state => state.isLogin
   }),
   created () {
-    let data = {}
-    identifyingcodeManage.getCodeId(data).then((res) => {
-      if (res.code !== 200) {
-        console.log(res.msg)
-      } else {
-        let _self = this
-        this.key = res.data
-        window.initNECaptcha({
-          captchaId: _self.key,
-          element: '#captcha',
-          mode: 'float',
-          width: 260,
-          onReady: function (instance) { },
-          onVerify: function (err, data) {
-            if (data) {
-              _self.phoneKey = data.validate
-              _self.isImg = true
-            }
-            if (err) {
-              console.log(err)
-            }
-          },
-          onError: function () { }
-        }, function onload (instance) {
-          _self.cap = instance
-        })
-      }
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
+      let _self = this
+      this.key = res.data
+      window.initNECaptcha({
+        captchaId: _self.key,
+        element: '#captcha',
+        mode: 'float',
+        width: 260,
+        onReady: function (instance) { },
+        onVerify: function (err, data) {
+          if (data) {
+            _self.phoneKey = data.validate
+            _self.isImg = true
+          }
+          if (err) {
+            console.log(err)
+          }
+        },
+        onError: function () { }
+      }, function onload (instance) {
+        _self.cap = instance
+      })
+    }).catch(err => {
+      console.log(err.msg)
     })
   },
   destroyed () {
@@ -208,11 +203,8 @@ export default {
       }
       this.$config({ handlers: true }).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
         sessionStorage.setItem('isLogin', true)
-        account.getAccount({}).then((res) => {
-          if (res.code !== 200) {
-          } else {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-          }
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
         })
         this.setIsLogin(1)
         this.$router.replace('/setAccount')
@@ -248,11 +240,8 @@ export default {
       }
       this.$config({ handlers: true }).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
         sessionStorage.setItem('isLogin', true)
-        account.getAccount({}).then((res) => {
-          if (res.code !== 200) {
-          } else {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-          }
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
         })
         this.setIsLogin(1)
         this.isSend = true
@@ -292,38 +281,36 @@ export default {
         'type': 'BUSINESS_USER_LOGIN',
         captcha: this.phoneKey
       }
-      identifyingcodeManage.getCode(data).then((res) => {
-        if (res.code !== 200) {
-          if (res.code === 10050) {
-            this.mobileError = '验证码输入过于频繁'
-          } else {
-            this.mobileError = res.msg
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
           }
-          this.mobileOpacity = 1
-          clearInterval(this.timerr)
-          this.isSend = false
-          this.isProhibit = true
-          this.second = 60
-          this.isImg = false
-          this.phoneKey = ''
-          this.cap.refresh()
+        }, 1000)
+      }).catch(err => {
+        if (err.code === 10050) {
+          this.mobileError = '验证码输入过于频繁'
         } else {
-          this.isSend = true
-          this.isProhibit = true
-          clearInterval(this.timerr)
-          this.timerr = setInterval(() => {
-            this.second--
-            if (this.second <= 0) {
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }, 1000)
+          this.mobileError = err.msg
         }
+        this.mobileOpacity = 1
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
       })
     },
     isGetCodePermission (val) {

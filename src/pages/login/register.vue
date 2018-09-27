@@ -92,7 +92,7 @@
 <script>
 import MyInput from './login-input'
 import userService from 'src/api/user-service'
-import identifyingcodeManage from 'src/api/identifyingcode-manage'
+
 export default {
   data () {
     return {
@@ -121,35 +121,32 @@ export default {
     'com-input': MyInput
   },
   created () {
-    let data = {}
-    identifyingcodeManage.getCodeId(data).then((res) => {
-      if (res.code !== 200) {
-        console.log(res.msg)
-      } else {
-        let _self = this
-        this.key = res.data
-        window.initNECaptcha({
-          captchaId: _self.key,
-          element: '#captcha',
-          mode: 'float',
-          width: 260,
-          onReady: function (instance) {
-          },
-          onVerify: function (err, data) {
-            if (data) {
-              _self.phoneKey = data.validate
-              _self.isImg = true
-            }
-            if (err) {
-              console.log(err)
-            }
-          },
-          onError: function () {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
+      let _self = this
+      this.key = res.data
+      window.initNECaptcha({
+        captchaId: _self.key,
+        element: '#captcha',
+        mode: 'float',
+        width: 260,
+        onReady: function (instance) {
+        },
+        onVerify: function (err, data) {
+          if (data) {
+            _self.phoneKey = data.validate
+            _self.isImg = true
           }
-        }, function onload (instance) {
-          _self.cap = instance
-        })
-      }
+          if (err) {
+            console.log(err)
+          }
+        },
+        onError: function () {
+        }
+      }, function onload (instance) {
+        _self.cap = instance
+      })
+    }).catch(err => {
+      console.log(err.msg)
     })
   },
   destroyed () {
@@ -206,38 +203,36 @@ export default {
         'type': 'BUSINESS_USER_REG',
         captcha: this.phoneKey
       }
-      identifyingcodeManage.getCode(data).then((res) => {
-        if (res.code !== 200) {
-          if (res.code === 10050) {
-            this.error = '验证码输入过于频繁'
-          } else {
-            this.error = res.msg
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
           }
-          this.opacity = 1
-          clearInterval(this.timerr)
-          this.isSend = false
-          this.isProhibit = true
-          this.second = 60
-          this.isImg = false
-          this.phoneKey = ''
-          this.cap.refresh()
+        }, 1000)
+      }).catch(err => {
+        if (err.code === 10050) {
+          this.error = '验证码输入过于频繁'
         } else {
-          this.isSend = true
-          this.isProhibit = true
-          clearInterval(this.timerr)
-          this.timerr = setInterval(() => {
-            this.second--
-            if (this.second <= 0) {
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }, 1000)
+          this.error = err.msg
         }
+        this.opacity = 1
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
       })
     },
     submit () {
