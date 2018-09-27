@@ -1,12 +1,14 @@
 <template>
-  <div class="ve-upload-box" v-ComLoading="loading" com-loading-text="loading...">
+  <div class="ve-upload-box" v-ComLoading="loading" com-loading-text="上传准备中...">
     <transition name="fade">
       <div class="ve-upload-video" v-if="fileName">
         <span :class='{"mp4-video-icon":true,"mp4-eror":errorTxt}'>.Mp4</span>
         <span class="file-name">{{fileName}}</span>
         <span class="error-msg" v-if="errorTxt">{{errorTxt}}</span>
         <span class="file-size"
-              v-else-if="!isConvert">{{fileRealSize}}M/{{(fileRealSize*percentVideo/100).toFixed(2)}}M</span>
+              v-else-if="!isConvert&&percentVideo!=100&&percentVideo!=0">{{fileRealSize}}M/{{(fileRealSize*percentVideo/100).toFixed(2)}}M</span>
+        <span class="file-size"
+              v-else-if="!isConvert&&(percentVideo==100||percentVideo==0)">{{fileRealSize}}M</span>
         <span class="file-convert" v-else="isConvert">上传成功，转码中…</span>
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
@@ -124,7 +126,6 @@
               app_id: this.sdk.app_id
             },
             beforeUpload: (file) => {
-              debugger
               this.fileName = file.name
               this.fileRealSize = file.size / 1024 / 1024
               if (file.type !== 'video/mp4') {
@@ -142,11 +143,10 @@
               return true
             },
             progress: (percent) => {
-              // console.log(`percent=${percent}`)
               this.loading = false
-              // if (this.percentVideo - 0 >= percent - 0) return
-              // console.log(`percentVideo=${this.percentVideo}`)
-              this.percentVideo = parseFloat(percent.replace('%', ''))
+              const temPercent = parseFloat(percent.replace('%', ''))
+              if (this.percentVideo >= temPercent) return
+              this.percentVideo = temPercent
             },
             uploadSuccess () {
               document.getElementById('confirmUpload').click()
