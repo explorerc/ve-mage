@@ -30,11 +30,11 @@
           :data="playBackList"
           style="width: 100%">
           <!--<el-table-column-->
-            <!--label="缩略图">-->
-            <!--<div slot-scope="scope" class="play-back-cover">-->
-              <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
-              <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
-            <!--</div>-->
+          <!--label="缩略图">-->
+          <!--<div slot-scope="scope" class="play-back-cover">-->
+          <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
+          <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
+          <!--</div>-->
           <!--</el-table-column>-->
           <el-table-column
             prop="title"
@@ -101,7 +101,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagination-box">
+        <div class="pagination-box" v-if="total>pageSize">
           <div class="page-pagination">
             <ve-pagination
               :total="total"
