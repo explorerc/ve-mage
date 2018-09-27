@@ -42,22 +42,22 @@ class $Http {
     this.config = {}
     this.options = {}
   }
-  config (config) {
+  $config (config = {}) {
     this.config = config
     if (this.config.headers) {
       this.options.headers = this.config.headers
     }
     return this
   }
-  $get (url, data) {
+  $get (url, data = {}) {
     this.options.method = 'get'
     this.options.params = data
-    this._ajax(url)
+    return this.ajax(url)
   }
-  $post (url, data) {
+  $post (url, data = {}) {
     this.options.method = 'post'
     this.options.data = qs.stringify(data)
-    this._ajax(url)
+    return this.ajax(url)
   }
   ajax (url) {
     this.options.url = BASE_URL + url
@@ -73,12 +73,13 @@ class $Http {
       .catch(data => {
         Loading(false)
         if (this.config.handlers === true) {
-          return Promise.resolve(data)
+          return Promise.reject(data)
         } else if (
-          Object.prototype.toString.call(this.config.handlers) &&
+          Object.prototype.toString.call(this.config.handlers) ===
+            '[object Array]' &&
           ~this.config.handlers.indexOf(data.code)
         ) {
-          return Promise.resolve(data)
+          return Promise.reject(data)
         } else {
           let errorMsg = data.msg || '网络异常'
           MessageBox({
@@ -96,7 +97,7 @@ class $Http {
 export default Vue => {
   Vue.prototype.$config = config => {
     let http = new $Http(this)
-    return http.config(config)
+    return http.$config(config)
   }
   Vue.prototype.$get = (url, data) => {
     let http = new $Http(this)
