@@ -38,7 +38,7 @@
             <div class="from-content">
               <ve-upload-image
                 title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
-                accept="png|jpg|jpeg|bmp|gif"
+                accept="png|jpg|jpeg|bmp"
                 :defaultImg="defaultImg"
                 :fileSize="2048"
                 :errorMsg="uploadImgErrorMsg"
@@ -79,7 +79,8 @@
           signed_at: '',
           app_id: '',
           fileName: '',
-          fileSize: ''
+          fileSize: '',
+          transcode_status: 0
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -90,7 +91,6 @@
         },
         isSwitch: false,
         loading: false,
-        videoSize: '200', // 视频限制大小，单位兆
         percentVideo: 0, // 上传进度
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '', // 上传错误信息
@@ -145,6 +145,7 @@
             this.sdkPlayParam.recordId = res.data.recordId
             this.sdkParam.fileName = res.data.filename
             this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+            this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
           }
         }).then(() => {
           /* 获取pass信息 */
@@ -166,8 +167,21 @@
       uploadVideo () {
         document.getElementById('upload').click()
       },
+      checkoutParams () {
+        if (!this.warm.recordId) {
+          this.$toast({
+            header: `提示`,
+            content: '请上传暖场视频',
+            autoClose: 2000,
+            position: 'right-top'
+          })
+          return false
+        }
+        return true
+      },
       /* 保存暖场信息 */
       saveWarm () {
+        if (!this.checkoutParams()) return
         LiveHttp.saveAndEditWarmInfo({
           activityId: this.warm.activityId,
           recordId: this.warm.recordId,
@@ -191,9 +205,12 @@
         this.warm.playCover = data.name
       },
       /* 上传视频成功 */
-      uploadVideoSuccess (recordId, fileName) {
+      uploadVideoSuccess (recordId, fileName, fileSize) {
         this.warm.recordId = recordId
         this.warm.filename = fileName
+        this.sdkParam.fileName = fileName
+        this.sdkParam.fileSize = fileSize
+        this.sdkPlayParam.recordId = recordId
       },
       /* 预览，删除触发 */
       handleVideoClick (e) {
@@ -211,15 +228,17 @@
               if (e.action === 'confirm') {
                 this.warm.recordId = ''
                 this.warm.filename = ''
+                this.sdkPlayParam.recordId = ''
                 this.sdkParam.fileName = ''
                 this.sdkParam.fileSize = ''
+                this.sdkParam.transcode_status = 0
               }
             }
           })
         }
       },
       uploadError (data) {
-        this.uploadImgErrorMsg = '上传图片失败'
+        this.uploadImgErrorMsg = data.msg
       }
     }
   }
@@ -228,11 +247,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>
