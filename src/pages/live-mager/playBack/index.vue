@@ -30,11 +30,11 @@
           :data="playBackList"
           style="width: 100%">
           <!--<el-table-column-->
-            <!--label="缩略图">-->
-            <!--<div slot-scope="scope" class="play-back-cover">-->
-              <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
-              <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
-            <!--</div>-->
+          <!--label="缩略图">-->
+          <!--<div slot-scope="scope" class="play-back-cover">-->
+          <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
+          <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
+          <!--</div>-->
           <!--</el-table-column>-->
           <el-table-column
             prop="title"
@@ -44,7 +44,7 @@
             prop="duration"
             label="时长">
             <template slot-scope="scope">
-              {{scope.row.duration | isEmpty}}
+              {{scope.row.duration | formatTime}}
             </template>
           </el-table-column>
           <el-table-column
@@ -101,7 +101,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagination-box">
+        <div class="pagination-box" v-if="total>pageSize">
           <div class="page-pagination">
             <ve-pagination
               :total="total"
@@ -151,9 +151,9 @@
             <div class="from-title"><i class="star">*</i>上传视频：</div>
             <div class="from-content">
               <ve-upload-video
-                title="视频仅支持mp4格式，文件大小不超过200M"
-                accept="mp4"
-                :fileSize="204800"
+                title="选择视频"
+                accept="mp4|avi|3gp|mov|mkv|flv|rm|rmvb"
+                :fileSize="4096000"
                 :errorMsg="recordIdError"
                 :sdk="sdkParam"
                 @handleClick="handleVideoClick"
@@ -200,6 +200,7 @@
                   accept="png|jpg|jpeg"
                   :defaultImg="defaultImg"
                   :fileSize="1024"
+                  :errorMsg="uploadImgErrorMsg"
                   @error="uploadError"
                   @success="uploadImgSuccess"></ve-upload-image>
               </div>
@@ -276,6 +277,7 @@
           recordId: '', // 回放视频id
           linkVideo: '' // 外链视频
         },
+        tempPlayBackCover: '',
         playBack: {
           isSwitch: true,
           replayId: '',
@@ -298,22 +300,34 @@
         recordId: '',
         activityId: '',
         page: 1,
-        pageSize: 8,
+        pageSize: 25,
         total: 0,
         outLineLink: '',
         outLineMode: '0',
         playBackMode: '0',
         uploadErrorMsg: '',
+        uploadImgErrorMsg: '',
         playMsg: '',
         prePlayShow: false
       }
     },
+    filters: {
+      formatTime: function (value) {
+        if (value) {
+          let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+          let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+          let s = ((value % 60 >> 0) + '').padStart(2, 0)
+          return `${h}:${m}:${s}`
+        }
+        return value || '--'
+      }
+    },
     computed: {
       defaultImg () {
-        if (!this.playBack.playBackCover) {
+        if (!this.tempPlayBackCover) {
           return ''
         }
-        return `${this.$imgHost}/${this.playBack.playBackCover}`
+        return `${this.$imgHost}/${this.tempPlayBackCover}`
       }
     },
     watch: {
@@ -354,6 +368,7 @@
             playBackCover: res.data.cover,
             outLineLink: ''
           }
+          this.tempPlayBackCover = res.data.cover
           this.outLineMode = res.data.offlineType === outLineMode.TIMING ? '1' : '0'
         }).then(() => {
           this.queryPlayBackList()
@@ -427,6 +442,7 @@
       playBackSetting (idx) {
         this.playBackShow = true
         this.selectRowIdx = idx
+        this.tempPlayBackCover = this.playBack.playBackCover
       },
       /* 取消默认回放 */
       cancelPlayBack (idx) {
@@ -487,6 +503,14 @@
             dl.href = res.data.downloadUrl
             dl.click()
           }
+        }).catch(e => {
+          let errorMsg = e.msg || '网络异常'
+          this.$messageBox({
+            header: '提示',
+            content: errorMsg,
+            autoClose: 5,
+            confirmText: '知道了'
+          })
         })
       },
       addVideoClickShow () {
@@ -554,6 +578,7 @@
               return
             }
           }
+          this.playBack.playBackCover = this.tempPlayBackCover
           const replayId = this.playBackList[this.selectRowIdx].replayId
           PlayBackHttp.savePlayBackConfig({
             replayId: replayId,
@@ -564,6 +589,8 @@
             if (res.code !== 200) return
             this.playBack.replayId = replayId
           })
+        } else {
+          this.tempPlayBackCover = ''
         }
         this.playBackShow = false
       },
@@ -616,10 +643,10 @@
         return true
       },
       uploadImgSuccess (data) {
-        this.playBack.playBackCover = data.name
+        this.tempPlayBackCover = data.name
       },
       uploadError (data) {
-        console.log('上传失败:', data)
+        this.uploadImgErrorMsg = data.msg
       },
       uploadVideo () {
         document.getElementById('upload').click()

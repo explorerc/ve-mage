@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-import userService from 'src/api/user-service'
+import userService from 'src/api/user-service.js'
 import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 import EventBus from 'src/utils/eventBus'

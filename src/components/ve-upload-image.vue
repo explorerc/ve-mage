@@ -80,6 +80,9 @@
       defaultImg: {
         handler (val) {
           this.coverImg = val
+          if (!val) {
+            this.fileSrc = ''
+          }
         },
         immediate: true
       },

@@ -121,7 +121,7 @@
       </message-box>
     </div>
     <div class="email-bottom">
-      <button class="primary-button fr" @click="send">发送</button>
+      <button :class="{'primary-button':true, fr:true,disabled:disabledBtn}" @click="send">发送</button>
       <button class="primary-button margin-fl fr" @click="saveEmail">保存草稿</button>
     </div>
   </div>
@@ -147,6 +147,7 @@
         selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
         selectedPersonListStr: '',
         selectedCount: 0,
+        disabledBtn: false,
         errorMsg: {
           title: '',
           content: '',
@@ -174,6 +175,7 @@
       emailInfo: {
         handler (newVal) {
           this.email = {...this.email, ...newVal}
+          this.sendType = this.email.planTime ? 'ONCE' : 'AUTO'
         },
         immediate: true
       },
@@ -306,28 +308,41 @@
       sendEmail () {
         if (this.isTimer && !this.email.planTime) {
           this.errorMsg.planTime = '定时时间不能为空'
+          this.disabledBtn = false
           return
         }
-        if (!this.checkParams(this.isTimer)) return
+        if (!this.checkParams(this.isTimer)) {
+          this.disabledBtn = false
+          return
+        }
         this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         if (this.isTimer) { // 发送定时邮件
           LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
+            this.disabledBtn = false
+          }).catch(() => {
+            this.disabledBtn = false
           })
         } else { // 保存并发送
           LiveHttp.saveAndsendEmail(this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
+            this.disabledBtn = false
+          }).catch(() => {
+            this.disabledBtn = false
           })
         }
       },
       send () {
-        if (this.sendType === 'AUTO') {
-          this.isTimer = false
-          this.immediatelySend()
-        } else if (this.sendType === 'ONCE') {
-          this.isTimer = true
-          this.sendEmail()
-        }
+        this.disabledBtn = true
+        this.$nextTick(() => {
+          if (this.sendType === 'AUTO') {
+            this.isTimer = false
+            this.immediatelySend()
+          } else if (this.sendType === 'ONCE') {
+            this.isTimer = true
+            this.sendEmail()
+          }
+        })
       },
       immediatelySend () {
         this.email.planTime = ''
@@ -354,6 +369,7 @@
         return true
       },
       goBack () {
+        this.storeEmailInfo(this.email)
         this.$router.go(-1)
       }
     }

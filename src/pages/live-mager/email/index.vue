@@ -9,7 +9,7 @@
       <div class="tip-box">
         通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
       </div>
-      <div class="table-list-box">
+      <div class="table-list-box" style="padding-top: 20px;">
         <el-table
           :data="emailList"
           style="width: 100%">
@@ -288,6 +288,10 @@
 
 .dd-status {
   color: #ff8b0e;
+}
+
+.email-box{
+  margin-top: 20px;
 }
 </style>
 
