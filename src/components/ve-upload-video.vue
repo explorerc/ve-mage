@@ -131,10 +131,11 @@
               if (file.type !== 'video/mp4') {
                 this.errorTxt = '不支持该视频格式，请上传mp4格式视频'
                 return false
-              } else if (this.fileRealSize > this.videoSize) {
-                this.errorTxt = '视频太大，请不要大于200M'
+              } else if (this.fileRealSize > this.fileSize / 1024) {
+                this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
                 return false
               }
+              console.log(this.fileSize)
               this.loading = true
               this.errorTxt = ''
               this.percentVideo = 0
