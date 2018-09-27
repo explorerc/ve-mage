@@ -54,7 +54,7 @@
     data () {
       return {
         show: false,
-        pageSize: 8,
+        pageSize: 16,
         loading: false,
         optionsStates: [
           { value: '', label: '全部' },
@@ -72,7 +72,7 @@
           sortBy: 'createTime',
           keyword: '',
           page: 1,
-          pageSize: 8
+          pageSize: 16
         },
         tableList: [],
         total: 0
