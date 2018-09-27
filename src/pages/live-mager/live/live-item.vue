@@ -107,7 +107,7 @@
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', {...action, ...this.liveData})
+        this.$emit('handleClick', { ...action, ...this.liveData })
       }
     }
   }

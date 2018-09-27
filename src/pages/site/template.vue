@@ -179,7 +179,7 @@ export default {
         this.com = `t${this.ptid}`
       } else {
         activityService.webinarInfo(this.tid).then(res => {
-          ({title: this.title, published: this.published} = res.data)
+          ({ title: this.title, published: this.published } = res.data)
           this.share.title = res.data.title
           this.share.des = ''
           this.share.imgUrl = res.data.imgUrl ? this.host + res.data.imgUrl : ''
