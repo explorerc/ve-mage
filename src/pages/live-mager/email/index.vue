@@ -108,7 +108,8 @@
 </template>
 
 <script>
-  import LiveHttp from 'src/api/activity-manger'
+  // import LiveHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   import VePagination from 'src/components/ve-pagination'
   import {mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
@@ -176,26 +177,40 @@
         this.queryEmailListById()
       },
       queryEmailListById () {
-        this.loading = true
-        LiveHttp.queryEmailList({
+        // this.loading = true
+        this.$config({loading: true}).$get(activityService.GET_EMAIL_LIST, {
           activityId: this.activeId,
           pageSize: this.pageSize,
           page: this.currentPage
         }).then((res) => {
-          this.loading = false
-          if (res.code === 200) {
-            res.data.list.map((dataItem) => {
-              dataItem.statusName = statusType[dataItem.status]
-              dataItem.sendTime = dataItem.sendTime || '--'
-              dataItem.title = dataItem.title || '--'
-              return dataItem
-            })
-            this.total = res.data.total
-            this.emailList = res.data.list
-          }
-        }).catch(() => {
-          this.loading = false
+          res.data.list.map((dataItem) => {
+            dataItem.statusName = statusType[dataItem.status]
+            dataItem.sendTime = dataItem.sendTime || '--'
+            dataItem.title = dataItem.title || '--'
+            return dataItem
+          })
+          this.total = res.data.total
+          this.emailList = res.data.list
         })
+        // LiveHttp.queryEmailList({
+        //   activityId: this.activeId,
+        //   pageSize: this.pageSize,
+        //   page: this.currentPage
+        // }).then((res) => {
+        //   this.loading = false
+        //   if (res.code === 200) {
+        //     res.data.list.map((dataItem) => {
+        //       dataItem.statusName = statusType[dataItem.status]
+        //       dataItem.sendTime = dataItem.sendTime || '--'
+        //       dataItem.title = dataItem.title || '--'
+        //       return dataItem
+        //     })
+        //     this.total = res.data.total
+        //     this.emailList = res.data.list
+        //   }
+        // }).catch(() => {
+        //   this.loading = false
+        // })
       },
       clickEmail (idx, type) {
         this.currentEmailIdx = idx
@@ -226,15 +241,21 @@
         this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
       },
       sendEmail () {
-        LiveHttp.sendEmailInfo({
+        this.$post(activityService.POST_SEND_EMAIL_INFO, {
           emailInviteId: this.emailList[this.currentEmailIdx].emailInviteId
         }).then((res) => {
           console.log('邮件发送成功')
           console.log(res)
-        }).catch((e) => {
-          console.log('邮件发送失败')
-          console.log(e)
         })
+        // LiveHttp.sendEmailInfo({
+        //   emailInviteId: this.emailList[this.currentEmailIdx].emailInviteId
+        // }).then((res) => {
+        //   console.log('邮件发送成功')
+        //   console.log(res)
+        // }).catch((e) => {
+        //   console.log('邮件发送失败')
+        //   console.log(e)
+        // })
       },
       handleClickSendEmail (e) {
         this.sendShow = false
@@ -244,14 +265,19 @@
       },
       delEmail () {
         const emaiId = this.emailList[this.currentEmailIdx].emailInviteId
-        LiveHttp.deleteEmailById(emaiId).then((res) => {
-          if (res.code === 200) {
-            this.queryEmailListById()
-          }
-        }).catch((e) => {
-          console.log('删除邮件失败')
-          console.log(e)
+        this.$post(activityService.POST_DEL_EMAIL, {
+          emailInviteId: emaiId
+        }).then((res) => {
+          this.queryEmailListById()
         })
+        // LiveHttp.deleteEmailById(emaiId).then((res) => {
+        //   if (res.code === 200) {
+        //     this.queryEmailListById()
+        //   }
+        // }).catch((e) => {
+        //   console.log('删除邮件失败')
+        //   console.log(e)
+        // })
       },
       editEmail () {
         const email = this.emailList[this.currentEmailIdx]
@@ -290,7 +316,7 @@
   color: #ff8b0e;
 }
 
-.email-box{
+.email-box {
   margin-top: 20px;
 }
 </style>

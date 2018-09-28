@@ -102,7 +102,7 @@
   </div>
 </template>
 <script>
-import prepareHttp from 'src/api/activity-manger'
+// import prepareHttp from 'src/api/activity-manger'
 import activityService from 'src/api/activity-service'
 export default {
   data () {
@@ -194,7 +194,7 @@ export default {
         let data = {
           id: this.modalData.id
         }
-        this.$config().$post(activityService.POST_DELASS, data).then((res) => {
+        this.$post(activityService.POST_DELASS, data).then((res) => {
           console.log(res)
           this.$toast({
             content: '删除成功',
@@ -287,7 +287,7 @@ export default {
       }
       let isNew = this.modalData.title.search('编辑') >= 0
       if (isNew) {
-        this.$config().$post(activityService.POST_ADD_ASS, saveData).then((res) => {
+        this.$post(activityService.POST_ADD_ASS, saveData).then((res) => {
           this.$toast({
             content: '创建成功',
             position: 'center'
@@ -304,7 +304,7 @@ export default {
           this.tableData.push(pushData)
         })
       } else {
-        this.$config().$post(activityService.POST_UPDATE_ASS, saveData).then((res) => {
+        this.$post(activityService.POST_UPDATE_ASS, saveData).then((res) => {
           this.$toast({
             content: '编辑成功',
             position: 'center'
@@ -351,15 +351,21 @@ export default {
     },
     getRolelist () {
       this.loading = true
-      prepareHttp.roleList(this.activityId).then((res) => {
-        this.loading = false
-        if (res.code === 200) {
-          console.log(res)
-          this.tableData = res.data.list
-        }
-      }).catch(() => {
-        this.loading = false
+      this.$config({loading: true}).$get(activityService.GET_ROLE_LIST, {
+        activityId: this.activityId
+      }).then((res) => {
+        console.log(res)
+        this.tableData = res.data.list
       })
+      // prepareHttp.roleList(this.activityId).then((res) => {
+      //   this.loading = false
+      //   if (res.code === 200) {
+      //     console.log(res)
+      //     this.tableData = res.data.list
+      //   }
+      // }).catch(() => {
+      //   this.loading = false
+      // })
     },
     copyLink (idx, res) {
       const str = this.copyDataval

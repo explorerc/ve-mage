@@ -44,7 +44,8 @@
 </template>
 
 <script>
-  import liveHttp from 'src/api/activity-manger'
+  // import liveHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   import LiveTable from './live/live-table'
   import VePagination from 'src/components/ve-pagination'
 
@@ -127,28 +128,43 @@
         this.$router.push('/liveMager/create')
       },
       deleteLive (activityId) {
-        liveHttp.deleteById(activityId).then((res) => {
-          if (res.code !== 200) return
+        this.$post(activityService.POST_DEL_ACTIVITY, {
+          id: activityId
+        }).then((res) => {
           this.queryList()
         })
+        // liveHttp.deleteById(activityId).then((res) => {
+        //   if (res.code !== 200) return
+        //   this.queryList()
+        // })
       },
       queryList () {
-        this.loading = true
-        liveHttp.queryList(this.searchParams).then((res) => {
-          this.loading = false
-          if (res.code === 200) {
-            res.data.list.map((item, indx) => {
-              if (item.imgUrl) {
-                item.imgUrl = this.$imgHost + '/' + item.imgUrl
-              }
-              return item
-            })
-            this.tableList = res.data.list
-            this.total = res.data.total
-          }
-        }).catch(() => {
-          this.loading = false
+        // this.loading = true
+        this.$config({loading: true}).$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
+          res.data.list.map((item, indx) => {
+            if (item.imgUrl) {
+              item.imgUrl = this.$imgHost + '/' + item.imgUrl
+            }
+            return item
+          })
+          this.tableList = res.data.list
+          this.total = res.data.total
         })
+        // liveHttp.queryList(this.searchParams).then((res) => {
+        //   this.loading = false
+        //   if (res.code === 200) {
+        //     res.data.list.map((item, indx) => {
+        //       if (item.imgUrl) {
+        //         item.imgUrl = this.$imgHost + '/' + item.imgUrl
+        //       }
+        //       return item
+        //     })
+        //     this.tableList = res.data.list
+        //     this.total = res.data.total
+        //   }
+        // }).catch(() => {
+        //   this.loading = false
+        // })
       }
     }
   }

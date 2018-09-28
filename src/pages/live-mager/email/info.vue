@@ -65,7 +65,8 @@
 </template>
 
 <script>
-  import LiveHttp from 'src/api/activity-manger'
+  // import LiveHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
@@ -123,22 +124,35 @@
       queryEmailInfo () {
         // 如果不是编辑页面就return
         if (!this.email.emailInviteId) return
-        LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
+        this.$get(activityService.GET_EMAIL_INFO, {
+          emailInviteId: this.email.emailInviteId
+        }).then((res) => {
           res.data.statusName = statusType[res.data.status]
           this.email = res.data
           this.storeEmailInfo(this.email)
         })
+        // LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
+        //   res.data.statusName = statusType[res.data.status]
+        //   this.email = res.data
+        //   this.storeEmailInfo(this.email)
+        // })
       },
       sendEmail () {
-        LiveHttp.sendEmailInfo({
+        this.$post(activityService.POST_SEND_EMAIL_INFO, {
           emailInviteId: this.email.emailInviteId
         }).then((res) => {
           console.log('邮件发送成功')
           console.log(res)
-        }).catch((e) => {
-          console.log('邮件发送失败')
-          console.log(e)
         })
+        // LiveHttp.sendEmailInfo({
+        //   emailInviteId: this.email.emailInviteId
+        // }).then((res) => {
+        //   console.log('邮件发送成功')
+        //   console.log(res)
+        // }).catch((e) => {
+        //   console.log('邮件发送失败')
+        //   console.log(e)
+        // })
       },
       editEmail () {
         this.$router.push(`/liveMager/emailEditOne/${this.email.activityId}?email=${this.email.emailInviteId}`)

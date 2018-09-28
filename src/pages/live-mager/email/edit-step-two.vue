@@ -129,7 +129,8 @@
 
 <script>
   import VeMsgTips from 'src/components/ve-msg-tips'
-  import LiveHttp from 'src/api/activity-manger'
+  // import LiveHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
@@ -274,7 +275,7 @@
       },
       /* 查询人员 */
       queryPersonList () {
-        LiveHttp.queryPersonList({
+        this.$get(activityService.GET_PERSON_LIST, {
           activityId: this.$route.params.id,
           name: this.searchPerson
         }).then((res) => {
@@ -289,21 +290,46 @@
           })
           this.personList = temArray
         })
+        // LiveHttp.queryPersonList({
+        //   activityId: this.$route.params.id,
+        //   name: this.searchPerson
+        // }).then((res) => {
+        //   let temArray = []
+        //   res.data.forEach((item) => {
+        //     temArray.push({
+        //       id: item.id,
+        //       name: item.name,
+        //       count: 0,
+        //       isChecked: false
+        //     })
+        //   })
+        //   this.personList = temArray
+        // })
       },
       saveEmail () {
         this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
-        LiveHttp.saveEmailInfo(this.email).then((res) => {
-          if (res.code === 200) {
-            this.email = {...this.email, ...res.data}
-            this.storeEmailInfo(this.email)
-            this.$toast({
-              header: `提示`,
-              content: '保存草稿成功',
-              autoClose: 2000,
-              position: 'right-top'
-            })
-          }
+        this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
+          this.email = {...this.email, ...res.data}
+          this.storeEmailInfo(this.email)
+          this.$toast({
+            header: `提示`,
+            content: '保存草稿成功',
+            autoClose: 2000,
+            position: 'right-top'
+          })
         })
+        // LiveHttp.saveEmailInfo(this.email).then((res) => {
+        //   if (res.code === 200) {
+        //     this.email = {...this.email, ...res.data}
+        //     this.storeEmailInfo(this.email)
+        //     this.$toast({
+        //       header: `提示`,
+        //       content: '保存草稿成功',
+        //       autoClose: 2000,
+        //       position: 'right-top'
+        //     })
+        //   }
+        // })
       },
       sendEmail () {
         if (this.isTimer && !this.email.planTime) {
@@ -317,19 +343,27 @@
         }
         this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         if (this.isTimer) { // 发送定时邮件
-          LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
+          this.$post(activityService.POST_SEND_TIMER_EMAIL_INFO, this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
             this.disabledBtn = false
-          }).catch(() => {
-            this.disabledBtn = false
           })
+          // LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
+          //   this.$router.push(`/liveMager/email/${this.email.activityId}`)
+          //   this.disabledBtn = false
+          // }).catch(() => {
+          //   this.disabledBtn = false
+          // })
         } else { // 保存并发送
-          LiveHttp.saveAndsendEmail(this.email).then((res) => {
+          this.$post(activityService.POST_SAVE_SEND_EMAIL, this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
             this.disabledBtn = false
-          }).catch(() => {
-            this.disabledBtn = false
           })
+          // LiveHttp.saveAndsendEmail(this.email).then((res) => {
+          //   this.$router.push(`/liveMager/email/${this.email.activityId}`)
+          //   this.disabledBtn = false
+          // }).catch(() => {
+          //   this.disabledBtn = false
+          // })
         }
       },
       send () {

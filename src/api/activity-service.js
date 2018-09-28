@@ -4,6 +4,7 @@ const ActivityManger = {
   /**
    *  查询直播列表
    */
+  GET_ACTIVITY_LIST: '/manage/base-manage/list-activity',
   queryList (data) {
     return utils.ajax({
       method: 'post',
@@ -14,6 +15,7 @@ const ActivityManger = {
   /**
    *  通过id删除活动
    */
+  POST_DEL_ACTIVITY: '/manage/base-manage/del-activity',
   deleteById (id) {
     return utils.ajax({
       method: 'post',
@@ -26,6 +28,7 @@ const ActivityManger = {
   /**
    *  通过id获取暖场信息
    */
+  GET_WRAM_INFO: '/manage/warm-up-manage/get',
   queryWarmInfoById (id) {
     return utils.ajax({
       method: 'post',
@@ -38,6 +41,7 @@ const ActivityManger = {
   /**
    *  保存或者编辑暖场信息
    */
+  POST_SAVE_WRAM_INFO: '/manage/warm-up-manage/edit',
   saveAndEditWarmInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -48,6 +52,7 @@ const ActivityManger = {
   /**
    *  通过id获取活动提醒
    */
+  GET_REMINDER_INFO: '',
   queryReminderInfoById (id) {
     return utils.ajax({
       method: 'post',
@@ -60,6 +65,7 @@ const ActivityManger = {
   /**
    *  保存活动提醒信息
    */
+  POST_REMINDER_INFO: '',
   saveReminderInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -70,6 +76,7 @@ const ActivityManger = {
   /**
    *  角色列表
    */
+  GET_ROLE_LIST: '/manage/role-manage/list-role',
   roleList (id) {
     return utils.ajax({
       method: 'GET',
@@ -158,6 +165,7 @@ const ActivityManger = {
   /**
    *  获取邮件列表
    */
+  GET_EMAIL_LIST: '/expand/email-invite/list',
   queryEmailList (data) {
     return utils.ajax({
       method: 'post',
@@ -168,6 +176,7 @@ const ActivityManger = {
   /**
    *  通过id删除邮件
    */
+  POST_DEL_EMAIL: '/expand/email-invite/delete',
   deleteEmailById (id) {
     return utils.ajax({
       method: 'post',
@@ -180,6 +189,7 @@ const ActivityManger = {
   /**
    *  通过邮件id查询邮件详细
    */
+  GET_EMAIL_INFO: '/expand/email-invite/query',
   queryEmailInfoById (id) {
     return utils.ajax({
       method: 'post',
@@ -192,6 +202,7 @@ const ActivityManger = {
   /**
    *  获取邮件模板
    */
+  GET_EMAIL_TPL_LIST: '/expand/email-invite/templates',
   queryEmailTemplateList () {
     return utils.ajax({
       method: 'post',
@@ -199,9 +210,12 @@ const ActivityManger = {
       params: {}
     })
   },
+  // 获取pass sdk
+  GET_PAAS_SDK_INFO: '/common/paas/create-access-token',
   /**
    *  发送邮件
    */
+  POST_SEND_EMAIL_INFO: '/expand/email-invite/send',
   sendEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -212,6 +226,7 @@ const ActivityManger = {
   /**
    *  发送定时邮件
    */
+  POST_SEND_TIMER_EMAIL_INFO: '/expand/email-invite/save-and-plansend',
   sendTimerEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -222,6 +237,7 @@ const ActivityManger = {
   /**
    *  发送测试邮件
    */
+  POST_SEND_TEST_EMAIL_INFO: '/expand/email-invite/test-send',
   sendTestEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -232,6 +248,7 @@ const ActivityManger = {
   /**
    *  发送邮件
    */
+  POST_SAVE_SEND_EMAIL: '/expand/email-invite/save-and-send',
   saveAndsendEmail (data) {
     return utils.ajax({
       method: 'post',
@@ -242,6 +259,7 @@ const ActivityManger = {
   /**
    *  保存草稿
    */
+  POST_SAVE_EMAIL_INFO: '/expand/email-invite/save-draft',
   saveEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -307,6 +325,7 @@ const ActivityManger = {
    * @param data
    * @returns {*}
    */
+  GET_PERSON_LIST: '/common/group/get-group',
   queryPersonList (data) {
     return utils.ajax({
       method: 'post',
@@ -321,6 +340,7 @@ const ActivityManger = {
    * @param data
    * @returns {*}
    */
+  POST_TEST_EMAIL_INFO: '/common/message/limit-num',
   queryTestEmailInfo (data) {
     return utils.ajax({
       method: 'post',
@@ -333,6 +353,7 @@ const ActivityManger = {
    * @param data
    * @returns {*}
    */
+  GET_PLAYBACK_INFO: '/frontend/replay/default-replay',
   queryPlayBackInfoById (activityId) {
     return utils.ajax({
       method: 'post',

@@ -85,7 +85,8 @@
 <script>
   import ComUpload from 'src/components/common/upload/com'
   import VeUpload from 'src/components/ve-upload-image'
-  import LiveHttp from 'src/api/activity-manger'
+  // import LiveHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   // 参会提醒
   export default {
     name: 'reminder',
@@ -129,10 +130,14 @@
         this.$router.go(-1)
       },
       queryReminInfo () {
-        LiveHttp.queryReminderInfoById(this.$route.params.id)
+        this.$get(activityService.GET_REMINDER_INFO, {
+          id: this.$route.params.id
+        })
+        // LiveHttp.queryReminderInfoById(this.$route.params.id)
       },
       saveRemider () {
-        LiveHttp.saveReminderInfo(this.reminder)
+        this.$post(activityService.POST_REMINDER_INFO, this.reminder)
+        // LiveHttp.saveReminderInfo(this.reminder)
       }
     }
   }
