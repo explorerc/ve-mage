@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { formatDate } from 'src/assets/js/date'
+import {formatDate} from 'src/assets/js/date'
 // import queryHttp from 'src/api/activity-manger'
 import noticeService from 'src/api/notice-service'
 import comPhone from '../com-phone'
@@ -127,7 +127,7 @@ export default {
     }
   },
   created () {
-    this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
+    this.$config({loading: true}).$get(noticeService.GET_QUERY_MSG, {
       inviteId: this.id
     }).then((res) => {
       this.group = res.data.groupId

@@ -433,7 +433,7 @@ export default {
     queryPlayBackList () {
       if (this.isLoadingList) return
       this.isLoadingList = true
-      this.$config({ handlers: true }).$get(playbackService.GET_PLAYBACK_LIST, {
+      this.$config({handlers: true}).$get(playbackService.GET_PLAYBACK_LIST, {
         activityId: this.activityId,
         page: this.page,
         pageSize: this.pageSize,
@@ -509,7 +509,7 @@ export default {
     /* 下载 */
     downLoadVideo () {
       const playBack = this.playBackList[this.selectRowIdx]
-      this.$config({ handlers: true }).$post(playbackService.POST_DOWNLOAD_VIDEO, {
+      this.$config({handlers: true}).$post(playbackService.POST_DOWNLOAD_VIDEO, {
         replayId: playBack.replayId
       }).then((res) => {
         if (res.data.downloadUrl) {
