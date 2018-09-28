@@ -207,7 +207,7 @@ export default {
           sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
         })
         this.setIsLogin(1)
-        this.$router.replace('/setAccount')
+        this.$router.replace('/liveMager/list')
       }).catch((err) => {
         this.isSend = true
         this.isProhibit = true
@@ -259,7 +259,7 @@ export default {
             this.cap.refresh()
           }
         }, 1000)
-        this.$router.replace('/setAccount')
+        this.$router.replace('/liveMager/list')
       }).catch(() => {
         this.isSend = false
         this.isProhibit = true

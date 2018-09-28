@@ -87,7 +87,7 @@ export default {
             accountInfo.hasPassword = true
             sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
           }
-          this.$router.replace('/setAccount')
+          this.$router.replace('/liveMager/list')
         }).catch((err) => {
           this.errorTips = err.msg
         })

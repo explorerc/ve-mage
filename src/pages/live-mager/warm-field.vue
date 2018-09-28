@@ -59,7 +59,7 @@
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
-  // import LiveHttp from 'src/api/activity-manger'
+  import LiveHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
 
   export default {
@@ -130,16 +130,23 @@
         })
       },
       initPage () {
-        this.$get(activityService.GET_WRAM_INFO, {
-          activityId: this.$route.params.id
-        }).then((res) => {
-          this.warm = {
-            activityId: this.$route.params.id,
-            enabled: res.data.enabled,
-            playMode: res.data.playType,
-            playCover: res.data.imgUrl,
-            recordId: res.data.recordId,
-            filename: res.data.filename
+        LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+          /* 查询详情 */
+          if (res.code === 200 && res.data) {
+            this.warm = {
+              activityId: this.$route.params.id,
+              enabled: res.data.enabled,
+              playMode: res.data.playType || this.warm.playMode,
+              playCover: res.data.imgUrl,
+              recordId: res.data.recordId,
+              filename: res.data.filename
+            }
+            this.isSwitch = res.data.enabled === 'Y'
+            /* sdk参数赋值 */
+            this.sdkPlayParam.recordId = res.data.recordId
+            this.sdkParam.fileName = res.data.filename
+            this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+            this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
           }
           this.isSwitch = res.data.enabled === 'Y'
           /* sdk参数赋值 */

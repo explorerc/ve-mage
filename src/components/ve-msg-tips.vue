@@ -41,6 +41,7 @@
       border: solid 1px rgba(85,85,85,1);;
       border-radius: 50%;
       color: #555;
+      font-style: normal;
     &:hover{
        cursor: pointer;
        opacity: .8;

@@ -246,6 +246,9 @@
         this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
           // 回写邮件id
+          if (!this.email.emailInviteId) {
+            this.$router.replace({query: {email: res.data.emailInviteId}})
+          }
           this.email.emailInviteId = res.data.emailInviteId
           this.email.title = res.data.title
           // 把信息保存到vuex
@@ -324,33 +327,48 @@
 <style lang="scss" scoped>
 @import 'assets/css/mixin.scss';
 
-.edit-step-box {
-  min-width: 1366px;
-  height: 800px;
-  background-color: #fff;
-  color: #222;
-  .email-header {
-    height: 60px;
-    line-height: 60px;
-    background-color: #ffd021;
-    .icon-jiantou {
-      font-size: 22px;
-      vertical-align: -2px;
+  .edit-step-box {
+    min-width: 1366px;
+    background-color: #fff;
+    color: #222;
+    .email-header {
+      height: 60px;
+      line-height: 60px;
+      background-color: #ffd021;
+      .icon-jiantou {
+        font-size: 22px;
+        vertical-align: -2px;
+      }
+      .back-btn {
+        display: inline-block;
+        padding: 0 15px;
+        background-color: #ffda51;
+        line-height: 40px;
+        border-radius: 4px;
+        font-size: 18px;
+        text-align: center;
+        margin-left: 20px;
+        margin-right: 10px;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.9;
+          color: #4b5afe;
+        }
+      }
     }
-    .back-btn {
-      display: inline-block;
-      padding: 0 15px;
-      background-color: #ffda51;
-      line-height: 40px;
-      border-radius: 4px;
-      font-size: 18px;
-      text-align: center;
-      margin-left: 20px;
-      margin-right: 10px;
-      &:hover {
-        cursor: pointer;
-        opacity: 0.9;
-        color: #4b5afe;
+    .email-bottom {
+      height: 60px;
+      line-height: 60px;
+      border-top: 1px solid #e2e2e2;
+      box-sizing: border-box;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+      padding: 0 20px;
+      background-color: #fff;
+      button {
+        margin-top: 10px;
+      }
+      .margin-fl {
+        margin-right: 10px;
       }
     }
   }
@@ -372,29 +390,19 @@
     height: calc(100vh - 120px);
     .html-editer {
       height: 100%;
-      .vue-html5-editor .content {
-        background-color: #f5f5f5;
-      }
-    }
-  }
-  .step-btns {
-    margin: 30px 30px 100px 30px;
-    .margin-fl {
-      margin: 0 20px;
-    }
-  }
-  .edit-content {
-    height: 100%;
-    margin: 0 0 20px 0;
-    .edit-content-temp {
-      width: 356px;
-      margin-top: 36px;
-      padding: 0 39px;
-      box-sizing: border-box;
-      .temp-title {
-        span {
-          line-height: 44px;
-          color: #555;
+      margin: 0 0 20px 0;
+      .edit-content-temp {
+        height: calc(100% - 36px);
+        width: 356px;
+        margin-top: 36px;
+        padding: 0 1.8%;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        .temp-title {
+          span {
+            line-height: 44px;
+            color: #555;
+          }
         }
       }
       .temp-boxs {
