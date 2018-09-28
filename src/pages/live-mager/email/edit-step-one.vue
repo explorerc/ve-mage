@@ -217,7 +217,7 @@
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           // 回写邮件id
           if (!this.email.emailInviteId) {
-            this.$router.replace({query: {email: res.data.emailInviteId}})
+            this.$router.replace({ query: { email: res.data.emailInviteId } })
           }
           this.email.emailInviteId = res.data.emailInviteId
           this.email.title = res.data.title
