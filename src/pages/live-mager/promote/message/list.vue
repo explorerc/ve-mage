@@ -110,7 +110,7 @@
       },
       confirmDel (e) {
         if (e.action === 'confirm') {
-          this.$config().$post(noticeService.POST_DELETE_MSG, {
+          this.$post(noticeService.POST_DELETE_MSG, {
             inviteId: this.delId
           }).then((res) => {
             this.tableData.splice(this.delIdx, 1)

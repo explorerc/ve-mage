@@ -109,7 +109,7 @@
       },
       confirmDel (e) {
         if (e.action === 'confirm') {
-          this.$config().$post(noticeService.POST_DELETE_WECHAT, {
+          this.$post(noticeService.POST_DELETE_WECHAT, {
             inviteId: this.delId
           }).then((res) => {
             this.tableData.splice(this.delIdx, 1)

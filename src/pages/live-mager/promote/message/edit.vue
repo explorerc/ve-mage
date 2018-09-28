@@ -194,7 +194,7 @@ export default {
   created () {
     this.queryPersonList()
     if (this.inviteId) {
-      this.$config().$get(noticeService.GET_QUERY_MSG, {
+      this.$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.inviteId
       }).then((res) => {
         this.titleValue = res.data.title
@@ -239,7 +239,7 @@ export default {
         signature: this.msgTag
       }
       // 更新
-      this.$config().$post(noticeService.POST_SAVE_MSG, data).then((res) => {
+      this.$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
           content: '保存成功',
@@ -300,7 +300,7 @@ export default {
     },
     /* 查询人员 */
     queryPersonList () {
-      this.$config().$get(noticeService.GET_PERSON_LIST, {
+      this.$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id,
         name: this.searchPerson
       }).then((res) => {

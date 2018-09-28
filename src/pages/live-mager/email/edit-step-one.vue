@@ -216,6 +216,9 @@
         this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
         LiveHttp.saveEmailInfo(this.email).then((res) => {
           // 回写邮件id
+          if (!this.email.emailInviteId) {
+            this.$router.replace({ query: { email: res.data.emailInviteId } })
+          }
           this.email.emailInviteId = res.data.emailInviteId
           this.email.title = res.data.title
           // 把信息保存到vuex

@@ -233,7 +233,7 @@
           planTime: this.date
         }
         // 更新
-        this.$config().$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
+        this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
             content: '保存成功',
@@ -303,7 +303,7 @@
       },
       /* 查询人员 */
       queryPersonList () {
-        this.$config().$get(noticeService.GET_PERSON_LIST, {
+        this.$get(noticeService.GET_PERSON_LIST, {
           activityId: this.$route.params.id,
           name: this.searchPerson
         }).then((res) => {
