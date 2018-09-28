@@ -258,12 +258,13 @@ import VeUploadImage from 'src/components/ve-upload-image'
 import VeUploadVideo from 'src/components/ve-upload-video'
 import VePagination from 'src/components/ve-pagination'
 import veMsgTips from 'src/components/ve-msg-tips'
-import PlayBackHttp from 'src/api/play-back'
+// import PlayBackHttp from 'src/api/play-back'
 import ActivityHttp from 'src/api/activity-manger'
-import LiveHttp from 'src/api/live'
+// import LiveHttp from 'src/api/live'
 import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
-
+const PlayBackHttp = {}
+const LiveHttp = {}
 const outLineMode = {
   'FOREVER': 'NEVER',
   'TIMING': 'PLAN'

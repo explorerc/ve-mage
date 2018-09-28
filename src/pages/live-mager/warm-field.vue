@@ -135,7 +135,7 @@
             this.warm = {
               activityId: this.$route.params.id,
               enabled: res.data.enabled,
-              playMode: res.data.playType,
+              playMode: res.data.playType || this.warm.playMode,
               playCover: res.data.imgUrl,
               recordId: res.data.recordId,
               filename: res.data.filename

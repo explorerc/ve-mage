@@ -286,7 +286,6 @@
 
   .edit-step-box {
     min-width: 1366px;
-    height: 800px;
     background-color: #fff;
     color: #222;
     .email-header {
@@ -321,6 +320,7 @@
       box-sizing: border-box;
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
       padding: 0 20px;
+      background-color: #fff;
       button {
         margin-top: 10px;
       }
@@ -347,10 +347,12 @@
       height: 100%;
       margin: 0 0 20px 0;
       .edit-content-temp {
+        height: calc(100% - 36px);
         width: 356px;
         margin-top: 36px;
-        padding: 0 39px;
+        padding: 0 1.8%;
         box-sizing: border-box;
+        overflow-y: scroll;
         .temp-title {
           span {
             line-height: 44px;
