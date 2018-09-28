@@ -14,7 +14,7 @@ const router = new Router({
   }
 })
 
-let vue = new Vue()
+let vue = new Vue({ router })
 
 router.beforeEach((to, from, next) => {
   if (to.meta.noLogin) {
@@ -24,6 +24,7 @@ router.beforeEach((to, from, next) => {
       if (isLogin) {
         next('/setAccount')
       } else {
+        debugger
         vue
           .$config({ loading: true })
           .$get(userService.GET_ACCOUNT)
@@ -52,6 +53,7 @@ router.beforeEach((to, from, next) => {
         next('/setPassword')
         return false
       } else {
+        debugger
         vue
           .$config({ loading: true })
           .$get(userService.GET_ACCOUNT)
