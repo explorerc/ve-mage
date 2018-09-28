@@ -163,8 +163,8 @@
         webinarTime: '',
         loading: false,
         searchPerson: '',
-        personList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        personList: [{ id: '', name: '', count: 0, isChecked: false }],
+        selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
         selectedPersonListStr: '',
         selectPersonShow: false,
         selectedCount: 0,
@@ -179,7 +179,7 @@
     created () {
       this.queryPersonList()
       if (this.inviteId) {
-        this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
+        this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
           inviteId: this.inviteId
         }).then((res) => {
           this.titleValue = res.data.title
@@ -193,7 +193,7 @@
         // }).catch((e) => {
         //   console.log(e)
         // })
-        this.$config({loading: true}).$get(noticeService.GET_WEBINAR_INFO, {
+        this.$config({ loading: true }).$get(noticeService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.webinarName = res.data.title
@@ -240,7 +240,7 @@
             position: 'center'
           })
           // 跳转到列表页面
-          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
+          this.$router.push({ name: 'promoteWechat', params: { id: this.activityId } })
         })
         // createHttp.saveWechat(data).then((res) => {
 

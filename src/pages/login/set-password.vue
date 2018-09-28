@@ -80,14 +80,14 @@ export default {
         let data = {
           'newPassword': this.password
         }
-        this.$config({handlers: true}).$post(userService.POST_SET_PASSWORD, data).then((res) => {
+        this.$config({ handlers: true }).$post(userService.POST_SET_PASSWORD, data).then((res) => {
           this.isWarning = false
           let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
           if (accountInfo) {
             accountInfo.hasPassword = true
             sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
           }
-          this.$router.replace('/setAccount')
+          this.$router.replace('/liveMager/list')
         }).catch((err) => {
           this.errorTips = err.msg
         })

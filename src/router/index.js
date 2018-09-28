@@ -22,15 +22,15 @@ router.beforeEach((to, from, next) => {
     let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
     if (to.name === 'login') {
       if (isLogin) {
-        next('/setAccount')
+        next('/liveMager/list')
       } else {
         vue
-          .$config({loading: true})
+          .$config({ loading: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
             sessionStorage.setItem('isLogin', true)
-            next('/setAccount')
+            next('/liveMager/list')
           })
       }
     }
@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
         return false
       } else {
         vue
-          .$config({loading: true})
+          .$config({ loading: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             if (res.data.hasPassword) {

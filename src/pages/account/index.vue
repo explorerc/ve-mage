@@ -253,7 +253,7 @@ import Editor from './info-editor'
 import SelectEditor from './info-select'
 import userService from 'src/api/user-service'
 import VeUploadTx from 'src/components/ve-upload-tx'
-import {mapMutations, mapState} from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 import EventBus from 'src/utils/eventBus'
 export default {
@@ -370,7 +370,7 @@ export default {
         sessionStorage.setItem('contactInfo', JSON.stringify(res.data))
       })
     }
-    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
       this.key = res.data
     }).catch(err => {
       console.log(err.msg)
@@ -728,7 +728,7 @@ export default {
               code: this.phoneCode,
               type: 'BUSINESS_USER_VERIFY_MOBILE'
             }
-            this.$config({handlers: true}).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
+            this.$config({ handlers: true }).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
               this.phoneCodeError = false
               this.phoneCodeTip = res.msg
               this.token = res.data.codeToken
@@ -769,7 +769,7 @@ export default {
               codeToken: this.token,
               code: this.phoneCode
             }
-            this.$config({handlers: true}).$post(userService.POST_UPDATE_MOBILE, data).then((res) => {
+            this.$config({ handlers: true }).$post(userService.POST_UPDATE_MOBILE, data).then((res) => {
               this.phone = ''
               this.step = 'phoneSuccess'
               this.confirmText = '完成'
@@ -818,7 +818,7 @@ export default {
             'newPassword': this.newPassword,
             'oldPassword': this.oldPassword
           }
-          this.$config({handlers: true}).$post(userService.POST_CHANGE_PASSWORD, data).then((res) => {
+          this.$config({ handlers: true }).$post(userService.POST_CHANGE_PASSWORD, data).then((res) => {
             this.$messageBox({
               header: '提示',
               content: '修改成功',
@@ -892,7 +892,7 @@ export default {
           captcha: this.phoneKey
         }
       }
-      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
         this.phoneCodeError = false
         this.phoneCodeTip = res.msg
         this.isSend = true
