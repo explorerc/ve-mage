@@ -1,10 +1,13 @@
 <!--新建/编辑活动-->
 <template>
   <div>
-    <div class='edit-page live-mager' v-if='!createdSuccess'>
+    <div class='edit-page live-mager'
+         v-if='!createdSuccess'>
       <div class="edit-title">
-        <span class="title" v-if="activityId">编辑活动</span>
-        <span class="title" v-else>新建活动</span>
+        <span class="title"
+              v-if="activityId">编辑活动</span>
+        <span class="title"
+              v-else>新建活动</span>
       </div>
       <div class="tips">
         <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
@@ -13,23 +16,44 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
-            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
-            <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
+            <com-input :value.sync="title"
+                       placeholder="请输入直播标题"
+                       :max-length="60"
+                       class='inp'
+                       :class="{ 'error':titleEmpty }"
+                       @focus='titleEmpty = false'></com-input>
+            <span class="error-tips"
+                  v-if='titleEmpty'>直播标题不能为空</span>
           </div>
         </div>
-        <div class="from-row" >
+        <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播时间：</div>
-          <div class="from-content" :class="{ 'error':dateEmpty }">
-            <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
+          <div class="from-content"
+               :class="{ 'error':dateEmpty }">
+            <el-date-picker @focus='dateEmpty=false'
+                            v-model="date"
+                            type="datetime"
+                            placeholder="选择日期时间"
+                            :picker-options="pickerOptions"
+                            format='yyyy-MM-dd HH:mm:ss'
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :popper-class="'datePicker'">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
-            <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
+            <span class="error-tips"
+                  v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
+                       accept="png|jpg|jpeg|bmp|gif"
+                       :defaultImg="defaultImg"
+                       :fileSize="2048"
+                       :errorMsg="uploadImgErrorMsg"
+                       @error="uploadError"
+                       @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
@@ -38,28 +62,43 @@
             <ol class='tag-list clearfix'>
               <li v-for="item in tagGroup">{{item}}</li>
             </ol>
-            <el-button @click='tagModal=true' round class="add-tag">+</el-button>
-            <div class="tag-modal" v-show='tagModal'>
-              <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
-                <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
+            <el-button @click='tagModal=true'
+                       round
+                       class="add-tag">+</el-button>
+            <div class="tag-modal"
+                 v-show='tagModal'>
+              <el-checkbox-group v-model="tagGroup"
+                                 size="mini"
+                                 :max='6'>
+                <el-checkbox-button v-for="tag in tagList"
+                                    :label="tag"
+                                    :key="tag">{{tag}}</el-checkbox-button>
               </el-checkbox-group>
             </div>
-            <span class="error-tips" v-if='tagEmpty'>请添加直播标签</span>
+            <span class="error-tips"
+                  v-if='tagEmpty'>请添加直播标签</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播介绍：</div>
-          <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
-            <ve-editer height="280" v-model="editorContent" ></ve-editer>
+          <div class="from-content editor-content"
+               style='position:relative;'
+               :class="{ 'error':outRange, 'error':descEmpty }">
+            <ve-editer height="280"
+                       v-model="editorContent"></ve-editer>
             <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
-            <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
-            <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
+            <span class="error-tips"
+                  v-if="outRange">直播简介不能超过1000个字符</span>
+            <span class="error-tips"
+                  v-if="descEmpty">直播简介不能为空</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"></div>
           <div class="from-content">
-            <button @click='comfirm' class='create-btn' :disabled="outRange">
+            <button @click='comfirm'
+                    class='create-btn'
+                    :disabled="outRange">
               <template v-if="activityId">更新</template>
               <template v-else>创建</template>
             </button>
@@ -68,178 +107,180 @@
       </div>
     </div>
     <transition name='fade'>
-      <div class="finish-box" v-if='createdSuccess'>
-          <dl>
-            <dt></dt>
-            <dd>直播已{{successTxt}}，您可以</dd>
-            <dd>
-              <router-link  class='finish-button detail' :to="{ name:'detail',params:{id:finishId} }">活动详情</router-link>
-              <router-link class='finish-button list' :to="{name:'liveMager'}">活动列表</router-link>
-            </dd>
-          </dl>
+      <div class="finish-box"
+           v-if='createdSuccess'>
+        <dl>
+          <dt></dt>
+          <dd>直播已{{successTxt}}，您可以</dd>
+          <dd>
+            <router-link class='finish-button detail'
+                         :to="{ name:'detail',params:{id:finishId} }">活动详情</router-link>
+            <router-link class='finish-button list'
+                         :to="{name:'liveMager'}">活动列表</router-link>
+          </dd>
+        </dl>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-image'
-  import VeEditer from 'src/components/ve-html5-editer'
-  // import http from 'src/api/activity-manger'
-  import activityService from 'src/api/activity-service'
-  export default {
-    name: 'edit',
-    data () {
-      return {
-        tagModal: false,
-        isNew: true, // 是否是新建活动
-        date: '',
-        title: '',
-        editorContent: '',
-        outRange: false,
-        titleEmpty: false,
-        descEmpty: false,
-        tagEmpty: false,
-        dateEmpty: false,
-        countCount: 0,
-        tagList: [],
-        tagGroup: [],
-        poster: '',
-        uploadImgErrorMsg: '', // 上传图片错误提示
-        percentImg: 0, // 图片上传进度
-        createdSuccess: false,
-        activityId: this.$route.params.id,
-        imgHost: process.env.IMGHOST + '/',
-        // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
-        pickerOptions: {
-          disabledDate (time) {
-            return time.getTime() < Date.now() - 8.64e7
-          }
-        },
-        successTxt: ''
-      }
-    },
-    created () {
-      this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
-      if (this.activityId) { // 编辑页面请求接口返回活动信息
-        this.isNew = false
-        this.queryInfo()
-      }
-    },
-    watch: {
-      editorContent (newValue, oldValue) {
-        this.$nextTick(() => {
-          this.countCount = document.querySelector('.vue-html5-editor .content').innerText.length
-          this.descEmpty = false
-          if (this.countCount > 1000) {
-            this.outRange = true
-          } else {
-            this.outRange = false
-          }
-        })
-      }
-    },
-    methods: {
-      // change (res) {
-      //   console.log('change')
-      //   // this.editorContent = res
-      // },
-      // closeModal (e) {
-      //   if (e.target.className === 'modal-cover') {
-      //     this.createdSuccess = false
-      //   }
-      // },
-      // uploadProgress (data) {
-      //   this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
-      //   if (this.percentImg === 100) {
-      //     this.percentImg = 0
-      //   }
-      // },
-      uploadImgSuccess (data) {
-        this.poster = data.name
-      },
-      uploadError (data) {
-        console.log('上传失败:', data)
-      },
-      uploadOver (e) {
-        console.log(e)
-      },
-      queryInfo () {
-        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
-          id: this.activityId
-        }).then((res) => {
-          this.date = res.data.startTime
-          this.title = res.data.title
-          this.poster = res.data.imgUrl
-          this.editorContent = res.data.description
-          this.tagGroup = res.data.tags
-        })
-        // http.webinarInfo(this.activityId).then((res) => {
-        //   if (res.code === 200) {
-        //     this.date = res.data.startTime
-        //     this.title = res.data.title
-        //     this.poster = res.data.imgUrl
-        //     this.editorContent = res.data.description
-        //     this.tagGroup = res.data.tags
-        //   }
-        // }).catch(() => {})
-      },
-      comfirm () {
-        // 提交数据
-        let data = {
-          id: this.activityId,
-          startTime: this.date,
-          title: this.title,
-          imgUrl: this.poster,
-          description: this.editorContent,
-          tags: this.tagGroup
+import VeUpload from 'src/components/ve-upload-image'
+import VeEditer from 'src/components/ve-html5-editer'
+import activityService from 'src/api/activity-service'
+export default {
+  name: 'edit',
+  data () {
+    return {
+      tagModal: false,
+      isNew: true, // 是否是新建活动
+      date: '',
+      title: '',
+      editorContent: '',
+      outRange: false,
+      titleEmpty: false,
+      descEmpty: false,
+      tagEmpty: false,
+      dateEmpty: false,
+      countCount: 0,
+      tagList: [],
+      tagGroup: [],
+      poster: '',
+      uploadImgErrorMsg: '', // 上传图片错误提示
+      percentImg: 0, // 图片上传进度
+      createdSuccess: false,
+      activityId: this.$route.params.id,
+      imgHost: process.env.IMGHOST + '/',
+      // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now() - 8.64e7
         }
-        // console.log(data)
-        this.title.length ? this.titleEmpty = false : this.titleEmpty = true
-        this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true
-        this.editorContent.length ? this.descEmpty = false : this.descEmpty = true
-        this.date.length ? this.dateEmpty = false : this.dateEmpty = true
-        this.$nextTick(() => {
-          if (this.title.length && this.tagGroup.length && this.editorContent.length && this.date.length) {
-            this.updateWebinfo(this.isNew, data)
-          }
-        })
       },
-      updateWebinfo (isNew, data) { // 新建 创建活动
-        if (isNew) {
-          this.$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
-            this.createdSuccess = true
-            this.successTxt = '创建成功'
-            res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
-          })
-        } else {
-          this.$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
-            this.createdSuccess = true
-            this.successTxt = '更新成功'
-            res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
-          })
-        }
-        // http.updateWebinfo(isNew, data).then((res) => {
-        //   if (res.code === 200) {
-        //     this.createdSuccess = true
-        //     isNew ? this.successTxt = '创建成功' : this.successTxt = '更新成功'
-        //     res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
-        //   }
-        // }).catch((error) => {
-        //   console.log(error)
-        // })
-      }
-    },
-    computed: {
-      defaultImg () {
-        return this.poster ? `${this.$imgHost}/${this.poster}` : ''
-      }
-    },
-    components: {
-      VeEditer,
-      VeUpload
+      successTxt: ''
     }
+  },
+  created () {
+    this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
+    if (this.activityId) { // 编辑页面请求接口返回活动信息
+      this.isNew = false
+      this.queryInfo()
+    }
+  },
+  watch: {
+    editorContent (newValue, oldValue) {
+      this.$nextTick(() => {
+        this.countCount = document.querySelector('.vue-html5-editor .content').innerText.length
+        this.descEmpty = false
+        if (this.countCount > 1000) {
+          this.outRange = true
+        } else {
+          this.outRange = false
+        }
+      })
+    }
+  },
+  methods: {
+    // change (res) {
+    //   console.log('change')
+    //   // this.editorContent = res
+    // },
+    // closeModal (e) {
+    //   if (e.target.className === 'modal-cover') {
+    //     this.createdSuccess = false
+    //   }
+    // },
+    // uploadProgress (data) {
+    //   this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
+    //   if (this.percentImg === 100) {
+    //     this.percentImg = 0
+    //   }
+    // },
+    uploadImgSuccess (data) {
+      this.poster = data.name
+    },
+    uploadError (data) {
+      console.log('上传失败:', data)
+    },
+    uploadOver (e) {
+      console.log(e)
+    },
+    queryInfo () {
+      this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        id: this.activityId
+      }).then((res) => {
+        this.date = res.data.startTime
+        this.title = res.data.title
+        this.poster = res.data.imgUrl
+        this.editorContent = res.data.description
+        this.tagGroup = res.data.tags
+      })
+      // http.webinarInfo(this.activityId).then((res) => {
+      //   if (res.code === 200) {
+      //     this.date = res.data.startTime
+      //     this.title = res.data.title
+      //     this.poster = res.data.imgUrl
+      //     this.editorContent = res.data.description
+      //     this.tagGroup = res.data.tags
+      //   }
+      // }).catch(() => {})
+    },
+    comfirm () {
+      // 提交数据
+      let data = {
+        id: this.activityId,
+        startTime: this.date,
+        title: this.title,
+        imgUrl: this.poster,
+        description: this.editorContent,
+        tags: this.tagGroup
+      }
+      // console.log(data)
+      this.title.length ? this.titleEmpty = false : this.titleEmpty = true
+      this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true
+      this.editorContent.length ? this.descEmpty = false : this.descEmpty = true
+      this.date.length ? this.dateEmpty = false : this.dateEmpty = true
+      this.$nextTick(() => {
+        if (this.title.length && this.tagGroup.length && this.editorContent.length && this.date.length) {
+          this.updateWebinfo(this.isNew, data)
+        }
+      })
+    },
+    updateWebinfo (isNew, data) { // 新建 创建活动
+      if (isNew) {
+        this.$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
+          this.createdSuccess = true
+          this.successTxt = '创建成功'
+          res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+        })
+      } else {
+        this.$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
+          this.createdSuccess = true
+          this.successTxt = '更新成功'
+          res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+        })
+      }
+      // http.updateWebinfo(isNew, data).then((res) => {
+      //   if (res.code === 200) {
+      //     this.createdSuccess = true
+      //     isNew ? this.successTxt = '创建成功' : this.successTxt = '更新成功'
+      //     res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+      //   }
+      // }).catch((error) => {
+      //   console.log(error)
+      // })
+    }
+  },
+  computed: {
+    defaultImg () {
+      return this.poster ? `${this.$imgHost}/${this.poster}` : ''
+    }
+  },
+  components: {
+    VeEditer,
+    VeUpload
   }
+}
 </script>
 
 <style lang='scss' scoped>
