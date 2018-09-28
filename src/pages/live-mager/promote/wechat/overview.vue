@@ -100,7 +100,7 @@ export default {
     //   console.log(e)
     //   this.loading = false
     // })
-    this.$config().$get(noticeService.GET_WEBINAR_INFO, {
+    this.$get(noticeService.GET_WEBINAR_INFO, {
       id: this.activityId
     }).then((res) => {
       this.webinarName = res.data.title
@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     sendNow () {
-      this.$config().$post(noticeService.POST_SEND_WECHAT, {
+      this.$post(noticeService.POST_SEND_WECHAT, {
         inviteId: this.id
       }).then((res) => {
         this.$toast({

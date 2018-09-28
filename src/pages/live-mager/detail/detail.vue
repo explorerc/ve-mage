@@ -581,7 +581,7 @@
           submodule: type,
           enabled: status ? 'Y' : 'N'
         }
-        this.$config().$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           console.log(res)
           if (res.code === 200) {
             this.$toast({

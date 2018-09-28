@@ -137,7 +137,7 @@ export default {
       this.msgTag = res.data.signature
       this.msgContent = res.data.desc
     })
-    this.$config().$get(noticeService.GET_WEBINAR_INFO, {
+    this.$get(noticeService.GET_WEBINAR_INFO, {
       id: this.activityId
     }).then((res) => {
       this.webinarName = res.data.title
@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     sendNow () {
-      this.$config().$post(noticeService.POST_SEND_MSG, {
+      this.$post(noticeService.POST_SEND_MSG, {
         inviteId: this.id
       }).then((res) => {
         this.$toast({

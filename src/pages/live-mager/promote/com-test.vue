@@ -92,7 +92,7 @@ export default {
       }
     },
     getCount () {
-      this.$config().$get(noticeService.GET_MSG_LIMIT, {
+      this.$get(noticeService.GET_MSG_LIMIT, {
         type: 'sms'
       }).then((res) => {
         this.limitCount = res.data
@@ -108,7 +108,7 @@ export default {
         content: this.msgContent,
         receiverMobile: this.sendPhone
       }
-      this.$config().$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
+      this.$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
         this.limitCount -= 1
         this.$toast({
           content: '发送成功',
@@ -137,7 +137,7 @@ export default {
         noticeTaskId: this.noticeId,
         mobile: this.sendPhone
       }
-      this.$config().$post(noticeService.POST_AUTO_SEND_TEST, data).then((res) => {
+      this.$post(noticeService.POST_AUTO_SEND_TEST, data).then((res) => {
         this.limitCount -= 1
         this.$toast({
           content: '发送成功',
