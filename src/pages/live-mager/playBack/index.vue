@@ -274,7 +274,7 @@
   }
   export default {
     name: 'play-back',
-    components: {VeUploadImage, veMsgTips, VeUploadVideo, VePagination},
+    components: { VeUploadImage, veMsgTips, VeUploadVideo, VePagination },
     data () {
       return {
         navIdx: 0,
@@ -313,9 +313,9 @@
         playBackList: [],
         isLoadingList: false,
         options: [
-          {value: '0', label: '默认回放'},
-          {value: '1', label: '上传视频'},
-          {value: '2', label: '外部链接'}
+          { value: '0', label: '默认回放' },
+          { value: '1', label: '上传视频' },
+          { value: '2', label: '外部链接' }
         ],
         recordId: '',
         activityId: '',
@@ -444,7 +444,7 @@
       queryPlayBackList () {
         if (this.isLoadingList) return
         this.isLoadingList = true
-        this.$config({handlers: true}).$get(playbackService.GET_PLAYBACK_LIST, {
+        this.$config({ handlers: true }).$get(playbackService.GET_PLAYBACK_LIST, {
           activityId: this.activityId,
           page: this.page,
           pageSize: this.pageSize,
@@ -520,7 +520,7 @@
       /* 下载 */
       downLoadVideo () {
         const playBack = this.playBackList[this.selectRowIdx]
-        this.$config({handlers: true}).$post(playbackService.POST_DOWNLOAD_VIDEO, {
+        this.$config({ handlers: true }).$post(playbackService.POST_DOWNLOAD_VIDEO, {
           replayId: playBack.replayId
         }).then((res) => {
           if (res.data.downloadUrl) {
