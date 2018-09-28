@@ -27,9 +27,11 @@
           <div class="from-title"><i class="star">*</i>播放模式：</div>
           <div class="from-content">
             <el-radio v-model="warm.playMode"
-                      label="AUTO">自动循环</el-radio>
+                      label="AUTO">自动循环
+            </el-radio>
             <el-radio v-model="warm.playMode"
-                      label="ONCE">单次播放</el-radio>
+                      label="ONCE">单次播放
+            </el-radio>
           </div>
         </div>
         <div class="from-row">
@@ -49,7 +51,8 @@
       </div>
       <div class="bottom-btn">
         <button class="primary-button"
-                @click="saveWarm">保存</button>
+                @click="saveWarm">保存
+        </button>
       </div>
     </div>
 
@@ -57,279 +60,274 @@
 </template>
 
 <script>
-import VeUploadImage from 'src/components/ve-upload-image'
-import VeUploadVideo from 'src/components/ve-upload-video'
-import activityService from 'src/api/activity-service'
+  import VeUploadImage from 'src/components/ve-upload-image'
+  import VeUploadVideo from 'src/components/ve-upload-video'
+  import activityService from 'src/api/activity-service'
 
-export default {
-  name: 'warm-field',
-  components: { VeUploadImage, VeUploadVideo },
-  data () {
-    return {
-      warm: {
-        enabled: 'N',
-        playMode: 'AUTO',
-        playCover: '',
-        recordId: '',
-        activityId: '',
-        filename: ''
-      },
-      sdkParam: { // sdk上传插件初始化参数
-        sign: '',
-        signed_at: '',
-        app_id: '',
-        fileName: '',
-        fileSize: '',
-        transcode_status: 0
-      },
-      sdkPlayParam: { // sdk播放器初始化参数
-        app_id: '',
-        accountId: '',
-        token: '',
-        recordId: '', // 回放视频id
-        linkVideo: '' // 外链视频
-      },
-      isSwitch: false,
-      loading: false,
-      percentVideo: 0, // 上传进度
-      percentImg: 0, // 图片上传进度
-      uploadErrorMsg: '', // 上传错误信息
-      uploadImgErrorMsg: '', // 图片上传错误信息
-      uploadVideoErrorMsg: '', // 视频上传错误信息
-      playMsg: ''
-    }
-  },
-  computed: {
-    defaultImg () {
-      return this.warm.playCover ? `${this.$imgHost}/${this.warm.playCover}` : ''
-    }
-  },
-  /* 路由守卫，离开当前页面之前被调用 */
-  beforeRouteLeave (to, from, next) {
-    this.$messageBox({
-      header: '提示',
-      width: '400px',
-      content: '是否放弃当前编辑？',
-      cancelText: '取消',
-      confirmText: '确定',
-      handleClick: (e) => {
-        if (e.action === 'confirm') {
-          next(true)
-        } else {
-          next(false)
-        }
+  export default {
+    name: 'warm-field',
+    components: {VeUploadImage, VeUploadVideo},
+    data () {
+      return {
+        warm: {
+          enabled: 'N',
+          playMode: 'AUTO',
+          playCover: '',
+          recordId: '',
+          activityId: '',
+          filename: ''
+        },
+        sdkParam: { // sdk上传插件初始化参数
+          sign: '',
+          signed_at: '',
+          app_id: '',
+          fileName: '',
+          fileSize: '',
+          transcode_status: 0
+        },
+        sdkPlayParam: { // sdk播放器初始化参数
+          app_id: '',
+          accountId: '',
+          token: '',
+          recordId: '', // 回放视频id
+          linkVideo: '' // 外链视频
+        },
+        isSwitch: false,
+        loading: false,
+        percentVideo: 0, // 上传进度
+        percentImg: 0, // 图片上传进度
+        uploadErrorMsg: '', // 上传错误信息
+        uploadImgErrorMsg: '', // 图片上传错误信息
+        uploadVideoErrorMsg: '', // 视频上传错误信息
+        playMsg: ''
       }
-    })
-  },
-  watch: {
-    isSwitch (newVal) {
-      this.warm.enabled = newVal ? 'Y' : 'N'
-    }
-  },
-  created () {
-    const activityId = this.$route.params.id
-    if (!activityId) {
-      this.goBack()
-      return
-    }
-    this.warm.activityId = activityId
-    this.initPage()
-  },
-  methods: {
-    goBack () {
-      this.$router.go(-1)
     },
-    /* 播放器进行播放,预览 */
-    prePlayVideo () {
-      this.$playVideo({
-        ...this.sdkPlayParam
+    computed: {
+      defaultImg () {
+        return this.warm.playCover ? `${this.$imgHost}/${this.warm.playCover}` : ''
+      }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '取消',
+        confirmText: '确定',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
       })
     },
-    initPage () {
-      this.$get(activityService.GET_WRAM_INFO, {
-        activityId: this.$route.params.id
-      }).then((res) => {
-        /* 查询详情 */
-        if (res.data) {
-          this.warm = {
-            activityId: this.$route.params.id,
-            enabled: res.data.enabled,
-            playMode: res.data.playType || this.warm.playMode,
-            playCover: res.data.imgUrl,
-            recordId: res.data.recordId,
-            filename: res.data.filename
+    watch: {
+      isSwitch (newVal) {
+        this.warm.enabled = newVal ? 'Y' : 'N'
+      }
+    },
+    created () {
+      const activityId = this.$route.params.id
+      if (!activityId) {
+        this.goBack()
+        return
+      }
+      this.warm.activityId = activityId
+      this.initPage()
+    },
+    methods: {
+      goBack () {
+        this.$router.go(-1)
+      },
+      /* 播放器进行播放,预览 */
+      prePlayVideo () {
+        this.$playVideo({
+          ...this.sdkPlayParam
+        })
+      },
+      initPage () {
+        this.$get(activityService.GET_WRAM_INFO, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          /* 查询详情 */
+          if (res.data) {
+            this.warm = {
+              activityId: this.$route.params.id,
+              enabled: res.data.enabled,
+              playMode: res.data.playType || this.warm.playMode,
+              playCover: res.data.imgUrl,
+              recordId: res.data.recordId,
+              filename: res.data.filename
+            }
+            this.isSwitch = res.data.enabled === 'Y'
+            /* sdk参数赋值 */
+            this.sdkPlayParam.recordId = res.data.recordId
+            this.sdkParam.fileName = res.data.filename
+            this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+            this.sdkParam.transcode_status = (res.data.record && res.data.record.list.length > 0) ? res.data.record.list[0].transcode_status : 0
           }
-          this.isSwitch = res.data.enabled === 'Y'
-          /* sdk参数赋值 */
-          this.sdkPlayParam.recordId = res.data.recordId
-          this.sdkParam.fileName = res.data.filename
-          this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
-          this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
-        }
-        this.isSwitch = res.data.enabled === 'Y'
-        /* sdk参数赋值 */
-        this.sdkPlayParam.recordId = res.data.recordId
-        this.sdkParam.fileName = res.data.filename
-        this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
-        this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
-      }).then(() => {
-        this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
-          /* $nextTick保证dom被渲染之后进行paas插件初始化 */
-          this.$nextTick(() => {
-            // 初始化pass上传插件
-            this.sdkParam.sign = res.data.sign
-            this.sdkParam.signed_at = res.data.signedAt
-            this.sdkParam.app_id = res.data.appId
-            // 初始化pass播放参数
-            this.sdkPlayParam.app_id = res.data.appId
-            this.sdkPlayParam.accountId = res.data.accountId
-            this.sdkPlayParam.token = res.data.token
+        }).then(() => {
+          this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
+            /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+            this.$nextTick(() => {
+              // 初始化pass上传插件
+              this.sdkParam.sign = res.data.sign
+              this.sdkParam.signed_at = res.data.signedAt
+              this.sdkParam.app_id = res.data.appId
+              // 初始化pass播放参数
+              this.sdkPlayParam.app_id = res.data.appId
+              this.sdkPlayParam.accountId = res.data.accountId
+              this.sdkPlayParam.token = res.data.token
+            })
           })
         })
-      })
-      // LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
-      //   /* 查询详情 */
-      //   if (res.code === 200 && res.data) {
-      //     this.warm = {
-      //       activityId: this.$route.params.id,
-      //       enabled: res.data.enabled,
-      //       playMode: res.data.playType || this.warm.playMode,
-      //       playCover: res.data.imgUrl,
-      //       recordId: res.data.recordId,
-      //       filename: res.data.filename
-      //     }
-      //     this.isSwitch = res.data.enabled === 'Y'
-      //     /* sdk参数赋值 */
-      //     this.sdkPlayParam.recordId = res.data.recordId
-      //     this.sdkParam.fileName = res.data.filename
-      //     this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
-      //     this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
-      //   }
-      //   this.isSwitch = res.data.enabled === 'Y'
-      //   /* sdk参数赋值 */
-      //   this.sdkPlayParam.recordId = res.data.recordId
-      //   this.sdkParam.fileName = res.data.filename
-      //   this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
-      //   this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
-      // }).then(() => {
-      //   this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
-      //     /* $nextTick保证dom被渲染之后进行paas插件初始化 */
-      //     this.$nextTick(() => {
-      //       // 初始化pass上传插件
-      //       this.sdkParam.sign = res.data.sign
-      //       this.sdkParam.signed_at = res.data.signedAt
-      //       this.sdkParam.app_id = res.data.appId
-      //       // 初始化pass播放参数
-      //       this.sdkPlayParam.app_id = res.data.appId
-      //       this.sdkPlayParam.accountId = res.data.accountId
-      //       this.sdkPlayParam.token = res.data.token
-      //     })
-      //   })
-      // })
-    },
-    uploadVideo () {
-      document.getElementById('upload').click()
-    },
-    checkoutParams () {
-      if (!this.warm.recordId) {
-        this.$toast({
-          header: `提示`,
-          content: '请上传暖场视频',
-          autoClose: 2000,
-          position: 'right-top'
+        // LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+        //   /* 查询详情 */
+        //   if (res.code === 200 && res.data) {
+        //     this.warm = {
+        //       activityId: this.$route.params.id,
+        //       enabled: res.data.enabled,
+        //       playMode: res.data.playType || this.warm.playMode,
+        //       playCover: res.data.imgUrl,
+        //       recordId: res.data.recordId,
+        //       filename: res.data.filename
+        //     }
+        //     this.isSwitch = res.data.enabled === 'Y'
+        //     /* sdk参数赋值 */
+        //     this.sdkPlayParam.recordId = res.data.recordId
+        //     this.sdkParam.fileName = res.data.filename
+        //     this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+        //     this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
+        //   }
+        //   this.isSwitch = res.data.enabled === 'Y'
+        //   /* sdk参数赋值 */
+        //   this.sdkPlayParam.recordId = res.data.recordId
+        //   this.sdkParam.fileName = res.data.filename
+        //   this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+        //   this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
+        // }).then(() => {
+        //   this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
+        //     /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+        //     this.$nextTick(() => {
+        //       // 初始化pass上传插件
+        //       this.sdkParam.sign = res.data.sign
+        //       this.sdkParam.signed_at = res.data.signedAt
+        //       this.sdkParam.app_id = res.data.appId
+        //       // 初始化pass播放参数
+        //       this.sdkPlayParam.app_id = res.data.appId
+        //       this.sdkPlayParam.accountId = res.data.accountId
+        //       this.sdkPlayParam.token = res.data.token
+        //     })
+        //   })
+        // })
+      },
+      uploadVideo () {
+        document.getElementById('upload').click()
+      },
+      checkoutParams () {
+        if (!this.warm.recordId) {
+          this.$toast({
+            header: `提示`,
+            content: '请上传暖场视频',
+            autoClose: 2000,
+            position: 'right-top'
+          })
+          return false
+        }
+        return true
+      },
+      /* 保存暖场信息 */
+      saveWarm () {
+        if (!this.checkoutParams()) return
+        this.$post(activityService.POST_SAVE_WRAM_INFO, {
+          activityId: this.warm.activityId,
+          recordId: this.warm.recordId,
+          playType: this.warm.playMode,
+          imgUrl: this.warm.playCover,
+          enabled: this.warm.enabled,
+          filename: this.warm.filename
+        }).then((res) => {
+          this.$toast({
+            header: `提示`,
+            content: '保存成功',
+            autoClose: 2000,
+            position: 'right-top'
+          })
         })
-        return false
-      }
-      return true
-    },
-    /* 保存暖场信息 */
-    saveWarm () {
-      if (!this.checkoutParams()) return
-      this.$post(activityService.POST_SAVE_WRAM_INFO, {
-        activityId: this.warm.activityId,
-        recordId: this.warm.recordId,
-        playType: this.warm.playMode,
-        imgUrl: this.warm.playCover,
-        enabled: this.warm.enabled,
-        filename: this.warm.filename
-      }).then((res) => {
-        this.$toast({
-          header: `提示`,
-          content: '保存成功',
-          autoClose: 2000,
-          position: 'right-top'
-        })
-      })
-      // LiveHttp.saveAndEditWarmInfo({
-      //   activityId: this.warm.activityId,
-      //   recordId: this.warm.recordId,
-      //   playType: this.warm.playMode,
-      //   imgUrl: this.warm.playCover,
-      //   enabled: this.warm.enabled,
-      //   filename: this.warm.filename
-      // }).then((res) => {
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       header: `提示`,
-      //       content: '保存成功',
-      //       autoClose: 2000,
-      //       position: 'right-top'
-      //     })
-      //   }
-      // })
-    },
-    /* 上传图片成功 */
-    uploadImgSuccess (data) {
-      this.warm.playCover = data.name
-    },
-    /* 上传视频成功 */
-    uploadVideoSuccess (recordId, fileName, fileSize) {
-      this.warm.recordId = recordId
-      this.warm.filename = fileName
-      this.sdkParam.fileName = fileName
-      this.sdkParam.fileSize = fileSize
-      this.sdkPlayParam.recordId = recordId
-    },
-    /* 预览，删除触发 */
-    handleVideoClick (e) {
-      if (e.type === 'pre-view') { // 预览
-        this.prePlayVideo()
-      } else if (e.type === 'delete') { // 删除
-        this.$messageBox({
-          header: '删除此视频',
-          width: '400px',
-          content: '您是否确定要删除此视频？',
-          cancelText: '取消',
-          confirmText: '删除',
-          type: 'error',
-          handleClick: (e) => {
-            if (e.action === 'confirm') {
-              this.warm.recordId = ''
-              this.warm.filename = ''
-              this.sdkPlayParam.recordId = ''
-              this.sdkParam.fileName = ''
-              this.sdkParam.fileSize = ''
-              this.sdkParam.transcode_status = 0
+        // LiveHttp.saveAndEditWarmInfo({
+        //   activityId: this.warm.activityId,
+        //   recordId: this.warm.recordId,
+        //   playType: this.warm.playMode,
+        //   imgUrl: this.warm.playCover,
+        //   enabled: this.warm.enabled,
+        //   filename: this.warm.filename
+        // }).then((res) => {
+        //   if (res.code === 200) {
+        //     this.$toast({
+        //       header: `提示`,
+        //       content: '保存成功',
+        //       autoClose: 2000,
+        //       position: 'right-top'
+        //     })
+        //   }
+        // })
+      },
+      /* 上传图片成功 */
+      uploadImgSuccess (data) {
+        this.warm.playCover = data.name
+      },
+      /* 上传视频成功 */
+      uploadVideoSuccess (recordId, fileName, fileSize) {
+        this.warm.recordId = recordId
+        this.warm.filename = fileName
+        this.sdkParam.fileName = fileName
+        this.sdkParam.fileSize = fileSize
+        this.sdkPlayParam.recordId = recordId
+      },
+      /* 预览，删除触发 */
+      handleVideoClick (e) {
+        if (e.type === 'pre-view') { // 预览
+          this.prePlayVideo()
+        } else if (e.type === 'delete') { // 删除
+          this.$messageBox({
+            header: '删除此视频',
+            width: '400px',
+            content: '您是否确定要删除此视频？',
+            cancelText: '取消',
+            confirmText: '删除',
+            type: 'error',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.warm.recordId = ''
+                this.warm.filename = ''
+                this.sdkPlayParam.recordId = ''
+                this.sdkParam.fileName = ''
+                this.sdkParam.fileSize = ''
+                this.sdkParam.transcode_status = 0
+              }
             }
-          }
-        })
+          })
+        }
+      },
+      uploadError (data) {
+        this.uploadImgErrorMsg = data.msg
+        this.warm.playCover = ''
       }
-    },
-    uploadError (data) {
-      this.uploadImgErrorMsg = data.msg
     }
   }
-}
 </script>
 
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>
