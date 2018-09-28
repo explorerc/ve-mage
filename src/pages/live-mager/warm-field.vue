@@ -59,7 +59,7 @@
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
-  import LiveHttp from 'src/api/activity-manger'
+  // import LiveHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
 
   export default {
@@ -147,9 +147,11 @@
         })
       },
       initPage () {
-        LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+        this.$get(activityService.GET_WRAM_INFO, {
+          activityId: this.$route.params.id
+        }).then((res) => {
           /* 查询详情 */
-          if (res.code === 200 && res.data) {
+          if (res.data) {
             this.warm = {
               activityId: this.$route.params.id,
               enabled: res.data.enabled,
@@ -192,7 +194,7 @@
         //     this.warm = {
         //       activityId: this.$route.params.id,
         //       enabled: res.data.enabled,
-        //       playMode: res.data.playType,
+        //       playMode: res.data.playType || this.warm.playMode,
         //       playCover: res.data.imgUrl,
         //       recordId: res.data.recordId,
         //       filename: res.data.filename
@@ -204,9 +206,14 @@
         //     this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
         //     this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
         //   }
+        //   this.isSwitch = res.data.enabled === 'Y'
+        //   /* sdk参数赋值 */
+        //   this.sdkPlayParam.recordId = res.data.recordId
+        //   this.sdkParam.fileName = res.data.filename
+        //   this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+        //   this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
         // }).then(() => {
-        //   /* 获取pass信息 */
-        //   LiveHttp.queryPassSdkInfo().then((res) => {
+        //   this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
         //     /* $nextTick保证dom被渲染之后进行paas插件初始化 */
         //     this.$nextTick(() => {
         //       // 初始化pass上传插件
