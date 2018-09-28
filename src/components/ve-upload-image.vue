@@ -40,7 +40,7 @@
 
   export default {
     name: 've-upload-image',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         imgHost: '',
@@ -80,6 +80,9 @@
       defaultImg: {
         handler (val) {
           this.coverImg = val
+          if (!val) {
+            this.fileSrc = ''
+          }
         },
         immediate: true
       },

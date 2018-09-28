@@ -9,7 +9,7 @@
       <div class="tip-box">
         通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
       </div>
-      <div class="table-list-box">
+      <div class="table-list-box" style="padding-top: 20px;">
         <el-table
           :data="emailList"
           style="width: 100%">
@@ -110,7 +110,7 @@
 <script>
   import LiveHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const handleType = {
@@ -126,7 +126,7 @@
   }
   export default {
     name: 'index',
-    components: { VePagination },
+    components: {VePagination},
     data () {
       return {
         pageSize: 10,
@@ -288,6 +288,10 @@
 
 .dd-status {
   color: #ff8b0e;
+}
+
+.email-box{
+  margin-top: 20px;
 }
 </style>
 

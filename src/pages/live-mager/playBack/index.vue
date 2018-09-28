@@ -52,7 +52,7 @@
           <el-table-column prop="duration"
                            label="时长">
             <template slot-scope="scope">
-              {{scope.row.duration | isEmpty}}
+              {{scope.row.duration | formatTime}}
             </template>
           </el-table-column>
           <el-table-column label="生成时间">
@@ -109,7 +109,8 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagination-box">
+        <div class="pagination-box"
+             v-if="total>pageSize">
           <div class="page-pagination">
             <ve-pagination :total="total"
                            :pageSize="pageSize"
@@ -159,9 +160,9 @@
                v-if="playBackMode==0">
             <div class="from-title"><i class="star">*</i>上传视频：</div>
             <div class="from-content">
-              <ve-upload-video title="视频仅支持mp4格式，文件大小不超过200M"
-                               accept="mp4"
-                               :fileSize="204800"
+              <ve-upload-video title="选择视频"
+                               accept="mp4|avi|3gp|mov|mkv|flv|rm|rmvb"
+                               :fileSize="4096000"
                                :errorMsg="recordIdError"
                                :sdk="sdkParam"
                                @handleClick="handleVideoClick"
@@ -212,6 +213,7 @@
                                  accept="png|jpg|jpeg"
                                  :defaultImg="defaultImg"
                                  :fileSize="1024"
+                                 :errorMsg="uploadImgErrorMsg"
                                  @error="uploadError"
                                  @success="uploadImgSuccess"></ve-upload-image>
               </div>
@@ -256,7 +258,7 @@ import VeUploadImage from 'src/components/ve-upload-image'
 import VeUploadVideo from 'src/components/ve-upload-video'
 import VePagination from 'src/components/ve-pagination'
 import veMsgTips from 'src/components/ve-msg-tips'
-import playbackService from 'src/api/playback-service'
+import PlayBackHttp from 'src/api/play-back'
 import ActivityHttp from 'src/api/activity-manger'
 import LiveHttp from 'src/api/live'
 import ChatConfig from 'src/api/chat-config'
@@ -291,6 +293,7 @@ export default {
         recordId: '', // 回放视频id
         linkVideo: '' // 外链视频
       },
+      tempPlayBackCover: '',
       playBack: {
         isSwitch: true,
         replayId: '',
@@ -313,22 +316,34 @@ export default {
       recordId: '',
       activityId: '',
       page: 1,
-      pageSize: 8,
+      pageSize: 25,
       total: 0,
       outLineLink: '',
       outLineMode: '0',
       playBackMode: '0',
       uploadErrorMsg: '',
+      uploadImgErrorMsg: '',
       playMsg: '',
       prePlayShow: false
     }
   },
+  filters: {
+    formatTime: function (value) {
+      if (value) {
+        let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+        let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+        let s = ((value % 60 >> 0) + '').padStart(2, 0)
+        return `${h}:${m}:${s}`
+      }
+      return value || '--'
+    }
+  },
   computed: {
     defaultImg () {
-      if (!this.playBack.playBackCover) {
+      if (!this.tempPlayBackCover) {
         return ''
       }
-      return `${this.$imgHost}/${this.playBack.playBackCover}`
+      return `${this.$imgHost}/${this.tempPlayBackCover}`
     }
   },
   watch: {
@@ -359,7 +374,9 @@ export default {
   },
   methods: {
     initPage () {
-      this.$get(playbackService.GET_PLAYBACK, { activityId: this.activityId }).then((res) => {
+      PlayBackHttp.queryPlayBack({
+        activityId: this.activityId
+      }).then((res) => {
         this.playBack = {
           replayId: res.data.replayId,
           outLineMode: res.data.offlineType,
@@ -367,6 +384,7 @@ export default {
           playBackCover: res.data.cover,
           outLineLink: ''
         }
+        this.tempPlayBackCover = res.data.cover
         this.outLineMode = res.data.offlineType === outLineMode.TIMING ? '1' : '0'
       }).then(() => {
         this.queryPlayBackList()
@@ -418,7 +436,7 @@ export default {
     queryPlayBackList () {
       if (this.isLoadingList) return
       this.isLoadingList = true
-      this.$config({ handlers: true }).$get(playbackService.GET_PLAYBACK_LIST, {
+      PlayBackHttp.queryPlayBackList({
         activityId: this.activityId,
         page: this.page,
         pageSize: this.pageSize,
@@ -440,29 +458,30 @@ export default {
     playBackSetting (idx) {
       this.playBackShow = true
       this.selectRowIdx = idx
+      this.tempPlayBackCover = this.playBack.playBackCover
     },
     /* 取消默认回放 */
     cancelPlayBack (idx) {
-      this.$post(playbackService.POST_CANCEL_PLAYBACK_CONFIG, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.playBack.replayId = ''
+      PlayBackHttp.cancelPlayBackConfig(this.activityId).then(res => {
+        if (res.code === 200) {
+          this.playBack.replayId = ''
+        }
       })
     },
     /* 重新生成回放 */
     resetMakePlayBack (idx) {
       this.selectRowIdx = idx
       const playBack = this.playBackList[this.selectRowIdx]
-      this.$post(playbackService.POST_REMAKE_PLAYBACK, {
-        replayId: playBack.replayId
-      }).then((res) => {
-        playBack.status = 'PROCESS'
-        this.$toast({
-          header: `提示`,
-          content: '成功生成回放',
-          autoClose: 2000,
-          position: 'top-center'
-        })
+      PlayBackHttp.resetMakePlayBack(playBack.replayId).then(res => {
+        if (res.code === 200) {
+          playBack.status = 'PROCESS'
+          this.$toast({
+            header: `提示`,
+            content: '成功生成回放',
+            autoClose: 2000,
+            position: 'top-center'
+          })
+        }
       })
     },
     /* 更多 */
@@ -493,14 +512,21 @@ export default {
     /* 下载 */
     downLoadVideo () {
       const playBack = this.playBackList[this.selectRowIdx]
-      this.$post(playbackService.POST_DOWNLOAD_VIDEO, {
-        replayId: playBack.replayId
-      }).then((res) => {
-        if (res.data.downloadUrl) {
+      PlayBackHttp.downloadVideo(playBack.replayId).then((res) => {
+        console.log(res)
+        if (res.data.code === 200 && res.data.downloadUrl) {
           let dl = document.createElement('a')
           dl.href = res.data.downloadUrl
           dl.click()
         }
+      }).catch(e => {
+        let errorMsg = e.msg || '网络异常'
+        this.$messageBox({
+          header: '提示',
+          content: errorMsg,
+          autoClose: 5,
+          confirmText: '知道了'
+        })
       })
     },
     addVideoClickShow () {
@@ -531,15 +557,17 @@ export default {
           this.newTitleError = '视频标题不能为空'
           return
         }
-        this.$post(playbackService.POST_CREATE_PLAYBACK, {
+        PlayBackHttp.createPlayBack({
           activityId: this.activityId,
           title: this.newTitle,
           type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
           link: this.outLineLink,
           video: this.recordId
         }).then((res) => {
-          this.navIdx = 1
-          this.queryPlayBackList()
+          if (res.code === 200) {
+            this.navIdx = 1
+            this.queryPlayBackList()
+          }
         })
       }
       this.addVideoShow = false
@@ -566,25 +594,28 @@ export default {
             return
           }
         }
+        this.playBack.playBackCover = this.tempPlayBackCover
         const replayId = this.playBackList[this.selectRowIdx].replayId
-        this.$post(playbackService.POST_SAVE_PLAYBACK_CONFIG, {
+        PlayBackHttp.savePlayBackConfig({
           replayId: replayId,
           cover: this.playBack.playBackCover,
           offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
           offlineTime: this.playBack.outLineTime
         }).then((res) => {
+          if (res.code !== 200) return
           this.playBack.replayId = replayId
         })
+      } else {
+        this.tempPlayBackCover = ''
       }
       this.playBackShow = false
     },
     updataTitle () {
       let playBack = this.playBackList[this.selectRowIdx]
-      this.$post(playbackService.POST_RETITLE_PLAYBACK, {
-        replayId: playBack.replayId,
-        title: this.newTitle
-      }).then((res) => {
-        playBack.title = this.newTitle
+      PlayBackHttp.retitlePlayBack(playBack.replayId, this.newTitle).then((res) => {
+        if (res.code === 200) {
+          playBack.title = this.newTitle
+        }
       })
     },
     delPlayBack () {
@@ -598,16 +629,16 @@ export default {
         handleClick: (e) => {
           if (e.action === 'confirm') {
             const delId = this.playBackList[this.selectRowIdx].replayId
-            this.$post(playbackService.POST_DELETE_PLAYBACK_BY_ID, {
-              replayId: delId
-            }).then((res) => {
-              this.$toast({
-                header: `提示`,
-                content: '删除成功！',
-                autoClose: 2000,
-                position: 'right-top'
-              })
-              this.queryPlayBackList()
+            PlayBackHttp.deletePlayBackById(delId).then((res) => {
+              if (res.code === 200) {
+                this.$toast({
+                  header: `提示`,
+                  content: '删除成功！',
+                  autoClose: 2000,
+                  position: 'right-top'
+                })
+                this.queryPlayBackList()
+              }
             })
           }
         }
@@ -628,10 +659,10 @@ export default {
       return true
     },
     uploadImgSuccess (data) {
-      this.playBack.playBackCover = data.name
+      this.tempPlayBackCover = data.name
     },
     uploadError (data) {
-      console.log('上传失败:', data)
+      this.uploadImgErrorMsg = data.msg
     },
     uploadVideo () {
       document.getElementById('upload').click()

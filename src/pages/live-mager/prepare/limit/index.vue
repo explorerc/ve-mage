@@ -27,7 +27,8 @@
   import comNone from './com-none'
   import comInvited from './com-invited'
   import comApply from './com-apply'
-  import prepareHttp from 'src/api/activity-manger'
+  // import prepareHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
   export default {
     data () {
       return {
@@ -47,17 +48,23 @@
     },
     methods: {
       getLimit () {
-        prepareHttp.limit(this.id).then((res) => {
-          if (res.code === 200) {
-            console.log(res)
-            this.viewLimit = res.data.viewCondition
-          }
-        }).catch((res) => {
-          this.$toast({
-            content: res.msg,
-            position: 'center'
-          })
+        this.$config().$get(activityService.GET_LIMIT, {
+          activityId: this.activityId
+        }).then((res) => {
+          console.log(res)
+          this.viewLimit = res.data.viewCondition
         })
+        // prepareHttp.limit(this.id).then((res) => {
+        //   if (res.code === 200) {
+        //     console.log(res)
+        //     this.viewLimit = res.data.viewCondition
+        //   }
+        // }).catch((res) => {
+        //   this.$toast({
+        //     content: res.msg,
+        //     position: 'center'
+        //   })
+        // })
       }
     }
 

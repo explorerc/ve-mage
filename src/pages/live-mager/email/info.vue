@@ -55,9 +55,9 @@
           <!--</div>-->
         </div>
         <div class="step-btns">
+          <!--<button class="primary-button fr" @click="prePage">返回上级</button>-->
           <button v-if="email.status!=='SEND'" class="default-button margin-fl" @click="editEmail">编辑邮件</button>
           <button v-if="email.status=='AWAIT'" class="primary-button" @click="sendEmail">立即发送</button>
-          <!--<button class="primary-button fr" @click="prePage">返回上级</button>-->
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@
 
 <script>
   import LiveHttp from 'src/api/activity-manger'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   const statusType = {
@@ -99,7 +99,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...newVal }
+          this.email = {...newVal}
         },
         immediate: true
       }

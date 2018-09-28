@@ -82,6 +82,7 @@ const ActivityManger = {
   /**
    * 删除助理
    */
+  POST_DELASS: '/manage/role-manage/del-assistant',
   delAss (data) {
     return utils.ajax({
       method: 'POST',
@@ -92,6 +93,8 @@ const ActivityManger = {
   /**
    *  编辑 添加助理
    */
+  POST_UPDATE_ASS: '/manage/role-manage/update-assistant',
+  POST_ADD_ASS: '/manage/role-manage/add-assistant',
   handleAss (isNew, data) {
     return utils.ajax({
       method: 'POST',
@@ -104,6 +107,7 @@ const ActivityManger = {
   /**
    * 获取观看条件
    */
+  GET_LIMIT: '/manage/view-limit/get-limit',
   getLimit (id) {
     return utils.ajax({
       method: 'GET',
@@ -116,6 +120,7 @@ const ActivityManger = {
   /**
    * 保存观看条件
    */
+  SAVE_LIMIT: '/manage/view-limit/update-limit',
   saveLimit (data) {
     return utils.ajax({
       method: 'POST',
@@ -139,6 +144,8 @@ const ActivityManger = {
   /**
    * 更新/创建活动
    */
+  POST_UPDATE_WEBINAR: '/manage/base-manage/update-activity',
+  POST_CREATE_WEBINAR: '/manage/base-manage/add-activity',
   updateWebinfo (isNew, data) {
     return utils.ajax({
       method: 'POST',
@@ -243,6 +250,7 @@ const ActivityManger = {
     })
   },
   // 详情页面获取活动信息
+  GET_DETAILS: '/manage/activity-detail/index',
   getDetails (id) {
     return utils.ajax({
       method: 'get',
@@ -253,6 +261,7 @@ const ActivityManger = {
     })
   },
   // 详情页面子模块开关 设置子模块开关
+  POST_DETAIL_SWITCH: '/manage/submodule-manage/edit',
   detailSwitch (data) {
     return utils.ajax({
       method: 'post',
@@ -261,6 +270,7 @@ const ActivityManger = {
     })
   },
   // 查询子模块开关
+  GET_QUERY_SWITCH: '/manage/submodule-manage/get',
   querySwitch (id) {
     return utils.ajax({
       method: 'get',
@@ -271,6 +281,7 @@ const ActivityManger = {
     })
   },
   // 发布活动
+  POST_PUBLISH_ACTIVITE: '/manage/base-manage/published',
   publishActive (id) {
     return utils.ajax({
       method: 'get',
@@ -281,6 +292,7 @@ const ActivityManger = {
     })
   },
   // 下线活动
+  POST_OFFLINE_ACTIVITE: '/manage/base-manage/down',
   offlineActive (id) {
     return utils.ajax({
       method: 'get',

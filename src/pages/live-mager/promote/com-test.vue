@@ -29,7 +29,8 @@
   </transition>
 </template>
 <script>
-import createHttp from 'src/api/activity-manger'
+// import createHttp from 'src/api/activity-manger'
+import noticeService from 'src/api/notice-service'
 export default {
   name: 'com-test',
   data () {
@@ -91,54 +92,73 @@ export default {
       }
     },
     getCount () {
-      createHttp.msgLimit('sms').then((res) => {
-        if (res.code === 200) {
-          this.limitCount = res.data
-        }
-      }).catch((e) => { console.log(e) })
+      this.$get(noticeService.GET_MSG_LIMIT, {
+        type: 'sms'
+      }).then((res) => {
+        this.limitCount = res.data
+      })
+      // createHttp.msgLimit('sms').then((res) => {
+      //   if (res.code === 200) {
+      //     this.limitCount = res.data
+      //   }
+      // }).catch((e) => { console.log(e) })
     },
     sendTestmsg () {
       const data = {
         content: this.msgContent,
         receiverMobile: this.sendPhone
       }
-      createHttp.sendTestmsg(data).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.limitCount -= 1
-          this.$toast({
-            content: '发送成功',
-            position: 'center'
-          })
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
+        this.limitCount -= 1
         this.$toast({
-          content: '发送失败',
+          content: '发送成功',
           position: 'center'
         })
       })
+      // createHttp.sendTestmsg(data).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.limitCount -= 1
+      //     this.$toast({
+      //       content: '发送成功',
+      //       position: 'center'
+      //     })
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      //   this.$toast({
+      //     content: '发送失败',
+      //     position: 'center'
+      //   })
+      // })
     },
     sendAuto () {
       const data = {
         noticeTaskId: this.noticeId,
         mobile: this.sendPhone
       }
-      createHttp.autoSendtest(data).then((res) => {
-        if (res.code === 200) {
-          this.limitCount -= 1
-          this.$toast({
-            content: '发送成功',
-            position: 'center'
-          })
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$post(noticeService.POST_AUTO_SEND_TEST, data).then((res) => {
+        this.limitCount -= 1
         this.$toast({
-          content: '发送失败',
+          content: '发送成功',
           position: 'center'
         })
       })
+      // createHttp.autoSendtest(data).then((res) => {
+      //   if (res.code === 200) {
+      //     this.limitCount -= 1
+      //     this.$toast({
+      //       content: '发送成功',
+      //       position: 'center'
+      //     })
+      //   }
+      // }).catch((e) => {
+      //   console.log(e)
+      //   this.$toast({
+      //     content: '发送失败',
+      //     position: 'center'
+      //   })
+      // })
     },
     validPhone (phone) {
       var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/

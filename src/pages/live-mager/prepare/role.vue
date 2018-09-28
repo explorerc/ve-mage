@@ -103,6 +103,7 @@
 </template>
 <script>
 import prepareHttp from 'src/api/activity-manger'
+import activityService from 'src/api/activity-service'
 export default {
   data () {
     return {
@@ -193,24 +194,33 @@ export default {
         let data = {
           id: this.modalData.id
         }
-        prepareHttp.delAss(data).then((res) => {
-          this.msgDelete = false
-          if (res.code === 200) {
-            console.log(res)
-            this.$toast({
-              content: '删除成功',
-              position: 'center'
-            })
-            // 更新data
-            this.tableData.splice([this.modalData.idx], 1)
-          }
-        }).catch((res) => {
+        this.$config().$post(activityService.POST_DELASS, data).then((res) => {
+          console.log(res)
           this.$toast({
-            content: res.msg,
+            content: '删除成功',
             position: 'center'
           })
-          this.msgDelete = false
+          // 更新data
+          this.tableData.splice([this.modalData.idx], 1)
         })
+        // prepareHttp.delAss(data).then((res) => {
+        //   this.msgDelete = false
+        //   if (res.code === 200) {
+        //     console.log(res)
+        //     this.$toast({
+        //       content: '删除成功',
+        //       position: 'center'
+        //     })
+        //     // 更新data
+        //     this.tableData.splice([this.modalData.idx], 1)
+        //   }
+        // }).catch((res) => {
+        //   this.$toast({
+        //     content: res.msg,
+        //     position: 'center'
+        //   })
+        //   this.msgDelete = false
+        // })
       } else {
         this.msgDelete = false
       }
@@ -276,39 +286,68 @@ export default {
         avatar: this.modalData.avatar
       }
       let isNew = this.modalData.title.search('编辑') >= 0
-      prepareHttp.handleAss(isNew, saveData).then((res) => {
-        if (res.code === 200) {
+      if (isNew) {
+        this.$config().$post(activityService.POST_ADD_ASS, saveData).then((res) => {
           this.$toast({
-            content: isNew ? '编辑成功' : '创建成功',
+            content: '创建成功',
             position: 'center'
           })
-          // update data
-          if (!isNew) { // new
-            let pushData = {
-              id: res.data.id,
-              activityId: saveData.activityId,
-              avatar: saveData.avatar,
-              nickname: saveData.nickname,
-              role: 'ASSISTANT',
-              password: saveData.password,
-              online: true
-            }
-            this.tableData.push(pushData)
-          } else { // update
-            this.tableData[this.modalData.idx].avatar = saveData.avatar
-            this.tableData[this.modalData.idx].nickname = saveData.nickname
-            this.tableData[this.modalData.idx].password = saveData.password
+          let pushData = {
+            id: res.data.id,
+            activityId: saveData.activityId,
+            avatar: saveData.avatar,
+            nickname: saveData.nickname,
+            role: 'ASSISTANT',
+            password: saveData.password,
+            online: true
           }
-        } else {
+          this.tableData.push(pushData)
+        })
+      } else {
+        this.$config().$post(activityService.POST_UPDATE_ASS, saveData).then((res) => {
           this.$toast({
-            content: res.msg,
+            content: '编辑成功',
             position: 'center'
           })
-        }
-        this.modalData.isShow = false
-      }).catch((e) => {
-        console.log(e)
-      })
+          this.tableData[this.modalData.idx].avatar = saveData.avatar
+          this.tableData[this.modalData.idx].nickname = saveData.nickname
+          this.tableData[this.modalData.idx].password = saveData.password
+        })
+      }
+
+      // prepareHttp.handleAss(isNew, saveData).then((res) => {
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       content: isNew ? '编辑成功' : '创建成功',
+      //       position: 'center'
+      //     })
+      //     // update data
+      //     if (!isNew) { // new
+      //       let pushData = {
+      //         id: res.data.id,
+      //         activityId: saveData.activityId,
+      //         avatar: saveData.avatar,
+      //         nickname: saveData.nickname,
+      //         role: 'ASSISTANT',
+      //         password: saveData.password,
+      //         online: true
+      //       }
+      //       this.tableData.push(pushData)
+      //     } else { // update
+      //       this.tableData[this.modalData.idx].avatar = saveData.avatar
+      //       this.tableData[this.modalData.idx].nickname = saveData.nickname
+      //       this.tableData[this.modalData.idx].password = saveData.password
+      //     }
+      //   } else {
+      //     this.$toast({
+      //       content: res.msg,
+      //       position: 'center'
+      //     })
+      //   }
+      //   this.modalData.isShow = false
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     getRolelist () {
       this.loading = true
