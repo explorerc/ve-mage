@@ -52,7 +52,7 @@
     props: {
       accept: {
         type: String,
-        default: 'png|jpg|jpeg|bmp|gif|doc|mp4'
+        default: 'mp4|avi|3gp|mov|mkv|flv|rm|rmvb'
       },
       fileSize: {
         type: Number,
@@ -129,7 +129,7 @@
               this.fileName = file.name
               this.fileRealSize = file.size / 1024 / 1024
               if (file.type !== 'video/mp4') {
-                this.errorTxt = '不支持该视频格式，请上传mp4格式视频'
+                this.errorTxt = '不支持该视频格式，请上传' + this.accept + '格式视频'
                 return false
               } else if (this.fileRealSize > this.fileSize / 1024) {
                 this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'

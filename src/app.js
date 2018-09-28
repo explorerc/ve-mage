@@ -52,6 +52,7 @@ let ready = window.Vhall.ready
 let readyStatus = false
 let callback = []
 window.Vhall.ready = fn => {
+  debugger
   if (readyStatus) {
     fn()
   } else {
@@ -70,6 +71,7 @@ ready(() => {
 let config = window.Vhall.config
 let exec = false
 window.Vhall.config = options => {
+  if (!options.token) return
   if (exec) return
   exec = true
   config(options)

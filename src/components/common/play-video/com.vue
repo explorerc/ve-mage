@@ -43,6 +43,7 @@
         this.$emit('close')
       },
       initPage () {
+        debugger
         this.$nextTick(() => {
           if (!this.recordId) return
           window.Vhall.ready(() => {
