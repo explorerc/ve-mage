@@ -16,5 +16,7 @@ export default {
   // 重新生成回放
   POST_REMAKE_PLAYBACK: '/manage/replay-manage/recreate-replay',
   // 下载回放视频
-  POST_DOWNLOAD_VIDEO: '/manage/replay-manage/download'
+  POST_DOWNLOAD_VIDEO: '/manage/replay-manage/download',
+  // 获取pass sdk
+  GET_PAAS_SDK_INFO: '/common/paas/create-access-token'
 }

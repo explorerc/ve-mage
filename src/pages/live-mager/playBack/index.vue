@@ -259,7 +259,6 @@ import VeUploadVideo from 'src/components/ve-upload-video'
 import VePagination from 'src/components/ve-pagination'
 import veMsgTips from 'src/components/ve-msg-tips'
 import playbackService from 'src/api/playback-service'
-import ActivityHttp from 'src/api/activity-manger'
 import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 const outLineMode = {
@@ -387,8 +386,7 @@ export default {
       }).then(() => {
         this.queryPlayBackList()
         /* 获取pass信息 */
-        ActivityHttp.queryPassSdkInfo().then((res) => {
-          console.log(res)
+        this.$get(playbackService.GET_PAAS_SDK_INFO).then((res) => {
           // this.vhallParams = res.data
           /* $nextTick保证dom被渲染之后进行paas插件初始化 */
           this.$nextTick(() => {
