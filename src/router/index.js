@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
         next('/setAccount')
       } else {
         vue
-          .$config({loading: true})
+          .$config({ loading: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
         return false
       } else {
         vue
-          .$config({loading: true})
+          .$config({ loading: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             if (res.data.hasPassword) {

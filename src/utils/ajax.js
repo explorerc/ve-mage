@@ -1,8 +1,8 @@
 import axios from 'axios'
 // import qs from 'qs'
 // import EventBus from 'src/utils/eventBus'
-import {Loading} from 'components/common/loading'
-import {MessageBox} from 'components/common/message-box'
+import { Loading } from 'components/common/loading'
+import { MessageBox } from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
