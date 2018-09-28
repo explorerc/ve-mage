@@ -1,5 +1,5 @@
 <template>
-  <div class="ve-upload-box">
+  <div class="ve-upload-box" v-ComLoading="loading">
     <div class="upload-img-box" v-if="fileSrc||(!fileSrc && coverImg)">
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
@@ -24,6 +24,7 @@
       inputName="file"
       :fileSize="fileSize"
       @error="uploadError"
+      @selected="selected"
       @progress="uploadProgress"
       @load="uploadImgSuccess">
       <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
@@ -48,7 +49,8 @@
         coverImg: '',
         tipTxt: '',
         percentImg: 0,
-        errorTxt: ''
+        errorTxt: '',
+        loading: false
       }
     },
     props: {
@@ -106,7 +108,12 @@
       overUpload () {
         this.$refs.uploadFile.click()
       },
+      selected () {
+        console.log('selected')
+        this.loading = true
+      },
       uploadProgress (data) {
+        this.loading = false
         this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
         if (this.percentImg === 100) {
           this.percentImg = 0
@@ -119,6 +126,7 @@
         this.$emit('success', fildObj)
       },
       uploadError (data) {
+        this.loading = false
         const state = data.data[0].state
         let msg = ''
         if (state === 'size-limit') {
@@ -187,7 +195,6 @@
       height: 100%;
       width: 249px;
       margin: 0 auto;
-      background-color: #666666;
       overflow: hidden;
       cursor: pointer;
       .temp-img {

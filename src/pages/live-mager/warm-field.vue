@@ -165,14 +165,8 @@
             this.sdkPlayParam.recordId = res.data.recordId
             this.sdkParam.fileName = res.data.filename
             this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
-            this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
+            this.sdkParam.transcode_status = (res.data.record && res.data.record.list.length > 0) ? res.data.record.list[0].transcode_status : 0
           }
-          this.isSwitch = res.data.enabled === 'Y'
-          /* sdk参数赋值 */
-          this.sdkPlayParam.recordId = res.data.recordId
-          this.sdkParam.fileName = res.data.filename
-          this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
-          this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
         }).then(() => {
           this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
@@ -317,7 +311,9 @@
         }
       },
       uploadError (data) {
+        debugger
         this.uploadImgErrorMsg = data.msg
+        this.warm.playCover = ''
       }
     }
   }
@@ -326,11 +322,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>

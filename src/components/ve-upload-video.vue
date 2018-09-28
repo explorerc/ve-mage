@@ -6,7 +6,7 @@
         <span class="file-name">{{fileName}}</span>
         <span class="error-msg" v-if="errorTxt">{{errorTxt}}</span>
         <span class="file-size"
-              v-else-if="!isConvert&&percentVideo!=100&&percentVideo!=0">{{fileRealSize}}M/{{(fileRealSize*percentVideo/100).toFixed(2)}}M</span>
+              v-else-if="!isConvert&&percentVideo!=100&&percentVideo!=0">{{(fileRealSize*percentVideo/100).toFixed(2)}}M/{{fileRealSize}}M</span>
         <span class="file-size"
               v-else-if="!isConvert&&(percentVideo==100||percentVideo==0)">{{fileRealSize}}M</span>
         <span class="file-convert" v-else="isConvert">上传成功，转码中…</span>
@@ -135,7 +135,6 @@
                 this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
                 return false
               }
-              console.log(this.fileSize)
               this.loading = true
               this.errorTxt = ''
               this.percentVideo = 0
