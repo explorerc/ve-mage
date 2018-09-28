@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import {Loading} from 'components/common/loading'
-import {MessageBox} from 'components/common/message-box'
+import { Loading } from 'components/common/loading'
+import { MessageBox } from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -38,7 +38,7 @@ axios.interceptors.response.use(
 
 class $Http {
   constructor (target) {
-    this.target = null
+    this.target = target
     this.config = {}
     this.options = {}
   }
@@ -70,40 +70,44 @@ class $Http {
         Loading(false)
         return res.data
       })
-      .catch(data => {
+      .catch(err => {
         Loading(false)
         if (this.config.handlers === true) {
-          return Promise.reject(data)
+          return Promise.reject(err)
         } else if (
           Object.prototype.toString.call(this.config.handlers) ===
-          '[object Array]' &&
-          ~this.config.handlers.indexOf(data.code)
+            '[object Array]' &&
+          ~this.config.handlers.indexOf(err.code)
         ) {
-          return Promise.reject(data)
+          return Promise.reject(err)
         } else {
-          let errorMsg = data.msg || '网络异常'
-          MessageBox({
-            header: '提示',
-            content: errorMsg,
-            autoClose: 10,
-            confirmText: '知道了'
-          })
+          if (err.code === 10030) {
+            this.target.$router.replace('/login')
+          } else {
+            let errorMsg = err.msg || '网络异常'
+            MessageBox({
+              header: '提示',
+              content: errorMsg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+          }
         }
-        return new Promise(() => { })
+        return new Promise(() => {})
       })
   }
 }
 
 export default Vue => {
-  Vue.prototype.$config = config => {
+  Vue.prototype.$config = function (config) {
     let http = new $Http(this)
     return http.$config(config)
   }
-  Vue.prototype.$get = (url, data) => {
+  Vue.prototype.$get = function (url, data) {
     let http = new $Http(this)
     return http.$get(url, data)
   }
-  Vue.prototype.$post = (url, data) => {
+  Vue.prototype.$post = function (url, data) {
     let http = new $Http(this)
     return http.$post(url, data)
   }

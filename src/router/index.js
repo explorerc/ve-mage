@@ -13,24 +13,25 @@ const router = new Router({
       : 0
   }
 })
-
-let vue = new Vue()
-
+const vue = new Vue()
 router.beforeEach((to, from, next) => {
   if (to.meta.noLogin) {
     // 不需要登录
     let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
     if (to.name === 'login') {
       if (isLogin) {
-        next('/setAccount')
+        next('/liveMager/list')
       } else {
         vue
-          .$config({loading: true})
+          .$config({ loading: true, handlers: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
             sessionStorage.setItem('isLogin', true)
-            next('/setAccount')
+            next('/liveMager/list')
+          })
+          .catch(() => {
+            next()
           })
       }
     }
@@ -53,7 +54,7 @@ router.beforeEach((to, from, next) => {
         return false
       } else {
         vue
-          .$config({loading: true})
+          .$config({ loading: true, handlers: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             if (res.data.hasPassword) {
@@ -63,6 +64,9 @@ router.beforeEach((to, from, next) => {
             } else {
               next('/setPassword')
             }
+          })
+          .catch(() => {
+            next('/login')
           })
       }
     }
