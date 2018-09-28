@@ -273,8 +273,11 @@
 </script>
 
 <style lang="scss">
-.html-editer {
+.html-editer /deep/{
   min-width: 480px;
+  i{
+    font-style: italic;
+  }
   .content {
     max-height: 560px;
   }
