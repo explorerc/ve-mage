@@ -76,15 +76,15 @@ class $Http {
           return Promise.reject(err)
         } else if (
           Object.prototype.toString.call(this.config.handlers) ===
-          '[object Array]' &&
+            '[object Array]' &&
           ~this.config.handlers.indexOf(err.code)
         ) {
           return Promise.reject(err)
         } else {
-          let errorMsg = err.msg || '网络异常'
           if (err.code === 10030) {
             this.target.$router.replace('/login')
           } else {
+            let errorMsg = err.msg || '网络异常'
             MessageBox({
               header: '提示',
               content: errorMsg,
@@ -93,7 +93,7 @@ class $Http {
             })
           }
         }
-        return new Promise(() => { })
+        return new Promise(() => {})
       })
   }
 }

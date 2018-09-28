@@ -212,7 +212,7 @@
                 <ve-upload-image title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
                                  accept="png|jpg|jpeg"
                                  :defaultImg="defaultImg"
-                                 :fileSize="1024"
+                                 :fileSize="2048"
                                  :errorMsg="uploadImgErrorMsg"
                                  @error="uploadError"
                                  @success="uploadImgSuccess"></ve-upload-image>
@@ -258,9 +258,8 @@ import VeUploadImage from 'src/components/ve-upload-image'
 import VeUploadVideo from 'src/components/ve-upload-video'
 import VePagination from 'src/components/ve-pagination'
 import veMsgTips from 'src/components/ve-msg-tips'
-import PlayBackHttp from 'src/api/play-back'
+import playbackService from 'src/api/playback-service'
 import ActivityHttp from 'src/api/activity-manger'
-import LiveHttp from 'src/api/live'
 import ChatConfig from 'src/api/chat-config'
 import ChatService from 'components/chat/ChatService.js'
 
@@ -374,7 +373,7 @@ export default {
   },
   methods: {
     initPage () {
-      PlayBackHttp.queryPlayBack({
+      this.$get(playbackService.GET_PLAYBACK, {
         activityId: this.activityId
       }).then((res) => {
         this.playBack = {
@@ -412,12 +411,13 @@ export default {
       this.initMsgServe()
     },
     async initMsgServe () {
-      const regActivity = await LiveHttp.queryRegActivity(this.activityId).then(res => {
-        return res.data
-      })
-      const roomInfo = await LiveHttp.queryPaasParams(this.activityId, regActivity.activityUserId).then(res => {
-        return res.data
-      })
+      // const regActivity = await LiveHttp.queryRegActivity(this.activityId).then(res => {
+      //   return res.data
+      // })
+      // const roomInfo = await LiveHttp.queryPaasParams(this.activityId, regActivity.activityUserId).then(res => {
+      //   return res.data
+      // })
+      const roomInfo = {}
       ChatService.OBJ.init({
         accountId: roomInfo.accountId,
         token: roomInfo.token,
@@ -436,7 +436,7 @@ export default {
     queryPlayBackList () {
       if (this.isLoadingList) return
       this.isLoadingList = true
-      PlayBackHttp.queryPlayBackList({
+      this.$config({ handlers: true }).$get(playbackService.GET_PLAYBACK_LIST, {
         activityId: this.activityId,
         page: this.page,
         pageSize: this.pageSize,
@@ -462,26 +462,26 @@ export default {
     },
     /* 取消默认回放 */
     cancelPlayBack (idx) {
-      PlayBackHttp.cancelPlayBackConfig(this.activityId).then(res => {
-        if (res.code === 200) {
-          this.playBack.replayId = ''
-        }
+      this.$post(playbackService.POST_CANCEL_PLAYBACK_CONFIG, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.playBack.replayId = ''
       })
     },
     /* 重新生成回放 */
     resetMakePlayBack (idx) {
       this.selectRowIdx = idx
       const playBack = this.playBackList[this.selectRowIdx]
-      PlayBackHttp.resetMakePlayBack(playBack.replayId).then(res => {
-        if (res.code === 200) {
-          playBack.status = 'PROCESS'
-          this.$toast({
-            header: `提示`,
-            content: '成功生成回放',
-            autoClose: 2000,
-            position: 'top-center'
-          })
-        }
+      this.$post(playbackService.POST_REMAKE_PLAYBACK, {
+        replayId: playBack.replayId
+      }).then((res) => {
+        playBack.status = 'PROCESS'
+        this.$toast({
+          header: `提示`,
+          content: '成功生成回放',
+          autoClose: 2000,
+          position: 'top-center'
+        })
       })
     },
     /* 更多 */
@@ -512,9 +512,10 @@ export default {
     /* 下载 */
     downLoadVideo () {
       const playBack = this.playBackList[this.selectRowIdx]
-      PlayBackHttp.downloadVideo(playBack.replayId).then((res) => {
-        console.log(res)
-        if (res.data.code === 200 && res.data.downloadUrl) {
+      this.$config({ handlers: true }).$post(playbackService.POST_DOWNLOAD_VIDEO, {
+        replayId: playBack.replayId
+      }).then((res) => {
+        if (res.data.downloadUrl) {
           let dl = document.createElement('a')
           dl.href = res.data.downloadUrl
           dl.click()
@@ -557,17 +558,15 @@ export default {
           this.newTitleError = '视频标题不能为空'
           return
         }
-        PlayBackHttp.createPlayBack({
+        this.$post(playbackService.POST_CREATE_PLAYBACK, {
           activityId: this.activityId,
           title: this.newTitle,
           type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
           link: this.outLineLink,
           video: this.recordId
         }).then((res) => {
-          if (res.code === 200) {
-            this.navIdx = 1
-            this.queryPlayBackList()
-          }
+          this.navIdx = 1
+          this.queryPlayBackList()
         })
       }
       this.addVideoShow = false
@@ -596,13 +595,12 @@ export default {
         }
         this.playBack.playBackCover = this.tempPlayBackCover
         const replayId = this.playBackList[this.selectRowIdx].replayId
-        PlayBackHttp.savePlayBackConfig({
+        this.$post(playbackService.POST_SAVE_PLAYBACK_CONFIG, {
           replayId: replayId,
           cover: this.playBack.playBackCover,
           offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
           offlineTime: this.playBack.outLineTime
         }).then((res) => {
-          if (res.code !== 200) return
           this.playBack.replayId = replayId
         })
       } else {
@@ -612,10 +610,11 @@ export default {
     },
     updataTitle () {
       let playBack = this.playBackList[this.selectRowIdx]
-      PlayBackHttp.retitlePlayBack(playBack.replayId, this.newTitle).then((res) => {
-        if (res.code === 200) {
-          playBack.title = this.newTitle
-        }
+      this.$post(playbackService.POST_RETITLE_PLAYBACK, {
+        replayId: playBack.replayId,
+        title: this.newTitle
+      }).then((res) => {
+        playBack.title = this.newTitle
       })
     },
     delPlayBack () {
@@ -629,16 +628,16 @@ export default {
         handleClick: (e) => {
           if (e.action === 'confirm') {
             const delId = this.playBackList[this.selectRowIdx].replayId
-            PlayBackHttp.deletePlayBackById(delId).then((res) => {
-              if (res.code === 200) {
-                this.$toast({
-                  header: `提示`,
-                  content: '删除成功！',
-                  autoClose: 2000,
-                  position: 'right-top'
-                })
-                this.queryPlayBackList()
-              }
+            this.$post(playbackService.POST_DELETE_PLAYBACK_BY_ID, {
+              replayId: delId
+            }).then((res) => {
+              this.$toast({
+                header: `提示`,
+                content: '删除成功！',
+                autoClose: 2000,
+                position: 'right-top'
+              })
+              this.queryPlayBackList()
             })
           }
         }
@@ -898,3 +897,4 @@ export default {
   }
 }
 </style>
+
