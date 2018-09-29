@@ -3,7 +3,7 @@
     <div class="live-title"
          style="margin-top: 30px;">
       <span class="title">活动回放</span>
-      <span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>
+      <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
       <button class="primary-button fr"
               style="margin-top: 10px;"
               @click="addVideoClickShow">添加视频
