@@ -1,7 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-=======
   <!-- <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="overview-wx-page live-mager">
       <div class="from-box">
@@ -57,7 +54,6 @@
   <div class="content"
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
->>>>>>> f1dc5f21373ccf8383f0b633acff44d3c92a1ca9
     <div class="overview-wx-page live-mager">
       <div class="live-title">
         <span class="title">微信通知</span>
@@ -98,16 +94,12 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-<<<<<<< HEAD
-          <com-phone :titleValue='title' :date='date' :wxContent='msgContent'  :msgTag='msgTag' :isWx='false' ></com-phone>
-=======
           <com-phone :titleValue='title'
                      :date='date'
                      :wxContent='msgContent'
                      :webinarTime='webinarTime'
                      :msgTag='msgTag'
                      :webinarName='webinarName'></com-phone>
->>>>>>> f1dc5f21373ccf8383f0b633acff44d3c92a1ca9
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->
