@@ -98,6 +98,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    vertical-align: middle;
   }
   .v-avatar {
     display: inline-block;
@@ -111,8 +112,8 @@ export default {
     width: 200px;
     position: absolute;
     z-index: 3;
-    top: 35px;
-    right: 30px;
+    top: 46px;
+    right: 10px;
     background-color: #fff;
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;

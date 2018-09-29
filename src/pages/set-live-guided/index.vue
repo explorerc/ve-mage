@@ -30,7 +30,7 @@
               引导图片：
             </p>
             <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                       accept="png|jpg|jpeg|bmp|gif"
+                       accept="png|jpg|jpeg"
                        :defaultImg="defaultImg"
                        :fileSize="2048"
                        :errorMsg="uploadImgErrorMsg"
@@ -63,7 +63,12 @@
                      class="clearfix">
               <div class="v-phone pull-right">
                 <div class="v-img">
-                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                  <template v-if="defaultImg">
+                    <img :src="$imgHost + '/' + imgUrl" alt="">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/guid.png" alt="">
+                  </template>
                 </div>
                   <div class="v-phone-info">
                     <p class="v-phone-title">
@@ -98,7 +103,12 @@
                      class="clearfix">
               <div class="v-pc  pull-right clearfix">
                 <div class="v-img pull-left">
-                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                  <template v-if="defaultImg">
+                    <img :src="$imgHost + '/' + imgUrl" alt="">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/guid.png" alt="">
+                  </template>
                 </div>
                   <div class="v-pc-info pull-left">
                     <p class="v-pc-title">
@@ -188,7 +198,8 @@ export default {
       this.imgUrl = data.name
     },
     uploadError (data) {
-      console.log('上传失败:', data)
+      this.uploadImgErrorMsg = data.msg
+      this.imgUrl = ''
     },
     save () {
       let data = {

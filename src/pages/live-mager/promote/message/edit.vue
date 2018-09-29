@@ -1,7 +1,5 @@
 <template>
-  <div class="content"
-       v-ComLoading="loading"
-       com-loading-text="拼命加载中">
+  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="edit-msg-page live-mager">
       <div class="live-title">
         <span class="title">创建短信通知</span>
@@ -11,63 +9,40 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>通知标题：</div>
             <div class="from-content">
-              <com-input :value.sync="titleValue"
-                         placeholder="请输入标题"
-                         :max-length="30"
-                         :error-tips='errorData.titleError'
-                         @focus="errorData.titleError=''"></com-input>
+              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" :error-tips='errorData.titleError' @focus="errorData.titleError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title">接收人：</div>
             <div class="from-content">
-              <el-button class='default-button select-receiver'
-                         @click='selectPersonShow=true'>选择收信人</el-button>
-              <transition-group name="list"
-                                class="edit-groups"
-                                tag="div"
-                                v-if="selectedPersonList.length">
-                <span class="list-item"
-                      v-for="(person,idx) in selectedPersonList"
-                      :key="person.id">{{person.name}} ({{person.count}}人）
-                  <i class="iconfont icon-shanchu"
-                     @click="delPerson(idx)"></i>
+              <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
+              <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
+                <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
                 </span>
               </transition-group>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信内容：</div>
-            <div class="from-content"
-                 @click="errorData.msgError=''">
-              <com-input type="textarea"
-                         class="msg-content"
-                         :value.sync="msgContent"
-                         placeholder="请输入短信内容"
-                         :max-length="60"
-                         :error-tips='errorData.msgError'></com-input>
+            <div class="from-content" @click="errorData.msgError=''">
+              <com-input type="textarea" class="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="140" :error-tips='errorData.msgError'  ></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信签名：</div>
             <div class="from-content">
-              <com-input :value.sync="msgTag"
-                         placeholder="请输入签名"
-                         :max-length="10"
-                         :error-tips="errorData.tagError"
-                         @focus="errorData.tagError=''"></com-input>
+              <com-input :value.sync="msgTag" placeholder="请输入签名" :max-length="10" :error-tips="errorData.tagError" @focus="errorData.tagError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>发送时间：</div>
             <div class="from-content">
               <template>
-                <el-radio v-model="sendSetting"
-                          label="SEND">立即发送</el-radio>
-                <el-radio v-model="sendSetting"
-                          label="AWAIT">定时发送</el-radio>
+                <el-radio v-model="sendSetting" label="SEND">立即发送</el-radio>
+                <el-radio v-model="sendSetting" label="AWAIT">定时发送</el-radio>
               </template>
-              <!-- <div class="from-title">发送设置：</div>
+            <!-- <div class="from-title">发送设置：</div>
             <div class="from-content">
               <el-select v-model="sendSetting" placeholder="请选择">
                 <el-option v-for="item in sendOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -76,16 +51,10 @@
             </div> -->
             </div>
           </div>
-          <div class="from-row"
-               v-if='pickDate'>
+          <div class="from-row" v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date"
-                              format='yyyy-MM-dd HH:mm:ss'
-                              value-format="yyyy-MM-dd HH:mm:ss"
-                              type="datetime"
-                              placeholder="选择日期时间"
-                              :picker-options="pickerOptions">
+              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
               </el-date-picker>
             </div>
           </div>
@@ -97,26 +66,22 @@
             </div>
           </div> -->
           <!-- 模拟手机预览 -->
-          <com-phone :date='date'
-                     :wxContent='msgContent'
-                     :msgTag='msgTag'
-                     :isWx='false'></com-phone>
+          <com-phone :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx='false' ></com-phone>
         </div>
         <div class="btn-group">
-          <el-button class='default-button'
-                     @click="test">测试发送</el-button>
-          <el-button class='primary-button'
-                     @click="save">保存</el-button>
+          <el-button class='default-button' @click="test">测试发送</el-button>
+          <el-button class='primary-button' @click="save">保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
-      <message-box v-if="selectPersonShow"
-                   width="740px"
-                   type="prompt"
-                   header="选择观众组"
-                   confirmText='确认'
-                   class="select-person"
-                   @handleClick="handleSelectPerson">
+      <message-box
+        v-if="selectPersonShow"
+        width="740px"
+        type="prompt"
+        header="选择观众组"
+        confirmText='确认'
+        class="select-person"
+        @handleClick="handleSelectPerson">
         <div class="select-person-box">
           <div class="select-nav fl">
             <div class="select-item active">
@@ -138,42 +103,35 @@
             </div>
             <div class="select-person-box">
               <ul>
-                <li v-for="(person,idx) in personList"
-                    @click.stop="clickRow(idx)"
-                    :class="{active:person.isChecked}"
-                    :key="person.id">
+                <li
+                  v-for="(person,idx) in personList"
+                  @click.stop="clickRow(idx)"
+                  :class="{active:person.isChecked}"
+                  :key="person.id">
                   {{person.name}} ({{person.count}}人）
-                  <com-checkbox v-model="person.isChecked"
-                                class="fr"
-                                small></com-checkbox>
+                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div slot="bottom"
-             class="select-bottom">
+        <div slot="bottom" class="select-bottom">
           <span class="select-all fl">已选择{{selectedCount}}人：</span>
-          <div class="select-list fl"
-               :title="selectedPersonListStr">
+          <div class="select-list fl" :title="selectedPersonListStr">
             {{selectedPersonListStr}}
           </div>
-          <button class="primary-button"
-                  @click="okSelectList">确定</button>
+          <button class="primary-button" @click="okSelectList">确定</button>
         </div>
       </message-box>
     </div>
-
-    <!-- 测试发送弹窗 -->
-    <com-test v-if='testModal'
-              :msgContent='msgContent'
-              @closeTest='closeTest'
-              :type="'SMS'"></com-test>
-  </div>
+      <!-- 测试发送弹窗 -->
+      <com-test  v-if='testModal' :msgContent='msgContent' @closeTest='closeTest' :type="'SMS'"></com-test>
+    </div>
   </div>
 </template>
 
 <script>
+// import createHttp from 'src/api/activity-manger'
 import noticeService from 'src/api/notice-service'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
@@ -244,15 +202,6 @@ export default {
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
       })
-      // createHttp.queryMsg(this.inviteId).then((res) => {
-      //   this.titleValue = res.data.title
-      //   this.sendSetting = res.data.status
-      //   this.date = res.data.sendTime.toString()
-      //   this.msgContent = res.data.desc
-      //   this.msgTag = res.data.signature
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     }
   },
   methods: {
@@ -279,6 +228,9 @@ export default {
         desc: this.msgContent,
         signature: this.msgTag
       }
+      if (!this.formValid()) {
+        return false
+      }
       // 更新
       this.$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
@@ -289,23 +241,11 @@ export default {
         // 跳转到列表页面
         this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       })
-      // createHttp.saveMsg(data).then((res) => {
-      //   // console.log(res)
-      //   this.$toast({
-      //     content: '保存成功',
-      //     position: 'center'
-      //   })
-      //   // 跳转到列表页面
-      //   this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
-      // }).catch((res) => {
-      //   this.$toast({
-      //     content: '保存失败',
-      //     position: 'center'
-      //   })
-      // })
     },
     test () {
-      this.formValid()
+      if (!this.formValid()) {
+        return false
+      }
       this.$nextTick((res) => {
         if (this.isValided) {
           this.testModal = true
@@ -356,21 +296,6 @@ export default {
         })
         this.personList = temArray
       })
-      // createHttp.queryPersonList({
-      //   activityId: this.$route.params.id,
-      //   name: this.searchPerson
-      // }).then((res) => {
-      //   let temArray = []
-      //   res.data.forEach((item) => {
-      //     temArray.push({
-      //       id: item.id,
-      //       name: item.name,
-      //       count: 0,
-      //       isChecked: false
-      //     })
-      //   })
-      //   this.personList = temArray
-      // })
     },
     /* 验证 */
     formValid () {
@@ -379,8 +304,10 @@ export default {
       this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
       if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
+        return true
       } else {
         this.isValided = false
+        return false
       }
     }
   },
