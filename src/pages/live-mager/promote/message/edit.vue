@@ -54,7 +54,7 @@
           <div class="from-row" v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
               </el-date-picker>
             </div>
           </div>
@@ -66,7 +66,7 @@
             </div>
           </div> -->
           <!-- 模拟手机预览 -->
-          <com-phone :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx='false'></com-phone>
+          <com-phone :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx='false' ></com-phone>
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="test">测试发送</el-button>
@@ -124,7 +124,6 @@
         </div>
       </message-box>
     </div>
-
       <!-- 测试发送弹窗 -->
       <com-test  v-if='testModal' :msgContent='msgContent' @closeTest='closeTest' :type="'SMS'"></com-test>
     </div>
@@ -203,15 +202,6 @@ export default {
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
       })
-      // createHttp.queryMsg(this.inviteId).then((res) => {
-      //   this.titleValue = res.data.title
-      //   this.sendSetting = res.data.status
-      //   this.date = res.data.sendTime.toString()
-      //   this.msgContent = res.data.desc
-      //   this.msgTag = res.data.signature
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     }
   },
   methods: {
@@ -238,6 +228,9 @@ export default {
         desc: this.msgContent,
         signature: this.msgTag
       }
+      if (!this.formValid()) {
+        return false
+      }
       // 更新
       this.$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
@@ -248,23 +241,11 @@ export default {
         // 跳转到列表页面
         this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
       })
-      // createHttp.saveMsg(data).then((res) => {
-      //   // console.log(res)
-      //   this.$toast({
-      //     content: '保存成功',
-      //     position: 'center'
-      //   })
-      //   // 跳转到列表页面
-      //   this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
-      // }).catch((res) => {
-      //   this.$toast({
-      //     content: '保存失败',
-      //     position: 'center'
-      //   })
-      // })
     },
     test () {
-      this.formValid()
+      if (!this.formValid()) {
+        return false
+      }
       this.$nextTick((res) => {
         if (this.isValided) {
           this.testModal = true
@@ -315,21 +296,6 @@ export default {
         })
         this.personList = temArray
       })
-      // createHttp.queryPersonList({
-      //   activityId: this.$route.params.id,
-      //   name: this.searchPerson
-      // }).then((res) => {
-      //   let temArray = []
-      //   res.data.forEach((item) => {
-      //     temArray.push({
-      //       id: item.id,
-      //       name: item.name,
-      //       count: 0,
-      //       isChecked: false
-      //     })
-      //   })
-      //   this.personList = temArray
-      // })
     },
     /* 验证 */
     formValid () {
@@ -338,8 +304,10 @@ export default {
       this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
       if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
+        return true
       } else {
         this.isValided = false
+        return false
       }
     }
   },

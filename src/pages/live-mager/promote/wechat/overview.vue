@@ -37,7 +37,7 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='title' :date='date' :wxContent='wxContent' :webinarName='webinarName' :webinarTime='webinarTime'></com-phone>
+          <com-phone :titleValue='title' :date='date' :wxContent='wxContent' ></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteWechat',params:{id:activityId}}">返回</router-link></router-link> -->
@@ -62,8 +62,6 @@ export default {
     return {
       activityId: this.$route.params.id,
       id: this.$route.query.id,
-      webinarName: '',
-      webinarTime: '',
       title: '',
       group: '',
       status: '',
@@ -82,39 +80,9 @@ export default {
       this.title = res.data.title
       this.tpl = res.data.templateId
       this.status = res.data.status
-      this.date = res.data.sendTime
+      this.date = res.data.sendTime ? res.data.sendTime : res.data.planTime
       this.wxContent = res.data.desc
     })
-    // queryHttp.queryWechat(this.id).then((res) => {
-    //   console.log(res)
-    //   if (res.code === 200) {
-    //     this.group = res.data.groupId
-    //     this.title = res.data.title
-    //     this.tpl = res.data.templateId
-    //     this.status = res.data.status
-    //     this.date = res.data.sendTime
-    //     this.loading = false
-    //     this.wxContent = res.data.desc
-    //   }
-    // }).catch((e) => {
-    //   console.log(e)
-    //   this.loading = false
-    // })
-    this.$get(noticeService.GET_WEBINAR_INFO, {
-      id: this.activityId
-    }).then((res) => {
-      this.webinarName = res.data.title
-      this.webinarTime = res.data.startTime
-    })
-    // queryHttp.webinarInfo(this.activityId).then((res) => {
-    //   if (res.code === 200) {
-    //     this.webinarName = res.data.title
-    //     this.webinarTime = res.data.startTime
-    //     this.loading = false
-    //   }
-    // }).catch((e) => {
-    //   this.loading = false
-    // })
   },
   methods: {
     sendNow () {
@@ -128,19 +96,6 @@ export default {
         this.status = 'SEND'
         this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
       })
-      // queryHttp.sendWechat(this.id).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       content: '发送成功',
-      //       position: 'center'
-      //     })
-      //     this.status = 'SEND'
-      //     this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     }
   },
   components: {

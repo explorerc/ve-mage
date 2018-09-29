@@ -46,12 +46,12 @@
           <div class="from-row" v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
               </el-date-picker>
             </div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' :webinarName='webinarName' :webinarTime='webinarTime'></com-phone>
+          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' ></com-phone>
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
@@ -159,8 +159,6 @@
             return time.getTime() < Date.now() - 8.64e7
           }
         },
-        webinarName: '',
-        webinarTime: '',
         loading: false,
         searchPerson: '',
         personList: [{id: '', name: '', count: 0, isChecked: false}],
@@ -187,25 +185,6 @@
           this.date = res.data.planTime.toString()
           this.wxContent = res.data.desc
         })
-        // createHttp.queryWechat(this.inviteId).then((res) => {
-        //   // console.log(res)
-
-        // }).catch((e) => {
-        //   console.log(e)
-        // })
-        this.$config({loading: true}).$get(noticeService.GET_WEBINAR_INFO, {
-          id: this.activityId
-        }).then((res) => {
-          this.webinarName = res.data.title
-          this.webinarTime = res.data.startTime
-        })
-        // createHttp.webinarInfo(this.activityId).then((res) => {
-        //   if (res.code === 200) {
-        //     this.loading = false
-        //   }
-        // }).catch((e) => {
-        //   this.loading = false
-        // })
       }
     },
     methods: {
@@ -232,47 +211,32 @@
           desc: this.wxContent,
           planTime: this.date
         }
-        // 更新
-        this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
+        if (!this.formValid()) {
+          return false
+        }
+        this.$nextTick((res) => {
+          // 更新
+          this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
-          this.$toast({
-            content: '保存成功',
-            position: 'center'
+            this.$toast({
+              content: '保存成功',
+              position: 'center'
+            })
+            // 跳转到列表页面
+            this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
           })
-          // 跳转到列表页面
-          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
         })
-        // createHttp.saveWechat(data).then((res) => {
-
-        // }).catch((res) => {
-        //   this.$toast({
-        //     content: '保存失败',
-        //     position: 'center'
-        //   })
-        // })
       },
       testSend () {
-        this.formValid()
+        if (!this.formValid()) {
+          return false
+        }
         this.$nextTick((res) => {
           if (this.isValided) {
             this.testModal = true
             this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/api/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
           }
         })
-        // const data = {
-        //   content: this.wxContent,
-        //   activityId: this.activityId
-        // }
-        // createHttp.sendTestWechat(data).then((res) => {
-        //   if (res.code === 200) {
-        //     this.imgUrl = res.data
-        //   }
-        // }).catch((e) => {
-        //   this.$toast({
-        //     content: '二维码生成失败',
-        //     position: 'center'
-        //   })
-        // })
       },
       closeTest () {
       // debugger
@@ -331,8 +295,10 @@
         // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
         if (this.titleValue.length && this.wxContent.length) {
           this.isValided = true
+          return true
         } else {
           this.isValided = false
+          return false
         }
       }
     },

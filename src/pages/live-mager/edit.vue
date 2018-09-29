@@ -20,7 +20,7 @@
         <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
           <div class="from-content" :class="{ 'error':dateEmpty }">
-            <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
+            <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
@@ -56,11 +56,11 @@
             <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
           </div>
         </div>
-        <div class="from-row">
+        <div class="from-row" v-if="status === 'PREPARE'">
           <div class="from-title"></div>
           <div class="from-content">
             <button @click='comfirm' class='create-btn' :disabled="outRange">
-              <template v-if="activityId">更新</template>
+              <template v-if="activityId">保存</template>
               <template v-else>创建</template>
             </button>
           </div>
@@ -101,6 +101,7 @@
         descEmpty: false,
         tagEmpty: false,
         dateEmpty: false,
+        status: '',
         countCount: 0,
         tagList: [],
         tagGroup: [],
@@ -108,6 +109,7 @@
         uploadImgErrorMsg: '', // 上传图片错误提示
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
+        maxLength: 1000,
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
         // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
@@ -129,10 +131,11 @@
     watch: {
       editorContent (newValue, oldValue) {
         this.$nextTick(() => {
-          this.countCount = document.querySelector('.vue-html5-editor .content').innerText.length
+          this.countCount = document.querySelector('.vue-html5-editor .content').innerText.gbLength()
           this.descEmpty = false
-          if (this.countCount > 1000) {
+          if (this.countCount > this.maxLength) {
             this.outRange = true
+            this.editorContent = newValue.substring(0, newValue.gbIndex(this.maxLength) + 1)
           } else {
             this.outRange = false
           }
@@ -140,21 +143,6 @@
       }
     },
     methods: {
-      // change (res) {
-      //   console.log('change')
-      //   // this.editorContent = res
-      // },
-      // closeModal (e) {
-      //   if (e.target.className === 'modal-cover') {
-      //     this.createdSuccess = false
-      //   }
-      // },
-      // uploadProgress (data) {
-      //   this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
-      //   if (this.percentImg === 100) {
-      //     this.percentImg = 0
-      //   }
-      // },
       uploadImgSuccess (data) {
         this.poster = data.name
       },
@@ -174,16 +162,8 @@
           this.poster = res.data.imgUrl
           this.editorContent = res.data.description
           this.tagGroup = res.data.tags
+          this.status = res.data.status
         })
-        // http.webinarInfo(this.activityId).then((res) => {
-        //   if (res.code === 200) {
-        //     this.date = res.data.startTime
-        //     this.title = res.data.title
-        //     this.poster = res.data.imgUrl
-        //     this.editorContent = res.data.description
-        //     this.tagGroup = res.data.tags
-        //   }
-        // }).catch(() => {})
       },
       comfirm () {
         // 提交数据
@@ -220,15 +200,6 @@
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
           })
         }
-        // http.updateWebinfo(isNew, data).then((res) => {
-        //   if (res.code === 200) {
-        //     this.createdSuccess = true
-        //     isNew ? this.successTxt = '创建成功' : this.successTxt = '更新成功'
-        //     res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
-        //   }
-        // }).catch((error) => {
-        //   console.log(error)
-        // })
       }
     },
     computed: {
@@ -351,7 +322,7 @@
       right: 20px;
     }
     .html-editer .content {
-      width: 727px;
+      width: 100%;
     }
     .from-content.editor-content:not(.error):hover .vue-html5-editor {
       border-color: $color-blue-hover;

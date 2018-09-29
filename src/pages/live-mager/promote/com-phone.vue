@@ -3,9 +3,11 @@
   <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
   <div class="msg-box-overview" v-if='isWx'>
     <div class="detail">
-      <div class="msg-title-overview">{{titleValue}}</div>
-      <p class="time">{{date}}</p>
-      <p class="tips">{{wxContent}}</p>
+      <!-- <div class="msg-title-overview">{{titleValue}}</div> -->
+      <div class="msg-title-overview">预约成功通知</div>
+      <p class="time" v-html="date.substr(0,10)"></p>
+      <!-- <p class="tips">{{wxContent}}</p> -->
+      <p class="tips">您已预约成功，我们将及时提醒您参加活动。</p>
       <p>标题：<span>{{webinarName}}</span></p>
       <p>时间：<span>{{webinarTime}}</span></p>
       <p style='padding-bottom:20px;'>内容：<span>点击查看详情</span></p>
@@ -22,11 +24,22 @@
 </template>
 
 <script>
+import noticeService from 'src/api/notice-service'
 export default {
   data () {
     return {
-
+      activityId: this.$route.params.id,
+      webinarTime: '',
+      webinarName: ''
     }
+  },
+  mounted () {
+    this.$get(noticeService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.webinarName = res.data.title
+      this.webinarTime = res.data.startTime
+    })
   },
   props: {
     isWx: {
@@ -42,14 +55,6 @@ export default {
       default: '-----'
     },
     wxContent: {
-      type: String,
-      default: '-----'
-    },
-    webinarName: {
-      type: String,
-      default: '-----'
-    },
-    webinarTime: {
       type: String,
       default: '-----'
     },

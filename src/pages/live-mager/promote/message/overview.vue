@@ -1,56 +1,4 @@
 <template>
-  <!-- <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="overview-wx-page live-mager">
-      <div class="from-box">
-        <div class="from-row">
-          <div class="from-title">短信标题：</div>
-          <div class="from-content">
-            {{title}}
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">收件人：</div>
-          <div class="from-content">
-            {{group}}
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">发送状态：</div>
-          <div class="from-content">
-            <span v-if="status === 'SEND'">已发送</span>
-            <span v-if="status === 'AWAIT'">已定时</span>
-            <span v-if="status === 'DRAFT'">草稿</span>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">发送时间：</div>
-          <div class="from-content">
-            {{date}}
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title"></div>
-          <div class="from-content">
-            <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
-            <el-button v-if="status !== 'SEND'">
-              <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link>
-            </el-button>
-            <el-button v-if="status === 'SEND'" disabled>已发送</el-button>
-            <el-button @click='sendNow' v-else>立即发送</el-button>
-          </div>
-        </div>
-      </div>
-      <div class="overview-box">
-        <div class="header">短信</div>
-        <div class="msg-box">
-          <div class="msg-title">
-            <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
-            <div class="footer">短信通知将于{{date}}发送</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="overview-wx-page live-mager">
       <div class="live-title">
@@ -89,7 +37,7 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='title' :date='date' :wxContent='msgContent' :webinarTime='webinarTime' :msgTag='msgTag' :webinarName='webinarName'></com-phone>
+          <com-phone :titleValue='title' :date='date' :wxContent='msgContent'  :msgTag='msgTag' :isWx='false' ></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->
@@ -115,7 +63,6 @@ export default {
       activityId: this.$route.params.id,
       id: this.$route.query.id,
       webinarName: '',
-      webinarTime: '',
       title: '',
       group: '',
       status: '',
@@ -136,12 +83,6 @@ export default {
       this.date = res.data.sendTime
       this.msgTag = res.data.signature
       this.msgContent = res.data.desc
-    })
-    this.$get(noticeService.GET_WEBINAR_INFO, {
-      id: this.activityId
-    }).then((res) => {
-      this.webinarName = res.data.title
-      this.webinarTime = res.data.startTime
     })
     // queryHttp.queryMsg(this.id).then((res) => {
     //   console.log(res)

@@ -9,7 +9,7 @@
       </div>
       <div class="middle">
         <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
-        <p class='desc-label'>互动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
+        <p class='desc-label'>活动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
           <li class='icon page'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
@@ -536,7 +536,7 @@
             this.countdownTime = '0'
           }
           this.title = res.data.activity.title
-          // this.tagList = res.data.activity.countDown
+          this.tagList = res.data.activity.tags
           this.startTime = res.data.activity.startTime
           this.poster = res.data.activity.imgUrl
           this.dataPrepare = res.data.prepare

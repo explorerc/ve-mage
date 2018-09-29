@@ -20,7 +20,7 @@
             <el-radio v-model="radioTime" label="1">与直播同步关闭</el-radio>
             <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
             <div class="set-time" v-if="pickDate">
-              <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :editable="false" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
               </el-date-picker>
             </div>
           </div>
@@ -35,9 +35,9 @@
       <div class="set-content">
         <ul class='table-title clearfix'>
           <li class='spe'>信息类型</li>
-          <li>信息标题</li>
+          <!-- <li>信息标题</li> -->
           <li>信息描述</li>
-          <li>操作</li>
+          <li class='handle'>操作</li>
         </ul>
         <ol class='table-content'>
           <!-- <li class='clearfix'>
@@ -69,13 +69,13 @@
                 </el-option>
               </el-select>
             </div>
-            <div>
+            <!-- <div>
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
-            </div>
+            </div> -->
             <div>
               <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="16" placeholder="请输入信息描述"></com-input>
             </div>
-            <div v-if="item.type === 'mobile'">
+            <div v-if="item.type === 'mobile'" class='del-box'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
@@ -83,7 +83,7 @@
             </div>
             <section class='select-item clearfix' v-if="item.type === 'select'">
               <ol>
-                <span class='add-item' @click='addItem(idx)' :disabled="item.detail.length === 10 ? true : false"><i>＋</i>添加选项</span>
+                <span class='add-item' @click='addItem(idx)' v-if="item.detail.length < 10 ? true : false"><i>＋</i>添加选项</span>
                 <li v-for="(option,count) in item.detail" :key='count'>
                   <com-input :value.sync="option.value" :max-length="16" placeholder="请输入选项"></com-input>
                   <span @click='delItem(idx,count)' class='del'>删除</span>
@@ -92,9 +92,9 @@
             </section>
           </li>
         </ol>
+        <el-button class='primary-button' @click='saveLimit' :disabled="!isOpen">保存</el-button>
       </div>
     </div>
-    <el-button class='primary-button' @click='saveLimit' :disabled="!isOpen">保存</el-button>
   </div>
   </div>
 
@@ -245,27 +245,6 @@
             this.isOpen = false
           }
         })
-        // prepareHttp.getLimit(this.activityId).then((res) => {
-        //   if (res.code === 200) {
-        //     console.log(res)
-        //     if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
-        //       this.isOpen = true
-        //       this.queryData = res.data.detail
-        //       this.quesData = res.data.detail.questionList
-        //       if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
-        //         this.queryData.finishTime = ''
-        //       }
-        //       if (res.data.detail.finishTime === null) {
-        //         this.queryData.finishTime = ''
-        //       }
-        //       res.data.detail.finishTime.length > 0 ? this.radioTime = '2' : this.radioTime = '1'
-        //     } else {
-        //       this.isOpen = false
-        //     }
-        //   }
-        // }).catch((res) => {
-        //   console.log(res)
-        // })
       },
       saveLimit () {
         this.saveData = {
@@ -296,20 +275,6 @@
             position: 'center'
           })
         })
-        // prepareHttp.saveLimit(data).then((res) => {
-        //   if (res.code === 200) {
-        //     // console.log(res)
-        //     this.$toast({
-        //       content: '设置成功',
-        //       position: 'center'
-        //     })
-        //   }
-        // }).catch((res) => {
-        //   this.$toast({
-        //     content: '设置失败',
-        //     position: 'center'
-        //   })
-        // })
       },
       openSwitch (res) {
         if (res) {
@@ -409,6 +374,7 @@
   }
 }
 .set-content {
+  width: 800px;
   .table-title {
     height: 61px;
     background: rgba(245, 245, 245, 1);
@@ -423,6 +389,9 @@
       margin-right: 20px;
       &.spe {
         width: 180px;
+      }
+      &.handle {
+        width: 100px;
       }
     }
   }
@@ -445,6 +414,9 @@
             z-index: 9;
             left: 14px;
           }
+        }
+        &.del-box {
+          width: 100px;
         }
       }
       .del {
