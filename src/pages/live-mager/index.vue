@@ -81,7 +81,8 @@ export default {
         pageSize: 16
       },
       tableList: [],
-      total: 0
+      total: 0,
+      PC_HOST: process.env.PC_HOST
     }
   },
   watch: {
