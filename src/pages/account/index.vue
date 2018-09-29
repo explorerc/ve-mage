@@ -13,6 +13,7 @@
                       :defaultImg="defaultImg"
                       :fileSize="2048"
                       @success="uploadImgSuccess"
+                      :errorMsg="uploadImgErrorMsg"
                       @error="uploadError" />
       </div>
       <com-editor :value.sync="account"
@@ -282,6 +283,7 @@ export default {
       userQQ: '',
       userRemarks: '',
       confirmText: '',
+      uploadImgErrorMsg: '', // 上传图片错误提示
       messageBoxShow: false, // 是否显示弹窗
       messageBoxTitle: '更换手机', // 弹窗标题
       messageBoxExplain: '',
@@ -475,18 +477,8 @@ export default {
       })
     },
     uploadError (data) {
-      this.$messageBox({
-        header: '提示',
-        content: data.msg,
-        confirmText: '确定',
-        autoClose: 3, // 60秒
-        width: '500px', // 消息框宽度
-        handleClick: (e) => {
-          if (e.action === 'cancel') {
-          } else if (e.action === 'confirm') {
-          }
-        }
-      })
+      this.uploadImgErrorMsg = data.msg
+      EventBus.$emit('avatarChange', '')
     },
     saveSelectInfo (initVal, val, type, saveType) {
       let data = {

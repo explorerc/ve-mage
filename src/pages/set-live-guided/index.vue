@@ -198,18 +198,7 @@ export default {
       this.imgUrl = data.name
     },
     uploadError (data) {
-      this.$messageBox({
-        header: '提示',
-        content: data.msg,
-        confirmText: '确定',
-        autoClose: 3, // 60秒
-        width: '500px', // 消息框宽度
-        handleClick: (e) => {
-          if (e.action === 'cancel') {
-          } else if (e.action === 'confirm') {
-          }
-        }
-      })
+      this.uploadImgErrorMsg = data.msg
     },
     save () {
       let data = {
