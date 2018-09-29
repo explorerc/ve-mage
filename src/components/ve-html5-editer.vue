@@ -77,7 +77,7 @@
                 '#003399', '#006600', '#006633', '#009900', '#330000', '#330033', '#330066',
                 '#333300', '#333366', '#660000', '#660033', '#663300', '#666600', '#666633',
                 '#666666', '#666699', '#990000', '#990033', '#9900CC', '#996600', '#FFCC00',
-                '#FFCCCC', '#FFCC99', '#FFFF00', '#FF9900', '#CCFFCC', '#CCFFFF', '#CCFF99'
+                '#FFCCCC', '#FFCC99', '#FFFF00', '#FF9900', '#CCFFCC', '#CCFFFF', '#CCFF99', '#009DB5'
               ]
             }
           },
@@ -156,6 +156,9 @@
         if (json.code !== 200) {
           console.error(json.msg)
         } else {
+          if (json.data.host.indexOf('http') !== 0) {
+            return 'https://' + json.data.host + '/' + json.data.name
+          }
           return json.data.host + '/' + json.data.name
         }
       },
@@ -230,7 +233,7 @@
 
   export default {
     name: 've-html5-editer',
-    components: { editor },
+    components: {editor},
     data () {
       return {
         showModuleName: false,
@@ -273,10 +276,13 @@
 </script>
 
 <style lang="scss">
-.html-editer {
-  min-width: 480px;
-  .content {
-    max-height: 560px;
+  .html-editer /deep/ {
+    min-width: 480px;
+    i {
+      font-style: italic;
+    }
+    .content {
+      max-height: 560px;
+    }
   }
-}
 </style>

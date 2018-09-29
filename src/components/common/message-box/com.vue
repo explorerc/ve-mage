@@ -171,6 +171,8 @@
       .ve-message-box__header {
         height: 40px;
         line-height: 40px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
         background-color: $color-default;
         button {
           &:hover {

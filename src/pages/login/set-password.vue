@@ -1,23 +1,39 @@
 <template>
   <div class="setpsd-container">
-    <message-box v-show="show" width="450px" @handleClick="messageBoxClick">
-      <div slot="header" class="v-title">感谢您选择微吼，请先设置登录密码</div>
+    <message-box v-show="show"
+                 width="450px"
+                 @handleClick="messageBoxClick">
+      <div slot="header"
+           class="v-title">感谢您选择微吼，请先设置登录密码</div>
       <p class="v-info">
         请勿将密码泄露给第三者，避免造成不必要的损失
       </p>
       <div class="v-psd">
-        <com-input :value.sync="password" placeholder="请输入密码" class="v-input" :class="{warning:isWarning}" type="password" :maxLength="30" @focus="passwordFocus()" @change="passwordChange()" @blur="passwordBlur()" :error-tips="errorTips"></com-input>
-        <div class="v-verification" v-if="isShow">
+        <com-input :value.sync="password"
+                   placeholder="请输入密码"
+                   class="v-input"
+                   :class="{warning:isWarning}"
+                   type="password"
+                   :maxLength="30"
+                   @focus="passwordFocus()"
+                   @change="passwordChange()"
+                   @blur="passwordBlur()"
+                   :error-tips="errorTips"></com-input>
+        <div class="v-verification"
+             v-if="isShow">
           <ul>
             <p>密码至少包含：</p>
             <li>
-              <i class="iconfont icon-duigou1" :class="{isActive: isContainEn}"></i> 1个英文字母
+              <i class="iconfont icon-duigou1"
+                 :class="{isActive: isContainEn}"></i> 1个英文字母
             </li>
             <li>
-              <i class="iconfont icon-duigou1" :class="{isActive: isContainNum}"></i> 1个数字
+              <i class="iconfont icon-duigou1"
+                 :class="{isActive: isContainNum}"></i> 1个数字
             </li>
             <li>
-              <i class="iconfont icon-duigou1" :class="{isActive: isContainCount}"></i> 6～30个字符
+              <i class="iconfont icon-duigou1"
+                 :class="{isActive: isContainCount}"></i> 6～30个字符
             </li>
           </ul>
         </div>
@@ -26,81 +42,78 @@
   </div>
 </template>
 <script>
-  import account from 'src/api/account-manage'
-  export default {
-    data () {
-      return {
-        password: '',
-        isWarning: false,
-        show: true,
-        isContainEn: 0,
-        isContainNum: 0,
-        isContainCount: 0,
-        isShow: false,
-        isChecked: false,
-        errorTips: ''
-      }
-    },
-    components: {
-    },
-    created () {
-    },
-    watch: {
-      password: function () {
-        if (this.password.trim() === '') {
-          this.isWarning = true
-        } else {
-          this.isWarning = false
-        }
-      }
-    },
-    methods: {
-      messageBoxClick (e) {
-        if (e.action === 'confirm') {
-          if (!this.isChecked) {
-            this.errorTips = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
-            return false
-          }
-          let data = {
-            'newPassword': this.password
-          }
-          account.setPassword(data).then((res) => {
-            if (res.code !== 200) {
-              this.errorTips = res.msg
-            } else {
-              this.isWarning = false
-
-              let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              if (accountInfo) {
-                accountInfo.hasPassword = true
-                sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-              }
-              this.$router.replace('/setAccount')
-            }
-          })
-        }
-      },
-      passwordFocus () {
-        this.errorTips = ''
-        this.isShow = true
-      },
-      passwordChange () {
-        this.isContainCount = this.password.length >= 6 ? 1 : 0
-        var regNum = /^(?=.*\d.*\b)/
-        this.isContainNum = regNum.test(this.password) ? 1 : 0
-        var regEn = /[_a-zA-Z]/
-        this.isContainEn = regEn.test(this.password) ? 1 : 0
-        if (this.password.length >= 6 && regNum.test(this.password) && regEn.test(this.password)) {
-          this.isChecked = true
-        } else {
-          this.isChecked = false
-        }
-      },
-      passwordBlur () {
-        this.isShow = false
+import userService from 'src/api/user-service'
+export default {
+  data () {
+    return {
+      password: '',
+      isWarning: false,
+      show: true,
+      isContainEn: 0,
+      isContainNum: 0,
+      isContainCount: 0,
+      isShow: false,
+      isChecked: false,
+      errorTips: ''
+    }
+  },
+  components: {
+  },
+  created () {
+  },
+  watch: {
+    password: function () {
+      if (this.password.trim() === '') {
+        this.isWarning = true
+      } else {
+        this.isWarning = false
       }
     }
+  },
+  methods: {
+    messageBoxClick (e) {
+      if (e.action === 'confirm') {
+        if (!this.isChecked) {
+          this.errorTips = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
+          return false
+        }
+        let data = {
+          'newPassword': this.password
+        }
+        this.$config({handlers: true}).$post(userService.POST_SET_PASSWORD, data).then((res) => {
+          this.isWarning = false
+          let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+          if (accountInfo) {
+            accountInfo.hasPassword = true
+            sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+          }
+          this.$router.replace('/liveMager/list')
+        }).catch((err) => {
+          this.errorTips = err.msg
+        })
+      }
+    },
+    passwordFocus () {
+      this.errorTips = ''
+      this.isShow = true
+    },
+    passwordChange () {
+      this.isContainCount = this.password.length >= 6 ? 1 : 0
+      var regNum = /^(?=.*\d.*\b)/
+      this.isContainNum = regNum.test(this.password) ? 1 : 0
+      var regEn = /[_a-zA-Z]/
+      this.isContainEn = regEn.test(this.password) ? 1 : 0
+      if (this.password.length >= 6 && regNum.test(this.password) && regEn.test(this.password)) {
+        this.isChecked = true
+      } else {
+        this.isChecked = false
+      }
+    },
+    passwordBlur () {
+      this.isShow = false
+    }
   }
+}
 </script>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';

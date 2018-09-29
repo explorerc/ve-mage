@@ -4,8 +4,10 @@ const config = {
     BUILD_ENV: 'local',
     API_PATH: '/api',
     SUB_DIR: '',
-    PUBLIC_PATH: '/',
+    PUBLIC_PATH: '//localhost:2333/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
+    MOBILE_HOST: '//localhost:8866/',
+    PC_HOST: '//localhost:6688/',
     proxyTable: {
       '/api': {
         target: 'http://dev-api-zhike.vhall.com',
@@ -29,7 +31,9 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//test-zhike.vhall.com/'
+    PUBLIC_PATH: '//test-zhike.vhall.com/',
+    MOBILE_HOST: '//test-zhike.vhall.com/m/',
+    PC_HOST: '//test-zhike.vhall.com/watch/',
   },
   prod: {
     BUILD_ENV: 'prod',

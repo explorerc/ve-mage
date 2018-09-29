@@ -36,10 +36,10 @@ export default class CountTo {
 
       if (residue - s < 0) {
         clearInterval(this.interval)
-        cbk && cbk(e + s >> 0)
+        cbk && cbk(residue + num)
         return
       }
-      cbk && cbk(e - residue + s >> 0)
+      cbk && cbk(num)
     }, this.timeInterval)
   }
 

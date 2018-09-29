@@ -32,7 +32,7 @@
 
   export default {
     name: 've-upload-tx',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         imgHost: '',
@@ -96,7 +96,6 @@
         this.$emit('success', fildObj)
       },
       uploadError (data) {
-        debugger
         this.fileSrc = ''
         this.$emit('error', data)
       }

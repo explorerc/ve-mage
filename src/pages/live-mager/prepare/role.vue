@@ -1,98 +1,124 @@
 <!--角色设置-->
 <template>
-  <div v-ComLoading="loading" com-loading-text="拼命加载中">
+  <div v-ComLoading="loading"
+       com-loading-text="拼命加载中">
     <p>角色设置<i>？</i><span @click="add">添加助理</span></p>
     <div class="content">
-      <el-table
-      :data="tableData"
-      stripe
-      style="width: 100%">
-      <el-table-column
-        label="头像"
-        width="150">
-      <template slot-scope="scope">
-        <img :src="imgHost + scope.row.avatar" class='protrait'>
+      <el-table :data="tableData"
+                stripe
+                style="width: 100%">
+        <el-table-column label="头像"
+                         width="150">
+          <template slot-scope="scope">
+            <img :src="imgHost + scope.row.avatar" class='protrait'>
       </template>
-      </el-table-column>
-      <el-table-column
-        prop="nickname"
-        label="昵称"
-        width="150">
-      </el-table-column>
-      <el-table-column
-        prop="role"
-        label="角色"
-        width="150">
-        <template slot-scope="scope">
-          <span >{{scope.row.role === "HOST" ? "主持人" : "助理"}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="关联活动账号"
-        width="150"
-        prop='activityId'>
-      </el-table-column>
-      <el-table-column
-        prop="password"
-        label="口令"
-        width="150">
-      </el-table-column>
-      <el-table-column
-        label="状态"
-        width="150">
-        <template slot-scope="scope">
-          <span>{{scope.row.online === true ? "在线" : "离线"}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small"><a href=''>进入直播</a></el-button>
-          <el-button type="text" size="small" @click="copyLink(scope.$index,scope.row)">复制链接</el-button>
-          <el-button type="text" size="small" @click="copyInfo(scope.$index,scope.row)">复制邀请信息</el-button>
-          <el-button type="text" size="small" @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleKick(scope.$index,scope.row)" :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
-          <el-button type="text" size="small" @click="handleDelete(scope.$index,scope.row)" v-if='scope.row.role != "HOST"'>删除角色</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+        </el-table-column>
+        <el-table-column prop="nickname"
+                         label="昵称"
+                         width="150">
+        </el-table-column>
+        <el-table-column prop="role"
+                         label="角色"
+                         width="150">
+          <template slot-scope="scope">
+            <span>{{scope.row.role === "HOST" ? "主持人" : "助理"}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="关联活动账号"
+                         width="150"
+                         prop='activityId'>
+        </el-table-column>
+        <el-table-column prop="password"
+                         label="口令"
+                         width="150">
+        </el-table-column>
+        <el-table-column label="状态"
+                         width="150">
+          <template slot-scope="scope">
+            <span>{{scope.row.online === true ? "在线" : "离线"}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="text"
+                       size="small"><a href=''>进入直播</a></el-button>
+            <el-button type="text"
+                       size="small"
+                       @click="copyLink(scope.$index,scope.row)">复制链接</el-button>
+            <el-button type="text"
+                       size="small"
+                       @click="copyInfo(scope.$index,scope.row)">复制邀请信息</el-button>
+            <el-button type="text"
+                       size="small"
+                       @click="handleEdit(scope.$index,scope.row)">编辑</el-button>
+            <el-button type="text"
+                       size="small"
+                       @click="handleKick(scope.$index,scope.row)"
+                       :class='scope.row.online == true ? "disabled" : ""'>踢出</el-button>
+            <el-button type="text"
+                       size="small"
+                       @click="handleDelete(scope.$index,scope.row)"
+                       v-if='scope.row.role != "HOST"'>删除角色</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
-    <message-box v-if="msgKick" header="提示" content="执行踢出操作后，该角色将从发起端中被强制踢出，是否继续操作？" cancelText="取消" confirmText='确定' @handleClick="kickConfirm">
+    <message-box v-if="msgKick"
+                 header="提示"
+                 content="执行踢出操作后，该角色将从发起端中被强制踢出，是否继续操作？"
+                 cancelText="取消"
+                 confirmText='确定'
+                 @handleClick="kickConfirm">
     </message-box>
-    <message-box v-if="msgDelete" header="提示" content="是否确认删除该角色？" cancelText="取消" confirmText='确定' @handleClick="deleteConfirm">
+    <message-box v-if="msgDelete"
+                 header="提示"
+                 content="是否确认删除该角色？"
+                 cancelText="取消"
+                 confirmText='确定'
+                 @handleClick="deleteConfirm">
     </message-box>
-   <transition name='fade'>
-      <div class="modal-cover" v-if='modalData.isShow' @click="closeModal">
+    <transition name='fade'>
+      <div class="modal-cover"
+           v-if='modalData.isShow'
+           @click="closeModal">
         <div class='created-modal'>
           <p>{{modalData.title}}</p>
           <div class="btm">
             <div>
               <label>头像:</label>
-              <com-upload
-              accept="png|jpg|jpeg"
-              actionUrl="/api/upload/image"
-              inputName="file"
-              :fileSize="1024"
-              @error="uploadError"
-              @progress="uploadProgress"
-              @load="uploadImgSuccess">
-               <div class="upload-file-box" title="点击上传">
-                  <el-progress v-if="percentImg" type="circle" :percentage="percentImg"></el-progress>
+              <com-upload accept="png|jpg|jpeg"
+                          actionUrl="/api/upload/image"
+                          inputName="file"
+                          :fileSize="1024"
+                          @error="uploadError"
+                          @progress="uploadProgress"
+                          @load="uploadImgSuccess">
+                <div class="upload-file-box"
+                     title="点击上传">
+                  <el-progress v-if="percentImg"
+                               type="circle"
+                               :percentage="percentImg"></el-progress>
                   <i class="iconfont icon-jiahao"></i>
                   <span>上传头像</span>
-                  <div v-if="modalData.avatar" class="upload-file-botton" >编辑</div>
-                  <div class="temp-img" v-if="modalData.avatar"
+                  <div v-if="modalData.avatar"
+                       class="upload-file-botton">编辑</div>
+                  <div class="temp-img"
+                       v-if="modalData.avatar"
                        :style="{backgroundImage:'url('+imgHost+'/'+modalData.avatar+')'}"></div>
                 </div>
               </com-upload>
             </div>
             <div>
               <label>昵称:</label>
-              <com-input :value.sync="modalData.nickname" placeholder="请输入昵称" :max-length="10" ></com-input>
+              <com-input :value.sync="modalData.nickname"
+                         placeholder="请输入昵称"
+                         :max-length="10"></com-input>
             </div>
             <div>
               <label>口令:</label>
-              <com-input :value.sync="modalData.password" placeholder="请输入口令" :max-length="6" ></com-input>
+              <com-input :value.sync="modalData.password"
+                         placeholder="请输入口令"
+                         :max-length="6"></com-input>
             </div>
           </div>
           <p><button @click='saveSetting(activityId)'>确定</button></p>
@@ -102,7 +128,7 @@
   </div>
 </template>
 <script>
-import prepareHttp from 'src/api/activity-manger'
+import activityService from 'src/api/activity-service'
 export default {
   data () {
     return {
@@ -193,24 +219,33 @@ export default {
         let data = {
           id: this.modalData.id
         }
-        prepareHttp.delAss(data).then((res) => {
-          this.msgDelete = false
-          if (res.code === 200) {
-            console.log(res)
-            this.$toast({
-              content: '删除成功',
-              position: 'center'
-            })
-            // 更新data
-            this.tableData.splice([this.modalData.idx], 1)
-          }
-        }).catch((res) => {
+        this.$post(activityService.POST_DELASS, data).then((res) => {
+          console.log(res)
           this.$toast({
-            content: res.msg,
+            content: '删除成功',
             position: 'center'
           })
-          this.msgDelete = false
+          // 更新data
+          this.tableData.splice([this.modalData.idx], 1)
         })
+        // prepareHttp.delAss(data).then((res) => {
+        //   this.msgDelete = false
+        //   if (res.code === 200) {
+        //     console.log(res)
+        //     this.$toast({
+        //       content: '删除成功',
+        //       position: 'center'
+        //     })
+        //     // 更新data
+        //     this.tableData.splice([this.modalData.idx], 1)
+        //   }
+        // }).catch((res) => {
+        //   this.$toast({
+        //     content: res.msg,
+        //     position: 'center'
+        //   })
+        //   this.msgDelete = false
+        // })
       } else {
         this.msgDelete = false
       }
@@ -276,51 +311,86 @@ export default {
         avatar: this.modalData.avatar
       }
       let isNew = this.modalData.title.search('编辑') >= 0
-      prepareHttp.handleAss(isNew, saveData).then((res) => {
-        if (res.code === 200) {
+      if (isNew) {
+        this.$post(activityService.POST_ADD_ASS, saveData).then((res) => {
           this.$toast({
-            content: isNew ? '编辑成功' : '创建成功',
+            content: '创建成功',
             position: 'center'
           })
-          // update data
-          if (!isNew) { // new
-            let pushData = {
-              id: res.data.id,
-              activityId: saveData.activityId,
-              avatar: saveData.avatar,
-              nickname: saveData.nickname,
-              role: 'ASSISTANT',
-              password: saveData.password,
-              online: true
-            }
-            this.tableData.push(pushData)
-          } else { // update
-            this.tableData[this.modalData.idx].avatar = saveData.avatar
-            this.tableData[this.modalData.idx].nickname = saveData.nickname
-            this.tableData[this.modalData.idx].password = saveData.password
+          let pushData = {
+            id: res.data.id,
+            activityId: saveData.activityId,
+            avatar: saveData.avatar,
+            nickname: saveData.nickname,
+            role: 'ASSISTANT',
+            password: saveData.password,
+            online: true
           }
-        } else {
+          this.tableData.push(pushData)
+        })
+      } else {
+        this.$post(activityService.POST_UPDATE_ASS, saveData).then((res) => {
           this.$toast({
-            content: res.msg,
+            content: '编辑成功',
             position: 'center'
           })
-        }
-        this.modalData.isShow = false
-      }).catch((e) => {
-        console.log(e)
-      })
+          this.tableData[this.modalData.idx].avatar = saveData.avatar
+          this.tableData[this.modalData.idx].nickname = saveData.nickname
+          this.tableData[this.modalData.idx].password = saveData.password
+        })
+      }
+
+      // prepareHttp.handleAss(isNew, saveData).then((res) => {
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       content: isNew ? '编辑成功' : '创建成功',
+      //       position: 'center'
+      //     })
+      //     // update data
+      //     if (!isNew) { // new
+      //       let pushData = {
+      //         id: res.data.id,
+      //         activityId: saveData.activityId,
+      //         avatar: saveData.avatar,
+      //         nickname: saveData.nickname,
+      //         role: 'ASSISTANT',
+      //         password: saveData.password,
+      //         online: true
+      //       }
+      //       this.tableData.push(pushData)
+      //     } else { // update
+      //       this.tableData[this.modalData.idx].avatar = saveData.avatar
+      //       this.tableData[this.modalData.idx].nickname = saveData.nickname
+      //       this.tableData[this.modalData.idx].password = saveData.password
+      //     }
+      //   } else {
+      //     this.$toast({
+      //       content: res.msg,
+      //       position: 'center'
+      //     })
+      //   }
+      //   this.modalData.isShow = false
+      // }).catch((e) => {
+      //   console.log(e)
+      // })
     },
     getRolelist () {
       this.loading = true
-      prepareHttp.roleList(this.activityId).then((res) => {
-        this.loading = false
-        if (res.code === 200) {
-          console.log(res)
-          this.tableData = res.data.list
-        }
-      }).catch(() => {
-        this.loading = false
+      this.$config({loading: true}).$get(activityService.GET_ROLE_LIST, {
+        activityId: this.activityId
+      }).then((res) => {
+        console.log(res)
+        this.tableData = res.data.list
       })
+      // prepareHttp.roleList(this.activityId).then((res) => {
+      //   this.loading = false
+      //   if (res.code === 200) {
+      //     console.log(res)
+      //     this.tableData = res.data.list
+      //   }
+      // }).catch(() => {
+      //   this.loading = false
+      // })
     },
     copyLink (idx, res) {
       const str = this.copyDataval

@@ -1,30 +1,35 @@
 <template>
-  <div class="template2-container">
+  <div class="template1-container" :class="{isEdit:editAble}">
     <com-panel class="section1" :edit="editAble" v-model="data.section1Data.panel">
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
-       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
+      <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
     <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
-      <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
-      <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
-      <com-video :edit="editAble" v-model="data.section2Data.video"></com-video>
+      <div class="mask">
+        <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
+        <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
+      </div>
     </com-panel>
-    <com-block2 class="section3" :edit="editAble" height="556px" v-model="data.section3Data.block2"></com-block2>
+    <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
+      <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
+    </com-panel>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
-      <com-font class="section4-font" :edit="editAble" v-model="data.section4Data.font"></com-font>
+      <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
       <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
-      <com-share :edit="editAble" :share="shareData" v-model="data.section5Data.share"></com-share>
+      <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section5Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
-      <com-font class="section6-font" :edit="editAble" v-model="data.section6Data.font"></com-font>
-      <com-block1 :max="15" :edit="editAble" v-model="data.section6Data.block1"></com-block1>
+      <com-share :edit="editAble" :share="shareData" v-model="data.section6Data.share"></com-share>
     </com-panel>
-     <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
+    <com-panel class="section7" :edit="editAble" v-model="data.section7Data.panel">
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
-      <div class="support">微吼提供技术支持</div>
+        <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
+    <div class="support">微吼直播提供技术支持</div>
   </div>
 </template>
 
@@ -47,7 +52,7 @@ export default {
   },
   data () {
     return {
-      data: defaultData.template2()
+      data: defaultData.template3()
     }
   },
   props: {
@@ -77,7 +82,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.template2-container /deep/ {
+.template1-container.isEdit {
+  .section1 {
+    position: relative;
+  }
+}
+.template1-container /deep/ {
   min-width: 1366px;
   .edit {
     position: absolute;
@@ -99,14 +109,21 @@ export default {
       }
     }
   }
+  .support {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: rgba(85, 85, 85, 1);
+    font-size: 14px;
+  }
   .section1 {
     width: 100%;
-    height: 580px;
-    position: relative;
+    height: 60px;
+    z-index: 1;
     overflow: hidden;
     .logo {
       width: 100px;
-      height: 52px;
+      height: 100%;
       margin-left: 10px;
       position: absolute;
       top: 0;
@@ -115,19 +132,27 @@ export default {
       position: absolute;
       top: 0;
       right: 10px;
-      height: 52px;
+      height: 100%;
       .nav-group {
         font-size: 0;
+        line-height: 58px;
         .nav-item {
-          padding: 0 15px;
-          height: 100%;
-          line-height: 52px;
-          color: white;
-          font-size: 14px;
+          padding: 0 27px;
+          height: 30px;
+          line-height: 30px;
           display: inline-block;
-          transition: all 0.3s;
-          &:hover {
-            color: #00a2ca;
+          color: white;
+          font-size: 16px;
+          vertical-align: middle;
+          border-left: 1px solid #e2e2e2;
+          a {
+            padding-bottom: 9px;
+            min-width: 64px;
+            display: inline-block;
+            text-align: center;
+            &:hover {
+              border-bottom: 3px solid #ffd021;
+            }
           }
         }
       }
@@ -135,95 +160,109 @@ export default {
   }
   .section2 {
     width: 100%;
-    height: auto;
+    height: 820px;
     .panel {
       padding: 50px 0;
       text-align: center;
     }
+    .mask {
+      height: 260px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
     .font-content {
+      margin-top: 26px;
       text-align: left;
-      width: 580px;
+      width: 650px;
+      min-height: 100px;
+    }
+    .font-editer {
+      height: 400px;
+      background-color: #dadada;
+    }
+    .font-content {
+      width: 100%;
       min-height: 100px;
     }
     .btn {
       display: block;
-      margin-top: 30px;
+      margin-top: 24px;
       .btn-content {
         display: inline-block;
         position: relative;
       }
       .com-button {
-        min-width: 180px;
-        height: 45px;
+        min-width: 200px;
+        height: 40px;
         border-radius: 20px;
         font-size: 16px;
-      }
-    }
-    .video-container {
-      margin-top: 20px;
-      .video-content {
-        width: 728px;
-        height: 420px;
-        margin: auto;
-        background-color: #00a2ca;
       }
     }
   }
   .section3 {
     width: 100%;
-    height: 560px;
-    .section3-block2 {
-      .block2-item {
-        padding: 100px 0;
-        cursor: pointer;
+    height: auto;
+    text-align: center;
+    .panel {
+      padding-bottom: 80px;
+    }
+    .font-container {
+      margin-top: 100px;
+      text-align: left;
+      width: 650px;
+      min-height: 85px;
+    }
+    .block1-group {
+      &.width3 {
+        .block1-item {
+          width: 346px;
+          img {
+            height: 192px;
+          }
+        }
       }
-      .edit-content {
-        width: 600px;
+      .block1-item {
+        width: 540px;
+        margin-right: 40px;
+        img {
+          width: 100%;
+          height: 300px;
+        }
       }
     }
   }
   .section4 {
     width: 100%;
     height: auto;
+    text-align: center;
     .panel {
-      padding: 50px 0;
-      text-align: center;
+      padding-bottom: 20px;
     }
-    .section4-font {
+    .font-container {
+      margin-top: 50px;
       text-align: left;
-      width: 580px;
-      min-height: 60px;
-      margin-bottom: 40px;
+      width: 650px;
+      min-height: 85px;
     }
     .block1-group {
-      &.width2 {
-        .block1-item {
-          width: 500px;
-          min-height: 256px;
-        }
-      }
       &.width3 {
         .block1-item {
-          width: 390px;
-          min-height: 199px;
-        }
-      }
-      &.width4 {
-        .block1-item {
-          width: 280px;
-          min-height: 146px;
+          width: 340px;
+          height: 245px;
+          img {
+            height: 100%;
+          }
         }
       }
       .block1-item {
-        .content {
-          &.top {
-            width: 70%;
-          }
-        }
-        .img {
+        width: 540px;
+        height: 350px;
+        margin-right: 40px;
+        img {
           width: 100%;
-          height: 158px;
-          display: block;
+          height: 100%;
         }
       }
     }
@@ -231,52 +270,76 @@ export default {
   .section5 {
     width: 100%;
     height: auto;
+    text-align: center;
     .panel {
-      padding: 50px 0;
-      text-align: center;
+      padding-bottom: 40px;
+    }
+    .font-container {
+      margin-top: 100px;
+      text-align: left;
+      width: 650px;
+      min-height: 85px;
+    }
+    .block1-group {
+      &.width3 {
+        .block1-item {
+          width: 346px;
+          img {
+            height: 200px;
+          }
+        }
+      }
+      .block1-item {
+        width: 540px;
+        margin-right: 40px;
+        img {
+          width: 100%;
+          height: 310px;
+        }
+      }
     }
   }
   .section6 {
     width: 100%;
-    height: auto;
+    height: 270px;
     .panel {
-      padding: 50px;
+      padding-top: 50px;
       text-align: center;
     }
-    .section6-font {
-      text-align: left;
-      width: 580px;
-      min-height: 60px;
-      margin-bottom: 40px;
-    }
-    .block1-group {
-      width: 980px;
-      overflow: hidden;
-      .block1-item {
-        height: 56px;
-        margin: 0 30px 72px 32px;
-        float: left;
-        img {
-          width: 100%;
+    .share-group {
+      li {
+        margin-right: 50px;
+        .share-item {
+          font-size: 18px;
         }
       }
     }
   }
   .section7 {
     width: 100%;
-    height: auto;
+    height: 300px;
     .panel {
-      padding: 50px;
       text-align: center;
     }
     .font-content {
+      margin-top: 70px;
       text-align: left;
-      width: 580px;
-      min-height: 60px;
-      margin-bottom: 40px;
+      width: 650px;
+      min-height: 100px;
     }
-    .support {
-      font-size: 14px;
+    .btn {
+      display: block;
+      margin-top: 24px;
+      .btn-content {
+        display: inline-block;
+        position: relative;
+      }
+      .com-button {
+        min-width: 200px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 16px;
+      }
     }
   }
 }

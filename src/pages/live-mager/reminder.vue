@@ -16,7 +16,9 @@
           <div class="from-title"><i class="star">*</i>活动名称：</div>
           <div class="from-content">
             <div class="input-box">
-              <el-input type="textarea" :rows="2" v-model="reminder.name"/>
+              <el-input type="textarea"
+                        :rows="2"
+                        v-model="reminder.name" />
             </div>
           </div>
         </div>
@@ -24,7 +26,9 @@
           <div class="from-title">短信签名：</div>
           <div class="from-content">
             <div class="input-box">
-              <el-input type="textarea" :rows="2" v-model="reminder.message"/>
+              <el-input type="textarea"
+                        :rows="2"
+                        v-model="reminder.message" />
             </div>
           </div>
         </div>
@@ -32,7 +36,9 @@
           <div class="from-title">通知方式：</div>
           <div class="from-content">
             <el-checkbox-group v-model="reminder.reminderType">
-              <el-checkbox v-for="remind in reminderTypes" :label="remind.label" :key="remind.value">{{remind.label}}
+              <el-checkbox v-for="remind in reminderTypes"
+                           :label="remind.label"
+                           :key="remind.value">{{remind.label}}
               </el-checkbox>
             </el-checkbox-group>
           </div>
@@ -41,7 +47,9 @@
           <div class="from-title">通知时间：</div>
           <div class="from-content">
             <el-checkbox-group v-model="reminder.reminderTime">
-              <el-checkbox v-for="remind in reminderTimes" :label="remind.label" :key="remind.value">{{remind.label}}
+              <el-checkbox v-for="remind in reminderTimes"
+                           :label="remind.label"
+                           :key="remind.value">{{remind.label}}
               </el-checkbox>
             </el-checkbox-group>
           </div>
@@ -49,12 +57,13 @@
         <div class="from-row">
           <div class="from-title">通知范围：</div>
           <div class="from-content">
-            <el-select v-model="reminder.reminderRand" disabled placeholder="请选择">
-              <el-option
-                v-for="item in randOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+            <el-select v-model="reminder.reminderRand"
+                       disabled
+                       placeholder="请选择">
+              <el-option v-for="item in randOptions"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
               </el-option>
             </el-select>
           </div>
@@ -62,7 +71,10 @@
         <div class="from-row">
           <div class="from-title"></div>
           <div class="from-content">
-            <el-button class="live-btn" type="primary" plain @click="saveRemider">保存</el-button>
+            <el-button class="live-btn"
+                       type="primary"
+                       plain
+                       @click="saveRemider">保存</el-button>
           </div>
         </div>
       </div>
@@ -83,59 +95,63 @@
 </template>
 
 <script>
-  import ComUpload from 'src/components/common/upload/com'
-  import VeUpload from 'src/components/ve-upload-image'
-  import LiveHttp from 'src/api/activity-manger'
-  // 参会提醒
-  export default {
-    name: 'reminder',
-    components: { ComUpload, VeUpload },
-    data () {
-      return {
-        reminderTypes: [
-          { value: '0', label: '短信通知' },
-          { value: '1', label: '微信通知' }
-        ],
-        reminderTimes: [
-          { value: '0', label: '提前1天' },
-          { value: '1', label: '提前1小时' },
-          { value: '2', label: '提前10分钟' },
-          { value: '3', label: '活动开始时' }
-        ],
-        randOptions: [
-          { value: '0', label: '预约用户' },
-          { value: '1', label: '报名用户' },
-          { value: '2', label: '邀请用户' }
-        ],
-        reminder: {
-          isSwitch: false,
-          reminderType: [],
-          reminderTime: [],
-          reminderRand: '0',
-          message: '',
-          name: ''
-        }
-      }
-    },
-    created () {
-      if (!this.$route.params.id) {
-        this.goBack()
-        return
-      }
-      this.queryReminInfo()
-    },
-    methods: {
-      goBack () {
-        this.$router.go(-1)
-      },
-      queryReminInfo () {
-        LiveHttp.queryReminderInfoById(this.$route.params.id)
-      },
-      saveRemider () {
-        LiveHttp.saveReminderInfo(this.reminder)
+import ComUpload from 'src/components/common/upload/com'
+import VeUpload from 'src/components/ve-upload-image'
+import activityService from 'src/api/activity-service'
+// 参会提醒
+export default {
+  name: 'reminder',
+  components: {ComUpload, VeUpload},
+  data () {
+    return {
+      reminderTypes: [
+        {value: '0', label: '短信通知'},
+        {value: '1', label: '微信通知'}
+      ],
+      reminderTimes: [
+        {value: '0', label: '提前1天'},
+        {value: '1', label: '提前1小时'},
+        {value: '2', label: '提前10分钟'},
+        {value: '3', label: '活动开始时'}
+      ],
+      randOptions: [
+        {value: '0', label: '预约用户'},
+        {value: '1', label: '报名用户'},
+        {value: '2', label: '邀请用户'}
+      ],
+      reminder: {
+        isSwitch: false,
+        reminderType: [],
+        reminderTime: [],
+        reminderRand: '0',
+        message: '',
+        name: ''
       }
     }
+  },
+  created () {
+    if (!this.$route.params.id) {
+      this.goBack()
+      return
+    }
+    this.queryReminInfo()
+  },
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    },
+    queryReminInfo () {
+      this.$get(activityService.GET_REMINDER_INFO, {
+        id: this.$route.params.id
+      })
+      // LiveHttp.queryReminderInfoById(this.$route.params.id)
+    },
+    saveRemider () {
+      this.$post(activityService.POST_REMINDER_INFO, this.reminder)
+      // LiveHttp.saveReminderInfo(this.reminder)
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped src="./css/live.scss">

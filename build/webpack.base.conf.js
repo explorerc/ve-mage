@@ -63,7 +63,7 @@ const webpackConfig = {
       },
       {
         test: /\.js[x]?$/,
-        loader: 'happypack/loader?id=happy-babel-js',
+        loader: 'babel-loader',
         include: resolve('src')
       },
       {
@@ -124,11 +124,11 @@ const webpackConfig = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    new HappyPack({
-      id: 'happy-babel-js',
-      loaders: ['babel-loader?cacheDirectory=true'],
-      threadPool: happyThreadPool
-    }),
+    // new HappyPack({
+    //   id: 'happy-babel-js',
+    //   loaders: ['babel-loader?cacheDirectory=true'],
+    //   threadPool: happyThreadPool
+    // }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './index.html',
@@ -139,7 +139,10 @@ const webpackConfig = {
         IMGHOST: JSON.stringify(config[process.env.BUILD_ENV].IMGHOST),
         BUILD_ENV: JSON.stringify(config[process.env.BUILD_ENV].BUILD_ENV),
         API_PATH: JSON.stringify(config[process.env.BUILD_ENV].API_PATH),
-        PUBLIC_PATH: JSON.stringify(config[process.env.BUILD_ENV].PUBLIC_PATH)
+        SUB_DIR: JSON.stringify(config[process.env.BUILD_ENV].SUB_DIR),
+        PUBLIC_PATH: JSON.stringify(config[process.env.BUILD_ENV].PUBLIC_PATH),
+        MOBILE_HOST: JSON.stringify(config[process.env.BUILD_ENV].MOBILE_HOST),
+        PC_HOST: JSON.stringify(config[process.env.BUILD_ENV].PC_HOST)
       }
     }),
     new CopyWebpackPlugin([{
