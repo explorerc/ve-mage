@@ -2,21 +2,24 @@
   <div class="content live-mager auto-page">
     <div class="live-title">
       <span class="title">自动化通知</span>
-      <el-switch
-        v-model="isOpen"
-        inactive-color="#DEE1FF"
-        :width="32"
-        active-color="#FFD021" @change='openSwitch'>
+      <el-switch v-model="isOpen"
+                 inactive-color="#DEE1FF"
+                 :width="32"
+                 active-color="#FFD021"
+                 @change='openSwitch'>
       </el-switch>
       <span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>
     </div>
     <div class='preview mager-box border-box clearfix'>
       <div class="time-line fl"></div>
       <div class="fl">
-        <p class='step order' v-if="limit === 'NONE'? true : false">预约阶段</p>
-        <p v-else class='step order'>活动报名阶段</p>
+        <p class='step order'
+           v-if="limit === 'NONE'? true : false">预约阶段</p>
+        <p v-else
+           class='step order'>活动报名阶段</p>
         <div class="detail">
-          <div class="block" v-if="limit === 'NONE'? true : false">
+          <div class="block"
+               v-if="limit === 'NONE'? true : false">
             <div class="title clearfix">
               <p class='block-tips'>欢迎消息</p>
             </div>
@@ -25,63 +28,64 @@
               <div class="item message">
                 <div class="img msg"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'SMS'"
-                  :tpl="itemList['BEFORE_ORDER']['SMS']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_ORDER'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'SMS'"
+                           :tpl="itemList['BEFORE_ORDER']['SMS']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_ORDER'"></com-tpl>
                   <em>{{itemList['BEFORE_ORDER']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_ORDER']['SMS']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_ORDER', 'SMS', itemList['BEFORE_ORDER']['SMS']['noticeTaskId'], itemList['BEFORE_ORDER']['SMS']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_ORDER']['SMS']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_ORDER', 'SMS', itemList['BEFORE_ORDER']['SMS']['noticeTaskId'], itemList['BEFORE_ORDER']['SMS']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_ORDER', 'SMS',itemList['BEFORE_ORDER']['SMS']['noticeTaskId'])" :disabled="!itemList['BEFORE_ORDER']['SMS']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_ORDER', 'SMS',itemList['BEFORE_ORDER']['SMS']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_ORDER']['SMS']['switch']">测试发送</el-button>
                 </div>
               </div>
 
               <div class="item message">
                 <div class="img wechat"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'WECHAT'"
-                  :tpl="itemList['BEFORE_ORDER']['WECHAT']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_ORDER'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'WECHAT'"
+                           :tpl="itemList['BEFORE_ORDER']['WECHAT']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_ORDER'"></com-tpl>
                   <em>{{itemList['BEFORE_ORDER']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_ORDER']['WECHAT']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_ORDER', 'WECHAT',itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'], itemList['BEFORE_ORDER']['SMS']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_ORDER']['WECHAT']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_ORDER', 'WECHAT',itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'], itemList['BEFORE_ORDER']['SMS']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_ORDER', 'WECHAT',itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'])" :disabled="!itemList['BEFORE_ORDER']['WECHAT']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_ORDER', 'WECHAT',itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_ORDER']['WECHAT']['switch']">测试发送</el-button>
                 </div>
               </div>
 
             </div>
           </div>
 
-          <div class="block" v-else>
+          <div class="block"
+               v-else>
             <div class="title clearfix">
               <p class='block-tips'>欢迎消息</p>
             </div>
@@ -90,56 +94,56 @@
               <div class="item message">
                 <div class="img msg"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'SMS'"
-                  :tpl="itemList['BEFORE_APPLY']['SMS']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_APPLY'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'SMS'"
+                           :tpl="itemList['BEFORE_APPLY']['SMS']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_APPLY'"></com-tpl>
                   <em>{{itemList['BEFORE_APPLY']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_APPLY']['SMS']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_APPLY', 'SMS',itemList['BEFORE_APPLY']['SMS']['noticeTaskId'], itemList['BEFORE_APPLY']['SMS']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_APPLY']['SMS']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_APPLY', 'SMS',itemList['BEFORE_APPLY']['SMS']['noticeTaskId'], itemList['BEFORE_APPLY']['SMS']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_APPLY', 'SMS',itemList['BEFORE_APPLY']['SMS']['noticeTaskId'])" :disabled="!itemList['BEFORE_APPLY']['SMS']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_APPLY', 'SMS',itemList['BEFORE_APPLY']['SMS']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_APPLY']['SMS']['switch']">测试发送</el-button>
                 </div>
               </div>
 
               <div class="item message">
                 <div class="img wechat"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'WECHAT'"
-                  :tpl="itemList['BEFORE_APPLY']['WECHAT']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_APPLY'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'WECHAT'"
+                           :tpl="itemList['BEFORE_APPLY']['WECHAT']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_APPLY'"></com-tpl>
                   <em>{{itemList['BEFORE_APPLY']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_APPLY']['WECHAT']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_APPLY', 'WECHAT', itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'], itemList['BEFORE_APPLY']['WECHAT']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_APPLY']['WECHAT']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_APPLY', 'WECHAT', itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'], itemList['BEFORE_APPLY']['WECHAT']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_APPLY', 'WECHAT', itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'])" :disabled="!itemList['BEFORE_APPLY']['WECHAT']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_APPLY', 'WECHAT', itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_APPLY']['WECHAT']['switch']">测试发送</el-button>
                 </div>
               </div>
 
@@ -149,17 +153,25 @@
           <div class="block">
             <div class="title clearfix">
               <p class='block-tips'>开播前{{hourValue}}小时 <span>提醒用户活动即将开始，做好参加准备</span></p>
-              <el-button class='primary-button edit-time' @click='firstSel = true'>编辑提醒时间</el-button>
-              <div class="seltime-modal" v-if='firstSel'>
-                <div class="title">修改时间：<i class='close'  @click='resetCountDown("hour")'></i></div>
+              <el-button class='primary-button edit-time'
+                         @click='firstSel = true'>编辑提醒时间</el-button>
+              <div class="seltime-modal"
+                   v-if='firstSel'>
+                <div class="title">修改时间：<i class='close'
+                     @click='resetCountDown("hour")'></i></div>
                 <div class="content">
-                  <el-select v-model="selhourValue" placeholder="编辑提醒时间" >
-                    <el-option v-for="item in hourOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-select v-model="selhourValue"
+                             placeholder="编辑提醒时间">
+                    <el-option v-for="item in hourOptions"
+                               :key="item.value"
+                               :label="item.label"
+                               :value="item.value">
                     </el-option>
                   </el-select>
                   <div class="btn-group">
-                    <el-button class='primary-button' @click='saveCountdown("hour")'>保存</el-button>
-                    <span  @click='resetCountDown("hour")'>取消</span>
+                    <el-button class='primary-button'
+                               @click='saveCountdown("hour")'>保存</el-button>
+                    <span @click='resetCountDown("hour")'>取消</span>
                   </div>
                 </div>
               </div>
@@ -170,56 +182,56 @@
               <div class="item message">
                 <div class="img msg"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'SMS'"
-                  :tpl="itemList['BEFORE_HOUR']['SMS']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_HOUR'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'SMS'"
+                           :tpl="itemList['BEFORE_HOUR']['SMS']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_HOUR'"></com-tpl>
                   <em>{{itemList['BEFORE_HOUR']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_HOUR']['SMS']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'], itemList['BEFORE_HOUR']['SMS']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_HOUR']['SMS']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'], itemList['BEFORE_HOUR']['SMS']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'])" :disabled="!itemList['BEFORE_HOUR']['SMS']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_HOUR', 'SMS', itemList['BEFORE_HOUR']['SMS']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_HOUR']['SMS']['switch']">测试发送</el-button>
                 </div>
               </div>
 
               <div class="item message">
                 <div class="img wechat"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'WECHAT'"
-                  :tpl="itemList['BEFORE_HOUR']['WECHAT']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_HOUR'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'WECHAT'"
+                           :tpl="itemList['BEFORE_HOUR']['WECHAT']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_HOUR'"></com-tpl>
                   <em>{{itemList['BEFORE_HOUR']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_HOUR']['WECHAT']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'], itemList['BEFORE_HOUR']['WECHAT']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_HOUR']['WECHAT']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'], itemList['BEFORE_HOUR']['WECHAT']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'])" :disabled="!itemList['BEFORE_HOUR']['WECHAT']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_HOUR', 'WECHAT', itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_HOUR']['WECHAT']['switch']">测试发送</el-button>
                 </div>
               </div>
 
@@ -228,17 +240,25 @@
           <div class="block">
             <div class="title clearfix">
               <p class='block-tips'>开播前{{minValue}}分钟 <span>活动开始前{{minValue}}分钟，提醒用户活动即将开始，做好参加准备</span></p>
-              <el-button class='primary-button edit-time' @click='secondSel = true'>编辑提醒时间</el-button>
-              <div class="seltime-modal" v-if='secondSel'>
-                <div class="title">修改时间：<i class='close' @click='resetCountDown("min")'></i></div>
+              <el-button class='primary-button edit-time'
+                         @click='secondSel = true'>编辑提醒时间</el-button>
+              <div class="seltime-modal"
+                   v-if='secondSel'>
+                <div class="title">修改时间：<i class='close'
+                     @click='resetCountDown("min")'></i></div>
                 <div class="content">
-                  <el-select v-model="selminValue" placeholder="编辑提醒时间" >
-                    <el-option v-for="item in minOptions" :key="item.value" :label="item.label" :value="item.value">
+                  <el-select v-model="selminValue"
+                             placeholder="编辑提醒时间">
+                    <el-option v-for="item in minOptions"
+                               :key="item.value"
+                               :label="item.label"
+                               :value="item.value">
                     </el-option>
                   </el-select>
                   <div class="btn-group">
-                    <el-button class='primary-button' @click='saveCountdown("min")'>保存</el-button>
-                    <span  @click='resetCountDown("min")'>取消</span>
+                    <el-button class='primary-button'
+                               @click='saveCountdown("min")'>保存</el-button>
+                    <span @click='resetCountDown("min")'>取消</span>
                   </div>
                 </div>
               </div>
@@ -248,56 +268,56 @@
               <div class="item message">
                 <div class="img msg"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'SMS'"
-                  :tpl="itemList['BEFORE_MINUTE']['SMS']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_MINUTE'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'SMS'"
+                           :tpl="itemList['BEFORE_MINUTE']['SMS']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_MINUTE'"></com-tpl>
                   <em>{{itemList['BEFORE_MINUTE']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_MINUTE']['SMS']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_MINUTE', 'SMS', itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'], itemList['BEFORE_MINUTE']['SMS']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_MINUTE']['SMS']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_MINUTE', 'SMS', itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'], itemList['BEFORE_MINUTE']['SMS']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_MINUTE', 'SMS', itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'])" :disabled="!itemList['BEFORE_MINUTE']['SMS']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_MINUTE', 'SMS', itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_MINUTE']['SMS']['switch']">测试发送</el-button>
                 </div>
               </div>
 
               <div class="item message">
                 <div class="img wechat"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'WECHAT'"
-                  :tpl="itemList['BEFORE_MINUTE']['WECHAT']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'BEFORE_MINUTE'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'WECHAT'"
+                           :tpl="itemList['BEFORE_MINUTE']['WECHAT']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'BEFORE_MINUTE'"></com-tpl>
                   <em>{{itemList['BEFORE_MINUTE']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['BEFORE_MINUTE']['WECHAT']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'BEFORE_MINUTE', 'WECHAT', itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'], itemList['BEFORE_MINUTE']['WECHAT']['templateId'])">
+                  <el-switch v-model="itemList['BEFORE_MINUTE']['WECHAT']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'BEFORE_MINUTE', 'WECHAT', itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'], itemList['BEFORE_MINUTE']['WECHAT']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('BEFORE_MINUTE', 'WECHAT', itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'])" :disabled="!itemList['BEFORE_MINUTE']['WECHAT']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('BEFORE_MINUTE', 'WECHAT', itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'])"
+                             :disabled="!itemList['BEFORE_MINUTE']['WECHAT']['switch']">测试发送</el-button>
                 </div>
               </div>
 
@@ -382,56 +402,56 @@
               <div class="item message">
                 <div class="img msg"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'SMS'"
-                  :tpl="itemList['REPLAY']['SMS']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'REPLAY'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'SMS'"
+                           :tpl="itemList['REPLAY']['SMS']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'REPLAY'"></com-tpl>
                   <em>{{itemList['REPLAY']['SMS']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['REPLAY']['SMS']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'REPLAY', 'SMS', itemList['REPLAY']['SMS']['noticeTaskId'], itemList['REPLAY']['SMS']['templateId'])">
+                  <el-switch v-model="itemList['REPLAY']['SMS']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'REPLAY', 'SMS', itemList['REPLAY']['SMS']['noticeTaskId'], itemList['REPLAY']['SMS']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('REPLAY', 'SMS', itemList['REPLAY']['SMS']['noticeTaskId'])" :disabled="!itemList['REPLAY']['SMS']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('REPLAY', 'SMS', itemList['REPLAY']['SMS']['noticeTaskId'])"
+                             :disabled="!itemList['REPLAY']['SMS']['switch']">测试发送</el-button>
                 </div>
               </div>
 
               <div class="item message">
                 <div class="img wechat"></div>
                 <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'WECHAT'"
-                  :tpl="itemList['REPLAY']['WECHAT']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'REPLAY'"
-                  ></com-tpl>
+                  <com-tpl :isString="true"
+                           :type="'WECHAT'"
+                           :tpl="itemList['REPLAY']['WECHAT']['templateId']"
+                           :tag="tplData.tag"
+                           :webinarName="tplData.webinarName"
+                           :hostName="tplData.hostName"
+                           :date="tplData.date"
+                           :secondCount="tplData.secondCount"
+                           :firstCount="tplData.firstCount"
+                           :triggerType="'REPLAY'"></com-tpl>
                   <em>{{itemList['REPLAY']['WECHAT']['status']}}</em>
                 </div>
                 <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['REPLAY']['WECHAT']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'REPLAY', 'WECHAT', itemList['REPLAY']['WECHAT']['noticeTaskId'], itemList['REPLAY']['WECHAT']['templateId'])">
+                  <el-switch v-model="itemList['REPLAY']['WECHAT']['switch']"
+                             inactive-color="#DEE1FF"
+                             :width="32"
+                             active-color="#FFD021"
+                             @change="itemSwitch($event,'REPLAY', 'WECHAT', itemList['REPLAY']['WECHAT']['noticeTaskId'], itemList['REPLAY']['WECHAT']['templateId'])">
                   </el-switch>
-                  <el-button type="small default-button" @click="testSend('REPLAY', 'WECHAT', itemList['REPLAY']['WECHAT']['noticeTaskId'])" :disabled="!itemList['REPLAY']['WECHAT']['switch']">测试发送</el-button>
+                  <el-button type="small default-button"
+                             @click="testSend('REPLAY', 'WECHAT', itemList['REPLAY']['WECHAT']['noticeTaskId'])"
+                             :disabled="!itemList['REPLAY']['WECHAT']['switch']">测试发送</el-button>
                 </div>
               </div>
 
@@ -441,7 +461,12 @@
       </div>
     </div>
     <!-- 测试发送弹窗 -->
-    <com-test  v-if='testModal' :imgUrl="qrImgurl"  @closeTest='closeTest()' :type="testType"  :isAuto='true' :noticeId="noticeTaskId"></com-test>
+    <com-test v-if='testModal'
+              :imgUrl="qrImgurl"
+              @closeTest='closeTest()'
+              :type="testType"
+              :isAuto='true'
+              :noticeId="noticeTaskId"></com-test>
 
     <!-- <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
       <div class="del-footer" slot="footer">
@@ -455,7 +480,6 @@
 <script>
 import comTpl from './com-tpl'
 import comTest from '../com-test'
-// import http from 'src/api/activity-manger'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 // import {getMsg} from './tpl'

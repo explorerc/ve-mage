@@ -5,8 +5,13 @@
       <div class="from-row">
         <div class="from-title">微信模板：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择" @change='selChange'>
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
+          <el-select v-model="tplValue"
+                     placeholder="请选择"
+                     @change='selChange'>
+            <el-option v-for="item in tplOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
             </el-option>
           </el-select>
         </div>
@@ -31,23 +36,20 @@
         </div>
       </div>
     </div>
-    <send-tpl
-    :isDom="true"
-    :type="tplData.type"
-    :tpl="tplData.tpl"
-    :tag="tplData.tag"
-    :webinarName="tplData.webinarName"
-    :hostName="tplData.hostName"
-    :date="tplData.date"
-    :triggerType="tplData.triggerType"
-    :firstCount="tplData.firstCount"
-    :secondCount="tplData.secondCount"
-    ></send-tpl>
+    <send-tpl :isDom="true"
+              :type="tplData.type"
+              :tpl="tplData.tpl"
+              :tag="tplData.tag"
+              :webinarName="tplData.webinarName"
+              :hostName="tplData.hostName"
+              :date="tplData.date"
+              :triggerType="tplData.triggerType"
+              :firstCount="tplData.firstCount"
+              :secondCount="tplData.secondCount"></send-tpl>
   </div>
 </template>
 
 <script>
-// import http from 'src/api/activity-manger'
 import noticeService from 'src/api/notice-service'
 import sendTpl from './com-tpl'
 export default {
@@ -59,25 +61,25 @@ export default {
       titleValue: '',
       webinarName: '',
       tplOptions: [
-      // {
-      //   value: 1,
-      //   label: '预约成功通知'
-      // }, {
-      //   value: 2,
-      //   label: '报名成功通知'
-      // }, {
-      //   value: 3,
-      //   label: '开播提醒通知1'
-      // }, {
-      //   value: 4,
-      //   label: '开播提醒通知2'
-      // }, {
-      //   value: 5,
-      //   label: '订阅成功提醒'
-      // }, {
-      //   value: 6,
-      //   label: '回放设置成功提醒'
-      // }
+        // {
+        //   value: 1,
+        //   label: '预约成功通知'
+        // }, {
+        //   value: 2,
+        //   label: '报名成功通知'
+        // }, {
+        //   value: 3,
+        //   label: '开播提醒通知1'
+        // }, {
+        //   value: 4,
+        //   label: '开播提醒通知2'
+        // }, {
+        //   value: 5,
+        //   label: '订阅成功提醒'
+        // }, {
+        //   value: 6,
+        //   label: '回放设置成功提醒'
+        // }
       ],
       tplValue: 1,
       tplData: {

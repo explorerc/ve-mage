@@ -108,17 +108,17 @@ export default {
       this.error = []
       let fileSize = this.fileSize * 1000
       Array.prototype.forEach.call(this.$refs.upload.files, (item, index) => {
-        if (item.size > fileSize) {
-          this.error.push({
-            state: 'size-limit',
-            name: item.name,
-            size: item.size
-          })
-        } else if (this.acceptStr.indexOf(item.type) === -1) {
+        if (this.acceptStr.indexOf(item.type) === -1) {
           this.error.push({
             state: 'type-limit',
             name: item.name,
             type: item.type
+          })
+        } else if (item.size > fileSize) {
+          this.error.push({
+            state: 'size-limit',
+            name: item.name,
+            size: item.size
           })
         } else {
           this.list.push({

@@ -5,8 +5,13 @@
       <div class="from-row">
         <div class="from-title">短信模板：</div>
         <div class="from-content">
-          <el-select v-model="tplValue" placeholder="请选择" @change='selChange'>
-            <el-option v-for="item in tplOptions" :key="item.value" :label="item.label" :value="item.value">
+          <el-select v-model="tplValue"
+                     placeholder="请选择"
+                     @change='selChange'>
+            <el-option v-for="item in tplOptions"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
             </el-option>
           </el-select>
         </div>
@@ -14,7 +19,10 @@
       <div class="from-row">
         <div class="from-title">短信签名：</div>
         <div class="from-content">
-          <com-input :value.sync="tplData.tag" placeholder="请输入签名" :max-length="8" disabled></com-input>
+          <com-input :value.sync="tplData.tag"
+                     placeholder="请输入签名"
+                     :max-length="8"
+                     disabled></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -37,24 +45,21 @@
         </div>
       </div>
     </div>
-    <send-tpl
-    :isDom="true"
-    :type="tplData.type"
-    :tpl="tplData.tpl"
-    :tag="tplData.tag"
-    :webinarName="tplData.webinarName"
-    :hostName="tplData.hostName"
-    :date="tplData.date"
-    :triggerType="tplData.triggerType"
-    :firstCount="tplData.firstCount"
-    :secondCount="tplData.secondCount"
-    ></send-tpl>
+    <send-tpl :isDom="true"
+              :type="tplData.type"
+              :tpl="tplData.tpl"
+              :tag="tplData.tag"
+              :webinarName="tplData.webinarName"
+              :hostName="tplData.hostName"
+              :date="tplData.date"
+              :triggerType="tplData.triggerType"
+              :firstCount="tplData.firstCount"
+              :secondCount="tplData.secondCount"></send-tpl>
   </div>
 </template>
 
 <script>
 import sendTpl from './com-tpl'
-// import http from 'src/api/activity-manger'
 import noticeService from 'src/api/notice-service'
 export default {
   data () {
@@ -64,25 +69,25 @@ export default {
       webinarName: '',
       sign: '',
       tplOptions: [
-      // {
-      //   value: 1,
-      //   label: '预约成功通知'
-      // }, {
-      //   value: 2,
-      //   label: '报名成功通知'
-      // }, {
-      //   value: 3,
-      //   label: '开播提醒通知1'
-      // }, {
-      //   value: 4,
-      //   label: '开播提醒通知2'
-      // }, {
-      //   value: 5,
-      //   label: '订阅成功提醒'
-      // }, {
-      //   value: 6,
-      //   label: '回放设置成功提醒'
-      // }
+        // {
+        //   value: 1,
+        //   label: '预约成功通知'
+        // }, {
+        //   value: 2,
+        //   label: '报名成功通知'
+        // }, {
+        //   value: 3,
+        //   label: '开播提醒通知1'
+        // }, {
+        //   value: 4,
+        //   label: '开播提醒通知2'
+        // }, {
+        //   value: 5,
+        //   label: '订阅成功提醒'
+        // }, {
+        //   value: 6,
+        //   label: '回放设置成功提醒'
+        // }
       ],
       tplValue: 1,
       tplData: {
@@ -98,7 +103,7 @@ export default {
   },
   created () {
     if (this.noticeId) {
-    // 获取模版变量
+      // 获取模版变量
       this.getParams()
       // 获取模版id
       this.getTpl()

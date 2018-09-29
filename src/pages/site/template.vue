@@ -146,8 +146,8 @@
 </template>
 
 <script>
+import activityService from 'src/api/activity-service'
 import brandService from 'src/api/brand-service'
-import activityService from 'src/api/activity-manger'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
 import temp3 from './template3.vue'
@@ -232,7 +232,7 @@ export default {
       if (this.ptid) {
         this.com = `t${this.ptid}`
       } else {
-        activityService.webinarInfo(this.tid).then(res => {
+        this.$get(activityService.GET_WEBINAR_INFO, { id: this.tid }).then(res => {
           ({ title: this.title, published: this.published } = res.data)
           this.share.title = res.data.title
           this.share.des = ''

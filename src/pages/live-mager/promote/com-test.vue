@@ -1,25 +1,34 @@
 <template>
   <transition name='fade'>
-      <div class="modal-cover" @click="closeModal" >
-        <div class='modal-box phone' v-if="type === 'SMS'">
-          <h4>短信测试发送 <span class='close' @click='closeModal'></span></h4>
-          <div class='content-box from-box'>
-            <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
-            <div>
-              <com-input placeholder="请输入手机号码" :value.sync='sendPhone' :error-tips="phoneError" @focus="phoneError = ''"></com-input>
-            </div>
-          </div>
-          <div class="btn-group">
-            <p>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
-            <el-button class='primary-button fr' @click='sendTest'>立即发送</el-button>
+    <div class="modal-cover"
+         @click="closeModal">
+      <div class='modal-box phone'
+           v-if="type === 'SMS'">
+        <h4>短信测试发送 <span class='close'
+                @click='closeModal'></span></h4>
+        <div class='content-box from-box'>
+          <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
+          <div>
+            <com-input placeholder="请输入手机号码"
+                       :value.sync='sendPhone'
+                       :error-tips="phoneError"
+                       @focus="phoneError = ''"></com-input>
           </div>
         </div>
-        <div class='modal-box ' v-else>
-          <h4>微信测试发送 <span class='close' @click='closeModal'></span></h4>
-          <div class='content-box'>
-            <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
-            <div class="from-row">
-              <img :src="imgUrl" class='qrcode'>
+        <div class="btn-group">
+          <p>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
+          <el-button class='primary-button fr'
+                     @click='sendTest'>立即发送</el-button>
+        </div>
+      </div>
+      <div class='modal-box '
+           v-else>
+        <h4>微信测试发送 <span class='close'
+                @click='closeModal'></span></h4>
+        <div class='content-box'>
+          <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
+          <div class="from-row">
+            <img :src="imgUrl" class='qrcode'>
             </div>
             <p>扫描二维码，授权后即可收到测试消息</p>
             <p>微信限额：<span class='limit-count'>{{limitCount}}</span></p>
@@ -29,7 +38,6 @@
   </transition>
 </template>
 <script>
-// import createHttp from 'src/api/activity-manger'
 import noticeService from 'src/api/notice-service'
 export default {
   name: 'com-test',
