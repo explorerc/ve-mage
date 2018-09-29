@@ -12,10 +12,10 @@
         <p class='desc-label'>互动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
-          <li class='icon'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
-          <li class='icon copy' @click='copy'><i></i>复制链接<input type="text" :value="`www.baidu.com/${this.activityId}`" id='copyContent' style='position:absolute;opacity:0;'></li>
-          <li class='icon offline' @click='offlineActive' v-if="isPublished"><i></i>下线活动</li>
-          <li class='icon offline' @click='publishActive' v-else><i></i>发布活动</li>
+          <li class='icon page'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
+          <li class='icon link copy' @click='copy'><i></i>复制链接<input type="text" :value="`www.baidu.com/${this.activityId}`" id='copyContent' style='position:absolute;opacity:0;'></li>
+          <li class='icon offline offline' @click='offlineActive' v-if="isPublished"><i></i>下线活动</li>
+          <li class='icon offline offline' @click='publishActive' v-else><i></i>发布活动</li>
         </ol>
       </div>
       <div class="right">
@@ -39,37 +39,37 @@
         <ul>
           <li class='step highlight' :class="{ 'active':this.currStep === 'notPublish' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>准备</dd>
             </dl>
           </li>
-          <li class='step prompt' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }" >
+          <li class='step brand' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }" >
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>品牌</dd>
             </dl>
           </li>
-          <li class='step brand' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
+          <li class='step prompt' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>推广</dd>
             </dl>
           </li>
           <li class='step live ' :class="{ 'highlight':this.currStep.search('live') > -1, 'active':this.currStep === 'isPublish live' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>直播</dd>
             </dl>
           </li>
           <li class='step record' :class="{ 'highlight':this.currStep.search('playback') > -1, 'active':this.currStep === 'isPublish live end playback' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>回放</dd>
             </dl>
           </li>
           <li class='step statics' :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>数据</dd>
             </dl>
           </li>
@@ -96,9 +96,9 @@
           <!-- <span>推广</span> -->
           <ol>
             <li v-show="dataPromote[0].switch">自动化通知</li>
-            <li v-show="dataPromote[1].switch">邮箱</li>
-            <li v-show="dataPromote[2].switch">短信</li>
-            <li v-show="dataPromote[3].switch">微信</li>
+            <li v-show="dataPromote[1].switch">邮件邀约</li>
+            <li v-show="dataPromote[2].switch">短信推广</li>
+            <li v-show="dataPromote[3].switch">微信推广</li>
           </ol>
         </div>
         <div>
@@ -305,7 +305,7 @@
       <div class="item promote">
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[2].switch)">
+           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">
               <!-- 活动官网 -->
               <div class="card">
                 <div class='pic'>
@@ -315,14 +315,14 @@
                   <span>活动官网</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataBrand[0].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <template v-if="dataBrand[0].isSet">{{dataBrand[0].desc ==='N' ? '未发布' : '已发布'}}</template>
                     <!-- 未设置 -->
                     <template v-else>最精简的活动品牌页</template>
                   </span>
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataBrand[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[2].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[0].switch)"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -337,7 +337,7 @@
                   <span>直播引导页</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataBrand[1].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+                    <template v-if="dataBrand[1].isSet">{{dataBrand[1].desc ==='N' ? '未发布' : '已发布'}}</template>
                     <!-- 未设置 -->
                     <template v-else>最精简的活动品牌页</template>
                   </span>
@@ -429,82 +429,6 @@
       }
     },
     created () {
-      // this.cardData = {
-      //   'prepare': [
-      //     {
-      //       title: '基本信息',
-      //       desc: '',
-      //       link: '/liveMager/edit/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '活动报名',
-      //       desc: '已设置',
-      //       link: '/liveMager/prepare/limit-apply/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '暖场设置',
-      //       desc: '"asdasdasd.mp4"',
-      //       link: '/liveMager/warmField/',
-      //       switch: true
-      //     }
-      //   ],
-      //   'brand': [
-      //     {
-      //       title: '活动官网',
-      //       desc: '已发布',
-      //       link: '',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '直播引导页',
-      //       desc: '已发布',
-      //       link: '/setLiveGuided/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '观看页',
-      //       desc: '"定制直播观看页面"',
-      //       link: '/master/',
-      //       switch: true
-      //     }
-      //   ],
-      //   'promote': [
-      //     {
-      //       title: '自动化通知',
-      //       desc: '',
-      //       link: '/liveMager/promote/auto/preview/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '邮箱',
-      //       desc: '""',
-      //       link: '/liveMager/email/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '短信',
-      //       desc: '""',
-      //       link: '/liveMager/promote/msg/list/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '微信',
-      //       desc: '""',
-      //       link: '/liveMager/promote/wechat/list/',
-      //       switch: true
-      //     }
-      //   ],
-      //   'record': [
-      //     {
-      //       title: '回放',
-      //       desc: '已设置',
-      //       link: '/liveMager/playBack/',
-      //       switch: true
-      //     }
-      //   ]
-      // }
     },
     mounted () {
       this.getDetails()
@@ -640,46 +564,6 @@
           }
           this.getStep() // 获取当前阶段
         })
-        // http.getDetails(this.activityId).then((res) => {
-        //   // console.log(res)
-        //   if (res.data.activity.countDown.toString() > 0) {
-        //     this.countDownstatus = false
-        //     this.countdownTime = res.data.activity.countDown.toString()
-        //   } else {
-        //     this.countDownstatus = true
-        //     this.countdownTime = '0'
-        //   }
-        //   this.title = res.data.activity.title
-        //   // this.tagList = res.data.activity.countDown
-        //   this.startTime = res.data.activity.startTime
-        //   this.poster = res.data.activity.imgUrl
-        //   this.dataPrepare = res.data.prepare
-        //   this.dataBrand = res.data.brand
-        //   this.dataPromote = res.data.promote
-        //   this.dataRecord = res.data.record
-        //   this.isPublished = res.data.activity.published === 'Y'
-        //   switch (res.data.activity.status) {
-        //     case ('LIVING'):
-        //       this.state = '直播'
-        //       this.stateClass = 'live'
-        //       break
-        //     case ('PLAYBACK'):
-        //       this.state = '回放'
-        //       this.stateClass = 'record'
-        //       break
-        //     case ('FINISH'):
-        //       this.state = '结束'
-        //       this.stateClass = 'ended'
-        //       break
-        //     case ('PREPARE'):
-        //       this.state = '预约'
-        //       this.stateClass = 'preview'
-        //       break
-        //   }
-        //   this.getStep() // 获取当前阶段
-        // }).catch((e) => {
-        //   console.log(e)
-        // })
       },
       publishActive () { // 发布活动
         this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
@@ -692,17 +576,6 @@
           this.isPublished = true
           this.currStep = 'isPublish'
         })
-        // http.publishActive(this.activityId).then((res) => {
-        //   console.log(res)
-        //   if (res.code === 200) {
-        //     this.$toast({
-        //       content: '活动发布成功',
-        //       position: 'center'
-        //     })
-        //     this.isPublished = true
-        //     this.currStep = 'isPublish'
-        //   }
-        // })
       },
       offlineActive () { // 下线活动
         this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
@@ -717,19 +590,6 @@
             this.currStep = 'notPublish'
           }
         })
-        // http.offlineActive(this.activityId).then((res) => {
-        //   console.log(res)
-        //   if (res.code === 200) {
-        //     this.$toast({
-        //       content: '活动下线成功',
-        //       position: 'center'
-        //     })
-        //     this.isPublished = false
-        //     if (this.currStep.search('live') === -1) {
-        //       this.currStep = 'notPublish'
-        //     }
-        //   }
-        // })
       },
       getStep () { // 获取当前活动阶段
         switch (this.state) {
@@ -862,10 +722,19 @@
       border-radius: 500px;
       background-color: rgba(211, 215, 255, 1);
       position: relative;
-      background-image: url('~assets/image/auto_wechat.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: center;
+      i {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        top: 50%;
+        left: 50%;
+        margin-top: -25px;
+        margin-left: -25px;
+        background-image: url('~assets/image/auto_wechat.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
       &:before {
         content: '';
         width: 95px;
@@ -912,20 +781,53 @@
           display: none;
         }
       }
-      &.prompt dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.step {
+        dt i {
+          background-image: url('~assets/image/detail/detail_prepare.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_prepare_hover.png');
+        }
       }
-      &.brand dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.prompt {
+        dt i {
+          background-image: url('~assets/image/detail/detail_promote.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_promote_hover.png');
+        }
       }
-      &.live dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.brand {
+        dt i {
+          background-image: url('~assets/image/detail/detail_brand.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_brand_hover.png');
+        }
       }
-      &.record dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.live {
+        dt i {
+          background-image: url('~assets/image/detail/detail_live.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_live_hover.png');
+        }
       }
-      &.statics dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.record {
+        dt i {
+          background-image: url('~assets/image/detail/detail_record.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_record_hover.png');
+        }
+      }
+      &.statics {
+        dt i {
+          background-image: url('~assets/image/detail/detail_static.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_static_hover.png');
+        }
       }
     }
   }
@@ -1004,12 +906,20 @@
       font-size: 14px;
       background: rgba(239, 239, 239, 1);
       border-radius: 10px;
+      position: relative;
+      padding-right: 28px;
       i {
         cursor: pointer;
         display: inline-block;
-        width: 10px;
-        height: 10px;
-        background: url('~assets/image/icon_activity.png') no-repeat center;
+        width: 20px;
+        height: 20px;
+        background: url('~assets/image/detail/roomid.png') no-repeat center;
+        background-size: contain;
+        position: absolute;
+        top: 0px;
+        &:hover {
+          background-image: url('~assets/image/detail/roomid_hover.png');
+        }
       }
     }
   }
@@ -1051,13 +961,13 @@
         width: 20px;
         height: 20px;
         display: inline-block;
-        background: url('~assets/image/icon_activity.png') no-repeat center;
+        background: url('~assets/image/detail/page.png') no-repeat center;
         background-size: contain;
         position: absolute;
         left: 0;
       }
       &.copy i {
-        background-image: url('~assets/image/icon_activity.png');
+        background-image: url('~assets/image/detail/link.png');
       }
       &.offline {
         &::before {
@@ -1065,7 +975,20 @@
           display: none;
         }
         i {
-          background-image: url('~assets/image/icon_activity.png');
+          bottom: 3px;
+          background-image: url('~assets/image/detail/offline.png');
+        }
+      }
+      &:hover {
+        color: $color-blue;
+        i {
+          background-image: url('~assets/image/detail/page_hover.png');
+        }
+        &.copy i {
+          background-image: url('~assets/image/detail/link_hover.png');
+        }
+        &.offline i {
+          background-image: url('~assets/image/detail/offline_hover.png');
         }
       }
     }
@@ -1194,37 +1117,40 @@
   }
 }
 .item.base .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  width: 80px;
+  background-image: url('~assets/image/detail/base.png');
 }
 .item.apply .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/apply.png');
 }
 .item.wram .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/wramup.png');
 }
 .item.automaze .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/base.png');
 }
 .item.mail .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/mail_invite.png');
 }
 .item.message .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/msg.png');
 }
 .item.wechat .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/wechat.png');
 }
 .item.site .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/site.png');
 }
 .item.guide .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/guide.png');
 }
 .item.watch .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  width: 80px;
+  background-image: url('~assets/image/detail/watch.png');
 }
 .item.record .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  width: 80px;
+  background-image: url('~assets/image/detail/record.png');
 }
 .btm {
   width: 100%;

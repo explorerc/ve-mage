@@ -4,7 +4,7 @@
       <div class="live-title">
         <span class="title">短信通知</span>
         <div class="right-box">
-          <button class="default-button fr" ><router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }">新建微信</router-link></button>
+          <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信</button></router-link>
         </div>
       </div>
       <div class="content table">
@@ -202,6 +202,9 @@
 .live-title {
   .right-box {
     float: right;
+    .btn {
+      margin: 10px 0;
+    }
   }
 }
 .from-row {

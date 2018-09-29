@@ -29,7 +29,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
@@ -38,7 +38,7 @@
             <ol class='tag-list clearfix'>
               <li v-for="item in tagGroup">{{item}}</li>
             </ol>
-            <el-button @click='tagModal=true' round class="add-tag">+</el-button>
+            <el-button @click='tagModal=true,tagEmpty = false' round class="add-tag">+</el-button>
             <div class="tag-modal" v-show='tagModal'>
               <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
                 <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
@@ -160,6 +160,7 @@
       },
       uploadError (data) {
         console.log('上传失败:', data)
+        this.uploadImgErrorMsg = data.msg
       },
       uploadOver (e) {
         console.log(e)
