@@ -9,7 +9,7 @@
       </p>
       <div class="v-editor v-avatar-img"
            style="height: 125px;">
-        <ve-upload-tx accept="png|jpg|jpeg|bmp|gif"
+        <ve-upload-tx accept="png|jpg|jpeg"
                       :defaultImg="defaultImg"
                       :fileSize="2048"
                       @success="uploadImgSuccess"
@@ -475,7 +475,18 @@ export default {
       })
     },
     uploadError (data) {
-      console.log('上传失败:', data)
+      this.$messageBox({
+        header: '提示',
+        content: data.msg,
+        confirmText: '确定',
+        autoClose: 3, // 60秒
+        width: '500px', // 消息框宽度
+        handleClick: (e) => {
+          if (e.action === 'cancel') {
+          } else if (e.action === 'confirm') {
+          }
+        }
+      })
     },
     saveSelectInfo (initVal, val, type, saveType) {
       let data = {

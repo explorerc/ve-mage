@@ -14,7 +14,7 @@
                   背景图片：
                 </p>
                 <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg|bmp|gif"
+                           accept="png|jpg|jpeg"
                            :defaultImg="defaultBgImg"
                            :fileSize="2048"
                            :errorMsg="uploadImgErrorMsg"
@@ -29,7 +29,7 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg|bmp|gif"
+                           accept="png|jpg|jpeg"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
                            :errorMsg="uploadImgErrorMsg"
@@ -73,7 +73,7 @@
                   分享图标：
                 </p>
                 <ve-upload title="建议图片不小于80*80px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg|bmp|gif"
+                           accept="png|jpg|jpeg"
                            :defaultImg="defaultShareImg"
                            :fileSize="2048"
                            :errorMsg="uploadImgErrorMsg"
@@ -247,7 +247,18 @@ export default {
       this.bgImgUrl = data.name
     },
     uploadError (data) {
-      console.log('上传失败:', data)
+      this.$messageBox({
+        header: '提示',
+        content: data.msg,
+        confirmText: '确定',
+        autoClose: 3, // 60秒
+        width: '500px', // 消息框宽度
+        handleClick: (e) => {
+          if (e.action === 'cancel') {
+          } else if (e.action === 'confirm') {
+          }
+        }
+      })
     },
     uploadLogoSuccess (data) {
       this.logoImgUrl = data.name
