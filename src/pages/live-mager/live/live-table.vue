@@ -11,7 +11,7 @@
   import LiveItem from './live-item'
   export default {
     name: 'live-table',
-    components: { LiveItem },
+    components: {LiveItem},
     props: {
       tableList: {
         type: Array,
