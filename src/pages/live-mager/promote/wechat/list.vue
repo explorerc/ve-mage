@@ -4,14 +4,14 @@
       <div class="live-title">
         <span class="title">微信通知</span>
         <div class="right-box">
-          <button class="default-button fr" ><router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}">新建微信</router-link></button>
+          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信</button></router-link>
         </div>
       </div>
       <div class="content table">
         <el-table :data="tableData" stripe style="width: 100%">
           <el-table-column prop='title' label="微信标题" width="300">
           </el-table-column>
-          <el-table-column prop="sendTime" label="发送时间" width="180">
+          <el-table-column prop="time" label="发送时间" width="180">
           </el-table-column>
           <el-table-column prop="templateId" label="发送数量" width="150">
           </el-table-column>
@@ -138,11 +138,18 @@
         }
       },
       queryList () {
-        this.$config({ loading: true }).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
+        this.$config({loading: true}).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
           this.total = parseInt(res.data.total)
+          this.tableData.forEach(item => {
+            if (item.status === 'SEND') {
+              item.time = item.sendTime
+            } else if (item.status === 'AWAIT') {
+              item.time = item.planTime
+            }
+          })
         })
         // createHttp.queryWechatlist(this.queryData).then((res) => {
         //   console.log(res)
@@ -191,6 +198,9 @@
 .live-title {
   .right-box {
     float: right;
+    .btn {
+      margin: 10px 0;
+    }
   }
 }
 .from-row {
