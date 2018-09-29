@@ -31,7 +31,9 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//test-zhike.vhall.com/'
+    PUBLIC_PATH: '//test-zhike.vhall.com/',
+    MOBILE_HOST: '//test-zhike.vhall.com/m/',
+    PC_HOST: '//test-zhike.vhall.com/watch/',
   },
   prod: {
     BUILD_ENV: 'prod',
