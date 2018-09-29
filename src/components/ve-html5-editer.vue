@@ -156,6 +156,9 @@
         if (json.code !== 200) {
           console.error(json.msg)
         } else {
+          if (json.data.host.indexOf('http') !== 0) {
+            return 'https://' + json.data.host + '/' + json.data.name
+          }
           return json.data.host + '/' + json.data.name
         }
       },
@@ -230,7 +233,7 @@
 
   export default {
     name: 've-html5-editer',
-    components: {editor},
+    components: { editor },
     data () {
       return {
         showModuleName: false,
@@ -273,13 +276,13 @@
 </script>
 
 <style lang="scss">
-.html-editer /deep/{
-  min-width: 480px;
-  i{
-    font-style: italic;
+  .html-editer /deep/ {
+    min-width: 480px;
+    i {
+      font-style: italic;
+    }
+    .content {
+      max-height: 560px;
+    }
   }
-  .content {
-    max-height: 560px;
-  }
-}
 </style>

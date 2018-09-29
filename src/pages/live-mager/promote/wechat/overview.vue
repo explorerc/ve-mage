@@ -1,5 +1,7 @@
 <template>
-  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
+  <div class="content"
+       v-ComLoading="loading"
+       com-loading-text="拼命加载中">
     <div class="overview-wx-page live-mager">
       <div class="live-title">
         <span class="title">微信通知</span>
@@ -22,9 +24,12 @@
           <div class="from-row">
             <div class="from-title">发送状态：</div>
             <div class="from-content">
-              <span v-if="status === 'SEND'" class='SEND'><i></i>已发送</span>
-              <span v-if="status === 'AWAIT'" class='AWAIT'><i></i>已定时</span>
-              <span v-if="status === 'DRAFT'" class='DRAFT'><i></i>草稿</span>
+              <span v-if="status === 'SEND'"
+                    class='SEND'><i></i>已发送</span>
+              <span v-if="status === 'AWAIT'"
+                    class='AWAIT'><i></i>已定时</span>
+              <span v-if="status === 'DRAFT'"
+                    class='DRAFT'><i></i>草稿</span>
             </div>
           </div>
           <div class="from-row">
@@ -37,15 +42,28 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
+<<<<<<< HEAD
           <com-phone :titleValue='title' :date='date' :wxContent='wxContent' ></com-phone>
+=======
+          <com-phone :titleValue='title'
+                     :date='date'
+                     :wxContent='wxContent'
+                     :webinarName='webinarName'
+                     :webinarTime='webinarTime'></com-phone>
+>>>>>>> f1dc5f21373ccf8383f0b633acff44d3c92a1ca9
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteWechat',params:{id:activityId}}">返回</router-link></router-link> -->
-          <el-button class='default-button'  v-if="status !== 'SEND'">
+          <el-button class='default-button'
+                     v-if="status !== 'SEND'">
             <router-link :to="{name:'wechatEdit',params:{id:activityId},query:{id:id}}">编辑微信</router-link>
           </el-button>
-          <el-button class='primary-button' v-if="status === 'SEND'" disabled>已发送</el-button>
-          <el-button class='primary-button' @click='sendNow' v-else>正式发送</el-button>
+          <el-button class='primary-button'
+                     v-if="status === 'SEND'"
+                     disabled>已发送</el-button>
+          <el-button class='primary-button'
+                     @click='sendNow'
+                     v-else>正式发送</el-button>
         </div>
       </div>
     </div>
@@ -53,8 +71,7 @@
 </template>
 
 <script>
-import {formatDate} from 'src/assets/js/date'
-// import queryHttp from 'src/api/activity-manger'
+import { formatDate } from 'src/assets/js/date'
 import noticeService from 'src/api/notice-service'
 import comPhone from '../com-phone'
 export default {
@@ -73,7 +90,7 @@ export default {
     }
   },
   created () {
-    this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
+    this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
       inviteId: this.id
     }).then((res) => {
       this.group = res.data.groupId

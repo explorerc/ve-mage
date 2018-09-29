@@ -14,11 +14,11 @@
                   背景图片：
                 </p>
                 <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg|bmp|gif"
+                           accept="png|jpg|jpeg"
                            :defaultImg="defaultBgImg"
                            :fileSize="2048"
-                           :errorMsg="uploadImgErrorMsg"
-                           @error="uploadError"
+                           :errorMsg="uploadBgErrorMsg"
+                           @error="uploadBgError"
                            @success="uploadBgSuccess"></ve-upload>
                 <p class="v-notes">
                   注：背景图片，只对PC页面生效
@@ -29,11 +29,11 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg|bmp|gif"
+                           accept="png|jpg|jpeg"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
-                           :errorMsg="uploadImgErrorMsg"
-                           @error="uploadError"
+                           :errorMsg="uploadLogoErrorMsg"
+                           @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
                 <p class="v-notes">
                   注：logo图片，只对PC页面生效
@@ -73,11 +73,11 @@
                   分享图标：
                 </p>
                 <ve-upload title="建议图片不小于80*80px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg|bmp|gif"
+                           accept="png|jpg|jpeg"
                            :defaultImg="defaultShareImg"
                            :fileSize="2048"
-                           :errorMsg="uploadImgErrorMsg"
-                           @error="uploadError"
+                           :errorMsg="uploadShareErrorMsg"
+                           @error="uploadShareError"
                            @success="uploadShareSuccess"></ve-upload>
               </div>
               <div class="input-form v-label clearfix">
@@ -176,7 +176,9 @@ export default {
       isShowWatch: true, // 是否在直播观看页显示
       isShowOfficialWebsite: true, // 是否在活动官网显示
       isShowGuided: true, // 是否在直播引导页显示
-      uploadImgErrorMsg: '', // 上传图片错误提示
+      uploadBgErrorMsg: '', // 上传图片错误提示
+      uploadLogoError: '', // 上传图片错误提示
+      uploadShareErrorMsg: '', // 上传图片错误提示
       avatar: '',
       activityTitle: '' // 活动标题
     }
@@ -246,14 +248,23 @@ export default {
     uploadBgSuccess (data) {
       this.bgImgUrl = data.name
     },
-    uploadError (data) {
-      console.log('上传失败:', data)
+    uploadBgError (data) {
+      this.uploadBgErrorMsg = data.msg
+      this.bgImgUrl = ''
     },
     uploadLogoSuccess (data) {
       this.logoImgUrl = data.name
     },
+    uploadLogoError (data) {
+      this.uploadLogoErrorMsg = data.msg
+      this.logoImgUrl = ''
+    },
     uploadShareSuccess (data) {
       this.shareImgUrl = data.name
+    },
+    uploadShareError (data) {
+      this.uploadShareErrorMsg = data.msg
+      this.shareImgUrl = ''
     },
     brandClick () { // 品牌设置保存
       let data = {

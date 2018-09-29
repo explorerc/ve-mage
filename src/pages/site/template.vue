@@ -146,8 +146,8 @@
 </template>
 
 <script>
+import activityService from 'src/api/activity-service'
 import brandService from 'src/api/brand-service'
-import activityService from 'src/api/activity-manger'
 import temp1 from './template1.vue'
 import temp2 from './template2.vue'
 import temp3 from './template3.vue'
@@ -232,8 +232,8 @@ export default {
       if (this.ptid) {
         this.com = `t${this.ptid}`
       } else {
-        activityService.webinarInfo(this.tid).then(res => {
-          ({title: this.title, published: this.published} = res.data)
+        this.$get(activityService.GET_WEBINAR_INFO, { id: this.tid }).then(res => {
+          ({ title: this.title, published: this.published } = res.data)
           this.share.title = res.data.title
           this.share.des = ''
           this.share.imgUrl = res.data.imgUrl ? this.host + res.data.imgUrl : ''
@@ -247,7 +247,7 @@ export default {
             }
           })
         })
-        this.$config({loading: true}).$get(brandService.GET_SITE_DATA, {
+        this.$config({ loading: true }).$get(brandService.GET_SITE_DATA, {
           activityId: this.tid
         }).then(res => {
           let data = JSON.parse(res.data.value)
@@ -294,7 +294,7 @@ export default {
         this.keyWords = this.keyWords.trim().replace(/(\s)(\1)+/g, ($0, $1) => {
           return $1
         })
-        this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE_TDK, {
+        this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE_TDK, {
           activityId: this.tid,
           title: this.siteTitle,
           keyword: this.keyWords,
@@ -309,7 +309,7 @@ export default {
       }
     },
     doSave (callback) {
-      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.tid,
         template: JSON.stringify(this.data)
       }).then(res => {
@@ -343,7 +343,7 @@ export default {
           if (e.action === 'cancel') {
           } else if (e.action === 'confirm') {
             let resetData = this[`t${this.data.tid}`]()
-            this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
+            this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
               activityId: this.tid,
               template: JSON.stringify(resetData)
             }).then(res => {

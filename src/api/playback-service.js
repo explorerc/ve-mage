@@ -18,5 +18,9 @@ export default {
   // 下载回放视频
   POST_DOWNLOAD_VIDEO: '/manage/replay-manage/download',
   // 获取pass sdk
-  GET_PAAS_SDK_INFO: '/common/paas/create-access-token'
+  GET_PAAS_SDK_INFO: '/common/paas/create-access-token',
+  // 获取参会信息
+  GET_REG_ACTIVITY: '/frontend/user/reg-activity',
+  // 获取参会SDK
+  GET_REG_SDK_INFO: '/frontend/live/sdk-token'
 }
