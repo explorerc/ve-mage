@@ -56,7 +56,7 @@
             <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
           </div>
         </div>
-        <div class="from-row" v-if="status === 'PREPARE'">
+        <div class="from-row" v-if="status === 'PREPARE' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
             <button @click='comfirm' class='create-btn' :disabled="outRange">

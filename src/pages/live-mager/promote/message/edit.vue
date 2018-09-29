@@ -26,7 +26,7 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信内容：</div>
             <div class="from-content" @click="errorData.msgError=''">
-              <com-input type="textarea" class="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="60" :error-tips='errorData.msgError'  ></com-input>
+              <com-input type="textarea" class="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="140" :error-tips='errorData.msgError'  ></com-input>
             </div>
           </div>
           <div class="from-row">

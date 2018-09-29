@@ -11,7 +11,7 @@
         <el-table :data="tableData" stripe style="width: 100%">
           <el-table-column prop='title' label="微信标题" width="300">
           </el-table-column>
-          <el-table-column prop="sendTime" label="发送时间" width="180">
+          <el-table-column prop="time" label="发送时间" width="180">
           </el-table-column>
           <el-table-column prop="templateId" label="发送数量" width="150">
           </el-table-column>
@@ -143,6 +143,13 @@
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
           this.total = parseInt(res.data.total)
+          this.tableData.forEach(item => {
+            if (item.status === 'SEND') {
+              item.time = item.sendTime
+            } else if (item.status === 'AWAIT') {
+              item.time = item.planTime
+            }
+          })
         })
         // createHttp.queryWechatlist(this.queryData).then((res) => {
         //   console.log(res)

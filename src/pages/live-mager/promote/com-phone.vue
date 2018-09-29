@@ -70,7 +70,7 @@ export default {
 @import '~assets/css/mixin.scss';
 .overview-box {
   position: absolute;
-  top: 100px;
+  top: 120px;
   right: 100px;
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
