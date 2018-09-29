@@ -670,7 +670,7 @@ export default {
       // })
     },
     getList () {
-      this.$config({loading: true}).$get(noticeService.GET_AUTO_LIST, {
+      this.$config({ loading: true }).$get(noticeService.GET_AUTO_LIST, {
         activityId: this.activityId
       }).then((res) => {
         res.data.forEach(item => {

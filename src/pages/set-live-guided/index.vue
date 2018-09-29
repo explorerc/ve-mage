@@ -63,7 +63,12 @@
                      class="clearfix">
               <div class="v-phone pull-right">
                 <div class="v-img">
-                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                  <template v-if="defaultImg">
+                    <img :src="$imgHost + '/' + imgUrl" alt="">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/guid.png" alt="">
+                  </template>
                 </div>
                   <div class="v-phone-info">
                     <p class="v-phone-title">
@@ -98,7 +103,12 @@
                      class="clearfix">
               <div class="v-pc  pull-right clearfix">
                 <div class="v-img pull-left">
-                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                  <template v-if="defaultImg">
+                    <img :src="$imgHost + '/' + imgUrl" alt="">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/guid.png" alt="">
+                  </template>
                 </div>
                   <div class="v-pc-info pull-left">
                     <p class="v-pc-title">
