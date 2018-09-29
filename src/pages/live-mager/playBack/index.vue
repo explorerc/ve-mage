@@ -170,6 +170,7 @@
                                :errorMsg="recordIdError"
                                :sdk="sdkParam"
                                @handleClick="handleVideoClick"
+                               @error="errorUploadVideo"
                                @success="uploadVideoSuccess"></ve-upload-video>
             </div>
           </div>
@@ -673,6 +674,9 @@
       },
       uploadVideo () {
         document.getElementById('upload').click()
+      },
+      errorUploadVideo (msg, file) {
+        this.sdkParam.fileName = file.name
       },
       uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId

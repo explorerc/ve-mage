@@ -19,6 +19,7 @@
                              :fileSize="204800"
                              :errorMsg="uploadVideoErrorMsg"
                              :sdk="sdkParam"
+                             @error="errorUploadVideo"
                              @handleClick="handleVideoClick"
                              @success="uploadVideoSuccess"></ve-upload-video>
           </div>
@@ -50,7 +51,7 @@
         </div>
       </div>
       <div class="bottom-btn">
-        <button class="primary-button"
+        <button :class="{'primary-button':true,disabled:isDisabled}"
                 @click="saveWarm">保存
         </button>
       </div>
@@ -94,6 +95,7 @@
         },
         isSwitch: false,
         loading: false,
+        isDisabled: false,
         percentVideo: 0, // 上传进度
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '', // 上传错误信息
@@ -113,8 +115,8 @@
         header: '提示',
         width: '400px',
         content: '是否放弃当前编辑？',
-        cancelText: '取消',
-        confirmText: '确定',
+        cancelText: '否',
+        confirmText: '是',
         handleClick: (e) => {
           if (e.action === 'confirm') {
             next(true)
@@ -242,6 +244,7 @@
       /* 保存暖场信息 */
       saveWarm () {
         if (!this.checkoutParams()) return
+        this.isDisabled = true
         this.$post(activityService.POST_SAVE_WRAM_INFO, {
           activityId: this.warm.activityId,
           recordId: this.warm.recordId,
@@ -250,12 +253,15 @@
           enabled: this.warm.enabled,
           filename: this.warm.filename
         }).then((res) => {
+          this.isDisabled = false
           this.$toast({
             header: `提示`,
             content: '保存成功',
             autoClose: 2000,
             position: 'right-top'
           })
+        }).catch(() => {
+          this.isDisabled = false
         })
         // LiveHttp.saveAndEditWarmInfo({
         //   activityId: this.warm.activityId,
@@ -312,7 +318,11 @@
           })
         }
       },
+      errorUploadVideo (msg, file) {
+        this.sdkParam.fileName = file.name
+      },
       uploadError (data) {
+        debugger
         this.uploadImgErrorMsg = data.msg
         this.warm.playCover = ''
       }

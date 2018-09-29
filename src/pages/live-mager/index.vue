@@ -33,7 +33,7 @@
                 @click="createLive">创建直播</button>
       </div>
     </div>
-    <div class="mager-box">
+    <div class="mager-box" style="padding-bottom: 60px;">
       <live-table :tableList="tableList"
                   @handleClick="handleClick" />
       <div class="pagination-box">
@@ -98,7 +98,7 @@ export default {
     handleClick (event) {
       console.log(event)
       if (event.type === 'play') { // 开播
-        this.$router.push(`/master/${event.id}`)
+        window.open(`${this.PC_HOST}master/${event.id}`)
       } else if (event.type === 'delete') { // 编辑删除
         this.$messageBox({
           header: '删除活动',

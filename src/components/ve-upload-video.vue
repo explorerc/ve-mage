@@ -102,8 +102,6 @@
         document.getElementById(this.uploadId).click()
       },
       deleteVideo () {
-        this.percentVideo = 0
-        this.errorTxt = ''
         this.$emit('handleClick', {
           type: 'delete',
           detail: '删除'
@@ -116,6 +114,8 @@
         })
       },
       initPage () {
+        this.percentVideo = 0
+        this.errorTxt = ''
         this.$nextTick(() => {
           window.vhallCloudDemandSDK(`#${this.uploadId}`, {
             params: {
@@ -130,9 +130,11 @@
               this.fileRealSize = file.size / 1024 / 1024
               if (file.type !== 'video/mp4') {
                 this.errorTxt = '不支持该视频格式，请上传' + this.accept + '格式视频'
+                this.$emit('error', this.errorTxt, file)
                 return false
               } else if (this.fileRealSize > this.fileSize / 1024) {
                 this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
+                this.$emit('error', this.errorTxt, file)
                 return false
               }
               this.loading = true
@@ -159,7 +161,7 @@
             error: (msg, file, e) => {
               this.loading = false
               this.errorTxt = msg
-              this.$emit('error', msg)
+              this.$emit('error', msg, file)
             }
           })
         })
@@ -200,7 +202,7 @@
       line-height: 24px;
     }
     .upload-file-box {
-      width: 400px;
+      width: 440px;
       padding-bottom: 40px;
       cursor: pointer;
       span {
