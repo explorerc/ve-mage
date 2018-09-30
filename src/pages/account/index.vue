@@ -90,7 +90,8 @@
                   @cancel="cancel($event,'mobile')"
                   :errorTips="errorTips.mobile"
                   :isEdit="changeState.mobile"
-                  @clickSaveBtn="clickChangeState('mobile')"><span class="v-explain">手机：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('mobile')"
+                  classVal="v-phone-div"><span class="v-explain">手机：</span></com-editor>
       <com-editor :value.sync="officeNo"
                   type="input"
                   @saveInfo="save($event,officeNo,'tel','user')"
@@ -115,7 +116,8 @@
                   :max-length="40"
                   @cancel="cancel($event,'wechat')"
                   :isEdit="changeState.wechat"
-                  @clickSaveBtn="clickChangeState('wechat')"><span class="v-explain">微信：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('wechat')"
+                  classVal="v-wx-div"><span class="v-explain">微信：</span></com-editor>
       <com-editor :value.sync="userQQ"
                   type="input"
                   @saveInfo="save($event,userQQ,'qq','user')"
@@ -124,7 +126,8 @@
                   @cancel="cancel($event,'qq')"
                   :errorTips="errorTips.qq"
                   :isEdit="changeState.qq"
-                  @clickSaveBtn="clickChangeState('qq')"><span class="v-explain">QQ：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('qq')"
+                  classVal="v-qq-div"><span class="v-explain">QQ：</span></com-editor>
       <com-editor :value.sync="userRemarks"
                   type="input"
                   @saveInfo="save($event,userRemarks,'remark','user')"
@@ -432,7 +435,7 @@ export default {
         this.displayValue = accountInfo.industryFirst ? accountInfo.industryFirst + '/' + accountInfo.industrySecond : '无'
         this.industryFirst = accountInfo.industryFirst ? accountInfo.industryFirst : ''
         this.industrySecond = accountInfo.industrySecond ? accountInfo.industrySecond : ''
-        this.selectChildId = accountInfo.selectChildId ? parseInt(accountInfo.selectChildId) : 0
+        this.selectChildId = accountInfo.industryId ? parseInt(accountInfo.industryId) : 0
         this.companyWebsite = accountInfo.website ? accountInfo.website : '无'
         this.licenseCode = accountInfo.licenseCode ? accountInfo.licenseCode : '无'
         this.licensePic = accountInfo.licensePic ? accountInfo.licensePic : '无'
@@ -449,7 +452,7 @@ export default {
           this.displayValue = resData.industryFirst ? resData.industryFirst + '/' + resData.industrySecond : '无'
           this.industryFirst = resData.industryFirst ? resData.industryFirst : ''
           this.industrySecond = resData.industrySecond ? resData.industrySecond : ''
-          this.selectChildId = resData.selectChildId ? parseInt(resData.selectChildId) : 0
+          this.selectChildId = resData.industryId ? parseInt(resData.industryId) : 0
           this.companyWebsite = resData.website ? resData.website : '无'
           this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
           this.licensePic = resData.licensePic ? resData.licensePic : '无'
@@ -499,11 +502,11 @@ export default {
         this.$post(userService.POST_SET_COMPANY, data).then((res) => {
           this.changeState[type] = false
           let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-          accountInfo.selectChildId = parseInt(initVal.selectChildId)
+          accountInfo.industryId = parseInt(initVal.selectChildId)
           accountInfo.selectParentId = initVal.selectParentId
           accountInfo.industrySecond = initVal.selectChildValue
           accountInfo.industryFirst = initVal.selectParentValue
-          this.selectChildId = parseInt(initVal.selectChildId)
+          this.industryId = parseInt(initVal.selectChildId)
           sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
         })
       }
@@ -554,18 +557,19 @@ export default {
           this.changeState[type] = false
           this.errorTips[type] = ''
         }
-      } else if (type === 'website') {
-        let reg = /^(http(s)?):\/\/([\w-]+(\.[\w-]+)*\/)*[\w-]+(\.[\w-]+)*\/?(\?([\w-.,@?^=%&:/~+#]*)+)?/
-        if (!reg.test(val)) {
-          this.errorTips[type] = '公司网址格式不正确'
-          // this.companyWebsite = initVal
-          this.changeState[type] = true
-          return false
-        } else {
-          this.changeState[type] = false
-          this.errorTips[type] = ''
-        }
       }
+      // else if (type === 'website') {
+      //   let reg = /^((http(s)?):\/\/){0,1}([\w-]+(\.[\w-]+)*\/)*[\w-]+(\.[\w-]+)*\/?(\?([\w-.,@?^=%&:/~+#]*)+)?/
+      //   if (!reg.test(val)) {
+      //     this.errorTips[type] = '公司网址格式不正确'
+      //     // this.companyWebsite = initVal
+      //     this.changeState[type] = true
+      //     return false
+      //   } else {
+      //     this.changeState[type] = false
+      //     this.errorTips[type] = ''
+      //   }
+      // }
       let valType = type
       let data = {
       }
@@ -1000,6 +1004,11 @@ export default {
     width: 1366px;
     .v-info .v-editor {
       width: 453px;
+      &.v-phone-div, &.v-qq-div, &.v-wx-div{
+        .limit {
+          display: none;
+        }
+      }
     }
   }
   /* 设备宽度小于 1600px */
@@ -1011,6 +1020,7 @@ export default {
   }
   margin: 0 auto;
   .v-account-title {
+    margin: 30px 0;
     line-height: 60px;
     font-size: 24px;
     color: #222;
@@ -1037,8 +1047,8 @@ export default {
     }
     .v-editor {
       display: inline-block;
-      height: 42px;
-      line-height: 42px;
+      height: 46px;
+      line-height: 46px;
       text-align: left;
       &.v-avatar-img {
         display: block;
@@ -1061,8 +1071,12 @@ export default {
         margin-right: 15px;
         input {
           width: 214px;
-          height: 40px;
-          line-height: 40px;
+          height: 30px;
+          line-height: 30px;
+        }
+        .error-msg{
+          top: 36px;
+          font-size: 12px;
         }
       }
       .v-info-label {

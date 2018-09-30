@@ -45,7 +45,9 @@
                    :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
                 <div class="clearfix"
                      style="padding-left: 30px;">
-                  <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                  <template v-if="defaultLogoImg">
+                    <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                  </template>
                   <div class="pull-left">
                     <p class="v-live-title">
                       {{activityTitle}}
@@ -82,12 +84,14 @@
               </div>
               <div class="input-form v-label clearfix">
                 <p class="v-info-label pull-left">
-                  分享标题：
+                  <span class="v-red">*</span> 分享标题：
                 </p>
                 <div class="v-info pull-left">
                   <com-input :value.sync="shareTitle"
                              placeholder="标题"
-                             :max-length="30"></com-input>
+                             :max-length="30"
+                             :errorTips="errorTips"
+                             @focus="shareTitleFocus"></com-input>
                   <p class="v-notes"
                      style="margin-top: 0;">
                     注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字
@@ -111,7 +115,7 @@
                 <p class="v-info-label pull-left">
                   应用页面：
                 </p>
-                <p class="v-info pull-left">
+                <p class="v-info pull-left" style="padding-top: 6px;">
                   <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
                   <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
@@ -128,7 +132,9 @@
                     <div class="v-introduction">
                       {{shareIntroduction}}
                     </div>
-                    <img :src="defaultShareImg" alt="分享图片" class="v-show-img">
+                    <template v-if="defaultShareImg">
+                      <img :src="defaultShareImg" alt="分享图片" class="v-show-img">
+                    </template>
                   </div>
                   </div>
                   <img :src="avatarImg" alt="头像" class="v-avatar pull-left">
@@ -177,10 +183,11 @@ export default {
       isShowOfficialWebsite: true, // 是否在活动官网显示
       isShowGuided: true, // 是否在直播引导页显示
       uploadBgErrorMsg: '', // 上传图片错误提示
-      uploadLogoError: '', // 上传图片错误提示
+      uploadLogoErrorMsg: '', // 上传图片错误提示
       uploadShareErrorMsg: '', // 上传图片错误提示
       avatar: '',
-      activityTitle: '' // 活动标题
+      activityTitle: '', // 活动标题
+      errorTips: '' // 错误提示
     }
   },
   components: {
@@ -288,6 +295,10 @@ export default {
       })
     },
     shareClick () { // 分享设置保存
+      if (!this.shareTitle) {
+        this.errorTips = '请填写标题'
+        return false
+      }
       let data = {
         'activityId': this.activityId,
         'title': this.shareTitle,
@@ -317,6 +328,9 @@ export default {
           }
         })
       })
+    },
+    shareTitleFocus () {
+      this.errorTips = ''
     }
   }
 }
@@ -334,6 +348,8 @@ export default {
   }
   margin: 0 auto;
   .v-title {
+    line-height: 60px;
+    margin: 30px 0;
     font-size: 24px;
     color: #222;
   }
@@ -360,10 +376,6 @@ export default {
         }
       }
     }
-    .v-brand {
-      width: 920px;
-      margin: 60px auto 0;
-    }
     .v-set {
       .input-form {
         position: relative;
@@ -371,9 +383,24 @@ export default {
         .v-info-label {
           font-size: 14px;
           color: #555;
-          width: 70px;
+          width: 100px;
           padding-top: 6px;
           margin-right: 17px;
+        }
+        .v-notes {
+          font-size: 12px;
+          color: #888888;
+          padding-left: 219px;
+          margin: 10px auto 0;
+        }
+      }
+    }
+    .v-brand {
+      width: 920px;
+      margin: 60px auto 0;
+      .input-form {
+        .v-info-label {
+          width: 70px;
         }
         .v-notes {
           font-size: 14px;
@@ -427,7 +454,7 @@ export default {
     .v-pc-icon {
       display: block;
       width: 87px;
-      margin-top: -10px;
+      margin-top: 7px;
     }
     .v-pc {
       width: 438px;
@@ -453,10 +480,13 @@ export default {
     }
   }
   .v-share {
-    width: 810px;
+    width: 850px;
     margin: 60px auto;
     .com-input {
       width: 440px;
+    }
+    .error-msg{
+      font-size: 12px;
     }
     .el-textarea {
       width: 440px;
@@ -552,6 +582,11 @@ export default {
     background-color: #666;
     color: #fff;
     margin-left: 80px;
+  }
+  .v-red{
+    color: #FC5659;
+    padding: 4px 10px 0 0;
+    vertical-align: middle;
   }
 }
 </style>

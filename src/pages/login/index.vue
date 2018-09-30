@@ -260,7 +260,8 @@ export default {
           }
         }, 1000)
         this.$router.replace('/liveMager/list')
-      }).catch(() => {
+      }).catch((err) => {
+        this.mobileError = err.msg
         this.isSend = false
         this.isProhibit = true
         this.second = 60

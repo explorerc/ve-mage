@@ -52,7 +52,7 @@
                    :isPassword="false"
                    value=""
                    :inputValue.sync="code"
-                   placeholder="动态码"
+                   placeholder="验证码"
                    :maxLength="6"
                    @inputFocus="inputFocus()">
           <a href="javascript:;"
@@ -442,15 +442,22 @@ export default {
       text-align: center;
     }
   }
-  .v-try-box {
+  .ve-message-box__wrapper {
     .ve-message-box {
       width: 570px;
+      height: 280px;
       &::before {
         background-color: #fff;
       }
       div {
         font-size: 20px;
         color: #222;
+        &.ve-message-box__btns{
+          margin-top: 44px;
+        }
+        &.ve-message-box__container{
+          padding: 25px 30px 20px 30px;
+        }
       }
       p {
         font-size: 14px;
@@ -460,6 +467,9 @@ export default {
           font-size: 18px;
           color: #222;
         }
+      }
+      :before{
+        background-color: #fff;
       }
     }
   }

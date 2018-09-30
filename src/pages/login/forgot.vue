@@ -24,7 +24,7 @@
           <div id="captcha"></div>
           <com-input class="v-input phone-code"
                      :value.sync="phoneCode"
-                     placeholder="动态码"
+                     placeholder="验证码"
                      @focus="passwordFocus('phoneCode')"
                      :error-tips="errorTips.phoneCode">
           </com-input>
@@ -241,6 +241,7 @@ export default {
         captcha: this.phoneKey
       }
       this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+        this.errorTips.phoneCode = ''
         this.isSend = true
         this.isProhibit = true
         clearInterval(this.timerr)
