@@ -40,6 +40,7 @@
         <span class="test-tip">每天只允许发送5条测试短信：</span>
         <com-input :value.sync="testEmailAddress"
                    :error-tips="emailError"
+                   @keyup.enter.native="sendTestEmail"
                    placeholder="输入邮件地址" />
       </div>
       <div class="step-one-btns"
@@ -84,7 +85,8 @@ export default {
         content: '',
         desc: '',
         senderName: ''
-      }
+      },
+      PC_HOST: location.protocol + process.env.PC_HOST
     }
   },
   components: {VeHtml5Editer},
@@ -219,7 +221,7 @@ export default {
         return
       }
       this.testEmailShow = false
-      this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SEND_TEST_EMAIL_INFO, {
         content: this.email.content,
         receiverEmail: this.testEmailAddress
@@ -247,7 +249,7 @@ export default {
     },
     /* 保存草稿 */
     saveEmail () {
-      this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
         // 回写邮件id
         if (!this.email.emailInviteId) {

@@ -84,7 +84,7 @@
                 <p class="v-info-label pull-left">
                   分享标题：
                 </p>
-                <p class="v-info pull-left">
+                <div class="v-info pull-left">
                   <com-input :value.sync="shareTitle"
                              placeholder="标题"
                              :max-length="30"></com-input>
@@ -92,7 +92,7 @@
                      style="margin-top: 0;">
                     注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字
                   </p>
-                </p>
+                </div>
               </div>
               <div class="input-form v-label clearfix">
                 <p class="v-info-label pull-left">
@@ -266,6 +266,7 @@ export default {
       this.bgImgUrl = data.name
     },
     uploadBgError (data) {
+      debugger
       this.uploadBgErrorMsg = data.msg
       this.bgImgUrl = ''
     },

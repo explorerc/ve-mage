@@ -216,6 +216,7 @@ export default {
     },
     uploadError (data) {
       this.uploadImgErrorMsg = data.msg
+      this.imgUrl = ''
     },
     save () {
       let data = {

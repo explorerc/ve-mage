@@ -256,7 +256,7 @@ import userService from 'src/api/user-service'
 import VeUploadTx from 'src/components/ve-upload-tx'
 import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
-import EventBus from 'src/utils/eventBus'
+// import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -346,10 +346,9 @@ export default {
     }
   },
   mounted () {
-    // sessionStorage.clear()
     this.getAccount()
     let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
-    if (contactInfo) {
+    if (contactInfo && contactInfo.userName) {
       this.userName = contactInfo.name ? contactInfo.name : '无'
       this.userPost = contactInfo.position ? contactInfo.position : '无'
       this.userPhone = contactInfo.mobile ? contactInfo.mobile : '无'
@@ -473,12 +472,21 @@ export default {
           accountInfo.avatar = data.name
           sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
         }
-        EventBus.$emit('avatarChange', data.name)
       })
     },
     uploadError (data) {
-      this.uploadImgErrorMsg = data.msg
-      EventBus.$emit('avatarChange', '')
+      this.$messageBox({
+        header: '提示',
+        content: data.msg,
+        autoClose: 3,
+        confirmText: '确定',
+        width: '400px', // 消息框宽度
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            // console.log('点击了确定按钮')
+          }
+        }
+      })
     },
     saveSelectInfo (initVal, val, type, saveType) {
       let data = {
