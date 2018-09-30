@@ -180,7 +180,7 @@ export default {
         planTime: '',
         groupIds: ''
       },
-      PC_HOST: process.env.PC_HOST
+      PC_HOST: location.protocol + process.env.PC_HOST
     }
   },
   computed: mapState('liveMager', {
@@ -321,7 +321,7 @@ export default {
       // })
     },
     saveEmail () {
-      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}/watch/${this.email.activityId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
         this.email = {...this.email, ...res.data}
         this.storeEmailInfo(this.email)
@@ -355,7 +355,7 @@ export default {
         this.disabledBtn = false
         return
       }
-      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}/watch/${this.email.activityId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       if (this.isTimer) { // 发送定时邮件
         this.$post(activityService.POST_SEND_TIMER_EMAIL_INFO, this.email).then((res) => {
           this.$router.push(`/liveMager/email/${this.email.activityId}`)
