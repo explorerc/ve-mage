@@ -111,7 +111,7 @@ export default [
     path: '/',
     name: 'Layout',
     component: Layout,
-    redirect: 'setAccount',
+    redirect: '/liveMager/list',
     children: [
       {
         path: '/liveMager/site/:id',
