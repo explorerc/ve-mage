@@ -63,7 +63,7 @@
 <script>
 import activityService from 'src/api/activity-service'
 import VeHtml5Editer from 'src/components/ve-html5-editer'
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import * as types from '../../../store/mutation-types'
 
 export default {
@@ -84,10 +84,11 @@ export default {
         content: '',
         desc: '',
         senderName: ''
-      }
+      },
+      PC_HOST: process.env.PC_HOST
     }
   },
-  components: { VeHtml5Editer },
+  components: {VeHtml5Editer},
   computed: mapState('liveMager', {
     emailInfo: state => state.emailInfo
   }),
@@ -104,7 +105,7 @@ export default {
   watch: {
     emailInfo: {
       handler (newVal) {
-        this.email = { ...this.email, ...newVal }
+        this.email = {...this.email, ...newVal}
       },
       immediate: true
     },
@@ -219,7 +220,7 @@ export default {
         return
       }
       this.testEmailShow = false
-      this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}/watch/${this.email.activityId}`)
       this.$post(activityService.POST_SEND_TEST_EMAIL_INFO, {
         content: this.email.content,
         receiverEmail: this.testEmailAddress
@@ -247,11 +248,11 @@ export default {
     },
     /* 保存草稿 */
     saveEmail () {
-      this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}/watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
         // 回写邮件id
         if (!this.email.emailInviteId) {
-          this.$router.replace({ query: { email: res.data.emailInviteId } })
+          this.$router.replace({query: {email: res.data.emailInviteId}})
         }
         this.email.emailInviteId = res.data.emailInviteId
         this.email.title = res.data.title
