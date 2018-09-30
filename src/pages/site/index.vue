@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     init () {
-      this.$config({ loading: true }).$get(brandService.GET_SITE_DATA, {
+      this.$config({loading: true}).$get(brandService.GET_SITE_DATA, {
         activityId: this.$route.params.id
       }).then(res => {
         if (res.data.enabled === 'Y') {
@@ -116,7 +116,7 @@ export default {
       }
     },
     updateState () {
-      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
@@ -132,7 +132,7 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
       }).then(res => {
