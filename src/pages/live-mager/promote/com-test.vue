@@ -18,7 +18,7 @@
         <div class="btn-group">
           <p>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
           <el-button class='primary-button fr'
-                     @click='sendTest'>立即发送</el-button>
+                     @click='sendTest' :disabled="limitCount <= 0">立即发送</el-button>
         </div>
       </div>
       <div class='modal-box '

@@ -22,7 +22,8 @@
         <p class="title" v-if="!countDownstatus">距离直播开始还有</p>
         <p class="title" v-else-if="status === '直播'">直播已开始</p>
         <p class="title" v-else-if="status === '预约' && countDownstatus">直播即将开始</p>
-        <div class="count-box">
+        <p class="title" v-else-if="status === '结束'">直播已结束</p>
+        <div class="count-box" :style="{'height':countDownstatus ? '0px' : 'auto'}">
           <com-countdown :endTime.sync="countdownTime" >
             <ol class='clearfix' @timeOut='timeOut' slot='slot1' slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
@@ -169,7 +170,7 @@
                 </div>
               </div>
               <div class="btm">
-                <el-switch  class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('APPOINT', dataPrepare[1].switch)"></el-switch>
+                <el-switch  class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -194,7 +195,7 @@
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"  @change="switchChange('WARMUP',dataPrepare[2].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"  @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -238,7 +239,7 @@
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -317,15 +318,15 @@
                 <div class='desc'>
                   <span>活动官网</span>
                   <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataBrand[0].isSet">{{dataBrand[0].desc ==='N' ? '未发布' : '已发布'}}</template>
-                    <!-- 未设置 -->
+                    <template v-if="dataBrand[0].switch">
+                      <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}</template>
+                    </template>
                     <template v-else>最精简的活动品牌页</template>
                   </span>
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[0].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -468,17 +469,32 @@
           }
         })
       },
-      switchChange (type, status) {
+      switchChange (type, status, dataType) {
         const data = {
           activityId: this.activityId,
           submodule: type,
           enabled: status ? 'Y' : 'N'
         }
-        this.$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           console.log(res)
           if (res.code === 200) {
             this.$toast({
               'content': '设置成功'
+            })
+          }
+        }).catch((res) => {
+          if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+            console.log(type + ' ' + status)
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+            this[dataType].forEach(item => {
+              if (item.submodule === type) {
+                item.switch = !status
+              }
             })
           }
         })
@@ -689,10 +705,12 @@
     }
     .process .bottom > div ol {
       width: 140px;
+      margin: 0 auto;
     }
     .process .bottom > div {
       margin: 10px 14px;
       // margin: 10px 31px;
+      width: 140px;
     }
     .middle {
       width: 375px;
@@ -1015,6 +1033,7 @@
     border-radius: 1px;
   }
   .count-box {
+    overflow: hidden;
     margin: 13px 0 36px 0;
     li {
       float: left;

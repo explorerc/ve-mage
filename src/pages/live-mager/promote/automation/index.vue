@@ -36,6 +36,7 @@
                            :hostName="tplData.hostName"
                            :date="tplData.date"
                            :secondCount="tplData.secondCount"
+                           :link="tplData.link"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_ORDER'"></com-tpl>
                   <em>{{itemList['BEFORE_ORDER']['SMS']['status']}}</em>
@@ -63,6 +64,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_ORDER'"></com-tpl>
@@ -101,6 +103,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_APPLY'"></com-tpl>
@@ -129,6 +132,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_APPLY'"></com-tpl>
@@ -189,6 +193,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_HOUR'"></com-tpl>
@@ -217,6 +222,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_HOUR'"></com-tpl>
@@ -275,6 +281,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_MINUTE'"></com-tpl>
@@ -303,6 +310,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'BEFORE_MINUTE'"></com-tpl>
@@ -342,6 +350,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'REPLAY'"></com-tpl>
@@ -370,6 +379,7 @@
                            :webinarName="tplData.webinarName"
                            :hostName="tplData.hostName"
                            :date="tplData.date"
+                           :link="tplData.link"
                            :secondCount="tplData.secondCount"
                            :firstCount="tplData.firstCount"
                            :triggerType="'REPLAY'"></com-tpl>
@@ -605,6 +615,7 @@ export default {
         this.tplData.hostName = res.data.hostName
         this.tplData.firstCount = res.data.firstCount
         this.tplData.secondCount = res.data.secondCount
+        this.tplData.link = `wwww.baidu.com/${this.activityId}`
       })
       // http.autoGetparams(this.activityId).then((res) => {
       //   console.log(res)
@@ -760,8 +771,8 @@ export default {
       this.secondSel = false
       const data = {
         activityId: this.activityId,
-        prehour: this.hourValue,
-        preminute: this.minValue
+        prehour: this.selhourValue,
+        preminute: this.selminValue
 
       }
       this.$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
@@ -874,23 +885,6 @@ export default {
     closeTest () {
       this.testModal = false
     }
-  },
-  /* 路由守卫，离开当前页面之前被调用 */
-  beforeRouteLeave (to, from, next) {
-    this.$messageBox({
-      header: '提示',
-      width: '400px',
-      content: '是否放弃当前编辑？',
-      cancelText: '否',
-      confirmText: '是',
-      handleClick: (e) => {
-        if (e.action === 'confirm') {
-          next(true)
-        } else {
-          next(false)
-        }
-      }
-    })
   },
   components: {
     comTpl,
@@ -1059,9 +1053,9 @@ export default {
       }
       p.is-string {
         width: 500px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
         color: $color-font;
       }
       em {
@@ -1120,6 +1114,9 @@ export default {
     .btn-group {
       float: right;
       margin-top: 40px;
+      span {
+        cursor: pointer;
+      }
     }
     .primary-button {
       padding: 0;
