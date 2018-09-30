@@ -101,7 +101,7 @@
 <script>
 import MyInput from './login-input'
 import userService from 'src/api/user-service'
-import {mapMutations, mapState} from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 
 export default {
@@ -137,7 +137,7 @@ export default {
     isLogin: state => state.isLogin
   }),
   created () {
-    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
       let _self = this
       this.key = res.data
       window.initNECaptcha({
@@ -201,7 +201,7 @@ export default {
         'password': this.passWord,
         'remember': this.remember ? 1 : 0
       }
-      this.$config({handlers: true}).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
+      this.$config({ handlers: true }).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
         sessionStorage.setItem('isLogin', true)
         this.$get(userService.GET_ACCOUNT).then((res) => {
           sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
@@ -238,7 +238,7 @@ export default {
         'code': this.code,
         'remember': 0
       }
-      this.$config({handlers: true}).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
+      this.$config({ handlers: true }).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
         sessionStorage.setItem('isLogin', true)
         this.$get(userService.GET_ACCOUNT).then((res) => {
           sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
@@ -281,7 +281,7 @@ export default {
         'type': 'BUSINESS_USER_LOGIN',
         captcha: this.phoneKey
       }
-      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
         this.isSend = true
         this.isProhibit = true
         clearInterval(this.timerr)

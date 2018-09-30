@@ -177,8 +177,8 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{id: '', name: '', count: 0, isChecked: false}],
-      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+      personList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
       selectedPersonListStr: '',
       selectPersonShow: false,
       selectedCount: 0,
@@ -239,7 +239,7 @@ export default {
           position: 'center'
         })
         // 跳转到列表页面
-        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
+        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       })
     },
     test () {
