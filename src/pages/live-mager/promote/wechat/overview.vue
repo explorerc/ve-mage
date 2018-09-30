@@ -42,15 +42,7 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-<<<<<<< HEAD
           <com-phone :titleValue='title' :date='date' :wxContent='wxContent' ></com-phone>
-=======
-          <com-phone :titleValue='title'
-                     :date='date'
-                     :wxContent='wxContent'
-                     :webinarName='webinarName'
-                     :webinarTime='webinarTime'></com-phone>
->>>>>>> f1dc5f21373ccf8383f0b633acff44d3c92a1ca9
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteWechat',params:{id:activityId}}">返回</router-link></router-link> -->
