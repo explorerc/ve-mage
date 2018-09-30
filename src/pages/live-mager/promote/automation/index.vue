@@ -324,73 +324,6 @@
             </div>
           </div>
         </div>
-        <!-- <p class='step live'>直播阶段</p>
-        <div class="detail">
-          <div class="block">
-            <div class="title clearfix">
-              <p class='block-tips'>订阅直播成功消息 <span>观众订阅企业活动信息成功后立即发送</span></p>
-            </div>
-            <div class="item-box">
-
-              <div class="item message">
-                <div class="img msg"></div>
-                <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'SMS'"
-                  :tpl="itemList['SUBSCRIBE']['SMS']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'SUBSCRIBE'"
-                  ></com-tpl>
-                  <em>{{itemList['BEFORE_APPLY']['SMS']['templateId']}}</em>
-                </div>
-                <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['SUBSCRIBE']['SMS']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'SUBSCRIBE', 'SMS', itemList['SUBSCRIBE']['SMS']['noticeTaskId'], itemList['SUBSCRIBE']['SMS']['templateId'])">
-                  </el-switch>
-                  <el-button  type="small default-button" @click="testSend('SUBSCRIBE', 'SMS', itemList['SUBSCRIBE']['SMS']['noticeTaskId'])" :disabled="!itemList['SUBSCRIBE']['SMS']['switch']">测试发送</el-button>
-                </div>
-              </div>
-
-              <div class="item message">
-                <div class="img wechat"></div>
-                <div class="txt">
-                  <com-tpl
-                  :isString="true"
-                  :type="'WECHAT'"
-                  :tpl="itemList['SUBSCRIBE']['WECHAT']['templateId']"
-                  :tag="tplData.tag"
-                  :webinarName="tplData.webinarName"
-                  :hostName="tplData.hostName"
-                  :date="tplData.date"
-                  :secondCount="tplData.secondCount"
-                  :firstCount="tplData.firstCount"
-                  :triggerType="'SUBSCRIBE'"
-                  ></com-tpl>
-                  <em>{{itemList['BEFORE_APPLY']['SMS']['templateId']}}</em>
-                </div>
-                <div class="btn-group">
-                  <el-switch
-                    v-model="itemList['SUBSCRIBE']['WECHAT']['switch']"
-                    inactive-color="#DEE1FF"
-                    :width="32"
-                    active-color="#FFD021" @change="itemSwitch($event,'SUBSCRIBE', 'WECHAT', itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'], itemList['SUBSCRIBE']['WECHAT']['templateId'])">
-                  </el-switch>
-                  <el-button type="small default-button" @click="testSend('SUBSCRIBE', 'WECHAT', itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'])" :disabled="!itemList['SUBSCRIBE']['WECHAT']['switch']">测试发送</el-button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div> -->
         <p class='step record'>回放阶段</p>
         <div class="detail">
           <div class="block">
@@ -792,107 +725,6 @@ export default {
           }
         })
       })
-      // http.autoList(this.activityId).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     res.data.forEach(item => {
-      //       switch (item.triggerType) {
-      //         case 'BEFORE_ORDER':
-      //           this.renderData['BEFORE_ORDER'].push(item)
-      //           if (item.type === 'SMS') {
-      //             this.itemList['BEFORE_ORDER']['SMS']['switch'] = true
-      //             this.itemList['BEFORE_ORDER']['SMS']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_ORDER']['SMS']['status'] = status
-      //           }
-      //           if (item.type === 'WECHAT') {
-      //             this.itemList['BEFORE_ORDER']['WECHAT']['switch'] = true
-      //             this.itemList['BEFORE_ORDER']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_ORDER']['WECHAT']['status'] = status
-      //           }
-      //           break
-      //         case 'BEFORE_APPLY':
-      //           this.renderData['BEFORE_APPLY'].push(item)
-      //           if (item.type === 'SMS') {
-      //             this.itemList['BEFORE_APPLY']['SMS']['switch'] = true
-      //             this.itemList['BEFORE_APPLY']['SMS']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_APPLY']['SMS']['status'] = status
-      //           }
-      //           if (item.type === 'WECHAT') {
-      //             this.itemList['BEFORE_APPLY']['WECHAT']['switch'] = true
-      //             this.itemList['BEFORE_APPLY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_APPLY']['SMS']['status'] = status
-      //           }
-      //           break
-      //         case 'BEFORE_HOUR':
-      //           this.renderData['BEFORE_HOUR'].push(item)
-      //           if (item.type === 'SMS') {
-      //             this.itemList['BEFORE_HOUR']['SMS']['switch'] = true
-      //             this.itemList['BEFORE_HOUR']['SMS']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_HOUR']['SMS']['status'] = status
-      //           }
-      //           if (item.type === 'WECHAT') {
-      //             this.itemList['BEFORE_HOUR']['WECHAT']['switch'] = true
-      //             this.itemList['BEFORE_HOUR']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_HOUR']['WECHAT']['status'] = status
-      //           }
-      //           break
-      //         case 'BEFORE_MINUTE':
-      //           this.renderData['BEFORE_MINUTE'].push(item)
-      //           if (item.type === 'SMS') {
-      //             this.itemList['BEFORE_MINUTE']['SMS']['switch'] = true
-      //             this.itemList['BEFORE_MINUTE']['SMS']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_MINUTE']['SMS']['status'] = status
-      //           }
-      //           if (item.type === 'WECHAT') {
-      //             this.itemList['BEFORE_MINUTE']['WECHAT']['switch'] = true
-      //             this.itemList['BEFORE_MINUTE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['BEFORE_MINUTE']['WECHAT']['status'] = status
-      //           }
-      //           break
-      //         case 'SUBSCRIBE':
-      //           this.renderData['SUBSCRIBE'].push(item)
-      //           if (item.type === 'SMS') {
-      //             this.itemList['SUBSCRIBE']['SMS']['switch'] = true
-      //             this.itemList['SUBSCRIBE']['SMS']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['SUBSCRIBE']['SMS']['status'] = status
-      //           }
-      //           if (item.type === 'WECHAT') {
-      //             this.itemList['SUBSCRIBE']['WECHAT']['switch'] = true
-      //             this.itemList['SUBSCRIBE']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['SUBSCRIBE']['WECHAT']['status'] = status
-      //           }
-      //           break
-      //         case 'REPLAY':
-      //           this.renderData['REPLAY'].push(item)
-      //           if (item.type === 'SMS') {
-      //             this.itemList['REPLAY']['SMS']['switch'] = true
-      //             this.itemList['REPLAY']['SMS']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['REPLAY']['SMS']['status'] = status
-      //           }
-      //           if (item.type === 'WECHAT') {
-      //             this.itemList['REPLAY']['WECHAT']['switch'] = true
-      //             this.itemList['REPLAY']['WECHAT']['noticeTaskId'] = item.noticeTaskId
-      //             const status = this.getStatus(item.status)
-      //             this.itemList['REPLAY']['WECHAT']['status'] = status
-      //           }
-      //           break
-      //       }
-      //     })
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     },
     getStatus (status) {
       let str = ''
@@ -922,15 +754,6 @@ export default {
         this.hourValue = res.data.prehour
         this.minValue = res.data.preminute
       })
-      // http.autoFindconfig(this.activityId).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.hourValue = res.data.prehour
-      //     this.minValue = res.data.preminute
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     },
     saveCountdown (type) {
       this.firstSel = false
@@ -954,24 +777,6 @@ export default {
           this.tplData.secondCount = this.selminValue
         }
       })
-      // http.autoSaveconfig(data).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       content: '设置成功',
-      //       position: 'center'
-      //     })
-      //     if (type === 'hour') {
-      //       this.hourValue = this.selhourValue
-      //       this.tplData.firstCount = this.selhourValue
-      //     } else {
-      //       this.minValue = this.selminValue
-      //       this.tplData.secondCount = this.selminValue
-      //     }
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     },
     resetCountDown (type) {
       if (type === 'hour') {
@@ -1029,22 +834,6 @@ export default {
         })
         this.itemList[step][type]['switch'] = false
       })
-      // http.autoDeletetask(id).then((res) => {
-      //   if (res.code === 200) {
-      //     this.renderData[step].forEach((item, idx) => {
-      //       if (item.noticeTaskId === id) {
-      //         this.renderData[step].splice(idx, 1)
-      //       }
-      //     })
-      //     this.$toast({
-      //       content: '设置成功',
-      //       position: 'center'
-      //     })
-      //     this.itemList[step][type]['switch'] = false
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     },
     addTask (step, type, templateId) {
       const data = {
@@ -1061,19 +850,6 @@ export default {
         this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
         this.itemList[step][type]['switch'] = true
       })
-      // http.autoSavetask(data).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       content: '设置成功',
-      //       position: 'center'
-      //     })
-      //     this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
-      //     this.itemList[step][type]['switch'] = true
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
     },
     testSend (triggerType, type, idx) {
       this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/api/expand/notice/test-send-qr?noticeTaskId=${idx}`)}`
@@ -1098,6 +874,23 @@ export default {
     closeTest () {
       this.testModal = false
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   },
   components: {
     comTpl,
