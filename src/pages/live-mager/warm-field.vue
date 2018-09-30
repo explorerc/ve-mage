@@ -111,6 +111,10 @@
     },
     /* 路由守卫，离开当前页面之前被调用 */
     beforeRouteLeave (to, from, next) {
+      if (this.warm.recordId) {
+        next(true)
+        return
+      }
       this.$messageBox({
         header: '提示',
         width: '400px',
@@ -322,7 +326,6 @@
         this.sdkParam.fileName = file.name
       },
       uploadError (data) {
-        debugger
         this.uploadImgErrorMsg = data.msg
         this.warm.playCover = ''
       }
