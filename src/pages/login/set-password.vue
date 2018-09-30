@@ -80,7 +80,7 @@ export default {
         let data = {
           'newPassword': this.password
         }
-        this.$config({handlers: true}).$post(userService.POST_SET_PASSWORD, data).then((res) => {
+        this.$config({ handlers: true }).$post(userService.POST_SET_PASSWORD, data).then((res) => {
           this.isWarning = false
           let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
           if (accountInfo) {
