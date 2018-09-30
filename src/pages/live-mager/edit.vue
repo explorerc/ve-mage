@@ -72,8 +72,8 @@
             <dt></dt>
             <dd>直播已{{successTxt}}，您可以</dd>
             <dd>
-              <router-link  class='finish-button detail' :to="{ name:'detail',params:{id:finishId} }">活动详情</router-link>
-              <router-link class='finish-button list' :to="{name:'liveMager'}">活动列表</router-link>
+              <span class='finish-button detail'  @click='toDetail'>活动详情</span>
+              <span class='finish-button list' @click='toList'>活动列表</span>
             </dd>
           </dl>
       </div>
@@ -116,7 +116,8 @@
             return time.getTime() < Date.now() - 8.64e7
           }
         },
-        successTxt: ''
+        successTxt: '',
+        canPaas: false
       }
     },
     created () {
@@ -151,7 +152,7 @@
         console.log(e)
       },
       queryInfo () {
-        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.date = res.data.startTime
@@ -196,10 +197,26 @@
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
           })
         }
+      },
+      toDetail () {
+        this.canPaas = true
+        this.$router.push({
+          path: `/liveMager/detail/${this.finishId}`
+        })
+      },
+      toList () {
+        this.canPaas = true
+        this.$router.push({
+          path: '/liveMager/list'
+        })
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
     beforeRouteLeave (to, from, next) {
+      if (this.canPaas) {
+        next(true)
+        return false
+      }
       this.$messageBox({
         header: '提示',
         width: '400px',

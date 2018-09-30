@@ -76,7 +76,7 @@
               <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="16" placeholder="请输入信息描述"></com-input>
             </div>
             <div v-if="item.type === 'mobile'" class='del-box'>
-              <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
+              <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
               <span @click='removeItem(idx)' class='del'>删除</span>
@@ -432,8 +432,14 @@
             left: 14px;
           }
         }
-        &.del-box {
+        &.del-box /deep/ {
           width: 100px;
+          .msg-tip-box span {
+            max-width: 500px;
+            width: 400px;
+            top: -30px;
+            left: 30px;
+          }
         }
       }
       .del {
