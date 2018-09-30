@@ -121,7 +121,6 @@
             <li>数据报表</li>
             <li>详细数据导出</li>
           </ol>
-          </ol>
         </div>
       </div>
     </div>
@@ -423,6 +422,7 @@
         isPublished: false,
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
+        PC_HOST: process.env.PC_HOST,
         // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
         countdownTime: '', // 倒计时 秒
         countDownstatus: false,
@@ -462,9 +462,7 @@
             console.log(e)
             if (e.action === 'cancel') {
             } else if (e.action === 'confirm') {
-              this.$router.push({
-                path: `/master/${this.activityId}`
-              })
+              window.open(`${this.PC_HOST}master/${this.activityId}`)
               // this.status = 0
             }
           }
