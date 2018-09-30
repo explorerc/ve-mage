@@ -48,12 +48,11 @@
           </div>
         </div>
         <div class="from-row">
-          <div class="from-title"><i class="star">*</i>直播介绍：</div>
-          <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange, 'error':descEmpty }">
+          <div class="from-title">直播介绍：</div>
+          <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange}">
             <ve-editer height="280" v-model="editorContent" ></ve-editer>
             <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
-            <span class="error-tips" v-if="descEmpty">直播简介不能为空</span>
           </div>
         </div>
         <div class="from-row" v-if="status === 'PREPARE' || !activityId">
@@ -98,7 +97,6 @@
         editorContent: '',
         outRange: false,
         titleEmpty: false,
-        descEmpty: false,
         tagEmpty: false,
         dateEmpty: false,
         status: '',
@@ -132,7 +130,6 @@
       editorContent (newValue, oldValue) {
         this.$nextTick(() => {
           this.countCount = document.querySelector('.vue-html5-editor .content').innerText.gbLength()
-          this.descEmpty = false
           if (this.countCount > this.maxLength) {
             this.outRange = true
             this.editorContent = newValue.substring(0, newValue.gbIndex(this.maxLength) + 1)
@@ -154,7 +151,7 @@
         console.log(e)
       },
       queryInfo () {
-        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.date = res.data.startTime
@@ -178,10 +175,9 @@
         // console.log(data)
         this.title.length ? this.titleEmpty = false : this.titleEmpty = true
         this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true
-        this.editorContent.length ? this.descEmpty = false : this.descEmpty = true
         this.date.length ? this.dateEmpty = false : this.dateEmpty = true
         this.$nextTick(() => {
-          if (this.title.length && this.tagGroup.length && this.editorContent.length && this.date.length) {
+          if (this.title.length && this.tagGroup.length && this.date.length) {
             this.updateWebinfo(this.isNew, data)
           }
         })
@@ -201,6 +197,23 @@
           })
         }
       }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
     },
     computed: {
       defaultImg () {

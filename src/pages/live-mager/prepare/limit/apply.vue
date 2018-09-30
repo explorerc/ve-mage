@@ -300,6 +300,23 @@
         }
       }
     },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
+    },
     watch: {
       quesData: {
         handler (newValue) {

@@ -161,8 +161,8 @@
         },
         loading: false,
         searchPerson: '',
-        personList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        personList: [{ id: '', name: '', count: 0, isChecked: false }],
+        selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
         selectedPersonListStr: '',
         selectPersonShow: false,
         selectedCount: 0,
@@ -171,13 +171,14 @@
           msgError: '',
           tagError: ''
         },
-        isValided: false
+        isValided: false,
+        routerPass: false
       }
     },
     created () {
       this.queryPersonList()
       if (this.inviteId) {
-        this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
+        this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
           inviteId: this.inviteId
         }).then((res) => {
           this.titleValue = res.data.title
@@ -222,8 +223,9 @@
               content: '保存成功',
               position: 'center'
             })
+            this.routerPass = true
             // 跳转到列表页面
-            this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
+            this.$router.push({ name: 'promoteWechat', params: { id: this.activityId } })
           })
         })
       },
@@ -301,6 +303,27 @@
           return false
         }
       }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      if (this.routerPass) {
+        next(true)
+        return false
+      }
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
     },
     watch: {
       sendSetting: {
