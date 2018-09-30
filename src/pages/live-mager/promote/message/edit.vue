@@ -241,7 +241,7 @@ export default {
         })
         // 跳转到列表页面
         this.routerPass = true
-        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
+        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       })
     },
     test () {
