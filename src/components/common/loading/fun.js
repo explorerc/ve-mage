@@ -10,7 +10,7 @@ export default (options = {}) => {
   if (options === false) {
     state = false
   } else {
-    ;({ loadingText, target } = options)
+    ;({loadingText, target} = options)
   }
 
   if (!instance && state) {
