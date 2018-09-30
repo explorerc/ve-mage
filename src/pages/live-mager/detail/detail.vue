@@ -649,7 +649,7 @@ export default {
       // })
     },
     getDetails () {
-      this.$config({ loading: true }).$get(activityService.GET_DETAILS, {
+      this.$config({loading: true}).$get(activityService.GET_DETAILS, {
         activityId: this.activityId
       }).then((res) => {
         if (res.data.activity.countDown.toString() > 0) {
