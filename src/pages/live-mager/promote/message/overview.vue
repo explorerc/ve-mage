@@ -16,7 +16,7 @@
             <div class="from-title">收件人：</div>
             <div class="from-content">
               {{group}}
-              <el-button class='send-detail default-button'>发送详情</el-button>
+              <el-button v-if="status === 'SEND'" class='send-detail default-button'>发送详情</el-button>
             </div>
           </div>
           <div class="from-row">
@@ -40,14 +40,12 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='title' :date='date' :wxContent='msgContent'  :msgTag='msgTag' :isWx='false' ></com-phone>
+          <com-phone :titleValue='title' :date='date' :wxContent='msgContent'  :msgTag='msgTag' :isWx='false' @webinarStatus='webinarStatus'></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->
-          <el-button class='default-button'
-                     v-if="status !== 'SEND'">
-            <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑微信</router-link>
-          </el-button>
+          <router-link  v-if="status !== 'SEND' && type === 'PREPARE'" :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}"><el-button class='default-button'
+                    >编辑短信</el-button></router-link>
           <el-button class='primary-button'
                      v-if="status === 'SEND'"
                      disabled>已发送</el-button>
@@ -77,7 +75,8 @@ export default {
       date: '',
       msgTag: '',
       loading: false,
-      msgContent: ''
+      msgContent: '',
+      type: ''// 活动状态
     }
   },
   created () {
@@ -87,22 +86,10 @@ export default {
       this.group = res.data.groupId
       this.title = res.data.title
       this.status = res.data.status
-      this.date = res.data.sendTime
+      this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
       this.msgTag = res.data.signature
       this.msgContent = res.data.desc
     })
-    // queryHttp.queryMsg(this.id).then((res) => {
-    //   console.log(res)
-    //   this.group = res.data.groupId
-    //   this.title = res.data.title
-    //   this.status = res.data.status
-    //   this.date = res.data.sendTime
-    //   this.msgTag = res.data.signature
-    //   this.msgContent = res.data.desc
-    //   this.loading = false
-    // }).catch((e) => {
-    //   console.log(e)
-    // })
   },
   methods: {
     sendNow () {
@@ -115,18 +102,9 @@ export default {
         this.status = 'SEND'
         this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
       })
-      // queryHttp.sendMsg(this.id).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       content: '发送成功'
-      //     })
-      //     this.status = 'SEND'
-      //     this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      // })
+    },
+    webinarStatus (res) {
+      this.type = res
     }
   },
   components: {

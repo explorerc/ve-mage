@@ -32,6 +32,7 @@ Vue.use(PlayVideo)
 Vue.use(Checkbox)
 Vue.use(Ajax)
 
+console.log(process.env.NODE_ENV)
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
 Vue.config.productionTip = process.env.NODE_ENV !== 'production'

@@ -183,7 +183,7 @@
         }).then((res) => {
           this.titleValue = res.data.title
           this.sendSetting = res.data.status
-          this.date = res.data.planTime.toString()
+          this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
           this.wxContent = res.data.desc
         })
       }

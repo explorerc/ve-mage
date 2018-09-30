@@ -6,11 +6,11 @@ const config = {
     SUB_DIR: '',
     PUBLIC_PATH: '//localhost:2333/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
-    MOBILE_HOST: '//localhost:8866/',
-    PC_HOST: '//localhost:6688/',
+    MOBILE_HOST: '//localhost:8866/m/',
+    PC_HOST: '//localhost:6688/watch/',
     proxyTable: {
       '/api': {
-        target: 'http://dev-api-zhike.vhall.com',
+        target: 'http://test-api-zhike.vhall.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
@@ -24,7 +24,7 @@ const config = {
     SUB_DIR: 'static',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
     PUBLIC_PATH: '//dev-zhike.vhall.com/'
-    //PUBLIC_PATH: '//127.0.0.1:8088/'
+    // PUBLIC_PATH: '//127.0.0.1:8088/'
   },
   test: {
     BUILD_ENV: 'test',
@@ -33,7 +33,7 @@ const config = {
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
     PUBLIC_PATH: '//test-zhike.vhall.com/',
     MOBILE_HOST: '//test-zhike.vhall.com/m/',
-    PC_HOST: '//test-zhike.vhall.com/watch/',
+    PC_HOST: '//test-zhike.vhall.com/watch/'
   },
   prod: {
     BUILD_ENV: 'prod',

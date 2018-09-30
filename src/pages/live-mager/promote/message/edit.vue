@@ -199,7 +199,7 @@ export default {
       }).then((res) => {
         this.titleValue = res.data.title
         this.sendSetting = res.data.status
-        this.date = res.data.sendTime.toString()
+        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
       })
