@@ -3,19 +3,24 @@
   <div class='detail-wrap' v-if="dataPrepare[0]">
     <div class="desc clearfix">
       <div class="left">
-        <img v-if="poster" :src="`${imgHost + poster}`">
-        <img v-else src="https://cnstatic01.e.vhall.com/static/img/v35-webinar.png">
         <span class="status" :class="statusClass">{{status}}</span>
+        <div v-if="poster" class='poster has-poster' :style="{backgroundImage:'url('+ imgHost + poster + ')'}"></div>
+        <div class="poster default-poster" :style="{backgroundImage:'url(//cnstatic01.e.vhall.com/static/img/v35-webinar.png)'}" v-else></div>
       </div>
       <div class="middle">
         <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
         <p class='desc-label'>活动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
-          <li class='icon page'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
-          <li class='icon link copy' @click='copy'><i></i>复制链接<input type="text" :value="`www.baidu.com/${this.activityId}`" id='copyContent' style='position:absolute;opacity:0;'></li>
-          <li class='icon offline offline' @click='offlineActive' v-if="isPublished"><i></i>下线活动</li>
-          <li class='icon offline offline' @click='publishActive' v-else><i></i>发布活动</li>
+          <li class='icon page'><i></i>
+            <router-link :to="`/site/${activityId}`">活动页面</router-link>
+          </li>
+          <li class="icon link copy" @click="copy">
+            <i></i>复制链接
+            <input type="text" :value="`www.baidu.com/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+          </li>
+          <li class='icon offline offline' @click="offlineActive" v-if="isPublished"><i></i>下线活动</li>
+          <li class='icon offline offline' @click="publishActive" v-else><i></i>发布活动</li>
         </ol>
       </div>
       <div class="right">
@@ -24,7 +29,7 @@
         <p class="title" v-else-if="status === '预约' && countDownstatus">直播即将开始</p>
         <p class="title" v-else-if="status === '结束'">直播已结束</p>
         <div class="count-box" :style="{'height':countDownstatus ? '0px' : 'auto'}">
-          <com-countdown :endTime.sync="countdownTime" >
+          <com-countdown :endTime.sync="countdownTime">
             <ol class='clearfix' @timeOut='timeOut' slot='slot1' slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
               <li>{{scoped.hour}}<span>时</span></li>
@@ -45,7 +50,7 @@
               <dd>准备</dd>
             </dl>
           </li>
-          <li class='step brand' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }" >
+          <li class='step brand' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
             <dl>
               <dt><i></i></dt>
               <dd>品牌</dd>
@@ -126,46 +131,53 @@
       </div>
     </div>
     <div class="fun-card">
-        <div class="item prepare">
+      <div class="item prepare">
         <p class='block-separte'>准备</p>
-          <!-- <div class="card-list clearfix">
-            <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
-              :prop-img='item.img'></process-card>
-          </div> -->
-          <div class="card-list clearfix">
-            <div class='item base' @click="linkTo($event,'/liveMager/edit/')">
-              <!-- 基本信息 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>基本信息</span>
-                  <span class='des'>编辑活动基本信息</span>
-                </div>
+        <!-- <div class="card-list clearfix">
+              <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
+                :prop-img='item.img'></process-card>
+            </div> -->
+        <div class="card-list clearfix">
+          <div class='item base' @click="linkTo($event,'/liveMager/edit/')">
+            <!-- 基本信息 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
               </div>
-              <div class="btm">
-                <!-- <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop="" @change='switchChange('APPOINT',dataBrand[2].switch)'></el-switch> -->
-                <!-- <span class='set'>设置</span> -->
+              <div class='desc'>
+                <span>基本信息</span>
+                <span class='des'>编辑活动基本信息</span>
               </div>
             </div>
-            <div class='item apply' @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">
-              <!-- 活动报名 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>活动报名</span>
-                  <span class='des'>
-                    <!-- 未设置未开启 -->
-                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息</template>
+            <div class="btm">
+              <!-- <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop="" @change='switchChange('APPOINT',dataBrand[2].switch)'></el-switch> -->
+              <!-- <span class='set'>设置</span> -->
+            </div>
+          </div>
+          <div class='item apply' @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">
+            <!-- 活动报名 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
+              </div>
+              <div class='desc'>
+                <span>活动报名</span>
+                <span class='des'>
+                      <!-- 未设置未开启 -->
+                      <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息
+</template>
                     <!-- 未设置已开启 -->
-                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">暂未设置</template>
+<template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">
+  暂未设置
+</template>
                     <!-- 已设置已开启 -->
-                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">已设置活动报名</template>
+<template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">
+  已设置活动报名
+</template>
                     <!-- 已设置未开启 -->
-                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">已设置活动报名</template>
+<template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">
+  已设置活动报名
+</template>
                   </span>
                 </div>
               </div>
@@ -184,13 +196,21 @@
                   <span>暖场设置</span>
                   <span class='des'>
                     <!-- 未设置未开启 -->
-                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">为活动设置暖场视频</template>
+<template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">
+  为活动设置暖场视频
+</template>
                     <!-- 未设置已开启 -->
-                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">暂未设置</template>
+<template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">
+  暂未设置
+</template>
                     <!-- 已设置已开启 -->
-                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">{{dataPrepare[2].desc}}</template>
+<template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">
+  {{dataPrepare[2].desc}}
+</template>
                     <!-- 已设置未开启 -->
-                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">{{dataPrepare[2].desc}}</template>
+<template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">
+  {{dataPrepare[2].desc}}
+</template>
                   </span>
                 </div>
               </div>
@@ -214,27 +234,53 @@
                 <div class='desc'>
                   <span>自动化通知</span>
                   <span class='des'>
-                    <template v-if="isPublished">
-                      <!-- 未设置未开启 -->
-                      <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === false">设置自动化活动通知提醒</template>
+<template v-if="isPublished">
+  <!-- 未设置未开启 -->
+  <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === false">设置自动化活动通知提醒
+</template>
                       <!-- 未设置已开启 -->
-                      <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === true">暂未设置</template>
+<template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === true">
+  暂未设置
+</template>
                       <!-- 已设置已开启 -->
-                      <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === true">
-                        <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
-                        <template v-if="dataPromote[0].desc === 'PREPARE'">预约</template>
-                        <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-                        <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+<template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === true">
+  <template v-if="dataPromote[0].desc === 'NONE'">暂未设置
+</template>
+
+<template v-if="dataPromote[0].desc === 'PREPARE'">
+  预约
+</template>
+
+<template v-if="dataPromote[0].desc === 'LIVING'">
+  直播中
+</template>
+
+<template v-if="dataPromote[0].desc === 'PLAYBACK'">
+  回放
+</template>
                       </template>
                       <!-- 已设置未开启 -->
-                      <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === false">
-                        <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
-                        <template v-if="dataPromote[0].desc === 'PREPARE'">预约</template>
-                        <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-                        <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+<template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === false">
+  <template v-if="dataPromote[0].desc === 'NONE'">暂未设置
+</template>
+
+<template v-if="dataPromote[0].desc === 'PREPARE'">
+  预约
+</template>
+
+<template v-if="dataPromote[0].desc === 'LIVING'">
+  直播中
+</template>
+
+<template v-if="dataPromote[0].desc === 'PLAYBACK'">
+  回放
+</template>
                       </template>
                     </template>
-                    <template v-else>暂未设置</template>
+
+<template v-else>
+  暂未设置
+</template>
                   </span>
                 </div>
               </div>
@@ -254,9 +300,13 @@
                   <span>邮箱</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataPromote[1].isSet">已设置邮件邀约</template>
+<template v-if="dataPromote[1].isSet">
+  已设置邮件邀约
+</template>
                     <!-- 未设置 -->
-                    <template v-else>通过邮件进行活动推广</template>
+<template v-else>
+  通过邮件进行活动推广
+</template>
                   </span>
                 </div>
               </div>
@@ -274,9 +324,13 @@
                   <span>短信</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataPromote[2].isSet">已设置短信通知</template>
+<template v-if="dataPromote[2].isSet">
+  已设置短信通知
+</template>
                     <!-- 未设置 -->
-                    <template v-else>通过短信进行活动推广</template>
+<template v-else>
+  通过短信进行活动推广
+</template>
                   </span>
                 </div>
               </div>
@@ -294,9 +348,13 @@
                   <span>微信</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataPromote[3].isSet">已设置微信通知</template>
+<template v-if="dataPromote[3].isSet">
+  已设置微信通知
+</template>
                     <!-- 未设置 -->
-                    <template v-else>通过微信进行活动推广</template>
+<template v-else>
+  通过微信进行活动推广
+</template>
                   </span>
                 </div>
               </div>
@@ -318,10 +376,14 @@
                 <div class='desc'>
                   <span>活动官网</span>
                   <span class='des'>
-                    <template v-if="dataBrand[0].switch">
-                      <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}</template>
+<template v-if="dataBrand[0].switch">
+  <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}
+</template>
                     </template>
-                    <template v-else>最精简的活动品牌页</template>
+
+<template v-else>
+  最精简的活动品牌页
+</template>
                   </span>
                 </div>
               </div>
@@ -341,9 +403,13 @@
                   <span>直播引导页</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataBrand[1].isSet">{{dataBrand[1].desc ==='N' ? '未发布' : '已发布'}}</template>
+<template v-if="dataBrand[1].isSet">
+  {{dataBrand[1].desc ==='N' ? '未发布' : '已发布'}}
+</template>
                     <!-- 未设置 -->
-                    <template v-else>最精简的活动品牌页</template>
+<template v-else>
+  最精简的活动品牌页
+</template>
                   </span>
                 </div>
               </div>
@@ -361,9 +427,13 @@
                   <span>观看页</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataBrand[2].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+<template v-if="dataBrand[2].isSet">
+  {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+</template>
                     <!-- 未设置 -->
-                    <template v-else>订制直播观看页面</template>
+<template v-else>
+  订制直播观看页面
+</template>
                   </span>
                 </div>
               </div>
@@ -386,9 +456,13 @@
                   <span>设置回放</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataRecord[0].isSet">已设置默认回放</template>
+<template v-if="dataRecord[0].isSet">
+  已设置默认回放
+</template>
                     <!-- 未设置 -->
-                    <template v-else>设置活动后的回放视频</template>
+<template v-else>
+  设置活动后的回放视频
+</template>
                   </span>
                 </div>
               </div>
@@ -398,6 +472,13 @@
         </div>
       </div>
     </div>
+    <message-box class='in-countdown' v-show="inCountdown" :width="300"  header="提示"
+      cancelText="放弃"
+      confirmText='仍然进入' @handleClick='inCountdownClick'>
+      <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
+      <p>您设置的时间为:</p>
+      <p>{{startTime}}</p>
+    </message-box>
   </div>
 </template>
 
@@ -405,7 +486,6 @@
   // import http from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import processCard from 'components/process-card'
-  import messageBox from 'components/common/message-box'
   import comCountdown from 'components/com-countDown'
   export default {
     data () {
@@ -421,20 +501,21 @@
         cardData: {},
         msgShow: false,
         isPublished: false,
+        hostOnline: false,
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
         PC_HOST: process.env.PC_HOST,
         // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
         countdownTime: '', // 倒计时 秒
         countDownstatus: false,
+        inCountdown: false,
         dataPrepare: [],
         dataBrand: [],
         dataPromote: [],
         dataRecord: []
       }
     },
-    created () {
-    },
+    created () {},
     mounted () {
       this.getDetails()
     },
@@ -452,21 +533,59 @@
           this.$router.push(link + this.activityId)
         }
       },
-      turnOn () {
-        this.$messageBox({
-          header: '提示',
-          width: '200',
-          content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
-          cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
-          confirmText: '确认开播',
-          handleClick: (e) => {
-            console.log(e)
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-              window.open(`${this.PC_HOST}master/${this.activityId}`)
-              // this.status = 0
+      async turnOn () {
+        await this.$get(activityService.GET_HOSTING, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.hostOnline = res.data.hostOnline
+        })
+        if (this.hostOnline) {
+          this.$toast({
+            content: '主持人已进入直播前台，无法再次进入',
+            position: 'center'
+          })
+          return false
+        }
+        if (this.countdownTime > 86400) { // 在24小时之外
+          this.inCountdown = true
+          return false
+        }
+        this.judgePublish()
+      },
+      judgePublish () {
+        if (this.isPublished) {
+          this.inCountdown = false
+          window.open(`${this.PC_HOST}master/${this.activityId}`)
+        } else {
+          this.inCountdown = false
+          this.$messageBox({
+            header: '提示',
+            width: '200',
+            content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
+            cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
+            confirmText: '确认开播',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {} else if (e.action === 'confirm') {
+                window.open(`${this.PC_HOST}master/${this.activityId}`)
+                // this.status = 0
+              }
             }
-          }
+          })
+        }
+      },
+      inCountdownClick (e) {
+        console.log(e)
+        if (e.action === 'cancel') {
+          this.inCountdown = false
+        } else if (e.action === 'confirm') {
+          this.inCountdown = true
+          this.judgePublish()
+        }
+      },
+      isHosting () {
+        return new Promise((resolve, reject) => {
+
         })
       },
       switchChange (type, status, dataType) {
@@ -475,7 +594,9 @@
           submodule: type,
           enabled: status ? 'Y' : 'N'
         }
-        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({
+          handlers: true
+        }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           console.log(res)
           if (res.code === 200) {
             this.$toast({
@@ -510,7 +631,9 @@
         // })
       },
       getDetails () {
-        this.$config({loading: true}).$get(activityService.GET_DETAILS, {
+        this.$config({
+          loading: true
+        }).$get(activityService.GET_DETAILS, {
           activityId: this.activityId
         }).then((res) => {
           if (res.data.activity.countDown.toString() > 0) {
@@ -559,8 +682,7 @@
           confirmText: '确认发布',
           handleClick: (e) => {
             console.log(e)
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+            if (e.action === 'cancel') {} else if (e.action === 'confirm') {
               // this.status = 0
               this.publish()
             }
@@ -576,8 +698,7 @@
           confirmText: '确认下线',
           handleClick: (e) => {
             console.log(e)
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+            if (e.action === 'cancel') {} else if (e.action === 'confirm') {
               this.offline()
             }
           }
@@ -651,7 +772,6 @@
     },
     components: {
       processCard,
-      messageBox,
       comCountdown
     }
 
@@ -661,7 +781,6 @@
 <style lang='scss' scoped>
 @import 'assets/css/variable.scss';
 @import '~assets/css/mixin.scss';
-
 .detail-wrap {
   border-radius: 5px;
   overflow: hidden;
@@ -671,12 +790,10 @@
   min-width: 1019px;
   color: #222;
   transition: width 0.2s;
-
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
   }
-
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
@@ -719,13 +836,25 @@
       }
     }
   }
+  .in-countdown {
+    p {
+      text-align: center;
+      margin: 20px 0;
+      &:nth-of-type(3) {
+        color: $color-error;
+        font-size: 20px;
+      }
+    }
+  }
 }
+
 .block {
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
   border: 1px solid rgba(226, 226, 226, 1);
   margin-top: 50px;
 }
+
 .process {
   padding: 30px 0;
   .top {
@@ -869,18 +998,22 @@
     }
   }
 }
+
 .desc {
   padding-top: 20px;
 }
+
 .left {
   float: left;
   margin-right: 20px;
   position: relative;
-  img {
+  .poster {
     display: inline-block;
     width: 300px;
     height: 169px;
     border-radius: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   .status {
     position: absolute;
@@ -895,22 +1028,20 @@
     font-size: 12px;
     color: #fff;
   }
-
   // .live {
   //   color: red;
   //   border-color: red;
   // }
-
   // .preview {
   //   color: blue;
   //   border-color: blue;
   // }
-
   // .record {
   //   color: green;
   //   border-color: green;
   // }
 }
+
 .middle {
   float: left;
   width: 640px;
@@ -1015,9 +1146,11 @@
     }
   }
 }
+
 .left {
   float: left;
 }
+
 .right {
   float: right;
   text-align: center;
@@ -1060,8 +1193,10 @@
     text-align: center;
   }
 }
+
 .fun-card {
 }
+
 .block-separte {
   margin-top: 40px;
   margin-bottom: 10px;
@@ -1079,6 +1214,7 @@
     background: rgba(255, 208, 33, 1);
   }
 }
+
 .card-list .item {
   cursor: pointer;
   float: left;
@@ -1138,42 +1274,54 @@
     }
   }
 }
+
 .item.base .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/base.png');
 }
+
 .item.apply .card .pic {
   background-image: url('~assets/image/detail/apply.png');
 }
+
 .item.wram .card .pic {
   background-image: url('~assets/image/detail/wramup.png');
 }
+
 .item.automaze .card .pic {
   background-image: url('~assets/image/detail/base.png');
 }
+
 .item.mail .card .pic {
   background-image: url('~assets/image/detail/mail_invite.png');
 }
+
 .item.message .card .pic {
   background-image: url('~assets/image/detail/msg.png');
 }
+
 .item.wechat .card .pic {
   background-image: url('~assets/image/detail/wechat.png');
 }
+
 .item.site .card .pic {
   background-image: url('~assets/image/detail/site.png');
 }
+
 .item.guide .card .pic {
   background-image: url('~assets/image/detail/guide.png');
 }
+
 .item.watch .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/watch.png');
 }
+
 .item.record .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/record.png');
 }
+
 .btm {
   width: 100%;
   height: 40px;

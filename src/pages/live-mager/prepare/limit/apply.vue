@@ -226,7 +226,7 @@
         this.quesData.push(obj)
       },
       getLimit () {
-        this.$config().$get(activityService.GET_LIMIT, {
+        this.$config({loading: true}).$get(activityService.GET_LIMIT, {
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
@@ -269,35 +269,79 @@
         })
       },
       saveLimitfn (data) {
-        this.$config().$post(activityService.SAVE_LIMIT, data).then((res) => {
+        this.$config({handlers: [60704]}).$post(activityService.SAVE_LIMIT, data).then((res) => {
           this.$toast({
             content: '设置成功',
             position: 'center'
           })
+        }).catch(res => {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this.isOpen = !this.isOpen
         })
       },
-      openSwitch (res) {
-        if (res) {
-          let obj = {
-            title: '手机号码',
-            placeholder: '请输入手机号码',
-            label: '手机号码',
-            type: 'mobile',
-            detail: []
-          }
-          this.quesData.push(obj)
-        } else { // 直接调用接口设置为观看条件为none
-          const data = {
-            'activityId': this.activityId,
-            'viewCondition': 'NONE',
-            'detail': {
-              'finishTime': this.radioTime === '2' ? this.queryData.finishTime : '',
-              'questionList': this.quesData
+      openSwitch (ref) {
+        // if (ref) {
+        //   let obj = {
+        //     title: '手机号码',
+        //     placeholder: '请输入手机号码',
+        //     label: '手机号码',
+        //     type: 'mobile',
+        //     detail: []
+        //   }
+        //   this.quesData.push(obj)
+        // } else { // 直接调用接口设置为观看条件为none
+        // const data = {
+        //   'activityId': this.activityId,
+        //   'viewCondition': 'NONE',
+        //   'detail': {
+        //     'finishTime': this.radioTime === '2' ? this.queryData.finishTime : '',
+        //     'questionList': this.quesData
+        //   }
+        // }
+        // this.saveLimitfn(data)
+
+        const data = {
+          'activityId': this.activityId,
+          'submodule': 'APPOINT',
+          'enabled': ref ? 'Y' : 'N'
+        }
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+          if (res.code === 200) {
+            if (ref) {
+              let obj = {
+                title: '手机号码',
+                placeholder: '请输入手机号码',
+                label: '手机号码',
+                type: 'mobile',
+                detail: []
+              }
+              this.quesData.push(obj)
+            } else {
+              this.$toast({
+                'content': '设置成功'
+              })
             }
           }
-          this.saveLimitfn(data)
+        }).catch((res) => {
+          if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+            this.isOpen = !this.isOpen
+          }
+        })
+        if (!ref) {
           this.quesData = []
         }
+        // }
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */

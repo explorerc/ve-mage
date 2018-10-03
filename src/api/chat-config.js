@@ -7,5 +7,6 @@ export default {
   gagAll: 'GAG_ALL', // 全体禁言
   beginLive: 'BEGIN_LIVE', // 开始直播
   endLive: 'FINISH_LIVE', // 结束直播
-  download: 'DOWNLOAD' // 回放下载
+  download: 'DOWNLOAD', // 回放下载
+  wechat_msg: 'WECHAT_INVITE_TEST' // 微信测试发送成功
 }
