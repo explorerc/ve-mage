@@ -16,7 +16,7 @@
   </div>
   <div class="msg-box-overview msg-box-message" v-else>
     <div class="detail">
-      <p class="tips">{{wxContent}}<br>【{{msgTag}}】</p>
+      <p class="tips">【{{msgTag}}】{{wxContent}}</p>
     </div>
     <div class="footer">{{date}} 发送</div>
   </div>
@@ -39,6 +39,7 @@ export default {
     }).then((res) => {
       this.webinarName = res.data.title
       this.webinarTime = res.data.startTime
+      this.$emit('webinarStatus', res.data.status)
     })
   },
   props: {

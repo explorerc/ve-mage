@@ -1,5 +1,5 @@
 <template>
-  <div class="v-editor">
+  <div class="v-editor" :class="classVal">
     <slot></slot>
     <span class="v-info-label" v-if="!isEdit" :title="value">{{value===''?'无':value}}</span>
     <template v-else-if="type !== 'readOnly'">
@@ -45,7 +45,8 @@ export default {
     }, // 修改按钮文案
     maxLength: Number,
     errorTips: String,
-    isEdit: Boolean
+    isEdit: Boolean,
+    classVal: String
   },
   data () {
     return {
