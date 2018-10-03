@@ -37,9 +37,10 @@
                  width="450px"
                  @handleClick="emailHandleClick">
       <div class="email-box">
-        <span class="test-tip">每天只允许发送5条测试短信：</span>
+        <span class="test-tip">每天只允许发送5条测试邮件：</span>
         <com-input :value.sync="testEmailAddress"
                    :error-tips="emailError"
+                   :maxLength="40"
                    @keyup.enter.native="sendTestEmail"
                    placeholder="输入邮件地址" />
       </div>
