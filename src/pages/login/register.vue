@@ -52,7 +52,7 @@
                    :isPassword="false"
                    value=""
                    :inputValue.sync="code"
-                   placeholder="动态码"
+                   placeholder="验证码"
                    :maxLength="6"
                    @inputFocus="inputFocus()">
           <a href="javascript:;"
@@ -121,7 +121,7 @@ export default {
     'com-input': MyInput
   },
   created () {
-    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
       let _self = this
       this.key = res.data
       window.initNECaptcha({
@@ -203,7 +203,7 @@ export default {
         'type': 'BUSINESS_USER_REG',
         captcha: this.phoneKey
       }
-      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
         this.isSend = true
         this.isProhibit = true
         clearInterval(this.timerr)
@@ -247,7 +247,7 @@ export default {
         'company': this.userCompany,
         'code': this.code
       }
-      this.$config({handlers: true}).$post(userService.POST_REGISTER, data).then((res) => {
+      this.$config({ handlers: true }).$post(userService.POST_REGISTER, data).then((res) => {
         this.closeTime = 60
         this.show = true
       }).catch((err) => {
@@ -442,15 +442,22 @@ export default {
       text-align: center;
     }
   }
-  .v-try-box {
+  .ve-message-box__wrapper {
     .ve-message-box {
       width: 570px;
+      height: 280px;
       &::before {
         background-color: #fff;
       }
       div {
         font-size: 20px;
         color: #222;
+        &.ve-message-box__btns{
+          margin-top: 44px;
+        }
+        &.ve-message-box__container{
+          padding: 25px 30px 20px 30px;
+        }
       }
       p {
         font-size: 14px;
@@ -460,6 +467,9 @@ export default {
           font-size: 18px;
           color: #222;
         }
+      }
+      :before{
+        background-color: #fff;
       }
     }
   }

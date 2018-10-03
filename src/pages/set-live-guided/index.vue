@@ -12,7 +12,7 @@
             </p>
             <p class="v-info pull-left"
                style="margin-top: 6px;">
-              {{viewCondition === 'APPOINT'? '报名':'预约'}}
+              {{viewCondition === 'APPOINT'? '报名':'无限制'}}
             </p>
           </div>
           <div class="input-form v-label clearfix">
@@ -22,7 +22,7 @@
             <p class="v-info pull-left">
               <com-input :value.sync="title"
                          placeholder="标题"
-                         :max-length="15"></com-input>
+                         :max-length="30"></com-input>
             </p>
           </div>
           <div class="input-form v-label clearfix">
@@ -44,15 +44,13 @@
             <p class="v-info pull-left"
                style="width: 350px; margin-top: 10px;">
               <el-radio v-model="showType"
-                        label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
-              <el-radio v-model="showType"
                         label='DESCRIPTION'>显示直播简介</el-radio>
-              <el-input type="textarea"
-                        :rows="5"
-                        placeholder="请输入内容"
-                        v-model="description"
-                        :maxlength=50>
-              </el-input>
+              <el-radio v-model="showType"
+                        label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
+              <com-input type="textarea"
+                         :value.sync="description"
+                         placeholder="请输入简介"
+                         :max-length="60"></com-input>
             </p>
           </div>
         </div>
@@ -87,7 +85,7 @@
                           距离直播开始还有
                         </p>
                         <div class="v-cutdown-content">
-                          <span class="v-red">05</span>天<span class="v-red">23</span>小时<span class="v-red">44</span>分钟<span class="v-red">25</span>秒
+                          <span class="v-red">XX</span>天<span class="v-red">XX</span>小时<span class="v-red">XX</span>分钟<span class="v-red">XX</span>秒
                         </div>
                       </div>
                       <span href="javascript:;"
@@ -126,7 +124,7 @@
                         距离直播开始还有
                       </p>
                       <div class="v-cutdown-content">
-                        <span class="v-red">05</span>天<span class="v-red">23</span>小时<span class="v-red">44</span>分钟<span class="v-red">25</span>秒
+                        <span class="v-red">XX</span>天<span class="v-red">XX</span>小时<span class="v-red">XX</span>分钟<span class="v-red">XX</span>秒
                       </div>
                     </div>
                     <span href="javascript:;"
@@ -262,6 +260,8 @@ export default {
     float: right;
   }
   .v-title {
+    line-height: 60px;
+    margin: 30px 0;
     font-size: 24px;
     color: #222;
   }
@@ -301,8 +301,13 @@ export default {
         .com-input {
           width: 100%;
         }
-        .el-textarea {
+        .area.com-input{
           margin-top: 10px;
+          height: 140px;
+        }
+        .limit{
+          right: 8px;
+          bottom: 8px;
         }
       }
       .ve-upload-box {
@@ -388,7 +393,7 @@ export default {
             margin: 5px 0 0 149px;
           }
           .v-cutdown-content {
-            width: 250px;
+            width: 260px;
             margin: 10px 0 0 107px;
             .v-red {
               color: #fc5659;

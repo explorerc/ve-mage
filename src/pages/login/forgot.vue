@@ -24,7 +24,7 @@
           <div id="captcha"></div>
           <com-input class="v-input phone-code"
                      :value.sync="phoneCode"
-                     placeholder="动态码"
+                     placeholder="验证码"
                      @focus="passwordFocus('phoneCode')"
                      :error-tips="errorTips.phoneCode">
           </com-input>
@@ -154,7 +154,7 @@ export default {
   components: {
   },
   created () {
-    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
       let _self = this
       this.key = res.data
       window.initNECaptcha({
@@ -240,7 +240,8 @@ export default {
         'type': 'BUSINESS_USER_UPDATE_PASSWORD',
         captcha: this.phoneKey
       }
-      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+        this.errorTips.phoneCode = ''
         this.isSend = true
         this.isProhibit = true
         clearInterval(this.timerr)
@@ -289,7 +290,7 @@ export default {
         code: this.phoneCode,
         type: 'BUSINESS_USER_UPDATE_PASSWORD'
       }
-      this.$config({handlers: true}).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
+      this.$config({ handlers: true }).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
         this.isStepOneSuccess = true
         this.sedIsActive = true
         this.activeName = 'second'
@@ -327,7 +328,7 @@ export default {
         codeToken: this.token,
         newPassword: this.password
       }
-      this.$config({handlers: true}).$post(userService.POST_BACK_PASSWORD, data).then((res) => {
+      this.$config({ handlers: true }).$post(userService.POST_BACK_PASSWORD, data).then((res) => {
         setInterval(() => {
           this.time--
           if (this.time <= 0) {
