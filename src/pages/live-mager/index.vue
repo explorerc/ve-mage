@@ -46,6 +46,13 @@
         </div>
       </div>
     </div>
+    <message-box class='in-countdown' v-show="inCountdown" width="300"  header="提示"
+      cancelText="放弃"
+      confirmText='仍然进入' @handleClick='inCountdownClick'>
+      <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
+      <p>您设置的时间为:</p>
+      <p>{{startTime}}</p>
+    </message-box>
   </div>
 </template>
 
@@ -62,6 +69,11 @@ export default {
       show: false,
       pageSize: 16,
       loading: false,
+      inCountdown: false,
+      isPublished: false,
+      hostOnline: false,
+      jumpId: '',
+      startTime: '',
       optionsStates: [
         {value: '', label: '全部'},
         {value: 'PREPARE', label: '预告'},
@@ -99,7 +111,12 @@ export default {
     handleClick (event) {
       console.log(event)
       if (event.type === 'play') { // 开播
-        window.open(`${this.PC_HOST}master/${event.id}`)
+        // 请求活动详情 判断 是否 发布 是否进入 24小时内
+        this.isPublished = event.published === 'Y'
+        this.startTime = event.startTime
+        this.jumpId = event.id
+        this.getDetails(event.id)
+        // window.open(`${this.PC_HOST}master/${event.id}`)
       } else if (event.type === 'delete') { // 编辑删除
         this.$messageBox({
           header: '删除活动',
@@ -118,6 +135,61 @@ export default {
       } else if (event.type === 'info') { // 详情
         this.$router.push(`/liveMager/detail/${event.id}`)
       }
+    },
+    inCountdownClick (e) {
+      console.log(e)
+      if (e.action === 'cancel') {
+        this.inCountdown = false
+      } else if (e.action === 'confirm') {
+        this.inCountdown = true
+        this.judgePublish()
+      }
+    },
+    judgePublish () {
+      if (this.isPublished) {
+        this.inCountdown = false
+        window.open(`${this.PC_HOST}master/${this.jumpId}`)
+      } else {
+        this.inCountdown = false
+        this.$messageBox({
+          header: '提示',
+          width: '200px',
+          content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
+          cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认开播',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+              window.open(`${this.PC_HOST}master/${this.jumpId}`)
+              // this.status = 0
+            }
+          }
+        })
+      }
+    },
+    async getDetails (id) {
+      await this.$get(activityService.GET_HOSTING, {
+        activityId: this.jumpId
+      }).then((res) => {
+        this.hostOnline = res.data.hostOnline
+      })
+      if (this.hostOnline) {
+        this.$toast({
+          content: '主持人已进入直播前台，无法再次进入',
+          position: 'center'
+        })
+        return false
+      }
+      this.$config({loading: true}).$get(activityService.GET_DETAILS, {
+        activityId: id
+      }).then((res) => {
+        if (res.data.activity.countDown > 86400) {
+          this.inCountdown = true
+        } else {
+          this.judgePublish()
+        }
+      })
     },
     changePage (currentPage) {
       this.searchParams.page = currentPage
@@ -178,3 +250,16 @@ export default {
 
 <style lang="scss" scoped src="./css/live.scss">
 </style>
+<style lang="scss" scoped>
+.in-countdown {
+  p {
+    text-align: center;
+    margin: 20px 0;
+    &:nth-of-type(3) {
+      color: #fc5659;
+      font-size: 20px;
+    }
+  }
+}
+</style>
+

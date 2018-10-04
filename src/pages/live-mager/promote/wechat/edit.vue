@@ -115,11 +115,13 @@
 </template>
 
 <script>
-  // import createHttp from 'src/api/activity-manger'
+  import ChatService from 'components/chat/ChatService.js'
+  import playbackService from 'src/api/playback-service'
   import noticeService from 'src/api/notice-service'
   import comTest from '../com-test'
   import comPhone from '../com-phone'
   import veTips from 'src/components/ve-msg-tips'
+  import ChatConfig from 'src/api/chat-config'
   export default {
     data () {
       return {
@@ -172,10 +174,12 @@
           tagError: ''
         },
         isValided: false,
-        routerPass: false
+        routerPass: false,
+        sdkParam: {}
       }
     },
     created () {
+      this.initSdk()
       this.queryPersonList()
       if (this.inviteId) {
         this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
@@ -302,6 +306,55 @@
           this.isValided = false
           return false
         }
+      },
+      listenMsg (msg) {
+        console.log(msg)
+      },
+      initSdk () {
+        /* 获取pass信息 */
+        this.$get(playbackService.GET_PAAS_SDK_INFO).then((res) => {
+          // this.vhallParams = res.data
+          /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+          this.$nextTick(() => {
+            // 初始化pass上传插件
+            // this.initVhallUpload()
+            this.sdkParam.sign = res.data.sign
+            this.sdkParam.signed_at = res.data.signedAt
+            this.sdkParam.app_id = res.data.appId
+            this.sdkPlayParam = {
+              app_id: res.data.appId,
+              accountId: res.data.accountId,
+              token: res.data.token,
+              recordId: '',
+              linkVideo: ''
+            }
+          })
+        })
+        this.initMsgServe()
+      },
+      async initMsgServe () {
+        const regActivity = await this.$get(playbackService.GET_REG_ACTIVITY, {
+          activityId: this.activityId
+        }).then(res => {
+          return res.data
+        })
+        const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
+          activityId: this.activityId,
+          activityUserId: regActivity.activityUserId
+        }).then(res => {
+          return res.data
+        })
+        ChatService.OBJ.init({
+          accountId: roomInfo.accountId,
+          token: roomInfo.token,
+          appId: roomInfo.appId,
+          channelId: roomInfo.channelRoom
+        })
+        /* 监听微信测试发送成功消息 */
+        ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
+          console.log(msg)
+          debugger
+        })
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */

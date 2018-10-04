@@ -804,10 +804,21 @@ export default {
         submodule: 'EXPAND_NOTICE',
         enabled: type ? 'Y' : 'N'
       }
-      this.$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+      this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
         this.$toast({
           content: '设置成功'
         })
+      }).catch((res) => {
+        console.log(res)
+        if (res.code === 60706) {
+          this.isOpen = !type
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+        }
       })
       // http.detailSwitch(data).then((res) => {
       //   if (res.code === 200) {

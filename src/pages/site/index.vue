@@ -5,7 +5,7 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"
-                   @change="updateState">
+                   @change="confirmState">
         </el-switch>
       </div>
     </div>
@@ -75,11 +75,13 @@
 <script>
 import brandService from 'src/api/brand-service'
 import defaultData from './templateData'
+import activityService from 'src/api/activity-service'
 
 export default {
   data () {
     return {
       enable: false,
+      isPublish: false,
       data: {},
       t0478320: require('assets/image/site_tp1.png'),
       t0478321: require('assets/image/site_tp2.png'),
@@ -92,7 +94,7 @@ export default {
   },
   methods: {
     init () {
-      this.$config({loading: true}).$get(brandService.GET_SITE_DATA, {
+      this.$config({ loading: true }).$get(brandService.GET_SITE_DATA, {
         activityId: this.$route.params.id
       }).then(res => {
         if (res.data.enabled === 'Y') {
@@ -101,6 +103,11 @@ export default {
         if (res.data.value) {
           this.data = JSON.parse(res.data.value)
         }
+      })
+      this.$get(activityService.GET_WEBINAR_INFO, {
+        id: this.$route.params.id
+      }).then((res) => {
+        this.isPublish = res.data.published === 'Y'
       })
     },
     goEdit () {
@@ -115,15 +122,36 @@ export default {
         this.$router.push(`/site/preview/${this.$route.params.id}`)
       }
     },
+    confirmState (res) {
+      if (this.isPublish && !res) {
+        this.$messageBox({
+          header: '提示',
+          width: '200',
+          content: '活动官网已经发布，请确认是否关闭？',
+          cancelText: '暂不关闭', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认关闭',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
+              this.enable = true
+            } else if (e.action === 'confirm') {
+              this.updateState()
+            }
+          }
+        })
+      } else {
+        this.updateState()
+      }
+    },
     updateState () {
-      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
       }).then(res => {
         this.$toast({
           content: '保存成功',
-          autoClose: 2000
+          autoClose: 500
         })
       })
     },
@@ -132,7 +160,7 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
       }).then(res => {

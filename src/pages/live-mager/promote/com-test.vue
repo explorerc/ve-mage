@@ -68,6 +68,10 @@ export default {
     isAuto: {
       type: Boolean,
       default: false
+    },
+    wechatSuccess: {
+      type: Boolean,
+      default: false
     }
   },
   created () {
@@ -123,22 +127,6 @@ export default {
           position: 'center'
         })
       })
-      // createHttp.sendTestmsg(data).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.limitCount -= 1
-      //     this.$toast({
-      //       content: '发送成功',
-      //       position: 'center'
-      //     })
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      //   this.$toast({
-      //     content: '发送失败',
-      //     position: 'center'
-      //   })
-      // })
     },
     sendAuto () {
       const data = {
@@ -152,25 +140,20 @@ export default {
           position: 'center'
         })
       })
-      // createHttp.autoSendtest(data).then((res) => {
-      //   if (res.code === 200) {
-      //     this.limitCount -= 1
-      //     this.$toast({
-      //       content: '发送成功',
-      //       position: 'center'
-      //     })
-      //   }
-      // }).catch((e) => {
-      //   console.log(e)
-      //   this.$toast({
-      //     content: '发送失败',
-      //     position: 'center'
-      //   })
-      // })
     },
     validPhone (phone) {
       var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
       return re.test(phone)
+    }
+  },
+  watch: {
+    wechatSuccess (newVal) {
+      console.log(newVal)
+      this.limitCount -= 1
+      this.$toast({
+        content: '信息已发送',
+        position: 'center'
+      })
     }
   }
 }

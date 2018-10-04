@@ -119,6 +119,8 @@ const ActivityManger = {
    * @param data
    * @returns {*}
    */
-  GET_PLAYBACK_INFO: '/frontend/replay/default-replay'
+  GET_PLAYBACK_INFO: '/frontend/replay/default-replay',
+  // 获取主持人在线状态
+  GET_HOSTING: '/manage/role-manage/check-host-online'
 }
 export default ActivityManger
