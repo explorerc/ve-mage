@@ -472,7 +472,7 @@
         </div>
       </div>
     </div>
-    <message-box class='in-countdown' v-show="inCountdown" :width="300"  header="提示"
+    <message-box class='in-countdown' v-show="inCountdown" width="300"  header="提示"
       cancelText="放弃"
       confirmText='仍然进入' @handleClick='inCountdownClick'>
       <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
@@ -523,6 +523,10 @@
       linkTo (e, link, status) {
         console.log(e.target.className)
         if (e.target.className.search('switch') > -1) {
+        // 直播状态直接 不跳转
+          if (this.status === '直播') {
+            return false
+          }
           // 如果开着状态则不跳转
           if (!status && e.target.className.search('input') > -1) {
             setTimeout(() => {

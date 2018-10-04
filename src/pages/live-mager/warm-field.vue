@@ -4,7 +4,7 @@
       <span class="title">暖场设置</span>
       <el-switch v-model="isSwitch"
                  inactive-color="#DEE1FF"
-                 active-color="#4B5AFE">
+                 active-color="#4B5AFE" @change='openSwitch'>
       </el-switch>
       <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
       <!--<button class="primary-button fr" @click="goBack">返回</button>-->
@@ -328,6 +328,29 @@
       uploadError (data) {
         this.uploadImgErrorMsg = data.msg
         this.warm.playCover = ''
+      },
+      openSwitch (type) {
+        const data = {
+          activityId: this.$route.params.id,
+          submodule: 'WARMUP',
+          enabled: type ? 'Y' : 'N'
+        }
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+          this.$toast({
+            content: '设置成功'
+          })
+        }).catch((res) => {
+          console.log(res)
+          if (res.code === 60706) {
+            this.isSwitch = !type
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+          }
+        })
       }
     }
   }
@@ -336,11 +359,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn {
-    text-align: center;
-    button {
-      width: 200px;
-      margin: 60px auto 50px auto;
-    }
+.bottom-btn {
+  text-align: center;
+  button {
+    width: 200px;
+    margin: 60px auto 50px auto;
   }
+}
 </style>

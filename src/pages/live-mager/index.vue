@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <message-box class='in-countdown' v-show="inCountdown" :width="300"  header="提示"
+    <message-box class='in-countdown' v-show="inCountdown" width="300"  header="提示"
       cancelText="放弃"
       confirmText='仍然进入' @handleClick='inCountdownClick'>
       <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
@@ -153,7 +153,7 @@ export default {
         this.inCountdown = false
         this.$messageBox({
           header: '提示',
-          width: '200',
+          width: '200px',
           content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
           cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
           confirmText: '确认开播',

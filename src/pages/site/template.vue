@@ -118,10 +118,10 @@
             <div class="from-title">收藏图标:</div>
             <div class="from-content">
               <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
-                         accept="png|jpg|jpeg|bmp|gif"
+                         accept="png|jpg|bmp"
                          :defaultImg="defaultImg"
                          :fileSize="500"
-                         :errorMsg="uploadImgErrorMsg"
+                         :errorMsg="uploadErrorMsg"
                          @error="uploadError"
                          @success="uploadImgSuccess"></ve-upload>
             </div>
@@ -176,7 +176,8 @@ export default {
       keyWordsError: '',
       siteDes: '',
       icon: '',
-      uploadImgErrorMsg: '',
+      0: '',
+      uploadErrorMsg: '',
       options: [
         {
           label: '内容主题',
@@ -227,6 +228,7 @@ export default {
     },
     uploadError (data) {
       console.log('上传失败:', data)
+      this.uploadErrorMsg = data.msg
     },
     init () {
       if (this.ptid) {
@@ -258,6 +260,10 @@ export default {
           this.keyWords = res.data.keyword || ''
           this.siteDes = res.data.description || ''
           this.icon = res.data.icon || ''
+          // 添加 下拉选项标记
+          // if (this.siteTitle.length) {
+          //   this.options[1]['label'] = '推广信息(已完成)'
+          // }
           setTimeout(() => {
             this.changed = false
           }, 500)
@@ -317,6 +323,10 @@ export default {
           content: '保存成功',
           autoClose: 500
         })
+
+        // // 添加 下拉选项标记
+        // this.options[0]['label'] = '内容主题(已完成)'
+        // this.options[1]['label'] = '推广信息(编辑中)'
         setTimeout(() => {
           this.changed = false
         }, 500)
