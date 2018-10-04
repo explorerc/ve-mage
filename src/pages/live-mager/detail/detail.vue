@@ -475,7 +475,7 @@
           submodule: type,
           enabled: status ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           console.log(res)
           if (res.code === 200) {
             this.$toast({
@@ -510,7 +510,7 @@
         // })
       },
       getDetails () {
-        this.$config({ loading: true }).$get(activityService.GET_DETAILS, {
+        this.$config({loading: true}).$get(activityService.GET_DETAILS, {
           activityId: this.activityId
         }).then((res) => {
           if (res.data.activity.countDown.toString() > 0) {
