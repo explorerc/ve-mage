@@ -120,7 +120,8 @@ const handleType = {
 const statusType = {
   DRAFT: '草稿',
   SEND: '已发送',
-  AWAIT: '等待发送'
+  AWAIT: '等待发送',
+  FAIL: '发送失败'
 }
 export default {
   name: 'index',
