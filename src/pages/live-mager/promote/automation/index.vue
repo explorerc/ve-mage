@@ -775,7 +775,7 @@ export default {
         preminute: this.selminValue
 
       }
-      this.$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
+      this.$config({handlers: true}).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
         this.$toast({
           content: '设置成功',
           position: 'center'
@@ -786,6 +786,15 @@ export default {
         } else {
           this.minValue = this.selminValue
           this.tplData.secondCount = this.selminValue
+        }
+      }).catch((res) => {
+        if (res.code === 65902) {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
         }
       })
     },
@@ -841,8 +850,8 @@ export default {
       //   }
       // })
     },
-    deleteTask (id, step, type) {
-      this.$post(noticeService.POST_DELETE_AUTO_TASK, {
+    deleteTask (id, step, type, status) {
+      this.$config({handlers: true}).$post(noticeService.POST_DELETE_AUTO_TASK, {
         noticeTaskId: id
       }).then((res) => {
         this.renderData[step].forEach((item, idx) => {
@@ -855,22 +864,42 @@ export default {
           position: 'center'
         })
         this.itemList[step][type]['switch'] = false
+      }).catch((res) => {
+        if (res.code === 65902) {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this.itemList[step][type]['switch'] = !status
+        }
       })
     },
-    addTask (step, type, templateId) {
+    addTask (step, type, templateId, status) {
       const data = {
         activityId: this.activityId,
         templateId: templateId, // 写死
         triggerType: step,
         type: type
       }
-      this.$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
+      this.$config({handlers: true}).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
         this.$toast({
           content: '设置成功',
           position: 'center'
         })
         this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
         this.itemList[step][type]['switch'] = true
+      }).catch((res) => {
+        if (res.code === 65902) {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this.itemList[step][type]['switch'] = !status
+        }
       })
     },
     testSend (triggerType, type, idx) {
@@ -885,10 +914,10 @@ export default {
       console.log(res)
       if (res) {
         // 请求添加
-        this.addTask(step, type, templateId)
+        this.addTask(step, type, templateId, res)
       } else {
         // 请求删除
-        this.deleteTask(noticeTaskId, step, type)
+        this.deleteTask(noticeTaskId, step, type, res)
       }
       console.log(step)
       console.log(type)

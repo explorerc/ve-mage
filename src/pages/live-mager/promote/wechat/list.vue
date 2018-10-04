@@ -55,7 +55,7 @@
     <!-- 删除确认 -->
     <message-box v-if="delConfirm"
       header="提示"
-      content="删除短信后，短信内容将无法找回，确认删除？"
+      content="删除微信后，微信内容将无法找回，确认删除？"
       cancelText="取消"
       confirmText='确认删除'
       @handleClick="confirmDel">

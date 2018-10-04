@@ -56,12 +56,12 @@
        com-loading-text="拼命加载中">
     <div class="overview-wx-page live-mager">
       <div class="live-title">
-        <span class="title">微信通知</span>
+        <span class="title">短信通知</span>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title">微信标题：</div>
+            <div class="from-title">短信标题：</div>
             <div class="from-content">
               {{title}}
             </div>
