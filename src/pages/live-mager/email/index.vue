@@ -189,25 +189,6 @@ export default {
         this.total = res.data.total
         this.emailList = res.data.list
       })
-      // LiveHttp.queryEmailList({
-      //   activityId: this.activeId,
-      //   pageSize: this.pageSize,
-      //   page: this.currentPage
-      // }).then((res) => {
-      //   this.loading = false
-      //   if (res.code === 200) {
-      //     res.data.list.map((dataItem) => {
-      //       dataItem.statusName = statusType[dataItem.status]
-      //       dataItem.sendTime = dataItem.sendTime || '--'
-      //       dataItem.title = dataItem.title || '--'
-      //       return dataItem
-      //     })
-      //     this.total = res.data.total
-      //     this.emailList = res.data.list
-      //   }
-      // }).catch(() => {
-      //   this.loading = false
-      // })
     },
     clickEmail (idx, type) {
       this.currentEmailIdx = idx
