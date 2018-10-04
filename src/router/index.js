@@ -71,9 +71,12 @@ router.beforeEach((to, from, next) => {
       }
     }
   }
-  if (to.meta.scrollTop && router.app) {
+})
+router.beforeResolve((to, from, next) => {
+  next()
+  if (router.app) {
     router.app.$nextTick(() => {
-      document.querySelector('.main-container').scrollTop = to.meta.scrollTop
+      document.querySelector('.main-container').scrollTop = to.meta.scrollTop || 0
     })
   }
 })
