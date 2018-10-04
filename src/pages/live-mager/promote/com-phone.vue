@@ -33,7 +33,7 @@ export default {
       webinarName: ''
     }
   },
-  mounted () {
+  created () {
     this.$get(noticeService.GET_WEBINAR_INFO, {
       id: this.activityId
     }).then((res) => {
