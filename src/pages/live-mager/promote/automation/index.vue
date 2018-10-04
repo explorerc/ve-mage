@@ -638,7 +638,7 @@ export default {
       // })
     },
     getList () {
-      this.$config({loading: true}).$get(noticeService.GET_AUTO_LIST, {
+      this.$config({ loading: true }).$get(noticeService.GET_AUTO_LIST, {
         activityId: this.activityId
       }).then((res) => {
         res.data.forEach(item => {
@@ -804,7 +804,7 @@ export default {
         submodule: 'EXPAND_NOTICE',
         enabled: type ? 'Y' : 'N'
       }
-      this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+      this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
         this.$toast({
           content: '设置成功'
         })
