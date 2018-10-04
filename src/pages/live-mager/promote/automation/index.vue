@@ -775,7 +775,7 @@ export default {
         preminute: this.selminValue
 
       }
-      this.$config({handlers: true}).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
+      this.$config({ handlers: true }).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
         this.$toast({
           content: '设置成功',
           position: 'center'
@@ -851,7 +851,7 @@ export default {
       // })
     },
     deleteTask (id, step, type, status) {
-      this.$config({handlers: true}).$post(noticeService.POST_DELETE_AUTO_TASK, {
+      this.$config({ handlers: true }).$post(noticeService.POST_DELETE_AUTO_TASK, {
         noticeTaskId: id
       }).then((res) => {
         this.renderData[step].forEach((item, idx) => {
@@ -883,7 +883,7 @@ export default {
         triggerType: step,
         type: type
       }
-      this.$config({handlers: true}).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
+      this.$config({ handlers: true }).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
         this.$toast({
           content: '设置成功',
           position: 'center'
