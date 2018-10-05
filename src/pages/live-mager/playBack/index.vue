@@ -417,14 +417,10 @@
         this.initMsgServe()
       },
       async initMsgServe () {
-        const regActivity = await this.$get(playbackService.GET_REG_ACTIVITY, {
-          activityId: this.activityId
-        }).then(res => {
-          return res.data
-        })
+        const loginInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
         const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
-          activityId: this.activityId,
-          activityUserId: regActivity.activityUserId
+          thirdUserId: loginInfo.businessUserId,
+          channel: loginInfo.channelRoom
         }).then(res => {
           return res.data
         })
@@ -436,6 +432,7 @@
         })
         /* 监听下载消息 */
         ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
+          debugger
           this.downLoadVideo()
         })
       },

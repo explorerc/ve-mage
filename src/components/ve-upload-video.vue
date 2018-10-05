@@ -13,8 +13,9 @@
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
         </div>
-        <span v-if="!isConvert&&fileName" class="upload-video upload-pre-view" @click="preViewVideo">预览</span>
-        <span class="upload-video upload-delete" @click="deleteVideo">删除</span>
+        <span v-if="(!isConvert&&fileName)&&!showHandler" class="upload-video upload-pre-view" @click="preViewVideo">预览</span>
+        <span v-if="!showHandler" class="upload-video upload-delete"
+              @click="deleteVideo">删除</span>
       </div>
       <div v-else class="upload-file-box" id="uploadFile_video" title="点击上传" @click="clickUploadVideo">
         <i class="upload-video-icon"></i>
@@ -97,6 +98,14 @@
         deep: true
       }
     },
+    computed: {
+      showHandler () {
+        if (this.percentVideo === 0 || this.percentVideo === 100) {
+          return false
+        }
+        return true
+      }
+    },
     methods: {
       clickUploadVideo () {
         document.getElementById(this.uploadId).click()
@@ -116,52 +125,53 @@
       initPage () {
         this.percentVideo = 0
         this.errorTxt = ''
+        let _this = this
         this.$nextTick(() => {
-          window.vhallCloudDemandSDK(`#${this.uploadId}`, {
+          window.vhallCloudDemandSDK(`#${_this.uploadId}`, {
             params: {
               confirmBtn: '#confirmUpload',
               name: '#rename',
-              sign: this.sdk.sign,
-              signed_at: this.sdk.signed_at,
-              app_id: this.sdk.app_id
+              sign: _this.sdk.sign,
+              signed_at: _this.sdk.signed_at,
+              app_id: _this.sdk.app_id
             },
             beforeUpload: (file) => {
-              this.fileName = file.name
-              this.fileRealSize = file.size / 1024 / 1024
+              _this.fileName = file.name
+              _this.fileRealSize = file.size / 1024 / 1024
               if (file.type !== 'video/mp4') {
-                this.errorTxt = '不支持该视频格式，请上传' + this.accept + '格式视频'
-                this.$emit('error', this.errorTxt, file)
+                _this.errorTxt = '不支持该视频格式，请上传' + this.accept + '格式视频'
+                _this.$emit('error', this.errorTxt, file)
                 return false
-              } else if (this.fileRealSize > this.fileSize / 1024) {
-                this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
-                this.$emit('error', this.errorTxt, file)
+              } else if (_this.fileRealSize > _this.fileSize / 1024) {
+                _this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
+                _this.$emit('error', _this.errorTxt, file)
                 return false
               }
-              this.loading = true
-              this.errorTxt = ''
-              this.percentVideo = 0
-              this.isConvert = false
-              this.fileRealSize = this.fileRealSize.toFixed(2)
+              _this.loading = true
+              _this.errorTxt = ''
+              _this.percentVideo = 0
+              _this.isConvert = false
+              _this.fileRealSize = _this.fileRealSize.toFixed(2)
               return true
             },
             progress: (percent) => {
-              this.loading = false
+              _this.loading = false
               const temPercent = parseFloat(percent.replace('%', ''))
-              if (this.percentVideo >= temPercent) return
-              this.percentVideo = temPercent
+              if (_this.percentVideo >= temPercent) return
+              _this.percentVideo = temPercent
             },
             uploadSuccess () {
               document.getElementById('confirmUpload').click()
             },
             saveSuccess: (res) => {
-              this.record_id = res.record_id
-              this.isConvert = true
-              this.$emit('success', this.record_id, this.fileName, this.fileRealSize * 1024)
+              _this.record_id = res.record_id
+              _this.isConvert = true
+              _this.$emit('success', _this.record_id, _this.fileName, _this.fileRealSize * 1024)
             },
             error: (msg, file, e) => {
-              this.loading = false
-              this.errorTxt = msg
-              this.$emit('error', msg, file)
+              _this.loading = false
+              _this.errorTxt = msg
+              _this.$emit('error', msg, file)
             }
           })
         })
