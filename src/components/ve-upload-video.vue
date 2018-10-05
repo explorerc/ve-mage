@@ -140,7 +140,7 @@
               _this.fileName = file.name
               _this.fileRealSize = file.size / 1024 / 1024
               if (file.type !== 'video/mp4') {
-                _this.errorTxt = '不支持该视频格式，请上传' + this.accept + '格式视频'
+                _this.errorTxt = '不支持该视频格式，请上传' + _this.accept + '格式视频'
                 _this.$emit('error', _this.errorTxt, file)
                 return false
               } else if (_this.fileRealSize > _this.fileSize / 1024) {
