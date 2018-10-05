@@ -1,35 +1,48 @@
 <template>
-  <div
-  class="com-input"
-  v-if="type!=='textarea'"
-  >
-    <i v-if="type==='search'" class="iconfont icon-search"></i>
-    <input
-    :type="inputType"
-    :style="style"
-    :class="{error:errorMsg}"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    v-model="innerValue"
-    @focus="focusHandle"
-    @blur="blurHandle"
-    >
-    <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
-    <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
-    <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
-    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
+  <div class="com-input"
+       v-if="type!=='textarea'">
+    <i v-if="type==='search'"
+       class="iconfont icon-search"></i>
+    <input :type="inputType"
+           :style="style"
+           :class="{error:errorMsg}"
+           :placeholder="placeholder"
+           :disabled="disabled"
+           v-model="innerValue"
+           @focus="focusHandle"
+           @blur="blurHandle">
+    <i v-if="type==='search'"
+       v-show="showDelete"
+       class="iconfont icon-delete"
+       @click="empty"></i>
+    <i v-if="type==='password'||(type==='password'&&inputType==='text')"
+       class="iconfont"
+       :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}"
+       @click="toggleShow"></i>
+    <span class="limit"
+          v-if="maxLength&&type==='input'">
+      <i class="length"
+         v-text="innerValue.gbLength()">0</i>/
+      <i>{{maxLength}}</i>
+    </span>
+    <span class="error-msg"
+          v-if="errorMsg">{{errorMsg}}</span>
   </div>
-  <div class="com-input area"  v-else>
-    <textarea
-    ref="tarea"
-    v-model="innerValue"
-    :class="{error:errorMsg}"
-    :placeholder="placeholder"
-    :rows="rows"
-  placeholder="请输入内容"
-    ></textarea>
-    <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
-    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
+  <div class="com-input area"
+       v-else>
+    <textarea ref="tarea"
+              v-model="innerValue"
+              :class="{error:errorMsg}"
+              :placeholder="placeholder ? placeholder: '请输入内容'"
+              :rows="rows"></textarea>
+    <span class="limit area"
+          v-if="maxLength&&type==='textarea'">
+      <i class="length"
+         v-text="innerValue.gbLength()">0</i>/
+      <i>{{maxLength}}</i>
+    </span>
+    <span class="error-msg"
+          v-if="errorMsg">{{errorMsg}}</span>
   </div>
 </template>
 
