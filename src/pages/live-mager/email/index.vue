@@ -120,7 +120,8 @@ const handleType = {
 const statusType = {
   DRAFT: '草稿',
   SEND: '已发送',
-  AWAIT: '等待发送'
+  AWAIT: '等待发送',
+  FAIL: '发送失败'
 }
 export default {
   name: 'index',
@@ -189,25 +190,6 @@ export default {
         this.total = res.data.total
         this.emailList = res.data.list
       })
-      // LiveHttp.queryEmailList({
-      //   activityId: this.activeId,
-      //   pageSize: this.pageSize,
-      //   page: this.currentPage
-      // }).then((res) => {
-      //   this.loading = false
-      //   if (res.code === 200) {
-      //     res.data.list.map((dataItem) => {
-      //       dataItem.statusName = statusType[dataItem.status]
-      //       dataItem.sendTime = dataItem.sendTime || '--'
-      //       dataItem.title = dataItem.title || '--'
-      //       return dataItem
-      //     })
-      //     this.total = res.data.total
-      //     this.emailList = res.data.list
-      //   }
-      // }).catch(() => {
-      //   this.loading = false
-      // })
     },
     clickEmail (idx, type) {
       this.currentEmailIdx = idx
