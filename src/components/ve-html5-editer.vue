@@ -284,5 +284,14 @@
     .content {
       max-height: 560px;
     }
+    a {
+      text-decoration: underline;
+      &:hover{
+        color: #5D6AFE;
+      }
+      &:active{
+        color: #4350E4;
+      }
+    }
   }
 </style>
