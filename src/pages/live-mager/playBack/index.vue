@@ -432,7 +432,6 @@
         })
         /* 监听下载消息 */
         ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
-          debugger
           this.downLoadVideo()
         })
       },
