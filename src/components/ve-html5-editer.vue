@@ -233,7 +233,7 @@
 
   export default {
     name: 've-html5-editer',
-    components: { editor },
+    components: {editor},
     data () {
       return {
         showModuleName: false,
@@ -283,6 +283,15 @@
     }
     .content {
       max-height: 560px;
+    }
+    a {
+      text-decoration: underline;
+      &:hover{
+        color: #5D6AFE;
+      }
+      &:active{
+        color: #4350E4;
+      }
     }
   }
 </style>
