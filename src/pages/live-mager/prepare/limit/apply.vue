@@ -128,6 +128,7 @@
         },
         questionId: '',
         canPaas: true,
+        canSave: true,
         saveData: {}
       }
     },
@@ -269,9 +270,36 @@
           if (item.type === 'email') {
             item.verification = 'Y'
           }
+          if (item.type === 'select') {
+            if (!item.detail.length) {
+              this.$messageBox({
+                header: '提示',
+                content: '请添加下拉选项',
+                autoClose: 10,
+                confirmText: '知道了'
+              })
+              this.canSave = false
+            } else {
+              item.detail.forEach(ele => {
+                if (!ele.value.length) {
+                  this.$messageBox({
+                    header: '提示',
+                    content: '下拉选项不能为空',
+                    autoClose: 10,
+                    confirmText: '知道了'
+                  })
+                  this.canSave = false
+                } else {
+                  this.canSave = true
+                }
+              })
+            }
+          }
         })
         this.$nextTick(() => {
-          this.saveLimitfn(this.saveData)
+          if (this.canSave) {
+            this.saveLimitfn(this.saveData)
+          }
         })
       },
       saveLimitfn (data) {
