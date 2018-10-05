@@ -48,6 +48,7 @@
         fileRealSize: 0,
         isConvert: true,
         loading: false,
+        tempSign: '',
         uploadId: 'upload_video_' + Math.random()
       }
     },
@@ -94,7 +95,10 @@
           this.fileName = newVal.fileName
           this.fileRealSize = (newVal.fileSize / 1024).toFixed(2)
           this.isConvert = !newVal.transcode_status
-          this.initPage()
+          if (!this.tempSign) {
+            this.initPage()
+          }
+          this.tempSign = newVal.sign
         },
         deep: true
       }
