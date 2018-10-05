@@ -13,7 +13,8 @@
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
         </div>
-        <span v-if="(!isConvert&&fileName)&&!showHandler" class="upload-video upload-pre-view" @click="preViewVideo">预览</span>
+        <span v-if="(!isConvert&&fileName)&&!showHandler" class="upload-video upload-pre-view"
+              @click="preViewVideo">预览</span>
         <span v-if="!showHandler" class="upload-video upload-delete"
               @click="deleteVideo">删除</span>
       </div>
@@ -146,13 +147,14 @@
                 _this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
                 _this.$emit('error', _this.errorTxt, file)
                 return false
+              } else {
+                _this.loading = true
+                _this.errorTxt = ''
+                _this.percentVideo = 0
+                _this.isConvert = false
+                _this.fileRealSize = _this.fileRealSize.toFixed(2)
+                return true
               }
-              _this.loading = true
-              _this.errorTxt = ''
-              _this.percentVideo = 0
-              _this.isConvert = false
-              _this.fileRealSize = _this.fileRealSize.toFixed(2)
-              return true
             },
             progress: (percent) => {
               _this.loading = false
