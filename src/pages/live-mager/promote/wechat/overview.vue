@@ -42,7 +42,11 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='title' :date='date' :wxContent='wxContent' @webinarStatus='webinarStatus'></com-phone>
+          <com-phone :titleValue='title'
+                     :date='date'
+                     :wxContent='wxContent'
+                     :webinarName='webinarName'
+                     :webinarTime='webinarTime'></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteWechat',params:{id:activityId}}">返回</router-link></router-link> -->
@@ -61,7 +65,7 @@
 </template>
 
 <script>
-import {formatDate} from 'src/assets/js/date'
+import { formatDate } from 'src/assets/js/date'
 import noticeService from 'src/api/notice-service'
 import comPhone from '../com-phone'
 export default {
@@ -81,7 +85,7 @@ export default {
     }
   },
   created () {
-    this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
+    this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
       inviteId: this.id
     }).then((res) => {
       this.group = res.data.groupId
