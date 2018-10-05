@@ -1,6 +1,7 @@
 export default function () {
   return {
     tid: '0478320',
+    tplName: '模版名称1',
     section1Data: {
       panel: {
         bgType: 'color',

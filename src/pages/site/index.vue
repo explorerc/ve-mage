@@ -7,6 +7,7 @@
                    active-color="#FFD021"
                    @change="confirmState">
         </el-switch>
+      <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span>
       </div>
     </div>
     <div class="group">
@@ -22,14 +23,15 @@
               <a @click="goPreview">预览</a>
             </div>
           </div>
+          <span class='tpl-name' v-html="this.data.tplName"></span>
         </div>
         <div v-else>
-          没有模板
+          没有模版
         </div>
       </div>
     </div>
     <div class="group">
-      <div class="fwn">模板库</div>
+      <div class="fwn fwn2">模版库</div>
       <div class="group-content fs0">
         <div class="template-block">
           <img :src="t0478320" alt="">
@@ -39,6 +41,7 @@
               <a @click="showPreview('0478320')">预览</a>
             </div>
           </div>
+          <span class='tpl-name' v-html="tplData['template1']()['tplName']"></span>
         </div>
         <div class="template-block">
           <img :src="t0478321" >
@@ -48,6 +51,7 @@
               <a @click="showPreview('0478321')">预览</a>
             </div>
           </div>
+          <span class='tpl-name' v-html="tplData['template2']()['tplName']"></span>
         </div>
         <!-- <div class="template-block">
           <img :src="t0478322" >
@@ -66,6 +70,7 @@
               <a @click="showPreview('0478323')">预览</a>
             </div>
           </div>
+          <span class='tpl-name' v-html="tplData['template3']()['tplName']"></span>
         </div>
       </div>
     </div>
@@ -83,6 +88,7 @@ export default {
       enable: false,
       isPublish: false,
       data: {},
+      tplData: defaultData,
       t0478320: require('assets/image/site_tp1.png'),
       t0478321: require('assets/image/site_tp2.png'),
       t0478322: require('assets/image/site_tp1.png'),
@@ -91,6 +97,7 @@ export default {
   },
   mounted () {
     this.init()
+    console.log()
   },
   methods: {
     init () {
@@ -182,6 +189,19 @@ export default {
   .group {
     .title {
       font-size: 24px;
+      & > span {
+        display: inline-block;
+        position: relative;
+        left: 10px;
+        top: -3px;
+        border: solid 1px #e2e2e2;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 5px 10px;
+        margin-right: 10px;
+        line-height: 18px;
+        font-size: 12px;
+      }
     }
     .fwn {
       font-size: 16px;
@@ -200,6 +220,9 @@ export default {
         top: -2px;
       }
     }
+    .fwn2 {
+      margin-top: 45px;
+    }
   }
   .group-content {
     &:first-of-type {
@@ -216,7 +239,7 @@ export default {
       margin-right: 40px;
       font-size: 14px;
       position: relative;
-      overflow: hidden;
+      // overflow: hidden;
       border-radius: 4px;
       img {
         width: 100%;
@@ -261,6 +284,13 @@ export default {
             }
           }
         }
+      }
+      .tpl-name {
+        padding-top: 10px;
+        width: 100%;
+        text-align: center;
+        color: #888;
+        position: absolute;
       }
     }
   }

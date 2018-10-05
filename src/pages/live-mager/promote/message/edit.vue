@@ -1,6 +1,6 @@
 <template>
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="edit-msg-page live-mager">
+    <div class="edit-msg-page live-mager" @mousedown="canPass = false">
       <div class="live-title">
         <span class="title">创建短信通知</span>
       </div>
@@ -188,7 +188,7 @@ export default {
         tagError: ''
       },
       isValided: false,
-      routerPass: false
+      canPass: true
     }
   },
   created () {
@@ -240,7 +240,7 @@ export default {
           position: 'center'
         })
         // 跳转到列表页面
-        this.routerPass = true
+        this.canPass = true
         this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
       })
     },
@@ -315,7 +315,7 @@ export default {
   },
   /* 路由守卫，离开当前页面之前被调用 */
   beforeRouteLeave (to, from, next) {
-    if (this.routerPass) {
+    if (this.canPass) {
       next(true)
       return false
     }
@@ -337,6 +337,7 @@ export default {
   watch: {
     sendSetting: {
       handler (newValue) {
+        this.canPass = true
         newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
       }
     },

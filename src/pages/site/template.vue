@@ -7,7 +7,7 @@
       </div>
       <a @click="goBack"
          class="back">返回</a>
-      <el-select v-model="cType"
+      <el-select v-if="!isPreview&&!ptid" v-model="cType"
                  class="type-select"
                  @change="changeType">
         <el-option v-for="item in options"

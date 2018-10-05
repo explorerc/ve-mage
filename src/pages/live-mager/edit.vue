@@ -1,6 +1,6 @@
 <!--新建/编辑活动-->
 <template>
-  <div>
+  <div @mousedown="canPaas = false">
     <div class='edit-page live-mager' v-if='!createdSuccess'>
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
@@ -117,7 +117,7 @@
           }
         },
         successTxt: '',
-        canPaas: false
+        canPaas: true
       }
     },
     created () {

@@ -153,7 +153,7 @@ export default {
         this.inCountdown = false
         this.$messageBox({
           header: '提示',
-          width: '200px',
+          width: '400px',
           content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
           cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
           confirmText: '确认开播',

@@ -17,7 +17,7 @@
           </li>
           <li class="icon link copy" @click="copy">
             <i></i>复制链接
-            <input type="text" :value="`www.baidu.com/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            <input type="text" :value="`${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
           </li>
           <li class='icon offline offline' @click="offlineActive" v-if="isPublished"><i></i>下线活动</li>
           <li class='icon offline offline' @click="publishActive" v-else><i></i>发布活动</li>

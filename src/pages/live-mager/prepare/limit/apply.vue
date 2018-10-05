@@ -1,5 +1,5 @@
 <template>
-  <div class="apply-page live-mager">
+  <div class="apply-page live-mager" @mousedown="canPaas = false">
     <div class="live-title">
       <span class="title">活动报名</span>
       <el-switch
@@ -127,6 +127,7 @@
           questionId: ''
         },
         questionId: '',
+        canPaas: true,
         saveData: {}
       }
     },
@@ -196,15 +197,18 @@
     },
     methods: {
       removeItem (idx) {
+        this.canPaas = false
         this.quesData.splice([idx], 1)
       },
       selectChange (idx, res) {
+        this.canPaas = false
         if (res === '下拉选择') {
           // debugger// eslint-disable-line
           this.quesData[idx]['detail'].push('')
         }
       },
       addItem (idx) {
+        this.canPaas = false
         console.log(idx)
         this.quesData[idx]['detail'].push({
           value: '',
@@ -212,10 +216,12 @@
         })
       },
       delItem (idx, count) {
+        this.canPaas = false
         // debugger // eslint-disable-line
         this.quesData[idx]['detail'].splice(count, 1)
       },
       addNew () {
+        this.canPaas = false
         let obj = {
           title: '标题',
           placeholder: '描述描述',
@@ -304,7 +310,7 @@
         //   }
         // }
         // this.saveLimitfn(data)
-
+        this.canPaas = false
         const data = {
           'activityId': this.activityId,
           'submodule': 'APPOINT',
@@ -346,6 +352,10 @@
     },
     /* 路由守卫，离开当前页面之前被调用 */
     beforeRouteLeave (to, from, next) {
+      if (this.canPaas) {
+        next(true)
+        return false
+      }
       this.$messageBox({
         header: '提示',
         width: '400px',
@@ -371,6 +381,7 @@
       radioTime: {
         handler (newValue) {
           newValue === '2' ? this.pickDate = true : this.pickDate = false
+          this.canPaas = false
         }
       }
     },

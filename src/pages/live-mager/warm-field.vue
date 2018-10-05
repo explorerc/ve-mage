@@ -101,7 +101,8 @@
         uploadErrorMsg: '', // 上传错误信息
         uploadImgErrorMsg: '', // 图片上传错误信息
         uploadVideoErrorMsg: '', // 视频上传错误信息
-        playMsg: ''
+        playMsg: '',
+        canPass: true
       }
     },
     computed: {
@@ -111,7 +112,7 @@
     },
     /* 路由守卫，离开当前页面之前被调用 */
     beforeRouteLeave (to, from, next) {
-      if (this.warm.recordId) {
+      if (this.canPass) {
         next(true)
         return
       }
@@ -133,6 +134,9 @@
     watch: {
       isSwitch (newVal) {
         this.warm.enabled = newVal ? 'Y' : 'N'
+      },
+      'warm.playMode' () {
+        this.canPass = false
       }
     },
     created () {
@@ -287,10 +291,12 @@
       },
       /* 上传图片成功 */
       uploadImgSuccess (data) {
+        this.canPass = false
         this.warm.playCover = data.name
       },
       /* 上传视频成功 */
       uploadVideoSuccess (recordId, fileName, fileSize) {
+        this.canPass = false
         this.warm.recordId = recordId
         this.warm.filename = fileName
         this.sdkParam.fileName = fileName
@@ -311,6 +317,7 @@
             type: 'error',
             handleClick: (e) => {
               if (e.action === 'confirm') {
+                this.canPass = false
                 this.warm.recordId = ''
                 this.warm.filename = ''
                 this.sdkPlayParam.recordId = ''

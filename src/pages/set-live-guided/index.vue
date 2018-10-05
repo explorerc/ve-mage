@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix set-live-guided-container">
+  <div class="clearfix set-live-guided-container" >
     <p class="v-title">
       直播引导页
     </p>
@@ -19,7 +19,7 @@
             <p class="v-info-label pull-left">
               引导标题：
             </p>
-            <p class="v-info pull-left">
+            <p class="v-info pull-left" @click="canPass = false">
               <com-input :value.sync="title"
                          placeholder="标题"
                          :max-length="30"></com-input>
@@ -42,7 +42,7 @@
               辅助信息：
             </p>
             <p class="v-info pull-left"
-               style="width: 350px; margin-top: 10px;">
+               style="width: 350px; margin-top: 10px;" @click='canPass = false'>
               <el-radio v-model="showType"
                         label='DESCRIPTION'>显示直播简介</el-radio>
               <el-radio v-model="showType"
@@ -158,7 +158,8 @@ export default {
       description: '', // 简介
       tabValue: 1, // 预览页签选择
       imgUrl: '', // 引导图片
-      uploadImgErrorMsg: ''
+      uploadImgErrorMsg: '',
+      canPass: true
     }
   },
   components: {
@@ -193,6 +194,10 @@ export default {
   },
   /* 路由守卫，离开当前页面之前被调用 */
   beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return
+    }
     this.$messageBox({
       header: '提示',
       width: '400px',
@@ -210,6 +215,7 @@ export default {
   },
   methods: {
     uploadImgSuccess (data) {
+      this.canPass = false
       this.imgUrl = data.name
     },
     uploadError (data) {
@@ -301,11 +307,11 @@ export default {
         .com-input {
           width: 100%;
         }
-        .area.com-input{
+        .area.com-input {
           margin-top: 10px;
           height: 140px;
         }
-        .limit{
+        .limit {
           right: 8px;
           bottom: 8px;
         }
