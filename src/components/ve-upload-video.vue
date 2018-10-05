@@ -36,7 +36,7 @@
 
   export default {
     name: 've-upload-video',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         tipTxt: '',
