@@ -574,6 +574,10 @@
             this.navIdx = 1
             this.queryPlayBackList()
           })
+        } else {
+          this.recordIdError = ''
+          this.outLineError = ''
+          this.newTitleError = ''
         }
         this.addVideoShow = false
       },
@@ -611,6 +615,8 @@
           })
         } else {
           this.tempPlayBackCover = ''
+          this.uploadImgErrorMsg = ''
+          this.outLineError = ''
         }
         this.playBackShow = false
       },
@@ -674,6 +680,7 @@
       },
       errorUploadVideo (msg, file) {
         this.sdkParam.fileName = file.name
+        this.recordIdError = msg
       },
       uploadVideoSuccess (recordId, fileName) {
         this.recordId = recordId
