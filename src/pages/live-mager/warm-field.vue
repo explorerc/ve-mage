@@ -311,6 +311,7 @@
             type: 'error',
             handleClick: (e) => {
               if (e.action === 'confirm') {
+                this.uploadVideoErrorMsg = ''
                 this.warm.recordId = ''
                 this.warm.filename = ''
                 this.sdkPlayParam.recordId = ''
@@ -324,6 +325,7 @@
       },
       errorUploadVideo (msg, file) {
         this.sdkParam.fileName = file.name
+        this.uploadVideoErrorMsg = msg
       },
       uploadError (data) {
         this.uploadImgErrorMsg = data.msg
