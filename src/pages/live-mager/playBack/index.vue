@@ -164,8 +164,8 @@
                v-if="playBackMode==0">
             <div class="from-title"><i class="star">*</i>上传视频：</div>
             <div class="from-content">
-              <ve-upload-video title="选择视频"
-                               accept="mp4|avi|3gp|mov|mkv|flv|rm|rmvb"
+              <ve-upload-video title="视频仅支持mp4格式，文件大小不超过4G"
+                               accept="mp4"
                                :fileSize="4096000"
                                :errorMsg="recordIdError"
                                :sdk="sdkParam"

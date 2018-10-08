@@ -181,7 +181,7 @@ export default {
         })
         return false
       }
-      this.$config({loading: true}).$get(activityService.GET_DETAILS, {
+      this.$get(activityService.GET_DETAILS, {
         activityId: id
       }).then((res) => {
         if (res.data.activity.countDown > 86400) {
