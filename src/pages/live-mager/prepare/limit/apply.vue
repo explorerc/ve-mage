@@ -233,7 +233,7 @@
         this.quesData.push(obj)
       },
       getLimit () {
-        this.$config({ loading: true }).$get(activityService.GET_LIMIT, {
+        this.$config({loading: true}).$get(activityService.GET_LIMIT, {
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
@@ -303,11 +303,12 @@
         })
       },
       saveLimitfn (data) {
-        this.$config({ handlers: [60704] }).$post(activityService.SAVE_LIMIT, data).then((res) => {
+        this.$config({handlers: [60704]}).$post(activityService.SAVE_LIMIT, data).then((res) => {
           this.$toast({
             content: '设置成功',
             position: 'center'
           })
+          this.canPaas = true
         }).catch(res => {
           this.$messageBox({
             header: '提示',
@@ -344,7 +345,7 @@
           'submodule': 'APPOINT',
           'enabled': ref ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           if (res.code === 200) {
             if (ref) {
               let obj = {

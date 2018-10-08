@@ -134,6 +134,7 @@
           if (this.countCount > this.maxLength) {
             this.outRange = true
             this.editorContent = newValue.substring(0, newValue.gbIndex(this.maxLength) + 1)
+            document.getElementsByClassName('content')[1].selectStart = 5
           } else {
             this.outRange = false
           }
@@ -152,7 +153,7 @@
         console.log(e)
       },
       queryInfo () {
-        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.date = res.data.startTime
@@ -365,11 +366,8 @@
         color: $color-error;
       }
     }
-    .error-tips {
-      color: $color-error;
-      display: block;
-      position: absolute;
-      font-size: 12px;
+    .from-content .vue-html5-editor .content img {
+      width: 100%;
     }
   }
 }

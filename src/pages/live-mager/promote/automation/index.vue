@@ -436,6 +436,7 @@ export default {
       titleValue: '',
       firstSel: false,
       secondSel: false,
+      PC_HOST: process.env.PC_HOST,
       hourOptions: [{
         value: 1,
         label: '开播前1小时'
@@ -615,7 +616,7 @@ export default {
         this.tplData.hostName = res.data.hostName
         this.tplData.firstCount = res.data.firstCount
         this.tplData.secondCount = res.data.secondCount
-        this.tplData.link = `wwww.baidu.com/${this.activityId}`
+        this.tplData.link = `${this.PC_HOST}/${this.activityId}`
       })
       // http.autoGetparams(this.activityId).then((res) => {
       //   console.log(res)
@@ -638,7 +639,7 @@ export default {
       // })
     },
     getList () {
-      this.$config({ loading: true }).$get(noticeService.GET_AUTO_LIST, {
+      this.$config({loading: true}).$get(noticeService.GET_AUTO_LIST, {
         activityId: this.activityId
       }).then((res) => {
         res.data.forEach(item => {
@@ -775,7 +776,7 @@ export default {
         preminute: this.selminValue
 
       }
-      this.$config({ handlers: true }).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
+      this.$config({handlers: true}).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
         this.$toast({
           content: '设置成功',
           position: 'center'
@@ -813,7 +814,7 @@ export default {
         submodule: 'EXPAND_NOTICE',
         enabled: type ? 'Y' : 'N'
       }
-      this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+      this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
         this.$toast({
           content: '设置成功'
         })
@@ -851,7 +852,7 @@ export default {
       // })
     },
     deleteTask (id, step, type, status) {
-      this.$config({ handlers: true }).$post(noticeService.POST_DELETE_AUTO_TASK, {
+      this.$config({handlers: true}).$post(noticeService.POST_DELETE_AUTO_TASK, {
         noticeTaskId: id
       }).then((res) => {
         this.renderData[step].forEach((item, idx) => {
@@ -883,7 +884,7 @@ export default {
         triggerType: step,
         type: type
       }
-      this.$config({ handlers: true }).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
+      this.$config({handlers: true}).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
         this.$toast({
           content: '设置成功',
           position: 'center'

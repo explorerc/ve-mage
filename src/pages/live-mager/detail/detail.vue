@@ -25,7 +25,7 @@
           <li class="icon link copy"
               @click="copy">
             <i></i>复制链接
-            <input type="text" :value="`${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            <input type="text" :value="`${this.PC_HOST}/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
           </li>
           <li class='icon offline offline'
               @click="offlineActive"
@@ -277,7 +277,8 @@
   </template>
 
 <template v-if="dataPromote[0].desc === 'PREPARE'">
-  预约
+  <template v-if="isAppoint">报名</template>
+  <template v-else>预约</template>
 </template>
 
 <template v-if="dataPromote[0].desc === 'LIVING'">
@@ -294,7 +295,9 @@
   </template>
 
 <template v-if="dataPromote[0].desc === 'PREPARE'">
-  预约
+  <template v-if="isAppoint">报名</template>
+  <template v-else>预约</template>
+
 </template>
 
 <template v-if="dataPromote[0].desc === 'LIVING'">
@@ -411,7 +414,7 @@
                     </template>
 
 <template v-else>
-  最精简的活动品牌页
+  打造活动品牌聚合页面
 </template>
                   </span>
                 </div>
@@ -538,6 +541,7 @@ export default {
       countdownTime: '', // 倒计时 秒
       countDownstatus: false,
       inCountdown: false,
+      isAppoint: false,
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
@@ -579,11 +583,23 @@ export default {
         })
         return false
       }
-      if (this.countdownTime > 86400) { // 在24小时之外
+      if (this.isToday(this.startTime)) { // 在24小时之外
         this.inCountdown = true
         return false
       }
+
       this.judgePublish()
+    },
+    isToday (str) {
+      if (new Date(str).toDateString() === new Date().toDateString()) {
+        // 今天
+        console.log('当天')
+        return false
+      } else {
+        // 之前
+        console.log('非当天')
+        return true
+      }
     },
     judgePublish () {
       if (this.isPublished) {
@@ -685,6 +701,7 @@ export default {
         this.dataPromote = res.data.promote
         this.dataRecord = res.data.record
         this.isPublished = res.data.activity.published === 'Y'
+        this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
         switch (res.data.activity.status) {
           case ('LIVING'):
             this.status = '直播'
@@ -1045,6 +1062,7 @@ export default {
     width: 300px;
     height: 169px;
     border-radius: 5px;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   }

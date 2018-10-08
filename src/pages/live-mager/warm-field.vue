@@ -67,7 +67,7 @@
 
   export default {
     name: 'warm-field',
-    components: { VeUploadImage, VeUploadVideo },
+    components: {VeUploadImage, VeUploadVideo},
     data () {
       return {
         warm: {
@@ -261,6 +261,7 @@
           enabled: this.warm.enabled,
           filename: this.warm.filename
         }).then((res) => {
+          this.canPass = true
           this.isDisabled = false
           this.$toast({
             header: `提示`,
@@ -344,7 +345,7 @@
           submodule: 'WARMUP',
           enabled: type ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           this.$toast({
             content: '设置成功'
           })
