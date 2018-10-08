@@ -261,6 +261,7 @@
           enabled: this.warm.enabled,
           filename: this.warm.filename
         }).then((res) => {
+          this.canPass = true
           this.isDisabled = false
           this.$toast({
             header: `提示`,

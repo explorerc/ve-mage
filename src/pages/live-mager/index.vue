@@ -33,7 +33,8 @@
                 @click="createLive">创建直播</button>
       </div>
     </div>
-    <div class="mager-box" style="padding-bottom: 60px;">
+    <div class="mager-box"
+         style="padding-bottom: 60px;">
       <live-table :tableList="tableList"
                   @handleClick="handleClick" />
       <div class="pagination-box">
@@ -46,9 +47,13 @@
         </div>
       </div>
     </div>
-    <message-box class='in-countdown' v-show="inCountdown" width="300"  header="提示"
-      cancelText="放弃"
-      confirmText='仍然进入' @handleClick='inCountdownClick'>
+    <message-box class='in-countdown'
+                 v-show="inCountdown"
+                 width="300"
+                 header="提示"
+                 cancelText="放弃"
+                 confirmText='仍然进入'
+                 @handleClick='inCountdownClick'>
       <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
       <p>您设置的时间为:</p>
       <p>{{startTime}}</p>
@@ -181,7 +186,7 @@ export default {
         })
         return false
       }
-      this.$config({ loading: true }).$get(activityService.GET_DETAILS, {
+      this.$get(activityService.GET_DETAILS, {
         activityId: id
       }).then((res) => {
         if (res.data.activity.countDown > 86400) {
