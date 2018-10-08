@@ -25,7 +25,7 @@
           <li class="icon link copy"
               @click="copy">
             <i></i>复制链接
-            <input type="text" :value="`${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            <input type="text" :value="`${this.PC_HOST}/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
           </li>
           <li class='icon offline offline'
               @click="offlineActive"
