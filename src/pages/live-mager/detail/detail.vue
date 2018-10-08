@@ -579,11 +579,22 @@ export default {
         })
         return false
       }
-      if (this.countdownTime > 86400) { // 在24小时之外
+      if (this.isToday(this.countdownTime * 1)) { // 在24小时之外
         this.inCountdown = true
         return false
       }
       this.judgePublish()
+    },
+    isToday (str) {
+      if (new Date(str).toDateString() === new Date().toDateString()) {
+        // 今天
+        console.log('当天')
+        return false
+      } else if (new Date(str) < new Date()) {
+        // 之前
+        console.log('以前的日期')
+        return true
+      }
     },
     judgePublish () {
       if (this.isPublished) {
@@ -1045,6 +1056,7 @@ export default {
     width: 300px;
     height: 169px;
     border-radius: 5px;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
   }

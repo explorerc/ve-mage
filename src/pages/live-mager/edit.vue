@@ -107,7 +107,7 @@
         uploadImgErrorMsg: '', // 上传图片错误提示
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
-        maxLength: 1000,
+        maxLength: 10,
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
         // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
@@ -134,6 +134,7 @@
           if (this.countCount > this.maxLength) {
             this.outRange = true
             this.editorContent = newValue.substring(0, newValue.gbIndex(this.maxLength) + 1)
+            document.getElementsByClassName('content')[1].selectStart = 5
           } else {
             this.outRange = false
           }
@@ -152,7 +153,7 @@
         console.log(e)
       },
       queryInfo () {
-        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.date = res.data.startTime

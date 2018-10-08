@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     init () {
-      this.$config({ loading: true }).$get(brandService.GET_SITE_DATA, {
+      this.$config({loading: true}).$get(brandService.GET_SITE_DATA, {
         activityId: this.$route.params.id
       }).then(res => {
         if (res.data.enabled === 'Y') {
@@ -151,7 +151,7 @@ export default {
       }
     },
     updateState () {
-      this.$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$config({handlers: [60706]}).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
@@ -160,6 +160,16 @@ export default {
           content: '保存成功',
           autoClose: 500
         })
+      }).catch((res) => {
+        if (res.code === 60706) {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this.enable = !this.enable
+        }
       })
     },
     showPreview (tid) {
@@ -167,7 +177,7 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
       }).then(res => {
