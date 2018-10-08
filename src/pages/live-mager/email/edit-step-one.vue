@@ -190,7 +190,7 @@ export default {
         if (!res.data.list) return
         this.emailList = res.data.list
         if (!this.email.emailInviteId) { // 如果不是编辑
-          this.email.content = this.emailList[0].content
+          this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
         }
       })
       // LiveHttp.queryEmailTemplateList().then((res) => {
@@ -299,7 +299,7 @@ export default {
         handleClick: (e) => {
           if (e.action === 'confirm') {
             this.email.emailTemplateId = this.emailList[idx].emailTemplateId
-            this.email.content = this.emailList[idx].content
+            this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
           }
         }
       })
@@ -317,7 +317,7 @@ export default {
             for (let i = 0; i < this.emailList.length; i++) {
               const emailObj = this.emailList[i]
               if (emailObj.emailTemplateId === this.email.emailTemplateId) {
-                this.email.content = emailObj.content
+                this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
                 break
               }
             }
