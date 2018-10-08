@@ -575,6 +575,7 @@
             this.queryPlayBackList()
           })
         } else {
+          this.sdkParam.fileName = ''
           this.recordIdError = ''
           this.outLineError = ''
           this.newTitleError = ''

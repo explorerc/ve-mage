@@ -33,6 +33,8 @@
                     class="fs-status">{{scope.row.statusName}}</span>
               <span v-if="scope.row.status=='AWAIT'"
                     class="dd-status">{{scope.row.statusName}}</span>
+              <span v-if="scope.row.status=='FAIL'"
+                    class="del-status">{{scope.row.statusName}}</span>
               <!--DRAFT: '草稿',-->
               <!--SEND: '已发送',-->
               <!--AWAIT: '等待发送'-->
@@ -293,6 +295,10 @@ export default {
 
 .dd-status {
   color: #ff8b0e;
+}
+
+.del-status{
+  color: #FC5659;
 }
 
 .email-box {

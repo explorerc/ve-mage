@@ -7,7 +7,7 @@ const config = {
     PUBLIC_PATH: '//localhost:2333/',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
     MOBILE_HOST: '//localhost:8866/m/',
-    PC_HOST: '//localhost:6688/watch/',
+    PC_HOST: '//localhost:6688/webinar/',
     proxyTable: {
       '/api': {
         target: 'http://dev-api-zhike.vhall.main',
@@ -23,8 +23,9 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//dev-zhike.vhall.com/'
-    // PUBLIC_PATH: '//127.0.0.1:8088/'
+    PUBLIC_PATH: '//dev-zhike.vhall.com/',
+    MOBILE_HOST: '//dev-zhike.vhall.com/m/',
+    PC_HOST: '//dev-zhike.vhall.com/webinar/'
   },
   test: {
     BUILD_ENV: 'test',
@@ -33,7 +34,7 @@ const config = {
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
     PUBLIC_PATH: '//test-zhike.vhall.com/',
     MOBILE_HOST: '//test-zhike.vhall.com/m/',
-    PC_HOST: '//test-zhike.vhall.com/watch/'
+    PC_HOST: '//test-zhike.vhall.com/webinar/'
   },
   prod: {
     BUILD_ENV: 'prod',
