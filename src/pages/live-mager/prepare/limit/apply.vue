@@ -128,6 +128,7 @@
         },
         questionId: '',
         canPaas: true,
+        canSave: true,
         saveData: {}
       }
     },
@@ -232,7 +233,7 @@
         this.quesData.push(obj)
       },
       getLimit () {
-        this.$config({ loading: true }).$get(activityService.GET_LIMIT, {
+        this.$config({loading: true}).$get(activityService.GET_LIMIT, {
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
@@ -269,13 +270,40 @@
           if (item.type === 'email') {
             item.verification = 'Y'
           }
+          if (item.type === 'select') {
+            if (!item.detail.length) {
+              this.$messageBox({
+                header: '提示',
+                content: '请添加下拉选项',
+                autoClose: 10,
+                confirmText: '知道了'
+              })
+              this.canSave = false
+            } else {
+              item.detail.forEach(ele => {
+                if (!ele.value.length) {
+                  this.$messageBox({
+                    header: '提示',
+                    content: '下拉选项不能为空',
+                    autoClose: 10,
+                    confirmText: '知道了'
+                  })
+                  this.canSave = false
+                } else {
+                  this.canSave = true
+                }
+              })
+            }
+          }
         })
         this.$nextTick(() => {
-          this.saveLimitfn(this.saveData)
+          if (this.canSave) {
+            this.saveLimitfn(this.saveData)
+          }
         })
       },
       saveLimitfn (data) {
-        this.$config({ handlers: [60704] }).$post(activityService.SAVE_LIMIT, data).then((res) => {
+        this.$config({handlers: [60704]}).$post(activityService.SAVE_LIMIT, data).then((res) => {
           this.$toast({
             content: '设置成功',
             position: 'center'
@@ -316,7 +344,7 @@
           'submodule': 'APPOINT',
           'enabled': ref ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           if (res.code === 200) {
             if (ref) {
               let obj = {

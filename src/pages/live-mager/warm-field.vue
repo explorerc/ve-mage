@@ -67,7 +67,7 @@
 
   export default {
     name: 'warm-field',
-    components: { VeUploadImage, VeUploadVideo },
+    components: {VeUploadImage, VeUploadVideo},
     data () {
       return {
         warm: {
@@ -318,6 +318,7 @@
             handleClick: (e) => {
               if (e.action === 'confirm') {
                 this.canPass = false
+                this.uploadVideoErrorMsg = ''
                 this.warm.recordId = ''
                 this.warm.filename = ''
                 this.sdkPlayParam.recordId = ''
@@ -331,6 +332,7 @@
       },
       errorUploadVideo (msg, file) {
         this.sdkParam.fileName = file.name
+        this.uploadVideoErrorMsg = msg
       },
       uploadError (data) {
         this.uploadImgErrorMsg = data.msg
@@ -342,7 +344,7 @@
           submodule: 'WARMUP',
           enabled: type ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           this.$toast({
             content: '设置成功'
           })

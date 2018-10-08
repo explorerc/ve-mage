@@ -33,6 +33,8 @@
                     class="fs-status">{{scope.row.statusName}}</span>
               <span v-if="scope.row.status=='AWAIT'"
                     class="dd-status">{{scope.row.statusName}}</span>
+              <span v-if="scope.row.status=='FAIL'"
+                    class="del-status">{{scope.row.statusName}}</span>
               <!--DRAFT: '草稿',-->
               <!--SEND: '已发送',-->
               <!--AWAIT: '等待发送'-->
@@ -108,7 +110,7 @@
 <script>
 import activityService from 'src/api/activity-service'
 import VePagination from 'src/components/ve-pagination'
-import { mapMutations } from 'vuex'
+import {mapMutations} from 'vuex'
 import * as types from '../../../store/mutation-types'
 
 const handleType = {
@@ -125,7 +127,7 @@ const statusType = {
 }
 export default {
   name: 'index',
-  components: { VePagination },
+  components: {VePagination},
   data () {
     return {
       pageSize: 10,
@@ -176,7 +178,7 @@ export default {
     },
     queryEmailListById () {
       // this.loading = true
-      this.$config({ loading: true }).$get(activityService.GET_EMAIL_LIST, {
+      this.$config({loading: true}).$get(activityService.GET_EMAIL_LIST, {
         activityId: this.activeId,
         pageSize: this.pageSize,
         page: this.currentPage
@@ -293,6 +295,10 @@ export default {
 
 .dd-status {
   color: #ff8b0e;
+}
+
+.del-status{
+  color: #FC5659;
 }
 
 .email-box {
