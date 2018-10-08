@@ -231,6 +231,7 @@ export default {
         'description': this.description
       }
       this.$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+        this.canPass = true
         this.$messageBox({
           header: '提示',
           content: '保存成功',

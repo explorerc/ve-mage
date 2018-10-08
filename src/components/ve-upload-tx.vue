@@ -32,7 +32,7 @@
 
   export default {
     name: 've-upload-tx',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         imgHost: '',

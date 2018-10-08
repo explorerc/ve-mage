@@ -186,6 +186,7 @@ export default {
       uploadLogoErrorMsg: '', // 上传图片错误提示
       uploadShareErrorMsg: '', // 上传图片错误提示
       avatar: '',
+      canPass: true,
       activityTitle: '', // 活动标题
       errorTips: '' // 错误提示
     }
@@ -253,6 +254,10 @@ export default {
   },
   /* 路由守卫，离开当前页面之前被调用 */
   beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return
+    }
     this.$messageBox({
       header: '提示',
       width: '400px',
@@ -270,6 +275,7 @@ export default {
   },
   methods: {
     uploadBgSuccess (data) {
+      this.canPass = false
       this.bgImgUrl = data.name
     },
     uploadBgError (data) {
@@ -278,6 +284,7 @@ export default {
       this.bgImgUrl = ''
     },
     uploadLogoSuccess (data) {
+      this.canPass = false
       this.logoImgUrl = data.name
     },
     uploadLogoError (data) {
@@ -285,6 +292,7 @@ export default {
       this.logoImgUrl = ''
     },
     uploadShareSuccess (data) {
+      this.canPass = false
       this.shareImgUrl = data.name
     },
     uploadShareError (data) {
@@ -298,6 +306,7 @@ export default {
         'logoUrl': this.logoImgUrl
       }
       this.$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+        this.canPass = true
         this.$messageBox({
           header: '提示',
           content: '保存成功',
@@ -333,6 +342,7 @@ export default {
         data.page.push('guide_route')
       }
       this.$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+        this.canPass = true
         this.$messageBox({
           header: '提示',
           content: '保存成功',
@@ -347,6 +357,7 @@ export default {
       })
     },
     shareTitleFocus () {
+      this.canPass = false
       this.errorTips = ''
     }
   }
@@ -502,7 +513,7 @@ export default {
     .com-input {
       width: 440px;
     }
-    .error-msg{
+    .error-msg {
       font-size: 12px;
     }
     .el-textarea {
@@ -600,8 +611,8 @@ export default {
     color: #fff;
     margin-left: 80px;
   }
-  .v-red{
-    color: #FC5659;
+  .v-red {
+    color: #fc5659;
     padding: 4px 10px 0 0;
     vertical-align: middle;
   }
