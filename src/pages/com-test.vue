@@ -1,62 +1,75 @@
 <template>
   <div>
     <router-link to="/entry">bbbbb</router-link>
-    <com-dialog
-    :visible.sync="show1"
-    header="提示"
-
-    center
-    :beforeClose="beforeClose"
-    @close="close"
-    @closed="closed"
-    >
-    <div v-if="at===1">
-      <com-input type="input"></com-input>
-    </div>
-    <div v-else-if="at===2">
-      <com-input type="password"></com-input>
-    </div>
-      <div class="test-footer" slot="footer">
+    <com-dialog :visible.sync="show1"
+                header="提示"
+                center
+                :beforeClose="beforeClose"
+                @close="close"
+                @closed="closed">
+      <div v-if="at===1">
+        <com-input type="input"></com-input>
+      </div>
+      <div v-else-if="at===2">
+        <com-input type="password"></com-input>
+      </div>
+      <div class="test-footer"
+           slot="footer">
         <com-button>取消</com-button>
-        <com-button type="primary" :loading="true" @click="ttt">确定</com-button>
+        <com-button type="primary"
+                    :loading="true"
+                    @click="ttt">确定</com-button>
       </div>
     </com-dialog>
     <button @click="testCom">test1</button>
     <button @click="testCom1">test11</button>
-   <div class="test-wrap" v-ComLoading="show1" com-loading-text="拼命加载中">
-    <button @click="testFun">test2</button>
-   </div>
-    <com-notification v-show="show" :header="header" :content="content">
-        <div slot="header">我是header</div>
-        <p>我是content</p>
+    <div class="test-wrap"
+         v-ComLoading="show1"
+         com-loading-text="拼命加载中">
+      <button @click="testFun">test2</button>
+    </div>
+    <com-notification v-show="show"
+                      :header="header"
+                      :content="content">
+      <div slot="header">我是header</div>
+      <p>我是content</p>
     </com-notification>
     <div class="test-wrap">
-      <com-input :value.sync="outValue" placeholder="请输入公司名称" type="textarea" autosize :maxLength="50"></com-input>
+      <com-input :value.sync="outValue"
+                 placeholder="请输入公司名称"
+                 type="textarea"
+                 autosize
+                 :maxLength="50"></com-input>
     </div>
     <div class="test-wrap">
-      <com-upload
-      accept="png|jpg|jpeg|bmp|gif|mp4"
-      uploadTxt="xxx"
-      actionUrl="/api/upload/image"
-      inputName="file"
-      :fileSize="fileSize"
-      :exParams="exParams"
-
-      @selected="uploadSelected"
-      @progress="uploadProgress"
-      @load="uploadLoad"
-      @error="uploadError"
-      @over="uploadOver"
-      >
-      <div class="test-upload">我是自定义区域</div>
+      <com-upload accept="png|jpg|jpeg|bmp|gif|mp4"
+                  uploadTxt="xxx"
+                  actionUrl="/api/upload/image"
+                  inputName="file"
+                  :fileSize="fileSize"
+                  :exParams="exParams"
+                  @selected="uploadSelected"
+                  @progress="uploadProgress"
+                  @load="uploadLoad"
+                  @error="uploadError"
+                  @over="uploadOver">
+        <div class="test-upload">我是自定义区域</div>
       </com-upload>
     </div>
-    <div class="test-wrap" style="width:600px;height:400px;">
+    <div class="test-wrap"
+         style="width:600px;height:400px;">
       <com-tabs :value.sync="tabValue">
-       <com-tab label="用户管理" :index="1" >
-       <div ><com-input :value.sync="outValue"></com-input><span>{{outValue}}</span></div></com-tab>
-       <com-tab label="配置管理" :index="2" >配置管理的内容详情</com-tab>
-       <com-tab label="xxxx" :index="3" >sdasdasdds</com-tab>
+        <com-tab label="用户管理"
+                 :index="1">
+          <div>
+            <com-input :value.sync="outValue"></com-input>
+            <span>{{outValue}}</span>
+          </div>
+        </com-tab>
+        <com-tab label="配置管理"
+                 :index="2">配置管理的内容详情</com-tab>
+        <com-tab label="xxxx"
+                 :index="3">sdasdasdds</com-tab>
       </com-tabs>
     </div>
   </div>
@@ -64,7 +77,7 @@
 
 <script>
 // import testService from 'src/api/test'
-import {Toast} from 'components/common/notification'
+import { Toast } from 'components/common/notification'
 
 export default {
   data () {

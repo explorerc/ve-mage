@@ -123,6 +123,7 @@ export default {
   },
   watch: {
     innerValue (value) {
+      debugger
       if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
