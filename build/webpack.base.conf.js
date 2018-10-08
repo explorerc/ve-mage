@@ -72,8 +72,8 @@ const webpackConfig = {
           {
             loader: 'url-loader',
             options: {
-              name: subPath('img/[name].[ext]'),
-              limit: 5000 // 单位是byte
+              name: subPath('img/[name].[ext]')
+              // limit: 5000 // 单位是byte
             }
           }
         ],
@@ -85,7 +85,7 @@ const webpackConfig = {
           {
             loader: 'url-loader',
             options: {
-              limit: 5000,
+              // limit: 5000,
               name: subPath('media/[name].[ext]')
             }
           }
@@ -98,7 +98,7 @@ const webpackConfig = {
           {
             loader: 'url-loader',
             options: {
-              limit: 5000,
+              // limit: 5000,
               name: subPath('fonts/[name].[ext]')
             }
           }
