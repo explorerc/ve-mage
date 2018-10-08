@@ -433,7 +433,11 @@ export default {
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 
-.edit-msg-page {
+.edit-msg-page /deep/ {
+  .com-input .limit.area {
+    bottom: 7px;
+    right: 7px;
+  }
   // min-height: 730px;
   position: relative;
   .select-receiver {

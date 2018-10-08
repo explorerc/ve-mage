@@ -13,7 +13,7 @@
           </el-table-column>
           <el-table-column prop="time" label="发送时间" width="180">
           </el-table-column>
-          <el-table-column prop="templateId" label="发送数量" width="150">
+          <el-table-column prop="sendCount" label="发送数量" width="150">
           </el-table-column>
           <!-- <el-table-column label="观众分组" width="200" prop='groupId'>
           </el-table-column> -->
@@ -29,7 +29,7 @@
             <template slot-scope="scope">
               <div class="tool-box">
                 <span ><router-link :to="{ name:'wechatOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
-                <span class='del-btn' @click="del(scope.row.inviteId,scope.$index)">删除</span>
+                <span class='del-btn' v-if='type === "PREPARE"' @click="del(scope.row.inviteId,scope.$index)">删除</span>
                 <!-- <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
                 <div class="tool" v-if='moreIdx == scope.$index ? true : false'>
                   <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
@@ -64,6 +64,7 @@
 </template>
 <script>
   import noticeService from 'src/api/notice-service'
+  import activityService from 'src/api/activity-service'
   import VePagination from 'src/components/ve-pagination'
   export default {
     data () {
@@ -92,11 +93,13 @@
         delConfirm: false,
         delId: '',
         delIdx: '',
+        type: '',
         loading: false
       }
     },
     created () {
       this.queryList()
+      this.queryInfo()
     },
     methods: {
       switchAutosend (idx, data) {
@@ -162,6 +165,13 @@
         //   console.log(e)
         //   this.loading = false
         // })
+      },
+      queryInfo () {
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
+          id: this.$route.params.id
+        }).then((res) => {
+          this.type = res.data.status
+        })
       },
       currentChange (e) {
         this.queryData.page = e

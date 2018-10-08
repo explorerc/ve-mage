@@ -75,7 +75,7 @@ export default {
     }
   },
   created () {
-    this.getCount()
+    this.getCount(this.type)
   },
   methods: {
     closeModal (e) {
@@ -103,17 +103,12 @@ export default {
         }
       }
     },
-    getCount () {
+    getCount (type) {
       this.$get(noticeService.GET_MSG_LIMIT, {
-        type: 'sms'
+        type: type === 'SMS' ? 'sms' : 'wechat'
       }).then((res) => {
         this.limitCount = res.data
       })
-      // createHttp.msgLimit('sms').then((res) => {
-      //   if (res.code === 200) {
-      //     this.limitCount = res.data
-      //   }
-      // }).catch((e) => { console.log(e) })
     },
     sendTestmsg () {
       const data = {

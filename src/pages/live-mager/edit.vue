@@ -107,7 +107,7 @@
         uploadImgErrorMsg: '', // 上传图片错误提示
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
-        maxLength: 10,
+        maxLength: 1000,
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
         // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
@@ -366,11 +366,8 @@
         color: $color-error;
       }
     }
-    .error-tips {
-      color: $color-error;
-      display: block;
-      position: absolute;
-      font-size: 12px;
+    .from-content .vue-html5-editor .content img {
+      width: 100%;
     }
   }
 }

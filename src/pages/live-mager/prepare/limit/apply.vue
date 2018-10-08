@@ -308,6 +308,7 @@
             content: '设置成功',
             position: 'center'
           })
+          this.canPaas = true
         }).catch(res => {
           this.$messageBox({
             header: '提示',

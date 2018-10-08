@@ -283,57 +283,57 @@ export default {
   cursor: pointer;
 }
 
-.overview-box {
-  width: 375px;
-  height: 500px;
-  border: 1px solid #ccc;
-  position: absolute;
-  top: 100px;
-  right: 100px;
-  .header,
-  .footer {
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    background: #000000;
-    color: #fff;
-  }
-  .footer {
-    background: #fff;
-    color: #000000;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #ccc;
-  }
-  .msg-box {
-    width: 300px;
-    height: 400px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px auto;
-    position: relative;
-    .msg-title {
-      text-align: left;
-      font-size: 20px;
-      span {
-        display: block;
-        text-align: left;
-        font-size: 14px;
-      }
-    }
-    p {
-      text-align: left;
-      margin: 10px 0px;
-    }
-    p.detal {
-      span {
-        color: #ccc;
-        display: inline-block;
-        text-align: left;
-      }
-    }
-  }
-}
+// .overview-box {
+//   width: 375px;
+//   height: 500px;
+//   border: 1px solid #ccc;
+//   position: absolute;
+//   top: 100px;
+//   right: 100px;
+//   .header,
+//   .footer {
+//     text-align: center;
+//     height: 50px;
+//     line-height: 50px;
+//     background: #000000;
+//     color: #fff;
+//   }
+//   .footer {
+//     background: #fff;
+//     color: #000000;
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     border-top: 1px solid #ccc;
+//   }
+//   .msg-box {
+//     width: 300px;
+//     height: 400px;
+//     border: 1px solid #ccc;
+//     padding: 20px;
+//     margin: 20px auto;
+//     position: relative;
+//     .msg-title {
+//       text-align: left;
+//       font-size: 20px;
+//       span {
+//         display: block;
+//         text-align: left;
+//         font-size: 14px;
+//       }
+//     }
+//     p {
+//       text-align: left;
+//       margin: 10px 0px;
+//     }
+//     p.detal {
+//       span {
+//         color: #ccc;
+//         display: inline-block;
+//         text-align: left;
+//       }
+//     }
+//   }
+// }
 </style>

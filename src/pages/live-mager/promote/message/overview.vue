@@ -97,7 +97,6 @@
           <com-phone :titleValue='title'
                      :date='date'
                      :wxContent='msgContent'
-                     :webinarTime='webinarTime'
                      :msgTag='msgTag'
                      :webinarName='webinarName'></com-phone>
         </div>
@@ -120,6 +119,7 @@
 <script>
 import {formatDate} from 'src/assets/js/date'
 import noticeService from 'src/api/notice-service'
+import activityService from 'src/api/activity-service'
 import comPhone from '../com-phone'
 export default {
   data () {
@@ -139,6 +139,7 @@ export default {
     }
   },
   created () {
+    this.queryInfo()
     this.$config({loading: true}).$get(noticeService.GET_QUERY_MSG, {
       inviteId: this.id
     }).then((res) => {
@@ -162,8 +163,12 @@ export default {
         this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
       })
     },
-    webinarStatus (res) {
-      this.type = res
+    queryInfo () {
+      this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
+        id: this.$route.params.id
+      }).then((res) => {
+        this.type = res.data.status
+      })
     }
   },
   components: {

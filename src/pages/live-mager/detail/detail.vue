@@ -277,7 +277,8 @@
   </template>
 
 <template v-if="dataPromote[0].desc === 'PREPARE'">
-  预约
+  <template v-if="isAppoint">报名</template>
+  <template v-else>预约</template>
 </template>
 
 <template v-if="dataPromote[0].desc === 'LIVING'">
@@ -294,7 +295,9 @@
   </template>
 
 <template v-if="dataPromote[0].desc === 'PREPARE'">
-  预约
+  <template v-if="isAppoint">报名</template>
+  <template v-else>预约</template>
+
 </template>
 
 <template v-if="dataPromote[0].desc === 'LIVING'">
@@ -411,7 +414,7 @@
                     </template>
 
 <template v-else>
-  最精简的活动品牌页
+  打造活动品牌聚合页面
 </template>
                   </span>
                 </div>
@@ -538,6 +541,7 @@ export default {
       countdownTime: '', // 倒计时 秒
       countDownstatus: false,
       inCountdown: false,
+      isAppoint: false,
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
@@ -579,10 +583,11 @@ export default {
         })
         return false
       }
-      if (this.isToday(this.countdownTime * 1)) { // 在24小时之外
+      if (this.isToday(this.startTime)) { // 在24小时之外
         this.inCountdown = true
         return false
       }
+
       this.judgePublish()
     },
     isToday (str) {
@@ -590,9 +595,9 @@ export default {
         // 今天
         console.log('当天')
         return false
-      } else if (new Date(str) < new Date()) {
+      } else {
         // 之前
-        console.log('以前的日期')
+        console.log('非当天')
         return true
       }
     },
@@ -696,6 +701,7 @@ export default {
         this.dataPromote = res.data.promote
         this.dataRecord = res.data.record
         this.isPublished = res.data.activity.published === 'Y'
+        this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
         switch (res.data.activity.status) {
           case ('LIVING'):
             this.status = '直播'

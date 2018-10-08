@@ -432,7 +432,11 @@
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 
-.edit-wx-page {
+.edit-wx-page /deep/ {
+  .com-input .limit.area {
+    bottom: 7px;
+    right: 7px;
+  }
   // height: 730px;
   position: relative;
   .select-receiver {

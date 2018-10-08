@@ -436,6 +436,7 @@ export default {
       titleValue: '',
       firstSel: false,
       secondSel: false,
+      PC_HOST: process.env.PC_HOST,
       hourOptions: [{
         value: 1,
         label: '开播前1小时'
@@ -615,7 +616,7 @@ export default {
         this.tplData.hostName = res.data.hostName
         this.tplData.firstCount = res.data.firstCount
         this.tplData.secondCount = res.data.secondCount
-        this.tplData.link = `wwww.baidu.com/${this.activityId}`
+        this.tplData.link = `${this.PC_HOST}/${this.activityId}`
       })
       // http.autoGetparams(this.activityId).then((res) => {
       //   console.log(res)
