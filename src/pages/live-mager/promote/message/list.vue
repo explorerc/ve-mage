@@ -152,7 +152,7 @@
         }
       },
       queryList () {
-        this.$config({ loading: true }).$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
+        this.$config({loading: true}).$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
           console.log(res)
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)

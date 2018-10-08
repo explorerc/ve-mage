@@ -141,7 +141,7 @@
         }
       },
       queryList () {
-        this.$config({ loading: true }).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
+        this.$config({loading: true}).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
