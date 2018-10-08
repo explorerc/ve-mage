@@ -10,7 +10,7 @@ const config = {
     PC_HOST: '//localhost:6688/watch/',
     proxyTable: {
       '/api': {
-        target: 'http://dev-api-zhike.vhall.com',
+        target: 'http://dev-api-zhike.vhall.main',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
