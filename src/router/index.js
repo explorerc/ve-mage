@@ -23,7 +23,7 @@ router.beforeEach((to, from, next) => {
         next('/liveMager/list')
       } else {
         vue
-          .$config({loading: true, handlers: true})
+          .$config({ loading: true, handlers: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
         return false
       } else {
         vue
-          .$config({loading: true, handlers: true})
+          .$config({ loading: true, handlers: true })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             if (res.data.hasPassword) {
@@ -76,7 +76,10 @@ router.beforeResolve((to, from, next) => {
   next()
   if (router.app) {
     router.app.$nextTick(() => {
-      document.querySelector('.main-container').scrollTop = to.meta.scrollTop || 0
+      if (document.querySelector('.main-container')) {
+        document.querySelector('.main-container').scrollTop =
+          to.meta.scrollTop || 0
+      }
     })
   }
 })
