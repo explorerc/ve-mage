@@ -21,6 +21,6 @@ export default {
   GET_PAAS_SDK_INFO: '/common/paas/create-access-token',
   // 获取参会信息
   GET_REG_ACTIVITY: '/frontend/user/reg-activity',
-  // 获取参会SDK
-  GET_REG_SDK_INFO: '/frontend/live/sdk-token'
+  // 获取聊天频道token
+  GET_REG_SDK_INFO: '/manage/channel/create-channel-token'
 }

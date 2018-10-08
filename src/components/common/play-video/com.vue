@@ -38,6 +38,11 @@
         immediate: true
       }
     },
+    beforeDestroy () {
+      if (window.VhallPlayer) {
+        window.VhallPlayer.destory()
+      }
+    },
     methods: {
       closePlay () {
         this.$emit('close')
