@@ -65,7 +65,7 @@
 <script>
 import activityService from 'src/api/activity-service'
 import VeHtml5Editer from 'src/components/ve-html5-editer'
-import {mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
 
 export default {
@@ -90,7 +90,7 @@ export default {
       PC_HOST: location.protocol + process.env.PC_HOST
     }
   },
-  components: {VeHtml5Editer},
+  components: { VeHtml5Editer },
   computed: mapState('liveMager', {
     emailInfo: state => state.emailInfo
   }),
@@ -107,7 +107,7 @@ export default {
   watch: {
     emailInfo: {
       handler (newVal) {
-        this.email = {...this.email, ...newVal}
+        this.email = { ...this.email, ...newVal }
       },
       immediate: true
     },
@@ -254,7 +254,7 @@ export default {
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
         // 回写邮件id
         if (!this.email.emailInviteId) {
-          this.$router.replace({query: {email: res.data.emailInviteId}})
+          this.$router.replace({ query: { email: res.data.emailInviteId } })
         }
         this.email.emailInviteId = res.data.emailInviteId
         this.email.title = res.data.title
