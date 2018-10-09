@@ -46,25 +46,29 @@
                 <div class="clearfix"
                      style="padding-left: 30px;">
                   <template v-if="defaultLogoImg">
-                    <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                    <img :src="defaultLogoImg"
+                         alt="logo"
+                         class="v-logo pull-left">
                   </template>
                   <div class="pull-left">
                     <p class="v-live-title">
                       {{activityTitle}}
                     </p>
-                    <img src="../../assets/image/mac-icon@2x.png" alt="" class="v-pc-icon">
-                  </div>
-                  </div>
-                  <div class="v-show-content">
+                    <img src="../../assets/image/mac-icon@2x.png"
+                         alt=""
+                         class="v-pc-icon">
                   </div>
                 </div>
-                <p class="v-preview">品牌预览</p>
+                <div class="v-show-content">
+                </div>
               </div>
+              <p class="v-preview">品牌预览</p>
             </div>
-            <button @click='brandClick'
-                    class='primary-button'>
-              保存
-            </button>
+          </div>
+          <button @click='brandClick'
+                  class='primary-button'>
+            保存
+          </button>
         </com-tab>
         <com-tab label="分享"
                  :index="2">
@@ -115,7 +119,8 @@
                 <p class="v-info-label pull-left">
                   应用页面：
                 </p>
-                <p class="v-info pull-left" style="padding-top: 6px;">
+                <p class="v-info pull-left"
+                   style="padding-top: 6px;">
                   <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
                   <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
@@ -133,14 +138,18 @@
                       {{shareIntroduction}}
                     </div>
                     <template v-if="defaultShareImg">
-                      <img :src="defaultShareImg" alt="分享图片" class="v-show-img">
+                      <img :src="defaultShareImg"
+                           alt="分享图片"
+                           class="v-show-img">
                     </template>
                   </div>
-                  </div>
-                  <img :src="avatarImg" alt="头像" class="v-avatar pull-left">
+                </div>
+                <img :src="avatarImg"
+                     alt="头像"
+                     class="v-avatar pull-left">
               </div>
-                  <p class="v-preview">预览</p>
-                  <!-- <div class="v-title">
+              <p class="v-preview">预览</p>
+              <!-- <div class="v-title">
                 分享到朋友圈
               </div>
               <div class="v-share-friend-circle clearfix">
@@ -153,12 +162,12 @@
                   </p>
                 </div>
               </div> -->
-                </div>
-              </div>
-              <button @click='shareClick'
-                      class='primary-button v-share-button'>
-                保存
-              </button>
+            </div>
+          </div>
+          <button @click='shareClick'
+                  class='primary-button v-share-button'>
+            保存
+          </button>
         </com-tab>
       </com-tabs>
     </div>
@@ -476,7 +485,7 @@ export default {
     .v-live-title {
       font-size: 16px;
       transform: scale(0.5);
-      -webkit-transform-origin: top left;
+      transform-origin: top left;
       color: #fff;
     }
     .v-pc-icon {
@@ -495,7 +504,6 @@ export default {
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
-        background: url('~assets/image/pc_content@2x.png') center center;
         background-size: cover;
         position: relative;
       }
