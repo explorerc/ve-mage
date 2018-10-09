@@ -100,7 +100,7 @@ export default function () {
         list: [{
           type: 'left',
           content: `<span style="font-size: 32px;">大会简介</span><div><span style="font-size: 32px;"><br></span><div><br></div><div><span style="font-size: 16px;">世界互联网内容营销会议及博览会是一个可以让您在内容营销行业中学习和与最优秀和最聪明人士建立联系的活动。您将获得所需的所有材料，以便将内容营销策略反馈给您的团队以及实施内容营销计划，从而拓展您的业务并激励您的受众。</span><br></div><div><br></div><div><span style="font-size: 40px;"><font color="#009db5">___</font></span></div><div style="line-height: 1;"><br></div><div><span style="font-size: 18px;">2018年9月8日-12日 上午9:00</span><br></div><div><span style="font-size: 18px;">中国北京国家会议中心</span><br></div></div>`,
-          img: require('assets/image/tp_bg5.png'),
+          img: require('assets/image/tp_bg5.jpg'),
           btn: {}
         }]
       }
