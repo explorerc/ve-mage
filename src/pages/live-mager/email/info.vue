@@ -74,7 +74,7 @@
 
 <script>
 import activityService from 'src/api/activity-service'
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import * as types from '../../../store/mutation-types'
 
 const statusType = {
@@ -107,7 +107,7 @@ export default {
   watch: {
     emailInfo: {
       handler (newVal) {
-        this.email = { ...newVal }
+        this.email = {...newVal}
       },
       immediate: true
     }
