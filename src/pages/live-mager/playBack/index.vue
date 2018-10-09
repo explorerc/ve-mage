@@ -568,7 +568,7 @@
             activityId: this.activityId,
             title: this.newTitle,
             type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
-            link: this.outLineLink,
+            link: this.outLineLink.replace('http://', location.protocol + '//'),
             video: this.recordId
           }).then((res) => {
             this.navIdx = 1
