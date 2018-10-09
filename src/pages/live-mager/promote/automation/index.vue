@@ -616,7 +616,7 @@ export default {
         this.tplData.hostName = res.data.hostName
         this.tplData.firstCount = res.data.firstCount
         this.tplData.secondCount = res.data.secondCount
-        this.tplData.link = `${this.PC_HOST}/${this.activityId}`
+        this.tplData.link = `https:${this.PC_HOST}${this.activityId}`
       })
       // http.autoGetparams(this.activityId).then((res) => {
       //   console.log(res)

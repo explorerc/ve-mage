@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-step-box">
+  <div class="edit-step-box" @keydown="canPass = false">
     <header class="email-header">
       <div class="back-btn"
            @click="goBack">
@@ -87,6 +87,7 @@ export default {
         desc: '',
         senderName: ''
       },
+      canPass: true,
       PC_HOST: location.protocol + process.env.PC_HOST
     }
   },
@@ -250,6 +251,7 @@ export default {
     },
     /* 保存草稿 */
     saveEmail () {
+      this.canPass = true
       this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
         // 回写邮件id
@@ -285,6 +287,7 @@ export default {
       this.$router.go(-1)
     },
     nextEmail () {
+      this.canPass = true
       this.storeEmailInfo(this.email)
       // 切换到下一步
       this.$router.push(`/liveMager/emailEditTwo/${this.email.activityId}?email=${this.email.emailInviteId}`)
@@ -325,6 +328,27 @@ export default {
         }
       })
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   }
 }
 </script>
@@ -332,169 +356,169 @@ export default {
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss" scoped>
-  @import 'assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 
-  .edit-step-box {
-    min-width: 1366px;
-    background-color: #fff;
-    color: #222;
-    .email-header {
-      height: 60px;
-      line-height: 60px;
-      background-color: #ffd021;
-      .icon-jiantou {
-        font-size: 22px;
-        vertical-align: -2px;
-      }
-      .back-btn {
-        display: inline-block;
-        padding: 0 15px;
-        background-color: #ffda51;
-        line-height: 40px;
-        border-radius: 4px;
-        font-size: 18px;
-        text-align: center;
-        margin-left: 20px;
-        margin-right: 10px;
-        &:hover {
-          cursor: pointer;
-          opacity: 0.9;
-          color: #4b5afe;
-        }
-      }
+.edit-step-box {
+  min-width: 1366px;
+  background-color: #fff;
+  color: #222;
+  .email-header {
+    height: 60px;
+    line-height: 60px;
+    background-color: #ffd021;
+    .icon-jiantou {
+      font-size: 22px;
+      vertical-align: -2px;
     }
-    .email-bottom {
-      height: 60px;
-      line-height: 60px;
-      border-top: 1px solid #e2e2e2;
-      box-sizing: border-box;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-      padding: 0 20px;
-      background-color: #fff;
-      button {
-        margin-top: 10px;
-      }
-      .margin-fl {
-        margin-right: 10px;
-      }
-    }
-    .border-box /deep/ {
-      height: calc(100vh - 120px);
-      .html-editer {
-        height: 100%;
-        .vue-html5-editor .content {
-          background-color: #f5f5f5;
-        }
-      }
-    }
-    .step-btns {
-      margin: 30px 30px 100px 30px;
-      .margin-fl {
-        margin: 0 20px;
-      }
-    }
-    .edit-content {
-      height: 100%;
-      margin: 0 0 20px 0;
-      .edit-content-temp {
-        height: calc(100% - 36px);
-        width: 356px;
-        margin-top: 36px;
-        padding: 0 1.8%;
-        box-sizing: border-box;
-        overflow-y: scroll;
-        .temp-title {
-          span {
-            line-height: 44px;
-            color: #555;
-          }
-        }
-        .temp-boxs {
-          margin-top: 20px;
-          .temp-item {
-            width: 124px;
-            margin: 10px 15px;
-            text-align: center;
-            &:nth-child(2n) {
-              margin-right: 0;
-            }
-            &:nth-child(2n + 1) {
-              margin-left: 0;
-            }
-            .temp-item-box {
-              height: 196px;
-              box-sizing: border-box;
-              border: solid 1px #e5e5e5;
-              border-radius: 4px;
-              background-size: cover;
-              &:hover {
-                cursor: pointer;
-                border-color: #4b5afe;
-                transition: border-color 0.2s;
-              }
-            }
-            .temp-item-title {
-              display: block;
-              padding-top: 5px;
-              font-size: 14px;
-              color: #555555;
-            }
-            &:nth-child(1) .temp-item-box {
-              background-image: url('../../../assets/image/email-01.jpg');
-            }
-            &:nth-child(2) .temp-item-box {
-              background-image: url('../../../assets/image/email-02.jpg');
-            }
-            &:nth-child(3) .temp-item-box {
-              background-image: url('../../../assets/image/email-03.jpg');
-            }
-            &:nth-child(4) .temp-item-box {
-              background-image: url('../../../assets/image/email-04.jpg');
-            }
-          }
-          .active {
-            .temp-item-box {
-              border-color: #4b5afe;
-            }
-          }
-        }
-      }
-      .edit-content-box /deep/ {
-        width: calc(100% - 356px);
-        height: 100%;
-        .vue-html5-editor {
-          height: 100%;
-          border: none;
-          border-right: solid 1px #e5e5e5;
-          border-radius: 0;
-          .content {
-            height: calc(100% - 37px);
-            max-height: calc(100% - 37px);
-            padding: 0;
-          }
-        }
-      }
-    }
-    .email-box {
-      width: 100%;
-      margin: 15px 10px;
-      .test-tip {
-        font-size: 14px;
+    .back-btn {
+      display: inline-block;
+      padding: 0 15px;
+      background-color: #ffda51;
+      line-height: 40px;
+      border-radius: 4px;
+      font-size: 18px;
+      text-align: center;
+      margin-left: 20px;
+      margin-right: 10px;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.9;
         color: #4b5afe;
-        line-height: 40px;
-      }
-      .com-input {
-        width: 390px;
-      }
-    }
-    .step-one-btns {
-      margin: 40px 10px -10px 10px;
-      span {
-        float: left;
-        line-height: 45px;
-        font-size: 14px;
-        color: #888;
       }
     }
   }
+  .email-bottom {
+    height: 60px;
+    line-height: 60px;
+    border-top: 1px solid #e2e2e2;
+    box-sizing: border-box;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    background-color: #fff;
+    button {
+      margin-top: 10px;
+    }
+    .margin-fl {
+      margin-right: 10px;
+    }
+  }
+  .border-box /deep/ {
+    height: calc(100vh - 120px);
+    .html-editer {
+      height: 100%;
+      .vue-html5-editor .content {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+  .step-btns {
+    margin: 30px 30px 100px 30px;
+    .margin-fl {
+      margin: 0 20px;
+    }
+  }
+  .edit-content {
+    height: 100%;
+    margin: 0 0 20px 0;
+    .edit-content-temp {
+      height: calc(100% - 36px);
+      width: 356px;
+      margin-top: 36px;
+      padding: 0 1.8%;
+      box-sizing: border-box;
+      overflow-y: scroll;
+      .temp-title {
+        span {
+          line-height: 44px;
+          color: #555;
+        }
+      }
+      .temp-boxs {
+        margin-top: 20px;
+        .temp-item {
+          width: 124px;
+          margin: 10px 15px;
+          text-align: center;
+          &:nth-child(2n) {
+            margin-right: 0;
+          }
+          &:nth-child(2n + 1) {
+            margin-left: 0;
+          }
+          .temp-item-box {
+            height: 196px;
+            box-sizing: border-box;
+            border: solid 1px #e5e5e5;
+            border-radius: 4px;
+            background-size: cover;
+            &:hover {
+              cursor: pointer;
+              border-color: #4b5afe;
+              transition: border-color 0.2s;
+            }
+          }
+          .temp-item-title {
+            display: block;
+            padding-top: 5px;
+            font-size: 14px;
+            color: #555555;
+          }
+          &:nth-child(1) .temp-item-box {
+            background-image: url('../../../assets/image/email-01.jpg');
+          }
+          &:nth-child(2) .temp-item-box {
+            background-image: url('../../../assets/image/email-02.jpg');
+          }
+          &:nth-child(3) .temp-item-box {
+            background-image: url('../../../assets/image/email-03.jpg');
+          }
+          &:nth-child(4) .temp-item-box {
+            background-image: url('../../../assets/image/email-04.jpg');
+          }
+        }
+        .active {
+          .temp-item-box {
+            border-color: #4b5afe;
+          }
+        }
+      }
+    }
+    .edit-content-box /deep/ {
+      width: calc(100% - 356px);
+      height: 100%;
+      .vue-html5-editor {
+        height: 100%;
+        border: none;
+        border-right: solid 1px #e5e5e5;
+        border-radius: 0;
+        .content {
+          height: calc(100% - 37px);
+          max-height: calc(100% - 37px);
+          padding: 0;
+        }
+      }
+    }
+  }
+  .email-box {
+    width: 100%;
+    margin: 15px 10px;
+    .test-tip {
+      font-size: 14px;
+      color: #4b5afe;
+      line-height: 40px;
+    }
+    .com-input {
+      width: 390px;
+    }
+  }
+  .step-one-btns {
+    margin: 40px 10px -10px 10px;
+    span {
+      float: left;
+      line-height: 45px;
+      font-size: 14px;
+      color: #888;
+    }
+  }
+}
 </style>

@@ -16,7 +16,8 @@
           </div>
         </div>
         <div class="btn-group">
-          <p>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
+          <p v-if="limitCount <= 0">今日限额已用完</p>
+          <p v-else>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
           <el-button class='primary-button fr'
                      @click='sendTest' :disabled="limitCount <= 0">立即发送</el-button>
         </div>
@@ -28,10 +29,12 @@
         <div class='content-box'>
           <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
           <div class="from-row">
-            <img :src="imgUrl" class='qrcode'>
+            <div class="qrcode" v-if="limitCount <= 0">今日限额已用完</div>
+            <img :src="imgUrl" class='qrcode' v-else>
             </div>
             <p>扫描二维码，授权后即可收到测试消息</p>
-            <p>微信限额：<span class='limit-count'>{{limitCount}}</span></p>
+            <p v-if="limitCount <= 0">今日限额已用完</p>
+            <p v-else>微信限额：<span class='limit-count'>{{limitCount}}</span></p>
           </div>
         </div>
       </div>
@@ -221,6 +224,8 @@ export default {
     .qrcode {
       width: 110px;
       height: 110px;
+      font-size: 12px;
+      line-height: 110px;
       display: block;
       margin: 20px auto;
       border: 1px solid rgba(226, 226, 226, 1);

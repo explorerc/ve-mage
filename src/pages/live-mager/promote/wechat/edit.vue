@@ -55,7 +55,7 @@
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
-          <el-button class='primary-button' @click="save">保存</el-button>
+          <el-button class='primary-button' @click="save" :disabled="saveDisabled">保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -175,7 +175,8 @@
         },
         isValided: false,
         canPass: true,
-        sdkParam: {}
+        sdkParam: {},
+        saveDisabled: false
       }
     },
     created () {
@@ -207,6 +208,8 @@
         this.tagIdx = idx
       },
       save () {
+        this.saveDisabled = true
+        this.canPass = true
         let data = {
           inviteId: this.inviteId,
           activityId: this.$route.params.id,

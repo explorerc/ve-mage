@@ -23,7 +23,7 @@
             <div class="overview-box">
               <div class="header">短信</div>
               <div class="msg-box">
-                【{{tag}}】您预约的<span class='webinar-name'> {{webinarName}} </span> 还有 {{countVal}} 就要开播了，快来观看吧,进入直播 {{link}}
+                【{{tag}}】您预约的<span class='webinar-name'> {{webinarName}} </span> 还有 {{countVal}} 就要开播了，快来观看吧。进入直播 {{link}}
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@
       <template v-if="type === 'SMS'">
         <template v-if="tpl === 1">【{{tag}}】您已预约成功 {{webinarName}}，活动时间为{{date}}，请按时参加活动。查看详情 {{link}}</template>
         <template v-if="tpl === 2">【{{tag}}】您已报名成功 {{webinarName}}，活动时间为{{date}}，请按时参加活动。查看详情 {{link}}</template>
-        <template v-if="tpl === 3">【{{tag}}】您预约的 {{webinarName}}  还有 {{countVal}} 就要开播了，快来观看吧,进入直播 {{link}}</template>
+        <template v-if="tpl === 3">【{{tag}}】您预约的 {{webinarName}}  还有 {{countVal}} 就要开播了，快来观看吧。进入直播 {{link}}</template>
         <template v-if="tpl === 4">【{{tag}}】您已成功订阅{{hostName}} 举办的活动，有关活动的最新资讯我们将第一时间给您推送。</template>
         <template v-if="tpl === 5">【{{tag}}】您关注的 {{webinarName}} 已设置回放，您可以点击链接回顾活动全程。查看详情 {{link}}</template>
       </template>
