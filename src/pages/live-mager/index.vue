@@ -173,6 +173,17 @@ export default {
         })
       }
     },
+    isToday (str) {
+      if (new Date(str).toDateString() === new Date().toDateString()) {
+        // 今天
+        console.log('当天')
+        return false
+      } else {
+        // 之前
+        console.log('非当天')
+        return true
+      }
+    },
     async getDetails (id) {
       await this.$get(activityService.GET_HOSTING, {
         activityId: this.jumpId
@@ -189,7 +200,7 @@ export default {
       this.$get(activityService.GET_DETAILS, {
         activityId: id
       }).then((res) => {
-        if (res.data.activity.countDown > 86400) {
+        if (this.isToday(res.data.activity.startTime)) { // 在24小时之外
           this.inCountdown = true
         } else {
           this.judgePublish()
