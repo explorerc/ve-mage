@@ -37,7 +37,7 @@
 
   export default {
     name: 've-upload-video',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         tipTxt: '',
@@ -82,6 +82,12 @@
     watch: {
       errorMsg (value) {
         this.errorTxt = value
+        if (!(this.percentVideo === 0 || this.percentVideo === 100)) {
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.errorTxt = ''
+          }, 2000)
+        }
       },
       title: {
         handler (val) {
