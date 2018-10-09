@@ -20,6 +20,7 @@
       return {
         playMsg: '',
         visible: false,
+        player: null,
         myVideoId: `myVideo_${Math.random()}`
       }
     },
@@ -39,8 +40,8 @@
       }
     },
     beforeDestroy () {
-      if (window.VhallPlayer) {
-        window.VhallPlayer.destory()
+      if (this.player) {
+        this.player.destory()
       }
     },
     methods: {
@@ -50,6 +51,7 @@
       initPage () {
         this.$nextTick(() => {
           if (!this.recordId) return
+          let _this = this
           window.Vhall.ready(() => {
             window.VhallPlayer.init({
               recordId: this.recordId,
@@ -57,6 +59,7 @@
               videoNode: this.myVideoId,
               complete: function () {
                 window.VhallPlayer.play()
+                _this.player = window.VhallPlayer
               },
               fail: (msg) => {
                 this.playMsg = `${msg}...`
