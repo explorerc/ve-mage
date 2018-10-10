@@ -152,7 +152,7 @@
         }
       },
       queryList () {
-        this.$config({ loading: true }).$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
+        this.$config({loading: true}).$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
           console.log(res)
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
@@ -179,7 +179,7 @@
         // })
       },
       queryInfo () {
-        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
           id: this.$route.params.id
         }).then((res) => {
           this.type = res.data.status
