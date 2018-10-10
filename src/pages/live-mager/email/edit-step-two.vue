@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-step-box">
+  <div class="edit-step-box" @keydown="canPass = false">
     <header class="email-header">
       <div class="back-btn"
            @click="goBack">
@@ -144,12 +144,12 @@
 <script>
 import VeMsgTips from 'src/components/ve-msg-tips'
 import activityService from 'src/api/activity-service'
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import * as types from '../../../store/mutation-types'
 
 export default {
   name: 'edit-step-two',
-  components: { VeMsgTips },
+  components: {VeMsgTips},
   data () {
     return {
       outValue: '',
@@ -157,11 +157,12 @@ export default {
       selectPersonShow: false,
       sendType: 'AUTO',
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      personList: [{id: '', name: '', count: 0, isChecked: false}],
+      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectedCount: 0,
       disabledBtn: false,
+      canPass: true,
       errorMsg: {
         title: '',
         content: '',
@@ -189,7 +190,7 @@ export default {
   watch: {
     emailInfo: {
       handler (newVal) {
-        this.email = { ...this.email, ...newVal }
+        this.email = {...this.email, ...newVal}
         this.sendType = this.email.planTime ? 'ONCE' : 'AUTO'
       },
       immediate: true
@@ -321,9 +322,10 @@ export default {
       // })
     },
     saveEmail () {
+      this.canPass = true
       this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
-        this.email = { ...this.email, ...res.data }
+        this.email = {...this.email, ...res.data}
         this.storeEmailInfo(this.email)
         this.$toast({
           header: `提示`,
@@ -346,6 +348,7 @@ export default {
       // })
     },
     sendEmail () {
+      this.canPass = true
       if (this.isTimer && !this.email.planTime) {
         this.errorMsg.planTime = '定时时间不能为空'
         this.disabledBtn = false
@@ -381,6 +384,7 @@ export default {
       }
     },
     send () {
+      this.canPass = true
       this.disabledBtn = true
       this.$nextTick(() => {
         if (this.sendType === 'AUTO') {
@@ -420,6 +424,27 @@ export default {
       this.storeEmailInfo(this.email)
       this.$router.go(-1)
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   }
 }
 </script>

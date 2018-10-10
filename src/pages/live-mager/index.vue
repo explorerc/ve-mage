@@ -68,7 +68,7 @@ import VePagination from 'src/components/ve-pagination'
 
 export default {
   name: 'index',
-  components: { LiveTable, VePagination },
+  components: {LiveTable, VePagination},
   data () {
     return {
       show: false,
@@ -80,15 +80,15 @@ export default {
       jumpId: '',
       startTime: '',
       optionsStates: [
-        { value: '', label: '全部' },
-        { value: 'PREPARE', label: '预告' },
-        { value: 'LIVING', label: '直播中' },
-        { value: 'FINISH', label: '已结束' },
-        { value: 'PLAYBACK', label: '回放' }
+        {value: '', label: '全部'},
+        {value: 'PREPARE', label: '预告'},
+        {value: 'LIVING', label: '直播中'},
+        {value: 'FINISH', label: '已结束'},
+        {value: 'PLAYBACK', label: '回放'}
       ],
       optionsOrder: [
-        { value: 'createTime', label: '按创建时间排序' },
-        { value: 'startTime', label: '按直播开始时间排序' }
+        {value: 'createTime', label: '按创建时间排序'},
+        {value: 'startTime', label: '按直播开始时间排序'}
       ],
       searchParams: {
         status: '',
@@ -173,6 +173,17 @@ export default {
         })
       }
     },
+    isToday (str) {
+      if (new Date(str).toDateString() === new Date().toDateString()) {
+        // 今天
+        console.log('当天')
+        return false
+      } else {
+        // 之前
+        console.log('非当天')
+        return true
+      }
+    },
     async getDetails (id) {
       await this.$get(activityService.GET_HOSTING, {
         activityId: this.jumpId
@@ -189,7 +200,7 @@ export default {
       this.$get(activityService.GET_DETAILS, {
         activityId: id
       }).then((res) => {
-        if (res.data.activity.countDown > 86400) {
+        if (this.isToday(res.data.activity.startTime)) { // 在24小时之外
           this.inCountdown = true
         } else {
           this.judgePublish()
@@ -223,7 +234,7 @@ export default {
     },
     queryList () {
       // this.loading = true
-      this.$config({ loading: true }).$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
+      this.$config({loading: true}).$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
         res.data.list.map((item, indx) => {
           if (item.imgUrl) {
             item.imgUrl = this.$imgHost + '/' + item.imgUrl

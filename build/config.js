@@ -1,5 +1,5 @@
 const config = {
-  buildDetail: true,
+  buildDetail: false,
   local: {
     BUILD_ENV: 'local',
     API_PATH: '/api',

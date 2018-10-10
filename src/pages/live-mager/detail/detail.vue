@@ -20,12 +20,12 @@
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <ol class='clearfix'>
           <li class='icon page'><i></i>
-            <router-link :to="`/site/${activityId}`">活动页面</router-link>
+            <router-link target="_blank" :to="`${this.PC_HOST}site/${activityId}`">活动页面</router-link>
           </li>
           <li class="icon link copy"
               @click="copy">
             <i></i>复制链接
-            <input type="text" :value="`${this.PC_HOST}/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            <input type="text" :value="`${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
           </li>
           <li class='icon offline offline'
               @click="offlineActive"
@@ -264,55 +264,31 @@
                   <span>自动化通知</span>
                   <span class='des'>
 <template v-if="isPublished">
-  <!-- 未设置未开启 -->
-  <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === false">设置自动化活动通知提醒
+  <!-- 未开启 -->
+  <template v-if="dataPromote[0].switch === false">已开启</template>
+  <!-- 已开启 -->
+  <!-- <template v-if="dataPromote[0].switch === true">已开启</template> -->
+  <!-- 已开启 -->
+  <template v-if="dataPromote[0].switch === true">
+    <template v-if="dataPromote[0].desc === 'PREPARE'">
+      <template v-if="isAppoint">报名</template>
+      <template v-else>预约</template>
+    </template>
+    <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+    <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
   </template>
-                      <!-- 未设置已开启 -->
-<template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === true">
-  暂未设置
-</template>
-                      <!-- 已设置已开启 -->
-<template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === true">
-  <template v-if="dataPromote[0].desc === 'NONE'">暂未设置
+  <!-- 已设置未开启 -->
+  <template v-if="dataPromote[0].switch === false">
+    <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
+    <template v-if="dataPromote[0].desc === 'PREPARE'">
+      <template v-if="isAppoint">报名</template>
+      <template v-else>预约</template>
+    </template>
+    <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+    <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
   </template>
-
-<template v-if="dataPromote[0].desc === 'PREPARE'">
-  <template v-if="isAppoint">报名</template>
-  <template v-else>预约</template>
 </template>
-
-<template v-if="dataPromote[0].desc === 'LIVING'">
-  直播中
-</template>
-
-<template v-if="dataPromote[0].desc === 'PLAYBACK'">
-  回放
-</template>
-                      </template>
-                      <!-- 已设置未开启 -->
-<template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === false">
-  <template v-if="dataPromote[0].desc === 'NONE'">暂未设置
-  </template>
-
-<template v-if="dataPromote[0].desc === 'PREPARE'">
-  <template v-if="isAppoint">报名</template>
-  <template v-else>预约</template>
-
-</template>
-
-<template v-if="dataPromote[0].desc === 'LIVING'">
-  直播中
-</template>
-
-<template v-if="dataPromote[0].desc === 'PLAYBACK'">
-  回放
-</template>
-                      </template>
-                    </template>
-
-<template v-else>
-  暂未设置
-</template>
+<template v-else>设置自动化活动通知提醒</template>
                   </span>
                 </div>
               </div>
@@ -616,6 +592,7 @@ export default {
           handleClick: (e) => {
             console.log(e)
             if (e.action === 'cancel') { } else if (e.action === 'confirm') {
+              this.publish()
               window.open(`${this.PC_HOST}master/${this.activityId}`)
               // this.status = 0
             }
@@ -740,6 +717,13 @@ export default {
       })
     },
     offlineActive () { // 下线活动
+      if (this.status === '直播') {
+        this.$toast({
+          content: '直播中无法下线活动',
+          position: 'center'
+        })
+        return false
+      }
       this.$messageBox({
         header: '提示',
         width: '200',
@@ -924,12 +908,12 @@ export default {
       position: relative;
       i {
         position: absolute;
-        width: 50px;
-        height: 50px;
+        width: 44px;
+        height: 44px;
         top: 50%;
         left: 50%;
-        margin-top: -25px;
-        margin-left: -25px;
+        margin-top: -22px;
+        margin-left: -22px;
         background-image: url('~assets/image/auto_wechat.png');
         background-repeat: no-repeat;
         background-size: contain;
@@ -983,50 +967,50 @@ export default {
       }
       &.step {
         dt i {
-          background-image: url('~assets/image/detail/detail_prepare.png');
+          background-image: url('~assets/image/detail/detail_prepare_hover.png');
         }
         &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_prepare_hover.png');
+          background-image: url('~assets/image/detail/detail_prepare.png');
         }
       }
       &.prompt {
         dt i {
-          background-image: url('~assets/image/detail/detail_promote.png');
+          background-image: url('~assets/image/detail/detail_promote_hover.png');
         }
         &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_promote_hover.png');
+          background-image: url('~assets/image/detail/detail_promote.png');
         }
       }
       &.brand {
         dt i {
-          background-image: url('~assets/image/detail/detail_brand.png');
+          background-image: url('~assets/image/detail/detail_brand_hover.png');
         }
         &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_brand_hover.png');
+          background-image: url('~assets/image/detail/detail_brand.png');
         }
       }
       &.live {
         dt i {
-          background-image: url('~assets/image/detail/detail_live.png');
+          background-image: url('~assets/image/detail/detail_live_hover.png');
         }
         &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_live_hover.png');
+          background-image: url('~assets/image/detail/detail_live.png');
         }
       }
       &.record {
         dt i {
-          background-image: url('~assets/image/detail/detail_record.png');
+          background-image: url('~assets/image/detail/detail_record_hover.png');
         }
         &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_record_hover.png');
+          background-image: url('~assets/image/detail/detail_record.png');
         }
       }
       &.statics {
         dt i {
-          background-image: url('~assets/image/detail/detail_static.png');
+          background-image: url('~assets/image/detail/detail_static_hover.png');
         }
         &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_static_hover.png');
+          background-image: url('~assets/image/detail/detail_static.png');
         }
       }
     }
@@ -1062,8 +1046,7 @@ export default {
     width: 300px;
     height: 169px;
     border-radius: 5px;
-    background-size: cover;
-    background-position: center;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
   }
   .status {

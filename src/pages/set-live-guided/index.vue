@@ -68,7 +68,7 @@
                          alt="">
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/guid.png"
+                    <img src="../../assets/image/guid.jpg"
                          alt="">
                   </template>
                 </div>
@@ -113,7 +113,7 @@
                          alt="">
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/guid.png"
+                    <img src="../../assets/image/guid.jpg"
                          alt="">
                   </template>
                 </div>

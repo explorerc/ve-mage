@@ -12,7 +12,7 @@ const webpackConfig = merge(baseConfig, {
   module: {
     rules: [
       {
-        test: /\.scss/,
+        test: /\.[s]?css/,
         use: [
           'vue-style-loader',
           'css-loader',
@@ -25,10 +25,6 @@ const webpackConfig = merge(baseConfig, {
           'sass-loader'
         ],
         include: resolve('src')
-      },
-      {
-        test: /\.css/,
-        use: ['vue-style-loader', 'css-loader', 'postcss-loader']
       }
     ]
   },

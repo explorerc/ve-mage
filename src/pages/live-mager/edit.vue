@@ -13,7 +13,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
-            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="60" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
+            <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="30" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
             <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
           </div>
         </div>
@@ -153,7 +153,7 @@
         console.log(e)
       },
       queryInfo () {
-        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.date = res.data.startTime
@@ -351,6 +351,10 @@
       position: absolute;
       bottom: 20px;
       right: 20px;
+      color: #999;
+      i {
+        color:$color-blue;
+      }
     }
     .html-editer .content {
       width: 100%;

@@ -10,13 +10,13 @@
       <p class="tips">您已预约成功，我们将及时提醒您参加活动。</p>
       <p>标题：<span>{{webinarName}}</span></p>
       <p>时间：<span>{{webinarTime}}</span></p>
-      <p style='padding-bottom:20px;'>内容：<span>点击查看详情</span></p>
+      <p style='padding-bottom:20px;'>内容：<span>{{wxContent}}</span></p>
       <div class="footer">详情</div>
     </div>
   </div>
   <div class="msg-box-overview msg-box-message" v-else>
     <div class="detail">
-      <p class="tips">【{{msgTag}}】{{wxContent}}</p>
+      <p class="">【{{msgTag}}】{{wxContent}}</p>
     </div>
     <div class="footer">{{date}} 发送</div>
   </div>

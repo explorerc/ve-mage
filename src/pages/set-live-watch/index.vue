@@ -494,7 +494,7 @@ export default {
     .v-live-title {
       font-size: 16px;
       transform: scale(0.5);
-      -webkit-transform-origin: top left;
+      transform-origin: top left;
       color: #fff;
     }
     .v-pc-icon {
@@ -513,7 +513,6 @@ export default {
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
-        background: url('~assets/image/pc_content@2x.png') center center;
         background-size: cover;
         position: relative;
       }

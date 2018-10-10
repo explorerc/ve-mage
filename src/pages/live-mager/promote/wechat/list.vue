@@ -29,7 +29,7 @@
             <template slot-scope="scope">
               <div class="tool-box">
                 <span ><router-link :to="{ name:'wechatOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
-                <span class='del-btn' v-if='type === "PREPARE"' @click="del(scope.row.inviteId,scope.$index)">删除</span>
+                <span class='del-btn' v-if='type === "PREPARE" && scope.row.status !== "SEND"' @click="del(scope.row.inviteId,scope.$index)">删除</span>
                 <!-- <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
                 <div class="tool" v-if='moreIdx == scope.$index ? true : false'>
                   <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
@@ -141,7 +141,7 @@
         }
       },
       queryList () {
-        this.$config({ loading: true }).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
+        this.$config({loading: true}).$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
@@ -167,7 +167,7 @@
         // })
       },
       queryInfo () {
-        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
           id: this.$route.params.id
         }).then((res) => {
           this.type = res.data.status

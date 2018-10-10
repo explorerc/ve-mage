@@ -107,7 +107,7 @@
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', { ...action, ...this.liveData })
+        this.$emit('handleClick', {...action, ...this.liveData})
       }
     }
   }
@@ -146,7 +146,7 @@
   }
   .live-img {
     height: calc(100% - 94px);
-    background-size: cover;
+    background-size: 100% 100%;
     border-bottom: 1px solid $color-bd;
     background-position: center center;
     border-top-left-radius: 4px;
