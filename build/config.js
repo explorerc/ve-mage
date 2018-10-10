@@ -10,7 +10,7 @@ const config = {
     PC_HOST: '//localhost:6688/webinar/',
     proxyTable: {
       '/api': {
-        target: 'http://dev-api-zhike.vhall.domain',
+        target: 'http://test-api-zhike.vhall.com',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
