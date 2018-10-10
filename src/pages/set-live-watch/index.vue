@@ -434,7 +434,7 @@ export default {
         .v-notes {
           font-size: 12px;
           color: #888888;
-          padding-left: 219px;
+          padding-left: 215px;
           margin: 10px auto 0;
         }
       }
