@@ -122,7 +122,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...this.email,
+          this.email = { ...this.email,
             ...newVal
           }
         },
