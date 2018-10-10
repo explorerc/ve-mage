@@ -292,6 +292,13 @@
       }
       .file-name {
         color: #222;
+        overflow: hidden;
+        width: 90%;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0 auto;
       }
       .file-size {
         display: block;
