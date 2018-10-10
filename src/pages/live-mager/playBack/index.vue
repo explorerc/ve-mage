@@ -166,7 +166,7 @@
             <div class="from-content">
               <ve-upload-video title="视频仅支持mp4格式，文件大小不超过4G"
                                accept="mp4"
-                               :fileSize="4096000"
+                               :fileSize="4194304"
                                :errorMsg="recordIdError"
                                :sdk="sdkParam"
                                @handleClick="handleVideoClick"
