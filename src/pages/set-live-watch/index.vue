@@ -46,25 +46,29 @@
                 <div class="clearfix"
                      style="padding-left: 30px;">
                   <template v-if="defaultLogoImg">
-                    <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                    <img :src="defaultLogoImg"
+                         alt="logo"
+                         class="v-logo pull-left">
                   </template>
                   <div class="pull-left">
                     <p class="v-live-title">
                       {{activityTitle}}
                     </p>
-                    <img src="../../assets/image/mac-icon@2x.png" alt="" class="v-pc-icon">
-                  </div>
-                  </div>
-                  <div class="v-show-content">
+                    <img src="../../assets/image/mac-icon@2x.png"
+                         alt=""
+                         class="v-pc-icon">
                   </div>
                 </div>
-                <p class="v-preview">品牌预览</p>
+                <div class="v-show-content">
+                </div>
               </div>
+              <p class="v-preview">品牌预览</p>
             </div>
-            <button @click='brandClick'
-                    class='primary-button'>
-              保存
-            </button>
+          </div>
+          <button @click='brandClick'
+                  class='primary-button'>
+            保存
+          </button>
         </com-tab>
         <com-tab label="分享"
                  :index="2">
@@ -94,7 +98,8 @@
                              @focus="shareTitleFocus"></com-input>
                   <p class="v-notes"
                      style="margin-top: 0;">
-                    注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字
+                    注：为了您的内容获得有效传播，建议标题长度不要超过
+                    <span class="v-blue">14</span>个字
                   </p>
                 </div>
               </div>
@@ -115,7 +120,8 @@
                 <p class="v-info-label pull-left">
                   应用页面：
                 </p>
-                <p class="v-info pull-left" style="padding-top: 6px;">
+                <p class="v-info pull-left"
+                   style="padding-top: 6px;">
                   <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
                   <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
@@ -133,14 +139,18 @@
                       {{shareIntroduction}}
                     </div>
                     <template v-if="defaultShareImg">
-                      <img :src="defaultShareImg" alt="分享图片" class="v-show-img">
+                      <img :src="defaultShareImg"
+                           alt="分享图片"
+                           class="v-show-img">
                     </template>
                   </div>
-                  </div>
-                  <img :src="avatarImg" alt="头像" class="v-avatar pull-left">
+                </div>
+                <img :src="avatarImg"
+                     alt="头像"
+                     class="v-avatar pull-left">
               </div>
-                  <p class="v-preview">预览</p>
-                  <!-- <div class="v-title">
+              <p class="v-preview">预览</p>
+              <!-- <div class="v-title">
                 分享到朋友圈
               </div>
               <div class="v-share-friend-circle clearfix">
@@ -153,12 +163,12 @@
                   </p>
                 </div>
               </div> -->
-                </div>
-              </div>
-              <button @click='shareClick'
-                      class='primary-button v-share-button'>
-                保存
-              </button>
+            </div>
+          </div>
+          <button @click='shareClick'
+                  class='primary-button v-share-button'>
+            保存
+          </button>
         </com-tab>
       </com-tabs>
     </div>
@@ -305,16 +315,20 @@ export default {
         'backgroundUrl': this.bgImgUrl,
         'logoUrl': this.logoImgUrl
       }
-      this.$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+      }).catch((err) => {
         this.$messageBox({
           header: '提示',
-          content: '保存成功',
+          content: err.msg,
           confirmText: '确定',
-          width: '400px', // 消息框宽度
           handleClick: (e) => {
-            if (e.action === 'confirm') {
-              // console.log('点击了确定按钮')
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
             }
           }
         })
@@ -341,16 +355,20 @@ export default {
       if (this.isShowGuided) {
         data.page.push('guide_route')
       }
-      this.$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+      }).catch((err) => {
         this.$messageBox({
           header: '提示',
-          content: '保存成功',
+          content: err.msg,
           confirmText: '确定',
-          width: '400px', // 消息框宽度
           handleClick: (e) => {
-            if (e.action === 'confirm') {
-              // console.log('点击了确定按钮')
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
             }
           }
         })

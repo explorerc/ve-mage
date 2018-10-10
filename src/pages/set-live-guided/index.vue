@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix set-live-guided-container" >
+  <div class="clearfix set-live-guided-container">
     <p class="v-title">
       直播引导页
     </p>
@@ -19,7 +19,8 @@
             <p class="v-info-label pull-left">
               引导标题：
             </p>
-            <p class="v-info pull-left" @click="canPass = false">
+            <p class="v-info pull-left"
+               @click="canPass = false">
               <com-input :value.sync="title"
                          placeholder="标题"
                          :max-length="30"></com-input>
@@ -42,7 +43,8 @@
               辅助信息：
             </p>
             <p class="v-info pull-left"
-               style="width: 350px; margin-top: 10px;" @click='canPass = false'>
+               style="width: 350px; margin-top: 10px;"
+               @click='canPass = false'>
               <el-radio v-model="showType"
                         label='DESCRIPTION'>显示直播简介</el-radio>
               <el-radio v-model="showType"
@@ -62,39 +64,44 @@
               <div class="v-phone pull-right">
                 <div class="v-img">
                   <template v-if="defaultImg">
-                    <img :src="$imgHost + '/' + imgUrl" alt="">
+                    <img :src="$imgHost + '/' + imgUrl"
+                         alt="">
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/guid.png" alt="">
+                    <img src="../../assets/image/guid.png"
+                         alt="">
                   </template>
                 </div>
-                  <div class="v-phone-info">
-                    <p class="v-phone-title">
-                      {{title}}
-                    </p>
-                    <div class="v-phone-operation">
-                      <div v-if="showType === 'DESCRIPTION'"
-                           class="v-phone-description">
-                        <p class="v-description">
-                          {{description}}
-                        </p>
-                      </div>
-                      <div v-if="showType === 'COUNTDOWN'"
-                           class="v-phone-countdown">
-                        <p class="v-count-title">
-                          距离直播开始还有
-                        </p>
-                        <div class="v-cutdown-content">
-                          <span class="v-red">XX</span>天<span class="v-red">XX</span>小时<span class="v-red">XX</span>分钟<span class="v-red">XX</span>秒
-                        </div>
-                      </div>
-                      <span href="javascript:;"
-                            class="v-phone-enroll">
-                        {{viewCondition === 'APPOINT'? '报名':'预约'}}
-                      </span>
+                <div class="v-phone-info">
+                  <p class="v-phone-title">
+                    {{title}}
+                  </p>
+                  <div class="v-phone-operation">
+                    <div v-if="showType === 'DESCRIPTION'"
+                         class="v-phone-description">
+                      <p class="v-description">
+                        {{description}}
+                      </p>
                     </div>
+                    <div v-if="showType === 'COUNTDOWN'"
+                         class="v-phone-countdown">
+                      <p class="v-count-title">
+                        距离直播开始还有
+                      </p>
+                      <div class="v-cutdown-content">
+                        <span class="v-red">XX</span>天
+                        <span class="v-red">XX</span>小时
+                        <span class="v-red">XX</span>分钟
+                        <span class="v-red">XX</span>秒
+                      </div>
+                    </div>
+                    <span href="javascript:;"
+                          class="v-phone-enroll">
+                      {{viewCondition === 'APPOINT'? '报名':'预约'}}
+                    </span>
                   </div>
                 </div>
+              </div>
             </com-tab>
             <com-tab label="电脑预览"
                      :index="2"
@@ -102,37 +109,42 @@
               <div class="v-pc  pull-right clearfix">
                 <div class="v-img pull-left">
                   <template v-if="defaultImg">
-                    <img :src="$imgHost + '/' + imgUrl" alt="">
+                    <img :src="$imgHost + '/' + imgUrl"
+                         alt="">
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/guid.png" alt="">
+                    <img src="../../assets/image/guid.png"
+                         alt="">
                   </template>
                 </div>
-                  <div class="v-pc-info pull-left">
-                    <p class="v-pc-title">
-                      {{title}}
+                <div class="v-pc-info pull-left">
+                  <p class="v-pc-title">
+                    {{title}}
+                  </p>
+                  <div v-if="showType === 'DESCRIPTION'"
+                       class="v-pc-description">
+                    <p>
+                      {{description}}
                     </p>
-                    <div v-if="showType === 'DESCRIPTION'"
-                         class="v-pc-description">
-                      <p>
-                        {{description}}
-                      </p>
-                    </div>
-                    <div class="v-pc-operation"
-                         v-else>
-                      <p class="v-count-title">
-                        距离直播开始还有
-                      </p>
-                      <div class="v-cutdown-content">
-                        <span class="v-red">XX</span>天<span class="v-red">XX</span>小时<span class="v-red">XX</span>分钟<span class="v-red">XX</span>秒
-                      </div>
-                    </div>
-                    <span href="javascript:;"
-                          class="v-pc-enroll">
-                      报名
-                    </span>
                   </div>
+                  <div class="v-pc-operation"
+                       v-else>
+                    <p class="v-count-title">
+                      距离直播开始还有
+                    </p>
+                    <div class="v-cutdown-content">
+                      <span class="v-red">XX</span>天
+                      <span class="v-red">XX</span>小时
+                      <span class="v-red">XX</span>分钟
+                      <span class="v-red">XX</span>秒
+                    </div>
+                  </div>
+                  <span href="javascript:;"
+                        class="v-pc-enroll">
+                    报名
+                  </span>
                 </div>
+              </div>
             </com-tab>
           </com-tabs>
         </div>
@@ -153,7 +165,7 @@ export default {
     return {
       activityId: 0,
       viewCondition: '', // 观看条件
-      title: '标题', // 引导标题
+      title: '', // 引导标题
       showType: '', // 显示倒计时|显示简介
       description: '', // 简介
       tabValue: 1, // 预览页签选择
@@ -180,12 +192,14 @@ export default {
       return
     }
     this.$get(brandService.GET_LIVE_GUIDE, data).then(res => {
-      this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
-      this.title = res.data.title ? res.data.title : ''
-      this.showType = res.data.showType ? res.data.showType : ''
-      this.description = res.data.description ? res.data.description : '' // 60max
-      this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
-      this.tabValue = 1
+      if (res.data) {
+        this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
+        this.title = res.data.title ? res.data.title : ''
+        this.showType = res.data.showType ? res.data.showType : ''
+        this.description = res.data.description ? res.data.description : '' // 60max
+        this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+        this.tabValue = 1
+      }
     })
   },
   mounted () {
@@ -230,16 +244,20 @@ export default {
         'imgUrl': this.imgUrl,
         'description': this.description
       }
-      this.$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
         this.canPass = true
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+      }).catch((err) => {
         this.$messageBox({
           header: '提示',
-          content: '保存成功',
+          content: err.msg,
           confirmText: '确定',
-          width: '400px', // 消息框宽度
           handleClick: (e) => {
-            if (e.action === 'confirm') {
-              // console.log('点击了确定按钮')
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
             }
           }
         })
