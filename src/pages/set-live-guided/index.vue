@@ -89,7 +89,10 @@
                         距离直播开始还有
                       </p>
                       <div class="v-cutdown-content">
-                        <span class="v-red">XX</span>天<span class="v-red">XX</span>小时<span class="v-red">XX</span>分钟<span class="v-red">XX</span>秒
+                        <span class="v-red">XX</span>天
+                        <span class="v-red">XX</span>小时
+                        <span class="v-red">XX</span>分钟
+                        <span class="v-red">XX</span>秒
                       </div>
                     </div>
                     <span href="javascript:;"
@@ -130,7 +133,10 @@
                       距离直播开始还有
                     </p>
                     <div class="v-cutdown-content">
-                      <span class="v-red">XX</span>天<span class="v-red">XX</span>小时<span class="v-red">XX</span>分钟<span class="v-red">XX</span>秒
+                      <span class="v-red">XX</span>天
+                      <span class="v-red">XX</span>小时
+                      <span class="v-red">XX</span>分钟
+                      <span class="v-red">XX</span>秒
                     </div>
                   </div>
                   <span href="javascript:;"
@@ -159,7 +165,7 @@ export default {
     return {
       activityId: 0,
       viewCondition: '', // 观看条件
-      title: '标题', // 引导标题
+      title: '', // 引导标题
       showType: '', // 显示倒计时|显示简介
       description: '', // 简介
       tabValue: 1, // 预览页签选择
@@ -186,12 +192,14 @@ export default {
       return
     }
     this.$get(brandService.GET_LIVE_GUIDE, data).then(res => {
-      this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
-      this.title = res.data.title ? res.data.title : ''
-      this.showType = res.data.showType ? res.data.showType : ''
-      this.description = res.data.description ? res.data.description : '' // 60max
-      this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
-      this.tabValue = 1
+      if (res.data) {
+        this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
+        this.title = res.data.title ? res.data.title : ''
+        this.showType = res.data.showType ? res.data.showType : ''
+        this.description = res.data.description ? res.data.description : '' // 60max
+        this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+        this.tabValue = 1
+      }
     })
   },
   mounted () {
@@ -236,16 +244,20 @@ export default {
         'imgUrl': this.imgUrl,
         'description': this.description
       }
-      this.$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
         this.canPass = true
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+      }).catch((err) => {
         this.$messageBox({
           header: '提示',
-          content: '保存成功',
+          content: err.msg,
           confirmText: '确定',
-          width: '400px', // 消息框宽度
           handleClick: (e) => {
-            if (e.action === 'confirm') {
-              // console.log('点击了确定按钮')
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
             }
           }
         })

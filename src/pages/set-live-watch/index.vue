@@ -98,7 +98,8 @@
                              @focus="shareTitleFocus"></com-input>
                   <p class="v-notes"
                      style="margin-top: 0;">
-                    注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字
+                    注：为了您的内容获得有效传播，建议标题长度不要超过
+                    <span class="v-blue">14</span>个字
                   </p>
                 </div>
               </div>
@@ -314,16 +315,20 @@ export default {
         'backgroundUrl': this.bgImgUrl,
         'logoUrl': this.logoImgUrl
       }
-      this.$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+      }).catch((err) => {
         this.$messageBox({
           header: '提示',
-          content: '保存成功',
+          content: err.msg,
           confirmText: '确定',
-          width: '400px', // 消息框宽度
           handleClick: (e) => {
-            if (e.action === 'confirm') {
-              // console.log('点击了确定按钮')
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
             }
           }
         })
@@ -350,16 +355,20 @@ export default {
       if (this.isShowGuided) {
         data.page.push('guide_route')
       }
-      this.$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
+        this.$toast({
+          content: '保存成功',
+          position: 'center'
+        })
+      }).catch((err) => {
         this.$messageBox({
           header: '提示',
-          content: '保存成功',
+          content: err.msg,
           confirmText: '确定',
-          width: '400px', // 消息框宽度
           handleClick: (e) => {
-            if (e.action === 'confirm') {
-              // console.log('点击了确定按钮')
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
             }
           }
         })
