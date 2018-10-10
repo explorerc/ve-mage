@@ -318,8 +318,7 @@ export default {
       this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: '保存成功'
         })
       }).catch((err) => {
         this.$messageBox({
@@ -358,8 +357,7 @@ export default {
       this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: '保存成功'
         })
       }).catch((err) => {
         this.$messageBox({
