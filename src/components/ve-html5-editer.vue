@@ -192,7 +192,7 @@
       'list',
       'link',
       'unlink',
-      'tabulation',
+      // 'tabulation',
       'hr',
       'eraser',
       'undo',
