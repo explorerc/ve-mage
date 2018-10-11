@@ -195,7 +195,7 @@ export default {
       if (str === null) {
         return false
       }
-      if (new Date().getTime() - new Date('2018-10-04 13:04:08').getTime() > 3600 * 24 * 2) {
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2) {
         return true
       } else {
         return false

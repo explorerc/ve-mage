@@ -46,9 +46,8 @@
            v-else-if="status === '结束'">直播已结束</p>
         <div class="count-box"
              :style="{'height':countDownstatus ? '0px' : 'auto'}">
-          <com-countdown :endTime.sync="countdownTime">
+          <com-countdown :endTime.sync="countdownTime" @timeOut='timeOut'>
             <ol class='clearfix'
-                @timeOut='timeOut'
                 slot='slot1'
                 slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
@@ -582,7 +581,7 @@ export default {
       if (str === null) {
         return false
       }
-      if (new Date().getTime() - new Date('2018-10-04 13:04:08').getTime() > 3600 * 24 * 2) {
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2) {
         return true
       } else {
         return false
