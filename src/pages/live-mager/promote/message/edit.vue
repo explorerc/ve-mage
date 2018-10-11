@@ -14,7 +14,7 @@
             <div class="from-content">
               <com-input :value.sync="titleValue"
                          placeholder="请输入标题"
-                         :max-length="30"
+                         :max-length="15"
                          :error-tips='errorData.titleError'
                          @focus="errorData.titleError=''"></com-input>
             </div>
@@ -45,7 +45,7 @@
                          class="msg-content"
                          :value.sync="msgContent"
                          placeholder="请输入短信内容"
-                         :max-length="140"
+                         :max-length="100"
                          :error-tips='errorData.msgError'></com-input>
             </div>
           </div>
@@ -221,8 +221,8 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      personList: [{id: '', name: '', count: 0, isChecked: false}],
+      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectPersonShow: false,
       selectedCount: 0,
@@ -288,7 +288,7 @@ export default {
         })
         // 跳转到列表页面
         this.canPass = true
-        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
+        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
       })
     },
     test () {

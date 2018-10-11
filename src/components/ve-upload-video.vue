@@ -37,7 +37,7 @@
 
   export default {
     name: 've-upload-video',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         tipTxt: '',
@@ -154,7 +154,10 @@
                 _this.$emit('error', _this.errorTxt, file)
                 return false
               } else if (_this.fileRealSize > _this.fileSize / 1024) {
-                _this.errorTxt = '您上传的视频文件过大，请上传不超过200M的视频文件'
+                const gSize = (_this.fileSize / 1024 / 1024).toFixed(2)
+                const mSize = parseInt(_this.fileSize / 1024)
+                let fSize = gSize > 1 ? `${gSize}G` : `${mSize}M`
+                _this.errorTxt = '您上传的视频文件过大，请上传不超过' + fSize + '的视频文件'
                 _this.$emit('error', _this.errorTxt, file)
                 return false
               } else {
@@ -289,6 +292,13 @@
       }
       .file-name {
         color: #222;
+        overflow: hidden;
+        width: 90%;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 0 auto;
       }
       .file-size {
         display: block;

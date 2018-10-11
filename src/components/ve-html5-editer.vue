@@ -60,11 +60,26 @@
 </div>`
   const editor = new VueHtml5Editor({
     showModuleName: true,
+    icons: {
+      text: 'fa iconfont icon-qianbi',
+      font: 'fa iconfont icon-zifu',
+      align: 'fa iconfont icon-paiban',
+      list: 'fa iconfont icon-pailie',
+      link: 'fa iconfont icon-lianjie',
+      unlink: 'fa iconfont icon-duankailianjie',
+      tabulation: 'fa iconfont icon-biaoge',
+      image: 'fa iconfont icon-tupian',
+      hr: 'fa iconfont icon-hengxian',
+      eraser: 'fa iconfont icon-xiangpica',
+      undo: 'fa iconfont icon-xuanzhuan',
+      'full-screen': 'fa iconfont icon-biaoji',
+      info: 'fa iconfont icon-i'
+    },
     modules: [
       {
         // custom module with dashboard.html
         name: 'colorEx',
-        icon: 'fa fa-paint-brush',
+        icon: 'fa iconfont icon-huabi',
         i18n: 'color',
         dashboard: {
           template: colorTemplate,
@@ -233,7 +248,7 @@
 
   export default {
     name: 've-html5-editer',
-    components: { editor },
+    components: {editor},
     data () {
       return {
         showModuleName: false,
@@ -286,12 +301,17 @@
     }
     a {
       text-decoration: underline;
-      &:hover{
+      &:hover {
         color: #5D6AFE;
       }
-      &:active{
+      &:active {
         color: #4350E4;
       }
+    }
+    .iconfont {
+      width: auto !important;
+      height: auto !important;
+      font-size: 12px;
     }
   }
 </style>

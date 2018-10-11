@@ -153,7 +153,7 @@
         console.log(e)
       },
       queryInfo () {
-        this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+        this.$get(activityService.GET_WEBINAR_INFO, {
           id: this.activityId
         }).then((res) => {
           this.date = res.data.startTime
@@ -353,7 +353,7 @@
       right: 20px;
       color: #999;
       i {
-        color:$color-blue;
+        color: $color-blue;
       }
     }
     .html-editer .content {

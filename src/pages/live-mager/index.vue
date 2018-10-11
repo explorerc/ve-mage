@@ -68,7 +68,7 @@ import VePagination from 'src/components/ve-pagination'
 
 export default {
   name: 'index',
-  components: { LiveTable, VePagination },
+  components: {LiveTable, VePagination},
   data () {
     return {
       show: false,
@@ -80,15 +80,15 @@ export default {
       jumpId: '',
       startTime: '',
       optionsStates: [
-        { value: '', label: '全部' },
-        { value: 'PREPARE', label: '预告' },
-        { value: 'LIVING', label: '直播中' },
-        { value: 'FINISH', label: '已结束' },
-        { value: 'PLAYBACK', label: '回放' }
+        {value: '', label: '全部'},
+        {value: 'PREPARE', label: '预告'},
+        {value: 'LIVING', label: '直播中'},
+        {value: 'FINISH', label: '已结束'},
+        {value: 'PLAYBACK', label: '回放'}
       ],
       optionsOrder: [
-        { value: 'createTime', label: '按创建时间排序' },
-        { value: 'startTime', label: '按直播开始时间排序' }
+        {value: 'createTime', label: '按创建时间排序'},
+        {value: 'startTime', label: '按直播开始时间排序'}
       ],
       searchParams: {
         status: '',
@@ -116,6 +116,13 @@ export default {
     handleClick (event) {
       console.log(event)
       if (event.type === 'play') { // 开播
+        if (this.isOverdue(event.endTime)) {
+          this.$toast({
+            content: '该活动已结束超过48小时，无法再次开启',
+            position: 'center'
+          })
+          return false
+        }
         // 请求活动详情 判断 是否 发布 是否进入 24小时内
         this.isPublished = event.published === 'Y'
         this.startTime = event.startTime
@@ -184,6 +191,16 @@ export default {
         return true
       }
     },
+    isOverdue (str) { // 是否超过48小时
+      if (str === null) {
+        return false
+      }
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2) {
+        return true
+      } else {
+        return false
+      }
+    },
     async getDetails (id) {
       await this.$get(activityService.GET_HOSTING, {
         activityId: this.jumpId
@@ -234,7 +251,7 @@ export default {
     },
     queryList () {
       // this.loading = true
-      this.$config({ loading: true }).$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
+      this.$config({loading: true}).$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
         res.data.list.map((item, indx) => {
           if (item.imgUrl) {
             item.imgUrl = this.$imgHost + '/' + item.imgUrl
