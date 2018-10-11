@@ -62,6 +62,7 @@
     showModuleName: true,
     icons: {
       text: 'fa iconfont icon-qianbi',
+      color: 'fa iconfont icon-huabi',
       font: 'fa iconfont icon-zifu',
       align: 'fa iconfont icon-paiban',
       list: 'fa iconfont icon-pailie',
@@ -69,17 +70,17 @@
       unlink: 'fa iconfont icon-duankailianjie',
       tabulation: 'fa iconfont icon-biaoge',
       image: 'fa iconfont icon-tupian',
-      hr: 'fa iconfont icon-hengxian',
-      eraser: 'fa iconfont icon-xiangpica',
+      hr: 'fa iconfont icon-xiahuaxian',
+      eraser: 'fa iconfont icon-xiangpi',
       undo: 'fa iconfont icon-xuanzhuan',
-      'full-screen': 'fa iconfont icon-biaoji',
-      info: 'fa iconfont icon-i'
+      'full-screen': 'fa iconfont icon-maodian',
+      info: 'fa iconfont icon-biaoji'
     },
     modules: [
       {
         // custom module with dashboard.html
         name: 'colorEx',
-        icon: 'fa iconfont icon-huabi',
+        icon: 'fa iconfont iconfont icon-huabi',
         i18n: 'color',
         dashboard: {
           template: colorTemplate,
@@ -106,7 +107,7 @@
       {
         // custom module with dashboard.html
         name: 'fontEx',
-        icon: 'fa fa-font',
+        icon: 'fa iconfont icon-zifu',
         i18n: 'font',
         dashboard: {
           template: fontTemplate,
@@ -309,9 +310,7 @@
       }
     }
     .iconfont {
-      width: auto !important;
-      height: auto !important;
-      font-size: 12px;
+      font-size: 18px;
     }
   }
 </style>
