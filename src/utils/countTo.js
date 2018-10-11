@@ -34,6 +34,10 @@ export default class CountTo {
       let num = this.step + this.step * this.getRange(o) >> 0
       residue = residue - num
 
+      if (num === 0) {
+        return
+      }
+
       if (residue - s < 0) {
         clearInterval(this.interval)
         cbk && cbk(residue + num)
