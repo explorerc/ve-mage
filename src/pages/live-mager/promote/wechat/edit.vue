@@ -109,7 +109,7 @@
         </div>
       </message-box>
       <!-- 测试发送弹窗 -->
-      <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
+      <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'" :deliverd.sync='deliverd'></com-test>
     </div>
   </div>
 </template>
@@ -176,7 +176,8 @@
         isValided: false,
         canPass: true,
         sdkParam: {},
-        saveDisabled: false
+        saveDisabled: false,
+        deliverd: false
       }
     },
     created () {
@@ -352,10 +353,7 @@
         /* 监听微信测试发送成功消息 */
         ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
           console.log(msg)
-          this.$toast({
-            content: '信息已发送',
-            position: 'center'
-          })
+          this.deliverd = true
         })
       }
     },

@@ -75,6 +75,10 @@ export default {
     wechatSuccess: {
       type: Boolean,
       default: false
+    },
+    deliverd: {
+      type: Boolean,
+      default: false
     }
   },
   created () {
@@ -147,6 +151,13 @@ export default {
   watch: {
     wechatSuccess (newVal) {
       console.log(newVal)
+      this.limitCount -= 1
+      this.$toast({
+        content: '信息已发送',
+        position: 'center'
+      })
+    },
+    deliverd (newVal) {
       this.limitCount -= 1
       this.$toast({
         content: '信息已发送',
