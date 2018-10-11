@@ -46,9 +46,8 @@
            v-else-if="status === '结束'">直播已结束</p>
         <div class="count-box"
              :style="{'height':countDownstatus ? '0px' : 'auto'}">
-          <com-countdown :endTime.sync="countdownTime">
+          <com-countdown :endTime.sync="countdownTime" @timeOut='timeOut'>
             <ol class='clearfix'
-                @timeOut='timeOut'
                 slot='slot1'
                 slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
@@ -59,7 +58,7 @@
           </com-countdown>
         </div>
         <el-button class='primary-button'
-                   @click='turnOn'>正式直播</el-button>
+                   @click='turnOn' :disabled="overdue" >正式直播</el-button>
       </div>
     </div>
     <div class="block process clearfix">
@@ -518,6 +517,7 @@ export default {
       countDownstatus: false,
       inCountdown: false,
       isAppoint: false,
+      overdue: false,
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
@@ -575,6 +575,16 @@ export default {
         // 之前
         console.log('非当天')
         return true
+      }
+    },
+    isOverdue (str) { // 是否超过48小时
+      if (str === null) {
+        return false
+      }
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2) {
+        return true
+      } else {
+        return false
       }
     },
     judgePublish () {
@@ -679,6 +689,7 @@ export default {
         this.dataRecord = res.data.record
         this.isPublished = res.data.activity.published === 'Y'
         this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
+        this.overdue = this.isOverdue(res.data.activity.endTime)
         switch (res.data.activity.status) {
           case ('LIVING'):
             this.status = '直播'

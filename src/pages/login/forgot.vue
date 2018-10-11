@@ -12,7 +12,9 @@
           <i class="iconfont icon-duigou1 v-icon1"
              v-if="isStepOneSuccess"></i>
           <span class="v-circle active"
-                v-else><i></i></span>
+                v-else>
+            <i></i>
+          </span>
           <span class="v-line"></span>
         </div>
         <div class="v-get-password">
@@ -31,8 +33,11 @@
           <a href="javascript:;"
              class="v-getcode"
              :class="{prohibit:isProhibit}"
-             @click="getCode()">获取验证码<span v-show="isSend"
-                  class="fr">(<em>{{second}}</em>s)</span></a>
+             @click="getCode()">获取验证码
+            <span v-show="isSend"
+                  class="fr">(
+              <em>{{second}}</em>s)</span>
+          </a>
           <button class="primary-button"
                   @click="verifyUser">提交</button>
         </div>
@@ -44,7 +49,9 @@
              v-if="isStepTwoSuccess"></i>
           <span class="v-circle"
                 :class="{active: sedIsActive}"
-                v-else><i></i></span>
+                v-else>
+            <i></i>
+          </span>
         </div>
         <div class="v-get-password">
           <div class="v-psd">
@@ -58,7 +65,7 @@
                        @blur="passwordBlur()"
                        :error-tips="errorTips.password"></com-input>
             <div class="v-verification"
-                 v-if="isShow">
+                 v-if="isPasswordShow">
               <ul>
                 <p>密码至少包含：</p>
                 <li>
@@ -76,14 +83,28 @@
               </ul>
             </div>
           </div>
-          <com-input class="v-input"
-                     :value.sync="rePassword"
-                     placeholder="请确认新密码"
-                     :maxLength="30"
-                     type="password"
-                     @focus="passwordFocus('rePassword')"
-                     :error-tips="errorTips.rePassword">
-          </com-input>
+          <div class="v-new-psd">
+            <com-input class="v-input"
+                       :value.sync="rePassword"
+                       placeholder="请确认新密码"
+                       :maxLength="30"
+                       type="password"
+                       @focus="passwordFocus('rePassword')"
+                       @change="newPasswordChange()"
+                       @blur="newPasswordBlur()"
+                       :error-tips="errorTips.rePassword">
+            </com-input>
+            <div class="v-verification"
+                 v-if="isNewPasswordShow">
+              <ul>
+                <p>确认密码需要：</p>
+                <li>
+                  <i class="iconfont icon-duigou1"
+                     :class="{isActive: isSame}"></i> 与原密码一致
+                </li>
+              </ul>
+            </div>
+          </div>
           <button class="primary-button"
                   @click="undatePhone">提交</button>
         </div>
@@ -95,9 +116,13 @@
              v-if="isStepThreeSuccess"></i>
           <span class="v-circle"
                 :class="{active: thdIsActive}"
-                v-else><i></i></span>
+                v-else>
+            <i></i>
+          </span>
         </div>
-        <img src="../../assets/image/success@2x.png" alt="" class="v-success-img">
+        <img src="../../assets/image/success@2x.png"
+             alt=""
+             class="v-success-img">
         <p class="v-success">
           新密码设置成功
         </p>
@@ -139,7 +164,9 @@ export default {
       isContainEn: 0,
       isContainNum: 0,
       isContainCount: 0,
-      isShow: false,
+      isSame: 0,
+      isPasswordShow: false,
+      isNewPasswordShow: false,
       errorTips: {
         userPhone: '',
         phoneCode: '',
@@ -354,9 +381,10 @@ export default {
     passwordFocus (val) {
       switch (val) {
         case 'password': this.errorTips.password = ''
-          this.isShow = true
+          this.isPasswordShow = true
           break
         case 'rePassword': this.errorTips.rePassword = ''
+          this.isNewPasswordShow = true
           break
         case 'userPhone': this.errorTips.userPhone = ''
           break
@@ -375,9 +403,22 @@ export default {
       } else {
         this.isChecked = false
       }
+      if (this.password !== this.rePassword) {
+        this.isSame = false
+      }
+    },
+    newPasswordChange () {
+      if (this.password === this.rePassword) {
+        this.isSame = true
+      } else {
+        this.isSame = false
+      }
     },
     passwordBlur () {
-      this.isShow = false
+      this.isPasswordShow = false
+    },
+    newPasswordBlur () {
+      this.isNewPasswordShow = false
     }
   }
 }
@@ -472,7 +513,8 @@ export default {
     width: 450px;
     margin: 50px auto 0;
     position: relative;
-    .v-psd {
+    .v-psd,
+    .v-new-psd {
       position: relative;
       .v-verification {
         position: absolute;
@@ -504,6 +546,13 @@ export default {
               color: $color-blue;
             }
           }
+        }
+      }
+    }
+    .v-new-psd {
+      .v-verification {
+        ul {
+          height: 60px;
         }
       }
     }

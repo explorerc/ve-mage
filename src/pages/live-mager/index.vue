@@ -116,6 +116,13 @@ export default {
     handleClick (event) {
       console.log(event)
       if (event.type === 'play') { // 开播
+        if (this.isOverdue(event.endTime)) {
+          this.$toast({
+            content: '该活动已结束超过48小时，无法再次开启',
+            position: 'center'
+          })
+          return false
+        }
         // 请求活动详情 判断 是否 发布 是否进入 24小时内
         this.isPublished = event.published === 'Y'
         this.startTime = event.startTime
@@ -182,6 +189,16 @@ export default {
         // 之前
         console.log('非当天')
         return true
+      }
+    },
+    isOverdue (str) { // 是否超过48小时
+      if (str === null) {
+        return false
+      }
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2) {
+        return true
+      } else {
+        return false
       }
     },
     async getDetails (id) {

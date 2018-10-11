@@ -511,6 +511,7 @@ export default {
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
+        background: url('~assets/image/viewarea@2x.jpg');
         background-size: cover;
         position: relative;
       }
