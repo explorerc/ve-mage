@@ -240,19 +240,21 @@
       checkoutParams () {
         if (!this.warm.recordId) {
           this.$toast({
-            header: `提示`,
             content: '请上传暖场视频',
-            autoClose: 2000,
-            position: 'right-top'
+            position: 'center'
           })
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isDisabled = false
+          }, 3000)
           return false
         }
         return true
       },
       /* 保存暖场信息 */
       saveWarm () {
-        if (!this.checkoutParams()) return
         this.isDisabled = true
+        if (!this.checkoutParams()) return
         this.$post(activityService.POST_SAVE_WRAM_INFO, {
           activityId: this.warm.activityId,
           recordId: this.warm.recordId,
@@ -262,13 +264,14 @@
           filename: this.warm.filename
         }).then((res) => {
           this.canPass = true
-          this.isDisabled = false
           this.$toast({
-            header: `提示`,
             content: '保存成功',
-            autoClose: 2000,
-            position: 'right-top'
+            position: 'center'
           })
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isDisabled = false
+          }, 3000)
         }).catch(() => {
           this.isDisabled = false
         })
@@ -369,11 +372,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>
