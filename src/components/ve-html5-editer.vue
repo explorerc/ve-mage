@@ -311,6 +311,8 @@
     }
     .iconfont {
       font-size: 18px;
+      width: auto !important;
+      height: auto !important;
     }
   }
 </style>
