@@ -614,9 +614,9 @@ export default {
         this.tplData.webinarName = res.data.webinarName
         this.tplData.date = res.data.date
         this.tplData.hostName = res.data.hostName
-        this.tplData.firstCount = res.data.firstCount
-        this.tplData.secondCount = res.data.secondCount
-        this.tplData.link = `https:${this.PC_HOST}${this.activityId}`
+        this.tplData.firstCount = res.data.firstCount * 1
+        this.tplData.secondCount = res.data.secondCount * 1
+        this.tplData.link = `https:${this.PC_HOST}subscribe/${this.activityId}`
       })
       // http.autoGetparams(this.activityId).then((res) => {
       //   console.log(res)
@@ -639,7 +639,7 @@ export default {
       // })
     },
     getList () {
-      this.$config({loading: true}).$get(noticeService.GET_AUTO_LIST, {
+      this.$get(noticeService.GET_AUTO_LIST, {
         activityId: this.activityId
       }).then((res) => {
         res.data.forEach(item => {

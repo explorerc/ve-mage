@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     init () {
-      this.$config({loading: true}).$get(brandService.GET_SITE_DATA, {
+      this.$get(brandService.GET_SITE_DATA, {
         activityId: this.$route.params.id
       }).then(res => {
         if (res.data.enabled === 'Y') {
