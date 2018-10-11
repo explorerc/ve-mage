@@ -315,7 +315,7 @@ export default {
         'backgroundUrl': this.bgImgUrl,
         'logoUrl': this.logoImgUrl
       }
-      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
@@ -354,7 +354,7 @@ export default {
       if (this.isShowGuided) {
         data.page.push('guide_route')
       }
-      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
@@ -511,6 +511,7 @@ export default {
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
+        background: url('~assets/image/viewarea@2x.jpg');
         background-size: cover;
         position: relative;
       }
