@@ -249,7 +249,7 @@
 
   export default {
     name: 've-html5-editer',
-    components: { editor },
+    components: {editor},
     data () {
       return {
         showModuleName: false,
