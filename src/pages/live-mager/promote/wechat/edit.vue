@@ -317,11 +317,8 @@
       initSdk () {
         /* 获取pass信息 */
         this.$get(playbackService.GET_PAAS_SDK_INFO).then((res) => {
-          // this.vhallParams = res.data
           /* $nextTick保证dom被渲染之后进行paas插件初始化 */
           this.$nextTick(() => {
-            // 初始化pass上传插件
-            // this.initVhallUpload()
             this.sdkParam.sign = res.data.sign
             this.sdkParam.signed_at = res.data.signedAt
             this.sdkParam.app_id = res.data.appId

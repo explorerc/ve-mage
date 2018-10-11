@@ -477,7 +477,7 @@
   }
 }
 .set-content {
-  width: 800px;
+  // width: 800px;
   .table-title {
     height: 61px;
     background: rgba(245, 245, 245, 1);
@@ -485,13 +485,13 @@
     color: $color-font;
     li {
       float: left;
-      width: 300px;
+      width: 470px;
       text-align: left;
       margin: 20px 0px;
       padding-left: 40px;
       margin-right: 20px;
       &.spe {
-        width: 180px;
+        width: 450px;
       }
       &.handle {
         width: 100px;
@@ -504,11 +504,11 @@
       margin: 20px 0;
       & > div {
         float: left;
-        width: 300px;
+        width: 400px;
         text-align: left;
-        margin-right: 20px;
+        margin-right: 90px;
         &.spe {
-          width: 180px;
+          width: 380px;
           position: relative;
           .star {
             color: #fc5659;
@@ -522,7 +522,7 @@
           width: 100px;
           .msg-tip-box span {
             max-width: 500px;
-            width: 400px;
+            width: 270px;
             top: -30px;
             left: 30px;
           }
@@ -540,12 +540,12 @@
       }
     }
     .inp {
-      width: 300px;
+      width: 100%;
       height: 40px;
       line-height: 40px;
     }
     .el-select {
-      width: 180px;
+      width: 100%;
       height: 40px;
       .el-input__inner {
         border: 1px solid #e2d2d2;
