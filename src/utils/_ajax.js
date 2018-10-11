@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import {Loading} from 'components/common/loading'
-// import { MessageBox } from 'components/common/message-box'
+import {MessageBox} from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -76,7 +76,7 @@ class $Http {
           return Promise.reject(err)
         } else if (
           Object.prototype.toString.call(this.config.handlers) ===
-            '[object Array]' &&
+          '[object Array]' &&
           ~this.config.handlers.indexOf(err.code)
         ) {
           return Promise.reject(err)
@@ -84,16 +84,16 @@ class $Http {
           if (err.code === 10030) {
             this.target.$router.replace('/login')
           } else {
-            // let errorMsg = err.msg || '网络异常'
-            // MessageBox({
-            //   header: '提示',
-            //   content: errorMsg,
-            //   autoClose: 10,
-            //   confirmText: '知道了'
-            // })
+            let errorMsg = err.msg || '网络异常'
+            MessageBox({
+              header: '提示',
+              content: errorMsg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
           }
         }
-        return new Promise(() => {})
+        return new Promise(() => { })
       })
   }
 }
