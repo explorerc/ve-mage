@@ -32,11 +32,8 @@ export default class CountTo {
 
     this.interval = setInterval(() => {
       let num = this.step + this.step * this.getRange(o) >> 0
+      num = num < 1 ? 1 : num
       residue = residue - num
-
-      if (num === 0) {
-        return
-      }
 
       if (residue - s < 0) {
         clearInterval(this.interval)
