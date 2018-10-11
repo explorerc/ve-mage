@@ -233,7 +233,7 @@
         this.quesData.push(obj)
       },
       getLimit () {
-        this.$config({loading: true}).$get(activityService.GET_LIMIT, {
+        this.$get(activityService.GET_LIMIT, {
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
