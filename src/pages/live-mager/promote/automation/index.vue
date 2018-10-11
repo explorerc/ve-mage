@@ -25,7 +25,7 @@
             </div>
             <div class="item-box">
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img msg"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -54,7 +54,7 @@
                 </div>
               </div>
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img wechat"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -93,7 +93,7 @@
             </div>
             <div class="item-box">
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img msg"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -122,7 +122,7 @@
                 </div>
               </div>
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img wechat"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -183,7 +183,7 @@
             </div>
             <div class="item-box">
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img msg"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -212,7 +212,7 @@
                 </div>
               </div>
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img wechat"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -271,7 +271,7 @@
             </div>
             <div class="item-box">
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img msg"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -300,7 +300,7 @@
                 </div>
               </div>
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img wechat"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -340,7 +340,7 @@
             </div>
             <div class="item-box">
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img msg"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -369,7 +369,7 @@
                 </div>
               </div>
 
-              <div class="item message">
+              <div class="item message clearfix">
                 <div class="img wechat"></div>
                 <div class="txt">
                   <com-tpl :isString="true"
@@ -1070,7 +1070,7 @@ export default {
     .item {
       padding: 10px;
       width: 800px;
-      height: 80px;
+      // height: 80px;
       background: rgba(245, 245, 245, 1);
       border-radius: 4px;
       margin-bottom: 5px;
