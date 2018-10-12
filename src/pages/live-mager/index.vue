@@ -196,9 +196,9 @@ export default {
         return false
       }
       if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
-        return false
-      } else {
         return true
+      } else {
+        return false
       }
     },
     async getDetails (id) {
@@ -251,7 +251,7 @@ export default {
     },
     queryList () {
       // this.loading = true
-      this.$config({loading: true}).$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
+      this.$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
         res.data.list.map((item, indx) => {
           if (item.imgUrl) {
             item.imgUrl = this.$imgHost + '/' + item.imgUrl
