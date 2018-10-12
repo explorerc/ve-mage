@@ -89,10 +89,10 @@ export default {
   background-color: rgba(0, 0, 0, 0.2);
   .edit-content {
     position: absolute;
-    padding-top: 70px !important;
+    padding-top: 60px !important;
     right: 0;
     height: 100%;
-    width: 460px;
+    width: 356px;
     transition: all 0.3s;
     background-color: white;
     transform: translateX(100%);
