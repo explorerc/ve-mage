@@ -4,19 +4,28 @@
       <a target="_black" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
     </div>
     <com-edit ref="editTarget">
-      <div>
-        背景色
+      <div class="nav-blank-title">按钮</div>
+      <div class='button-item'>
+        <label class="">按钮名称</label>
+        <com-input placeholder="输入按钮名称" v-model="value.text"></com-input>
+      </div>
+      <div class='button-item clearfix'>
+        <label>背景色</label>
         <el-color-picker show-alpha v-model="value.bgColor"></el-color-picker>
       </div>
-      <div>
-        文字色
+      <div class='button-item clearfix'>
+        <label>文字色</label>
         <el-color-picker show-alpha v-model="value.fontColor"></el-color-picker>
       </div>
-      <div>
-        <com-input placeholder="按钮文字" v-model="value.text"></com-input>
+      <div class='button-item'>
+        <label class="">跳转链接</label>
+        <com-input placeholder="跳转链接" v-model="value.link"></com-input>
+        <span class='tips'>链接需要附带http头协议</span>
       </div>
-      <div>
-        <com-input placeholder="按钮链接" v-model="value.link"></com-input>
+      <div class='button-item clearfix spe'>
+        <label class="label-spe-button">打开方式</label>
+        <el-radio v-model="itemSwitch" label="_blank">新窗口</el-radio>
+        <el-radio v-model="itemSwitch" label="_self">当前窗口</el-radio>
       </div>
     </com-edit>
   </div>
@@ -28,6 +37,11 @@ import ComEdit from './edit'
 
 export default {
   mixins: [editMixin],
+  data () {
+    return {
+      itemSwitch: false
+    }
+  },
   components: {
     ComEdit
   },
@@ -44,6 +58,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'assets/css/variable.scss';
 .btn-container {
   display: block;
   position: relative;
@@ -51,6 +66,53 @@ export default {
   text-align: center;
   button {
     border: 0;
+  }
+  .button-item /deep/ {
+    padding: 0 28px;
+    padding-top: 20px;
+    label {
+      display: block;
+      text-align: left;
+      padding-bottom: 10px;
+    }
+    .com-input {
+      width: 100%;
+    }
+    .el-color-picker {
+      display: block;
+      float: left;
+    }
+    .el-color-picker__trigger {
+      width: 90px;
+      height: 30px;
+      border-radius: 4px;
+      padding: 0;
+      overflow: hidden;
+      border: none;
+      .el-color-picker__icon {
+        display: none;
+      }
+    }
+    .label-spe-button {
+      float: left;
+    }
+    .el-radio {
+      margin-top: 3px;
+      padding: 0;
+      margin-left: 30px;
+      display: inline-block;
+      float: left;
+    }
+    span.tips {
+      text-align: left;
+      display: block;
+      padding-top: 8px;
+      color: $color-gray;
+      font-size: 14px;
+    }
+  }
+  .spe {
+    padding-top: 30px;
   }
 }
 </style>

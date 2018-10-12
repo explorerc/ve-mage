@@ -67,37 +67,63 @@
         </li>
       </ul>
     </div>
-    <com-edit ref="editTarget">
+    <com-edit ref="editTarget" :class='"share-com"'>
+      <div class="nav-blank-title">分享</div>
+      <label class='normal' >分享媒体</label>
       <ul class="edit-share-group">
         <li>
-          <span class="label">新浪微博</span>
-          <el-switch v-model="value.sina">
-          </el-switch>
+          <input id='wx' type="checkbox" :checked.sync="value.wx">
+          <label for="wx">
+            <dl class='wx'>
+              <dt></dt>
+              <dd>微信好友</dd>
+            </dl>
+          </label>
         </li>
         <li>
-          <span class="label">QQ空间</span>
-          <el-switch v-model="value.qqSpace">
-          </el-switch>
+          <input id='wxSpace' type="checkbox" :checked.sync='value.wxSpace'>
+          <label for="wxSpace">
+            <dl class='wxSpace'>
+              <dt></dt>
+              <dd>朋友圈</dd>
+            </dl>
+          </label>
         </li>
         <li>
-          <span class="label">QQ好友</span>
-          <el-switch v-model="value.qq">
-          </el-switch>
+          <input id='qq' type="checkbox" :checked.sync='value.qq'>
+          <label for="qq">
+            <dl class='qq'>
+              <dt></dt>
+              <dd>QQ好友</dd>
+            </dl>
+          </label>
         </li>
         <li>
-          <span class="label">朋友圈</span>
-          <el-switch v-model="value.wxSpace">
-          </el-switch>
+          <input id='qqSpace' type="checkbox" :checked.sync='value.qqSpace'>
+          <label for="qqSpace">
+            <dl class='qqSpace'>
+              <dt></dt>
+              <dd>QQ空间</dd>
+            </dl>
+          </label>
         </li>
         <li>
-          <span class="label">微信好友</span>
-          <el-switch v-model="value.wx">
-          </el-switch>
+          <input id='sina' type="checkbox" :checked.sync='value.sina'>
+          <label for="sina">
+            <dl class='sina'>
+              <dt></dt>
+              <dd>微博</dd>
+            </dl>
+          </label>
         </li>
         <li>
-          <span class="label">复制链接</span>
-          <el-switch v-model="value.copy">
-          </el-switch>
+          <input id='copy' type="checkbox" :checked.sync='value.copy'>
+          <label for="copy">
+            <dl class='copy'>
+              <dt></dt>
+              <dd>复制链接</dd>
+            </dl>
+          </label>
         </li>
       </ul>
     </com-edit>
@@ -165,6 +191,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'assets/css/variable.scss';
 .share-container /deep/ {
   position: relative;
   ._dialog-container {
@@ -288,16 +315,76 @@ export default {
   }
   .edit-container {
     .edit-share-group {
-      margin-top: 20px;
       li {
-        display: block;
+        display: inline-block;
         margin-bottom: 5px;
+        width: 60px;
+        margin: 0 27px;
+        margin-bottom: 30px;
         .label {
           display: inline-block;
           width: 80px;
           text-align: left;
         }
+        input {
+          display: none;
+        }
+        dl {
+          cursor: pointer;
+          width: 100%;
+          text-align: center;
+          dt {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+            border: 1px solid rgba(226, 226, 226, 1);
+            border-radius: 10px;
+          }
+          dd {
+            text-align: center;
+            color: $color-font;
+            font-size: 14px;
+            padding-top: 5px;
+          }
+          &.wxSpace dt {
+          }
+          &.qq dt {
+          }
+          &.qqSpace dt {
+          }
+          &.sina dt {
+          }
+          &.copy dt {
+          }
+        }
+        input:checked ~ label {
+          dl dt {
+            border-color: #07b906;
+          }
+          dl.wxSpace dt {
+            border-color: #6467f0;
+          }
+          dl.qq dt {
+            border-color: #2ab6fa;
+          }
+          dl.qqSpace dt {
+            border-color: #ffc600;
+          }
+          dl.sina dt {
+            border-color: #ff000e;
+          }
+          dl.copy dt {
+            border-color: #53a2ff;
+          }
+        }
       }
+    }
+  }
+  .share-com {
+    label.normal {
+      text-align: left;
+      display: block;
+      padding: 20px 28px;
     }
   }
 }
