@@ -97,8 +97,7 @@
           <com-phone :titleValue='title'
                      :date='date'
                      :wxContent='msgContent'
-                     :msgTag='msgTag'
-                     :webinarName='webinarName'></com-phone>
+                     :msgTag='msgTag'></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->

@@ -7,10 +7,10 @@
       <div class="msg-title-overview">预约成功通知</div>
       <p class="time" v-html="date.substr(0,10)"></p>
       <!-- <p class="tips">{{wxContent}}</p> -->
-      <p class="tips">您已预约成功，我们将及时提醒您参加活动。</p>
+      <p class="tips">{{wxContent}}</p>
       <p>标题：<span>{{webinarName}}</span></p>
-      <p>时间：<span>{{webinarTime}}</span></p>
-      <p style='padding-bottom:20px;'>内容：<span>{{wxContent}}</span></p>
+      <p style='padding-bottom:20px;'>时间：<span>{{webinarTime}}</span></p>
+      <!-- <p style='padding-bottom:20px;'>内容：<span>{{wxContent}}</span></p> -->
       <div class="footer">详情</div>
     </div>
   </div>

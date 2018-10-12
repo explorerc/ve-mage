@@ -581,10 +581,10 @@ export default {
       if (str === null) {
         return false
       }
-      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2) {
-        return true
-      } else {
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
         return false
+      } else {
+        return true
       }
     },
     judgePublish () {
@@ -667,9 +667,7 @@ export default {
       // })
     },
     getDetails () {
-      this.$config({
-        loading: true
-      }).$get(activityService.GET_DETAILS, {
+      this.$get(activityService.GET_DETAILS, {
         activityId: this.activityId
       }).then((res) => {
         if (res.data.activity.countDown.toString() > 0) {

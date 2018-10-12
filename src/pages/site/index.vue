@@ -4,6 +4,7 @@
       <div class="title">活动官网 <el-switch v-model="enable"
                    inactive-color="#DEE1FF"
                    :width="32"
+                   :disabled="switchDisabled"
                    active-color="#FFD021"
                    @change="confirmState">
         </el-switch>
@@ -87,6 +88,7 @@ export default {
     return {
       enable: false,
       isPublish: false,
+      switchDisabled: false,
       data: {},
       tplData: defaultData,
       t0478320: require('assets/image/site_tp1.png'),
@@ -130,6 +132,7 @@ export default {
       }
     },
     confirmState (res) {
+      this.switchDisabled = true
       if (this.isPublish && !res) {
         this.$messageBox({
           header: '提示',
@@ -160,6 +163,11 @@ export default {
           content: '保存成功',
           autoClose: 500
         })
+
+        let st = setTimeout(() => {
+          clearTimeout(st)
+          this.switchDisabled = false
+        }, 2000)
       }).catch((res) => {
         if (res.code === 60706) {
           this.$messageBox({
@@ -169,6 +177,7 @@ export default {
             confirmText: '知道了'
           })
           this.enable = !this.enable
+          this.switchDisabled = false
         }
       })
     },
