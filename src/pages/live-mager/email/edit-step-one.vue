@@ -15,10 +15,12 @@
           <div class="temp-title">
             <span>选择模板</span>
             <button class="default-button fr" @click="recoverDefault">恢复默认
-              </button>
+            </button>
           </div>
           <div class="temp-boxs">
-            <div v-for="(emailItem,idx) in emailList" :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}" @click.stop="changeTemp(idx)">
+            <div v-for="(emailItem,idx) in emailList"
+                 :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
+                 @click.stop="changeTemp(idx)">
               <div class="temp-item-box" :style="{backgroundColor:emailItem.cover}"></div>
               <span class="temp-item-title">{{emailItem.title}}</span>
             </div>
@@ -30,21 +32,22 @@
     <message-box v-show="testEmailShow" header="邮件测试发送" type="prompt" width="450px" @handleClick="emailHandleClick">
       <div class="email-box">
         <span class="test-tip">每天只允许发送5条测试邮件：</span>
-        <com-input :value.sync="testEmailAddress" :error-tips="emailError" :maxLength="40" @keyup.enter.native="sendTestEmail" placeholder="输入邮件地址" />
+        <com-input :value.sync="testEmailAddress" :error-tips="emailError" :maxLength="40"
+                   @keyup.enter.native="sendTestEmail" placeholder="输入邮件地址"/>
       </div>
       <div class="step-one-btns" slot="bottom">
         <span>邮件限额：{{testEmailCount}}</span>
         <button class="primary-button" @click="sendTestEmail">立即发送
-          </button>
+        </button>
       </div>
     </message-box>
     <div class="email-bottom">
       <button class="default-button fl" @click="clickSendTestEmail">发送测试邮件
-        </button>
+      </button>
       <button class="primary-button fr" @click="nextEmail">下一步
-        </button>
+      </button>
       <button class="default-button margin-fl fr" @click="saveEmail">保存草稿
-        </button>
+      </button>
     </div>
   </div>
 </template>
@@ -94,6 +97,7 @@
         if (from.name === 'emailEditTwo') {
           /* 表示第二步进入第一步 */
           vm.isHistory = true
+          vm.queryEmailTemp()
         }
         vm.initPage()
       })
@@ -122,7 +126,8 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...this.email,
+          this.email = {
+            ...this.email,
             ...newVal
           }
         },
@@ -210,7 +215,7 @@
         this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
           if (!res.data.list) return
           this.emailList = res.data.list
-          if (!this.email.emailInviteId) { // 如果不是编辑
+          if (!this.email.emailInviteId && !this.isHistory) { // 如果不是编辑
             let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
             this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
           }
@@ -366,168 +371,169 @@
 </style>
 
 <style lang="scss" scoped>
-@import 'assets/css/mixin.scss';
-.edit-step-box {
-  min-width: 1366px;
-  background-color: #fff;
-  color: #222;
-  .email-header {
-    height: 60px;
-    line-height: 60px;
-    background-color: #ffd021;
-    .icon-jiantou {
-      font-size: 22px;
-      vertical-align: -2px;
-    }
-    .back-btn {
-      display: inline-block;
-      padding: 0 15px;
-      background-color: #ffda51;
-      line-height: 40px;
-      border-radius: 4px;
-      font-size: 18px;
-      text-align: center;
-      margin-left: 20px;
-      margin-right: 10px;
-      &:hover {
-        cursor: pointer;
-        opacity: 0.9;
-        color: #4b5afe;
-      }
-    }
-  }
-  .email-bottom {
-    height: 60px;
-    line-height: 60px;
-    border-top: 1px solid #e2e2e2;
-    box-sizing: border-box;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-    padding: 0 20px;
+  @import 'assets/css/mixin.scss';
+
+  .edit-step-box {
+    min-width: 1366px;
     background-color: #fff;
-    button {
-      margin-top: 10px;
-    }
-    .margin-fl {
-      margin-right: 10px;
-    }
-  }
-  .border-box /deep/ {
-    height: calc(100vh - 120px);
-    .html-editer {
-      height: 100%;
-      .vue-html5-editor .content {
-        background-color: #f5f5f5;
+    color: #222;
+    .email-header {
+      height: 60px;
+      line-height: 60px;
+      background-color: #ffd021;
+      .icon-jiantou {
+        font-size: 22px;
+        vertical-align: -2px;
       }
-    }
-  }
-  .step-btns {
-    margin: 30px 30px 100px 30px;
-    .margin-fl {
-      margin: 0 20px;
-    }
-  }
-  .edit-content {
-    height: 100%;
-    margin: 0 0 20px 0;
-    .edit-content-temp {
-      height: calc(100% - 36px);
-      width: 356px;
-      margin-top: 36px;
-      padding: 0 1.8%;
-      box-sizing: border-box;
-      overflow-y: scroll;
-      .temp-title {
-        span {
-          line-height: 44px;
-          color: #555;
+      .back-btn {
+        display: inline-block;
+        padding: 0 15px;
+        background-color: #ffda51;
+        line-height: 40px;
+        border-radius: 4px;
+        font-size: 18px;
+        text-align: center;
+        margin-left: 20px;
+        margin-right: 10px;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.9;
+          color: #4b5afe;
         }
       }
-      .temp-boxs {
-        margin-top: 20px;
-        .temp-item {
-          width: 124px;
-          margin: 10px 15px;
-          text-align: center;
-          &:nth-child(2n) {
-            margin-right: 0;
+    }
+    .email-bottom {
+      height: 60px;
+      line-height: 60px;
+      border-top: 1px solid #e2e2e2;
+      box-sizing: border-box;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+      padding: 0 20px;
+      background-color: #fff;
+      button {
+        margin-top: 10px;
+      }
+      .margin-fl {
+        margin-right: 10px;
+      }
+    }
+    .border-box /deep/ {
+      height: calc(100vh - 120px);
+      .html-editer {
+        height: 100%;
+        .vue-html5-editor .content {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+    .step-btns {
+      margin: 30px 30px 100px 30px;
+      .margin-fl {
+        margin: 0 20px;
+      }
+    }
+    .edit-content {
+      height: 100%;
+      margin: 0 0 20px 0;
+      .edit-content-temp {
+        height: calc(100% - 36px);
+        width: 356px;
+        margin-top: 36px;
+        padding: 0 1.8%;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        .temp-title {
+          span {
+            line-height: 44px;
+            color: #555;
           }
-          &:nth-child(2n + 1) {
-            margin-left: 0;
-          }
-          .temp-item-box {
-            height: 196px;
-            box-sizing: border-box;
-            border: solid 1px #e5e5e5;
-            border-radius: 4px;
-            background-size: cover;
-            &:hover {
-              cursor: pointer;
-              border-color: #4b5afe;
-              transition: border-color 0.2s;
+        }
+        .temp-boxs {
+          margin-top: 20px;
+          .temp-item {
+            width: 124px;
+            margin: 10px 15px;
+            text-align: center;
+            &:nth-child(2n) {
+              margin-right: 0;
+            }
+            &:nth-child(2n + 1) {
+              margin-left: 0;
+            }
+            .temp-item-box {
+              height: 196px;
+              box-sizing: border-box;
+              border: solid 1px #e5e5e5;
+              border-radius: 4px;
+              background-size: cover;
+              &:hover {
+                cursor: pointer;
+                border-color: #4b5afe;
+                transition: border-color 0.2s;
+              }
+            }
+            .temp-item-title {
+              display: block;
+              padding-top: 5px;
+              font-size: 14px;
+              color: #555555;
+            }
+            &:nth-child(1) .temp-item-box {
+              background-image: url('../../../assets/image/email-01.jpg');
+            }
+            &:nth-child(2) .temp-item-box {
+              background-image: url('../../../assets/image/email-02.jpg');
+            }
+            &:nth-child(3) .temp-item-box {
+              background-image: url('../../../assets/image/email-03.jpg');
+            }
+            &:nth-child(4) .temp-item-box {
+              background-image: url('../../../assets/image/email-04.jpg');
             }
           }
-          .temp-item-title {
-            display: block;
-            padding-top: 5px;
-            font-size: 14px;
-            color: #555555;
-          }
-          &:nth-child(1) .temp-item-box {
-            background-image: url('../../../assets/image/email-01.jpg');
-          }
-          &:nth-child(2) .temp-item-box {
-            background-image: url('../../../assets/image/email-02.jpg');
-          }
-          &:nth-child(3) .temp-item-box {
-            background-image: url('../../../assets/image/email-03.jpg');
-          }
-          &:nth-child(4) .temp-item-box {
-            background-image: url('../../../assets/image/email-04.jpg');
-          }
-        }
-        .active {
-          .temp-item-box {
-            border-color: #4b5afe;
+          .active {
+            .temp-item-box {
+              border-color: #4b5afe;
+            }
           }
         }
       }
-    }
-    .edit-content-box /deep/ {
-      width: calc(100% - 356px);
-      height: 100%;
-      .vue-html5-editor {
+      .edit-content-box /deep/ {
+        width: calc(100% - 356px);
         height: 100%;
-        border: none;
-        border-right: solid 1px #e5e5e5;
-        border-radius: 0;
-        .content {
-          height: calc(100% - 37px);
-          max-height: calc(100% - 37px);
-          padding: 0;
+        .vue-html5-editor {
+          height: 100%;
+          border: none;
+          border-right: solid 1px #e5e5e5;
+          border-radius: 0;
+          .content {
+            height: calc(100% - 37px);
+            max-height: calc(100% - 37px);
+            padding: 0;
+          }
         }
       }
     }
-  }
-  .email-box {
-    width: 100%;
-    margin: 15px 10px;
-    .test-tip {
-      font-size: 14px;
-      color: #4b5afe;
-      line-height: 40px;
+    .email-box {
+      width: 100%;
+      margin: 15px 10px;
+      .test-tip {
+        font-size: 14px;
+        color: #4b5afe;
+        line-height: 40px;
+      }
+      .com-input {
+        width: 390px;
+      }
     }
-    .com-input {
-      width: 390px;
+    .step-one-btns {
+      margin: 40px 10px -10px 10px;
+      span {
+        float: left;
+        line-height: 45px;
+        font-size: 14px;
+        color: #888;
+      }
     }
   }
-  .step-one-btns {
-    margin: 40px 10px -10px 10px;
-    span {
-      float: left;
-      line-height: 45px;
-      font-size: 14px;
-      color: #888;
-    }
-  }
-}
 </style>
