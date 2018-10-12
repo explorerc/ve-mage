@@ -142,13 +142,6 @@
     computed: mapState('login', {
       isLogin: state => state.isLogin
     }),
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-        if (from.name === 'master') {
-          this.isGoMaster = true
-        }
-      })
-    },
     created () {
       this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
         let _self = this
@@ -223,9 +216,11 @@
             sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
           })
           this.setIsLogin(1)
-          if (this.isGoMaster) {
+          let isGoMaster = sessionStorage.getItem('isGoMaster')
+          if (isGoMaster) {
             this.$router.go(-1)
           } else {
+            sessionStorage.removeItem('isGoMaster')
             this.$router.replace('/liveMager/list')
           }
         }).catch((err) => {
@@ -279,9 +274,11 @@
               this.cap.refresh()
             }
           }, 1000)
-          if (this.isGoMaster) {
+          let isGoMaster = sessionStorage.getItem('isGoMaster')
+          if (isGoMaster) {
             this.$router.go(-1)
           } else {
+            sessionStorage.removeItem('isGoMaster')
             this.$router.replace('/liveMager/list')
           }
         }).catch((err) => {

@@ -5,8 +5,9 @@
            class="title">{{title}}-
         <span>{{publishState}}</span>
       </div>
-      <a @click="goBack"
-         class="back">返回</a>
+      <div class="back-btn" @click="goBack">
+        <i class="iconfont icon-jiantou"></i>
+      </div>
       <el-select v-if="!isPreview&&!ptid" v-model="cType"
                  class="type-select"
                  @change="changeType">
@@ -180,11 +181,11 @@ export default {
       uploadErrorMsg: '',
       options: [
         {
-          label: '内容主题',
+          label: '步骤1 内容主题',
           value: 'tp'
         },
         {
-          label: '推广信息',
+          label: '步骤2 推广信息',
           value: 'tdk'
         }
       ],
@@ -425,6 +426,18 @@ export default {
 
 <style scoped lang="scss">
 @import 'assets/css/variable.scss';
+
+.el-select /deep/ {
+  input {
+    color: $color-font;
+    font-size: 16px;
+  }
+  .el-input {
+    .el-select__caret {
+      color: $color-font;
+    }
+  }
+}
 .from-box {
   // margin: 20px;
   .from-row {
@@ -463,40 +476,51 @@ export default {
   min-width: 1280px;
   overflow: auto;
   .header {
-    height: 54px;
-    line-height: 54px;
+    height: 60px;
+    line-height: 60px;
     text-align: center;
-    border-bottom: 1px solid #999;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 10;
     background-color: white;
     .title {
-      font-size: 18px;
+      font-size: 16px;
+      background: $color-default;
       span {
-        font-size: 14px;
+        font-size: 16px;
       }
     }
-    .back {
+
+    .back-btn {
       position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 110px;
+      display: inline-block;
+      top: 50%;
+      left: 20px;
+      margin-top: -20px;
+      padding: 0 15px;
+      background-color: #ffda51;
+      line-height: 40px;
+      border-radius: 4px;
+      font-size: 18px;
       text-align: center;
-      border-left: 1px solid #999;
-      border-right: 1px solid #999;
-      cursor: pointer;
+      .iconfont {
+        font-size: 22px;
+        vertical-align: -2px;
+      }
+      &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+        color: #4b5afe;
+      }
     }
     .type-select {
       position: absolute;
       top: 0;
-      left: 110px;
+      left: 80px;
       height: 100%;
-      width: 150px;
+      width: 154px;
       text-align: center;
-      border-right: 1px solid #999;
       cursor: pointer;
     }
     .save {
@@ -506,9 +530,8 @@ export default {
       height: 100%;
       width: 110px;
       text-align: center;
-      border-left: 1px solid #999;
-      border-right: 1px solid #999;
       cursor: pointer;
+      font-size: 14px;
     }
     .reset {
       position: absolute;
@@ -517,8 +540,8 @@ export default {
       height: 100%;
       width: 110px;
       text-align: center;
-      border-left: 1px solid #999;
       cursor: pointer;
+      font-size: 14px;
     }
     .preview-group {
       position: absolute;
@@ -613,7 +636,7 @@ export default {
     }
   }
   .template-content {
-    margin-top: 54px;
+    margin-top: 60px;
     .content {
       margin: auto;
       margin-top: 100px;

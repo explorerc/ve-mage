@@ -8,14 +8,19 @@
       </ul>
     </div>
     <com-edit ref="editTarget" class="nav-edit">
+      <div class="nav-blank-title">导航</div>
       <div>
         文字色
         <el-color-picker show-alpha v-model="value.data.fontColor"></el-color-picker>
       </div>
-      <com-button class="add-btn" @click="addNav">添加导航</com-button>
+      <!-- <com-button class="add-btn" @click="addNav">添加导航</com-button> -->
+      <div class="add-nav-box">
+        <span class='add-nav' @click="addNav"><i class='iconfont icon-jiahao'></i>添加栏目</span>
+        <span class='tips'>最多可添加8个栏目</span>
+      </div>
       <ul class="nav-edit-group">
         <li v-for="(item,index) in value.data.list" :key="'a'+index">
-          <div class="nav-title" @click="titleClick(index)">{{item.text}}<i @click.stop="removeClick(index)"class="iconfont icon-close"></i></div>
+          <div class="nav-title" @click="titleClick(index)">{{item.text}}<i @click.stop="removeClick(index)"class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow'></i></div>
           <div class="nav-content" :class="{active:active===index}">
             <div><com-input placeholder="输入导航名称" :value.sync="item.text"></com-input></div>
             <div><com-input placeholder="输入导航链接" :value.sync="item.link"></com-input></div>
@@ -73,6 +78,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'assets/css/variable.scss';
 .navigation-container /deep/ {
   .navigation-content {
     height: 100%;
@@ -81,29 +87,100 @@ export default {
     }
   }
   .nav-edit {
+    .nav-blank-title {
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      border-bottom: 1px solid rgba(226, 226, 226, 1);
+      font-size: 18px;
+      color: $color-font;
+    }
     .edit-content {
-      padding: 25px;
+      // padding: 25px;
     }
     .add-btn {
       width: 100%;
       margin-bottom: 10px;
     }
+    .add-nav-box {
+      padding: 20px 28px 16px 28px;
+      span.tips {
+        display: inline-block;
+        padding-top: 8px;
+        color: $color-gray;
+        font-size: 14px;
+      }
+    }
+    .add-nav {
+      display: block;
+      width: 300px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 40px;
+      height: 40px;
+      border-radius: 4px;
+      border: 1px dashed rgba(151, 151, 151, 1);
+      color: $color-font-sub;
+      font-size: 14px;
+      cursor: pointer;
+      .iconfont {
+        color: $color-font-sub;
+        font-size: 17px;
+        position: relative;
+        top: 1px;
+        right: 2px;
+      }
+      &:hover {
+        color: $color-blue-hover;
+        border-color: $color-blue-hover;
+        .iconfont {
+          color: $color-blue-hover;
+        }
+      }
+    }
     .nav-edit-group {
       border: 1px solid #dadada;
       border-bottom: 0;
       font-size: 14px;
+      li {
+        position: relative;
+      }
+      i.arrow {
+        top: 27px;
+      }
+      .del {
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        right: 38px;
+        top: 18px;
+        background: url('~assets/image/site/del.png') no-repeat;
+        background-size: contain;
+        &:hover {
+          background-image: url('~assets/image/site/del_hover.png');
+        }
+      }
     }
     .nav-title {
+      color: $color-font;
       cursor: pointer;
       width: 100%;
-      height: 35px;
-      line-height: 35px;
-      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      text-align: left;
+      padding: 0 28px;
       font-size: 14px;
+      font-weight: 600;
       border-bottom: 1px solid #dadada;
       .icon-close {
         float: right;
         padding-right: 10px;
+      }
+      &.active + .nav-title {
+        i.arrow {
+          -webkit-transform: rotateZ(180deg);
+          transform: rotateZ(180deg);
+        }
       }
     }
     .nav-content {
@@ -112,8 +189,9 @@ export default {
       transition: all 0.3s;
       &.active {
         border-bottom: 1px solid #dadada;
-        padding: 20px 10px;
+        padding: 20px 28px;
         height: auto;
+        background: rgba(245, 245, 245, 1);
       }
       .com-input {
         width: 100%;
