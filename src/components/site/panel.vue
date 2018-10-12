@@ -255,8 +255,12 @@ export default {
   }
 }
 .custom /deep/ {
+  .tab-content {
+    text-align: left;
+  }
   .tab-header-wrap {
     padding-top: 10px;
+    text-align: left;
     .tab-item {
       display: block;
       height: 30px;

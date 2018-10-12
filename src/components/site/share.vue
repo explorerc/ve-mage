@@ -72,7 +72,7 @@
       <label class='normal' >分享媒体</label>
       <ul class="edit-share-group">
         <li>
-          <input id='wx' type="checkbox" :checked.sync="value.wx">
+          <input id='wx' type="checkbox" v-model="value.wx">
           <label for="wx">
             <dl class='wx'>
               <dt></dt>
@@ -81,7 +81,7 @@
           </label>
         </li>
         <li>
-          <input id='wxSpace' type="checkbox" :checked.sync='value.wxSpace'>
+          <input id='wxSpace' type="checkbox" v-model='value.wxSpace'>
           <label for="wxSpace">
             <dl class='wxSpace'>
               <dt></dt>
@@ -90,7 +90,7 @@
           </label>
         </li>
         <li>
-          <input id='qq' type="checkbox" :checked.sync='value.qq'>
+          <input id='qq' type="checkbox" v-model='value.qq'>
           <label for="qq">
             <dl class='qq'>
               <dt></dt>
@@ -99,7 +99,7 @@
           </label>
         </li>
         <li>
-          <input id='qqSpace' type="checkbox" :checked.sync='value.qqSpace'>
+          <input id='qqSpace' type="checkbox" v-model='value.qqSpace'>
           <label for="qqSpace">
             <dl class='qqSpace'>
               <dt></dt>
@@ -108,7 +108,7 @@
           </label>
         </li>
         <li>
-          <input id='sina' type="checkbox" :checked.sync='value.sina'>
+          <input id='sina' type="checkbox" v-model='value.sina'>
           <label for="sina">
             <dl class='sina'>
               <dt></dt>
@@ -117,7 +117,7 @@
           </label>
         </li>
         <li>
-          <input id='copy' type="checkbox" :checked.sync='value.copy'>
+          <input id='copy' type="checkbox" v-model='value.copy'>
           <label for="copy">
             <dl class='copy'>
               <dt></dt>
@@ -346,35 +346,85 @@ export default {
             font-size: 14px;
             padding-top: 5px;
           }
+          &.wx dt {
+            background: url('~assets/image/site/wx.svg') no-repeat;
+            background-size: 40px 40px;
+            background-position: center;
+          }
           &.wxSpace dt {
+            background: url('~assets/image/site/wxSpace.svg') no-repeat;
+            background-size: 40px 40px;
+            background-position: center;
           }
           &.qq dt {
+            background: url('~assets/image/site/qq.svg') no-repeat;
+            background-size: 40px 40px;
+            background-position: center;
           }
           &.qqSpace dt {
+            background: url('~assets/image/site/qqSpace.svg') no-repeat;
+            background-size: 40px 40px;
+            background-position: center;
           }
           &.sina dt {
+            background: url('~assets/image/site/sina.svg') no-repeat;
+            background-size: 40px 40px;
+            background-position: center;
           }
           &.copy dt {
+            background: url('~assets/image/site/link.svg') no-repeat;
+            background-size: 40px 40px;
+            background-position: center;
           }
         }
         input:checked ~ label {
-          dl dt {
-            border-color: #07b906;
+          dl {
+            dd {
+              color: #07b906;
+            }
+            dt {
+              border-color: #07b906;
+            }
           }
-          dl.wxSpace dt {
-            border-color: #6467f0;
+          dl.wxSpace {
+            dd {
+              color: #6467f0;
+            }
+            dt {
+              border-color: #6467f0;
+            }
           }
-          dl.qq dt {
-            border-color: #2ab6fa;
+          dl.qq {
+            dd {
+              color: #2ab6fa;
+            }
+            dt {
+              border-color: #2ab6fa;
+            }
           }
-          dl.qqSpace dt {
-            border-color: #ffc600;
+          dl.qqSpace {
+            dd {
+              color: #ffc600;
+            }
+            dt {
+              border-color: #ffc600;
+            }
           }
-          dl.sina dt {
-            border-color: #ff000e;
+          dl.sina {
+            dd {
+              color: #ff000e;
+            }
+            dt {
+              border-color: #ff000e;
+            }
           }
-          dl.copy dt {
-            border-color: #53a2ff;
+          dl.copy {
+            dd {
+              color: #53a2ff;
+            }
+            dt {
+              border-color: #53a2ff;
+            }
           }
         }
       }

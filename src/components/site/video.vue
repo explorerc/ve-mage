@@ -10,41 +10,30 @@
            v-html="value.url"
            class="iframe-wrap"></div>
     </div>
-    <com-edit ref="editTarget"
-              class="video-edit-content">
-      <com-tabs :value="value.videoType"
-                @change="checkInit">
+    <com-edit ref="editTarget" class="video-edit-content">
+      <div class="nav-blank-title">视频</div>
+      <com-tabs :value="value.videoType" @change="checkInit">
         <com-tab index="upload">
           <div slot="label">
-            <el-radio v-model="value.videoType"
-                      label="upload">上传视频</el-radio>
+            <el-radio v-model="value.videoType" label="upload">上传视频</el-radio>
           </div>
           <div class="upload-field">
             <com-button @click="doUpload">上传视频</com-button>
-            <el-progress v-if="percentVideo"
-                         type="circle"
-                         :percentage="percentVideo"></el-progress>
+            <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
             <span>{{uploadErrorMsg}}</span>
             <div class="hide">
               <input type="file" ref="upload" id="upload"/>
               <input type="text" id='rename'>
-              <button ref="confirmUpload"
-                      id="confirmUpload"
-                      class="saveBtn"></button>
+              <button ref="confirmUpload" id="confirmUpload" class="saveBtn"></button>
             </div>
           </div>
         </com-tab>
         <com-tab index="url">
           <div slot="label">
-            <el-radio v-model="value.videoType"
-                      label="url">引用视频</el-radio>
+            <el-radio v-model="value.videoType" label="url">引用视频</el-radio>
           </div>
           <div>
-            <com-input class="link-input"
-                       :rows="6"
-                       type="textarea"
-                       placeholder="视频url"
-                       v-model="value.url"></com-input>
+            <com-input class="link-input" :rows="6" type="textarea" placeholder="视频url" v-model="value.url"></com-input>
           </div>
         </com-tab>
       </com-tabs>
