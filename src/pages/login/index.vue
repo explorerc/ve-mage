@@ -279,7 +279,11 @@
               this.cap.refresh()
             }
           }, 1000)
-          this.$router.replace('/liveMager/list')
+          if (this.isGoMaster) {
+            this.$router.go(-1)
+          } else {
+            this.$router.replace('/liveMager/list')
+          }
         }).catch((err) => {
           this.mobileError = err.msg
           this.isSend = false
