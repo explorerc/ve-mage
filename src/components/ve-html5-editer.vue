@@ -292,7 +292,7 @@
 </script>
 
 <style lang="scss">
-  .html-editer /deep/ {
+  .html-editer{
     min-width: 480px;
     i {
       font-style: italic;
