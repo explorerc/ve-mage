@@ -409,13 +409,13 @@
                 <div class='desc'>
                   <span>直播引导页</span>
                   <span class='des'>
-                    <!-- 已设置 -->
-<template v-if="dataBrand[1].isSet">
-  {{dataBrand[1].desc ==='N' ? '未发布' : '已发布'}}
+                    <!-- 已发布 -->
+<template v-if="isPublished">
+  已发布
 </template>
-                    <!-- 未设置 -->
+<!-- 未发布 -->
 <template v-else>
-  最精简的活动品牌页
+  {{dataBrand[1].isSet ? '未发布' : '最精简的活动品牌页'}}
 </template>
                   </span>
                 </div>

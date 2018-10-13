@@ -10,41 +10,33 @@
            v-html="value.url"
            class="iframe-wrap"></div>
     </div>
-    <com-edit ref="editTarget"
-              class="video-edit-content">
-      <com-tabs :value="value.videoType"
-                @change="checkInit">
+    <com-edit ref="editTarget" class="video-edit-content">
+      <div class="nav-blank-title">视频</div>
+      <label class='label-spe  label-spe-inner'>视频类型</label>
+      <com-tabs :value="value.videoType" @change="checkInit">
         <com-tab index="upload">
           <div slot="label">
-            <el-radio v-model="value.videoType"
-                      label="upload">上传视频</el-radio>
+            <el-radio v-model="value.videoType" label="upload">上传视频</el-radio>
           </div>
           <div class="upload-field">
-            <com-button @click="doUpload">上传视频</com-button>
-            <el-progress v-if="percentVideo"
-                         type="circle"
-                         :percentage="percentVideo"></el-progress>
-            <span>{{uploadErrorMsg}}</span>
+            <div class='upload-video-box' @click="doUpload">
+              <i class="upload-video-icon"></i>
+              <span class='desc' >{{uploadErrorMsg}}</span>
+              <span v-if="percentVideo" class="progress"><i  :style="{ 'width':`${percentVideo}%` }"></i></span>
+            </div>
             <div class="hide">
               <input type="file" ref="upload" id="upload"/>
               <input type="text" id='rename'>
-              <button ref="confirmUpload"
-                      id="confirmUpload"
-                      class="saveBtn"></button>
+              <button ref="confirmUpload" id="confirmUpload" class="saveBtn"></button>
             </div>
           </div>
         </com-tab>
         <com-tab index="url">
           <div slot="label">
-            <el-radio v-model="value.videoType"
-                      label="url">引用视频</el-radio>
+            <el-radio v-model="value.videoType" label="url">引用视频</el-radio>
           </div>
           <div>
-            <com-input class="link-input"
-                       :rows="6"
-                       type="textarea"
-                       placeholder="视频url"
-                       v-model="value.url"></com-input>
+            <com-input class="link-input" :rows="6" type="textarea" placeholder="请输入嵌入视频url: <iframe src='' frameborder=0 'allowfullscreen'></iframe>" v-model="value.url"></com-input>
           </div>
         </com-tab>
       </com-tabs>
@@ -65,7 +57,7 @@ export default {
     return {
       vhallParams: {},
       percentVideo: 0,
-      uploadErrorMsg: ''
+      uploadErrorMsg: '视频仅支持mp4格式，文件大小不超过200M'
     }
   },
   methods: {
@@ -82,6 +74,7 @@ export default {
           app_id: this.vhallParams.appId
         },
         beforeUpload: (file) => {
+          this.uploadErrorMsg = '准备上传...'
           if (file.type !== 'video/mp4') {
             this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
             return false
@@ -89,14 +82,15 @@ export default {
             this.uploadErrorMsg = '视频太大，请不要大于200M'
             return false
           }
-          this.uploadErrorMsg = ''
           this.percentVideo = 0
           return true
         },
         progress: (percent) => {
+          this.uploadErrorMsg = '上传中...'
           this.percentVideo = parseFloat(percent.replace('%', ''))
         },
         uploadSuccess: () => {
+          this.uploadErrorMsg = '上传成功!'
           this.$refs.confirmUpload.click()
         },
         saveSuccess: (res) => {
@@ -156,6 +150,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'assets/css/variable.scss';
 .video-container /deep/ {
   position: relative;
   .video-content {
@@ -175,7 +170,65 @@ export default {
     .upload-field {
     }
     .link-input {
-      width: 400px;
+      width: 300px;
+      margin: 0 auto;
+    }
+    .label-spe {
+      padding: 10px 0px 0px 25px;
+      font-size: 14px;
+      color: $color-font-sub;
+      float: left;
+    }
+    .com-input textarea {
+      width: 300px;
+      margin: 0 auto;
+    }
+  }
+}
+.upload-video-box {
+  cursor: pointer;
+  width: 300px;
+  margin: 0 auto;
+  height: 140px;
+  border: 1px dashed #e2e2e2;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  .upload-video-icon {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 15px auto 10px auto;
+    background-size: cover;
+    background-image: url('~assets/image/upload-video-icon@2x.png');
+  }
+  span.desc {
+    font-size: 14px;
+    line-height: 20px;
+    color: #888;
+    font-size: 14px;
+    width: 200px;
+    white-space: normal;
+    display: inline-block;
+    &.error {
+      color: $color-error;
+    }
+  }
+  span.progress {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background: white;
+    i {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: $color-default;
     }
   }
 }

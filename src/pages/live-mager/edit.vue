@@ -188,12 +188,14 @@
         if (isNew) {
           this.$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
+            this.canPaas = true
             this.successTxt = '创建成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
           })
         } else {
           this.$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
+            this.canPaas = true
             this.successTxt = '更新成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
           })
