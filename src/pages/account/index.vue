@@ -17,9 +17,13 @@
                       @error="uploadError" />
       </div>
       <com-editor :value.sync="account"
-                  type="readOnly"><span class="v-explain">账号：</span></com-editor>
+                  type="readOnly">
+        <span class="v-explain">账号：</span>
+      </com-editor>
       <com-editor :value.sync="companyName"
-                  type="readOnly"><span class="v-explain">公司名称：</span></com-editor>
+                  type="readOnly">
+        <span class="v-explain">公司名称：</span>
+      </com-editor>
       <com-editor :value.sync="accountName"
                   type="input"
                   @saveInfo="save($event,accountName,'name','company')"
@@ -27,16 +31,22 @@
                   :maxLength="40"
                   @cancel="cancel($event,'accountName')"
                   :isEdit="changeState.accountName"
-                  @clickSaveBtn="clickChangeState('accountName')"><span class="v-explain">账户名称：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('accountName')">
+        <span class="v-explain">账户名称：</span>
+      </com-editor>
       <com-editor :value.sync="state"
                   type="input"
                   @clickSaveBtn="clickSave(state,'popup','state')"
                   clickType="popup"
-                  btnName="查看"><span class="v-explain">认证状态：</span></com-editor>
+                  btnName="查看">
+        <span class="v-explain">认证状态：</span>
+      </com-editor>
       <com-editor :value.sync="accountPhone"
                   type="input"
                   @clickSaveBtn="clickSave(accountPhone,'popup','mobliePhone')"
-                  clickType="popup"><span class="v-explain">注册手机：</span></com-editor>
+                  clickType="popup">
+        <span class="v-explain">注册手机：</span>
+      </com-editor>
       <con-select :value.sync="displayValue"
                   :displayValue="displayValue"
                   type="select"
@@ -47,11 +57,15 @@
                   :isEdit="changeState.industry"
                   @cancelSelectInfo="cancelSelectInfo($event,'industry')"
                   @clickIndustryModifyBtn="clickIndustryModifyBtn('industry')"
-                  @saveSelectInfo="saveSelectInfo($event,displayValue,'industry','company')"><span class="v-explain">所属行业：</span></con-select>
+                  @saveSelectInfo="saveSelectInfo($event,displayValue,'industry','company')">
+        <span class="v-explain">所属行业：</span>
+      </con-select>
       <com-editor :value.sync="accountPassword"
                   type="input"
                   @clickSaveBtn="clickSave(accountPassword,'popup','password')"
-                  clickType="popup"><span class="v-explain">登录密码：</span></com-editor>
+                  clickType="popup">
+        <span class="v-explain">登录密码：</span>
+      </com-editor>
       <com-editor :value.sync="companyWebsite"
                   type="input"
                   @saveInfo="save($event,companyWebsite,'website','company')"
@@ -60,7 +74,9 @@
                   @cancel="cancel($event,'website')"
                   :errorTips="errorTips.website"
                   :isEdit="changeState.website"
-                  @clickSaveBtn="clickChangeState('website')"><span class="v-explain">公司网址：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('website')">
+        <span class="v-explain">公司网址：</span>
+      </com-editor>
     </div>
     <div class="v-info">
       <p class="v-title">
@@ -73,7 +89,9 @@
                   :max-length="20"
                   @cancel="cancel($event,'name')"
                   :isEdit="changeState.name"
-                  @clickSaveBtn="clickChangeState('name')"><span class="v-explain">姓名：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('name')">
+        <span class="v-explain">姓名：</span>
+      </com-editor>
       <com-editor :value.sync="userPost"
                   type="input"
                   @saveInfo="save($event,userPost,'position','user')"
@@ -81,7 +99,9 @@
                   :max-length="20"
                   @cancel="cancel($event,'position')"
                   :isEdit="changeState.position"
-                  @clickSaveBtn="clickChangeState('position')"><span class="v-explain">职务：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('position')">
+        <span class="v-explain">职务：</span>
+      </com-editor>
       <com-editor :value.sync="userPhone"
                   type="input"
                   @saveInfo="save($event,userPhone,'mobile','user')"
@@ -91,7 +111,9 @@
                   :errorTips="errorTips.mobile"
                   :isEdit="changeState.mobile"
                   @clickSaveBtn="clickChangeState('mobile')"
-                  classVal="v-phone-div"><span class="v-explain">手机：</span></com-editor>
+                  classVal="v-phone-div">
+        <span class="v-explain">手机：</span>
+      </com-editor>
       <com-editor :value.sync="officeNo"
                   type="input"
                   @saveInfo="save($event,officeNo,'tel','user')"
@@ -100,7 +122,9 @@
                   @cancel="cancel($event,'tel')"
                   :errorTips="errorTips.tel"
                   :isEdit="changeState.tel"
-                  @clickSaveBtn="clickChangeState('tel')"><span class="v-explain">办公电话：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('tel')">
+        <span class="v-explain">办公电话：</span>
+      </com-editor>
       <com-editor :value.sync="userEmail"
                   type="input"
                   @saveInfo="save($event,userEmail,'email','user')"
@@ -108,7 +132,9 @@
                   @cancel="cancel($event,'email')"
                   :errorTips="errorTips.email"
                   :isEdit="changeState.email"
-                  @clickSaveBtn="clickChangeState('email')"><span class="v-explain">邮箱：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('email')">
+        <span class="v-explain">邮箱：</span>
+      </com-editor>
       <com-editor :value.sync="userWechat"
                   type="input"
                   @saveInfo="save($event,userWechat,'wechat','user')"
@@ -117,7 +143,9 @@
                   @cancel="cancel($event,'wechat')"
                   :isEdit="changeState.wechat"
                   @clickSaveBtn="clickChangeState('wechat')"
-                  classVal="v-wx-div"><span class="v-explain">微信：</span></com-editor>
+                  classVal="v-wx-div">
+        <span class="v-explain">微信：</span>
+      </com-editor>
       <com-editor :value.sync="userQQ"
                   type="input"
                   @saveInfo="save($event,userQQ,'qq','user')"
@@ -127,7 +155,9 @@
                   :errorTips="errorTips.qq"
                   :isEdit="changeState.qq"
                   @clickSaveBtn="clickChangeState('qq')"
-                  classVal="v-qq-div"><span class="v-explain">QQ：</span></com-editor>
+                  classVal="v-qq-div">
+        <span class="v-explain">QQ：</span>
+      </com-editor>
       <com-editor :value.sync="userRemarks"
                   type="input"
                   @saveInfo="save($event,userRemarks,'remark','user')"
@@ -135,7 +165,9 @@
                   :max-length="40"
                   @cancel="cancel($event,'remark')"
                   :isEdit="changeState.remark"
-                  @clickSaveBtn="clickChangeState('remark')"><span class="v-explain">备注：</span></com-editor>
+                  @clickSaveBtn="clickChangeState('remark')">
+        <span class="v-explain">备注：</span>
+      </com-editor>
     </div>
     <message-box v-show="messageBoxShow"
                  @handleClick="messageBoxClick"
@@ -180,11 +212,16 @@
         <a href="javascript:;"
            class="phone-code-btn"
            :class="{prohibit:isProhibit}"
-           @click="getCode()">获取验证码<span v-show="isSend"
-                class="fr">(<em>{{second}}</em>s)</span></a>
+           @click="getCode()">获取验证码
+          <span v-show="isSend"
+                class="fr">(
+            <em>{{second}}</em>s)</span>
+        </a>
       </div>
       <div v-if="messageBoxType === 'changeMobile' && step === 'phoneSuccess'">
-        <img src="../../assets/image/success@2x.png" alt="成功" class="v-success-img">
+        <img src="../../assets/image/success@2x.png"
+             alt="成功"
+             class="v-success-img">
         <p class="v-success-explain">
           修改成功
         </p>
@@ -239,14 +276,18 @@
       </div>
       <div v-else-if="messageBoxType === 'seeState'">
         <p class="v-state-info">
-          <span class="v-label">公司名称：</span><span class="v-information">{{companyName}}</span>
+          <span class="v-label">公司名称：</span>
+          <span class="v-information">{{companyName}}</span>
         </p>
         <p class="v-state-info">
-          <span class="v-label">营业执照编号：</span><span class="v-information">{{licenseCode}}</span>
+          <span class="v-label">营业执照编号：</span>
+          <span class="v-information">{{licenseCode}}</span>
         </p>
         <p class="v-state-info">
           <span class="v-label">营业执照照片：</span>
-          <img :src="licensePicUrl" alt="成功" class="v-state-img">
+          <img :src="licensePicUrl"
+               alt="成功"
+               class="v-state-img">
         </p>
       </div>
     </message-box>
@@ -1004,7 +1045,9 @@ export default {
     width: 1366px;
     .v-info .v-editor {
       width: 453px;
-      &.v-phone-div, &.v-qq-div, &.v-wx-div{
+      &.v-phone-div,
+      &.v-qq-div,
+      &.v-wx-div {
         .limit {
           display: none;
         }
@@ -1074,7 +1117,7 @@ export default {
           height: 30px;
           line-height: 30px;
         }
-        .error-msg{
+        .error-msg {
           top: 36px;
           font-size: 12px;
         }

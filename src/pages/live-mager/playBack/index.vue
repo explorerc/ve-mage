@@ -432,6 +432,8 @@
         })
         /* 监听下载消息 */
         ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
+          console.log('---------下载消息---------')
+          console.log(msg)
           this.downLoadVideo()
         })
       },
@@ -516,10 +518,15 @@
         }
       },
       /* 下载 */
-      downLoadVideo () {
-        const playBack = this.playBackList[this.selectRowIdx]
+      downLoadVideo (rId) {
+        let replayId = 0
+        if (rId) {
+          replayId = rId
+        } else {
+          replayId = this.playBackList[this.selectRowIdx].replayId
+        }
         this.$config({handlers: true}).$post(playbackService.POST_DOWNLOAD_VIDEO, {
-          replayId: playBack.replayId
+          replayId: replayId
         }).then((res) => {
           if (res.data.downloadUrl) {
             let dl = document.createElement('a')
@@ -531,7 +538,7 @@
           this.$messageBox({
             header: '提示',
             content: errorMsg,
-            autoClose: 5,
+            autoClose: 3,
             confirmText: '知道了'
           })
         })

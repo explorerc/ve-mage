@@ -80,7 +80,7 @@
       {
         // custom module with dashboard.html
         name: 'colorEx',
-        icon: 'fa iconfont iconfont icon-huabi',
+        icon: 'fa iconfont icon-huabi',
         i18n: 'color',
         dashboard: {
           template: colorTemplate,
@@ -292,7 +292,7 @@
 </script>
 
 <style lang="scss">
-  .html-editer /deep/ {
+  .html-editer{
     min-width: 480px;
     i {
       font-style: italic;

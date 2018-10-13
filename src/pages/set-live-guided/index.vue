@@ -23,7 +23,7 @@
                @click="canPass = false">
               <com-input :value.sync="title"
                          placeholder="标题"
-                         :max-length="30"></com-input>
+                         :max-length="20"></com-input>
             </p>
           </div>
           <div class="input-form v-label clearfix">
@@ -52,7 +52,7 @@
               <com-input type="textarea"
                          :value.sync="description"
                          placeholder="请输入简介"
-                         :max-length="60"></com-input>
+                         :max-length="50"></com-input>
             </p>
           </div>
         </div>
@@ -395,12 +395,14 @@ export default {
         .v-phone-title {
           font-size: 16px;
           text-align: center;
+          word-break: break-all;
         }
         .v-phone-operation {
           height: 96px;
           border-radius: 0 0 5px 5px;
         }
         .v-phone-description {
+          word-break: break-all;
           width: 210px;
           font-size: 12px;
           text-align: center;
@@ -474,6 +476,9 @@ export default {
           font-size: 12px;
           text-align: center;
           padding-top: 10px;
+          width: 195px;
+          word-break: break-all;
+          margin: 0 auto;
         }
         .v-pc-operation {
           font-size: 12px;
