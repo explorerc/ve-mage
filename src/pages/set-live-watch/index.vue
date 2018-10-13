@@ -103,17 +103,15 @@
                   </p>
                 </div>
               </div>
-              <div class="input-form v-label clearfix">
+              <div class="input-form v-label clearfix v-shareIntroduction">
                 <p class="v-info-label pull-left">
                   分享简介：
                 </p>
                 <p class="v-info pull-left">
-                  <el-input type="textarea"
-                            :rows="5"
-                            placeholder="请输入分享简介"
-                            v-model="shareIntroduction"
-                            :max-length="120">
-                  </el-input>
+                  <com-input type="textarea"
+                             :value.sync="shareIntroduction"
+                             placeholder="请输入分享简介"
+                             :max-length="120"></com-input>
                 </p>
               </div>
               <div class="input-form v-label clearfix">
@@ -541,6 +539,16 @@ export default {
       left: 0;
       margin: 0;
     }
+    .v-shareIntroduction {
+      textarea {
+        padding-right: 45px;
+        height: 110px;
+      }
+      .limit {
+        right: 8px;
+        bottom: 8px;
+      }
+    }
     .v-show {
       width: 250px;
       height: 499px;
@@ -551,7 +559,7 @@ export default {
       position: relative;
       .v-share-friend {
         width: 173px;
-        height: 78px;
+        height: 100px;
         border: 1px solid #dadada;
         border-radius: 3px 3px 1px 1px;
         background-color: #fff;
