@@ -23,7 +23,7 @@
         <span class='tips'>链接需要附带http头协议</span>
       </div>
       <div class='button-item clearfix spe'>
-        <label class="label-spe-button">打开方式</label>
+        <label class="label-spe-button" style="padding-top:0px;padding-right:10px;">打开方式</label>
         <el-radio v-model="itemSwitch" label="_blank">新窗口</el-radio>
         <el-radio v-model="itemSwitch" label="_self">当前窗口</el-radio>
       </div>
@@ -64,6 +64,14 @@ export default {
   position: relative;
   font-size: 14px;
   text-align: center;
+  .nav-blank-title {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid rgba(226, 226, 226, 1);
+    font-size: 18px;
+    color: $color-font;
+  }
   button {
     border: 0;
   }

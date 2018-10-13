@@ -108,3 +108,10 @@ $color-ui-components:#4B5AFE;
   }
 }
 
+.datePicker {
+  .el-picker-panel__footer {
+    button:nth-of-type(1) {
+      display: none;
+    }
+  }
+}

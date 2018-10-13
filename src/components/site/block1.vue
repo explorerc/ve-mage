@@ -15,15 +15,14 @@
       </ul>
     </div>
     <com-edit ref="editTarget" class="block1-edit">
-      <!-- <div class="nav-blank-title">图组</div>
-      <com-button class="add-btn" @click="addBlock">添加图组</com-button> -->
+      <div class="nav-blank-title">图组</div>
       <div class="add-nav-box">
         <span class='add-nav' @click="addBlock"><i class='iconfont icon-jiahao'></i>添加图组</span>
         <span class='tips'>最多可添加8个图组</span>
       </div>
       <ul class="block1-edit-group">
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
-          <div class="block1-title" :class="{active:active===index}" @click="titleClick(index)">{{`图组${index+1}`}}<i @click.stop="removeClick(index)"class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
+          <div class="block1-title" :class="{active:active===index}" @click="titleClick(index)">{{`图组${index+1}`}}<i @click.stop="removeClick(index)" class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
           <div class="block1-content" :class="{active:active===index}" >
             <label class='normal' style="padding-top:0;" v-show='false'>对齐方式</label>
             <div class='radio-box' v-show='false'>
@@ -182,6 +181,14 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .block1-container /deep/ {
+  .nav-blank-title {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid rgba(226, 226, 226, 1);
+    font-size: 18px;
+    color: $color-font;
+  }
   position: relative;
   .block1-content {
     height: 100%;
