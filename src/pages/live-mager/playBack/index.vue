@@ -432,6 +432,7 @@
         })
         /* 监听下载消息 */
         ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
+          console.log('---------下载消息---------')
           console.log(msg)
           this.downLoadVideo()
         })
