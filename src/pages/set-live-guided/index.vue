@@ -244,7 +244,7 @@ export default {
         'imgUrl': this.imgUrl,
         'description': this.description
       }
-      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
@@ -401,6 +401,7 @@ export default {
           border-radius: 0 0 5px 5px;
         }
         .v-phone-description {
+          word-break: break-all;
           width: 210px;
           font-size: 12px;
           text-align: center;
@@ -474,6 +475,9 @@ export default {
           font-size: 12px;
           text-align: center;
           padding-top: 10px;
+          width: 195px;
+          word-break: break-all;
+          margin: 0 auto;
         }
         .v-pc-operation {
           font-size: 12px;
