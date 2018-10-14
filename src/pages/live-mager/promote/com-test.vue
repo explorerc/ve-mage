@@ -79,6 +79,10 @@ export default {
     deliverd: {
       type: Boolean,
       default: false
+    },
+    msgTag: {
+      type: String,
+      default: ''
     }
   },
   created () {
@@ -120,7 +124,8 @@ export default {
     sendTestmsg () {
       const data = {
         content: this.msgContent,
-        receiverMobile: this.sendPhone
+        receiverMobile: this.sendPhone,
+        signature: this.msgTag
       }
       this.$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
         this.limitCount -= 1
