@@ -169,6 +169,7 @@
     <com-test v-if='testModal'
               :msgContent='msgContent'
               @closeTest='closeTest'
+              :msgTag="msgTag"
               :type="'SMS'"></com-test>
   </div>
   </div>

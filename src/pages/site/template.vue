@@ -313,7 +313,8 @@ export default {
         }).then(res => {
           this.$toast({
             content: '保存成功',
-            autoClose: 500
+            autoClose: 500,
+            position: 'center'
           })
         })
       }
@@ -325,7 +326,8 @@ export default {
       }).then(res => {
         this.$toast({
           content: '保存成功',
-          autoClose: 500
+          autoClose: 500,
+          position: 'center'
         })
 
         // // 添加 下拉选项标记

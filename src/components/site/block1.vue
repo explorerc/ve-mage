@@ -18,7 +18,7 @@
       <div class="nav-blank-title">图组</div>
       <div class="add-nav-box">
         <span class='add-nav' @click="addBlock"><i class='iconfont icon-jiahao'></i>添加图组</span>
-        <span class='tips'>最多可添加8个图组</span>
+        <span class='tips'>最多可添加{{max}}个图组</span>
       </div>
       <ul class="block1-edit-group">
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
@@ -155,14 +155,17 @@ export default {
       }
     },
     uploadImgSuccess (data, index) {
+      // debugger
+      // let ret = JSON.parse(data.data)
+      this.value.list[index].img = `${data.name}`
       // let ret = JSON.parse(data.data)
       // if (ret.code === 200) {
-      if (this.value.bgType === 'img') {
-        this.value.img = `${data.name}`
-      } else {
-        this.value.video = `${data.name}`
-      }
-      this.analysisData(this.value)
+      // if (this.value.bgType === 'img') {
+      //   this.value.img = `${data.name}`
+      // } else {
+      //   this.value.video = `${data.name}`
+      // }
+      // this.analysisData(this.value)
       // }
     },
     uploadError (data, index) {
