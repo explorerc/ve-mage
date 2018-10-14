@@ -19,7 +19,7 @@
                 v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <p class="desc-label tool">活动状态: <el-switch class='switch' v-model="isPublished" :active-text="isPublished ? '已发布' : '未发布' " inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchActive"></el-switch>
-          <span class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
+          <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
           <ul v-show='showLinkBox'>
             <li>
               <i></i>活动官网链接 <el-button size="mini" round @click="copy('copyContent2')">复制</el-button>
