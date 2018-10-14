@@ -196,7 +196,7 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
       }).then(res => {
