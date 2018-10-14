@@ -22,11 +22,11 @@
           <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
           <ul v-show='showLinkBox'>
             <li>
-              <i></i>活动官网链接 <el-button size="mini" round @click="copy('copyContent2')">复制</el-button>
+              <i></i>活动官网 <router-link v-if="dataBrand[0].isSet" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link><el-button size="mini" round @click="copy('copyContent2')">复制</el-button><el-button size="mini" round @click="copy('copyContent2')">复制</el-button>
               <input type="text" :value="`https${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
             </li>
             <li>
-              <i></i>活动引导页链接 <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
+              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}setLiveGuided/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
               <input type="text" :value="`https${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
             </li>
           </ul>
@@ -1272,6 +1272,16 @@ export default {
       cursor: pointer;
       margin: 3px 0;
       padding: 0 17px;
+      a {
+        position: absolute;
+        left: 125px;
+        top: 50%;
+        margin-top: -26px;
+        .el-button {
+          position: static;
+          padding: 7px 10px;
+        }
+      }
       i {
         width: 20px;
         height: 20px;
@@ -1284,6 +1294,7 @@ export default {
         margin-top: -10px;
       }
       .el-button {
+        padding: 7px 10px;
         position: absolute;
         top: 50%;
         margin-top: -14px;
