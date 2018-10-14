@@ -330,6 +330,7 @@
         uploadErrorMsg: '',
         uploadImgErrorMsg: '',
         playMsg: '',
+        loadingTimeout: 0,
         prePlayShow: false
       }
     },
@@ -486,7 +487,7 @@
           playBack.status = 'PROCESS'
           this.$toast({
             header: `提示`,
-            content: '成功生成回放',
+            content: '开始重新生成回放',
             autoClose: 2000,
             position: 'top-center'
           })
@@ -525,6 +526,22 @@
         } else {
           replayId = this.playBackList[this.selectRowIdx].replayId
         }
+        console.log('------------downLoadVideo-------------')
+        if (rId) { // 收到下载消息直接
+          this.downLoadFile(replayId)
+        } else {
+          // 防止多次点击
+          if (this.loadingTimeout) {
+            return
+          }
+          this.loadingTimeout = setTimeout(() => {
+            clearTimeout(this.loadingTimeout)
+            this.loadingTimeout = 0
+            this.downLoadFile(replayId)
+          }, 1000)
+        }
+      },
+      downLoadFile (replayId) {
         this.$config({handlers: true}).$post(playbackService.POST_DOWNLOAD_VIDEO, {
           replayId: replayId
         }).then((res) => {
@@ -538,7 +555,7 @@
           this.$messageBox({
             header: '提示',
             content: errorMsg,
-            autoClose: 3,
+            autoClose: 5,
             confirmText: '知道了'
           })
         })
