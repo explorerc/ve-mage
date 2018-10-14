@@ -249,7 +249,7 @@
             </div>
           </div>
         </div>
-      <div class="item marketing">
+      <div class="item marketing" id="tg">
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
 
@@ -527,6 +527,12 @@ export default {
   created () { },
   mounted () {
     this.getDetails()
+    setTimeout(() => {
+      // 滚动到推广
+      if (window.location.href.search('tg') > -1) {
+        document.querySelector('.main-container').scrollTop = document.querySelector('#tg').offsetTop - 50
+      }
+    }, 500)
   },
   methods: {
     linkTo (e, link, status) {
