@@ -154,7 +154,7 @@ export default {
       }
     },
     updateState () {
-      this.$config({handlers: [60706]}).$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$config({handlers: [60706, 60701]}).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
@@ -170,6 +170,15 @@ export default {
         }, 2000)
       }).catch((res) => {
         if (res.code === 60706) {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this.enable = !this.enable
+          this.switchDisabled = false
+        } else if (res.code === 60701) {
           this.$messageBox({
             header: '提示',
             content: res.msg,
