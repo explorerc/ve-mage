@@ -3,13 +3,13 @@
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" :class="item.type" v-for="(item,index) in value.list" :key="'block1_item'+index">
-          <a target="_black" :href="item.link | voidLink">
+          <a :target="item.target" :href="item.link | voidLink">
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="block1-bg"></div>
             <div class="content"  v-html="item.content">
             </div>
             <!-- <com-font :class="{content:true,top:value.type==='top'}" :edit="edit" v-model="item.content"></com-font> -->
-            <com-btn v-if="value.showBtn" :edit="value.enable" v-model="item.btn"></com-btn>
+            <com-btn v-if="value.showBtn" :edit="false" v-model="item.btn"></com-btn>
           </a>
         </li>
       </ul>
@@ -63,10 +63,10 @@
             </div>
             <div class='open-way clearfix'>
               <label class='normal'>打开方式</label>
-              <el-radio v-model="item.type" label="_blank">新窗口</el-radio>
-              <el-radio v-model="item.type" label="_self">当前窗口</el-radio>
+              <el-radio v-model="item.target" label="_blank">新窗口</el-radio>
+              <el-radio v-model="item.target" label="_self">当前窗口</el-radio>
             </div>
-            <div class='clearfix show-btn'>
+            <div v-if='btn' class='clearfix show-btn'>
               <label class='normal'>是否显示按钮</label>
               <el-switch v-model="value.showBtn"></el-switch>
             </div>
@@ -82,6 +82,16 @@
               <div class='button-item clearfix'>
                 <com-input placeholder="按钮文字" v-model="item.btn.text"></com-input>
               </div>
+               <div>
+               <label class='normal'>跳转链接</label>
+               <com-input placeholder="跳转链接" v-model="item.btn.link"></com-input>
+               <label class='tips'>链接需要附带http头协议</label>
+            </div>
+              <div class='open-way clearfix'>
+              <label class='normal'>按钮打开方式</label>
+              <el-radio v-model="item.btn.target" label="_blank">新窗口</el-radio>
+              <el-radio v-model="item.btn.target" label="_self">当前窗口</el-radio>
+            </div>
             </div>
           </div>
         </li>
@@ -110,6 +120,10 @@ export default {
     max: {
       type: Number,
       default: 4
+    },
+    btn: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
