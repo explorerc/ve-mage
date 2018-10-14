@@ -20,7 +20,7 @@
           <div class="nav-content" :class="{active:active===index}">
             <div>
               <label>栏目名称</label>
-              <com-input placeholder="输入栏目名称" :value.sync="item.text"></com-input>
+              <com-input placeholder="输入栏目名称" :value.sync="item.text" :max-length="10"></com-input>
             </div>
             <div>
               <label>跳转链接</label>

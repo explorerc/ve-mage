@@ -161,7 +161,8 @@ export default {
       }).then(res => {
         this.$toast({
           content: '保存成功',
-          autoClose: 500
+          autoClose: 500,
+          position: 'center'
         })
 
         let st = setTimeout(() => {

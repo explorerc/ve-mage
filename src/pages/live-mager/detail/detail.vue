@@ -1122,7 +1122,7 @@ export default {
   float: left;
   width: 640px;
   p {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
   .title {
     font-size: 22px;
