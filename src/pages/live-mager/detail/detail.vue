@@ -21,13 +21,16 @@
         <p class="desc-label tool">活动状态: <el-switch class='switch' v-model="isPublished" :active-text="isPublished ? '已发布' : '未发布' " inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchActive"></el-switch>
           <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
           <ul v-show='showLinkBox'>
-            <li>
-              <i></i>活动官网 <router-link v-if="dataBrand[0].isSet" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link><el-button size="mini" round @click="copy('copyContent2')">复制</el-button><el-button size="mini" round @click="copy('copyContent2')">复制</el-button>
-              <input type="text" :value="`https${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
+            <li :class="{'isSwitch':!dataBrand[0].switch}">
+              <i></i>活动官网
+              <router-link v-if="dataBrand[0].switch" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link>
+              <router-link v-else :to="`/liveMager/site/${activityId}`" ><el-button size="mini" round>开启</el-button></router-link>
+              <el-button v-if="dataBrand[0].switch" size="mini" round @click="copy('copyContent2')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
             </li>
             <li>
-              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}setLiveGuided/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
-              <input type="text" :value="`https${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}subscibe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
             </li>
           </ul>
           </span>
@@ -1302,6 +1305,9 @@ export default {
       }
       &:hover {
         background: rgba(233, 235, 255, 1);
+      }
+      &.isSwitch a .el-button {
+        padding: 7px 35px;
       }
     }
   }
