@@ -141,6 +141,7 @@
           msg = '图片上传失败'
         }
         this.fileSrc = ''
+        this.coverImg = ''
         this.$emit('error', {
           type: state,
           msg: msg

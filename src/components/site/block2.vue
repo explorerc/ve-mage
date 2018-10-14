@@ -18,11 +18,11 @@
       <div class="nav-blank-title">轮播图</div>
       <div class="add-nav-box">
         <span class='add-nav' @click="addBlock"><i class='iconfont icon-jiahao'></i>添加栏目</span>
-        <span class='tips'>最多可添加6个栏目</span>
+        <span class='tips'>最多可添加5个栏目</span>
       </div>
       <ul class="block2-edit-group">
         <li v-for="(item,index) in value.list" :key="'block2_edit_item'+index">
-          <div class="block2-title" :class="{active:active===index}" @click="titleClick(index)"> {{`栏目${index+1}`}} <i @click.stop="removeClick(index)" class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
+          <div class="block2-title" :class="{active:active===index}" @click="titleClick(index)">栏目{{index+1}} <i @click.stop="removeClick(index)" class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
           <div class="block2-content" :class="{active:active===index}">
             <label class='normal' style="padding-top:0;" v-show='false'>对齐方式</label>
             <div class='radio-box' v-show='false'>
@@ -118,12 +118,17 @@ export default {
   },
   methods: {
     addBlock () {
-      let len = this.value.data.length
+      let len = this.value.list.length
       if (len < this.max) {
-        this.value.data.push({
-          content: ``,
-          img: ''
-        })
+        const obj = {
+          bgColor: '',
+          btn: {},
+          content: '',
+          img: '',
+          link: '',
+          type: ''
+        }
+        this.value.list.push(obj)
         this.active = len
       }
     },
@@ -135,8 +140,8 @@ export default {
       }
     },
     removeClick (index) {
-      if (this.value.data.length > this.min) {
-        this.value.data.splice(index, 1)
+      if (this.value.list.length > this.min) {
+        this.value.list.splice(index, 1)
       }
     },
     uploadLoad (data, index) {

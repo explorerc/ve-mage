@@ -415,6 +415,9 @@
     margin-left: 8px;
   }
 }
+.error-tips {
+  color: $color-error;
+}
 // .modal-cover {
 //   position: fixed;
 //   top: 0;
