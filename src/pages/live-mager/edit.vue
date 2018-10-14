@@ -186,18 +186,36 @@
       },
       updateWebinfo (isNew, data) { // 新建 创建活动
         if (isNew) {
-          this.$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
+          this.$config({'handlers': [2001]}).$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
             this.canPaas = true
             this.successTxt = '创建成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+          }).catch(res => {
+            if (res.code === 2001) {
+              this.$messageBox({
+                header: '提示',
+                content: '直播时间已过期，请重新选择!',
+                autoClose: 10,
+                confirmText: '知道了'
+              })
+            }
           })
         } else {
-          this.$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
+          this.$config({'handlers': [2001]}).$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
             this.canPaas = true
             this.successTxt = '更新成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+          }).catch(res => {
+            if (res.code === 2001) {
+              this.$messageBox({
+                header: '提示',
+                content: '直播时间已过期，请重新选择!',
+                autoClose: 10,
+                confirmText: '知道了'
+              })
+            }
           })
         }
       },

@@ -1264,6 +1264,7 @@ export default {
     border-radius: 4px;
     top: 40px;
     left: -60px;
+    z-index: 20;
     li {
       height: 50px;
       line-height: 50px;
