@@ -29,8 +29,8 @@
               <input type="text" :value="`https:${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
             </li>
             <li>
-              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}subscibe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
-              <input type="text" :value="`https:${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}subscribe/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
             </li>
           </ul>
           </span>

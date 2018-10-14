@@ -104,6 +104,9 @@ export default {
   .custom-editor.font-edit {
     .font-editer {
       background-color: transparent;
+      li .icon {
+        font-size: 12px;
+      }
     }
     .label-spe {
       padding-bottom: 10px;

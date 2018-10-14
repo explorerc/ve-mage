@@ -1,7 +1,7 @@
 <template>
-  <div class="btn-container" v-if="value.enable">
+  <div class="btn-container">
     <div ref="target" class="btn-content">
-      <a target="_black" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
+      <a :target="value.target" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
     </div>
     <com-edit ref="editTarget">
       <div class="nav-blank-title">按钮</div>
@@ -24,8 +24,8 @@
       </div>
       <div class='button-item clearfix spe'>
         <label class="label-spe-button" style="padding-top:0px;padding-right:10px;">打开方式</label>
-        <el-radio v-model="itemSwitch" label="_blank">新窗口</el-radio>
-        <el-radio v-model="itemSwitch" label="_self">当前窗口</el-radio>
+        <el-radio v-model="value.target" label="_blank">新窗口</el-radio>
+        <el-radio v-model="value.target" label="_self">当前窗口</el-radio>
       </div>
     </com-edit>
   </div>
@@ -39,11 +39,14 @@ export default {
   mixins: [editMixin],
   data () {
     return {
-      itemSwitch: false
+
     }
   },
   components: {
     ComEdit
+  },
+  mounted () {
+
   },
   computed: {
     styles () {

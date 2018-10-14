@@ -174,8 +174,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         },
         {
           type: 'bottom',
@@ -185,8 +187,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         },
         {
           type: 'bottom',
@@ -196,8 +200,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         },
         {
           type: 'bottom',
@@ -207,8 +213,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         }
         ]
       }
