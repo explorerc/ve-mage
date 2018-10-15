@@ -231,7 +231,7 @@
         </p>
       </div>
       <div v-else-if="messageBoxType === 'changePassword'">
-        <com-input :value.sync="dsds"
+        <com-input :value.sync="oldPassword"
                    placeholder="请输入旧密码"
                    class="v-input"
                    type="password"

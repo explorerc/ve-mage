@@ -40,7 +40,7 @@
       }
     },
     beforeDestroy () {
-      if (this.player) {
+      if (this.player && this.player.destory) {
         this.player.destory()
       }
     },
