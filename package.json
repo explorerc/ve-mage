@@ -7,7 +7,7 @@
     "start": "npm run local",
     "local": "cross-env NODE_ENV=local BUILD_ENV=local webpack-dev-server --config build/webpack.local.conf.js",
     "dev": "cross-env NODE_ENV=development BUILD_ENV=dev node build/build.js",
-    "test": "cross-env NODE_ENV=development BUILD_ENV=test node build/build.js",
+    "test": "cross-env NODE_ENV=production BUILD_ENV=test node build/build.js",
     "prod": "cross-env NODE_ENV=production BUILD_ENV=prod node build/build.js",
     "lint": "eslint --ext .js --ext .jsx --ext .vue src/",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
@@ -78,7 +78,7 @@
     "axios": "^0.18.0",
     "element-ui": "^2.4.6",
     "vue": "^2.5.16",
-    "vue-quill-editor": "^3.0.6",
+    "vue-html5-editor": "^1.1.1",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   }
