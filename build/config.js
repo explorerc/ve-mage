@@ -38,10 +38,12 @@ const config = {
   },
   prod: {
     BUILD_ENV: 'prod',
-    API_PATH: '//api-class.e.vhall.com',
+    API_PATH: '/api',
     SUB_DIR: 'static',
-    IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//static01-class.e.vhall.com/vhallclass/'
+    IMGHOST: '//zhike.oss-cn-beijing.aliyuncs.com',
+    PUBLIC_PATH: '//zhike1.vhall.com/',
+    MOBILE_HOST: '//zhike1.vhall.com/m/',
+    PC_HOST: '//zhike1.vhall.com/webinar/'
   }
 }
 module.exports = config
