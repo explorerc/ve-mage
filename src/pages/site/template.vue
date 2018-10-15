@@ -69,12 +69,14 @@
         <component v-if="platform==='PC'"
                    :editAble="!isPreview"
                    v-model="data"
-                   v-bind:is="com"></component>
+                   v-bind:is="com"
+                   :shareData='share'></component>
         <div v-if="platform==='H5'"
              class="h5-wrap">
           <iframe :src="`${this.mobileHost}site/${this.tid}`"
                   frameborder="0"
                   class="h5-preview"></iframe>
+          <div class="qrcode"><img src=""></div>
         </div>
       </div>
       <div class="template-content"
@@ -485,7 +487,7 @@ export default {
     top: 0;
     width: 100%;
     z-index: 99999;
-    background-color: white;
+    background-color: $color-default;
     .title {
       font-size: 16px;
       background: $color-default;
