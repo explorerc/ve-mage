@@ -41,7 +41,7 @@
 
   export default {
     name: 've-upload-image',
-    components: { ComUpload },
+    components: {ComUpload},
     data () {
       return {
         imgHost: '',
