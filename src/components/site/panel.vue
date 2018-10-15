@@ -80,7 +80,7 @@
                 <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
                 <div>
                   <label class='label-spe normal-inner'>引用视频</label>
-                  <com-input :class='"video-inner"' placeholder="请输入视频URL" v-model="value.video"></com-input>
+                  <com-input :class='"video-inner"' placeholder="请输入视频URL" :value.sync="value.link"></com-input>
                   <label class="tips link">例如:https://cnstatic01.e.vhall.com/static/bg.mp4</label>
                 </div>
               </com-tab>

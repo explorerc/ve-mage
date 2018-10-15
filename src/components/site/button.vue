@@ -19,7 +19,7 @@
       </div>
       <div class='button-item'>
         <label class="">跳转链接</label>
-        <com-input placeholder="跳转链接" v-model="value.link"></com-input>
+        <com-input placeholder="跳转链接" :value.sync="value.link"></com-input>
         <span class='tips'>链接需要附带http头协议</span>
       </div>
       <div class='button-item clearfix spe'>
