@@ -24,8 +24,8 @@
       </div>
       <div class='button-item clearfix spe'>
         <label class="label-spe-button" style="padding-top:0px;padding-right:10px;">打开方式</label>
-        <el-radio v-model="value.target" label="_blank">新窗口</el-radio>
         <el-radio v-model="value.target" label="_self">当前窗口</el-radio>
+        <el-radio v-model="value.target" label="_blank">新窗口</el-radio>
       </div>
     </com-edit>
   </div>
