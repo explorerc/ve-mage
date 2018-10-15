@@ -165,7 +165,9 @@ export default {
       text-align: center;
     }
     .mask {
-      height: 260px;
+      // height: 260px;
+      height: auto;
+      padding-bottom: 40px;
       position: absolute;
       bottom: 0;
       width: 100%;
