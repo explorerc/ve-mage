@@ -22,14 +22,14 @@
           <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
           <ul v-show='showLinkBox'>
             <li :class="{'isSwitch':!dataBrand[0].switch}">
-              <i></i>活动官网
+              <i class='icon-site'></i>活动官网
               <router-link v-if="dataBrand[0].switch" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link>
               <router-link v-else :to="`/liveMager/site/${activityId}`" ><el-button size="mini" round>开启</el-button></router-link>
               <el-button v-if="dataBrand[0].switch" size="mini" round @click="copy('copyContent2')">复制</el-button>
               <input type="text" :value="`https:${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
             </li>
             <li>
-              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
+              <i class='icon-guide'></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
               <input type="text" :value="`https:${this.PC_HOST}subscribe/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
             </li>
           </ul>
@@ -1193,8 +1193,25 @@ export default {
             color: #555;
             li {
               i {
+                width: 24px;
+                height: 24px;
                 left: 0;
-                background-image: url('~assets/image/detail/page.png');
+                top: 7px;
+              }
+              &:hover {
+                color: $color-blue;
+              }
+              i.icon-site {
+                background-image: url('~assets/image/detail/icon-site.png');
+              }
+              i.icon-guide {
+                background-image: url('~assets/image/detail/icon-guide.png');
+              }
+              &:hover i.icon-site {
+                background-image: url('~assets/image/detail/icon-guide-hover.png');
+              }
+              &:hover i.icon-guide {
+                background-image: url('~assets/image/detail/icon-site-hover.png');
               }
             }
           }
