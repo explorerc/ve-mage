@@ -23,7 +23,7 @@
           </div>
           <slot></slot>
           <div class="ve-message-box__btns">
-            <div v-if="!this.$slots.bottom">
+            <div v-if="!this.$slots.bottom" :type="type">
               <button type="button"
                       class="button--primary"
                       @click.prevent="handleClick(action.confirm)">
@@ -272,7 +272,9 @@ export default {
         &:active {
           background: $color-default-active;
         }
-        &[type='error'] {
+      }
+      div[type='error'] {
+        .button--primary{
           background-color: $color-red;
           &:hover {
             background: $color-red-hover;
@@ -281,14 +283,16 @@ export default {
             background: $color-red-active;
           }
         }
+        .button--cancel {
+          &:hover {
+            color: $color-red;
+          }
+        }
       }
       .button--cancel {
         padding: 0 20px 0 0;
         &:hover {
           color: $color-default;
-          &[type='error'] {
-            color: $color-red;
-          }
         }
       }
     }
