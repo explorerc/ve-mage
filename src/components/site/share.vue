@@ -182,6 +182,10 @@ export default {
     },
     doCopy () {
       this.url.copyClipboard()
+      this.$toast({
+        'content': '复制成功',
+        'position': 'center'
+      })
     },
     closeDialog () {
       this.showDialog = false
