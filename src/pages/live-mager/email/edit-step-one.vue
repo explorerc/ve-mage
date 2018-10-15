@@ -296,9 +296,7 @@
           // 把信息保存到vuex
           this.storeEmailInfo(this.email)
           this.$toast({
-            header: `提示`,
             content: '保存草稿成功',
-            autoClose: 2000,
             position: 'center'
           })
         })

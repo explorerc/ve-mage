@@ -77,7 +77,7 @@
 
 <script>
 // import testService from 'src/api/test'
-import { Toast } from 'components/common/notification'
+import {Toast} from 'components/common/notification'
 
 export default {
   data () {
