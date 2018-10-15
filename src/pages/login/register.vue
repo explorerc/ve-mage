@@ -121,7 +121,7 @@ export default {
     'com-input': MyInput
   },
   created () {
-    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
       let _self = this
       this.key = res.data
       window.initNECaptcha({
@@ -203,7 +203,7 @@ export default {
         'type': 'BUSINESS_USER_REG',
         captcha: this.phoneKey
       }
-      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
         this.isSend = true
         this.isProhibit = true
         clearInterval(this.timerr)
@@ -247,7 +247,7 @@ export default {
         'company': this.userCompany,
         'code': this.code
       }
-      this.$config({handlers: true}).$post(userService.POST_REGISTER, data).then((res) => {
+      this.$config({ handlers: true }).$post(userService.POST_REGISTER, data).then((res) => {
         this.closeTime = 60
         this.show = true
       }).catch((err) => {

@@ -1,14 +1,15 @@
 <template>
   <div class="site-container">
     <div class="group">
-      <div class="title">活动官网 <el-switch v-model="enable"
+      <div class="title">活动官网
+        <el-switch v-model="enable"
                    inactive-color="#DEE1FF"
                    :width="32"
                    :disabled="switchDisabled"
                    active-color="#FFD021"
                    @change="confirmState">
         </el-switch>
-      <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span>
+        <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span>
       </div>
     </div>
     <div class="group">
@@ -17,14 +18,15 @@
         <div class="template-block"
              style=""
              v-if="this.data.tid">
-          <img :src="this[`t${data.tid}`]" >
+          <img :src="this[`t${data.tid}`]">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="goEdit">编辑</a>
               <a @click="goPreview">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="this.data.tplName"></span>
+          <span class='tpl-name'
+                v-html="this.data.tplName"></span>
         </div>
         <div v-else>
           没有模板
@@ -35,24 +37,27 @@
       <div class="fwn fwn2">模板库</div>
       <div class="group-content fs0">
         <div class="template-block">
-          <img :src="t0478320" alt="">
+          <img :src="t0478320"
+               alt="">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template1')">使用模板</a>
               <a @click="showPreview('0478320')">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="tplData['template1']()['tplName']"></span>
+          <span class='tpl-name'
+                v-html="tplData['template1']()['tplName']"></span>
         </div>
         <div class="template-block">
-          <img :src="t0478321" >
+          <img :src="t0478321">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template2')">使用模板</a>
               <a @click="showPreview('0478321')">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="tplData['template2']()['tplName']"></span>
+          <span class='tpl-name'
+                v-html="tplData['template2']()['tplName']"></span>
         </div>
         <!-- <div class="template-block">
           <img :src="t0478322" >
@@ -64,14 +69,15 @@
           </div>
         </div> -->
         <div class="template-block">
-          <img :src="t0478323" >
+          <img :src="t0478323">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="useTemplate('template4')">使用模板</a>
               <a @click="showPreview('0478323')">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="tplData['template3']()['tplName']"></span>
+          <span class='tpl-name'
+                v-html="tplData['template3']()['tplName']"></span>
         </div>
       </div>
     </div>
@@ -154,7 +160,7 @@ export default {
       }
     },
     updateState () {
-      this.$config({handlers: [60706, 60701]}).$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$config({ handlers: [60706, 60701] }).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
@@ -196,7 +202,7 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
       }).then(res => {
