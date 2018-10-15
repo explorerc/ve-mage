@@ -151,7 +151,7 @@
       </div>
       <button @click='save'
               class='primary-button v-share-button'
-              v-if="published === 'Y' || !activityId">
+              v-if="published === 'N' || !activityId">
         保存
       </button>
     </div>
