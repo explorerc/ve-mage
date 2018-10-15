@@ -251,7 +251,7 @@ export default {
       &.width3 {
         .block1-item {
           width: 340px;
-          height: 245px;
+          min-height: 245px;
           img {
             height: 100%;
           }
@@ -259,7 +259,7 @@ export default {
       }
       .block1-item {
         width: 540px;
-        height: 350px;
+        height: auto;
         margin-right: 40px;
         img {
           width: 100%;
