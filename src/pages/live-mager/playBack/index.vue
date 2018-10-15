@@ -671,7 +671,7 @@
           // 默认回放不能删除
           this.$messageBox({
             header: '提示',
-            content: '默认回放不能删除？',
+            content: '默认回放不能删除!',
             autoClose: 5,
             confirmText: '知道了'
           })
