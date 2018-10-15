@@ -126,7 +126,8 @@ export default {
           content: '',
           img: '',
           link: '',
-          type: ''
+          type: '',
+          target: '_self'
         }
         this.value.list.push(obj)
         this.active = len

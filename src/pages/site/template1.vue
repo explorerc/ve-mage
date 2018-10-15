@@ -316,9 +316,10 @@ export default {
   }
   .section7 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
+      padding-bottom: 50px;
     }
     .font-content {
       margin-top: 70px;
