@@ -21,7 +21,7 @@
     </com-panel>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="6" v-model="data.section4Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>

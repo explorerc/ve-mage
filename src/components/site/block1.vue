@@ -22,7 +22,7 @@
       </div>
       <ul class="block1-edit-group">
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
-          <div class="block1-title" :class="{active:active===index}" @click="titleClick(index)">{{`图组${index+1}`}}<i @click.stop="removeClick(index)" class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
+          <div class="block1-title" :class="{active:active===index}" @click="titleClick(index)">图组{{index+1}}<i @click.stop="removeClick(index)" class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
           <div class="block1-content" :class="{active:active===index}" >
             <label class='normal' style="padding-top:0;" v-show='false'>对齐方式</label>
             <div class='radio-box' v-show='false'>
@@ -63,8 +63,8 @@
             </div>
             <div class='open-way clearfix'>
               <label class='normal'>打开方式</label>
-              <el-radio v-model="item.target" label="_blank">新窗口</el-radio>
               <el-radio v-model="item.target" label="_self">当前窗口</el-radio>
+              <el-radio v-model="item.target" label="_blank">新窗口</el-radio>
             </div>
             <div v-if='btn' class='clearfix show-btn'>
               <label class='normal'>是否显示按钮</label>
@@ -89,8 +89,8 @@
             </div>
               <div class='open-way clearfix'>
               <label class='normal'>按钮打开方式</label>
-              <el-radio v-model="item.btn.target" label="_blank">新窗口</el-radio>
               <el-radio v-model="item.btn.target" label="_self">当前窗口</el-radio>
+              <el-radio v-model="item.btn.target" label="_blank">新窗口</el-radio>
             </div>
             </div>
           </div>
@@ -144,8 +144,10 @@ export default {
             enable: true,
             text: '',
             bgColor: '',
-            fontColor: ''
-          }
+            fontColor: '',
+            target: '_self'
+          },
+          target: '_self'
         })
         this.active = len
       }
@@ -158,6 +160,7 @@ export default {
       }
     },
     removeClick (index) {
+      debugger
       if (this.value.list.length > this.min) {
         this.value.list.splice(index, 1)
       }
@@ -226,12 +229,14 @@ export default {
         }
         .content {
           width: 100%;
+          word-break: break-all;
         }
         &:last-child {
           margin-right: 0;
         }
         &.top {
           .content {
+            position: absolute;
             position: absolute;
             left: 0;
             top: 0;
