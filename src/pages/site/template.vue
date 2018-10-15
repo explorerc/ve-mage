@@ -76,7 +76,6 @@
           <iframe :src="`${this.mobileHost}site/${this.tid}`"
                   frameborder="0"
                   class="h5-preview"></iframe>
-          <div class="qrcode"><img src=""></div>
         </div>
       </div>
       <div class="template-content"

@@ -139,7 +139,7 @@ export default function () {
         showBtn: true,
         list: [{
           type: 'top',
-          content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
           img: require('assets/image/tp_section5_1.png'),
           btn: {
             enable: true,
@@ -150,7 +150,7 @@ export default function () {
         },
         {
           type: 'top',
-          content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
           img: require('assets/image/tp_section5_2.png'),
           btn: {
             enable: true,
@@ -161,7 +161,7 @@ export default function () {
         },
         {
           type: 'top',
-          content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
           img: require('assets/image/tp_section5_3.png'),
           btn: {
             enable: true,

@@ -212,6 +212,7 @@ export default {
         }
         .content {
           width: 100%;
+          word-break: break-all;
         }
         &:last-child {
           margin-right: 0;
