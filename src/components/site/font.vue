@@ -56,6 +56,10 @@ export default {
 
   .font-content {
     width: 100%;
+    a {
+      color: $color-blue;
+      text-decoration: underline;
+    }
   }
   .font-edit {
     .font-editer {

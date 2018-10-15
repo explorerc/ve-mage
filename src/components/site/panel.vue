@@ -81,6 +81,7 @@
                 <div>
                   <label class='label-spe normal-inner'>引用视频</label>
                   <com-input :class='"video-inner"' placeholder="请输入视频URL" v-model="value.video"></com-input>
+                  <label class="tips">例如:https://cnstatic01.e.vhall.com/static/bg.mp4</label>
                 </div>
               </com-tab>
            </com-tabs>
@@ -244,6 +245,13 @@ export default {
   }
   .label-spe-inner {
     padding-left: 0;
+  }
+  label.tips {
+    color: $color-gray;
+    position: relative;
+    top: 13px;
+    font-size: 14px;
+    word-break: keep-all;
   }
   .nav-blank-title {
     text-align: center;

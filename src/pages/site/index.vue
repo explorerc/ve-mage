@@ -209,7 +209,8 @@ export default {
         this.data = temData
         this.$toast({
           content: '设置成功',
-          autoClose: 2000
+          autoClose: 1000,
+          position: 'center'
         })
       })
     }

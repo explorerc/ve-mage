@@ -36,7 +36,7 @@
           <div class="from-title"><i class="star">*</i>直播标签：</div>
           <div class="from-content">
             <ol class='tag-list clearfix'>
-              <li v-for="item in tagGroup">{{item}}</li>
+              <li v-for="(idx,item) in tagGroup" :key="idx">{{item}}</li>
             </ol>
             <el-button @click='tagModal=true,tagEmpty = false' round class="add-tag">+</el-button>
             <div class="tag-modal" v-show='tagModal'>
@@ -133,8 +133,8 @@
           this.countCount = document.querySelector('.vue-html5-editor .content').innerText.gbLength()
           if (this.countCount > this.maxLength) {
             this.outRange = true
-            this.editorContent = newValue.substring(0, newValue.gbIndex(this.maxLength) + 1)
-            document.getElementsByClassName('content')[1].selectStart = 5
+            // this.editorContent = newValue.substring(0, newValue.gbIndex(this.maxLength) + 1)
+            // document.getElementsByClassName('content')[1].selectStart = 5
           } else {
             this.outRange = false
           }

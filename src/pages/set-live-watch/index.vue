@@ -66,7 +66,8 @@
             </div>
           </div>
           <button @click='brandClick'
-                  class='primary-button'>
+                  class='primary-button'
+                  v-if="status === 'PREPARE' || !activityId">
             保存
           </button>
         </com-tab>
@@ -164,7 +165,8 @@
             </div>
           </div>
           <button @click='shareClick'
-                  class='primary-button v-share-button'>
+                  class='primary-button v-share-button'
+                  v-if="status === 'PREPARE' || !activityId">
             保存
           </button>
         </com-tab>
@@ -176,6 +178,7 @@
 import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import userService from 'src/api/user-service'
+import activityService from 'src/api/activity-service'
 
 export default {
   data () {
@@ -194,6 +197,7 @@ export default {
       uploadLogoErrorMsg: '', // 上传图片错误提示
       uploadShareErrorMsg: '', // 上传图片错误提示
       avatar: '',
+      status: '', // 直播状态,
       canPass: true,
       activityTitle: '', // 活动标题
       errorTips: '' // 错误提示
@@ -222,6 +226,11 @@ export default {
         sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
       })
     }
+    this.$get(activityService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.status = res.data.status
+    })
     this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
       if (res.data) {
         this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
