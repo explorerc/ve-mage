@@ -226,12 +226,14 @@ export default {
         }
         .content {
           width: 100%;
+          word-break: break-all;
         }
         &:last-child {
           margin-right: 0;
         }
         &.top {
           .content {
+            position: absolute;
             position: absolute;
             left: 0;
             top: 0;

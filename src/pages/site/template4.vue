@@ -305,6 +305,10 @@ export default {
             border: 1px solid white;
           }
         }
+        .content {
+          padding: 20px;
+          word-break: break-all;
+        }
         .btn-container {
           width: 100px;
           height: 34px;
