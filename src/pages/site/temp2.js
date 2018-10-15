@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478321',
-    tplName: '模版名称2',
+    tplName: '模板名称2',
     section1Data: {
       panel: {
         bgType: 'color',
@@ -174,8 +174,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         },
         {
           type: 'bottom',
@@ -185,8 +187,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         },
         {
           type: 'bottom',
@@ -196,8 +200,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         },
         {
           type: 'bottom',
@@ -207,8 +213,10 @@ export default function () {
             enable: true,
             text: '了解详情',
             bgColor: 'rgba(253,101,76,1)',
+            target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
-          }
+          },
+          target: '_self'
         }
         ]
       }

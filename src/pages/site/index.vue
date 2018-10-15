@@ -1,77 +1,83 @@
 <template>
   <div class="site-container">
     <div class="group">
-      <div class="title">活动官网 <el-switch v-model="enable"
+      <div class="title">活动官网
+        <el-switch v-model="enable"
                    inactive-color="#DEE1FF"
                    :width="32"
                    :disabled="switchDisabled"
                    active-color="#FFD021"
                    @change="confirmState">
         </el-switch>
-      <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span>
+        <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span>
       </div>
     </div>
     <div class="group">
-      <div class="fwn">我的模版</div>
+      <div class="fwn">我的模板</div>
       <div class="group-content">
         <div class="template-block"
              style=""
              v-if="this.data.tid">
-          <img :src="this[`t${data.tid}`]" >
+          <img :src="this[`t${data.tid}`]">
           <div class="option-wrap">
             <div class="option-group">
               <a @click="goEdit">编辑</a>
               <a @click="goPreview">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="this.data.tplName"></span>
+          <span class='tpl-name'
+                v-html="this.data.tplName"></span>
         </div>
         <div v-else>
-          没有模版
+          没有模板
         </div>
       </div>
     </div>
     <div class="group">
-      <div class="fwn fwn2">模版库</div>
+      <div class="fwn fwn2">模板库</div>
       <div class="group-content fs0">
         <div class="template-block">
-          <img :src="t0478320" alt="">
+          <img :src="t0478320"
+               alt="">
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template1')">使用模版</a>
+              <a @click="useTemplate('template1')">使用模板</a>
               <a @click="showPreview('0478320')">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="tplData['template1']()['tplName']"></span>
+          <span class='tpl-name'
+                v-html="tplData['template1']()['tplName']"></span>
         </div>
         <div class="template-block">
-          <img :src="t0478321" >
+          <img :src="t0478321">
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template2')">使用模版</a>
+              <a @click="useTemplate('template2')">使用模板</a>
               <a @click="showPreview('0478321')">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="tplData['template2']()['tplName']"></span>
+          <span class='tpl-name'
+                v-html="tplData['template2']()['tplName']"></span>
         </div>
         <!-- <div class="template-block">
           <img :src="t0478322" >
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template2')">使用模版</a>
+              <a @click="useTemplate('template2')">使用模板</a>
               <a @click="showPreview('0478322')">预览</a>
             </div>
           </div>
         </div> -->
         <div class="template-block">
-          <img :src="t0478323" >
+          <img :src="t0478323">
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template4')">使用模版</a>
+              <a @click="useTemplate('template4')">使用模板</a>
               <a @click="showPreview('0478323')">预览</a>
             </div>
           </div>
-          <span class='tpl-name' v-html="tplData['template3']()['tplName']"></span>
+          <span class='tpl-name'
+                v-html="tplData['template3']()['tplName']"></span>
         </div>
       </div>
     </div>
@@ -154,14 +160,15 @@ export default {
       }
     },
     updateState () {
-      this.$config({ handlers: [60706] }).$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$config({ handlers: [60706, 60701] }).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
       }).then(res => {
         this.$toast({
           content: '保存成功',
-          autoClose: 500
+          autoClose: 500,
+          position: 'center'
         })
 
         let st = setTimeout(() => {
@@ -170,6 +177,15 @@ export default {
         }, 2000)
       }).catch((res) => {
         if (res.code === 60706) {
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this.enable = !this.enable
+          this.switchDisabled = false
+        } else if (res.code === 60701) {
           this.$messageBox({
             header: '提示',
             content: res.msg,

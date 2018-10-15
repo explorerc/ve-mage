@@ -12,15 +12,15 @@
     </com-panel>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
       <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="3" :btn="false" v-model="data.section3Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section4Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section5Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="4" v-model="data.section5Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
       <com-share :edit="editAble" :share="shareData" v-model="data.section6Data.share"></com-share>

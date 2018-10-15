@@ -129,6 +129,7 @@
                   type="input"
                   @saveInfo="save($event,userEmail,'email','user')"
                   clickType="save"
+                  :max-length="40"
                   @cancel="cancel($event,'email')"
                   :errorTips="errorTips.email"
                   :isEdit="changeState.email"
@@ -187,7 +188,7 @@
                    :value.sync="phone"
                    :placeholder="'输入原有注册手机号'"
                    class="v-input"
-                   type="input"
+                   type="mobile"
                    :max-length="11"
                    :errorTips="errorTips.oldPhone"
                    @focus="phoneFocus('oldphone')"></com-input>
@@ -195,7 +196,7 @@
                    :value.sync="saveNewPhone"
                    :placeholder="'输入新手机号'"
                    class="v-input"
-                   type="input"
+                   type="mobile"
                    :max-length="11"
                    :errorTips="errorTips.newPhone"
                    @focus="phoneFocus('newphone')"></com-input>
@@ -230,7 +231,7 @@
         </p>
       </div>
       <div v-else-if="messageBoxType === 'changePassword'">
-        <com-input :value.sync="oldPassword"
+        <com-input :value.sync="dsds"
                    placeholder="请输入旧密码"
                    class="v-input"
                    type="password"
@@ -519,6 +520,14 @@ export default {
       })
     },
     uploadError (data) {
+      if (data.code === 503 && data.data.length > 0) {
+        if (data.data[0].state === 'size-limit') {
+          data.msg = '图片过大,最大不能超过2M'
+        }
+        if (data.data[0].state === 'type-limit') {
+          data.msg = '图片类型错误'
+        }
+      }
       this.$messageBox({
         header: '提示',
         content: data.msg,

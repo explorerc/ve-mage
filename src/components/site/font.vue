@@ -3,7 +3,9 @@
     <div ref="target">
       <div class="font-content" v-html="value.content"></div>
     </div>
-    <com-edit ref="editTarget" class="font-edit" @show="showHandle" @hide="hideHandle">
+    <com-edit ref="editTarget" class="font-edit custom-editor" @show="showHandle" @hide="hideHandle">
+      <div class="nav-blank-title">文字</div>
+      <label class='label-spe'>文字内容</label>
       <com-editer class="font-editer" v-model="value.content" ></com-editer>
     </com-edit>
   </div>
@@ -46,6 +48,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'assets/css/variable.scss';
 .font-container /deep/ {
   display: inline-block;
   position: relative;
@@ -59,11 +62,14 @@ export default {
       min-width: auto;
       height: 100%;
       .vue-html5-editor {
+        width: 300px;
+        margin: 0 auto;
         min-height: 400px;
         line-height: inherit;
         background-color: transparent;
+        background-color: #dadada;
         position: relative;
-        border-radius: 0px;
+        border-radius: 4px;
         .toolbar {
           background-color: white;
           position: absolute;
@@ -93,6 +99,17 @@ export default {
       li[title='全屏'] {
         display: none;
       }
+    }
+  }
+  .custom-editor.font-edit {
+    .font-editer {
+      background-color: transparent;
+      li .icon {
+        font-size: 12px;
+      }
+    }
+    .label-spe {
+      padding-bottom: 10px;
     }
   }
 }

@@ -9,10 +9,6 @@
     </div>
     <com-edit ref="editTarget" class="nav-edit">
       <div class="nav-blank-title">导航</div>
-      <div>
-        文字色
-        <el-color-picker show-alpha v-model="value.data.fontColor"></el-color-picker>
-      </div>
       <!-- <com-button class="add-btn" @click="addNav">添加导航</com-button> -->
       <div class="add-nav-box">
         <span class='add-nav' @click="addNav"><i class='iconfont icon-jiahao'></i>添加栏目</span>
@@ -20,10 +16,17 @@
       </div>
       <ul class="nav-edit-group">
         <li v-for="(item,index) in value.data.list" :key="'a'+index">
-          <div class="nav-title" @click="titleClick(index)">{{item.text}}<i @click.stop="removeClick(index)"class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow'></i></div>
+          <div class="nav-title" :class="{active:active===index}" @click="titleClick(index)">{{item.text}}<i @click.stop="removeClick(index)"class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
           <div class="nav-content" :class="{active:active===index}">
-            <div><com-input placeholder="输入导航名称" :value.sync="item.text"></com-input></div>
-            <div><com-input placeholder="输入导航链接" :value.sync="item.link"></com-input></div>
+            <div>
+              <label>栏目名称</label>
+              <com-input placeholder="输入栏目名称" :value.sync="item.text" :max-length="10"></com-input>
+            </div>
+            <div>
+              <label>跳转链接</label>
+              <com-input placeholder="输入跳转链接" :value.sync="item.link"></com-input>
+              <label class='tips'>链接需要附带http头协议</label>
+            </div>
             <div>
               <span style="margin-right:20px;margin-left:5px;">打开方式</span>
               <el-radio v-model="item.type" label="_blank">新窗口</el-radio>
@@ -32,6 +35,10 @@
           </div>
         </li>
       </ul>
+      <div class='color-box'>
+        文字色
+        <el-color-picker show-alpha v-model="value.data.fontColor"></el-color-picker>
+      </div>
     </com-edit>
   </div>
 </template>
@@ -146,7 +153,7 @@ export default {
         position: relative;
       }
       i.arrow {
-        top: 27px;
+        top: 25px;
       }
       .del {
         width: 16px;
@@ -176,7 +183,9 @@ export default {
         float: right;
         padding-right: 10px;
       }
-      &.active + .nav-title {
+      &.active {
+        border-bottom: none;
+        background-color: whitesmoke;
         i.arrow {
           -webkit-transform: rotateZ(180deg);
           transform: rotateZ(180deg);
@@ -189,13 +198,41 @@ export default {
       transition: all 0.3s;
       &.active {
         border-bottom: 1px solid #dadada;
-        padding: 20px 28px;
+        padding: 0 28px 10px 28px;
         height: auto;
         background: rgba(245, 245, 245, 1);
+      }
+      label {
+        display: inline-block;
+        color: $color-font-sub;
+        padding-bottom: 10px;
+        &.tips {
+          color: $color-gray;
+          position: relative;
+          bottom: 13px;
+        }
       }
       .com-input {
         width: 100%;
         margin-bottom: 20px;
+      }
+    }
+    .color-box {
+      height: 50px;
+      line-height: 50px;
+      padding: 0px 28px;
+      color: $color-font;
+      font-weight: 600;
+      font-size: 14px;
+      position: relative;
+      .el-color-picker {
+        top: 10px;
+        right: 18px;
+        position: absolute;
+      }
+      .el-color-picker__trigger {
+        height: 30px;
+        width: 240px;
       }
     }
   }

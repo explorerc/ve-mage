@@ -313,7 +313,8 @@ export default {
         }).then(res => {
           this.$toast({
             content: '保存成功',
-            autoClose: 500
+            autoClose: 500,
+            position: 'center'
           })
         })
       }
@@ -325,7 +326,8 @@ export default {
       }).then(res => {
         this.$toast({
           content: '保存成功',
-          autoClose: 500
+          autoClose: 500,
+          position: 'center'
         })
 
         // // 添加 下拉选项标记
@@ -482,7 +484,7 @@ export default {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 10;
+    z-index: 99999;
     background-color: white;
     .title {
       font-size: 16px;
@@ -548,14 +550,14 @@ export default {
       top: 0;
       right: 0;
       height: 100%;
-      border-left: 1px solid #999;
+      // border-left: 1px solid #999;
 
       .share-box {
         width: 446px;
         height: 290px;
         position: absolute;
         right: 0;
-        top: 54px;
+        top: 60px;
         background-color: white;
         border: 1px solid #999;
         border-top: 0;
@@ -631,7 +633,8 @@ export default {
         height: 100%;
         float: left;
         cursor: pointer;
-        border-right: 1px solid #999;
+        font-size: 14px;
+        // border-right: 1px solid #999;
       }
     }
   }

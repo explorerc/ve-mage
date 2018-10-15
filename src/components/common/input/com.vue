@@ -20,9 +20,8 @@
        :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}"
        @click="toggleShow"></i>
     <span class="limit"
-          v-if="maxLength&&type==='input'">
-      <i class="length"
-         v-text="innerValue.gbLength()">0</i>/
+          v-if="maxLength&&(type==='input'||type==='mobile')">
+      <i class="length">{{isMobile?innerValue.length:innerValue.gbLength()}}</i>/
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -67,6 +66,7 @@ export default {
   },
   data () {
     return {
+      isMobile: false,
       innerValue: '',
       showDelete: false,
       inputType: '',
@@ -112,9 +112,15 @@ export default {
       let type = ''
       switch (this.type) {
         case 'password':
+          this.isMobile = false
           type = 'password'
           break
+        case 'mobile':
+          this.isMobile = true
+          type = 'text'
+          break
         default:
+          this.isMobile = false
           type = 'text'
           break
       }
@@ -123,15 +129,34 @@ export default {
   },
   watch: {
     innerValue (value) {
-      if (this.maxLength && value.gbLength() > this.maxLength) {
+      if (this.isMobile) {
+        this.innerValue = value.replace(/\D/g, '')
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
+      } else if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
       if (this.type === 'textarea' && this.autosize) {
         this.$refs.tarea.style.height = 'auto'
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
+      if (value.gbLength() === 0) {
+        this.limitColor = '#555'
+      } else {
+        this.limitColor = '#4b5afe'
+      }
       this.$emit('update:value', this.innerValue)
       this.$emit('input', this.innerValue)
+      // if (this.maxLength && value.gbLength() > this.maxLength) {
+      //   this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
+      // }
+      // if (this.type === 'textarea' && this.autosize) {
+      //   this.$refs.tarea.style.height = 'auto'
+      //   this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
+      // }
+      // this.$emit('update:value', this.innerValue)
+      // this.$emit('input', this.innerValue)
     },
     value: {
       handler (value) {

@@ -78,6 +78,10 @@
     watch: {
       errorMsg (value) {
         this.errorTxt = value
+        if (value.length) {
+          this.fileSrc = ''
+          this.coverImg = ''
+        }
       },
       defaultImg: {
         handler (val) {
@@ -137,6 +141,7 @@
           msg = '图片上传失败'
         }
         this.fileSrc = ''
+        this.coverImg = ''
         this.$emit('error', {
           type: state,
           msg: msg
@@ -147,87 +152,87 @@
 </script>
 
 <style lang="scss" scoped>
-  .fade-enter-active {
-    transition: all 0.3s ease;
-  }
+.fade-enter-active {
+  transition: all 0.3s ease;
+}
 
-  .fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-  }
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
 
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 
-  .ve-upload-box {
+.ve-upload-box {
+  position: relative;
+  width: 440px;
+  height: 140px;
+  border: 1px dashed #e2e2e2;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  text-align: center;
+  overflow: hidden;
+  .over-upload {
+    display: block;
     position: relative;
-    width: 440px;
-    height: 140px;
-    border: 1px dashed #e2e2e2;
-    border-radius: 4px;
-    background-color: #f7f7f7;
-    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 3;
+    top: 0;
+    span {
+      display: inline-block;
+      width: 34%;
+      text-align: center;
+      color: #fff;
+      margin-top: 50px;
+      .iconfont {
+        display: block;
+      }
+      &:hover {
+        color: #ccc;
+      }
+    }
+  }
+  .upload-img-box {
+    height: 100%;
+    width: 249px;
+    margin: 0 auto;
     overflow: hidden;
-    .over-upload {
-      display: block;
-      position: relative;
+    cursor: pointer;
+    .temp-img {
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 3;
-      top: 0;
-      span {
-        display: inline-block;
-        width: 34%;
-        text-align: center;
-        color: #fff;
-        margin-top: 50px;
-        .iconfont {
-          display: block;
-        }
-        &:hover {
-          color: #ccc;
-        }
-      }
+      background-position: center center;
+      background-size: cover;
     }
-    .upload-img-box {
-      height: 100%;
-      width: 249px;
-      margin: 0 auto;
-      overflow: hidden;
-      cursor: pointer;
-      .temp-img {
-        width: 100%;
-        height: 100%;
-        background-position: center center;
-        background-size: cover;
-      }
-      &:hover .over-upload {
-        transition: top 0.3s;
-        top: -100%;
-      }
-    }
-    .upload-file-box {
-      width: 400px;
-      padding-bottom: 40px;
-      cursor: pointer;
-      span {
-        font-size: 14px;
-        line-height: 20px;
-        color: #888;
-        &.error-msg {
-          color: #fc5659;
-        }
-      }
-      .upload-icon {
-        display: block;
-        width: 60px;
-        height: 60px;
-        margin: 20px auto 10px auto;
-        background-image: url('../assets/image/upload-image-icon@2x.png');
-        background-size: cover;
-      }
+    &:hover .over-upload {
+      transition: top 0.3s;
+      top: -100%;
     }
   }
+  .upload-file-box {
+    width: 400px;
+    padding-bottom: 40px;
+    cursor: pointer;
+    span {
+      font-size: 14px;
+      line-height: 20px;
+      color: #888;
+      &.error-msg {
+        color: #fc5659;
+      }
+    }
+    .upload-icon {
+      display: block;
+      width: 60px;
+      height: 60px;
+      margin: 20px auto 10px auto;
+      background-image: url('../assets/image/upload-image-icon@2x.png');
+      background-size: cover;
+    }
+  }
+}
 </style>

@@ -85,7 +85,7 @@ export default {
   left: 0;
   top: 0;
   bottom: 0;
-  z-index: 10;
+  z-index: 2000;
   background-color: rgba(0, 0, 0, 0.2);
   .edit-content {
     position: absolute;
@@ -97,6 +97,7 @@ export default {
     background-color: white;
     transform: translateX(100%);
     overflow-y: auto;
+    z-index: 2001;
     &.active {
       transform: translateX(0);
     }
@@ -104,6 +105,13 @@ export default {
       transform: translateX(0);
       transition: none;
       background-color: transparent;
+    }
+  }
+}
+.el-carousel {
+  .btn-container .edit-container /deep/ {
+    .edit-content {
+      padding-top: 0px !important;
     }
   }
 }

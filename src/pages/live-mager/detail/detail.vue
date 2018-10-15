@@ -18,14 +18,31 @@
         <p class='desc-label'>活动标签: <span class="tag"
                 v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
-        <ol class='clearfix'>
+        <p class="desc-label tool">活动状态: <el-switch class='switch' v-model="isPublished" :active-text="isPublished ? '已发布' : '未发布' " inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchActive"></el-switch>
+          <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
+          <ul v-show='showLinkBox'>
+            <li :class="{'isSwitch':!dataBrand[0].switch}">
+              <i></i>活动官网
+              <router-link v-if="dataBrand[0].switch" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link>
+              <router-link v-else :to="`/liveMager/site/${activityId}`" ><el-button size="mini" round>开启</el-button></router-link>
+              <el-button v-if="dataBrand[0].switch" size="mini" round @click="copy('copyContent2')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
+            </li>
+            <li>
+              <i></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}subscribe/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            </li>
+          </ul>
+          </span>
+        </p>
+        <!-- <ol class='clearfix'>
           <li class='icon page'><i></i>
             <router-link target="_blank" :to="`${this.PC_HOST}site/${activityId}`">活动页面</router-link>
           </li>
           <li class="icon link copy"
-              @click="copy">
+              @click="copy('copyContent')">
             <i></i>复制链接
-            <input type="text" :value="`${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            <input type="text" :value="`https${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
           </li>
           <li class='icon offline offline'
               @click="offlineActive"
@@ -33,7 +50,7 @@
           <li class='icon offline offline'
               @click="publishActive"
               v-else><i></i>发布活动</li>
-        </ol>
+        </ol> -->
       </div>
       <div class="right">
         <p class="title"
@@ -249,7 +266,7 @@
             </div>
           </div>
         </div>
-      <div class="item marketing">
+      <div class="item marketing" id="tg">
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
 
@@ -409,13 +426,13 @@
                 <div class='desc'>
                   <span>直播引导页</span>
                   <span class='des'>
-                    <!-- 已设置 -->
-<template v-if="dataBrand[1].isSet">
-  {{dataBrand[1].desc ==='N' ? '未发布' : '已发布'}}
+                    <!-- 已发布 -->
+<template v-if="isPublished">
+  已发布
 </template>
-                    <!-- 未设置 -->
+<!-- 未发布 -->
 <template v-else>
-  最精简的活动品牌页
+  {{dataBrand[1].isSet ? '未发布' : '最精简的活动品牌页'}}
 </template>
                   </span>
                 </div>
@@ -509,6 +526,7 @@ export default {
       msgShow: false,
       isPublished: false,
       hostOnline: false,
+      showLinkBox: false,
       activityId: this.$route.params.id,
       imgHost: process.env.IMGHOST + '/',
       PC_HOST: process.env.PC_HOST,
@@ -527,6 +545,12 @@ export default {
   created () { },
   mounted () {
     this.getDetails()
+    setTimeout(() => {
+      // 滚动到推广
+      if (window.location.href.search('tg') > -1) {
+        document.querySelector('.main-container').scrollTop = document.querySelector('#tg').offsetTop - 50
+      }
+    }, 500)
   },
   methods: {
     linkTo (e, link, status) {
@@ -718,7 +742,9 @@ export default {
         confirmText: '确认发布',
         handleClick: (e) => {
           console.log(e)
-          if (e.action === 'cancel') { } else if (e.action === 'confirm') {
+          if (e.action === 'cancel') {
+            this.isPublished = false
+          } else if (e.action === 'confirm') {
             // this.status = 0
             this.publish()
           }
@@ -731,6 +757,7 @@ export default {
           content: '直播中无法下线活动',
           position: 'center'
         })
+        this.isPublished = true
         return false
       }
       this.$messageBox({
@@ -741,11 +768,20 @@ export default {
         confirmText: '确认下线',
         handleClick: (e) => {
           console.log(e)
-          if (e.action === 'cancel') { } else if (e.action === 'confirm') {
+          if (e.action === 'cancel') {
+            this.isPublished = true
+          } else if (e.action === 'confirm') {
             this.offline()
           }
         }
       })
+    },
+    switchActive (res) {
+      if (res) {
+        this.publishActive()
+      } else {
+        this.offlineActive()
+      }
     },
     publish () {
       this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
@@ -799,8 +835,8 @@ export default {
           break
       }
     },
-    copy () { // 复制功能
-      let inp = document.getElementById('copyContent')
+    copy (dom) { // 复制功能
+      let inp = document.getElementById(dom)
       inp.select()
       document.execCommand('Copy')
       this.$toast({
@@ -1089,7 +1125,7 @@ export default {
   float: left;
   width: 640px;
   p {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
   .title {
     font-size: 22px;
@@ -1130,27 +1166,124 @@ export default {
       display: inline-block;
       margin: 0 3px;
     }
-  }
-  ol {
-    margin-top: 30px;
-    li {
-      cursor: pointer;
-      color: $color-font-sub;
-      font-size: 14px;
+    &.tool {
       position: relative;
-      float: left;
-      margin-right: 40px;
-      height: 20px;
-      line-height: 20px;
-      padding-left: 29px;
-      &::before {
-        content: '';
-        width: 1px;
-        height: 16px;
-        background: rgba(216, 216, 216, 1);
+      .link-box {
+        padding: 20px 0px;
+        position: relative;
+        top: 1px;
+        padding-left: 10px;
+        cursor: pointer;
+        i {
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          background: url('~assets/image/detail/link.png') no-repeat center;
+          background-size: contain;
+          position: relative;
+          top: 5px;
+          margin-right: 5px;
+        }
+        &:hover {
+          color: $color-blue;
+          i {
+            background-image: url('~assets/image/detail/link_hover.png');
+          }
+          ul {
+            color: #555;
+            li {
+              i {
+                left: 0;
+                background-image: url('~assets/image/detail/page.png');
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  // ol {
+  //   margin-top: 30px;
+  //   li {
+  //     cursor: pointer;
+  //     color: $color-font-sub;
+  //     font-size: 14px;
+  //     position: relative;
+  //     float: left;
+  //     margin-right: 40px;
+  //     height: 20px;
+  //     line-height: 20px;
+  //     padding-left: 29px;
+  //     &::before {
+  //       content: '';
+  //       width: 1px;
+  //       height: 16px;
+  //       background: rgba(216, 216, 216, 1);
+  //       position: absolute;
+  //       top: 0;
+  //       right: -16px;
+  //     }
+  //     i {
+  //       width: 20px;
+  //       height: 20px;
+  //       display: inline-block;
+  //       background: url('~assets/image/detail/page.png') no-repeat center;
+  //       background-size: contain;
+  //       position: absolute;
+  //       left: 0;
+  //     }
+  //     &.copy i {
+  //       background-image: url('~assets/image/detail/link.png');
+  //     }
+  //     &.offline {
+  //       &::before {
+  //         content: '';
+  //         display: none;
+  //       }
+  //       i {
+  //         bottom: 3px;
+  //         background-image: url('~assets/image/detail/offline.png');
+  //       }
+  //     }
+  //     &:hover {
+  //       color: $color-blue;
+  //       i {
+  //         background-image: url('~assets/image/detail/page_hover.png');
+  //       }
+  //       &.copy i {
+  //         background-image: url('~assets/image/detail/link_hover.png');
+  //       }
+  //       &.offline i {
+  //         background-image: url('~assets/image/detail/offline_hover.png');
+  //       }
+  //     }
+  //   }
+  // }
+  ul {
+    position: absolute;
+    width: 240px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    top: 40px;
+    left: -60px;
+    z-index: 20;
+    li {
+      height: 50px;
+      line-height: 50px;
+      position: relative;
+      cursor: pointer;
+      margin: 3px 0;
+      padding: 0 17px;
+      a {
         position: absolute;
-        top: 0;
-        right: -16px;
+        left: 125px;
+        top: 50%;
+        margin-top: -26px;
+        .el-button {
+          position: static;
+          padding: 7px 10px;
+        }
       }
       i {
         width: 20px;
@@ -1159,32 +1292,22 @@ export default {
         background: url('~assets/image/detail/page.png') no-repeat center;
         background-size: contain;
         position: absolute;
-        left: 0;
+        left: 17px;
+        top: 50%;
+        margin-top: -10px;
       }
-      &.copy i {
-        background-image: url('~assets/image/detail/link.png');
-      }
-      &.offline {
-        &::before {
-          content: '';
-          display: none;
-        }
-        i {
-          bottom: 3px;
-          background-image: url('~assets/image/detail/offline.png');
-        }
+      .el-button {
+        padding: 7px 10px;
+        position: absolute;
+        top: 50%;
+        margin-top: -14px;
+        right: 17px;
       }
       &:hover {
-        color: $color-blue;
-        i {
-          background-image: url('~assets/image/detail/page_hover.png');
-        }
-        &.copy i {
-          background-image: url('~assets/image/detail/link_hover.png');
-        }
-        &.offline i {
-          background-image: url('~assets/image/detail/offline_hover.png');
-        }
+        background: rgba(233, 235, 255, 1);
+      }
+      &.isSwitch a .el-button {
+        padding: 7px 35px;
       }
     }
   }
