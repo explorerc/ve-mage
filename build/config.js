@@ -40,7 +40,7 @@ const config = {
     BUILD_ENV: 'prod',
     API_PATH: '/api',
     SUB_DIR: 'static',
-    IMGHOST: '//zhike.oss-cn-beijing.aliyuncs.com',
+    IMGHOST: '//static.vhallyun.com',
     PUBLIC_PATH: '//zhike1.vhall.com/',
     MOBILE_HOST: '//zhike1.vhall.com/m/',
     PC_HOST: '//zhike1.vhall.com/webinar/'
