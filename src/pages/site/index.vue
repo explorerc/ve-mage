@@ -154,7 +154,7 @@ export default {
       }
     },
     updateState () {
-      this.$config({ handlers: [60706, 60701] }).$post(brandService.POST_UPDATE_SITE_STATE, {
+      this.$config({handlers: [60706, 60701]}).$post(brandService.POST_UPDATE_SITE_STATE, {
         activityId: this.$route.params.id,
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
@@ -196,7 +196,7 @@ export default {
     },
     useTemplate (temp) {
       let temData = defaultData[temp]()
-      this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
+      this.$config({loading: true}).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.$route.params.id,
         template: JSON.stringify(temData)
       }).then(res => {
