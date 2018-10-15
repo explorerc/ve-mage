@@ -56,6 +56,7 @@ export default {
 
   .font-content {
     width: 100%;
+    word-break: break-all;
     a {
       color: $color-blue;
       text-decoration: underline;

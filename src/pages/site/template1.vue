@@ -165,7 +165,9 @@ export default {
       text-align: center;
     }
     .mask {
-      height: 260px;
+      // height: 260px;
+      height: auto;
+      padding-bottom: 40px;
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -316,9 +318,10 @@ export default {
   }
   .section7 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
+      padding-bottom: 50px;
     }
     .font-content {
       margin-top: 70px;
