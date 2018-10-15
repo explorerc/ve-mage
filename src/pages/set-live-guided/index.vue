@@ -150,7 +150,8 @@
         </div>
       </div>
       <button @click='save'
-              class='primary-button v-share-button'>
+              class='primary-button v-share-button'
+              v-if="published === 'Y' || !activityId">
         保存
       </button>
     </div>
@@ -159,6 +160,7 @@
 <script>
 import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
+import activityService from 'src/api/activity-service'
 
 export default {
   data () {
@@ -171,7 +173,8 @@ export default {
       tabValue: 1, // 预览页签选择
       imgUrl: '', // 引导图片
       uploadImgErrorMsg: '',
-      canPass: true
+      canPass: true,
+      published: '' // 直播状态
     }
   },
   components: {
@@ -191,6 +194,11 @@ export default {
       this.$router.go(-1)
       return
     }
+    this.$get(activityService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.published = res.data.published
+    })
     this.$get(brandService.GET_LIVE_GUIDE, data).then(res => {
       if (res.data) {
         this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
@@ -244,7 +252,7 @@ export default {
         'imgUrl': this.imgUrl,
         'description': this.description
       }
-      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
