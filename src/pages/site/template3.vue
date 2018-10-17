@@ -4,12 +4,16 @@
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
-    <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
+    <!-- <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
       <div class="mask">
         <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
       </div>
-    </com-panel>
+    </com-panel> -->
+    <div class="section2" :edit="editAble" >
+      <com-block2 :edit="editAble" :max="3" v-model="data.section2Data.block2">
+      </com-block2>
+    </div>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
       <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
       <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
@@ -85,6 +89,7 @@ export default {
 .template1-container.isEdit {
   .section1 {
     position: relative;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
   }
 }
 .template1-container /deep/ {
@@ -160,44 +165,42 @@ export default {
   }
   .section2 {
     width: 100%;
-    height: 820px;
-    .panel {
-      padding: 50px 0;
-      text-align: center;
-    }
-    .mask {
-      height: 260px;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-    .font-content {
-      margin-top: 26px;
-      text-align: left;
-      width: 650px;
-      min-height: 100px;
-    }
-    .font-editer {
-      height: 400px;
-      background-color: #dadada;
-    }
-    .font-content {
-      width: 100%;
-      min-height: 100px;
-    }
-    .btn {
-      display: block;
-      margin-top: 24px;
-      .btn-content {
-        display: inline-block;
-        position: relative;
-      }
-      .com-button {
-        min-width: 200px;
-        height: 40px;
-        border-radius: 20px;
-        font-size: 16px;
+    .block2-content {
+      height: 660px;
+      .el-carousel {
+        height: 100%;
+        .el-carousel__container {
+          height: 100% !important;
+          .el-carousel__item {
+            &.top {
+              .content {
+                position: absolute;
+                top: 200px;
+                left: 170px;
+                .btn-container {
+                  width: 200px;
+                  height: 40px;
+                  padding: 0;
+                  font-size: 16px;
+                  border: 1px solid rgba(255, 255, 255, 1);
+                  background-color: transparent;
+                  margin-top: 40px;
+                  .com-button {
+                    padding: 0;
+                    line-height: 36px;
+                  }
+                }
+              }
+            }
+          }
+          .left-area {
+            width: 400px;
+            height: 100%;
+            position: absolute;
+          }
+          img {
+          }
+        }
       }
     }
   }

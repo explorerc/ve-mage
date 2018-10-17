@@ -11,7 +11,7 @@ export default function () {
         enable: true
       },
       logo: {
-        url: 'mp-dev/ae/57/ae578b4c70a4232d5326c5365e9f2685.png',
+        url: require('assets/image/tp_logo.png'),
         link: '',
         enable: true
       },
@@ -24,45 +24,69 @@ export default function () {
             type: '_blank'
           },
           {
-            text: '活动协议',
+            text: '大会简介',
+            type: '_blank'
+          },
+          {
+            text: '参会嘉宾',
+            type: '_blank'
+          },
+          {
+            text: '合作伙伴',
             type: '_blank'
           },
           {
             text: '联系我们',
             type: '_blank'
-          },
-          {
-            text: '立即报名',
-            type: '_self'
           }
           ]
         }
       }
     },
     section2Data: {
-      panel: {
-        bgType: 'img',
-        videoType: 'upload',
-        img: 'mp-dev/5a/09/5a09f6f7b86feb4c7b8f24843f967a36.jpg',
-        color: 'rgba(0, 0, 0, 1)',
-        enable: true
-      },
-      font: {
+      // panel: {
+      //   bgType: 'img',
+      //   videoType: 'upload',
+      //   img: require('assets/image/tp_bg_3.jpg'),
+      //   color: 'rgba(0, 0, 0, 1)',
+      //   enable: true
+      // },
+      // font: {
+      //   enable: true,
+      //   content: `<h1 style="text-align: center; line-height: 1.8;">
+      //   <font color="#ffffff" style="font-size: 42px;">2018第六届设计金鹰奖大展</font>
+      //   </h1><div style="text-align: center; line-height: 1.8;">
+      //   <font color="#ffffff"><span style="font-size: 18px;">2018年9月8日-9月11日，北京798艺术区</span><br></font>
+      //   </div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff">
+      //   <span style="font-size: 18px;">第六届设计金鹰奖大展是由微吼直播主办，邀请业内知人士参与评审的年度盛会</span><br></font></div>`
+      // },
+      // btn: {
+      //   bgColor: 'rgba(255,208,33,1)',
+      //   fontColor: 'rgba(34,34,34,1)',
+      //   text: '活动报名',
+      //   link: '',
+      //   enable: true,
+      //   target: '_self'
+      // }
+
+      block2: {
         enable: true,
-        content: `<h1 style="text-align: center; line-height: 1.8;">
-        <font color="#ffffff" style="font-size: 42px;">2018第六届设计金鹰奖大展</font>
-        </h1><div style="text-align: center; line-height: 1.8;">
-        <font color="#ffffff"><span style="font-size: 18px;">2018年9月8日-9月11日，北京798艺术区</span><br></font>
-        </div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff">
-        <span style="font-size: 18px;">第六届设计金鹰奖大展是由微吼直播主办，邀请业内知人士参与评审的年度盛会</span><br></font></div>`
-      },
-      btn: {
-        bgColor: 'rgba(255,208,33,1)',
-        fontColor: 'rgba(34,34,34,1)',
-        text: '活动报名',
-        link: '',
-        enable: true,
-        target: '_self'
+        showBtn: true,
+        loop: 4000,
+        list: [{
+          type: 'top',
+          content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
+          bgColor: 'rgba(30,101,231,1)',
+          img: require('assets/image/tp_bg_3.jpg'),
+          btn: {
+            enable: true,
+            text: '活动报名',
+            fontColor: 'rgba(255,255,255,1)',
+            bgColor: 'RGBA(0, 157, 181, 1)',
+            target: '_self'
+          }
+        }
+        ]
       }
     },
     section3Data: {
