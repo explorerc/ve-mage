@@ -208,6 +208,10 @@ export default {
     font-size: 18px;
     color: $color-font;
   }
+  div.content a {
+    color: $color-blue;
+    text-decoration: underline;
+  }
   position: relative;
   .block1-content {
     height: 100%;
