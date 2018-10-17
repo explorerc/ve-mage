@@ -1211,7 +1211,7 @@ export default {
                 background-image: url('~assets/image/detail/icon-site-hover.png');
               }
               &:hover i.icon-guide {
-                background-image: url('~assets/image/detail/icon-site-hover.png');
+                background-image: url('~assets/image/detail/icon-guide-hover.png');
               }
             }
           }
