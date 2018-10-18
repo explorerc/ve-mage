@@ -59,15 +59,17 @@
           <span class='tpl-name'
                 v-html="tplData['template2']()['tplName']"></span>
         </div>
-        <!-- <div class="template-block">
+        <div class="template-block">
           <img :src="t0478322" >
           <div class="option-wrap">
             <div class="option-group">
-              <a @click="useTemplate('template2')">使用模板</a>
+              <a @click="useTemplate('template3')">使用模板</a>
               <a @click="showPreview('0478322')">预览</a>
             </div>
           </div>
-        </div> -->
+          <span class='tpl-name'
+                v-html="tplData['template3']()['tplName']"></span>
+        </div>
         <div class="template-block">
           <img :src="t0478323">
           <div class="option-wrap">
@@ -77,7 +79,7 @@
             </div>
           </div>
           <span class='tpl-name'
-                v-html="tplData['template3']()['tplName']"></span>
+                v-html="tplData['template4']()['tplName']"></span>
         </div>
       </div>
     </div>
@@ -99,7 +101,7 @@ export default {
       tplData: defaultData,
       t0478320: require('assets/image/site_tp1.png'),
       t0478321: require('assets/image/site_tp2.png'),
-      t0478322: require('assets/image/site_tp1.png'),
+      t0478322: require('assets/image/site_tp3.jpg'),
       t0478323: require('assets/image/site_tp4.png')
     }
   },

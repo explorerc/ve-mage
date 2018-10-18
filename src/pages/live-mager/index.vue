@@ -160,7 +160,8 @@ export default {
     judgePublish () {
       if (this.isPublished) {
         this.inCountdown = false
-        window.open(`${this.PC_HOST}master/${this.jumpId}`)
+        const tempwindow = window.open('_blank') // 先打开页面
+        tempwindow.location = `${this.PC_HOST}master/${this.activityId}` // 后更改页面地址
       } else {
         this.inCountdown = false
         this.$messageBox({
@@ -173,7 +174,8 @@ export default {
             console.log(e)
             if (e.action === 'cancel') {
             } else if (e.action === 'confirm') {
-              window.open(`${this.PC_HOST}master/${this.jumpId}`)
+              const tempwindow = window.open('_blank') // 先打开页面
+              tempwindow.location = `${this.PC_HOST}master/${this.activityId}` // 后更改页面地址
               // this.status = 0
             }
           }

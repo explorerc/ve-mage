@@ -4,7 +4,7 @@
     <div ref="target"
          class="video-content">
       <div v-if="value.videoType==='upload'"
-           id="myVideo"
+           :id="videoId"
            class="video-wrap"></div>
       <div v-if="value.videoType==='url'"
            v-html="value.url"
@@ -25,9 +25,9 @@
               <span v-if="percentVideo" class="progress"><i  :style="{ 'width':`${percentVideo}%` }"></i></span>
             </div>
             <div class="hide">
-              <input type="file" ref="upload" id="upload"/>
-              <input type="text" id='rename'>
-              <button ref="confirmUpload" id="confirmUpload" class="saveBtn"></button>
+              <input type="file" ref="upload" :id="uploadId"/>
+              <input type="text" :id='nameId'>
+              <button ref="confirmUpload" :id="confirmId" class="saveBtn"></button>
             </div>
           </div>
         </com-tab>
@@ -55,6 +55,10 @@ export default {
   },
   data () {
     return {
+      uploadId: `vid_upload_${Math.floor(Math.random() * 10000)}`,
+      videoId: `vid_${Math.floor(Math.random() * 10000)}`,
+      confirmId: `vid_confirm_${Math.floor(Math.random() * 10000)}`,
+      nameId: `vid_name_${Math.floor(Math.random() * 10000)}`,
       vhallParams: {},
       percentVideo: 0,
       uploadErrorMsg: '视频仅支持mp4格式，文件大小不超过200M'
@@ -65,10 +69,10 @@ export default {
       this.$refs.upload.click()
     },
     initVhallUpload () {
-      window.vhallCloudDemandSDK('#upload', {
+      window.vhallCloudDemandSDK(`#${this.uploadId}`, {
         params: {
-          confirmBtn: '#confirmUpload', // 保存按钮的ID
-          name: '#rename',
+          confirmBtn: `#${this.confirmId}`, // 保存按钮的ID
+          name: `#${this.nameId}`,
           sign: this.vhallParams.sign,
           signed_at: this.vhallParams.signedAt,
           app_id: this.vhallParams.appId
@@ -114,7 +118,7 @@ export default {
         window.VhallPlayer.init({
           recordId: this.value.recordId, // 回放Id，点播必填，直播不写
           type: 'vod', // 播放类型,必填，live 直播, vod 为点播
-          videoNode: 'myVideo', // 推流视频回显节点id，必填
+          videoNode: this.videoId, // 推流视频回显节点id，必填
           complete: function () {
             // window.VhallPlayer.play()
           },
@@ -183,6 +187,16 @@ export default {
       width: 300px;
       margin: 0 auto;
     }
+  }
+  .video-js .vjs-big-play-button {
+    width: 54px;
+    height: 54px;
+    border-radius: 500px;
+    top: 50%;
+    left: 50%;
+    margin-top: -27px;
+    margin-left: -27px;
+    line-height: 51px;
   }
 }
 .upload-video-box {
