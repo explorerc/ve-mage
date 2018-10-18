@@ -10,7 +10,7 @@
       <com-block1 :edit="editAble" :max="1" v-model="data.section2Data.block1"></com-block1>
     </div>
     <div class="section3" :edit="editAble" >
-      <com-block1 :edit="editAble" :max="5" v-model="data.section3Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="1" v-model="data.section3Data.block1"></com-block1>
     </div>
     <div class="section4" :edit="editAble" >
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>

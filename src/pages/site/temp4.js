@@ -195,42 +195,42 @@ export default function () {
         enable: true,
         showBtn: false,
         list: [{
-          type: 'top',
+          type: 'bottom',
           content: ``,
           img: require('assets/image/tp_logo1.png'),
           btn: {},
           target: '_self'
         },
         {
-          type: 'top',
+          type: 'bottom',
           content: ``,
           img: require('assets/image/tp_logo2.png'),
           btn: {},
           target: '_self'
         },
         {
-          type: 'top',
+          type: 'bottom',
           content: ``,
           img: require('assets/image/tp_logo3.png'),
           btn: {},
           target: '_self'
         },
         {
-          type: 'top',
+          type: 'bottom',
           content: ``,
           img: require('assets/image/tp_logo4.png'),
           btn: {},
           target: '_self'
         },
         {
-          type: 'top',
+          type: 'bottom',
           content: ``,
           img: require('assets/image/tp_logo5.png'),
           btn: {},
           target: '_self'
         },
         {
-          type: 'top',
+          type: 'bottom',
           content: ``,
           img: require('assets/image/tp_logo6.png'),
           btn: {},
