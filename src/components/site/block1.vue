@@ -58,7 +58,7 @@
             </div>
             <div>
                <label class='normal'>跳转链接</label>
-               <com-input placeholder="跳转链接" v-model="item.link"></com-input>
+               <com-input placeholder="跳转链接" :value.sync="item.link"></com-input>
                <label class='tips'>链接需要附带http头协议</label>
             </div>
             <div class='open-way clearfix'>
@@ -84,7 +84,7 @@
               </div>
                <div>
                <label class='normal'>跳转链接</label>
-               <com-input placeholder="跳转链接" v-model="item.btn.link"></com-input>
+               <com-input placeholder="跳转链接" :value.sync="item.btn.link"></com-input>
                <label class='tips'>链接需要附带http头协议</label>
             </div>
               <div class='open-way clearfix'>
@@ -160,7 +160,6 @@ export default {
       }
     },
     removeClick (index) {
-      debugger
       if (this.value.list.length > this.min) {
         this.value.list.splice(index, 1)
       }
@@ -208,6 +207,10 @@ export default {
     border-bottom: 1px solid rgba(226, 226, 226, 1);
     font-size: 18px;
     color: $color-font;
+  }
+  div.content a {
+    color: $color-blue;
+    text-decoration: underline;
   }
   position: relative;
   .block1-content {

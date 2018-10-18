@@ -570,25 +570,34 @@ export default {
         this.$router.push(link + this.activityId)
       }
     },
-    async turnOn () {
-      await this.$get(activityService.GET_HOSTING, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.hostOnline = res.data.hostOnline
-      })
-      if (this.hostOnline) {
-        this.$toast({
-          content: '主持人已进入直播前台，无法再次进入',
-          position: 'center'
-        })
-        return false
+    turnOn () {
+      let xmlHttp = new XMLHttpRequest()
+      const serverUrl = process.env.API_PATH
+      let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
+      xmlHttp.onreadystatechange = () => {
+        if (xmlHttp.readyState === 4) {
+          let responseText = xmlHttp.responseText
+          let data = JSON.parse(responseText)
+          if (data.code === 200) {
+            this.hostOnline = data.data.hostOnline
+            if (this.hostOnline) {
+              this.$toast({
+                content: '主持人已进入直播前台，无法再次进入',
+                position: 'center'
+              })
+              return false
+            }
+            if (this.isToday(this.startTime)) { // 在24小时之外
+              this.inCountdown = true
+              return false
+            }
+            this.judgePublish()
+          }
+        }
       }
-      if (this.isToday(this.startTime)) { // 在24小时之外
-        this.inCountdown = true
-        return false
-      }
-
-      this.judgePublish()
+      xmlHttp.open('GET', url, false) // 同步方式请求
+      xmlHttp.withCredentials = true
+      xmlHttp.send(null)
     },
     isToday (str) {
       if (new Date(str).toDateString() === new Date().toDateString()) {
@@ -1208,10 +1217,10 @@ export default {
                 background-image: url('~assets/image/detail/icon-guide.png');
               }
               &:hover i.icon-site {
-                background-image: url('~assets/image/detail/icon-guide-hover.png');
+                background-image: url('~assets/image/detail/icon-site-hover.png');
               }
               &:hover i.icon-guide {
-                background-image: url('~assets/image/detail/icon-site-hover.png');
+                background-image: url('~assets/image/detail/icon-guide-hover.png');
               }
             }
           }
