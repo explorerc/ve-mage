@@ -128,6 +128,9 @@ export default {
     width: 100%;
     height: 60px;
     overflow: hidden;
+    .navigation-container {
+      position: relative;
+    }
     .panel {
       text-align: center;
     }
