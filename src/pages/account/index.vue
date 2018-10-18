@@ -191,7 +191,8 @@
                    type="mobile"
                    :max-length="11"
                    :errorTips="errorTips.oldPhone"
-                   @focus="phoneFocus('oldphone')"></com-input>
+                   @focus="phoneFocus('oldphone')"
+                   disabled="disabled"></com-input>
         <com-input v-if="!isOldphone"
                    :value.sync="saveNewPhone"
                    :placeholder="'输入新手机号'"
