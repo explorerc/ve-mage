@@ -117,7 +117,8 @@
             </dl>
           </li>
           <li class='step statics'
-              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}">
+              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}"
+          @click="goDataCenter">
             <dl>
               <dt><i></i></dt>
               <dd>数据</dd>
@@ -598,6 +599,9 @@ export default {
       xmlHttp.open('GET', url, false) // 同步方式请求
       xmlHttp.withCredentials = true
       xmlHttp.send(null)
+    },
+    goDataCenter () {
+      this.$router.push(`/data/preview/${this.activityId}`)
     },
     isToday (str) {
       if (new Date(str).toDateString() === new Date().toDateString()) {
