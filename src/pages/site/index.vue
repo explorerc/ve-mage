@@ -101,7 +101,7 @@ export default {
       tplData: defaultData,
       t0478320: require('assets/image/site_tp1.png'),
       t0478321: require('assets/image/site_tp2.png'),
-      t0478322: require('assets/image/site_tp1.png'),
+      t0478322: require('assets/image/site_tp3.jpg'),
       t0478323: require('assets/image/site_tp4.png')
     }
   },

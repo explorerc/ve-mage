@@ -4,27 +4,15 @@
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
-    <!-- <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
-      <div class="mask">
-        <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
-        <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
-      </div>
-    </com-panel> -->
     <div class="section2" :edit="editAble" >
       <com-panel :edit="editAble" v-model="data.section2Data.panel">
       </com-panel>
       <com-block1 :edit="editAble" :max="1" v-model="data.section2Data.block1"></com-block1>
     </div>
-    <!-- <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
-      <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
-    </com-panel> -->
-
-    <div class="section3" :edit="editAble" v-model="data.section3Data.panel">
+    <div class="section3" :edit="editAble" >
       <com-block1 :edit="editAble" :max="5" v-model="data.section3Data.block1"></com-block1>
     </div>
-
-    <div class="section4" :edit="editAble" v-model="data.section4Data.panel">
+    <div class="section4" :edit="editAble" >
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
       <div class="video-list clearfix">
         <div class="video-item" v-for="(item, idx) in data.section4Data.list" :key='idx'>
@@ -33,25 +21,14 @@
         </div>
       </div>
     </div>
-    <!-- <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
-      <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
-    </com-panel> -->
-
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
+      <div class='bg' :style="{backgroundImage:'url('+data.section5Data.panel.img+')'}"></div>
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
-        <com-btn class="btn" :edit="editAble" v-model="data.section5Data.btn"></com-btn>
+      <com-btn class="btn" :edit="editAble" v-model="data.section5Data.btn"></com-btn>
     </com-panel>
-    <!-- <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
-      <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section5Data.block1"></com-block1>
-    </com-panel> -->
-    <!-- <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
-      <com-share :edit="editAble" :share="shareData" v-model="data.section6Data.share"></com-share>
-    </com-panel> -->
     <com-panel class="section8" :edit="editAble" v-model="data.section8Data.panel">
       <com-font :edit="editAble" v-model="data.section8Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="10" v-model="data.section8Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="8" v-model="data.section8Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
       <com-font :edit="editAble" v-model="data.section6Data.font"></com-font>
@@ -114,12 +91,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.template1-container.isEdit {
-  .section1 {
-    position: relative;
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
-  }
-}
 .template1-container /deep/ {
   min-width: 1366px;
   .edit {
@@ -154,6 +125,8 @@ export default {
     height: 60px;
     z-index: 1;
     overflow: hidden;
+    position: relative;
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
     .logo {
       width: 100px;
       height: 100%;
@@ -208,7 +181,7 @@ export default {
     .block1-group {
       position: relative;
       .block1-item {
-        max-width: 1280px;
+        width: 1280px;
         &.left {
           .content {
             padding-right: 510px;
@@ -227,6 +200,10 @@ export default {
       border-radius: 4px;
       margin-top: 50px;
       .btn-content {
+        width: 100%;
+        height: 100%;
+      }
+      .com-button {
         width: 100%;
         height: 100%;
       }
@@ -275,7 +252,7 @@ export default {
   }
   .section4 {
     width: 100%;
-    height: 820px;
+    padding-bottom: 150px;
     text-align: center;
     overflow: hidden;
     position: relative;
@@ -312,6 +289,15 @@ export default {
   .section5 {
     width: 100%;
     height: 330px;
+    .bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      opacity: 0.2;
+    }
     .panel {
       text-align: center;
       background: RGBA(0, 157, 181, 1);
@@ -359,9 +345,9 @@ export default {
       .block1-item {
         width: 120px;
         height: 120px;
-        margin-right: 90px;
+        margin-right: 80px;
         margin-bottom: 30px;
-        &:nth-of-type(5) {
+        &:nth-of-type(6) {
           margin-right: 0;
         }
         img {
