@@ -129,26 +129,26 @@
         <div>
           <!-- <span>准备</span> -->
           <ol>
-            <li v-show="dataPrepare[0].switch">基本信息</li>
-            <li v-show="dataPrepare[1].switch">活动报名</li>
-            <li v-show="dataPrepare[2].switch">暖场设置</li>
+            <li v-show="dataPrepare[0].switch" @click="linkTo($event,'/liveMager/edit/')">基本信息</li>
+            <li v-show="dataPrepare[1].switch" @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">活动报名</li>
+            <li v-show="dataPrepare[2].switch" @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">暖场设置</li>
           </ol>
         </div>
         <div>
           <!-- <span>品牌</span> -->
           <ol>
-            <li v-show="dataBrand[0].switch">活动官网</li>
-            <li v-show="dataBrand[1].switch">直播引导页</li>
-            <li v-show="dataBrand[2].switch">观看页</li>
+            <li v-show="dataBrand[0].switch" @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网</li>
+            <li v-show="dataBrand[1].switch" @click="linkTo($event,'/setLiveGuided/')">直播引导页</li>
+            <li v-show="dataBrand[2].switch" @click="linkTo($event,'/setLiveWatch/')">观看页</li>
           </ol>
         </div>
         <div>
           <!-- <span>推广</span> -->
           <ol>
-            <li v-show="dataPromote[0].switch">自动化通知</li>
-            <li v-show="dataPromote[1].switch">邮件邀约</li>
-            <li v-show="dataPromote[2].switch">短信推广</li>
-            <li v-show="dataPromote[3].switch">微信推广</li>
+            <li v-show="dataPromote[0].switch" @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知</li>
+            <li v-show="dataPromote[1].switch" @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
+            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信推广</li>
+            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信推广</li>
           </ol>
         </div>
         <div>
@@ -161,7 +161,7 @@
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <li v-show="dataRecord[0].switch">设置回放</li>
+            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">设置回放</li>
           </ol>
         </div>
         <div>
@@ -1083,6 +1083,10 @@ export default {
       background: rgba(239, 239, 239, 0.7);
       border-radius: 18px;
       border: 1px solid rgba(177, 177, 177, 1);
+      cursor: pointer;
+      &:hover {
+        background: rgba(255, 208, 33, 0.7);
+      }
     }
   }
 }

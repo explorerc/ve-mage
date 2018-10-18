@@ -267,6 +267,8 @@ export default {
   }
   .share {
     width: auto;
+    min-width: 100px;
+    min-height: 50px;
     display: inline-block;
     position: relative;
     .share-group {
