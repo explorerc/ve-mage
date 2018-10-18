@@ -198,7 +198,7 @@ export default {
       }
       .font-editer {
         height: 400px;
-        background-color: #dadada;
+        // background-color: #dadada;
       }
       .font-content {
         width: 100%;

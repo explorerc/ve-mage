@@ -171,6 +171,14 @@ export default {
     }
   }
   .video-edit-content {
+    .nav-blank-title {
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      border-bottom: 1px solid rgba(226, 226, 226, 1);
+      font-size: 18px;
+      color: $color-font;
+    }
     .upload-field {
     }
     .link-input {
