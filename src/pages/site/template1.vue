@@ -251,9 +251,13 @@ export default {
       &.width3 {
         .block1-item {
           width: 340px;
-          height: 245px;
+          min-height: 245px;
+          height: auto;
           img {
             height: 100%;
+          }
+          .content {
+            position: static;
           }
         }
       }
