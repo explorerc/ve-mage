@@ -73,11 +73,24 @@
 
 <style lang="scss" scoped>
   .data-container {
-    margin: 20px;
     background-color: #fff;
     padding: 20px;
-    border-radius: 4px;
+    border-radius: 6px;
     overflow: hidden;
+    margin: 30px auto;
+    width: 1366px;
+    min-width: 1019px;
+    color: #222;
+    /* 设备宽度大于 1600 */
+    @media all and (min-width: 1600px) {
+      width: 1366px;
+    }
+
+    /* 设备宽度小于 1600px */
+    @media all and (max-width:1600px) {
+      width: 1019px;
+    }
+
     .data-header {
       .nav-menu-box {
         float: right;
