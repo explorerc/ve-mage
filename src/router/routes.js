@@ -65,6 +65,10 @@ const Site = () => import('src/pages/site')
 const SiteTemplate = () => import('src/pages/site/template.vue')
 const SiteTemplate1 = () => import('src/pages/site/template1.vue')
 const SiteTemplate2 = () => import('src/pages/site/template2.vue')
+/* 用户管理 */
+const userOverview = () => import('src/pages/users-manage/overview')
+const userPond = () => import('src/pages/users-manage/pond')
+const userGroup = () => import('src/pages/users-manage/group')
 
 export default [
   {
@@ -265,6 +269,21 @@ export default [
         path: '/liveMager/playBack/:id',
         name: 'playBack',
         component: PlayBack
+      },
+      {
+        path: '/userManage/overview',
+        name: 'userOverview',
+        component: userOverview
+      },
+      {
+        path: '/userManage/pond',
+        name: 'userPond',
+        component: userPond
+      },
+      {
+        path: '/userManage/group',
+        name: 'userGroup',
+        component: userGroup
       }
     ]
   },

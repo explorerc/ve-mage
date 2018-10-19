@@ -81,7 +81,40 @@
           <el-menu-item index="/setAccount">账户信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu> -->
-       <el-submenu index="2">
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="menu-icon icon_marketing"></i>
+          <span>营销管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/4">用户总览</el-menu-item>
+          <el-menu-item index="/5">用户池</el-menu-item>
+          <el-menu-item index="/6">用户群组</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="menu-icon icon_crm"></i>
+          <span>用户管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/userManage/overview">用户总览</el-menu-item>
+          <el-menu-item index="/userManage/pond">用户池</el-menu-item>
+          <el-menu-item index="/userManage/group">用户群组</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <!-- <el-submenu index="4">
+        <template slot="title">
+          <i class="menu-icon icon_data"></i>
+          <span>数据中心</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/7">用户总览</el-menu-item>
+          <el-menu-item index="/8">用户池</el-menu-item>
+          <el-menu-item index="/9">用户群组</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu> -->
+       <el-submenu index="5">
         <template slot="title">
           <i class="menu-icon icon_account"></i>
           <span>账户管理</span>
@@ -264,7 +297,7 @@ export default {
     &.el-menu--collapse {
       width: 100%;
     }
-    .is-active {
+    .is-opened {
       .el-submenu__title {
         color: #ffd021 !important;
         .icon_console {
@@ -289,7 +322,7 @@ export default {
           background-image: url(../assets/image/icon_account_hover.png);
         }
       }
-      .el-menu-item {
+      .el-menu-item.is-active {
         color: #ffd021 !important;
       }
     }
