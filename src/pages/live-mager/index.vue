@@ -68,7 +68,7 @@ import VePagination from 'src/components/ve-pagination'
 
 export default {
   name: 'index',
-  components: { LiveTable, VePagination },
+  components: {LiveTable, VePagination},
   data () {
     return {
       show: false,
@@ -80,15 +80,15 @@ export default {
       jumpId: '',
       startTime: '',
       optionsStates: [
-        { value: '', label: '全部' },
-        { value: 'PREPARE', label: '预告' },
-        { value: 'LIVING', label: '直播中' },
-        { value: 'FINISH', label: '已结束' },
-        { value: 'PLAYBACK', label: '回放' }
+        {value: '', label: '全部'},
+        {value: 'PREPARE', label: '预告'},
+        {value: 'LIVING', label: '直播中'},
+        {value: 'FINISH', label: '已结束'},
+        {value: 'PLAYBACK', label: '回放'}
       ],
       optionsOrder: [
-        { value: 'createTime', label: '按创建时间排序' },
-        { value: 'startTime', label: '按直播开始时间排序' }
+        {value: 'createTime', label: '按创建时间排序'},
+        {value: 'startTime', label: '按直播开始时间排序'}
       ],
       searchParams: {
         status: '',

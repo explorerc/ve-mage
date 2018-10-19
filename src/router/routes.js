@@ -70,6 +70,13 @@ const userOverview = () => import('src/pages/users-manage/overview')
 const userPond = () => import('src/pages/users-manage/pond')
 const userGroup = () => import('src/pages/users-manage/group')
 
+/* 数据中心 */
+const Data = () => import('src/pages/data/index')
+const Preview = () => import('src/pages/data/preview')
+const DataLive = () => import('src/pages/data/live')
+const Spread = () => import('src/pages/data/spread')
+const Viewer = () => import('src/pages/data/viewer')
+
 export default [
   {
     path: '/test',
@@ -284,6 +291,32 @@ export default [
         path: '/userManage/group',
         name: 'userGroup',
         component: userGroup
+      },
+      {
+        path: '/data',
+        component: Data,
+        children: [
+          {
+            path: 'preview/:id',
+            name: 'preview',
+            component: Preview
+          },
+          {
+            path: 'live/:id',
+            name: 'live',
+            component: DataLive
+          },
+          {
+            path: 'spread/:id',
+            name: 'spread',
+            component: Spread
+          },
+          {
+            path: 'viewer/:id',
+            name: 'viewer',
+            component: Viewer
+          }
+        ]
       }
     ]
   },
