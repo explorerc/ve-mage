@@ -1,5 +1,5 @@
 <template>
-  <div class="preview">
+  <div class="data-box preview">
     <div class="item-container clearfix">
       <div class="item-box vhall-item fl">
         <div class="item-title">
@@ -19,33 +19,33 @@
           <div class="item-title">
             <ve-title width="300px" title="观众" tip="观众总数，用来衡量一场直播内容和吸引力的重要指标"></ve-title>
           </div>
-          <ve-circle style="margin-top: 8px;" d="70px" :value="80"></ve-circle>
+          <ve-circle style="margin-top: 10px;" d="120px" tips="观众得分=80分（满分100分）" :value="80"></ve-circle>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="300px" title="观看时长"
                       tip="统计该场直播中所有观众的平均观看时长，反应观众在直播间内的平均停留时长。平均观看时长=所有观众观看时长之和/观众总数；注：观看时长包含直播和回放两部分。为了计算简便，系统假定回放"></ve-title>
           </div>
-          <ve-circle style="margin-top: 8px;" d="70px" :value="50"></ve-circle>
+          <ve-circle style="margin-top: 10px;" d="120px" tips="观看得分=50分（满分100分）"  :value="50"></ve-circle>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="300px" title="推广"
                       tip="衡量一场直播在前期宣传推广的触达效果。推广方式包括推广中心中的邮件、短信、微信三种方式。推广效果=最终成为观众人数/推广渠道触达人数"></ve-title>
           </div>
-          <ve-circle style="margin-top: 8px;" d="70px" :value="30"></ve-circle>
+          <ve-circle style="margin-top: 10px;" d="120px" tips="推广得分=30分（满分100分）" :value="30"></ve-circle>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="300px" title="传播" tip="衡量一场直播中，观众的自传播效果。展现观众在直播中分享拉新的效果"></ve-title>
           </div>
-          <ve-circle style="margin-top: 8px;" d="70px" :value="60"></ve-circle>
+          <ve-circle style="margin-top: 10px;" d="120px" tips="传播得分=60分（满分100分）" :value="60"></ve-circle>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="100px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数"></ve-title>
           </div>
-          <ve-circle style="margin-top: 8px;" d="70px" :value="90"></ve-circle>
+          <ve-circle style="margin-top: 10px;" d="120px" tips="互动得分=50分（满分100分）" :value="90"></ve-circle>
         </div>
       </div>
       <div class="item-box fl">
@@ -253,71 +253,24 @@
     }
   }
 </script>
-
+<style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-  @import "assets/css/mixin.scss";
-
-  .chart-box {
-    .title {
-      font-size: 16px;
-      margin: 20px 0 10px 0;
-    }
-  }
-
-  .item-container {
-    .item-box {
-      border: solid 1px $color-bd;
-      border-radius: 4px;
-      padding: 10px;
-      box-sizing: border-box;
-      height: 124px;
-      width: 100%;
-      margin: 10px 0;
-      font-size: 14px;
-      .item-title {
-        display: block;
-        text-align: center;
-        font-size: 18px;
-      }
-      .item-mid {
-        height: 60px;
-        line-height: 60px;
-        font-size: 30px;
-        font-weight: 600;
-        text-align: center;
-        span {
-          display: inline-block;
-          border: solid 1px $color-bd;
-          font-size: 14px;
-          line-height: 24px;
-          padding: 0 10px;
-          border-radius: 4px;
-          vertical-align: 5px;
-          font-weight: 400;
-        }
-      }
-      .item-bottom {
-        text-align: center;
-        span {
-          padding: 0 5px;
-          .down {
-            color: $color-red;
-          }
-          .up {
-            color: green;
-          }
-        }
-      }
-    }
-  }
-
   .preview {
     .item-container {
-      .vhall-item {
+      .vhall-item /deep/{
+        height: 180px;
         width: 300px;
+        .item-mid{
+          height: 90px;
+          line-height: 80px;
+        }
+        .ve-title{
+          padding: 10px 0;
+        }
       }
       .spread {
         margin-left: 20px;
+        height: 180px;
         width: calc(100% - 320px);
       }
     }
