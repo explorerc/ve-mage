@@ -86,7 +86,10 @@
 .primary-button {
   @include primary-button
 }
-
+.primary-button.is-round {
+  height:34px !important;
+  line-height: 34px !important;
+}
 .red-button {
   @include red-button
 }

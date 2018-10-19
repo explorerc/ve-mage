@@ -174,7 +174,7 @@
   require('echarts/lib/component/tooltip')
   export default {
     name: 'preview',
-    components: {VeTitle, VeCircle},
+    components: { VeTitle, VeCircle },
     created () {
       console.log(dataService)
       this.$nextTick(() => {
@@ -188,13 +188,13 @@
           msg: null,
           data: {
             sourceList: [
-              {source: 1, sourceName: '邮件', value: 1000},
-              {source: 2, sourceName: '短信', value: 500},
-              {source: 3, sourceName: '活动官网', value: 10000}
+              { source: 1, sourceName: '邮件', value: 1000 },
+              { source: 2, sourceName: '短信', value: 500 },
+              { source: 3, sourceName: '活动官网', value: 10000 }
             ],
             sourceLinks: [
-              {source: 1, sourceName: '邮件', target: 3, targetName: '活动官网', value: 1000},
-              {source: 2, sourceName: '短信', target: 3, targetName: '活动官网', value: 500}
+              { source: 1, sourceName: '邮件', target: 3, targetName: '活动官网', value: 1000 },
+              { source: 2, sourceName: '短信', target: 3, targetName: '活动官网', value: 500 }
             ]
           }
         }

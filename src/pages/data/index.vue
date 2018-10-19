@@ -24,7 +24,7 @@
 
   export default {
     name: 'data-main',
-    components: {NavMenu},
+    components: { NavMenu },
     data () {
       return {
         activeId: '',
