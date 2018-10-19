@@ -101,6 +101,14 @@ ol {
   font-size: 0;
 }
 
+.flex{
+  display: flex;
+}
+
+.box{
+  box-sizing: border-box;
+}
+
 embed,
 iframe {
   height: 100%;
