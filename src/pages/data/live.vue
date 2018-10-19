@@ -202,7 +202,7 @@
 
   export default {
     name: 'live-data',
-    components: {VeTitle, VeCircle, NavMenu},
+    components: { VeTitle, VeCircle, NavMenu },
     data () {
       return {
         watchType: 0
