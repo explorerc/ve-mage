@@ -2,6 +2,7 @@
   <div class="chart-circle" :style="{width:d,height:d}">
     <div class="chart-avg" :style="{width:mid,height:mid}"></div>
     <div class="chart-value" :style="{width:wh,height:wh}"></div>
+    <div class="chart-tips" v-if="tips">{{tips}}</div>
   </div>
 </template>
 
@@ -25,7 +26,8 @@
       maxValue: {
         type: Number,
         default: 100
-      }
+      },
+      tips: String
     },
     computed: {
       wh () {
@@ -67,6 +69,27 @@
       background-color: #2878FF;
       opacity: .5;
       z-index: 2;
+    }
+    .chart-tips {
+      position: absolute;
+      left: 40%;
+      bottom: 10%;
+      width: 200px;
+      color: #fff;
+      background-color: rgba(10, 10, 10, .8);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity .3s;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+      z-index: 3;
+    }
+    &:hover {
+      cursor: pointer;
+      .chart-tips {
+        opacity: 1;
+      }
     }
   }
 </style>
