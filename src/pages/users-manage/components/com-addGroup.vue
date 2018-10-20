@@ -4,7 +4,7 @@
     <div class="com-addGroup-box">
       <div class="header">
         <span class="title">添加到群组</span>
-        <button><i class="iconfont icon-close"></i></button>
+        <button @click='close'><i class="iconfont icon-close"></i></button>
       </div>
       <div class="content">
         <div class="item">
@@ -70,6 +70,13 @@ export default {
       }],
       selval: ''
     }
+  },
+  methods: {
+    close () {
+      this.$emit('handleClick', {
+        action: 'cancel'
+      })
+    }
   }
 }
 </script>
@@ -84,8 +91,10 @@ export default {
   height: 100%;
   opacity: 0.7;
   background: #000;
+  z-index: 2001;
 }
 .com-addGroup-box /deep/ {
+  z-index: 2002;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -138,8 +147,8 @@ export default {
     }
     .confirm {
       position: absolute;
-      bottom:20px;
-      right:35px;
+      bottom: 20px;
+      right: 35px;
     }
   }
   .com-input {

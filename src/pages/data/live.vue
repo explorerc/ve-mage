@@ -197,7 +197,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {lines} from 'src/utils/chart-tool'
+  import { lines } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
@@ -245,9 +245,9 @@
         lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
-            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
-            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
+            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
+            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
+            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
           ]
         })
       },
@@ -255,9 +255,9 @@
         lines('chart01', {
           xAxisData: this.watcherLineData.hours.xAxis,
           datas: [
-            {name: '浏览次数', data: this.watcherLineData.hours.pv},
-            {name: '独立访问', data: this.watcherLineData.hours.uv},
-            {name: 'IP', data: this.watcherLineData.hours.ip}
+            { name: '浏览次数', data: this.watcherLineData.hours.pv },
+            { name: '独立访问', data: this.watcherLineData.hours.uv },
+            { name: 'IP', data: this.watcherLineData.hours.ip }
           ]
         })
       }

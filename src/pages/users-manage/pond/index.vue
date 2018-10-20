@@ -13,10 +13,10 @@
         </div>
         <div class="right">
           <com-input :value.sync="filterVal" placeholder="姓名/昵称/手机号/邮箱"   @focus=""></com-input>
-          <span @click='showFilter = !showFilter'>精准搜索<i class='el-submenu__icon-arrow el-icon-arrow-down'></i></span>
+          <span @click='showFilter = !showFilter'>精准搜索<i class='el-submenu__icon-arrow el-icon-arrow-down' :class="{'is-open':showFilter }"></i></span>
         </div>
       </div>
-      <transition name='fade' mode='out-in'>
+      <transition name="left-right"  mode="out-in">
         <div class="handle-filter page-bg" v-show='showFilter'>
           <div class='filter-item'>
             <div class="condition">
@@ -89,8 +89,8 @@
             </div>
           </div>
           <div class='filter-item'>
-            <span class="label">首次访问</span>
             <div class="condition">
+            <span class="label">首次访问</span>
                <el-date-picker
                 v-model="firstVal"
                 type="datetimerange"
@@ -101,8 +101,8 @@
                 align="left">
               </el-date-picker>
             </div>
-            <span class="label">最后访问</span>
             <div class="condition">
+            <span class="label">最后访问</span>
                <el-date-picker
                 v-model="lastVal"
                 type="datetimerange"
@@ -116,32 +116,32 @@
           </div>
           <div class='filter-item'>
             <span class="label">参与活动</span>
-            <el-button round v-if='!activityArray.length'>选择活动</el-button>
+            <el-button round v-if='!activityArray.length' @click='showChooseActive = true'>选择活动</el-button>
             <div class="selected" v-else>
               <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in activityArray'>{{item}} <span class='close' @click="handleDel(idx,'activityArray')"></span></li>
+                <li class='tag' v-for='(item,idx) in activityArray' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'activityArray')"></span></li>
+                <li class="added" @click='showChooseActive = true'></li>
               </ol>
-              <span class="added"></span>
             </div>
           </div>
           <div class='filter-item'>
-            <span class="label">活动表情</span>
-            <el-button round v-if='!tagArray.length'>选择标签</el-button>
+            <span class="label">活动标签</span>
+            <el-button round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
             <div class="selected" v-else>
               <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in tagArray'>{{item}} <span class='close' @click="handleDel(idx,'tagArray')"></span></li>
+                <li class='tag' v-for='(item,idx) in tagArray' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'tagArray')"></span></li>
+                <li class="added" @click='showChooseTag = true'></li>
               </ol>
-              <span class="added"></span>
             </div>
           </div>
           <div class='filter-item'>
             <span class="label">所属群组</span>
-            <el-button round v-if='!groupArray.length'>选择分组</el-button>
+            <el-button round v-if='!groupArray.length' @click='showChooseGroup = true'>选择分组</el-button>
             <div class="selected" v-else>
               <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in groupArray'>{{item}} <span class='close' @click="handleDel(idx,'groupArray')"></span></li>
+                <li class='tag' v-for='(item,idx) in groupArray' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'groupArray')"></span></li>
+                <li class="added" @click='showChooseGroup = true'></li>
               </ol>
-              <span class="added"></span>
             </div>
           </div>
           <div class="filter-confirm">
@@ -233,11 +233,23 @@
           </div>
       </div>
     </div>
-    <com-addgroup></com-addgroup>
+  <transition name='fade' mode='out-in' v-if="showAddgroup">
+    <com-addgroup  @handleClick="handleClick"></com-addgroup>
+  </transition>
+  <transition name='fade' mode='out-in' v-if="showChooseActive">
+    <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmActive" :max='10' @searchHandler='searchHandler' :data='activelistData' :name="'活动'"></com-choose>
+  </transition>
+  <transition name='fade' mode='out-in' v-if="showChooseTag">
+    <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmTag" :max='10' @searchHandler='searchHandler' :data='tagListData' :name="'标签'"></com-choose>
+  </transition>
+  <transition name='fade' mode='out-in' v-if="showChooseGroup">
+    <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmGroup" :max='10' @searchHandler='searchHandler' :data='groupListData' :name="'固定群组'"></com-choose>
+  </transition>
   </div>
 </template>
 
 <script>
+import comChoose from '../components/com-choose'
 import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 export default {
@@ -267,26 +279,13 @@ export default {
       firstVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       lastVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       activityArray: [
-        '啊啊啊',
-        'asdasd',
-        '阿斯达刷卡机打卡时间',
-        '撒电风扇的风',
-        '匹配',
-        '似懂非懂'
+
       ],
       tagArray: [
-        '富含丰富和',
-        '吃v报告',
-        '会封号',
-        '可开始',
-        '啊'
+
       ],
       groupArray: [
-        '吃v报告',
-        '富含丰富和',
-        '啊',
-        '可开始',
-        '会封号'
+
       ],
       usersListData: [
         {
@@ -466,7 +465,15 @@ export default {
       queryData: {
         page: 1,
         pageSize: 10
-      }
+      },
+      showAddgroup: false,
+      showChooseActive: false,
+      showChooseTag: false,
+      showChooseGroup: false,
+      chooseType: '活动',
+      groupListData: ['互联网客户 (460人）', '物联网客户 (235人）', '产品团队 (22人）', '客户服务团队 (54人）', '客户服务团队 (54人）'],
+      tagListData: ['年龄/00后', '地区/北上广深', '资料完整度/参会人', '观看时完整度/完美用户', '地区/海外'],
+      activelistData: ['百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会']
     }
   },
   methods: {
@@ -482,11 +489,36 @@ export default {
     },
     handleDel (idx, type) {
       this[type].splice(idx, 1)
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.showAddgroup = false
+        this.showChooseActive = false
+        this.showChooseTag = false
+        this.showChooseGroup = false
+      }
+    },
+    selectConfirmActive (res) {
+      console.log(res)
+      this.activityArray = res
+    },
+    selectConfirmTag (res) {
+      console.log(res)
+      this.tagArray = res
+    },
+    selectConfirmGroup (res) {
+      console.log(res)
+      this.groupArray = res
+    },
+    searchHandler (res) {
+      console.log(res)
     }
   },
   components: {
     VePagination,
-    comAddgroup
+    comAddgroup,
+    comChoose
   }
 }
 </script>
@@ -506,6 +538,9 @@ export default {
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
+    .content .handle-filter .selected {
+      max-width: 880px !important;
+    }
   }
   .pond-title {
     // border-bottom: 1px solid $color-bd;
@@ -543,6 +578,15 @@ export default {
           .el-submenu__icon-arrow {
             right: 0px;
             margin-top: -6px;
+            -webkit-transition: -webkit-transform 0.3s;
+            transition: -webkit-transform 0.3s;
+            transition: transform 0.3s;
+            transition: transform 0.3s, -webkit-transform 0.3s;
+            font-size: 12px;
+            &.is-open {
+              -webkit-transform: rotateZ(180deg);
+              transform: rotateZ(180deg);
+            }
           }
           &:hover {
             opacity: 0.8;
@@ -561,6 +605,9 @@ export default {
       .label {
         color: $color-font-sub;
         padding-right: 10px;
+        float: left;
+        height: 34px;
+        line-height: 34px;
       }
       .filter-item {
         margin-bottom: 20px;
@@ -577,12 +624,15 @@ export default {
       }
       .selected {
         display: inline-block;
+        max-width: 1200px;
         .added {
           cursor: pointer;
           display: inline-block;
           border-radius: 100px;
           width: 19px;
           height: 19px;
+          padding: 0;
+          margin: 0;
           border: 1px solid rgba(136, 136, 136, 1);
           background: url('~assets/image/add_icon.svg') no-repeat;
           background-position: center;
@@ -603,7 +653,7 @@ export default {
           border-radius: 20px;
           border: 1px solid rgba(240, 241, 254, 1);
           margin-right: 10px;
-
+          margin-bottom: 10px;
           .close {
             cursor: pointer;
             display: inline-block;
