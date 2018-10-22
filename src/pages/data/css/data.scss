@@ -7,6 +7,14 @@
     font-weight: bold;
     border-bottom: solid 1px $color-bd;
   }
+  .data-link{
+    user-select: none;
+    color: #4B5AFE;
+    &:hover{
+      cursor: pointer;
+      color: $color-blue-hover;
+    }
+  }
   .item-container {
     .item-box {
       border: solid 1px $color-bd;

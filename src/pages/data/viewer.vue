@@ -7,7 +7,7 @@
           <div class="item-title">
             <ve-title title="观众总数"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.viewerCount}}</div>
+          <div class="item-mid data-link" @click="goPage('all')">{{basicUserData.viewerCount}}</div>
         </div>
       </div>
       <div class="item-box fl">
@@ -15,13 +15,13 @@
           <div class="item-title">
             <ve-title title="老用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.oldUser}}</div>
+          <div class="item-mid data-link" @click="goPage('old')">{{basicUserData.oldUser}}</div>
         </div>
         <div class="box fl" style="width: 50%;">
           <div class="item-title">
             <ve-title title="新用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.newUser}}</div>
+          <div class="item-mid data-link" @click="goPage('new')">{{basicUserData.newUser}}</div>
         </div>
       </div>
       <div class="item-box fl">
@@ -29,31 +29,31 @@
           <div class="item-title">
             <ve-title title="优质用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.highUser}}</div>
+          <div class="item-mid data-link" @click="goPage('high')">{{basicUserData.highUser}}</div>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="180px" title="高价值用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.vipUser}}</div>
+          <div class="item-mid data-link" @click="goPage('vip')">{{basicUserData.vipUser}}</div>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="180px" title="一般用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.ordinaryUser}}</div>
+          <div class="item-mid data-link" @click="goPage('ord')">{{basicUserData.ordinaryUser}}</div>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="180px" title="潜在用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.potentialUser}}</div>
+          <div class="item-mid data-link" @click="goPage('potent')">{{basicUserData.potentialUser}}</div>
         </div>
         <div class="box fl" style="width: 20%;">
           <div class="item-title">
             <ve-title width="180px" title="流失用户"></ve-title>
           </div>
-          <div class="item-mid">{{basicUserData.lossUser}}</div>
+          <div class="item-mid data-link" @click="goPage('loss')">{{basicUserData.lossUser}}</div>
         </div>
       </div>
     </div>
@@ -123,6 +123,9 @@
       })
     },
     methods: {
+      goPage (type) {
+        this.$router.push(`/data/viewerList/${this.$route.params.id}?type=${type}`)
+      },
       initPage () {
         let res = {
           code: 200,

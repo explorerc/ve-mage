@@ -1,6 +1,6 @@
 @import "./variable";
 $color-ui-components:#4B5AFE;
-.el-select{
+.live-mager .el-select{
   .el-input__inner {
     border: none;
     background-color: transparent;
@@ -10,7 +10,7 @@ $color-ui-components:#4B5AFE;
     color: #555;
   }
 }
-.el-select-dropdown{
+.live-mager .el-select-dropdown{
   .popper__arrow{
     display: none;
   }
@@ -124,4 +124,8 @@ $color-ui-components:#4B5AFE;
 }
 .el-button.is-round {
   padding:9px 23px;
+}
+.el-date-editor .el-range-separator {
+  width: 20px;
+  text-align: center;
 }

@@ -7,7 +7,7 @@
           <div class="item-title">
             <ve-title title="观看直播人数"></ve-title>
           </div>
-          <div class="item-mid">2561</div>
+          <div class="item-mid data-link" @click="goPage('/data/viewer')">2561</div>
         </div>
         <div class="box fl" style="width: 33.33333%;">
           <div class="item-title">
@@ -217,6 +217,9 @@
       })
     },
     methods: {
+      goPage (url) {
+        this.$router.push(`${url}/${this.$route.params.id}`)
+      },
       initPage () {
         let res = {
           'code': 200,
