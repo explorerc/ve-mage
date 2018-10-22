@@ -843,18 +843,14 @@ export default {
               this.step = 'phoneSuccess'
               this.confirmText = '完成'
               this.accountPhone = this.saveNewPhone
-
-              let temp = JSON.parse(JSON.stringify(this.accountInfo))
-              temp.accountPhone = this.saveNewPhone
-              this.setAccountInfo(temp)
-
-              // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              // if (accountInfo) {
-              //   accountInfo.accountPhone = this.saveNewPhone
-              //   sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-              // }
               this.newPhone = this.saveNewPhone
               this.saveNewPhone = ''
+              this.$get(userService.GET_ACCOUNT).then((res) => {
+                this.setAccountInfo(res.data)
+              })
+              // let temp = JSON.parse(JSON.stringify(this.accountInfo))
+              // temp.accountPhone = this.saveNewPhone
+              // this.setAccountInfo(temp)
             }).catch(err => {
               this.phoneCodeError = true
               this.phoneCodeTip = err.msg
