@@ -177,7 +177,7 @@ import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import userService from 'src/api/user-service'
 import activityService from 'src/api/activity-service'
-import { mapMutations, mapState } from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 
 export default {
