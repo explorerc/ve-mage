@@ -393,7 +393,7 @@ export default {
   },
   mounted () {
     this.getAccount()
-    let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
+    let contactInfo = this.contactInfo
     if (contactInfo && contactInfo.userName) {
       this.userName = contactInfo.name ? contactInfo.name : '无'
       this.userPost = contactInfo.position ? contactInfo.position : '无'
@@ -414,7 +414,7 @@ export default {
         this.userWechat = resData.wechat ? resData.wechat : '无'
         this.userQQ = resData.qq ? resData.qq : '无'
         this.userRemarks = resData.remark ? resData.remark : '无'
-        sessionStorage.setItem('contactInfo', JSON.stringify(res.data))
+        this.setContactInfo(res.data)
       })
     }
     this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
@@ -425,7 +425,9 @@ export default {
   },
   computed: {
     ...mapState('login', {
-      isLogin: state => state.isLogin
+      isLogin: state => state.isLogin,
+      accountInfo: state => state.accountInfo,
+      contactInfo: state => state.contactInfo
     }),
     defaultImg () {
       return this.avatar ? this.$imgHost + '/' + this.avatar : ''
@@ -463,11 +465,13 @@ export default {
   },
   methods: {
     ...mapMutations('login', {
-      setIsLogin: types.UPDATE_IS_LOGIN
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO,
+      setContactInfo: types.CONTACTINFO_INFO
     }),
     getAccount () {
-      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-      if (accountInfo && accountInfo.userName) {
+      if (this.accountInfo && this.accountInfo.userName) {
+        let accountInfo = this.accountInfo
         this.account = accountInfo.userName ? accountInfo.userName : '无'
         this.accountName = accountInfo.name ? accountInfo.name : '无'
         this.avatar = accountInfo.avatar ? accountInfo.avatar : '无'
@@ -499,7 +503,7 @@ export default {
           this.companyWebsite = resData.website ? resData.website : '无'
           this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
           this.licensePic = resData.licensePic ? resData.licensePic : '无'
-          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+          this.setAccountInfo(res.data)
         })
       }
     },
@@ -513,11 +517,9 @@ export default {
         }
       }
       this.$post(userService.POST_SET_COMPANY, companyData).then((res) => {
-        let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-        if (accountInfo) {
-          accountInfo.avatar = data.name
-          sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-        }
+        let temp = JSON.parse(JSON.stringify(this.accountInfo))
+        temp.avatar = data.name
+        this.setAccountInfo(temp)
       })
     },
     uploadError (data) {
@@ -551,14 +553,14 @@ export default {
       this.displayValue = initVal.selectParentValue + '/' + initVal.selectChildValue
       if (saveType === 'company') {
         this.$post(userService.POST_SET_COMPANY, data).then((res) => {
+          let temp = JSON.parse(JSON.stringify(this.accountInfo))
           this.changeState[type] = false
-          let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-          accountInfo.industryId = parseInt(initVal.selectChildId)
-          accountInfo.selectParentId = initVal.selectParentId
-          accountInfo.industrySecond = initVal.selectChildValue
-          accountInfo.industryFirst = initVal.selectParentValue
+          temp.industryId = parseInt(initVal.selectChildId)
+          temp.selectParentId = initVal.selectParentId
+          temp.industrySecond = initVal.selectChildValue
+          temp.industryFirst = initVal.selectParentValue
           this.industryId = parseInt(initVal.selectChildId)
-          sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+          this.setAccountInfo(temp)
         })
       }
     },
@@ -632,17 +634,19 @@ export default {
       data[valType] = val
       if (saveType === 'company') {
         this.$post(userService.POST_SET_COMPANY, data).then((res) => {
-          let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-          accountInfo[valType] = val
-          sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+          let temp = JSON.parse(JSON.stringify(this.accountInfo))
+          temp[valType] = val
+          this.setAccountInfo(temp)
+
+          // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+          // accountInfo[valType] = val
+          // sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
         })
       } else if (saveType === 'user') {
         this.$post(userService.POST_SET_USER, data).then((res) => {
-          let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
-          if (contactInfo) {
-            contactInfo[valType] = val
-            sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
-          }
+          let temp = JSON.parse(JSON.stringify(this.contactInfo))
+          temp[valType] = val
+          this.setContactInfo(temp)
         })
       }
     },
@@ -689,7 +693,6 @@ export default {
       this.$get(userService.GET_INDUSTRIES, data).then((res) => {
         this.industry = res.data
         this.changeState[type] = true
-        console.log(this.selectChildId)
         for (let i = 0; i < this.industry.length; i++) {
           for (let j = 0; j < this.industry[i].items.length; j++) {
             if (this.industry[i].items[j].industryId === this.selectChildId) {
@@ -840,11 +843,16 @@ export default {
               this.step = 'phoneSuccess'
               this.confirmText = '完成'
               this.accountPhone = this.saveNewPhone
-              let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              if (accountInfo) {
-                accountInfo.accountPhone = this.saveNewPhone
-                sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-              }
+
+              let temp = JSON.parse(JSON.stringify(this.accountInfo))
+              temp.accountPhone = this.saveNewPhone
+              this.setAccountInfo(temp)
+
+              // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+              // if (accountInfo) {
+              //   accountInfo.accountPhone = this.saveNewPhone
+              //   sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+              // }
               this.newPhone = this.saveNewPhone
               this.saveNewPhone = ''
             }).catch(err => {
