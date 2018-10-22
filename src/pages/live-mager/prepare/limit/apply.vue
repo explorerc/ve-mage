@@ -211,7 +211,7 @@
         this.canPaas = false
         let obj = {
           title: '标题',
-          placeholder: '请输入信息描述',
+          placeholder: '请输入描述信息',
           label: '文本',
           type: 'text',
           detail: []
