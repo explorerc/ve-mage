@@ -9,7 +9,7 @@
         <div class="left">
           <el-button round>选择</el-button>
           <el-button round>批量操作</el-button>
-          <el-button round>批量导入</el-button>
+          <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
           <com-input :value.sync="filterVal" placeholder="姓名/昵称/手机号/邮箱"   @focus=""></com-input>
@@ -245,6 +245,9 @@
   <transition name='fade' mode='out-in' v-if="showChooseGroup">
     <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmGroup" :max='10' @searchHandler='searchHandler' :data='groupListData' :name="'固定群组'"></com-choose>
   </transition>
+  <transition name='fade' mode='out-in' v-if="showImport">
+    <com-import @handleClick="handleClick"></com-import>
+  </transition>
   </div>
 </template>
 
@@ -252,6 +255,7 @@
 import comChoose from '../components/com-choose'
 import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
+import comImport from '../components/com-import'
 export default {
   data () {
     return {
@@ -470,6 +474,7 @@ export default {
       showChooseActive: false,
       showChooseTag: false,
       showChooseGroup: false,
+      showImport: false,
       chooseType: '活动',
       groupListData: ['互联网客户 (460人）', '物联网客户 (235人）', '产品团队 (22人）', '客户服务团队 (54人）', '客户服务团队 (54人）'],
       tagListData: ['年龄/00后', '地区/北上广深', '资料完整度/参会人', '观看时完整度/完美用户', '地区/海外'],
@@ -497,6 +502,7 @@ export default {
         this.showChooseActive = false
         this.showChooseTag = false
         this.showChooseGroup = false
+        this.showImport = false
       }
     },
     selectConfirmActive (res) {
@@ -518,7 +524,8 @@ export default {
   components: {
     VePagination,
     comAddgroup,
-    comChoose
+    comChoose,
+    comImport
   }
 }
 </script>
