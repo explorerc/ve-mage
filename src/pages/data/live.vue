@@ -197,7 +197,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  // import {pie, barRadius} from 'src/utils/chart-tool'
+  import { lines } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
@@ -205,7 +205,8 @@
     components: { VeTitle, VeCircle, NavMenu },
     data () {
       return {
-        watchType: 0
+        watchType: 0,
+        watcherLineData: {}
       }
     },
     created () {
@@ -217,12 +218,48 @@
     },
     methods: {
       initPage () {
+        let res = {
+          'code': 200,
+          'msg': null,
+          'data': {
+            'days': {
+              xAxis: ['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04', '2018-01-05'],
+              pv: [Math.round(Math.random() * 100), 20, Math.round(Math.random() * 100), 36, 40, 50],
+              uv: [Math.round(Math.random() * 100), 20, Math.round(Math.random() * 100), 36, 40, 50],
+              ip: [Math.round(Math.random() * 100), 20, Math.round(Math.random() * 100), 36, 40, 50]
+            },
+            'hours': {
+              xAxis: ['12:00', '13:00', '14:00', '15:00', '16:00'],
+              pv: [Math.round(Math.random() * 100), 20, Math.round(Math.random() * 100), 36, 40, 50],
+              uv: [Math.round(Math.random() * 100), 20, Math.round(Math.random() * 100), 36, 40, 50],
+              ip: [Math.round(Math.random() * 100), 20, Math.round(Math.random() * 100), 36, 40, 50]
+            }
+          }
+        }
+        this.watcherLineData = res.data
       },
       changeMenu (val) {
         if (this.watchType === val) return
         this.watchType = val
+        const typeAttr = this.watchType ? 'days' : 'hours'
+        lines('chart01', {
+          xAxisData: this.watcherLineData[typeAttr].xAxis,
+          datas: [
+            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
+            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
+            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+          ]
+        })
       },
       renderChart () {
+        lines('chart01', {
+          xAxisData: this.watcherLineData.hours.xAxis,
+          datas: [
+            { name: '浏览次数', data: this.watcherLineData.hours.pv },
+            { name: '独立访问', data: this.watcherLineData.hours.uv },
+            { name: 'IP', data: this.watcherLineData.hours.ip }
+          ]
+        })
       }
     }
   }
