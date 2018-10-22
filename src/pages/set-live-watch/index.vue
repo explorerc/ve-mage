@@ -177,6 +177,8 @@ import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import userService from 'src/api/user-service'
 import activityService from 'src/api/activity-service'
+import { mapMutations, mapState } from 'vuex'
+import * as types from 'src/store/mutation-types'
 
 export default {
   data () {
@@ -213,15 +215,14 @@ export default {
       this.$router.go(-1)
       return
     }
-    let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-    if (accountInfo && accountInfo.userName) {
-      this.name = accountInfo.name
-      this.avatar = accountInfo.avatar
+    if (this.accountInfo && this.accountInfo.userName) {
+      this.name = this.accountInfo.name
+      this.avatar = this.accountInfo.avatar
     } else {
       this.$get(userService.GET_ACCOUNT).then((res) => {
         this.name = res.data.name
         this.avatar = res.data.avatar
-        sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+        this.setAccountInfo(res.data)
       })
     }
     this.$get(activityService.GET_WEBINAR_INFO, {
@@ -250,6 +251,9 @@ export default {
     })
   },
   computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    }),
     defaultBgImg () {
       return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
     },
@@ -289,6 +293,9 @@ export default {
     })
   },
   methods: {
+    ...mapMutations('login', {
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
     uploadBgSuccess (data) {
       this.canPass = false
       this.bgImgUrl = data.name

@@ -140,7 +140,8 @@ export default {
     'com-input': MyInput
   },
   computed: mapState('login', {
-    isLogin: state => state.isLogin
+    isLogin: state => state.isLogin,
+    accountInfo: state => state.accountInfo
   }),
   created () {
     this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
@@ -186,7 +187,8 @@ export default {
   },
   methods: {
     ...mapMutations('login', {
-      setIsLogin: types.UPDATE_IS_LOGIN
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO
     }),
     changeFunction (item) {
       if (item === '账号登录') {
@@ -213,7 +215,7 @@ export default {
       this.$config({ handlers: true }).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
         sessionStorage.setItem('isLogin', true)
         this.$get(userService.GET_ACCOUNT).then((res) => {
-          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+          this.setAccountInfo(res.data)
         })
         this.setIsLogin(1)
         let isGoMaster = sessionStorage.getItem('isGoMaster')
@@ -256,7 +258,7 @@ export default {
       this.$config({ handlers: true }).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
         sessionStorage.setItem('isLogin', true)
         this.$get(userService.GET_ACCOUNT).then((res) => {
-          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+          this.setAccountInfo(res.data)
         })
         this.setIsLogin(1)
         this.isSend = true
