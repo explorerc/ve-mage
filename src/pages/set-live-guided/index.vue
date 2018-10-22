@@ -150,8 +150,7 @@
         </div>
       </div>
       <button @click='save'
-              class='primary-button v-share-button'
-              v-if="published === 'N' || !activityId">
+              class='primary-button v-share-button'>
         保存
       </button>
     </div>

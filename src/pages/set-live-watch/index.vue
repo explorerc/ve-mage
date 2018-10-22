@@ -66,8 +66,7 @@
             </div>
           </div>
           <button @click='brandClick'
-                  class='primary-button'
-                  v-if="status === 'PREPARE' || !activityId">
+                  class='primary-button'>
             保存
           </button>
         </com-tab>
@@ -165,8 +164,7 @@
             </div>
           </div>
           <button @click='shareClick'
-                  class='primary-button v-share-button'
-                  v-if="status === 'PREPARE' || !activityId">
+                  class='primary-button v-share-button'>
             保存
           </button>
         </com-tab>
@@ -230,6 +228,7 @@ export default {
       id: this.activityId
     }).then((res) => {
       this.status = res.data.status
+      this.activityTitle = res.data.title ? res.data.title : ''
     })
     this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
       if (res.data) {
@@ -240,7 +239,6 @@ export default {
         this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
         this.isShowGuided = res.data.page.indexOf('guide_route') > -1
         this.tabValue = 1
-        this.activityTitle = res.data.title ? res.data.title : ''
       }
     })
     this.$get(brandService.GET_LIVE_BRAND, data).then(res => {
@@ -500,12 +498,11 @@ export default {
       font-size: 16px;
       transform: scale(0.5);
       transform-origin: top left;
-      color: #fff;
+      color: #333;
     }
     .v-pc-icon {
       display: block;
       width: 87px;
-      margin-top: 7px;
     }
     .v-pc {
       width: 438px;
