@@ -300,7 +300,7 @@ import Editor from './info-editor'
 import SelectEditor from './info-select'
 import userService from 'src/api/user-service'
 import VeUploadTx from 'src/components/ve-upload-tx'
-import { mapMutations, mapState } from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 // import EventBus from 'src/utils/eventBus'
 export default {
@@ -393,7 +393,7 @@ export default {
   },
   mounted () {
     this.getAccount()
-    let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
+    let contactInfo = this.contactInfo
     if (contactInfo && contactInfo.userName) {
       this.userName = contactInfo.name ? contactInfo.name : '无'
       this.userPost = contactInfo.position ? contactInfo.position : '无'
@@ -414,10 +414,10 @@ export default {
         this.userWechat = resData.wechat ? resData.wechat : '无'
         this.userQQ = resData.qq ? resData.qq : '无'
         this.userRemarks = resData.remark ? resData.remark : '无'
-        sessionStorage.setItem('contactInfo', JSON.stringify(res.data))
+        this.setContactInfo(res.data)
       })
     }
-    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
+    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
       this.key = res.data
     }).catch(err => {
       console.log(err.msg)
@@ -425,7 +425,9 @@ export default {
   },
   computed: {
     ...mapState('login', {
-      isLogin: state => state.isLogin
+      isLogin: state => state.isLogin,
+      accountInfo: state => state.accountInfo,
+      contactInfo: state => state.contactInfo
     }),
     defaultImg () {
       return this.avatar ? this.$imgHost + '/' + this.avatar : ''
@@ -463,11 +465,13 @@ export default {
   },
   methods: {
     ...mapMutations('login', {
-      setIsLogin: types.UPDATE_IS_LOGIN
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO,
+      setContactInfo: types.CONTACTINFO_INFO
     }),
     getAccount () {
-      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-      if (accountInfo && accountInfo.userName) {
+      if (this.accountInfo && this.accountInfo.userName) {
+        let accountInfo = this.accountInfo
         this.account = accountInfo.userName ? accountInfo.userName : '无'
         this.accountName = accountInfo.name ? accountInfo.name : '无'
         this.avatar = accountInfo.avatar ? accountInfo.avatar : '无'
@@ -499,7 +503,7 @@ export default {
           this.companyWebsite = resData.website ? resData.website : '无'
           this.licenseCode = resData.licenseCode ? resData.licenseCode : '无'
           this.licensePic = resData.licensePic ? resData.licensePic : '无'
-          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+          this.setAccountInfo(res.data)
         })
       }
     },
@@ -513,11 +517,9 @@ export default {
         }
       }
       this.$post(userService.POST_SET_COMPANY, companyData).then((res) => {
-        let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-        if (accountInfo) {
-          accountInfo.avatar = data.name
-          sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-        }
+        let temp = JSON.parse(JSON.stringify(this.accountInfo))
+        temp.avatar = data.name
+        this.setAccountInfo(temp)
       })
     },
     uploadError (data) {
@@ -551,14 +553,14 @@ export default {
       this.displayValue = initVal.selectParentValue + '/' + initVal.selectChildValue
       if (saveType === 'company') {
         this.$post(userService.POST_SET_COMPANY, data).then((res) => {
+          let temp = JSON.parse(JSON.stringify(this.accountInfo))
           this.changeState[type] = false
-          let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-          accountInfo.industryId = parseInt(initVal.selectChildId)
-          accountInfo.selectParentId = initVal.selectParentId
-          accountInfo.industrySecond = initVal.selectChildValue
-          accountInfo.industryFirst = initVal.selectParentValue
+          temp.industryId = parseInt(initVal.selectChildId)
+          temp.selectParentId = initVal.selectParentId
+          temp.industrySecond = initVal.selectChildValue
+          temp.industryFirst = initVal.selectParentValue
           this.industryId = parseInt(initVal.selectChildId)
-          sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+          this.setAccountInfo(temp)
         })
       }
     },
@@ -632,17 +634,19 @@ export default {
       data[valType] = val
       if (saveType === 'company') {
         this.$post(userService.POST_SET_COMPANY, data).then((res) => {
-          let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-          accountInfo[valType] = val
-          sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+          let temp = JSON.parse(JSON.stringify(this.accountInfo))
+          temp[valType] = val
+          this.setAccountInfo(temp)
+
+          // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+          // accountInfo[valType] = val
+          // sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
         })
       } else if (saveType === 'user') {
         this.$post(userService.POST_SET_USER, data).then((res) => {
-          let contactInfo = JSON.parse(sessionStorage.getItem('contactInfo'))
-          if (contactInfo) {
-            contactInfo[valType] = val
-            sessionStorage.setItem('contactInfo', JSON.stringify(contactInfo))
-          }
+          let temp = JSON.parse(JSON.stringify(this.contactInfo))
+          temp[valType] = val
+          this.setContactInfo(temp)
         })
       }
     },
@@ -689,7 +693,6 @@ export default {
       this.$get(userService.GET_INDUSTRIES, data).then((res) => {
         this.industry = res.data
         this.changeState[type] = true
-        console.log(this.selectChildId)
         for (let i = 0; i < this.industry.length; i++) {
           for (let j = 0; j < this.industry[i].items.length; j++) {
             if (this.industry[i].items[j].industryId === this.selectChildId) {
@@ -794,7 +797,7 @@ export default {
               code: this.phoneCode,
               type: 'BUSINESS_USER_VERIFY_MOBILE'
             }
-            this.$config({ handlers: true }).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
+            this.$config({handlers: true}).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
               this.phoneCodeError = false
               this.phoneCodeTip = res.msg
               this.token = res.data.codeToken
@@ -835,18 +838,19 @@ export default {
               codeToken: this.token,
               code: this.phoneCode
             }
-            this.$config({ handlers: true }).$post(userService.POST_UPDATE_MOBILE, data).then((res) => {
+            this.$config({handlers: true}).$post(userService.POST_UPDATE_MOBILE, data).then((res) => {
               this.phone = ''
               this.step = 'phoneSuccess'
               this.confirmText = '完成'
               this.accountPhone = this.saveNewPhone
-              let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-              if (accountInfo) {
-                accountInfo.accountPhone = this.saveNewPhone
-                sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
-              }
               this.newPhone = this.saveNewPhone
               this.saveNewPhone = ''
+              this.$get(userService.GET_ACCOUNT).then((res) => {
+                this.setAccountInfo(res.data)
+              })
+              // let temp = JSON.parse(JSON.stringify(this.accountInfo))
+              // temp.accountPhone = this.saveNewPhone
+              // this.setAccountInfo(temp)
             }).catch(err => {
               this.phoneCodeError = true
               this.phoneCodeTip = err.msg
@@ -884,7 +888,7 @@ export default {
             'newPassword': this.newPassword,
             'oldPassword': this.oldPassword
           }
-          this.$config({ handlers: true }).$post(userService.POST_CHANGE_PASSWORD, data).then((res) => {
+          this.$config({handlers: true}).$post(userService.POST_CHANGE_PASSWORD, data).then((res) => {
             this.$messageBox({
               header: '提示',
               content: '修改成功',
@@ -958,7 +962,7 @@ export default {
           captcha: this.phoneKey
         }
       }
-      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
         this.phoneCodeError = false
         this.phoneCodeTip = res.msg
         this.isSend = true
