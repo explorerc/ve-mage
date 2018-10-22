@@ -161,7 +161,7 @@ export default {
       if (this.isPublished) {
         this.inCountdown = false
         const tempwindow = window.open('_blank') // 先打开页面
-        tempwindow.location = `${this.PC_HOST}master/${this.activityId}` // 后更改页面地址
+        tempwindow.location = `${this.PC_HOST}master/${this.jumpId}` // 后更改页面地址
       } else {
         this.inCountdown = false
         this.$messageBox({
@@ -175,7 +175,7 @@ export default {
             if (e.action === 'cancel') {
             } else if (e.action === 'confirm') {
               const tempwindow = window.open('_blank') // 先打开页面
-              tempwindow.location = `${this.PC_HOST}master/${this.activityId}` // 后更改页面地址
+              tempwindow.location = `${this.PC_HOST}master/${this.jumpId}` // 后更改页面地址
               // this.status = 0
             }
           }
