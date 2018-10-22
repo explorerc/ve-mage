@@ -256,7 +256,7 @@ export default {
   data () {
     return {
       filterVal: '',
-      showFilter: true,
+      showFilter: false,
       grands: [
         {
           value: '选项1',
