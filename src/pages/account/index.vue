@@ -5,7 +5,7 @@
     </p>
     <div class="v-info">
       <p class="v-title">
-        基本信息 6
+        基本信息
       </p>
       <div class="v-editor v-avatar-img"
            style="height: 125px;">
