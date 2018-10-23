@@ -76,6 +76,7 @@ const Preview = () => import('src/pages/data/preview')
 const DataLive = () => import('src/pages/data/live')
 const Spread = () => import('src/pages/data/spread')
 const Viewer = () => import('src/pages/data/viewer')
+const ViewerList = () => import('src/pages/data/viewerList')
 
 export default [
   {
@@ -315,6 +316,11 @@ export default [
             path: 'viewer/:id',
             name: 'viewer',
             component: Viewer
+          },
+          {
+            path: 'viewerList/:id',
+            name: 'viewerList',
+            component: ViewerList
           }
         ]
       }
