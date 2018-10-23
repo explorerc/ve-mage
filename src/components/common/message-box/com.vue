@@ -22,7 +22,7 @@
             {{content}}
           </div>
           <slot></slot>
-          <div class="ve-message-box__btns">
+          <div class="ve-message-box__btns" v-if="type!=='none'">
             <div v-if="!this.$slots.bottom" :type="type">
               <button type="button"
                       class="button--primary"
@@ -86,7 +86,7 @@ export default {
       type: String,
       default: '300px'
     },
-    type: { // prompt , error
+    type: { // prompt , error, none
       type: String,
       default: ''
     }

@@ -77,7 +77,6 @@
         span:first-child{
           font-size: 24px;
           font-weight: bold;
-          color: #4B5AFE;
           padding-right: 6px;
         }
         span:last-child{
@@ -108,6 +107,24 @@
           }
         }
       }
+    }
+  }
+  .msg-table-box{
+    position: relative;
+    padding: 40px 0 10px 0;
+    .table-box{
+      min-height: 100px;
+      max-height: 400px;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .export-btn{
+      position: absolute;
+      top: -5px;
+      right: 0;
+      height: 34px;
+      line-height: 1;
+      z-index: 2;
     }
   }
 }
