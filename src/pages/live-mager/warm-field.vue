@@ -76,7 +76,8 @@
           playCover: '',
           recordId: '',
           activityId: '',
-          filename: ''
+          filename: '',
+          fileSize: ''
         },
         sdkParam: { // sdk上传插件初始化参数
           sign: '',
@@ -170,13 +171,14 @@
               playMode: res.data.playType || this.warm.playMode,
               playCover: res.data.imgUrl,
               recordId: res.data.recordId,
-              filename: res.data.filename
+              filename: res.data.filename,
+              fileSize: res.data.fileSize || 0
             }
             this.isSwitch = res.data.enabled === 'Y'
             /* sdk参数赋值 */
             this.sdkPlayParam.recordId = res.data.recordId
             this.sdkParam.fileName = res.data.filename
-            this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+            this.sdkParam.fileSize = res.data.fileSize || 0
             this.sdkParam.transcode_status = (res.data.record && res.data.record.list.length > 0) ? res.data.record.list[0].transcode_status : 0
           }
         }).then(() => {
@@ -261,7 +263,8 @@
           playType: this.warm.playMode,
           imgUrl: this.warm.playCover,
           enabled: this.warm.enabled,
-          filename: this.warm.filename
+          filename: this.warm.filename,
+          fileSize: parseInt(this.warm.fileSize)
         }).then((res) => {
           this.canPass = true
           this.$toast({
@@ -303,6 +306,7 @@
         this.canPass = false
         this.warm.recordId = recordId
         this.warm.filename = fileName
+        this.warm.fileSize = fileSize
         this.sdkParam.fileName = fileName
         this.sdkParam.fileSize = fileSize
         this.sdkPlayParam.recordId = recordId
