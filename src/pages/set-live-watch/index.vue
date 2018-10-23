@@ -177,7 +177,7 @@ import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import userService from 'src/api/user-service'
 import activityService from 'src/api/activity-service'
-import { mapMutations, mapState } from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 
 export default {
@@ -327,7 +327,7 @@ export default {
         'backgroundUrl': this.bgImgUrl,
         'logoUrl': this.logoImgUrl
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
@@ -366,7 +366,7 @@ export default {
       if (this.isShowGuided) {
         data.page.push('guide_route')
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
