@@ -289,7 +289,7 @@
           <span class="v-label">营业执照照片：</span>
           <img :src="licensePicUrl"
                alt="成功"
-               class="v-state-img">
+               class="v-state-img" v-if="licensePicUrl!=''">
         </p>
       </div>
     </message-box>
@@ -433,7 +433,7 @@ export default {
       return this.avatar ? this.$imgHost + '/' + this.avatar : ''
     },
     licensePicUrl () {
-      return this.licensePic === '无' ? this.$imgHost + '/' + this.licensePic : ''
+      return this.licensePic === '无' ? '' : this.$imgHost + '/' + this.licensePic
     }
   },
   components: {
@@ -1326,6 +1326,7 @@ export default {
     .v-label {
       width: 98px;
       display: inline-block;
+      vertical-align: middle;
     }
     .v-information {
       color: #222;
@@ -1336,6 +1337,7 @@ export default {
       height: 80px;
       border: 1px solid #e2e2e2;
       border-radius: 4px;
+      vertical-align: middle;
     }
   }
 }
