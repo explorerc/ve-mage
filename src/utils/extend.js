@@ -76,3 +76,16 @@ String.prototype.copyClipboard = function (callBack) {
     document.body.removeChild(textarea)
   }, 500)
 }
+
+String.prototype.padStart = function (num, str) {
+  var s = this
+  if (this.length >= num) {
+    return s.substring(0, num)
+  } else {
+    var n = num - this.length
+    for (var i = 0; i < n; i++) {
+      s = str + s
+    }
+    return s
+  }
+}

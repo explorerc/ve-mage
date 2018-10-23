@@ -143,17 +143,59 @@
         </el-select>
       </div>
     </div>
+    <div class="table-list-box">
+      <button class="primary-button export-btn">导出</button>
+      <el-table :data="viewerList" style="width: 100%">
+        <el-table-column label="姓名">
+          <template slot-scope="scope">
+            {{scope.row.name}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="score" label="本次得分"></el-table-column>
+        <el-table-column prop="level" label="会后级别"></el-table-column>
+        <el-table-column prop="phoneNo" label="手机号"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column label="参会时间（第一次）">
+          <template slot-scope="scope">
+            {{scope.row.meetingDate.substring(0,16)}}
+          </template>
+        </el-table-column>
+        <el-table-column label="观看时长">
+          <template slot-scope="scope">
+            {{scope.row.watchTimes|fmtTime}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="channelName" label="渠道来源"></el-table-column>
+        <el-table-column label="详情">
+          <template slot-scope="scope">
+            <span class="data-link" @click="goPageDetail(scope.row.userId)">详情</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="page-pagination" v-if="total>pageSize">
+        <ve-pagination :total="total"
+                       :pageSize="pageSize"
+                       @changePage="changePage"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+  import VePagination from 'src/components/ve-pagination'
+
   export default {
     name: 'viewerList',
+    components: {VePagination},
     data () {
       return {
         isHigh: false,
         enterTime: [],
         leaveTime: [],
+        total: 0,
+        page: 1,
+        pageSize: 10,
+        viewerList: [],
         searchParams: {
           keyword: '',
           gender: '0',
@@ -222,7 +264,65 @@
         ]
       }
     },
+    filters: {
+      fmtTime (value) {
+        let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+        let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+        let s = ((value % 60 >> 0) + '').padStart(2, 0)
+        return `${h}:${m}:${s}`
+      }
+    },
+    created () {
+      this.queryList()
+    },
     methods: {
+      goPageDetail (id) {
+        this.$router.push(`/user/detail/${id}`)
+      },
+      changePage (pageIdx) {
+        this.page = pageIdx
+        this.queryList()
+      },
+      queryList () {
+        this.viewerList = [
+          {
+            userId: 10000,
+            name: '张三',
+            headImg: '/dev/111/sss/i.jpg',
+            score: 50,
+            level: 1,
+            phoneNo: '1859912717',
+            email: 'yy1221@vhall.com',
+            meetingDate: '2018-10-17 10:10:19',
+            watchTimes: 111002343,
+            channelName: '微信'
+          },
+          {
+            userId: 10001,
+            name: '李四',
+            headImg: '/dev/111/sss/i.jpg',
+            score: 50,
+            level: 1,
+            phoneNo: '1859912717',
+            email: 'yy1221@vhall.com',
+            meetingDate: '2018-10-17 10:10:19',
+            watchTimes: 3600,
+            channelName: '手机'
+          },
+          {
+            userId: 10002,
+            name: '刘德华',
+            headImg: '/dev/111/sss/i.jpg',
+            score: 50,
+            level: 1,
+            phoneNo: '1859912717',
+            email: 'yy1221@vhall.com',
+            meetingDate: '2018-10-17 10:10:19',
+            watchTimes: 111002343,
+            channelName: '微信'
+          }
+        ]
+      },
       searchEnter () {
       }
     }
@@ -252,6 +352,21 @@
         font-size: 14px;
       }
     }
+    .table-list-box {
+      position: relative;
+      padding-top: 30px;
+      padding-bottom: 20px;
+      .export-btn {
+        position: absolute;
+        top: -14px;
+        right: 0;
+        line-height: 1;
+        height: 34px;
+      }
+      .page-pagination {
+        margin-top: 20px;
+        float: right;
+      }
+    }
   }
-
 </style>
