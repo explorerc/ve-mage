@@ -13,10 +13,24 @@
         <div class="item upload-box-item clearfix">
           <label class="label">上传封面:</label>
           <div class="upload-box">
-            <dl class='before-upload'>
+            <!-- <dl class='before-upload'>
               <dt></dt>
               <dd>请使用csv模版上传</dd>
-            </dl>
+            </dl> -->
+            <com-upload
+              :accept="'csv'"
+              actionUrl="/api/upload/image"
+              inputName="file"
+              @error="uploadError"
+              @selected="selected"
+              @progress="uploadProgress"
+              @load="uploadImgSuccess">
+              <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
+                <i class="upload-icon"></i>
+                <span v-if="!errorTxt" v-html="tipTxt"></span>
+                <span class="error-msg" v-else>{{errorTxt}}</span>
+              </div>
+            </com-upload>
           </div>
         </div>
         <div class="item">
@@ -57,6 +71,7 @@
 
 <script>
 import veTips from 'src/components/ve-msg-tips'
+import ComUpload from 'src/components/common/upload/com'
 export default {
   data () {
     return {
@@ -65,6 +80,13 @@ export default {
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
+      loading: false,
+      percentImg: 0,
+      errorTxt: '',
+      tipTxt: '',
+      imgHost: '',
+      fileSrc: '',
+      coverImg: '',
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -89,10 +111,36 @@ export default {
       this.$emit('handleClick', {
         action: 'cancel'
       })
+    },
+    overUpload () {
+      this.$refs.uploadFile.click()
+    },
+    selected () {
+      console.log('selected')
+      this.loading = true
+    },
+    uploadProgress (data) {
+      this.loading = false
+      this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
+      if (this.percentImg === 100) {
+        this.percentImg = 0
+      }
+    },
+    uploadImgSuccess (data) {
+      const fildObj = JSON.parse(data.data).data
+      if (fildObj.host) this.imgHost = fildObj.host
+      if (fildObj.name) this.fileSrc = fildObj.name
+    },
+    uploadError (data) {
+      this.loading = false
+      const state = data.data[0].state
+      console.log(state)
+      this.fileSrc = ''
+      this.coverImg = ''
     }
   },
   components: {
-    veTips
+    veTips, ComUpload
   }
 }
 </script>
@@ -220,6 +268,10 @@ export default {
           padding-top: 10px;
           color: $color-gray;
         }
+      }
+      .com-upload {
+        width: 100%;
+        height: 100%;
       }
     }
   }

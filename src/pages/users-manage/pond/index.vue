@@ -474,7 +474,7 @@ export default {
       showChooseActive: false,
       showChooseTag: false,
       showChooseGroup: false,
-      showImport: false,
+      showImport: true,
       chooseType: '活动',
       groupListData: ['互联网客户 (460人）', '物联网客户 (235人）', '产品团队 (22人）', '客户服务团队 (54人）', '客户服务团队 (54人）'],
       tagListData: ['年龄/00后', '地区/北上广深', '资料完整度/参会人', '观看时完整度/完美用户', '地区/海外'],
