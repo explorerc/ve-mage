@@ -172,53 +172,53 @@
           userType: '0'
         },
         genderList: [
-          {value: '0', label: '全部'},
-          {value: '1', label: '男'},
-          {value: '2', label: '女'}
+          { value: '0', label: '全部' },
+          { value: '1', label: '男' },
+          { value: '2', label: '女' }
         ],
         watcherTypeList: [
-          {value: '0', label: '全部用户'},
-          {value: '1', label: '优质用户'},
-          {value: '2', label: '潜在用户'},
-          {value: '3', label: '一般用户'},
-          {value: '4', label: '高价值用户'},
-          {value: '5', label: '流失用户'}
+          { value: '0', label: '全部用户' },
+          { value: '1', label: '优质用户' },
+          { value: '2', label: '潜在用户' },
+          { value: '3', label: '一般用户' },
+          { value: '4', label: '高价值用户' },
+          { value: '5', label: '流失用户' }
         ],
         provinceList: [
-          {value: '0', label: '省'},
-          {value: '1', label: '北京'},
-          {value: '2', label: '河南省'},
-          {value: '3', label: '河北省'},
-          {value: '4', label: '黑龙江'},
-          {value: '5', label: '湖北'}
+          { value: '0', label: '省' },
+          { value: '1', label: '北京' },
+          { value: '2', label: '河南省' },
+          { value: '3', label: '河北省' },
+          { value: '4', label: '黑龙江' },
+          { value: '5', label: '湖北' }
         ],
         cityList: [
-          {value: '0', label: '市'},
-          {value: '1', label: '北京市'},
-          {value: '2', label: '郑州市'},
-          {value: '3', label: '天津市'}
+          { value: '0', label: '市' },
+          { value: '1', label: '北京市' },
+          { value: '2', label: '郑州市' },
+          { value: '3', label: '天津市' }
         ],
         tradeList: [
-          {value: '0', label: '全部'},
-          {value: '1', label: '导入'},
-          {value: '2', label: '微信注册'},
-          {value: '3', label: 'PC注册'}
+          { value: '0', label: '全部' },
+          { value: '1', label: '导入' },
+          { value: '2', label: '微信注册' },
+          { value: '3', label: 'PC注册' }
         ],
         deviceList: [
-          {value: '0', label: '全部'},
-          {value: '1', label: '电脑'},
-          {value: '2', label: '手机'}
+          { value: '0', label: '全部' },
+          { value: '1', label: '电脑' },
+          { value: '2', label: '手机' }
         ],
         scoreTypeList: [
-          {value: '0', label: '全部'},
-          {value: '1', label: '大于'},
-          {value: '2', label: '小于'},
-          {value: '3', label: '等于'}
+          { value: '0', label: '全部' },
+          { value: '1', label: '大于' },
+          { value: '2', label: '小于' },
+          { value: '3', label: '等于' }
         ],
         userTypeList: [
-          {value: '0', label: '全部'},
-          {value: '1', label: '新用户'},
-          {value: '2', label: '老用户'}
+          { value: '0', label: '全部' },
+          { value: '1', label: '新用户' },
+          { value: '2', label: '老用户' }
         ]
       }
     },
