@@ -186,7 +186,7 @@
 
   export default {
     name: 'viewerList',
-    components: { VePagination },
+    components: {VePagination},
     data () {
       return {
         isHigh: false,
