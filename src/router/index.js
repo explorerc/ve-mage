@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
             }
           })
           .catch(() => {
-            next('/login')
+            to.name === 'login' ? next() : next('/login')
           })
       }
     }
