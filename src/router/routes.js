@@ -292,7 +292,7 @@ export default [{
     component: userGroup
   },
   {
-    path: '/userManage/info',
+    path: '/userManage/info/:id',
     name: 'userInfo',
     component: userInfo
   },
