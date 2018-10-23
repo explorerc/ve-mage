@@ -211,7 +211,7 @@
         this.canPaas = false
         let obj = {
           title: '标题',
-          placeholder: '请输入信息描述',
+          placeholder: '请输入描述信息',
           label: '文本',
           type: 'text',
           detail: []
@@ -291,7 +291,7 @@
         })
       },
       saveLimitfn (data) {
-        this.$config({ handlers: [60704] }).$post(activityService.SAVE_LIMIT, data).then((res) => {
+        this.$config({handlers: [60704]}).$post(activityService.SAVE_LIMIT, data).then((res) => {
           this.$toast({
             content: '设置成功',
             position: 'center'
@@ -333,7 +333,7 @@
           'submodule': 'APPOINT',
           'enabled': ref ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           if (res.code === 200) {
             if (ref) {
               let obj = {
