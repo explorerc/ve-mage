@@ -69,18 +69,18 @@
       <div class="item-box hd-data-item fl">
         <span class="hd-title">预约</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goPreDataDetail">6023</span>
           <span>预约人数</span>
         </div>
       </div>
       <div class="item-box hd-data-item fr">
         <span class="hd-title">聊天</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goChatDataDetail">6023</span>
           <span>聊天人数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goChatDataDetail">6023</span>
           <span>消息数量</span>
         </div>
       </div>
@@ -98,86 +98,86 @@
       <div class="item-box hd-data-item fr">
         <span class="hd-title">抽奖</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goPrizeDataDetail">6023</span>
           <span>中奖人数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goPrizeDataDetail">6023</span>
           <span>参与人数</span>
         </div>
       </div>
       <div class="item-box hd-data-item fl">
         <span class="hd-title">调查问卷</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goPagerDataDetail">6023</span>
           <span>推送次数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goPagerDataDetail">6023</span>
           <span>收到数据</span>
         </div>
       </div>
       <div class="item-box hd-data-item fr">
         <span class="hd-title">答题</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goAnswerDataDetail">6023</span>
           <span>推送次数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goAnswerDataDetail">6023</span>
           <span>参与答题人数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goAnswerDataDetail">6023</span>
           <span>获得奖励人数</span>
         </div>
       </div>
       <div class="item-box hd-data-item fl">
         <span class="hd-title">推荐卡片</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goCardDataDetail">3</span>
           <span>推送次数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goCardDataDetail">6023</span>
           <span>浏览次数</span>
         </div>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goCardDataDetail">6023</span>
           <span>点击次数</span>
         </div>
       </div>
       <div class="item-box hd-data-item fr">
         <span class="hd-title">红包雨</span>
         <div class="hd-data">
-          <span>6023</span>
+          <span class="data-link" @click="goRedBagDataDetail">6023</span>
           <span>参与人数</span>
         </div>
         <div class="hd-data">
-          <span>8</span>
+          <span class="data-link" @click="goRedBagDataDetail">8</span>
           <span>领取人数</span>
         </div>
         <div class="hd-data">
-          <span>￥6023</span>
+          <span class="data-link" @click="goRedBagDataDetail">￥6023</span>
           <span>领取金额</span>
         </div>
       </div>
       <div class="item-box hd-data-item fl" style="width: 66%;">
         <span class="hd-title">商品推荐</span>
         <div class="hd-data" style="width: 25%;">
-          <span>7/20</span>
+          <span class="data-link" @click="goGoodsDataDetail">7/20</span>
           <span>商品上架数</span>
         </div>
         <div class="hd-data" style="width: 25%;">
-          <span>8</span>
+          <span class="data-link" @click="goGoodsDataDetail">8</span>
           <span>推送次数</span>
         </div>
         <div class="hd-data" style="width: 25%;">
-          <span>8</span>
+          <span class="data-link" @click="goGoodsDataDetail">8</span>
           <span>浏览次数</span>
         </div>
         <div class="hd-data" style="width: 25%;">
-          <span>6023</span>
+          <span class="data-link" @click="goGoodsDataDetail">30</span>
           <span>点击购买次数</span>
         </div>
       </div>
@@ -190,6 +190,237 @@
         </div>
       </div>
     </div>
+    <!-- 预约 -->
+    <message-box
+      v-show="preDataDetail"
+      width="60%"
+      type="none"
+      header="预约数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box">
+        <button class="primary-button export-btn fr">导出</button>
+        <div class="table-box">
+          <el-table :data="preDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="userId" label="用户Id"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="phone" label="手机号"></el-table-column>
+            <el-table-column prop="enterDate" label="进入引导页时间（第一次）"></el-table-column>
+            <el-table-column prop="leaveDate" label="离开引导页时间（最后一次）"></el-table-column>
+            <el-table-column prop="preDate" label="预约时间"></el-table-column>
+            <el-table-column prop="joinDate" label="参会时间"></el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 聊天 -->
+    <message-box
+      v-show="chatDataDetail"
+      width="60%"
+      type="none"
+      header="聊天数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box">
+        <button class="primary-button export-btn fr">导出</button>
+        <div class="table-box">
+          <el-table :data="chatDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="userId" label="用户Id"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="phone" label="手机号"></el-table-column>
+            <el-table-column prop="chatMsg" label="聊天内容"></el-table-column>
+            <el-table-column prop="chatDate" label="聊天时间"></el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 抽奖 -->
+    <message-box
+      v-show="prizeDataDetail"
+      width="60%"
+      type="none"
+      header="聊天数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box" style="padding-top: 20px;">
+        <div class="table-box">
+          <el-table :data="prizeDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="openDate" label="开奖时间"></el-table-column>
+            <el-table-column prop="joinType" label="参与条件"></el-table-column>
+            <el-table-column prop="phone" label="奖品名称"></el-table-column>
+            <el-table-column prop="count" label="奖品数量"></el-table-column>
+            <el-table-column prop="online" label="在线人数"></el-table-column>
+            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
+            <el-table-column label="中奖名单">
+              <template slot-scope="scope">
+                <span class="data-link">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 问卷 -->
+    <message-box
+      v-show="pagerDataDetail"
+      width="60%"
+      type="none"
+      header="问卷数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box" style="padding-top: 20px;">
+        <div class="table-box">
+          <el-table :data="pagerDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="问卷名称"></el-table-column>
+            <el-table-column prop="pushDate" label="推送时间"></el-table-column>
+            <el-table-column prop="count" label="题目数量"></el-table-column>
+            <el-table-column prop="receive" label="收到数据"></el-table-column>
+            <el-table-column label="问卷结果">
+              <template slot-scope="scope">
+                <span class="data-link">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 答题 -->
+    <message-box
+      v-show="answerDataDetail"
+      width="60%"
+      type="none"
+      header="问卷数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box" style="padding-top: 20px;">
+        <div class="table-box">
+          <el-table :data="answerDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="title" label="题目"></el-table-column>
+            <el-table-column prop="preMoney" label="预设奖金总额"></el-table-column>
+            <el-table-column prop="preCount" label="预设获奖人数"></el-table-column>
+            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
+            <el-table-column prop="correntCount" label="答对人数"></el-table-column>
+            <el-table-column prop="costMoney" label="实际消耗金额"></el-table-column>
+            <el-table-column prop="winCount" label="实际获奖人数"></el-table-column>
+            <el-table-column prop="successRate" label="正确率"></el-table-column>
+            <el-table-column label="详情数据">
+              <template slot-scope="scope">
+                <span class="data-link">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 推荐卡片 -->
+    <message-box
+      v-show="cardDataDetail"
+      width="60%"
+      type="none"
+      header="问卷数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box" style="padding-top: 20px;">
+        <div class="table-box">
+          <el-table :data="cardDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="卡片名称"></el-table-column>
+            <el-table-column prop="isLink" label="是否设置链接"></el-table-column>
+            <el-table-column prop="pushCount" label="推送次数"></el-table-column>
+            <el-table-column prop="browse" label="卡片浏览数"></el-table-column>
+            <el-table-column prop="click" label="点击卡片次数"></el-table-column>
+            <el-table-column label="详情数据">
+              <template slot-scope="scope">
+                <span class="data-link">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 红包 -->
+    <message-box
+      v-show="redBagDataDetail"
+      width="60%"
+      type="none"
+      header="问卷数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box" style="padding-top: 20px;">
+        <div class="table-box">
+          <el-table :data="redBagDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="pushDate" label="推送时间"></el-table-column>
+            <el-table-column prop="joinType" label="参与条件"></el-table-column>
+            <el-table-column prop="totalMoney" label="红包总金额"></el-table-column>
+            <el-table-column prop="totalCount" label="红包数量"></el-table-column>
+            <el-table-column prop="online" label="在线人数"></el-table-column>
+            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
+            <el-table-column prop="receiveCount" label="领取人数"></el-table-column>
+            <el-table-column prop="receiveMoney" label="领取金额"></el-table-column>
+            <el-table-column label="领取明细">
+              <template slot-scope="scope">
+                <span class="data-link">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
+    <!-- 商品推荐 -->
+    <message-box
+      v-show="goodsDataDetail"
+      width="60%"
+      type="none"
+      header="问卷数据详情"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box" style="padding-top: 20px;">
+        <div class="table-box">
+          <el-table :data="goodsDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="name" label="商品名称"></el-table-column>
+            <el-table-column prop="push" label="推送次数"></el-table-column>
+            <el-table-column prop="browse" label="商品详情浏览次数"></el-table-column>
+            <el-table-column prop="click" label="点击购买次数"></el-table-column>
+            <el-table-column label="详情数据">
+              <template slot-scope="scope">
+                <span class="data-link">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -197,16 +428,32 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { lines, bars, barAndLine, scatter, random } from 'src/utils/chart-tool'
+  import {lines, bars, barAndLine, scatter, random} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
     name: 'live-data',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
         watchType: 0,
-        watcherLineData: {}
+        watcherLineData: {},
+        preDataDetail: false, // 预约
+        chatDataDetail: false, // 聊天
+        prizeDataDetail: false, // 抽奖
+        pagerDataDetail: false, // 问卷
+        answerDataDetail: false, // 答案
+        cardDataDetail: false, // 推荐卡片
+        goodsDataDetail: false, // 商品推荐
+        redBagDataDetail: false, // 红包
+        preDataList: [],
+        chatDataList: [],
+        prizeDataList: [],
+        pagerDataList: [],
+        answerDataList: [],
+        cardDataList: [],
+        goodsDataList: [],
+        redBagDataList: []
       }
     },
     created () {
@@ -219,6 +466,16 @@
     methods: {
       goPage (url) {
         this.$router.push(`${url}/${this.$route.params.id}`)
+      },
+      closeMesssageBox () {
+        this.preDataDetail = false
+        this.chatDataDetail = false
+        this.prizeDataDetail = false
+        this.pagerDataDetail = false
+        this.answerDataDetail = false
+        this.cardDataDetail = false
+        this.redBagDataDetail = false
+        this.goodsDataDetail = false
       },
       initPage () {
         let res = {
@@ -241,6 +498,138 @@
         }
         this.watcherLineData = res.data
       },
+      goPreDataDetail () {
+        this.preDataDetail = true
+        this.preDataList = [
+          {
+            'userId': 10000,
+            'name': '刘德华1',
+            'phone': '18577362273',
+            'enterDate': '2018-10-17 10:10',
+            'leaveDate': '2018-10-17 10:10',
+            'preDate': '2018-10-17 10:10',
+            'joinDate': '2018-10-17 10:10'
+          },
+          {
+            'userId': 10001,
+            'name': '刘德华2',
+            'phone': '18577362273',
+            'enterDate': '2018-10-17 10:10',
+            'leaveDate': '2018-10-17 10:10',
+            'preDate': '2018-10-17 10:10',
+            'joinDate': '2018-10-17 10:10'
+          }
+        ]
+      },
+      goChatDataDetail () {
+        this.chatDataDetail = true
+        this.chatDataList = [
+          {'userId': 10000, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '吃了吗？'},
+          {'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...'}
+        ]
+      },
+      goPrizeDataDetail () {
+        this.prizeDataDetail = true
+        this.prizeDataList = [
+          {
+            'prizeId': 10000,
+            'name': '电饭锅',
+            'count': 50,
+            'openDate': '2018-10-17 10:10',
+            'joinType': 1,
+            'joinTypeName': '口令',
+            'online': 56975,
+            'joinCount': 46859
+          },
+          {
+            'prizeId': 10001,
+            'name': '电饼铛',
+            'count': 50,
+            'openDate': '2018-10-17 10:10',
+            'joinType': 1,
+            'joinTypeName': '口令',
+            'online': 56975,
+            'joinCount': 46859
+          }
+        ]
+      },
+      goPagerDataDetail () {
+        this.pagerDataDetail = true
+        this.pagerDataList = [
+          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
+          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
+        ]
+      },
+      goAnswerDataDetail () {
+        this.answerDataDetail = true
+        this.answerDataList = [
+          {
+            'answerId': 10000,
+            'title': '你最喜欢的艺术家',
+            'preMoney': 50,
+            'preCount': '222',
+            'joinCount': 1,
+            'correntCount': '123',
+            'costMoney': 56975,
+            'winCount': 46859,
+            'successRate': 50
+          },
+          {
+            'answerId': 10001,
+            'title': '特朗普...',
+            'preMoney': 50,
+            'preCount': '222',
+            'joinCount': 1,
+            'correntCount': '123',
+            'costMoney': 56975,
+            'winCount': 46859,
+            'successRate': 50
+          }
+        ]
+      },
+      goCardDataDetail () {
+        this.cardDataDetail = true
+        this.cardDataList = [
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
+        ]
+      },
+      goRedBagDataDetail () {
+        this.redBagDataDetail = true
+        this.redBagDataList = [
+          {
+            'redBagId': 10000,
+            'pushDate': '2018-10-17 10:10',
+            'joinType': 1,
+            'joinTypeName': '分享',
+            'totalMoney': 56975,
+            'totalCount': 56975,
+            'online': 56975,
+            'joinCount': 56975,
+            'receiveCount': 46859,
+            'receiveMoney': 10000
+          },
+          {
+            'redBagId': 10001,
+            'pushDate': '2018-10-17 10:10',
+            'joinType': 2,
+            'joinTypeName': '无限制',
+            'totalMoney': 56975,
+            'totalCount': 56975,
+            'online': 56975,
+            'joinCount': 56975,
+            'receiveCount': 46859,
+            'receiveMoney': 16000
+          }
+        ]
+      },
+      goGoodsDataDetail () {
+        this.goodsDataDetail = true
+        this.goodsDataList = [
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
+        ]
+      },
       changeMenu (val) {
         if (this.watchType === val) return
         this.watchType = val
@@ -248,9 +637,9 @@
         lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
-            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
+            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
+            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
           ]
         })
       },
@@ -259,9 +648,9 @@
         lines('chart01', {
           xAxisData: this.watcherLineData.hours.xAxis,
           datas: [
-            { name: '浏览次数', data: this.watcherLineData.hours.pv },
-            { name: '独立访问', data: this.watcherLineData.hours.uv },
-            { name: 'IP', data: this.watcherLineData.hours.ip }
+            {name: '浏览次数', data: this.watcherLineData.hours.pv},
+            {name: '独立访问', data: this.watcherLineData.hours.uv},
+            {name: 'IP', data: this.watcherLineData.hours.ip}
           ]
         })
         // 直播观众时长分布图
@@ -313,30 +702,30 @@
           'msg': null,
           'data': {
             'list': [
-              { week: random(0, 6), time: '零点', value: random(1, 100) },
-              { week: random(0, 6), time: '1点', value: random(1, 100) },
-              { week: random(0, 6), time: '2点', value: random(1, 100) },
-              { week: random(0, 6), time: '3点', value: random(1, 100) },
-              { week: random(0, 6), time: '4点', value: random(1, 100) },
-              { week: random(0, 6), time: 5, value: random(1, 100) },
-              { week: random(0, 6), time: 6, value: random(1, 10) },
-              { week: random(0, 6), time: 7, value: random(1, 10) },
-              { week: random(0, 6), time: 8, value: random(1, 100) },
-              { week: random(0, 6), time: 9, value: random(1, 100) },
-              { week: random(0, 6), time: 10, value: random(1, 10) },
-              { week: random(0, 6), time: 11, value: random(1, 10) },
-              { week: random(0, 6), time: 12, value: random(1, 100) },
-              { week: random(0, 6), time: 13, value: random(1, 10) },
-              { week: random(0, 6), time: 14, value: random(1, 100) },
-              { week: random(0, 6), time: 15, value: random(1, 100) },
-              { week: random(0, 6), time: 16, value: random(1, 100) },
-              { week: random(0, 6), time: 17, value: random(1, 100) },
-              { week: random(0, 6), time: 18, value: random(1, 10) },
-              { week: random(0, 6), time: 19, value: random(1, 10) },
-              { week: random(0, 6), time: 20, value: random(1, 100) },
-              { week: random(0, 6), time: 21, value: random(1, 10) },
-              { week: random(0, 6), time: 22, value: random(1, 100) },
-              { week: random(0, 6), time: 23, value: random(1, 10) }
+              {week: random(0, 6), time: '零点', value: random(1, 100)},
+              {week: random(0, 6), time: '1点', value: random(1, 100)},
+              {week: random(0, 6), time: '2点', value: random(1, 100)},
+              {week: random(0, 6), time: '3点', value: random(1, 100)},
+              {week: random(0, 6), time: '4点', value: random(1, 100)},
+              {week: random(0, 6), time: 5, value: random(1, 100)},
+              {week: random(0, 6), time: 6, value: random(1, 10)},
+              {week: random(0, 6), time: 7, value: random(1, 10)},
+              {week: random(0, 6), time: 8, value: random(1, 100)},
+              {week: random(0, 6), time: 9, value: random(1, 100)},
+              {week: random(0, 6), time: 10, value: random(1, 10)},
+              {week: random(0, 6), time: 11, value: random(1, 10)},
+              {week: random(0, 6), time: 12, value: random(1, 100)},
+              {week: random(0, 6), time: 13, value: random(1, 10)},
+              {week: random(0, 6), time: 14, value: random(1, 100)},
+              {week: random(0, 6), time: 15, value: random(1, 100)},
+              {week: random(0, 6), time: 16, value: random(1, 100)},
+              {week: random(0, 6), time: 17, value: random(1, 100)},
+              {week: random(0, 6), time: 18, value: random(1, 10)},
+              {week: random(0, 6), time: 19, value: random(1, 10)},
+              {week: random(0, 6), time: 20, value: random(1, 100)},
+              {week: random(0, 6), time: 21, value: random(1, 10)},
+              {week: random(0, 6), time: 22, value: random(1, 100)},
+              {week: random(0, 6), time: 23, value: random(1, 10)}
             ]
           }
         }
