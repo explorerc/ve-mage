@@ -376,7 +376,7 @@ export default {
     },
     getRolelist () {
       this.loading = true
-      this.$config({ loading: true }).$get(activityService.GET_ROLE_LIST, {
+      this.$config({loading: true}).$get(activityService.GET_ROLE_LIST, {
         activityId: this.activityId
       }).then((res) => {
         console.log(res)

@@ -33,7 +33,7 @@
       </div>
       <div class="search-item">
         <span class="search-title">活动前用户级别</span>
-        <el-select v-model="searchParams.level">
+        <el-select v-model="searchParams.beforeLevel">
           <el-option v-for="item in watcherTypeList"
                      :key="item.value"
                      :label="item.label"
@@ -43,7 +43,7 @@
       </div>
       <div class="search-item">
         <span class="search-title">活动后用户级别</span>
-        <el-select v-model="searchParams.aflevel">
+        <el-select v-model="searchParams.afterLevel">
           <el-option v-for="item in userTypeList"
                      :key="item.value"
                      :label="item.label"
@@ -54,7 +54,7 @@
       <div class="search-item">
         <span class="search-title">地域</span>
         <el-select style="width: 100px;"
-                   v-model="searchParams.province">
+                   v-model="searchParams.provinceId">
           <el-option v-for="item in provinceList"
                      :key="item.value"
                      :label="item.label"
@@ -62,7 +62,7 @@
           </el-option>
         </el-select>
         <el-select style="width: 100px;"
-                   v-model="searchParams.city">
+                   v-model="searchParams.cityId">
           <el-option v-for="item in cityList"
                      :key="item.value"
                      :label="item.label"
@@ -72,7 +72,7 @@
       </div>
       <div class="search-item">
         <span class="search-title">行业</span>
-        <el-select v-model="searchParams.trade"
+        <el-select v-model="searchParams.tradeId"
                    placeholder="直播状态">
           <el-option v-for="item in tradeList"
                      :key="item.value"
@@ -84,7 +84,7 @@
       <div class="search-item">
         <span class="search-title">进入时间</span>
         <el-date-picker
-          v-model="searchParams.enterTime"
+          v-model="enterTime"
           format="yyyy-MM-dd HH:mm"
           value-format="yyyy-MM-dd HH:mm"
           type="daterange"
@@ -96,7 +96,7 @@
       <div class="search-item">
         <span class="search-title">离开时间</span>
         <el-date-picker
-          v-model="searchParams.leaveTime"
+          v-model="leaveTime"
           format="yyyy-MM-dd HH:mm"
           value-format="yyyy-MM-dd HH:mm"
           type="daterange"
@@ -144,7 +144,7 @@
       </div>
     </div>
     <div class="table-list-box">
-      <button class="primary-button export-btn">导出</button>
+      <button class="primary-button export-btn" @click="exportData">导出</button>
       <el-table :data="viewerList" style="width: 100%">
         <el-table-column label="姓名">
           <template slot-scope="scope">
@@ -197,70 +197,71 @@
         pageSize: 10,
         viewerList: [],
         searchParams: {
+          activityId: '',
           keyword: '',
-          gender: '0',
-          level: '0',
-          aflevel: '0',
-          province: '0',
-          city: '0',
-          trade: '0',
-          enterStartTime: '',
-          enterEndTime: '',
-          leaveStartTime: '',
-          leaveEndTime: '',
-          device: '0',
-          scoreType: '0',
+          gender: '',
+          beforeLevel: '',
+          afterLevel: '',
+          provinceId: '',
+          cityId: '',
+          tradeId: '',
+          endterStartDate: '',
+          endterEndDate: '',
+          leaveStartDate: '',
+          leaveEndDate: '',
+          device: '',
+          scoreType: '',
           score: '',
-          userType: '0'
+          userType: ''
         },
         genderList: [
-          { value: '0', label: '全部' },
-          { value: '1', label: '男' },
-          { value: '2', label: '女' }
+          {value: '', label: '全部'},
+          {value: '1', label: '男'},
+          {value: '2', label: '女'}
         ],
         watcherTypeList: [
-          { value: '0', label: '全部用户' },
-          { value: '1', label: '优质用户' },
-          { value: '2', label: '潜在用户' },
-          { value: '3', label: '一般用户' },
-          { value: '4', label: '高价值用户' },
-          { value: '5', label: '流失用户' }
+          {value: '', label: '全部用户'},
+          {value: 1, label: '优质用户'},
+          {value: 2, label: '潜在用户'},
+          {value: 3, label: '一般用户'},
+          {value: 4, label: '高价值用户'},
+          {value: 5, label: '流失用户'}
         ],
         provinceList: [
-          { value: '0', label: '省' },
-          { value: '1', label: '北京' },
-          { value: '2', label: '河南省' },
-          { value: '3', label: '河北省' },
-          { value: '4', label: '黑龙江' },
-          { value: '5', label: '湖北' }
+          {value: '', label: '省'},
+          {value: '1', label: '北京'},
+          {value: '2', label: '河南省'},
+          {value: '3', label: '河北省'},
+          {value: '4', label: '黑龙江'},
+          {value: '5', label: '湖北'}
         ],
         cityList: [
-          { value: '0', label: '市' },
-          { value: '1', label: '北京市' },
-          { value: '2', label: '郑州市' },
-          { value: '3', label: '天津市' }
+          {value: '', label: '市'},
+          {value: '1', label: '北京市'},
+          {value: '2', label: '郑州市'},
+          {value: '3', label: '天津市'}
         ],
         tradeList: [
-          { value: '0', label: '全部' },
-          { value: '1', label: '导入' },
-          { value: '2', label: '微信注册' },
-          { value: '3', label: 'PC注册' }
+          {value: '', label: '全部'},
+          {value: '1', label: '导入'},
+          {value: '2', label: '微信注册'},
+          {value: '3', label: 'PC注册'}
         ],
         deviceList: [
-          { value: '0', label: '全部' },
-          { value: '1', label: '电脑' },
-          { value: '2', label: '手机' }
+          {value: '', label: '全部'},
+          {value: 'pc', label: '电脑'},
+          {value: 'phone', label: '手机'}
         ],
         scoreTypeList: [
-          { value: '0', label: '全部' },
-          { value: '1', label: '大于' },
-          { value: '2', label: '小于' },
-          { value: '3', label: '等于' }
+          {value: '', label: '全部'},
+          {value: 'big', label: '大于'},
+          {value: 'small', label: '小于'},
+          {value: 'equal', label: '等于'}
         ],
         userTypeList: [
-          { value: '0', label: '全部' },
-          { value: '1', label: '新用户' },
-          { value: '2', label: '老用户' }
+          {value: '', label: '全部'},
+          {value: 'new', label: '新用户'},
+          {value: 'old', label: '老用户'}
         ]
       }
     },
@@ -270,6 +271,18 @@
         let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
         let s = ((value % 60 >> 0) + '').padStart(2, 0)
         return `${h}:${m}:${s}`
+      }
+    },
+    watch: {
+      enterTime (vals) {
+        if (vals.length !== 2) return
+        this.searchParams.endterStartDate = vals[0]
+        this.searchParams.endterEndDate = vals[1]
+      },
+      leaveTime (vals) {
+        if (vals.length !== 2) return
+        this.searchParams.leaveStartDate = vals[0]
+        this.searchParams.leaveEndDate = vals[1]
       }
     },
     created () {
@@ -282,6 +295,20 @@
       changePage (pageIdx) {
         this.page = pageIdx
         this.queryList()
+      },
+      exportData () {
+        let res = {
+          'code': 200,
+          'msg': null,
+          'data': {
+            'downUrl': 'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1540275596&di=578ef951e10175ca4850b13935f0f9eb&src=http://pic.92to.com/360/201604/08/19864861_13.jpg'
+          }
+        }
+        if (res.data.downUrl) {
+          let dl = document.createElement('a')
+          dl.href = res.data.downUrl
+          dl.click()
+        }
       },
       queryList () {
         this.viewerList = [

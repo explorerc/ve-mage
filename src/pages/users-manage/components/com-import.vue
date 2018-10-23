@@ -13,23 +13,32 @@
         <div class="item upload-box-item clearfix">
           <label class="label">上传封面:</label>
           <div class="upload-box">
-            <!-- <dl class='before-upload'>
-              <dt></dt>
-              <dd>请使用csv模版上传</dd>
-            </dl> -->
+
             <com-upload
               :accept="'csv'"
-              actionUrl="/api/upload/image"
+              :fileSize="1024"
+              actionUrl="/common/group/import"
               inputName="file"
               @error="uploadError"
               @selected="selected"
               @progress="uploadProgress"
-              @load="uploadImgSuccess">
-              <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
-                <i class="upload-icon"></i>
-                <span v-if="!errorTxt" v-html="tipTxt"></span>
-                <span class="error-msg" v-else>{{errorTxt}}</span>
-              </div>
+              @load="uploadSuccess">
+              <dl class='dl'  ref="uploadFile" title="点击上传" v-if='uploadStatus === "beforeUpload"'>
+                <dt></dt>
+                <dd v-if="!errorTxt" >请使用csv模版上传</dd>
+                <dd class="error-msg" v-else>{{errorTxt}}</dd>
+              </dl>
+              <dl class='uploading' v-if='uploadStatus === "uploading"'>
+                <dt></dt>
+                <dd>{{percentImg}}</dd>
+                <dd>{{fileName}}</dd>
+                <dd class='progress'><i :style="{'width':percentImg}"></i></dd>
+              </dl>
+              <dl class='uploading' v-if='uploadStatus === "finishUpload"'>
+                <dt></dt>
+                <dd>{{fileName}}</dd>
+                <dd>检测到38位用户</dd>
+              </dl>
             </com-upload>
           </div>
         </div>
@@ -81,12 +90,10 @@ export default {
       titleEmpty: false,
       descEmpty: false,
       loading: false,
+      uploadStatus: 'beforeUpload',
       percentImg: 0,
+      fileName: '',
       errorTxt: '',
-      tipTxt: '',
-      imgHost: '',
-      fileSrc: '',
-      coverImg: '',
       options: [{
         value: '选项1',
         label: '黄金糕'
@@ -115,28 +122,36 @@ export default {
     overUpload () {
       this.$refs.uploadFile.click()
     },
-    selected () {
+    selected (file) {
       console.log('selected')
+      this.fileName = file.data[0].name
       this.loading = true
     },
     uploadProgress (data) {
       this.loading = false
+      this.uploadStatus = 'uploading'
       this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
       if (this.percentImg === 100) {
         this.percentImg = 0
       }
     },
-    uploadImgSuccess (data) {
+    uploadSuccess (data) {
+      this.uploadStatus = 'finishUpload'
       const fildObj = JSON.parse(data.data).data
-      if (fildObj.host) this.imgHost = fildObj.host
-      if (fildObj.name) this.fileSrc = fildObj.name
+      console.log(fildObj)
     },
     uploadError (data) {
+      this.uploadStatus = 'beforeUpload'
       this.loading = false
       const state = data.data[0].state
       console.log(state)
-      this.fileSrc = ''
-      this.coverImg = ''
+      if (state === 'size-limit') {
+        this.errorTxt = '上传图片过大'
+      } else if (state === 'type-limit') {
+        this.errorTxt = '不支持该格式，请重新上传'
+      } else {
+        this.errorTxt = '图片上传失败'
+      }
     }
   },
   components: {
@@ -251,8 +266,9 @@ export default {
       border-radius: 4px;
       border: 1px dashed rgba(226, 226, 226, 1);
       cursor: pointer;
-      .before-upload {
-        width: 120px;
+      position: relative;
+      dl {
+        width: 240px;
         height: 100px;
         margin: 20px auto;
         text-align: center;
@@ -265,13 +281,33 @@ export default {
           background-size: contain;
         }
         dd {
-          padding-top: 10px;
+          padding-top: 5px;
           color: $color-gray;
+        }
+        .progress {
+          padding: 0;
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          left: 0;
+          height: 4px;
+          background: rgba(226, 226, 226, 1);
+          i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 2px;
+            height: 100%;
+            background: rgba(255, 208, 33, 1);
+          }
         }
       }
       .com-upload {
         width: 100%;
         height: 100%;
+        .error-msg {
+          color: $color-error;
+        }
       }
     }
   }
