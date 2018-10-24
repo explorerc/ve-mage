@@ -12,7 +12,7 @@
         </div>
         <div class="item upload-box-item clearfix">
           <label class="label">上传封面:</label>
-          <div class="upload-box">
+          <div class="upload-box" :class="{ 'error':fileEmpty }" @click='fileEmpty = false' >
 
             <com-upload
               :accept="'csv'"
@@ -37,7 +37,7 @@
               <dl class='uploading' v-if='uploadStatus === "finishUpload"'>
                 <dt></dt>
                 <dd>{{fileName}}</dd>
-                <dd>检测到38位用户</dd>
+                <dd>检测到{{fileCount}}位用户</dd>
               </dl>
             </com-upload>
           </div>
@@ -51,19 +51,19 @@
           <div class="tab" v-if='radio === "1"'>
             <div class="item spe">
               <label class='label'>群组名称:</label>
-              <com-input :value.sync="name" placeholder="输入固定群组名称" :max-length="10" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
+              <com-input :value.sync="title" placeholder="输入固定群组名称" :max-length="10" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
             </div>
             <div class="item spe">
               <label class='label'>群组描述:</label>
-              <com-input type="textarea" :value.sync="desc" placeholder="输入群组描述" :max-length="10" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
+              <com-input type="textarea" :value.sync="describe" placeholder="输入群组描述" :max-length="10" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
             </div>
           </div>
           <div class="tab" v-else>
-             <div class="item spe">
+             <div class="item spe" @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in groupData"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -72,7 +72,7 @@
             </div>
           </div>
         </div>
-        <el-button round class='primary-button confirm'>导入</el-button>
+        <el-button round class='primary-button confirm' @click="addHandler">导入</el-button>
       </div>
     </div>
   </div>
@@ -84,30 +84,34 @@ import ComUpload from 'src/components/common/upload/com'
 export default {
   data () {
     return {
-      name: '',
-      desc: '',
+      title: '',
+      describe: '',
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
+      fileEmpty: false,
       loading: false,
+      optSel: false,
       uploadStatus: 'beforeUpload',
       percentImg: 0,
+      fileCount: 0,
       fileName: '',
+      fileKey: '',
       errorTxt: '',
-      options: [{
-        value: '选项1',
+      groupData: [{
+        value: '1',
         label: '黄金糕'
       }, {
-        value: '选项2',
+        value: '2',
         label: '双皮奶'
       }, {
-        value: '选项3',
+        value: '3',
         label: '蚵仔煎'
       }, {
-        value: '选项4',
+        value: '4',
         label: '龙须面'
       }, {
-        value: '选项5',
+        value: '5',
         label: '北京烤鸭'
       }],
       selval: ''
@@ -137,8 +141,10 @@ export default {
     },
     uploadSuccess (data) {
       this.uploadStatus = 'finishUpload'
-      const fildObj = JSON.parse(data.data).data
-      console.log(fildObj)
+      const fileObj = JSON.parse(data.data).data
+      console.log(fileObj)
+      this.fileCount = fileObj.num
+      this.fileKey = fileObj.key
     },
     uploadError (data) {
       this.uploadStatus = 'beforeUpload'
@@ -151,6 +157,47 @@ export default {
         this.errorTxt = '不支持该格式，请重新上传'
       } else {
         this.errorTxt = '图片上传失败'
+      }
+    },
+    addHandler () {
+      if (this.verifyEmpty()) {
+        const data = {
+          type: this.radio,
+          group_id: this.selval,
+          key: this.fileKey,
+          title: this.title,
+          describe: this.describe
+        }
+        // console.log(data)
+        this.$emit('groupData', data)
+      }
+    },
+    verifyEmpty () {
+      if (this.fileKey === '') {
+        this.fileEmpty = true
+        this.errorTxt = '请上传模版文件'
+        return false
+      }
+      if (this.radio === '1') {
+        if (!this.title.length) {
+          this.titleEmpty = true
+          return false
+        }
+        if (!this.describe.length) {
+          this.descEmpty = true
+          return false
+        }
+        return true
+      } else {
+        if (!this.selval.length) {
+          this.optSel = true
+          return false
+        }
+        this.title = ''
+        this.desc = ''
+        this.titleEmpty = false
+        this.descEmpty = false
+        return true
       }
     }
   },
@@ -224,6 +271,9 @@ export default {
       border: 1px solid #e2e2e2;
       width: 400px;
     }
+    .el-select.error .el-input__inner {
+      border-color: $color-error;
+    }
     .confirm {
       position: absolute;
       bottom: 20px;
@@ -232,6 +282,10 @@ export default {
   }
   .com-input {
     width: 400px;
+    &.error input,
+    &.error textarea {
+      border-color: $color-error;
+    }
   }
   textarea {
     height: 68px;
@@ -267,6 +321,9 @@ export default {
       border: 1px dashed rgba(226, 226, 226, 1);
       cursor: pointer;
       position: relative;
+      &.error {
+        border-color: $color-error;
+      }
       dl {
         width: 240px;
         height: 100px;

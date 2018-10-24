@@ -24,9 +24,9 @@
             </div>
           </div>
           <div class="tab" v-else>
-             <div class="item spe">
+             <div class="item spe"  @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
                 <el-option
                   v-for="item in groupData"
                   :key="item.value"
@@ -52,6 +52,7 @@ export default {
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
+      optSel: false,
       selval: '',
       groupData: [
         {
@@ -105,6 +106,10 @@ export default {
         }
         return true
       } else {
+        if (!this.selval.length) {
+          this.optSel = true
+          return false
+        }
         this.name = ''
         this.desc = ''
         this.titleEmpty = false
@@ -179,6 +184,9 @@ export default {
     .el-select .el-input__inner {
       border: 1px solid #e2e2e2;
       width: 330px;
+    }
+    .el-select.error .el-input__inner {
+      border-color: $color-error;
     }
     .confirm {
       position: absolute;

@@ -247,7 +247,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick"></com-import>
+        <com-import @handleClick="handleClick" @groupData="groupData"></com-import>
       </transition>
   </div>
 </template>
