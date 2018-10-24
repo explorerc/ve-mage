@@ -145,6 +145,10 @@ export default {
         float: left;
         text-align: left;
         padding: 0 20px;
+        word-break: break-all;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .v-name {
         width: 53%;
@@ -159,6 +163,11 @@ export default {
         width: 9%;
         text-align: center;
         padding: 0;
+        a {
+          &:hover {
+            color: #4b5afe;
+          }
+        }
       }
     }
   }

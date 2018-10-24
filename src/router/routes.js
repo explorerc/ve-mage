@@ -69,7 +69,7 @@ const SiteTemplate2 = () => import('src/pages/site/template2.vue')
 const userOverview = () => import('src/pages/users-manage/overview')
 const userPond = () => import('src/pages/users-manage/pond')
 const userGroup = () => import('src/pages/users-manage/group')
-const userInfo = () => import('src/pages/users-manage/info')
+const userInfo = () => import('src/pages/users-manage/pond/info')
 
 /* 数据中心 */
 const Data = () => import('src/pages/data/index')
