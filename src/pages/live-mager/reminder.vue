@@ -101,23 +101,23 @@ import activityService from 'src/api/activity-service'
 // 参会提醒
 export default {
   name: 'reminder',
-  components: { ComUpload, VeUpload },
+  components: {ComUpload, VeUpload},
   data () {
     return {
       reminderTypes: [
-        { value: '0', label: '短信通知' },
-        { value: '1', label: '微信通知' }
+        {value: '0', label: '短信通知'},
+        {value: '1', label: '微信通知'}
       ],
       reminderTimes: [
-        { value: '0', label: '提前1天' },
-        { value: '1', label: '提前1小时' },
-        { value: '2', label: '提前10分钟' },
-        { value: '3', label: '活动开始时' }
+        {value: '0', label: '提前1天'},
+        {value: '1', label: '提前1小时'},
+        {value: '2', label: '提前10分钟'},
+        {value: '3', label: '活动开始时'}
       ],
       randOptions: [
-        { value: '0', label: '预约用户' },
-        { value: '1', label: '报名用户' },
-        { value: '2', label: '邀请用户' }
+        {value: '0', label: '预约用户'},
+        {value: '1', label: '报名用户'},
+        {value: '2', label: '邀请用户'}
       ],
       reminder: {
         isSwitch: false,
