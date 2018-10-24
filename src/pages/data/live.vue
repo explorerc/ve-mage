@@ -76,11 +76,11 @@
       <div class="item-box hd-data-item fr">
         <span class="hd-title">聊天</span>
         <div class="hd-data">
-          <span class="data-link" @click="goChatDataDetail">{{interactCountData.nums}}</span>
+          <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.nums}}</span>
           <span>聊天人数</span>
         </div>
         <div class="hd-data">
-          <span class="data-link" @click="goChatDataDetail">{{interactCountData.msg}}</span>
+          <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.msg}}</span>
           <span>消息数量</span>
         </div>
       </div>
@@ -162,7 +162,7 @@
           <span>领取金额</span>
         </div>
       </div>
-      <div class="item-box hd-data-item fl" style="width: 66%;">
+      <div class="item-box hd-data-item fl">
         <span class="hd-title">商品推荐</span>
         <div class="hd-data" style="width: 25%;">
           <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
@@ -430,6 +430,8 @@
   import dataService from 'src/api/data-service'
   import { lines, bars, barAndLine, scatter, random } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
+  import {mapMutations} from 'vuex'
+  import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
@@ -517,8 +519,12 @@
       })
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       goPage (url) {
         this.$router.push(`${url}/${this.$route.params.id}`)
+        this.storeSelectMenu(3)
       },
       initPage () {
         // 基础数据

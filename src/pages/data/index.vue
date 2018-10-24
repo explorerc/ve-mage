@@ -8,7 +8,7 @@
       </p>
       <div class="nav-menu-box">
         <nav-menu :menus="menuList"
-                  :currentMenu="currentMenu"
+                  :currentMenu="selectMenu"
                   @changeMenu="changeMenu"></nav-menu>
       </div>
     </div>
@@ -21,6 +21,8 @@
 <script>
   import NavMenu from './nav-menu'
   import activityService from 'src/api/activity-service'
+  import {mapMutations, mapState} from 'vuex'
+  import * as types from '../../store/mutation-types'
 
   export default {
     name: 'data-main',
@@ -32,6 +34,11 @@
         activityInfo: {},
         menuList: ['概览数据', '推广数据', '直播数据', '观众数据']
       }
+    },
+    computed: {
+      ...mapState('dataCenter', {
+        selectMenu: state => state.selectMenu
+      })
     },
     created () {
       this.activeId = this.$route.params.id
@@ -45,9 +52,14 @@
       } else if (linkName === 'viewer') {
         this.currentMenu = 3
       }
+      this.storeSelectMenu(parseInt(sessionStorage.getItem(types.DATA_SELECT_MENU)) || this.currentMenu)
+      sessionStorage.removeItem(types.DATA_SELECT_MENU)
       this.getDetails()
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       changeMenu (idx) {
         if (idx === 0) {
           this.$router.push(`/data/preview/${this.activeId}`)
@@ -58,6 +70,7 @@
         } else if (idx === 3) {
           this.$router.push(`/data/viewer/${this.activeId}`)
         }
+        this.storeSelectMenu(this.currentMenu)
       },
       getDetails () {
         this.$get(activityService.GET_DETAILS, {
@@ -87,7 +100,7 @@
     }
 
     /* 设备宽度小于 1600px */
-    @media all and (max-width:1600px) {
+    @media all and (max-width: 1600px) {
       width: 1019px;
     }
 
