@@ -188,7 +188,7 @@
                       </p>
                       <p class="v-content">
                         参加了活动 2018年云溪大会杭州分会场
-                        <button>
+                        <button @click="showRecord()">
                           查看详情
                         </button>
                       </p>
@@ -202,7 +202,7 @@
                       </p>
                       <p class="v-content">
                         参加了活动 2018年云溪大会杭州分会场
-                        <button>
+                        <button @click="showRecord()">
                           查看详情
                         </button>
                       </p>
@@ -216,7 +216,7 @@
                       </p>
                       <p class="v-content">
                         参加了活动 2018年云溪大会杭州分会场
-                        <button>
+                        <button @click="showRecord()">
                           查看详情
                         </button>
                       </p>
@@ -230,7 +230,7 @@
                       </p>
                       <p class="v-content">
                         参加了活动 2018年云溪大会杭州分会场
-                        <button>
+                        <button @click="showRecord()">
                           查看详情
                         </button>
                       </p>
@@ -248,6 +248,76 @@
         </div>
       </div>
     </div>
+    <message-box v-show="recordBoxShow"
+                 @handleClick="recordBoxClick"
+                 width="450px"
+                 class="message-box v-record"
+                 confirmText="确定"
+                 type='prompt'
+                 header='行为记录'>
+      <div>
+        <p class="v-explain">
+          百度人工智能大会发布芯片
+        </p>
+        <p class="v-time">
+          2018-07-07 09:30:00
+        </p>
+        <div class="v-steps">
+          <div class="v-step">
+            <div class="v-content">
+              <i class="iconfont icon-duigou1">
+              </i>
+              <i class="v-border"></i>
+              <p class="v-content-time">
+                2017-07-07 09:30:05
+              </p>
+              <p class="v-content-title">
+                进入活动官网
+              </p>
+            </div>
+          </div>
+          <div class="v-step">
+            <div class="v-content">
+              <i class="iconfont icon-duigou1">
+              </i>
+              <i class="v-border"></i>
+              <p class="v-content-time">
+                2017-07-07 09:30:05
+              </p>
+              <p class="v-content-title">
+                进入活动官网
+              </p>
+            </div>
+          </div>
+          <div class="v-step">
+            <div class="v-content">
+              <i class="iconfont icon-duigou1">
+              </i>
+              <i class="v-border"></i>
+              <p class="v-content-time">
+                2017-07-07 09:30:05
+              </p>
+              <p class="v-content-title">
+                进入活动官网
+              </p>
+            </div>
+          </div>
+          <div class="v-step">
+            <div class="v-content">
+              <i class="iconfont icon-duigou1">
+              </i>
+              <i class="v-border"></i>
+              <p class="v-content-time">
+                2017-07-07 09:30:05
+              </p>
+              <p class="v-content-title">
+                进入活动官网
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -305,7 +375,8 @@ export default {
           }]
         }]
       }],
-      tabValue: 1
+      tabValue: 1,
+      recordBoxShow: false // 行为记录框显示隐藏
     }
   },
   components: {
@@ -325,6 +396,14 @@ export default {
           debugger
           this.user.industry = val
           break
+      }
+    },
+    showRecord () {
+      this.recordBoxShow = true
+    },
+    recordBoxClick (e) {
+      if (e.action === 'cancel') {
+        this.recordBoxShow = false
       }
     }
   }
@@ -360,7 +439,6 @@ export default {
   }
   .v-user-info {
     widows: 800px;
-    margin: 10px;
     min-height: 500px;
     overflow: hidden;
     position: relative;
@@ -616,6 +694,65 @@ export default {
             }
           }
         }
+      }
+    }
+  }
+  .v-record /deep/ {
+    .ve-message-box__btns {
+      display: none;
+    }
+    .ve-message-box .ve-message-box__container {
+      padding: 10px 30px 30px;
+    }
+    .v-explain {
+      font-size: 16px;
+      text-align: center;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .v-time {
+      color: #888;
+      text-align: center;
+      margin: 2px auto 15px;
+    }
+    .v-steps {
+      width: 100%;
+      border-top: 2px solid #e2e2e2;
+    }
+    .v-step {
+      position: relative;
+      padding: 20px 40px;
+      &:last-child {
+        .v-border {
+          display: none;
+        }
+      }
+      .v-content {
+        width: 350px;
+        padding: 12px 15px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        .v-content-time {
+          color: #888;
+        }
+      }
+      .iconfont {
+        position: absolute;
+        top: 35px;
+        left: 0;
+        z-index: 2;
+      }
+      .v-border {
+        display: block;
+        position: absolute;
+        top: 50px;
+        bottom: -35px;
+        width: 1px;
+        background-color: #d2d2d2;
+        left: 7px;
+        z-index: 1;
       }
     }
   }

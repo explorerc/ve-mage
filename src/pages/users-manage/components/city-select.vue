@@ -48,8 +48,8 @@ export default {
       area.children.push(_province)
       this.areas.push(area)
     })
-    console.log(this.areas)
-    console.log(this.selectValue)
+    // console.log(this.areas)
+    // console.log(this.selectValue)
   },
   methods: {
     modify (val) {
