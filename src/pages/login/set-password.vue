@@ -43,7 +43,7 @@
 </template>
 <script>
 import userService from 'src/api/user-service'
-import {mapMutations, mapState} from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
 export default {
   data () {
@@ -90,7 +90,7 @@ export default {
         let data = {
           'newPassword': this.password
         }
-        this.$config({handlers: true}).$post(userService.POST_SET_PASSWORD, data).then((res) => {
+        this.$config({ handlers: true }).$post(userService.POST_SET_PASSWORD, data).then((res) => {
           this.isWarning = false
           if (this.accountInfo && this.accountInfo.hasPassword) {
             let temp = JSON.parse(JSON.stringify(this.accountInfo))

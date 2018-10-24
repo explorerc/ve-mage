@@ -136,12 +136,12 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {barPile, lines} from 'src/utils/chart-tool'
+  import { barPile, lines } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
     name: 'spead',
-    components: {VeTitle, VeCircle, NavMenu},
+    components: { VeTitle, VeCircle, NavMenu },
     data () {
       return {
         emailType: 0,
@@ -247,8 +247,8 @@
         lines('chart02', {
           xAxisData: this.ratioDataList.email[typeAttr].xAxis,
           datas: [
-            {name: '活跃人数', data: this.ratioDataList.email[typeAttr].nums},
-            {name: '活跃次数', data: this.ratioDataList.email[typeAttr].times}
+            { name: '活跃人数', data: this.ratioDataList.email[typeAttr].nums },
+            { name: '活跃次数', data: this.ratioDataList.email[typeAttr].times }
           ]
         })
       },
@@ -259,8 +259,8 @@
         lines('chart03', {
           xAxisData: this.ratioDataList.weChat[typeAttr].xAxis,
           datas: [
-            {name: '活跃人数', data: this.ratioDataList.weChat[typeAttr].nums},
-            {name: '活跃次数', data: this.ratioDataList.weChat[typeAttr].times}
+            { name: '活跃人数', data: this.ratioDataList.weChat[typeAttr].nums },
+            { name: '活跃次数', data: this.ratioDataList.weChat[typeAttr].times }
           ]
         })
       },
@@ -271,8 +271,8 @@
         lines('chart04', {
           xAxisData: this.ratioDataList.sms[typeAttr].xAxis,
           datas: [
-            {name: '活跃人数', data: this.ratioDataList.sms[typeAttr].nums},
-            {name: '活跃次数', data: this.ratioDataList.sms[typeAttr].times}
+            { name: '活跃人数', data: this.ratioDataList.sms[typeAttr].nums },
+            { name: '活跃次数', data: this.ratioDataList.sms[typeAttr].times }
           ]
         })
       },
@@ -283,8 +283,8 @@
         lines('chart05', {
           xAxisData: this.webwiteDatas[typeAttr].xAxis,
           datas: [
-            {name: 'UV', data: this.webwiteDatas[typeAttr].nums},
-            {name: 'PV', data: this.webwiteDatas[typeAttr].times}
+            { name: 'UV', data: this.webwiteDatas[typeAttr].nums },
+            { name: 'PV', data: this.webwiteDatas[typeAttr].times }
           ]
         })
       },
@@ -309,24 +309,24 @@
         lines('chart02', {
           xAxisData: this.ratioDataList.email.days.xAxis,
           datas: [
-            {name: '活跃人数', data: this.ratioDataList.email.days.nums},
-            {name: '活跃次数', data: this.ratioDataList.email.days.times}
+            { name: '活跃人数', data: this.ratioDataList.email.days.nums },
+            { name: '活跃次数', data: this.ratioDataList.email.days.times }
           ]
         })
         /* 微信活跃 */
         lines('chart03', {
           xAxisData: this.ratioDataList.weChat.days.xAxis,
           datas: [
-            {name: '活跃人数', data: this.ratioDataList.weChat.days.nums},
-            {name: '活跃次数', data: this.ratioDataList.weChat.days.times}
+            { name: '活跃人数', data: this.ratioDataList.weChat.days.nums },
+            { name: '活跃次数', data: this.ratioDataList.weChat.days.times }
           ]
         })
         /* 短信活跃 */
         lines('chart04', {
           xAxisData: this.ratioDataList.sms.days.xAxis,
           datas: [
-            {name: '活跃人数', data: this.ratioDataList.sms.days.nums},
-            {name: '活跃次数', data: this.ratioDataList.sms.days.times}
+            { name: '活跃人数', data: this.ratioDataList.sms.days.nums },
+            { name: '活跃次数', data: this.ratioDataList.sms.days.times }
           ]
         })
       },
@@ -351,8 +351,8 @@
         lines('chart05', {
           xAxisData: res.data.days.xAxis,
           datas: [
-            {name: 'UV', data: res.data.days.nums},
-            {name: 'PV', data: res.data.days.times}
+            { name: 'UV', data: res.data.days.nums },
+            { name: 'PV', data: res.data.days.times }
           ]
         })
       },
@@ -387,14 +387,14 @@
             pv: []
           }
         }
-        pageLinkDatas.lineObj.uv.push({name: '邮件', data: res.data.email.nums})
-        pageLinkDatas.lineObj.pv.push({name: '邮件', data: res.data.email.times})
-        pageLinkDatas.lineObj.uv.push({name: '短信', data: res.data.sms.nums})
-        pageLinkDatas.lineObj.pv.push({name: '短信', data: res.data.sms.times})
-        pageLinkDatas.lineObj.uv.push({name: '微信', data: res.data.weChat.nums})
-        pageLinkDatas.lineObj.pv.push({name: '微信', data: res.data.weChat.times})
-        pageLinkDatas.lineObj.uv.push({name: '其他', data: res.data.other.nums})
-        pageLinkDatas.lineObj.pv.push({name: '其他', data: res.data.other.times})
+        pageLinkDatas.lineObj.uv.push({ name: '邮件', data: res.data.email.nums })
+        pageLinkDatas.lineObj.pv.push({ name: '邮件', data: res.data.email.times })
+        pageLinkDatas.lineObj.uv.push({ name: '短信', data: res.data.sms.nums })
+        pageLinkDatas.lineObj.pv.push({ name: '短信', data: res.data.sms.times })
+        pageLinkDatas.lineObj.uv.push({ name: '微信', data: res.data.weChat.nums })
+        pageLinkDatas.lineObj.pv.push({ name: '微信', data: res.data.weChat.times })
+        pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums })
+        pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times })
         this.pageLinkDatas = pageLinkDatas
         lines('chart06', {
           xAxisData: this.pageLinkDatas.xAxisData,
