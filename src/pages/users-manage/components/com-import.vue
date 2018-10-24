@@ -17,7 +17,7 @@
             <com-upload
               :accept="'csv'"
               :fileSize="1024"
-              actionUrl="/common/group/import"
+              actionUrl="/api/common/group/import"
               inputName="file"
               @error="uploadError"
               @selected="selected"

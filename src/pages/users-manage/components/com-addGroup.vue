@@ -10,7 +10,7 @@
         <div class="item">
           <label class='label'>导入规则:</label>
           <el-radio v-model="radio" label="1">新建固定群组</el-radio>
-          <el-radio v-model="radio" label="2">导入固定群组</el-radio>
+          <el-radio v-model="radio" label="0">导入固定群组</el-radio>
         </div>
         <div class="tab-box">
           <div class="tab" v-if='radio === "1"'>
@@ -28,7 +28,7 @@
               <label class='label'>选择群组:</label>
               <el-select v-model="selval" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in groupData"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-        <el-button round class='primary-button confirm'>添加</el-button>
+        <el-button round class='primary-button confirm' @click='addHandler'>添加</el-button>
       </div>
     </div>
   </div>
@@ -52,23 +52,30 @@ export default {
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
       selval: ''
+    }
+  },
+  props: {
+    groupData: {
+      type: Array,
+      default () {
+        return [{
+          value: '1',
+          label: '黄金糕'
+        }, {
+          value: '2',
+          label: '双皮奶'
+        }, {
+          value: '3',
+          label: '蚵仔煎'
+        }, {
+          value: '4',
+          label: '龙须面'
+        }, {
+          value: '5',
+          label: '北京烤鸭'
+        }]
+      }
     }
   },
   methods: {
@@ -76,6 +83,35 @@ export default {
       this.$emit('handleClick', {
         action: 'cancel'
       })
+    },
+    addHandler () {
+      if (this.verifyEmpty()) {
+        const data = {
+          type: this.radio,
+          group_id: this.selval,
+          title: this.name,
+          describe: this.desc
+        }
+        // console.log(data)
+        this.$emit('groupData', data)
+      }
+    },
+    verifyEmpty () {
+      if (this.radio === '1') {
+        if (!this.name.length) {
+          this.titleEmpty = true
+          return false
+        }
+        if (!this.desc.length) {
+          this.descEmpty = true
+          return false
+        }
+        return true
+      } else {
+        this.titleEmpty = false
+        this.descEmpty = false
+        return true
+      }
     }
   }
 }
@@ -153,6 +189,10 @@ export default {
   }
   .com-input {
     width: 330px;
+    &.error input,
+    &.error textarea {
+      border-color: $color-error;
+    }
   }
   textarea {
     height: 68px;

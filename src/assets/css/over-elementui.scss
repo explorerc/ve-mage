@@ -10,6 +10,9 @@ $color-ui-components:#4B5AFE;
     color: #555;
   }
 }
+.el-select-dropdown {
+  z-index: 9999!important;
+}
 .live-mager .el-select-dropdown{
   .popper__arrow{
     display: none;

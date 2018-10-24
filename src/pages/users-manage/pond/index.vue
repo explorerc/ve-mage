@@ -7,7 +7,7 @@
     <div class="content from-box">
       <div class="handle-bar">
         <div class="left">
-          <el-button round>选择</el-button>
+          <el-button round @click='showAddgroup = true'>选择</el-button>
           <el-button round>批量操作</el-button>
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
@@ -116,30 +116,30 @@
           </div>
           <div class='filter-item'>
             <span class="label">参与活动</span>
-            <el-button round v-if='!activityArray.length' @click='showChooseActive = true'>选择活动</el-button>
+            <el-button round v-if='!activityArray.name.length' @click='showChooseActive = true'>选择活动</el-button>
             <div class="selected" v-else>
               <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in activityArray' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'activityArray')"></span></li>
+                <li class='tag' v-for='(item,idx) in activityArray.name' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'activityArray')"></span></li>
                 <li class="added" @click='showChooseActive = true'></li>
               </ol>
             </div>
           </div>
           <div class='filter-item'>
             <span class="label">活动标签</span>
-            <el-button round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
+            <el-button round v-if='!tagArray.name.length' @click='showChooseTag = true'>选择标签</el-button>
             <div class="selected" v-else>
               <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in tagArray' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'tagArray')"></span></li>
+                <li class='tag' v-for='(item,idx) in tagArray.name' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'tagArray')"></span></li>
                 <li class="added" @click='showChooseTag = true'></li>
               </ol>
             </div>
           </div>
           <div class='filter-item'>
             <span class="label">所属群组</span>
-            <el-button round v-if='!groupArray.length' @click='showChooseGroup = true'>选择分组</el-button>
+            <el-button round v-if='!groupArray.name.length' @click='showChooseGroup = true'>选择分组</el-button>
             <div class="selected" v-else>
               <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in groupArray' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'groupArray')"></span></li>
+                <li class='tag' v-for='(item,idx) in groupArray.name' :key="idx">{{item}} <span class='close' @click="handleDel(idx,'groupArray')"></span></li>
                 <li class="added" @click='showChooseGroup = true'></li>
               </ol>
             </div>
@@ -233,21 +233,22 @@
           </div>
       </div>
     </div>
-  <transition name='fade' mode='out-in' v-if="showAddgroup">
-    <com-addgroup  @handleClick="handleClick"></com-addgroup>
-  </transition>
-  <transition name='fade' mode='out-in' v-if="showChooseActive">
-    <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmActive" :max='10' @searchHandler='searchHandler' :data='activelistData' :name="'活动'"></com-choose>
-  </transition>
-  <transition name='fade' mode='out-in' v-if="showChooseTag">
-    <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmTag" :max='10' @searchHandler='searchHandler' :data='tagListData' :name="'标签'"></com-choose>
-  </transition>
-  <transition name='fade' mode='out-in' v-if="showChooseGroup">
-    <com-choose  @handleClick="handleClick" @selectConfirm="selectConfirmGroup" :max='10' @searchHandler='searchHandler' :data='groupListData' :name="'固定群组'"></com-choose>
-  </transition>
-  <transition name='fade' mode='out-in' v-if="showImport">
-    <com-import @handleClick="handleClick"></com-import>
-  </transition>
+
+      <transition name='fade' mode='out-in' v-if="showAddgroup">
+        <com-addgroup  @handleClick="handleClick" @groupData='groupData'></com-addgroup>
+      </transition>
+      <transition name='fade' mode='out-in' v-if="showChooseActive">
+        <com-choose  @handleClick="handleClick" @selectComConfirm='selectActiveConfirm' :checkedData='activityArray'  :max='10' @searchHandler='searchHandler' :name="'活动'"></com-choose>
+      </transition>
+      <transition name='fade' mode='out-in' v-if="showChooseTag">
+        <com-choose  @handleClick="handleClick" @selectComConfirm='selectTagConfirm' :checkedData='tagArray'  :max='10' @searchHandler='searchHandler' :name="'标签'"></com-choose>
+      </transition>
+      <transition name='fade' mode='out-in' v-if="showChooseGroup">
+        <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
+      </transition>
+      <transition name='fade' mode='out-in' v-if="showImport">
+        <com-import @handleClick="handleClick"></com-import>
+      </transition>
   </div>
 </template>
 
@@ -282,15 +283,18 @@ export default {
       grandVal: '',
       firstVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       lastVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
-      activityArray: [
-
-      ],
-      tagArray: [
-
-      ],
-      groupArray: [
-
-      ],
+      activityArray: {
+        'id': [],
+        'name': []
+      },
+      tagArray: {
+        'id': [],
+        'name': []
+      },
+      groupArray: {
+        'id': [],
+        'name': []
+      },
       usersListData: [
         {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
@@ -474,11 +478,8 @@ export default {
       showChooseActive: false,
       showChooseTag: false,
       showChooseGroup: false,
-      showImport: true,
-      chooseType: '活动',
-      groupListData: ['互联网客户 (460人）', '物联网客户 (235人）', '产品团队 (22人）', '客户服务团队 (54人）', '客户服务团队 (54人）'],
-      tagListData: ['年龄/00后', '地区/北上广深', '资料完整度/参会人', '观看时完整度/完美用户', '地区/海外'],
-      activelistData: ['百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会', '百度人工智能大会发布芯片', '创想聚能 艾瑞年对高峰会议', '艺术二维码的设计思路', '腾讯向爱而生文创生态大会', '2018西南互联网趋势峰会']
+      showImport: false,
+      chooseType: '活动'
     }
   },
   methods: {
@@ -493,7 +494,8 @@ export default {
 
     },
     handleDel (idx, type) {
-      this[type].splice(idx, 1)
+      this[type].name.splice(idx, 1)
+      this[type].id.splice(idx, 1)
     },
     /* 点击取消 */
     handleClick (e) {
@@ -505,17 +507,20 @@ export default {
         this.showImport = false
       }
     },
-    selectConfirmActive (res) {
+    selectActiveConfirm (res) {
       console.log(res)
-      this.activityArray = res
+      this.activityArray.name = res.name
+      this.activityArray.id = res.id
     },
-    selectConfirmTag (res) {
+    selectTagConfirm (res) {
       console.log(res)
-      this.tagArray = res
+      this.tagArray.name = res.name
+      this.tagArray.id = res.id
     },
-    selectConfirmGroup (res) {
+    selectGroupConfirm (res) {
       console.log(res)
-      this.groupArray = res
+      this.groupArray.name = res.name
+      this.groupArray.id = res.id
     },
     searchHandler (res) {
       console.log(res)
@@ -728,7 +733,7 @@ export default {
     }
     /* reset element ui */
     .el-select {
-      border: 1px solid RGBA(226, 226, 226, 1);
+      // border: 1px solid RGBA(226, 226, 226, 1);
       .el-input__inner {
         padding: 0 15px;
         height: 34px;
