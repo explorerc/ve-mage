@@ -252,11 +252,11 @@
 </template>
 
 <script>
-import comSelect from './com-select'
-import singleInput from './single-input'
-import dateSelect from './date-select'
-import citySelect from './city-select'
-import infoList from './info-list'
+import comSelect from '../components/com-select'
+import singleInput from '../components/single-input'
+import dateSelect from '../components/date-select'
+import citySelect from '../components/city-select'
+import infoList from '../components/info-list'
 export default {
   data () {
     return {
