@@ -1,4 +1,3 @@
-
 const ActivityManger = {
   /**
    *  查询直播列表
