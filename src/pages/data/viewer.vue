@@ -111,22 +111,86 @@
     components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
-        basicUserData: {},
-        areaData: []
+        basicUserData: {}
       }
     },
-    created () {
+    mounted () {
       console.log(dataService)
       this.initPage()
-      this.$nextTick(() => {
-        this.renderChart()
-      })
     },
     methods: {
       goPage (type) {
         this.$router.push(`/data/viewerList/${this.$route.params.id}?type=${type}`)
       },
-      initPage () {
+      async initPage () {
+        // 地域
+        this.areaCountChart()
+        // 基础数据
+        let basicUserData = await this.basicCount()
+        this.basicUserData = basicUserData
+        // 观众比例
+        this.viewerRate()
+      },
+      viewerRate () {
+        let res = {
+          code: 200,
+          msg: null,
+          data: {
+            viewer: [
+              {type: 0, 'name': '新观众', value: 10},
+              {type: 1, 'name': '老观众', value: 20}
+            ],
+            device: [
+              {type: 0, 'name': '电脑端', value: 10},
+              {type: 1, 'name': '移动端', value: 20}
+            ],
+            system: [
+              {type: 0, 'name': 'Windows', value: 10},
+              {type: 1, 'name': 'Mac', value: 20},
+              {type: 1, 'name': 'IOS', value: 20},
+              {type: 1, 'name': 'Android', value: 20},
+              {type: 1, 'name': 'Other', value: 20}
+            ],
+            browser: [
+              {type: 0, 'name': 'Safari电脑版', value: 10},
+              {type: 1, 'name': 'Chrome电脑版', value: 20},
+              {type: 1, 'name': 'UC移动版', value: 20},
+              {type: 1, 'name': '微信', value: 20},
+              {type: 1, 'name': 'QQ', value: 20},
+              {type: 1, 'name': 'Other', value: 20}
+            ],
+            gender: [
+              {type: 0, 'name': '男士', value: 10},
+              {type: 1, 'name': '女士', value: 20},
+              {type: 1, 'name': '未知', value: 20}
+            ]
+          }
+        }
+        this.$nextTick(() => {
+          // 新老观众占比
+          pie('chart01', res.data.viewer)
+          // 各级别用户占比
+          pie('chart02', [
+            {name: '观众总数', value: this.basicUserData.viewerCount},
+            {name: '老用户', value: this.basicUserData.oldUser},
+            {name: '新用户', value: this.basicUserData.newUser},
+            {name: '优质用户', value: this.basicUserData.highUser},
+            {name: '高价值用户', value: this.basicUserData.vipUser},
+            {name: '一般用户', value: this.basicUserData.ordinaryUser},
+            {name: '潜在用户', value: this.basicUserData.potentialUser},
+            {name: '流失用户', value: this.basicUserData.lossUser}
+          ])
+          // 设备占比
+          pie('chart03', res.data.device)
+          // 操作系统占比
+          pie('chart04', res.data.system)
+          // 浏览器占比
+          pie('chart05', res.data.browser)
+          // 性别占比
+          pie('chart06', res.data.gender)
+        })
+      },
+      basicCount () {
         let res = {
           code: 200,
           msg: null,
@@ -141,8 +205,10 @@
             'lossUser': 2561
           }
         }
-        this.basicUserData = res.data
-        let resArae = {
+        return res.data
+      },
+      areaCountChart () {
+        let res = {
           code: 200,
           msg: null,
           data: {
@@ -185,66 +251,9 @@
             ]
           }
         }
-        this.areaData = resArae.data.list
-      },
-      renderChart () {
-        let res = {
-          code: 200,
-          msg: null,
-          data: {
-            viewer: [
-              {type: 0, 'name': '新观众', value: 10},
-              {type: 1, 'name': '老观众', value: 20}
-            ],
-            device: [
-              {type: 0, 'name': '电脑端', value: 10},
-              {type: 1, 'name': '移动端', value: 20}
-            ],
-            system: [
-              {type: 0, 'name': 'Windows', value: 10},
-              {type: 1, 'name': 'Mac', value: 20},
-              {type: 1, 'name': 'IOS', value: 20},
-              {type: 1, 'name': 'Android', value: 20},
-              {type: 1, 'name': 'Other', value: 20}
-            ],
-            browser: [
-              {type: 0, 'name': 'Safari电脑版', value: 10},
-              {type: 1, 'name': 'Chrome电脑版', value: 20},
-              {type: 1, 'name': 'UC移动版', value: 20},
-              {type: 1, 'name': '微信', value: 20},
-              {type: 1, 'name': 'QQ', value: 20},
-              {type: 1, 'name': 'Other', value: 20}
-            ],
-            gender: [
-              {type: 0, 'name': '男士', value: 10},
-              {type: 1, 'name': '女士', value: 20},
-              {type: 1, 'name': '未知', value: 20}
-            ]
-          }
-        }
-        // 新老观众占比
-        pie('chart01', res.data.viewer)
-        // 各级别用户占比
-        pie('chart02', [
-          {name: '观众总数', value: this.basicUserData.viewerCount},
-          {name: '老用户', value: this.basicUserData.oldUser},
-          {name: '新用户', value: this.basicUserData.newUser},
-          {name: '优质用户', value: this.basicUserData.highUser},
-          {name: '高价值用户', value: this.basicUserData.vipUser},
-          {name: '一般用户', value: this.basicUserData.ordinaryUser},
-          {name: '潜在用户', value: this.basicUserData.potentialUser},
-          {name: '流失用户', value: this.basicUserData.lossUser}
-        ])
-        // 设备占比
-        pie('chart03', res.data.device)
-        // 操作系统占比
-        pie('chart04', res.data.system)
-        // 浏览器占比
-        pie('chart05', res.data.browser)
-        // 性别占比
-        pie('chart06', res.data.gender)
-        // 地域
-        barRadius('chart07', this.areaData)
+        this.$nextTick(() => {
+          barRadius('chart07', res.data.list)
+        })
       }
     }
   }
