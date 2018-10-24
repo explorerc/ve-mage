@@ -11,3 +11,7 @@ export const LIVE_GUIDED = 'LIVE_GUIDED'
 
 // 邮件邀约
 export const EMAIL_INFO = 'EMAIL_INFO'
+// 账号信息
+export const ACCOUNT_INFO = 'ACCOUNT_INFO'
+// 指定联系人信息
+export const CONTACTINFO_INFO = 'CONTACTINFO_INFO'

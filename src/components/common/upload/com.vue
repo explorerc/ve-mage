@@ -36,7 +36,11 @@ const MIME_TYPES = {
   'm3u8': 'application/x-mpegURL',
   'mov': 'video/quicktime',
   'avi': 'video/x-msvideo',
-  'wmv': 'video/x-ms-wmv'
+  'wmv': 'video/x-ms-wmv',
+  // 'csv': 'text/comma-separated-values',
+  'csv': 'application/vnd.ms-excel'
+  // 'csv': 'text/csv'
+  // 'csv': 'text/x-csv'
 }
 export default {
   name: 'ComUpload',
@@ -108,17 +112,17 @@ export default {
       this.error = []
       let fileSize = this.fileSize * 1000
       Array.prototype.forEach.call(this.$refs.upload.files, (item, index) => {
-        if (item.size > fileSize) {
-          this.error.push({
-            state: 'size-limit',
-            name: item.name,
-            size: item.size
-          })
-        } else if (this.acceptStr.indexOf(item.type) === -1) {
+        if (!item.type || this.acceptStr.indexOf(item.type) === -1) {
           this.error.push({
             state: 'type-limit',
             name: item.name,
             type: item.type
+          })
+        } else if (item.size > fileSize) {
+          this.error.push({
+            state: 'size-limit',
+            name: item.name,
+            size: item.size
           })
         } else {
           this.list.push({
@@ -129,14 +133,14 @@ export default {
         }
       })
       if (this.error.length > 0) {
-        this.$emit('error', {code: 503, data: this.error})
+        this.$emit('error', { code: 503, data: this.error })
         return
       }
       if (this.currentCount + this.list.length > this.totalCount) {
-        this.$emit('error', {code: 502})
+        this.$emit('error', { code: 502 })
         return
       }
-      this.$emit('selected', {data: this.list})
+      this.$emit('selected', { data: this.list })
       if (this.queue.length > 0) {
         this.doWork()
       }
@@ -166,18 +170,18 @@ export default {
       }
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
-          this.$emit('progress', {name: this.current, loaded: e.loaded, total: e.total, percent: `${(e.loaded / e.total * 100).toFixed(2)}%`})
+          this.$emit('progress', { name: this.current, loaded: e.loaded, total: e.total, percent: `${(e.loaded / e.total * 100).toFixed(2)}%` })
         }
       }
       xhr.onload = (e) => {
-        this.$emit('load', {name: this.current, data: xhr.responseText})
+        this.$emit('load', { name: this.current, data: xhr.responseText })
         this.doWork()
       }
       xhr.ontimeout = (e) => {
-        this.$emit('error', {name: this.current, code: 501, error: e})
+        this.$emit('error', { name: this.current, code: 501, error: e })
       }
       xhr.onerror = (e) => {
-        this.$emit('error', {name: this.current, code: 501, error: e})
+        this.$emit('error', { name: this.current, code: 501, error: e })
       }
       xhr.send(formData)
     }

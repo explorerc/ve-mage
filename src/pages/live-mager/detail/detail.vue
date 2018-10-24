@@ -1,29 +1,72 @@
 <!-- 活动详情页面-->
 <template>
-  <div class='detail-wrap' v-if="dataPrepare[0]">
+  <div class='detail-wrap'
+       v-if="dataPrepare[0]">
     <div class="desc clearfix">
       <div class="left">
-        <img v-if="poster" :src="`${imgHost + poster}`">
-        <img v-else src="https://cnstatic01.e.vhall.com/static/img/v35-webinar.png">
-        <span class="state" :class="stateClass">{{state}}</span>
+        <span class="status"
+              :class="statusClass">{{status}}</span>
+        <div v-if="poster"
+             class='poster has-poster'
+             :style="{backgroundImage:'url('+ imgHost + poster + ')'}"></div>
+        <div class="poster default-poster"
+             :style="{backgroundImage:'url(//cnstatic01.e.vhall.com/static/img/v35-webinar.png)'}"
+             v-else></div>
       </div>
       <div class="middle">
         <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
-        <p class='desc-label'>互动标签: <span class="tag" v-for="item in tagList">{{item}}</span></p>
+        <p class='desc-label'>活动标签: <span class="tag"
+                v-for="item in tagList">{{item}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
-        <ol class='clearfix'>
-          <li class='icon'><i></i><router-link :to="/site/+activityId">活动页面</router-link></li>
-          <li class='icon copy' @click='copy'><i></i>复制链接<input type="text" :value="`www.baidu.com/${this.activityId}`" id='copyContent' style='position:absolute;opacity:0;'></li>
-          <li class='icon offline' @click='offlineActive' v-if="isPublished"><i></i>下线活动</li>
-          <li class='icon offline' @click='publishActive' v-else><i></i>发布活动</li>
-        </ol>
+        <p class="desc-label tool">活动状态: <el-switch class='switch' v-model="isPublished" :active-text="isPublished ? '已发布' : '未发布' " inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchActive"></el-switch>
+          <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
+          <ul v-show='showLinkBox'>
+            <li :class="{'isSwitch':!dataBrand[0].switch}">
+              <i class='icon-site'></i>活动官网
+              <router-link v-if="dataBrand[0].switch" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link>
+              <router-link v-else :to="`/liveMager/site/${activityId}`" ><el-button size="mini" round>开启</el-button></router-link>
+              <el-button v-if="dataBrand[0].switch" size="mini" round @click="copy('copyContent2')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}site/${activityId}`" id="copyContent2" style="position:absolute;opacity:0;">
+            </li>
+            <li>
+              <i class='icon-guide'></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`" target="_blank"><el-button size="mini" round>查看</el-button></router-link> <el-button size="mini" round @click="copy('copyContent')">复制</el-button>
+              <input type="text" :value="`https:${this.PC_HOST}subscribe/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+            </li>
+          </ul>
+          </span>
+        </p>
+        <!-- <ol class='clearfix'>
+          <li class='icon page'><i></i>
+            <router-link target="_blank" :to="`${this.PC_HOST}site/${activityId}`">活动页面</router-link>
+          </li>
+          <li class="icon link copy"
+              @click="copy('copyContent')">
+            <i></i>复制链接
+            <input type="text" :value="`https${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
+          </li>
+          <li class='icon offline offline'
+              @click="offlineActive"
+              v-if="isPublished"><i></i>下线活动</li>
+          <li class='icon offline offline'
+              @click="publishActive"
+              v-else><i></i>发布活动</li>
+        </ol> -->
       </div>
       <div class="right">
-        <p class="title" v-if="!countDownstatus">距离直播开始还有</p>
-        <p class="title" v-else>直播已开始</p>
-        <div class="count-box">
-          <com-countdown :endTime.sync="countdownTime" >
-            <ol class='clearfix' @timeOut='timeOut' slot='slot1' slot-scope="scoped">
+        <p class="title"
+           v-if="!countDownstatus">距离直播开始还有</p>
+        <p class="title"
+           v-else-if="status === '直播'">直播已开始</p>
+        <p class="title"
+           v-else-if="status === '预约' && countDownstatus">直播即将开始</p>
+        <p class="title"
+           v-else-if="status === '结束'">直播已结束</p>
+        <div class="count-box"
+             :style="{'height':countDownstatus ? '0px' : 'auto'}">
+          <com-countdown :endTime.sync="countdownTime" @timeOut='timeOut'>
+            <ol class='clearfix'
+                slot='slot1'
+                slot-scope="scoped">
               <li>{{scoped.day}}<span>天</span></li>
               <li>{{scoped.hour}}<span>时</span></li>
               <li>{{scoped.minute}}<span>分</span></li>
@@ -31,45 +74,53 @@
             </ol>
           </com-countdown>
         </div>
-        <el-button class='primary-button' @click='turnOn'>正式直播</el-button>
+        <el-button class='primary-button'
+                   @click='turnOn' :disabled="overdue" >正式直播</el-button>
       </div>
     </div>
     <div class="block process clearfix">
       <div class="top clearfix">
         <ul>
-          <li class='step highlight' :class="{ 'active':this.currStep === 'notPublish' }">
+          <li class='step highlight'
+              :class="{ 'active':this.currStep === 'notPublish' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>准备</dd>
             </dl>
           </li>
-          <li class='step prompt' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }" >
+          <li class='step brand'
+              :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>品牌</dd>
             </dl>
           </li>
-          <li class='step brand' :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
+          <li class='step prompt'
+              :class="{ 'highlight':this.currStep.search('isPublish') > -1, 'active':this.currStep === 'isPublish' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>推广</dd>
             </dl>
           </li>
-          <li class='step live ' :class="{ 'highlight':this.currStep.search('live') > -1, 'active':this.currStep === 'isPublish live' }">
+          <li class='step live '
+              :class="{ 'highlight':this.currStep.search('live') > -1, 'active':this.currStep === 'isPublish live' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>直播</dd>
             </dl>
           </li>
-          <li class='step record' :class="{ 'highlight':this.currStep.search('playback') > -1, 'active':this.currStep === 'isPublish live end playback' }">
+          <li class='step record'
+              :class="{ 'highlight':this.currStep.search('playback') > -1, 'active':this.currStep === 'isPublish live end playback' }">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>回放</dd>
             </dl>
           </li>
-          <li class='step statics' :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}">
+          <li class='step statics'
+              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}"
+          @click="goDataCenter">
             <dl>
-              <dt></dt>
+              <dt><i></i></dt>
               <dd>数据</dd>
             </dl>
           </li>
@@ -79,26 +130,26 @@
         <div>
           <!-- <span>准备</span> -->
           <ol>
-            <li v-show="dataPrepare[0].switch">基本信息</li>
-            <li v-show="dataPrepare[1].switch">活动报名</li>
-            <li v-show="dataPrepare[2].switch">暖场设置</li>
+            <li v-show="dataPrepare[0].switch" @click="linkTo($event,'/liveMager/edit/')">基本信息</li>
+            <li v-show="dataPrepare[1].switch" @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">活动报名</li>
+            <li v-show="dataPrepare[2].switch" @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">暖场设置</li>
           </ol>
         </div>
         <div>
           <!-- <span>品牌</span> -->
           <ol>
-            <li v-show="dataBrand[0].switch">活动官网</li>
-            <li v-show="dataBrand[1].switch">直播引导页</li>
-            <li v-show="dataBrand[2].switch">观看页</li>
+            <li v-show="dataBrand[0].switch" @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网</li>
+            <li v-show="dataBrand[1].switch" @click="linkTo($event,'/setLiveGuided/')">直播引导页</li>
+            <li v-show="dataBrand[2].switch" @click="linkTo($event,'/setLiveWatch/')">观看页</li>
           </ol>
         </div>
         <div>
           <!-- <span>推广</span> -->
           <ol>
-            <li v-show="dataPromote[0].switch">自动化通知</li>
-            <li v-show="dataPromote[1].switch">邮箱</li>
-            <li v-show="dataPromote[2].switch">短信</li>
-            <li v-show="dataPromote[3].switch">微信</li>
+            <li v-show="dataPromote[0].switch" @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知</li>
+            <li v-show="dataPromote[1].switch" @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
+            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信推广</li>
+            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信推广</li>
           </ol>
         </div>
         <div>
@@ -111,7 +162,7 @@
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <li v-show="dataRecord[0].switch">设置回放</li>
+            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">设置回放</li>
           </ol>
         </div>
         <div>
@@ -120,56 +171,64 @@
             <li>数据报表</li>
             <li>详细数据导出</li>
           </ol>
-          </ol>
         </div>
       </div>
     </div>
     <div class="fun-card">
-        <div class="item prepare">
+      <div class="item prepare">
         <p class='block-separte'>准备</p>
-          <!-- <div class="card-list clearfix">
-            <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
-              :prop-img='item.img'></process-card>
-          </div> -->
-          <div class="card-list clearfix">
-            <div class='item base' @click="linkTo($event,'/liveMager/edit/')">
-              <!-- 基本信息 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>基本信息</span>
-                  <span class='des'>编辑活动基本信息</span>
-                </div>
+        <!-- <div class="card-list clearfix">
+              <process-card @update:checked='switchBack' v-for="(item,index) in cardData.prepare" :prop-link="item.link" :prop-switch='item.switch' :prop-idx='index' :key='item.title' :prop-checked.sync='item.checked' :prop-title='item.title' :prop-desc='item.desc' :prop-part='"prepare"'
+                :prop-img='item.img'></process-card>
+            </div> -->
+        <div class="card-list clearfix">
+          <div class='item base'
+               @click="linkTo($event,'/liveMager/edit/')">
+            <!-- 基本信息 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
               </div>
-              <div class="btm">
-                <!-- <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop="" @change='switchChange('APPOINT',dataBrand[2].switch)'></el-switch> -->
-                <!-- <span class='set'>设置</span> -->
+              <div class='desc'>
+                <span>基本信息</span>
+                <span class='des'>编辑活动基本信息</span>
               </div>
             </div>
-            <div class='item apply' @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">
-              <!-- 活动报名 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>活动报名</span>
-                  <span class='des'>
-                    <!-- 未设置未开启 -->
-                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息</template>
+            <div class="btm">
+              <!-- <el-switch class='switch' v-model="dataPrepare[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @click.stop="" @change='switchChange('APPOINT',dataBrand[2].switch)'></el-switch> -->
+              <!-- <span class='set'>设置</span> -->
+            </div>
+          </div>
+          <div class='item apply'
+               @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">
+            <!-- 活动报名 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
+              </div>
+              <div class='desc'>
+                <span>活动报名</span>
+                <span class='des'>
+                  <!-- 未设置未开启 -->
+                  <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息
+                  </template>
                     <!-- 未设置已开启 -->
-                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">暂未设置</template>
+<template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">
+  暂未设置
+</template>
                     <!-- 已设置已开启 -->
-                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">已设置活动报名</template>
+<template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">
+  已设置活动报名
+</template>
                     <!-- 已设置未开启 -->
-                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">已设置活动报名</template>
+<template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">
+  已设置活动报名
+</template>
                   </span>
                 </div>
               </div>
               <div class="btm">
-                <el-switch  class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('APPOINT', dataPrepare[1].switch)"></el-switch>
+                <el-switch  class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -183,24 +242,32 @@
                   <span>暖场设置</span>
                   <span class='des'>
                     <!-- 未设置未开启 -->
-                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">为活动设置暖场视频</template>
+<template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">
+  为活动设置暖场视频
+</template>
                     <!-- 未设置已开启 -->
-                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">暂未设置</template>
+<template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">
+  暂未设置
+</template>
                     <!-- 已设置已开启 -->
-                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">{{dataPrepare[2].desc}}</template>
+<template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">
+  {{dataPrepare[2].desc}}
+</template>
                     <!-- 已设置未开启 -->
-                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">{{dataPrepare[2].desc}}</template>
+<template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">
+  {{dataPrepare[2].desc}}
+</template>
                   </span>
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"  @change="switchChange('WARMUP',dataPrepare[2].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021"  @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
           </div>
         </div>
-      <div class="item marketing">
+      <div class="item marketing" id="tg">
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
 
@@ -213,29 +280,37 @@
                 <div class='desc'>
                   <span>自动化通知</span>
                   <span class='des'>
-                    <!-- 未设置未开启 -->
-                    <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === false">设置自动化活动通知提醒</template>
-                    <!-- 未设置已开启 -->
-                    <template v-if="dataPromote[0].isSet === false && dataPromote[0].switch === true">暂未设置</template>
-                    <!-- 已设置已开启 -->
-                    <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === true">
-                      <template v-if="dataPromote[0].desc === 'NONE'">预约</template>
-                      <template v-if="dataPromote[0].desc === 'PREPARE'">报名</template>
-                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
-                    </template>
-                    <!-- 已设置未开启 -->
-                    <template v-if="dataPromote[0].isSet === true && dataPromote[0].switch === false">
-                      <template v-if="dataPromote[0].desc === 'NONE'">预约</template>
-                      <template v-if="dataPromote[0].desc === 'PREPARE'">报名</template>
-                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
-                    </template>
+<template v-if="isPublished">
+  <!-- 未开启 -->
+  <template v-if="dataPromote[0].switch === false">已开启</template>
+  <!-- 已开启 -->
+  <!-- <template v-if="dataPromote[0].switch === true">已开启</template> -->
+  <!-- 已开启 -->
+  <template v-if="dataPromote[0].switch === true">
+    <template v-if="dataPromote[0].desc === 'PREPARE'">
+      <template v-if="isAppoint">报名</template>
+      <template v-else>预约</template>
+    </template>
+    <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+    <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+  </template>
+  <!-- 已设置未开启 -->
+  <template v-if="dataPromote[0].switch === false">
+    <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
+    <template v-if="dataPromote[0].desc === 'PREPARE'">
+      <template v-if="isAppoint">报名</template>
+      <template v-else>预约</template>
+    </template>
+    <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+    <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+  </template>
+</template>
+<template v-else>设置自动化活动通知提醒</template>
                   </span>
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -250,9 +325,13 @@
                   <span>邮箱</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataPromote[1].isSet">已设置邮件邀约</template>
+<template v-if="dataPromote[1].isSet">
+  已设置邮件邀约
+</template>
                     <!-- 未设置 -->
-                    <template v-else>通过邮件进行活动推广</template>
+<template v-else>
+  通过邮件进行活动推广
+</template>
                   </span>
                 </div>
               </div>
@@ -270,9 +349,13 @@
                   <span>短信</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataPromote[2].isSet">已设置短信通知</template>
+<template v-if="dataPromote[2].isSet">
+  已设置短信通知
+</template>
                     <!-- 未设置 -->
-                    <template v-else>通过短信进行活动推广</template>
+<template v-else>
+  通过短信进行活动推广
+</template>
                   </span>
                 </div>
               </div>
@@ -290,9 +373,13 @@
                   <span>微信</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataPromote[3].isSet">已设置微信通知</template>
+<template v-if="dataPromote[3].isSet">
+  已设置微信通知
+</template>
                     <!-- 未设置 -->
-                    <template v-else>通过微信进行活动推广</template>
+<template v-else>
+  通过微信进行活动推广
+</template>
                   </span>
                 </div>
               </div>
@@ -305,7 +392,7 @@
       <div class="item promote">
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[2].switch)">
+           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">
               <!-- 活动官网 -->
               <div class="card">
                 <div class='pic'>
@@ -314,15 +401,19 @@
                 <div class='desc'>
                   <span>活动官网</span>
                   <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataBrand[0].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
-                    <!-- 未设置 -->
-                    <template v-else>最精简的活动品牌页</template>
+<template v-if="dataBrand[0].switch">
+  <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}
+  </template>
+                    </template>
+
+<template v-else>
+  打造活动品牌聚合页面
+</template>
                   </span>
                 </div>
               </div>
               <div class="btm">
-                <el-switch class='switch' v-model="dataBrand[2].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[2].switch)"></el-switch>
+                <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
                 <!-- <span class='set'>设置</span> -->
               </div>
             </div>
@@ -336,10 +427,14 @@
                 <div class='desc'>
                   <span>直播引导页</span>
                   <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataBrand[1].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
-                    <!-- 未设置 -->
-                    <template v-else>最精简的活动品牌页</template>
+                    <!-- 已发布 -->
+<template v-if="isPublished">
+  已发布
+</template>
+<!-- 未发布 -->
+<template v-else>
+  {{dataBrand[1].isSet ? '未发布' : '最精简的活动品牌页'}}
+</template>
                   </span>
                 </div>
               </div>
@@ -357,9 +452,13 @@
                   <span>观看页</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataBrand[2].isSet">{{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}</template>
+<template v-if="dataBrand[2].isSet">
+  {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+</template>
                     <!-- 未设置 -->
-                    <template v-else>订制直播观看页面</template>
+<template v-else>
+  订制直播观看页面
+</template>
                   </span>
                 </div>
               </div>
@@ -382,9 +481,13 @@
                   <span>设置回放</span>
                   <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="dataRecord[0].isSet">已设置默认回放</template>
+<template v-if="dataRecord[0].isSet">
+  已设置默认回放
+</template>
                     <!-- 未设置 -->
-                    <template v-else>设置活动后的回放视频</template>
+<template v-else>
+  设置活动后的回放视频
+</template>
                   </span>
                 </div>
               </div>
@@ -394,169 +497,139 @@
         </div>
       </div>
     </div>
+    <message-box class='in-countdown' v-show="inCountdown" width="300"  header="提示"
+      cancelText="放弃"
+      confirmText='仍然进入' @handleClick='inCountdownClick'>
+      <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
+      <p>您设置的时间为:</p>
+      <p>{{startTime}}</p>
+    </message-box>
   </div>
 </template>
 
 <script>
-  import http from 'src/api/activity-manger'
-  import processCard from 'components/process-card'
-  import messageBox from 'components/common/message-box'
-  import comCountdown from 'components/com-countDown'
-  export default {
-    data () {
-      return {
-        title: '',
-        id: '',
-        poster: '',
-        tagList: [],
-        startTime: '',
-        stateClass: '',
-        state: '',
-        currStep: '',
-        cardData: {},
-        msgShow: false,
-        isPublished: false,
-        activityId: this.$route.params.id,
-        imgHost: process.env.IMGHOST + '/',
-        // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
-        countdownTime: '', // 倒计时 秒
-        countDownstatus: false,
-        dataPrepare: [],
-        dataBrand: [],
-        dataPromote: [],
-        dataRecord: []
+// import http from 'src/api/activity-manger'
+import activityService from 'src/api/activity-service'
+import processCard from 'components/process-card'
+import comCountdown from 'components/com-countDown'
+export default {
+  data () {
+    return {
+      title: '',
+      id: '',
+      poster: '',
+      tagList: [],
+      startTime: '',
+      statusClass: '',
+      status: '',
+      currStep: '',
+      cardData: {},
+      msgShow: false,
+      isPublished: false,
+      hostOnline: false,
+      showLinkBox: false,
+      activityId: this.$route.params.id,
+      imgHost: process.env.IMGHOST + '/',
+      PC_HOST: process.env.PC_HOST,
+      // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+      countdownTime: '', // 倒计时 秒
+      countDownstatus: false,
+      inCountdown: false,
+      isAppoint: false,
+      overdue: false,
+      dataPrepare: [],
+      dataBrand: [],
+      dataPromote: [],
+      dataRecord: []
+    }
+  },
+  created () { },
+  mounted () {
+    this.getDetails()
+    setTimeout(() => {
+      // 滚动到推广
+      if (window.location.href.search('tg') > -1) {
+        document.querySelector('.main-container').scrollTop = document.querySelector('#tg').offsetTop - 50
+      }
+    }, 500)
+  },
+  methods: {
+    linkTo (e, link, status) {
+      console.log(e.target.className)
+      if (e.target.className.search('switch') > -1) {
+        // 直播状态直接 不跳转
+        if (this.status === '直播') {
+          return false
+        }
+        // 如果开着状态则不跳转
+        if (!status && e.target.className.search('input') > -1) {
+          setTimeout(() => {
+            this.$router.push(link + this.activityId)
+          }, 500)
+        }
+      } else {
+        this.$router.push(link + this.activityId)
       }
     },
-    created () {
-      // this.cardData = {
-      //   'prepare': [
-      //     {
-      //       title: '基本信息',
-      //       desc: '',
-      //       link: '/liveMager/edit/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '活动报名',
-      //       desc: '已设置',
-      //       link: '/liveMager/prepare/limit-apply/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '暖场设置',
-      //       desc: '"asdasdasd.mp4"',
-      //       link: '/liveMager/warmField/',
-      //       switch: true
-      //     }
-      //   ],
-      //   'brand': [
-      //     {
-      //       title: '活动官网',
-      //       desc: '已发布',
-      //       link: '',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '直播引导页',
-      //       desc: '已发布',
-      //       link: '/setLiveGuided/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '观看页',
-      //       desc: '"定制直播观看页面"',
-      //       link: '/master/',
-      //       switch: true
-      //     }
-      //   ],
-      //   'promote': [
-      //     {
-      //       title: '自动化通知',
-      //       desc: '',
-      //       link: '/liveMager/promote/auto/preview/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '邮箱',
-      //       desc: '""',
-      //       link: '/liveMager/email/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '短信',
-      //       desc: '""',
-      //       link: '/liveMager/promote/msg/list/',
-      //       switch: true
-      //     },
-      //     {
-      //       title: '微信',
-      //       desc: '""',
-      //       link: '/liveMager/promote/wechat/list/',
-      //       switch: true
-      //     }
-      //   ],
-      //   'record': [
-      //     {
-      //       title: '回放',
-      //       desc: '已设置',
-      //       link: '/liveMager/playBack/',
-      //       switch: true
-      //     }
-      //   ]
-      // }
-    },
-    mounted () {
-      this.getDetails()
-    },
-    methods: {
-      linkTo (e, link, status) {
-        console.log(e.target.className)
-        if (e.target.className.search('switch') > -1) {
-          // 如果开着状态则不跳转
-          if (!status && e.target.className.search('input') > -1) {
-            setTimeout(() => {
-              this.$router.push(link + this.activityId)
-            }, 500)
+    turnOn () {
+      let xmlHttp = new XMLHttpRequest()
+      const serverUrl = process.env.API_PATH
+      let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
+      xmlHttp.onreadystatechange = () => {
+        if (xmlHttp.readyState === 4) {
+          let responseText = xmlHttp.responseText
+          let data = JSON.parse(responseText)
+          if (data.code === 200) {
+            this.hostOnline = data.data.hostOnline
+            if (this.hostOnline) {
+              this.$toast({
+                content: '主持人已进入直播前台，无法再次进入',
+                position: 'center'
+              })
+              return false
+            }
+            if (this.isToday(this.startTime)) { // 在24小时之外
+              this.inCountdown = true
+              return false
+            }
+            this.judgePublish()
           }
-        } else {
-          this.$router.push(link + this.activityId)
         }
-      },
-      update () {
-        // debugger // eslint-disable-line
-        if (this.state === '预约') {
-          this.$messageBox({
-            header: '提示',
-            width: '200',
-            content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
-            cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
-            confirmText: '立即发布',
-            handleClick: (e) => {
-              console.log(e)
-              if (e.action === 'cancel') {
-              } else if (e.action === 'confirm') {
-                // this.state = 0
-              }
-            }
-          })
-        } else {
-          this.$messageBox({
-            header: '提示',
-            width: '200',
-            content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
-            cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
-            confirmText: '立即下线',
-            handleClick: (e) => {
-              console.log(e)
-              if (e.action === 'cancel') {
-              } else if (e.action === 'confirm') {
-                // this.state = 1
-              }
-            }
-          })
-        }
-      },
-      turnOn () {
+      }
+      xmlHttp.open('GET', url, false) // 同步方式请求
+      xmlHttp.withCredentials = true
+      xmlHttp.send(null)
+    },
+    goDataCenter () {
+      this.$router.push(`/data/preview/${this.activityId}`)
+    },
+    isToday (str) {
+      if (new Date(str).toDateString() === new Date().toDateString()) {
+        // 今天
+        console.log('当天')
+        return false
+      } else {
+        // 之前
+        console.log('非当天')
+        return true
+      }
+    },
+    isOverdue (str) { // 是否超过48小时
+      if (str === null) {
+        return false
+      }
+      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
+        return true
+      } else {
+        return false
+      }
+    },
+    judgePublish () {
+      if (this.isPublished) {
+        this.inCountdown = false
+        window.open(`${this.PC_HOST}master/${this.activityId}`)
+      } else {
+        this.inCountdown = false
         this.$messageBox({
           header: '提示',
           width: '200',
@@ -565,155 +638,241 @@
           confirmText: '确认开播',
           handleClick: (e) => {
             console.log(e)
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-              this.$router.push({
-                path: `/master/${this.activityId}`
-              })
-              // this.state = 0
+            if (e.action === 'cancel') { } else if (e.action === 'confirm') {
+              this.publish()
+              window.open(`${this.PC_HOST}master/${this.activityId}`)
+              // this.status = 0
             }
           }
         })
-      },
-      switchChange (type, status) {
-        const data = {
-          activityId: this.activityId,
-          submodule: type,
-          enabled: status ? 'Y' : 'N'
-        }
-        http.detailSwitch(data).then((res) => {
-          console.log(res)
-          if (res.code === 200) {
-            this.$toast({
-              'content': '设置成功'
-            })
-          } else {
-            console.log('设置失败')
-          }
-        })
-      },
-      getDetails () {
-        http.getDetails(this.activityId).then((res) => {
-          // console.log(res)
-          if (res.data.activity.countDown.toString() > 0) {
-            this.countDownstatus = false
-            this.countdownTime = res.data.activity.countDown.toString()
-          } else {
-            this.countDownstatus = true
-            this.countdownTime = '0'
-          }
-          this.title = res.data.activity.title
-          // this.tagList = res.data.activity.countDown
-          this.startTime = res.data.activity.startTime
-          this.poster = res.data.activity.imgUrl
-          this.dataPrepare = res.data.prepare
-          this.dataBrand = res.data.brand
-          this.dataPromote = res.data.promote
-          this.dataRecord = res.data.record
-          this.isPublished = res.data.activity.published === 'Y'
-          switch (res.data.activity.status) {
-            case ('LIVING'):
-              this.state = '直播'
-              this.stateClass = 'live'
-              break
-            case ('PLAYBACK'):
-              this.state = '回放'
-              this.stateClass = 'record'
-              break
-            case ('FINISH'):
-              this.state = '结束'
-              this.stateClass = 'ended'
-              break
-            case ('PREPARE'):
-              this.state = '预约'
-              this.stateClass = 'preview'
-              break
-          }
-          this.getStep() // 获取当前阶段
-        }).catch((e) => {
-          console.log(e)
-        })
-      },
-      publishActive () { // 发布活动
-        http.publishActive(this.activityId).then((res) => {
-          console.log(res)
-          if (res.code === 200) {
-            this.$toast({
-              content: '活动发布成功',
-              position: 'center'
-            })
-            this.isPublished = true
-            this.currStep = 'isPublish'
-          }
-        })
-      },
-      offlineActive () { // 下线活动
-        http.offlineActive(this.activityId).then((res) => {
-          console.log(res)
-          if (res.code === 200) {
-            this.$toast({
-              content: '活动下线成功',
-              position: 'center'
-            })
-            this.isPublished = false
-            if (this.currStep.search('live') === -1) {
-              this.currStep = 'notPublish'
-            }
-          }
-        })
-      },
-      getStep () { // 获取当前活动阶段
-        switch (this.state) {
-          case '预约':
-            if (this.isPublished) {
-              this.currStep = 'isPublish'
-              console.log('发布页面后，直播未开始')
-            } else {
-              this.currStep = 'notPublish'
-              console.log('活动未发布')
-            }
-            break
-          case '直播':
-            this.currStep = 'isPublish live'
-            console.log('直播中')
-            break
-          case '结束':
-            this.currStep = 'isPublish live end'
-            console.log('直播结束，但未设置回放')
-            break
-          case '回放':
-            this.currStep = 'isPublish live end playback'
-            console.log('直播结束，已设置回放')
-            break
-        }
-      },
-      copy () { // 复制功能
-        let inp = document.getElementById('copyContent')
-        inp.select()
-        document.execCommand('Copy')
-        this.$toast({
-          content: '复制成功',
-          position: 'center'
-        })
-      },
-      timeOut () {
-        console.log('倒计时结束')
-        this.countDownstatus = true
       }
     },
-    components: {
-      processCard,
-      messageBox,
-      comCountdown
-    }
+    inCountdownClick (e) {
+      console.log(e)
+      if (e.action === 'cancel') {
+        this.inCountdown = false
+      } else if (e.action === 'confirm') {
+        this.inCountdown = true
+        this.judgePublish()
+      }
+    },
+    isHosting () {
+      return new Promise((resolve, reject) => {
 
+      })
+    },
+    switchChange (type, status, dataType) {
+      const data = {
+        activityId: this.activityId,
+        submodule: type,
+        enabled: status ? 'Y' : 'N'
+      }
+      this.$config({
+        handlers: true
+      }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          this.$toast({
+            'content': '设置成功'
+          })
+        }
+      }).catch((res) => {
+        if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+          console.log(type + ' ' + status)
+          this.$messageBox({
+            header: '提示',
+            content: res.msg,
+            autoClose: 10,
+            confirmText: '知道了'
+          })
+          this[dataType].forEach(item => {
+            if (item.submodule === type) {
+              item.switch = !status
+            }
+          })
+        }
+      })
+      // http.detailSwitch(data).then((res) => {
+      //   console.log(res)
+      //   if (res.code === 200) {
+      //     this.$toast({
+      //       'content': '设置成功'
+      //     })
+      //   } else {
+      //     console.log('设置失败')
+      //   }
+      // })
+    },
+    getDetails () {
+      this.$get(activityService.GET_DETAILS, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.data.activity.countDown.toString() > 0) {
+          this.countDownstatus = false
+          this.countdownTime = res.data.activity.countDown.toString()
+        } else {
+          this.countDownstatus = true
+          this.countdownTime = '0'
+        }
+        this.title = res.data.activity.title
+        this.tagList = res.data.activity.tags
+        this.startTime = res.data.activity.startTime
+        this.poster = res.data.activity.imgUrl
+        this.dataPrepare = res.data.prepare
+        this.dataBrand = res.data.brand
+        this.dataPromote = res.data.promote
+        this.dataRecord = res.data.record
+        this.isPublished = res.data.activity.published === 'Y'
+        this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
+        this.overdue = this.isOverdue(res.data.activity.endTime)
+        switch (res.data.activity.status) {
+          case ('LIVING'):
+            this.status = '直播'
+            this.statusClass = 'live'
+            break
+          case ('PLAYBACK'):
+            this.status = '回放'
+            this.statusClass = 'record'
+            break
+          case ('FINISH'):
+            this.status = '结束'
+            this.statusClass = 'ended'
+            break
+          case ('PREPARE'):
+            this.status = '预约'
+            this.statusClass = 'preview'
+            break
+        }
+        this.getStep() // 获取当前阶段
+      })
+    },
+    publishActive () { // 发布活动
+      this.$messageBox({
+        header: '提示',
+        width: '200',
+        content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
+        cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
+        confirmText: '确认发布',
+        handleClick: (e) => {
+          console.log(e)
+          if (e.action === 'cancel') {
+            this.isPublished = false
+          } else if (e.action === 'confirm') {
+            // this.status = 0
+            this.publish()
+          }
+        }
+      })
+    },
+    offlineActive () { // 下线活动
+      if (this.status === '直播') {
+        this.$toast({
+          content: '直播中无法下线活动',
+          position: 'center'
+        })
+        this.isPublished = true
+        return false
+      }
+      this.$messageBox({
+        header: '提示',
+        width: '200',
+        content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
+        cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
+        confirmText: '确认下线',
+        handleClick: (e) => {
+          console.log(e)
+          if (e.action === 'cancel') {
+            this.isPublished = true
+          } else if (e.action === 'confirm') {
+            this.offline()
+          }
+        }
+      })
+    },
+    switchActive (res) {
+      if (res) {
+        this.publishActive()
+      } else {
+        this.offlineActive()
+      }
+    },
+    publish () {
+      this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.$toast({
+          content: '活动发布成功',
+          position: 'center'
+        })
+        this.isPublished = true
+        this.dataPromote[0].desc = 'PREPARE'
+        this.currStep = 'isPublish'
+      })
+    },
+    offline () {
+      this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.$toast({
+          content: '活动下线成功',
+          position: 'center'
+        })
+        this.isPublished = false
+        if (this.currStep.search('live') === -1) {
+          this.currStep = 'notPublish'
+        }
+      })
+    },
+    getStep () { // 获取当前活动阶段
+      switch (this.status) {
+        case '预约':
+          if (this.isPublished) {
+            this.currStep = 'isPublish'
+            console.log('发布页面后，直播未开始')
+          } else {
+            this.currStep = 'notPublish'
+            console.log('活动未发布')
+          }
+          break
+        case '直播':
+          this.currStep = 'isPublish live'
+          console.log('直播中')
+          break
+        case '结束':
+          this.currStep = 'isPublish live end'
+          console.log('直播结束，但未设置回放')
+          break
+        case '回放':
+          this.currStep = 'isPublish live end playback'
+          console.log('直播结束，已设置回放')
+          break
+      }
+    },
+    copy (dom) { // 复制功能
+      let inp = document.getElementById(dom)
+      inp.select()
+      document.execCommand('Copy')
+      this.$toast({
+        content: '复制成功',
+        position: 'center'
+      })
+    },
+    timeOut () {
+      console.log('倒计时结束')
+      this.countDownstatus = true
+    }
+  },
+  components: {
+    processCard,
+    comCountdown
   }
+
+}
 </script>
 
 <style lang='scss' scoped>
 @import 'assets/css/variable.scss';
 @import '~assets/css/mixin.scss';
-
 .detail-wrap {
   border-radius: 5px;
   overflow: hidden;
@@ -723,12 +882,10 @@
   min-width: 1019px;
   color: #222;
   transition: width 0.2s;
-
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
   }
-
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
@@ -757,10 +914,12 @@
     }
     .process .bottom > div ol {
       width: 140px;
+      margin: 0 auto;
     }
     .process .bottom > div {
       margin: 10px 14px;
       // margin: 10px 31px;
+      width: 140px;
     }
     .middle {
       width: 375px;
@@ -769,13 +928,25 @@
       }
     }
   }
+  .in-countdown {
+    p {
+      text-align: center;
+      margin: 20px 0;
+      &:nth-of-type(3) {
+        color: $color-error;
+        font-size: 20px;
+      }
+    }
+  }
 }
+
 .block {
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
   border: 1px solid rgba(226, 226, 226, 1);
   margin-top: 50px;
 }
+
 .process {
   padding: 30px 0;
   .top {
@@ -793,10 +964,19 @@
       border-radius: 500px;
       background-color: rgba(211, 215, 255, 1);
       position: relative;
-      background-image: url('~assets/image/auto_wechat.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: center;
+      i {
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        top: 50%;
+        left: 50%;
+        margin-top: -22px;
+        margin-left: -22px;
+        background-image: url('~assets/image/auto_wechat.png');
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
       &:before {
         content: '';
         width: 95px;
@@ -843,20 +1023,53 @@
           display: none;
         }
       }
-      &.prompt dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.step {
+        dt i {
+          background-image: url('~assets/image/detail/detail_prepare_hover.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_prepare.png');
+        }
       }
-      &.brand dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.prompt {
+        dt i {
+          background-image: url('~assets/image/detail/detail_promote_hover.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_promote.png');
+        }
       }
-      &.live dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.brand {
+        dt i {
+          background-image: url('~assets/image/detail/detail_brand_hover.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_brand.png');
+        }
       }
-      &.record dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.live {
+        dt i {
+          background-image: url('~assets/image/detail/detail_live_hover.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_live.png');
+        }
       }
-      &.statics dt {
-        background-image: url('~assets/image/auto_wechat.png');
+      &.record {
+        dt i {
+          background-image: url('~assets/image/detail/detail_record_hover.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_record.png');
+        }
+      }
+      &.statics {
+        dt i {
+          background-image: url('~assets/image/detail/detail_static_hover.png');
+        }
+        &.highlight dt i {
+          background-image: url('~assets/image/detail/detail_static.png');
+        }
       }
     }
   }
@@ -874,23 +1087,31 @@
       background: rgba(239, 239, 239, 0.7);
       border-radius: 18px;
       border: 1px solid rgba(177, 177, 177, 1);
+      cursor: pointer;
+      &:hover {
+        background: rgba(255, 208, 33, 0.7);
+      }
     }
   }
 }
+
 .desc {
   padding-top: 20px;
 }
+
 .left {
   float: left;
   margin-right: 20px;
   position: relative;
-  img {
+  .poster {
     display: inline-block;
     width: 300px;
     height: 169px;
     border-radius: 5px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
-  .state {
+  .status {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -903,27 +1124,25 @@
     font-size: 12px;
     color: #fff;
   }
-
   // .live {
   //   color: red;
   //   border-color: red;
   // }
-
   // .preview {
   //   color: blue;
   //   border-color: blue;
   // }
-
   // .record {
   //   color: green;
   //   border-color: green;
   // }
 }
+
 .middle {
   float: left;
   width: 640px;
   p {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
   .title {
     font-size: 22px;
@@ -935,12 +1154,20 @@
       font-size: 14px;
       background: rgba(239, 239, 239, 1);
       border-radius: 10px;
+      position: relative;
+      padding-right: 28px;
       i {
         cursor: pointer;
         display: inline-block;
-        width: 10px;
-        height: 10px;
-        background: url('~assets/image/icon_activity.png') no-repeat center;
+        width: 20px;
+        height: 20px;
+        background: url('~assets/image/detail/roomid.png') no-repeat center;
+        background-size: contain;
+        position: absolute;
+        top: 0px;
+        &:hover {
+          background-image: url('~assets/image/detail/roomid_hover.png');
+        }
       }
     }
   }
@@ -956,55 +1183,174 @@
       display: inline-block;
       margin: 0 3px;
     }
-  }
-  ol {
-    margin-top: 30px;
-    li {
-      cursor: pointer;
-      color: $color-font-sub;
-      font-size: 14px;
+    &.tool {
       position: relative;
-      float: left;
-      margin-right: 40px;
-      height: 20px;
-      line-height: 20px;
-      padding-left: 29px;
-      &::before {
-        content: '';
-        width: 1px;
-        height: 16px;
-        background: rgba(216, 216, 216, 1);
+      .link-box {
+        padding: 20px 0px;
+        position: relative;
+        top: 1px;
+        padding-left: 10px;
+        cursor: pointer;
+        i {
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          background: url('~assets/image/detail/link.png') no-repeat center;
+          background-size: contain;
+          position: relative;
+          top: 5px;
+          margin-right: 5px;
+        }
+        &:hover {
+          color: $color-blue;
+          i {
+            background-image: url('~assets/image/detail/link_hover.png');
+          }
+          ul {
+            color: #555;
+            li {
+              i {
+                width: 24px;
+                height: 24px;
+                left: 0;
+                top: 7px;
+              }
+              &:hover {
+                color: $color-blue;
+              }
+              i.icon-site {
+                background-image: url('~assets/image/detail/icon-site.png');
+              }
+              i.icon-guide {
+                background-image: url('~assets/image/detail/icon-guide.png');
+              }
+              &:hover i.icon-site {
+                background-image: url('~assets/image/detail/icon-site-hover.png');
+              }
+              &:hover i.icon-guide {
+                background-image: url('~assets/image/detail/icon-guide-hover.png');
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  // ol {
+  //   margin-top: 30px;
+  //   li {
+  //     cursor: pointer;
+  //     color: $color-font-sub;
+  //     font-size: 14px;
+  //     position: relative;
+  //     float: left;
+  //     margin-right: 40px;
+  //     height: 20px;
+  //     line-height: 20px;
+  //     padding-left: 29px;
+  //     &::before {
+  //       content: '';
+  //       width: 1px;
+  //       height: 16px;
+  //       background: rgba(216, 216, 216, 1);
+  //       position: absolute;
+  //       top: 0;
+  //       right: -16px;
+  //     }
+  //     i {
+  //       width: 20px;
+  //       height: 20px;
+  //       display: inline-block;
+  //       background: url('~assets/image/detail/page.png') no-repeat center;
+  //       background-size: contain;
+  //       position: absolute;
+  //       left: 0;
+  //     }
+  //     &.copy i {
+  //       background-image: url('~assets/image/detail/link.png');
+  //     }
+  //     &.offline {
+  //       &::before {
+  //         content: '';
+  //         display: none;
+  //       }
+  //       i {
+  //         bottom: 3px;
+  //         background-image: url('~assets/image/detail/offline.png');
+  //       }
+  //     }
+  //     &:hover {
+  //       color: $color-blue;
+  //       i {
+  //         background-image: url('~assets/image/detail/page_hover.png');
+  //       }
+  //       &.copy i {
+  //         background-image: url('~assets/image/detail/link_hover.png');
+  //       }
+  //       &.offline i {
+  //         background-image: url('~assets/image/detail/offline_hover.png');
+  //       }
+  //     }
+  //   }
+  // }
+  ul {
+    position: absolute;
+    width: 240px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    top: 40px;
+    left: -60px;
+    z-index: 20;
+    li {
+      height: 50px;
+      line-height: 50px;
+      position: relative;
+      cursor: pointer;
+      margin: 3px 0;
+      padding: 0 17px;
+      a {
         position: absolute;
-        top: 0;
-        right: -16px;
+        left: 125px;
+        top: 50%;
+        margin-top: -26px;
+        .el-button {
+          position: static;
+          padding: 7px 10px;
+        }
       }
       i {
         width: 20px;
         height: 20px;
         display: inline-block;
-        background: url('~assets/image/icon_activity.png') no-repeat center;
+        background: url('~assets/image/detail/page.png') no-repeat center;
         background-size: contain;
         position: absolute;
-        left: 0;
+        left: 17px;
+        top: 50%;
+        margin-top: -10px;
       }
-      &.copy i {
-        background-image: url('~assets/image/icon_activity.png');
+      .el-button {
+        padding: 7px 10px;
+        position: absolute;
+        top: 50%;
+        margin-top: -14px;
+        right: 17px;
       }
-      &.offline {
-        &::before {
-          content: '';
-          display: none;
-        }
-        i {
-          background-image: url('~assets/image/icon_activity.png');
-        }
+      &:hover {
+        background: rgba(233, 235, 255, 1);
+      }
+      &.isSwitch a .el-button {
+        padding: 7px 35px;
       }
     }
   }
 }
+
 .left {
   float: left;
 }
+
 .right {
   float: right;
   text-align: center;
@@ -1020,6 +1366,7 @@
     border-radius: 1px;
   }
   .count-box {
+    overflow: hidden;
     margin: 13px 0 36px 0;
     li {
       float: left;
@@ -1046,8 +1393,10 @@
     text-align: center;
   }
 }
+
 .fun-card {
 }
+
 .block-separte {
   margin-top: 40px;
   margin-bottom: 10px;
@@ -1065,6 +1414,7 @@
     background: rgba(255, 208, 33, 1);
   }
 }
+
 .card-list .item {
   cursor: pointer;
   float: left;
@@ -1124,39 +1474,54 @@
     }
   }
 }
+
 .item.base .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  width: 80px;
+  background-image: url('~assets/image/detail/base.png');
 }
+
 .item.apply .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/apply.png');
 }
+
 .item.wram .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/wramup.png');
 }
+
 .item.automaze .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/base.png');
 }
+
 .item.mail .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/mail_invite.png');
 }
+
 .item.message .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/msg.png');
 }
+
 .item.wechat .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/wechat.png');
 }
+
 .item.site .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/site.png');
 }
+
 .item.guide .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  background-image: url('~assets/image/detail/guide.png');
 }
+
 .item.watch .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  width: 80px;
+  background-image: url('~assets/image/detail/watch.png');
 }
+
 .item.record .card .pic {
-  background-image: url('~assets/image/auto_msg.png');
+  width: 80px;
+  background-image: url('~assets/image/detail/record.png');
 }
+
 .btm {
   width: 100%;
   height: 40px;

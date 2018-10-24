@@ -19,248 +19,299 @@
           欢迎登录微吼直播
         </p>
         <ul class="v-tabs clearfix">
-          <li v-on:click="changeFunction('账号登录')" :class="{active: isActive}">账号登录</li>
+          <li v-on:click="changeFunction('账号登录')"
+              :class="{active: isActive}">账号登录
+          </li>
           <span>|</span>
-          <li v-on:click="changeFunction('手机登录')" :class="{active: !isActive}">手机登录</li>
+          <li v-on:click="changeFunction('手机登录')"
+              :class="{active: !isActive}">手机登录
+          </li>
         </ul>
-        <div class="v-account" v-show="isAccount">
-          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="userName" placeholder="用户名/邮箱/手机号" :maxLength="30" @inputFocus="inputFocus()"></com-input>
-          <com-input :inputType="type" :isPassword="true" :inputValue.sync="passWord" v-model="passWord" @changePassword="change($event)" placeholder="密码" :maxLength="30" @inputFocus="inputFocus()"></com-input>
-          <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:accountOpacity}">
+        <div class="v-account"
+             v-show="isAccount">
+          <com-input inputType="text"
+                     :isPassword="false"
+                     value=""
+                     :inputValue.sync="userName"
+                     placeholder="用户名/邮箱/手机号"
+                     :maxLength="30"
+                     @inputFocus="inputFocus()"></com-input>
+          <com-input :inputType="type"
+                     :isPassword="true"
+                     :inputValue.sync="passWord"
+                     v-model="passWord"
+                     @changePassword="change($event)"
+                     placeholder="密码"
+                     :maxLength="30"
+                     @inputFocus="inputFocus()"></com-input>
+          <div class="input-form v-label"
+               style="margin-top:-28px;"
+               :style="{opacity:accountOpacity}">
             <p class="v-error">{{accountError}}</p>
           </div>
-          <div class="input-form v-forget" style="margin-top: 5px;">
-            <a href="/forgot" class="fr clickTag">忘记密码</a>
+          <div class="input-form v-forget"
+               style="margin-top: 5px;">
+            <a href="/forgot"
+               class="fr clickTag">忘记密码</a>
             <template>
               <el-checkbox v-model="remember">自动登录</el-checkbox>
             </template>
           </div>
-          <button class="primary-button" @click="accountSubmit">提交</button>
+          <button class="primary-button"
+                  @click="accountSubmit">提交
+          </button>
         </div>
-        <div class="v-mobile" v-show="!isAccount">
-          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="phone" placeholder="手机号"  @changeInput="checkPhone" :maxLength="11" @inputFocus="inputFocus()"></com-input>
+        <div class="v-mobile"
+             v-show="!isAccount">
+          <com-input inputType="text"
+                     :isPassword="false"
+                     value=""
+                     :inputValue.sync="phone"
+                     placeholder="手机号"
+                     @changeInput="checkPhone"
+                     :maxLength="11"
+                     @inputFocus="inputFocus()"></com-input>
           <div id="captcha"></div>
-          <com-input inputType="text" :isPassword="false" value="" :inputValue.sync="code" placeholder="验证码" :maxLength="6" @inputFocus="inputFocus()">
-            <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
+          <com-input inputType="text"
+                     :isPassword="false"
+                     value=""
+                     :inputValue.sync="code"
+                     placeholder="验证码"
+                     :maxLength="6"
+                     @inputFocus="inputFocus()">
+            <a href="javascript:;"
+               class="v-getcode"
+               :class="{prohibit:isProhibit}"
+               @click="getCode()">获取验证码<span v-show="isSend"
+                                             class="fr">(<em>{{second}}</em>s)</span></a>
           </com-input>
-          <div class="input-form v-label" style="margin-top:-28px;" :style="{opacity:mobileOpacity}">
-				  	<p class="v-error">{{mobileError}}</p>
-				  </div>
-          <button class="primary-button" @click="phoneSubmit">提交</button>
+          <div class="input-form v-label"
+               style="margin-top:-28px;"
+               :style="{opacity:mobileOpacity}">
+            <p class="v-error">{{mobileError}}</p>
+          </div>
+          <button class="primary-button"
+                  @click="phoneSubmit">提交
+          </button>
         </div>
       </div>
       <div class="v-info">
-        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a
+        href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import MyInput from './login-input'
-  import loginManage from 'src/api/login-manage'
-  import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  import {mapMutations, mapState} from 'vuex'
-  import * as types from 'src/store/mutation-types'
-  import account from 'src/api/account-manage'
-  export default {
-    data () {
-      return {
-        isAccount: false,
-        userName: '',
-        passWord: '',
-        phone: '',
-        phoneStatus: false,
-        code: '',
-        type: 'password',
-        key: '',
-        isProhibit: true,
-        isSend: false,
-        second: 60,
-        timerr: '',
-        phoneKey: '',
-        isImg: false,
-        cap: null,
-        accountOpacity: 0,
-        mobileOpacity: 0,
-        accountError: '',
-        mobileError: '',
-        remember: false,
-        isActive: false
+import MyInput from './login-input'
+import userService from 'src/api/user-service'
+import { mapMutations, mapState } from 'vuex'
+import * as types from 'src/store/mutation-types'
+
+export default {
+  data () {
+    return {
+      isAccount: false,
+      userName: '',
+      passWord: '',
+      phone: '',
+      phoneStatus: false,
+      code: '',
+      type: 'password',
+      key: '',
+      isProhibit: true,
+      isSend: false,
+      second: 60,
+      timerr: '',
+      phoneKey: '',
+      isImg: false,
+      cap: null,
+      accountOpacity: 0,
+      mobileOpacity: 0,
+      accountError: '',
+      mobileError: '',
+      remember: false,
+      isActive: false,
+      isGoMaster: false
+    }
+  },
+  components: {
+    'com-input': MyInput
+  },
+  computed: mapState('login', {
+    isLogin: state => state.isLogin,
+    accountInfo: state => state.accountInfo
+  }),
+  created () {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
+      let _self = this
+      this.key = res.data
+      window.initNECaptcha({
+        captchaId: _self.key,
+        element: '#captcha',
+        mode: 'float',
+        width: 260,
+        onReady: function (instance) {
+        },
+        onVerify: function (err, data) {
+          if (data) {
+            _self.phoneKey = data.validate
+            _self.isImg = true
+          }
+          if (err) {
+            console.log(err)
+          }
+        },
+        onError: function () {
+        }
+      }, function onload (instance) {
+        _self.cap = instance
+      })
+    }).catch(err => {
+      console.log(err.msg)
+    })
+  },
+  destroyed () {
+    clearInterval(this.timerr)
+  },
+  mounted () {
+  },
+  watch: {
+    phoneStatus: function (val) {
+      this.isGetCodePermission(true)
+    },
+    isImg: function (val) {
+      this.isGetCodePermission()
+    }
+  },
+  methods: {
+    ...mapMutations('login', {
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
+    changeFunction (item) {
+      if (item === '账号登录') {
+        this.isAccount = true
+        this.isActive = true
+      } else {
+        this.isAccount = false
+        this.isActive = false
       }
     },
-    components: {
-      'com-input': MyInput
+    change (type) {
+      this.type = type
     },
-    computed: mapState('login', {
-      isLogin: state => state.isLogin
-    }),
-    created () {
-      let data = {}
-      identifyingcodeManage.getCodeId(data).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
+    accountSubmit () {
+      this.checkAccountForm()
+      if (this.accountError) {
+        return false
+      }
+      let data = {
+        'account': this.userName,
+        'password': this.passWord,
+        'remember': this.remember ? 1 : 0
+      }
+      this.$config({ handlers: true }).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
+        sessionStorage.setItem('isLogin', true)
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          this.setAccountInfo(res.data)
+        })
+        this.setIsLogin(1)
+        let isGoMaster = sessionStorage.getItem('isGoMaster')
+        if (isGoMaster) {
+          this.$router.go(-1)
         } else {
-          let _self = this
-          this.key = res.data
-          window.initNECaptcha({
-            captchaId: _self.key,
-            element: '#captcha',
-            mode: 'float',
-            width: 260,
-            onReady: function (instance) {},
-            onVerify: function (err, data) {
-              if (data) {
-                _self.phoneKey = data.validate
-                _self.isImg = true
-              }
-              if (err) {
-                console.log(err)
-              }
-            },
-            onError: function () {}
-          }, function onload (instance) {
-            _self.cap = instance
-          })
+          sessionStorage.removeItem('isGoMaster')
+          this.$router.replace('/liveMager/list')
         }
+      }).catch((err) => {
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }, 1000)
+        this.accountError = err.msg
+        this.accountOpacity = 1
       })
     },
-    destroyed () {
-      clearInterval(this.timerr)
-    },
-    mounted () {},
-    watch: {
-      phoneStatus: function (val) {
-        this.isGetCodePermission(true)
-      },
-      isImg: function (val) {
-        this.isGetCodePermission()
+    phoneSubmit () {
+      this.checkMobileForm()
+      if (this.mobileError) {
+        return false
       }
-    },
-    methods: {
-      ...mapMutations('login', {
-        setIsLogin: types.UPDATE_IS_LOGIN
-      }),
-      changeFunction (item) {
-        if (item === '账号登录') {
-          this.isAccount = true
-          this.isActive = true
+      let data = {
+        'mobile': this.phone,
+        'code': this.code,
+        'remember': 0
+      }
+      this.$config({ handlers: true }).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
+        sessionStorage.setItem('isLogin', true)
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          this.setAccountInfo(res.data)
+        })
+        this.setIsLogin(1)
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }, 1000)
+        let isGoMaster = sessionStorage.getItem('isGoMaster')
+        if (isGoMaster) {
+          this.$router.go(-1)
         } else {
-          this.isAccount = false
-          this.isActive = false
+          sessionStorage.removeItem('isGoMaster')
+          this.$router.replace('/liveMager/list')
         }
-      },
-      change (type) {
-        this.type = type
-      },
-      accountSubmit () {
-        this.checkAccountForm()
-        if (this.accountError) {
-          return false
-        }
-        let data = {
-          'account': this.userName,
-          'password': this.passWord,
-          'remember': this.remember ? 1 : 0
-        }
-        loginManage.loginByAccount(data).then((res) => {
-          if (res.code !== 200) {
-            this.isSend = true
-            this.isProhibit = true
-            clearInterval(this.timerr)
-            this.timerr = setInterval(() => {
-              this.second--
-              if (this.second <= 0) {
-                clearInterval(this.timerr)
-                this.isSend = false
-                this.isProhibit = true
-                this.second = 60
-                this.isImg = false
-                this.phoneKey = ''
-                this.cap.refresh()
-              }
-            }, 1000)
-            this.accountError = res.msg
-            this.accountOpacity = 1
-          } else {
-            sessionStorage.setItem('isLogin', true)
-            account.getAccount({}).then((res) => {
-              if (res.code !== 200) {
-              } else {
-                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-              }
-            })
-            this.setIsLogin(1)
-            this.$router.replace('/setAccount')
-          }
-        })
-      },
-      phoneSubmit () {
-        this.checkMobileForm()
-        if (this.mobileError) {
-          return false
-        }
-        let data = {
-          'mobile': this.phone,
-          'code': this.code,
-          'remember': 0
-        }
-        loginManage.loginByPhone(data).then((res) => {
-          if (res.code !== 200) {
-            this.isSend = false
-            this.isProhibit = true
-            this.second = 60
-            this.isImg = false
-            this.phoneKey = ''
-            this.cap.refresh()
-            this.mobileOpacity = 1
-          } else {
-            sessionStorage.setItem('isLogin', true)
-            account.getAccount({}).then((res) => {
-              if (res.code !== 200) {
-              } else {
-                sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-              }
-            })
-            this.setIsLogin(1)
-            this.isSend = true
-            this.isProhibit = true
-            clearInterval(this.timerr)
-            this.timerr = setInterval(() => {
-              this.second--
-              if (this.second <= 0) {
-                clearInterval(this.timerr)
-                this.isSend = false
-                this.isProhibit = true
-                this.second = 60
-                this.isImg = false
-                this.phoneKey = ''
-                this.cap.refresh()
-              }
-            }, 1000)
-            this.$router.replace('/setAccount')
-          }
-        })
-      },
-      getCode () {
-        // 获取验证码
-        if (this.isProhibit) {
-          return false
-        }
+      }).catch((err) => {
+        this.mobileError = err.msg
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
+        this.mobileOpacity = 1
+      })
+    },
+    getCode () {
+      // 获取验证码
+      if (this.isProhibit) {
+        return false
+      }
 
-        let data = {
-          'mobile': this.phone,
-          'type': 'BUSINESS_USER_LOGIN',
-          captcha: this.phoneKey
-        }
-        identifyingcodeManage.getCode(data).then((res) => {
-          if (res.code !== 200) {
-            if (res.code === 10050) {
-              this.mobileError = '验证码输入过于频繁'
-            } else {
-              this.mobileError = res.msg
-            }
-            this.mobileOpacity = 1
+      let data = {
+        'mobile': this.phone,
+        'type': 'BUSINESS_USER_LOGIN',
+        captcha: this.phoneKey
+      }
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
             clearInterval(this.timerr)
             this.isSend = false
             this.isProhibit = true
@@ -268,108 +319,108 @@
             this.isImg = false
             this.phoneKey = ''
             this.cap.refresh()
-          } else {
-            this.isSend = true
-            this.isProhibit = true
-            clearInterval(this.timerr)
-            this.timerr = setInterval(() => {
-              this.second--
-              if (this.second <= 0) {
-                clearInterval(this.timerr)
-                this.isSend = false
-                this.isProhibit = true
-                this.second = 60
-                this.isImg = false
-                this.phoneKey = ''
-                this.cap.refresh()
-              }
-            }, 1000)
           }
-        })
-      },
-      isGetCodePermission (val) {
-        if (this.isImg && this.phoneStatus) {
+        }, 1000)
+      }).catch(err => {
+        if (err.code === 10050) {
+          this.mobileError = '验证码输入过于频繁'
+        } else {
+          this.mobileError = err.msg
+        }
+        this.mobileOpacity = 1
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
+      })
+    },
+    isGetCodePermission (val) {
+      if (this.isImg && this.phoneStatus) {
+        this.isProhibit = false
+        if (this.second > 0) {
+          this.isSend = false
           this.isProhibit = false
-          if (this.second > 0) {
-            this.isSend = false
-            this.isProhibit = false
-            this.second = 60
-            this.mobileOpacity = 1
-            clearInterval(this.timerr)
-            if (val) {
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
+          this.second = 60
+          this.mobileOpacity = 1
+          clearInterval(this.timerr)
+          if (val) {
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
           }
-        } else {
-          this.isProhibit = true
         }
-      },
-      checkPhone (param) {
-        let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-        if (reg.test(parseInt(param))) {
-          this.phoneStatus = true
-        } else {
-          this.phoneStatus = false
-        }
-      },
-      checkAccountForm: function (e) {
-        if (!this.userName) {
-          this.accountError = '请输入用户名/手机号/邮箱'
-          this.accountOpacity = 1
-          return false
-        }
-        if (!this.passWord) {
-          this.accountError = '请输入密码'
-          this.accountOpacity = 1
-          return false
-        }
-        this.accountError = ''
-        this.accountOpacity = 0
-
-        // else if (!this.validEmail(this.email)) {
-        //   this.errors.push('Valid email required.')
-        // }
-      },
-      checkMobileForm: function (e) {
-        if (!this.phone) {
-          this.mobileError = '请输入手机号'
-          this.mobileOpacity = 1
-          return false
-        } else if (!this.validPhone(this.phone)) {
-          this.mobileError = '请输入正确的手机号'
-          this.mobileOpacity = 1
-          return false
-        }
-        if (!this.code) {
-          this.mobileError = '请输入验证码'
-          this.mobileOpacity = 1
-          return false
-        }
-        this.mobileError = ''
-        this.mobileOpacity = 0
-      },
-      inputFocus: function () {
-        this.accountError = ''
-        this.accountOpacity = 0
-        this.mobileError = ''
-        this.mobileOpacity = 0
-      },
-      validEmail: function (email) {
-        var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-        return re.test(email)
-      },
-      validPhone: function (phone) {
-        var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-        return re.test(phone)
+      } else {
+        this.isProhibit = true
       }
+    },
+    checkPhone (param) {
+      let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      if (reg.test(parseInt(param))) {
+        this.phoneStatus = true
+      } else {
+        this.phoneStatus = false
+      }
+    },
+    checkAccountForm: function (e) {
+      if (!this.userName) {
+        this.accountError = '请输入用户名/手机号/邮箱'
+        this.accountOpacity = 1
+        return false
+      }
+      if (!this.passWord) {
+        this.accountError = '请输入密码'
+        this.accountOpacity = 1
+        return false
+      }
+      this.accountError = ''
+      this.accountOpacity = 0
+
+      // else if (!this.validEmail(this.email)) {
+      //   this.errors.push('Valid email required.')
+      // }
+    },
+    checkMobileForm: function (e) {
+      if (!this.phone) {
+        this.mobileError = '请输入手机号'
+        this.mobileOpacity = 1
+        return false
+      } else if (!this.validPhone(this.phone)) {
+        this.mobileError = '请输入正确的手机号'
+        this.mobileOpacity = 1
+        return false
+      }
+      if (!this.code) {
+        this.mobileError = '请输入验证码'
+        this.mobileOpacity = 1
+        return false
+      }
+      this.mobileError = ''
+      this.mobileOpacity = 0
+    },
+    inputFocus: function () {
+      this.accountError = ''
+      this.accountOpacity = 0
+      this.mobileError = ''
+      this.mobileOpacity = 0
+    },
+    validEmail: function (email) {
+      var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+      return re.test(email)
+    },
+    validPhone: function (phone) {
+      var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      return re.test(phone)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
+
 .login-container /deep/ {
   height: 100%;
   min-height: 660px;
@@ -435,7 +486,7 @@
       bottom: 0;
       margin: auto 0 auto -170px;
       max-height: 475px;
-      text-align: left;
+      text-aligun: left;
       font-size: 22px;
     }
     .v-title {
@@ -455,6 +506,7 @@
         font-size: 22px;
         color: #333333;
         margin-right: 10px;
+        cursor: pointer;
         &:last-child {
           margin-left: 10px;
         }
@@ -507,10 +559,18 @@
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {
-        background-color: #dedede;
+        background-color: #ffd021;
+        opacity: 0.8;
         &:hover {
-          background-color: #dedede;
+          background-color: #ffd021;
+          opacity: 0.8;
         }
+      }
+      &:hover {
+        background-color: #fdd43f;
+      }
+      &:active {
+        background-color: #eec11a;
       }
       .fr {
         margin-left: 6px;
@@ -534,6 +594,7 @@
     }
   }
 }
+
 @media screen and (max-width: 1200px) {
   .login-container {
     min-width: auto;

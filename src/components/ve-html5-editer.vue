@@ -60,11 +60,27 @@
 </div>`
   const editor = new VueHtml5Editor({
     showModuleName: true,
+    icons: {
+      text: 'fa iconfont icon-qianbi',
+      color: 'fa iconfont icon-huabi',
+      font: 'fa iconfont icon-zifu',
+      align: 'fa iconfont icon-paiban',
+      list: 'fa iconfont icon-pailie',
+      link: 'fa iconfont icon-lianjie',
+      unlink: 'fa iconfont icon-duankailianjie',
+      tabulation: 'fa iconfont icon-biaoge',
+      image: 'fa iconfont icon-tupian',
+      hr: 'fa iconfont icon-xiahuaxian',
+      eraser: 'fa iconfont icon-xiangpi',
+      undo: 'fa iconfont icon-xuanzhuan',
+      'full-screen': 'fa iconfont icon-maodian',
+      info: 'fa iconfont icon-biaoji'
+    },
     modules: [
       {
         // custom module with dashboard.html
         name: 'colorEx',
-        icon: 'fa fa-paint-brush',
+        icon: 'fa iconfont icon-huabi',
         i18n: 'color',
         dashboard: {
           template: colorTemplate,
@@ -91,7 +107,7 @@
       {
         // custom module with dashboard.html
         name: 'fontEx',
-        icon: 'fa fa-font',
+        icon: 'fa iconfont icon-zifu',
         i18n: 'font',
         dashboard: {
           template: fontTemplate,
@@ -156,6 +172,9 @@
         if (json.code !== 200) {
           console.error(json.msg)
         } else {
+          if (json.data.host.indexOf('http') !== 0) {
+            return 'https://' + json.data.host + '/' + json.data.name
+          }
           return json.data.host + '/' + json.data.name
         }
       },
@@ -174,7 +193,7 @@
       'list',
       'link',
       'unlink',
-      'tabulation',
+      // 'tabulation',
       'hr',
       'eraser',
       'undo',
@@ -230,7 +249,7 @@
 
   export default {
     name: 've-html5-editer',
-    components: {editor},
+    components: { editor },
     data () {
       return {
         showModuleName: false,
@@ -273,10 +292,27 @@
 </script>
 
 <style lang="scss">
-.html-editer {
-  min-width: 480px;
-  .content {
-    max-height: 560px;
+  .html-editer{
+    min-width: 480px;
+    i {
+      font-style: italic;
+    }
+    .content {
+      max-height: 560px;
+    }
+    a {
+      text-decoration: underline;
+      &:hover {
+        color: #5D6AFE;
+      }
+      &:active {
+        color: #4350E4;
+      }
+    }
+    .iconfont {
+      font-size: 18px;
+      width: auto !important;
+      height: auto !important;
+    }
   }
-}
 </style>

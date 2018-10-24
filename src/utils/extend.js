@@ -28,12 +28,12 @@ String.prototype.gbLength = function () {
   var blen = 0
   for (let i = 0; i < l; i++) {
     if ((this.charCodeAt(i) & 0xff00) !== 0) {
-      blen += 2
-    } else {
       blen += 1
+    } else {
+      blen += 0.5
     }
   }
-  return blen
+  return Math.ceil(blen)
 }
 
 String.prototype.gbIndex = function (length) {
@@ -42,9 +42,9 @@ String.prototype.gbIndex = function (length) {
   let index = 0
   for (let i = 0; i < l; i++) {
     if ((this.charCodeAt(i) & 0xff00) !== 0) {
-      blen += 2
-    } else {
       blen += 1
+    } else {
+      blen += 0.5
     }
     if (blen === length) {
       index = i
@@ -75,4 +75,17 @@ String.prototype.copyClipboard = function (callBack) {
     clearTimeout(lt)
     document.body.removeChild(textarea)
   }, 500)
+}
+
+String.prototype.padStart = function (num, str) {
+  var s = this
+  if (this.length >= num) {
+    return s.substring(0, num)
+  } else {
+    var n = num - this.length
+    for (var i = 0; i < n; i++) {
+      s = str + s
+    }
+    return s
+  }
 }

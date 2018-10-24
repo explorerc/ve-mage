@@ -6,95 +6,141 @@
     <div class="v-content">
       <div class="v-set clearfix">
         <div class="v-edit pull-left">
-          <div class="input-form v-label clearfix" >
+          <div class="input-form v-label clearfix">
             <p class="v-info-label pull-left">
               观看条件：
             </p>
-            <p class="v-info pull-left" style="margin-top: 6px;">
-              {{viewCondition === 'APPOINT'? '报名':'预约'}}
+            <p class="v-info pull-left"
+               style="margin-top: 6px;">
+              {{viewCondition === 'APPOINT'? '报名':'无限制'}}
             </p>
           </div>
-          <div class="input-form v-label clearfix" >
+          <div class="input-form v-label clearfix">
             <p class="v-info-label pull-left">
               引导标题：
             </p>
-            <p class="v-info pull-left">
-              <com-input :value.sync="title" placeholder="标题" :max-length="15" ></com-input>
+            <p class="v-info pull-left"
+               @click="canPass = false">
+              <com-input :value.sync="title"
+                         placeholder="标题"
+                         :max-length="20"></com-input>
             </p>
           </div>
-          <div class="input-form v-label clearfix" >
+          <div class="input-form v-label clearfix">
             <p class="v-info-label pull-left">
               引导图片：
             </p>
-            <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M" accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
+                       accept="png|jpg|jpeg"
+                       :defaultImg="defaultImg"
+                       :fileSize="2048"
+                       :errorMsg="uploadImgErrorMsg"
+                       @error="uploadError"
+                       @success="uploadImgSuccess"></ve-upload>
           </div>
-          <div class="input-form v-label clearfix" >
+          <div class="input-form v-label clearfix">
             <p class="v-info-label pull-left">
               辅助信息：
             </p>
-            <p class="v-info pull-left" style="width: 350px; margin-top: 10px;">
-              <el-radio v-model="showType" label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
-              <el-radio v-model="showType" label='DESCRIPTION'>显示直播简介</el-radio>
-              <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="description" :maxlength=50>
-              </el-input>
+            <p class="v-info pull-left"
+               style="width: 350px; margin-top: 10px;"
+               @click='canPass = false'>
+              <el-radio v-model="showType"
+                        label='DESCRIPTION'>显示直播简介</el-radio>
+              <el-radio v-model="showType"
+                        label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
+              <com-input type="textarea"
+                         :value.sync="description"
+                         placeholder="请输入简介"
+                         :max-length="50"></com-input>
             </p>
           </div>
         </div>
         <div class="v-show pull-right">
-          <com-tabs :value.sync="tabValue" >
-            <com-tab label="手机预览" :index="1" class="clearfix">
+          <com-tabs :value.sync="tabValue">
+            <com-tab label="手机预览"
+                     :index="1"
+                     class="clearfix">
               <div class="v-phone pull-right">
                 <div class="v-img">
-                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                  <template v-if="defaultImg">
+                    <img :src="$imgHost + '/' + imgUrl"
+                         alt="">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/guid.jpg"
+                         alt="">
+                  </template>
                 </div>
                 <div class="v-phone-info">
                   <p class="v-phone-title">
                     {{title}}
                   </p>
                   <div class="v-phone-operation">
-                    <div v-if="showType === 'DESCRIPTION'" class="v-phone-description">
+                    <div v-if="showType === 'DESCRIPTION'"
+                         class="v-phone-description">
                       <p class="v-description">
                         {{description}}
                       </p>
                     </div>
-                    <div v-if="showType === 'COUNTDOWN'" class="v-phone-countdown">
+                    <div v-if="showType === 'COUNTDOWN'"
+                         class="v-phone-countdown">
                       <p class="v-count-title">
                         距离直播开始还有
                       </p>
                       <div class="v-cutdown-content">
-                        <span class="v-red">05</span>天<span class="v-red">23</span>小时<span class="v-red">44</span>分钟<span class="v-red">25</span>秒
+                        <span class="v-red">XX</span>天
+                        <span class="v-red">XX</span>小时
+                        <span class="v-red">XX</span>分钟
+                        <span class="v-red">XX</span>秒
                       </div>
                     </div>
-                    <span href="javascript:;" class="v-phone-enroll">
+                    <span href="javascript:;"
+                          class="v-phone-enroll">
                       {{viewCondition === 'APPOINT'? '报名':'预约'}}
                     </span>
                   </div>
                 </div>
               </div>
             </com-tab>
-            <com-tab label="电脑预览" :index="2" class="clearfix">
+            <com-tab label="电脑预览"
+                     :index="2"
+                     class="clearfix">
               <div class="v-pc  pull-right clearfix">
                 <div class="v-img pull-left">
-                  <img :src="$imgHost + '/' + imgUrl" alt="">
+                  <template v-if="defaultImg">
+                    <img :src="$imgHost + '/' + imgUrl"
+                         alt="">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/guid.jpg"
+                         alt="">
+                  </template>
                 </div>
                 <div class="v-pc-info pull-left">
                   <p class="v-pc-title">
                     {{title}}
                   </p>
-                  <div v-if="showType === 'DESCRIPTION'" class="v-pc-description">
+                  <div v-if="showType === 'DESCRIPTION'"
+                       class="v-pc-description">
                     <p>
                       {{description}}
                     </p>
                   </div>
-                  <div class="v-pc-operation" v-else>
+                  <div class="v-pc-operation"
+                       v-else>
                     <p class="v-count-title">
                       距离直播开始还有
                     </p>
                     <div class="v-cutdown-content">
-                      <span class="v-red">05</span>天<span class="v-red">23</span>小时<span class="v-red">44</span>分钟<span class="v-red">25</span>秒
+                      <span class="v-red">XX</span>天
+                      <span class="v-red">XX</span>小时
+                      <span class="v-red">XX</span>分钟
+                      <span class="v-red">XX</span>秒
                     </div>
                   </div>
-                  <span href="javascript:;" class="v-pc-enroll">
+                  <span href="javascript:;"
+                        class="v-pc-enroll">
                     报名
                   </span>
                 </div>
@@ -103,97 +149,128 @@
           </com-tabs>
         </div>
       </div>
-      <button @click='save' class='primary-button v-share-button'>
+      <button @click='save'
+              class='primary-button v-share-button'>
         保存
       </button>
     </div>
   </div>
 </template>
 <script>
-  import liveGuidedManage from 'src/api/set-live-guided-manage'
-  import VeUpload from 'src/components/ve-upload-image'
-  export default {
-    data () {
-      return {
-        activityId: 0,
-        viewCondition: '', // 观看条件
-        title: '标题', // 引导标题
-        showType: '', // 显示倒计时|显示简介
-        description: '', // 简介
-        tabValue: 1, // 预览页签选择
-        imgUrl: '', // 引导图片
-        uploadImgErrorMsg: ''
+import brandService from 'src/api/brand-service'
+import VeUpload from 'src/components/ve-upload-image'
+import activityService from 'src/api/activity-service'
+
+export default {
+  data () {
+    return {
+      activityId: 0,
+      viewCondition: '', // 观看条件
+      title: '', // 引导标题
+      showType: '', // 显示倒计时|显示简介
+      description: '', // 简介
+      tabValue: 1, // 预览页签选择
+      imgUrl: '', // 引导图片
+      uploadImgErrorMsg: '',
+      canPass: true,
+      published: '' // 直播状态
+    }
+  },
+  components: {
+    VeUpload
+  },
+  computed: {
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+    }
+  },
+  created () {
+    this.activityId = this.$route.params.id
+    let data = {
+      'activityId': this.activityId
+    }
+    if (!this.activityId) {
+      this.$router.go(-1)
+      return
+    }
+    this.$get(activityService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.published = res.data.published
+    })
+    this.$get(brandService.GET_LIVE_GUIDE, data).then(res => {
+      if (res.data) {
+        this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
+        this.title = res.data.title ? res.data.title : ''
+        this.showType = res.data.showType ? res.data.showType : ''
+        this.description = res.data.description ? res.data.description : '' // 60max
+        this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+        this.tabValue = 1
       }
-    },
-    components: {
-      VeUpload
-    },
-    computed: {
-      defaultImg () {
-        return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
-      }
-    },
-    created () {
-      this.activityId = this.$route.params.id
-      let data = {
-        'activityId': this.activityId
-      }
-      if (!this.activityId) {
-        this.$router.go(-1)
-        return
-      }
-      liveGuidedManage.getLiveGuided(data).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
+    })
+  },
+  mounted () {
+  },
+  watch: {
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
         } else {
-          this.viewCondition = res.data.viewCondition ? res.data.viewCondition : ''
-          this.title = res.data.title ? res.data.title : ''
-          this.showType = res.data.showType ? res.data.showType : ''
-          this.description = res.data.description ? res.data.description : '' // 60max
-          this.imgUrl = res.data.imgUrl ? res.data.imgUrl : ''
-          this.tabValue = 1
+          next(false)
         }
-      })
+      }
+    })
+  },
+  methods: {
+    uploadImgSuccess (data) {
+      this.canPass = false
+      this.imgUrl = data.name
     },
-    mounted () {
+    uploadError (data) {
+      this.uploadImgErrorMsg = data.msg
+      this.imgUrl = ''
     },
-    watch: {
-    },
-    methods: {
-      uploadImgSuccess (data) {
-        this.imgUrl = data.name
-      },
-      uploadError (data) {
-        console.log('上传失败:', data)
-      },
-      save () {
-        let data = {
-          'activityId': this.activityId,
-          'title': this.title,
-          'showType': this.showType,
-          'imgUrl': this.imgUrl,
-          'description': this.description
-        }
-        liveGuidedManage.setLiveGuided(data).then((res) => {
-          if (res.code !== 200) {
-            console.log(res.msg)
-          } else {
-            this.$messageBox({
-              header: '提示',
-              content: '保存成功',
-              confirmText: '确定',
-              width: '400px', // 消息框宽度
-              handleClick: (e) => {
-                if (e.action === 'confirm') {
-                  // console.log('点击了确定按钮')
-                }
-              }
-            })
+    save () {
+      let data = {
+        'activityId': this.activityId,
+        'title': this.title,
+        'showType': this.showType,
+        'imgUrl': this.imgUrl,
+        'description': this.description
+      }
+      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+        this.canPass = true
+        this.$toast({
+          content: '保存成功'
+        })
+      }).catch((err) => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
           }
         })
-      }
+      })
     }
   }
+}
 </script>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
@@ -214,6 +291,8 @@
     float: right;
   }
   .v-title {
+    line-height: 60px;
+    margin: 30px 0;
     font-size: 24px;
     color: #222;
   }
@@ -253,8 +332,13 @@
         .com-input {
           width: 100%;
         }
-        .el-textarea {
+        .area.com-input {
           margin-top: 10px;
+          height: 140px;
+        }
+        .limit {
+          right: 8px;
+          bottom: 8px;
         }
       }
       .ve-upload-box {
@@ -318,12 +402,14 @@
         .v-phone-title {
           font-size: 16px;
           text-align: center;
+          word-break: break-all;
         }
         .v-phone-operation {
           height: 96px;
           border-radius: 0 0 5px 5px;
         }
         .v-phone-description {
+          word-break: break-all;
           width: 210px;
           font-size: 12px;
           text-align: center;
@@ -340,7 +426,7 @@
             margin: 5px 0 0 149px;
           }
           .v-cutdown-content {
-            width: 250px;
+            width: 260px;
             margin: 10px 0 0 107px;
             .v-red {
               color: #fc5659;
@@ -397,6 +483,9 @@
           font-size: 12px;
           text-align: center;
           padding-top: 10px;
+          width: 195px;
+          word-break: break-all;
+          margin: 0 auto;
         }
         .v-pc-operation {
           font-size: 12px;

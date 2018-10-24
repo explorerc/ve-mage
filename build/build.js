@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const webpackConfig = require('./webpack.prod.conf')
 const chalk = require('chalk')
 
-const spinner = ora('building for ' + process.env.BUILD_ENV + '...')
+const spinner = ora('building for ' + process.env.BUILD_ENV + '...'+ process.env.NODE_ENV + '...')
 spinner.start()
 
 webpack(webpackConfig, (err, stats) => {

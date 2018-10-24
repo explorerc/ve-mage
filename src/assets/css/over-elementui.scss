@@ -1,6 +1,6 @@
 @import "./variable";
 $color-ui-components:#4B5AFE;
-.el-select{
+.live-mager .el-select{
   .el-input__inner {
     border: none;
     background-color: transparent;
@@ -10,7 +10,10 @@ $color-ui-components:#4B5AFE;
     color: #555;
   }
 }
-.el-select-dropdown{
+.el-select-dropdown {
+  z-index: 9999!important;
+}
+.live-mager .el-select-dropdown{
   .popper__arrow{
     display: none;
   }
@@ -108,3 +111,24 @@ $color-ui-components:#4B5AFE;
   }
 }
 
+.datePicker {
+  .el-picker-panel__footer {
+    button:nth-of-type(1) {
+      display: none;
+    }
+  }
+}
+
+.el-switch__label.is-active {
+  color:#555;
+}
+.el-carousel__item.is-active{
+  z-index: inherit;
+}
+.el-button.is-round {
+  padding:9px 23px;
+}
+.el-date-editor .el-range-separator {
+  width: 20px;
+  text-align: center;
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="edit-wx-page live-mager">
+    <div class="edit-wx-page live-mager" @mousedown="canPass = false">
       <div class="live-title">
         <span class="title">创建微信通知</span>
       </div>
@@ -9,13 +9,13 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>通知标题：</div>
             <div class="from-content">
-              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" class='msg-title' :error-tips="errorData.titleError" @focus="errorData.titleError=''"></com-input>
+              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="15" class='msg-title' :error-tips="errorData.titleError" @focus="errorData.titleError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>微信内容：</div>
             <div class="from-content" @click="errorData.msgError=''">
-              <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入短信内容" :max-length="60" :error-tips="errorData.msgError" ></com-input>
+              <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入微信内容" :max-length="100" :error-tips="errorData.msgError" ></com-input>
             </div>
           </div>
           <div class="from-row" style='padding:4px 12px;'>
@@ -46,16 +46,16 @@
           <div class="from-row" v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
               </el-date-picker>
             </div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' :webinarName='webinarName' :webinarTime='webinarTime'></com-phone>
+          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' ></com-phone>
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
-          <el-button class='primary-button' @click="save">保存</el-button>
+          <el-button class='primary-button' @click="save" :disabled="saveDisabled">保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -109,244 +109,310 @@
         </div>
       </message-box>
       <!-- 测试发送弹窗 -->
-      <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'"></com-test>
+      <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'" :deliverd.sync='deliverd'></com-test>
     </div>
   </div>
 </template>
 
 <script>
-  import createHttp from 'src/api/activity-manger'
-  import comTest from '../com-test'
-  import comPhone from '../com-phone'
-  import veTips from 'src/components/ve-msg-tips'
-  export default {
-    data () {
-      return {
-        inviteId: this.$route.query.id, // 签名列表传过来的id
+import ChatService from 'components/chat/ChatService.js'
+import playbackService from 'src/api/playback-service'
+import noticeService from 'src/api/notice-service'
+import comTest from '../com-test'
+import comPhone from '../com-phone'
+import veTips from 'src/components/ve-msg-tips'
+import ChatConfig from 'src/api/chat-config'
+import { mapMutations, mapState } from 'vuex'
+import * as types from 'src/store/mutation-types'
+export default {
+  data () {
+    return {
+      inviteId: this.$route.query.id, // 签名列表传过来的id
+      activityId: this.$route.params.id,
+      testModal: false,
+      tabValue: 1,
+      searchTitle: '',
+      titleValue: '',
+      groupIdx: 0,
+      tagIdx: 0,
+      tplOptions: [{
+        value: 1,
+        label: '活动邀请'
+      }, {
+        value: 2,
+        label: '活动推荐'
+      }],
+      // sendOptions: [{
+      //   value: 'AWAIT',
+      //   label: '定时发送'
+      // }, {
+      //   value: 'SEND',
+      //   label: '立即发送'
+      // }, {
+      //   value: 'DRAFT',
+      //   label: '暂存为草稿'
+      // }],
+      // sendValue: '',
+      sendSetting: 'SEND',
+      wxContent: '',
+      qrImgurl: '',
+      pickDate: false,
+      date: '',
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now() - 8.64e7
+        }
+      },
+      loading: false,
+      searchPerson: '',
+      personList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedPersonListStr: '',
+      selectPersonShow: false,
+      selectedCount: 0,
+      errorData: {
+        titleError: '',
+        msgError: '',
+        tagError: ''
+      },
+      isValided: false,
+      canPass: true,
+      sdkParam: {},
+      saveDisabled: false,
+      deliverd: false
+    }
+  },
+  created () {
+    this.initSdk()
+    this.queryPersonList()
+    if (this.inviteId) {
+      this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
+        inviteId: this.inviteId
+      }).then((res) => {
+        this.titleValue = res.data.title
+        this.sendSetting = res.data.status
+        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
+        this.wxContent = res.data.desc
+      })
+    }
+  },
+  computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    })
+  },
+  methods: {
+    ...mapMutations('login', {
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
+    closeModal (e) {
+      if (e.target.className === 'modal-cover') {
+        this.testModal = false
+        this.groupIdx = 0
+        this.tagIdx = 0
+      }
+    },
+    chooseGroup (idx) {
+      this.groupIdx = idx
+    },
+    chooseTag (idx) {
+      this.tagIdx = idx
+    },
+    save () {
+      this.saveDisabled = true
+      this.canPass = true
+      let data = {
+        inviteId: this.inviteId,
         activityId: this.$route.params.id,
-        testModal: false,
-        tabValue: 1,
-        searchTitle: '',
-        titleValue: '',
-        groupIdx: 0,
-        tagIdx: 0,
-        tplOptions: [{
-          value: 1,
-          label: '活动邀请'
-        }, {
-          value: 2,
-          label: '活动推荐'
-        }],
-        // sendOptions: [{
-        //   value: 'AWAIT',
-        //   label: '定时发送'
-        // }, {
-        //   value: 'SEND',
-        //   label: '立即发送'
-        // }, {
-        //   value: 'DRAFT',
-        //   label: '暂存为草稿'
-        // }],
-        // sendValue: '',
-        sendSetting: 'SEND',
-        wxContent: '',
-        qrImgurl: '',
-        pickDate: false,
-        date: '',
-        pickerOptions: {
-          disabledDate (time) {
-            return time.getTime() < Date.now() - 8.64e7
-          }
-        },
-        webinarName: '',
-        webinarTime: '',
-        loading: false,
-        searchPerson: '',
-        personList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonListStr: '',
-        selectPersonShow: false,
-        selectedCount: 0,
-        errorData: {
-          titleError: '',
-          msgError: '',
-          tagError: ''
-        },
-        isValided: false
+        title: this.titleValue,
+        groupId: '1', // 分组id
+        status: this.sendSetting.toLowerCase(),
+        desc: this.wxContent,
+        planTime: this.date
       }
-    },
-    created () {
-      this.queryPersonList()
-      if (this.inviteId) {
-        this.loading = true
-        createHttp.queryWechat(this.inviteId).then((res) => {
-          // console.log(res)
-          this.titleValue = res.data.title
-          this.sendSetting = res.data.status
-          this.date = res.data.planTime.toString()
-          this.wxContent = res.data.desc
-        }).catch((e) => {
-          console.log(e)
-        })
-        createHttp.webinarInfo(this.activityId).then((res) => {
-          if (res.code === 200) {
-            this.webinarName = res.data.title
-            this.webinarTime = res.data.startTime
-            this.loading = false
-          }
-        }).catch((e) => {
-          this.loading = false
-        })
+      if (!this.formValid()) {
+        return false
       }
-    },
-    methods: {
-      closeModal (e) {
-        if (e.target.className === 'modal-cover') {
-          this.testModal = false
-          this.groupIdx = 0
-          this.tagIdx = 0
-        }
-      },
-      chooseGroup (idx) {
-        this.groupIdx = idx
-      },
-      chooseTag (idx) {
-        this.tagIdx = idx
-      },
-      save () {
-        let data = {
-          inviteId: this.inviteId,
-          activityId: this.$route.params.id,
-          title: this.titleValue,
-          groupId: '1', // 分组id
-          status: this.sendSetting.toLowerCase(),
-          desc: this.wxContent,
-          planTime: this.date
-        }
+      this.$nextTick((res) => {
         // 更新
-        createHttp.saveWechat(data).then((res) => {
+        this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
             content: '保存成功',
             position: 'center'
           })
+          this.canPass = true
           // 跳转到列表页面
-          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
-        }).catch((res) => {
-          this.$toast({
-            content: '保存失败',
-            position: 'center'
+          this.$router.push({ name: 'promoteWechat', params: { id: this.activityId } })
+        })
+      })
+    },
+    testSend () {
+      if (!this.formValid()) {
+        return false
+      }
+      this.$nextTick((res) => {
+        if (this.isValided) {
+          this.testModal = true
+          this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/api/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
+        }
+      })
+    },
+    closeTest () {
+      // debugger
+      this.testModal = false
+    },
+    /* enter搜索 */
+    searchEnter () {
+      this.queryPersonList()
+    },
+    /* 点击确定 */
+    okSelectList () {
+      this.selectPersonShow = false
+    },
+    /* 点击取消 */
+    handleSelectPerson (e) {
+      if (e.action === 'cancel') {
+        this.selectPersonShow = false
+      }
+    },
+    /* 选中行 */
+    clickRow (idx) {
+      this.personList[idx].isChecked = !this.personList[idx].isChecked
+    },
+    /* 删除标签 */
+    delPerson (idx) {
+      const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
+      this.personList[delIdx].isChecked = false
+    },
+    /* 查询人员 */
+    queryPersonList () {
+      this.$get(noticeService.GET_PERSON_LIST, {
+        activityId: this.$route.params.id,
+        name: this.searchPerson
+      }).then((res) => {
+        let temArray = []
+        res.data.forEach((item) => {
+          temArray.push({
+            id: item.id,
+            name: item.name,
+            count: 0,
+            isChecked: false
           })
         })
-      },
-      testSend () {
-        this.formValid()
-        this.$nextTick((res) => {
-          if (this.isValided) {
-            this.testModal = true
-            this.qrImgurl = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http://${window.location.host}/expand/wechat-invite/test-send?content=${this.wxContent}&activityId=${this.activityId}`)}`
+        this.personList = temArray
+      })
+      // createHttp.queryPersonList({
+
+      // }).then((res) => {
+
+      // })
+    },
+    /* 验证 */
+    formValid () {
+      this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
+      this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
+      // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
+      if (this.titleValue.length && this.wxContent.length) {
+        this.isValided = true
+        return true
+      } else {
+        this.isValided = false
+        return false
+      }
+    },
+    listenMsg (msg) {
+      console.log(msg)
+    },
+    initSdk () {
+      /* 获取pass信息 */
+      this.$get(playbackService.GET_PAAS_SDK_INFO).then((res) => {
+        /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+        this.$nextTick(() => {
+          this.sdkParam.sign = res.data.sign
+          this.sdkParam.signed_at = res.data.signedAt
+          this.sdkParam.app_id = res.data.appId
+          this.sdkPlayParam = {
+            app_id: res.data.appId,
+            accountId: res.data.accountId,
+            token: res.data.token,
+            recordId: '',
+            linkVideo: ''
           }
         })
-        // const data = {
-        //   content: this.wxContent,
-        //   activityId: this.activityId
-        // }
-        // createHttp.sendTestWechat(data).then((res) => {
-        //   if (res.code === 200) {
-        //     this.imgUrl = res.data
-        //   }
-        // }).catch((e) => {
-        //   this.$toast({
-        //     content: '二维码生成失败',
-        //     position: 'center'
-        //   })
-        // })
-      },
-      closeTest () {
-      // debugger
-        this.testModal = false
-      },
-      /* enter搜索 */
-      searchEnter () {
-        this.queryPersonList()
-      },
-      /* 点击确定 */
-      okSelectList () {
-        this.selectPersonShow = false
-      },
-      /* 点击取消 */
-      handleSelectPerson (e) {
-        if (e.action === 'cancel') {
-          this.selectPersonShow = false
-        }
-      },
-      /* 选中行 */
-      clickRow (idx) {
-        this.personList[idx].isChecked = !this.personList[idx].isChecked
-      },
-      /* 删除标签 */
-      delPerson (idx) {
-        const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
-        this.personList[delIdx].isChecked = false
-      },
-      /* 查询人员 */
-      queryPersonList () {
-        createHttp.queryPersonList({
-          activityId: this.$route.params.id,
-          name: this.searchPerson
-        }).then((res) => {
-          let temArray = []
-          res.data.forEach((item) => {
-            temArray.push({
-              id: item.id,
-              name: item.name,
-              count: 0,
-              isChecked: false
-            })
-          })
-          this.personList = temArray
-        })
-      },
-      /* 验证 */
-      formValid () {
-        this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
-        this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
-        // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
-        if (this.titleValue.length && this.wxContent.length) {
-          this.isValided = true
-        } else {
-          this.isValided = false
-        }
-      }
+      })
+      this.initMsgServe()
     },
-    watch: {
-      sendSetting: {
-        handler (newValue) {
-          newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
-        }
-      },
-      personList: {
-        handler (newArray) {
-          let temArray = []
-          let listStr = ''
-          newArray.forEach((item, idx) => {
-            if (!item.isChecked) return
-            temArray.push(item)
-            this.selectedCount += item.count
-            listStr += `${item.name} (${item.count}人）、`
-          })
-          this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
-          this.selectedPersonList = temArray
-        },
-        deep: true
-      }
-    },
-    components: {
-      comTest,
-      comPhone,
-      veTips
+    async initMsgServe () {
+      const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
+        thirdUserId: this.accountInfo.businessUserId,
+        channel: this.accountInfo.channelRoom
+      }).then(res => {
+        return res.data
+      })
+      ChatService.OBJ.init({
+        accountId: roomInfo.accountId,
+        token: roomInfo.token,
+        appId: roomInfo.appId,
+        channelId: roomInfo.channelRoom
+      })
+      /* 监听微信测试发送成功消息 */
+      ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
+        console.log(msg)
+        this.deliverd = true
+      })
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
+  },
+  watch: {
+    sendSetting: {
+      handler (newValue) {
+        this.canPass = true
+        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+      }
+    },
+    personList: {
+      handler (newArray) {
+        let temArray = []
+        let listStr = ''
+        newArray.forEach((item, idx) => {
+          if (!item.isChecked) return
+          temArray.push(item)
+          this.selectedCount += item.count
+          listStr += `${item.name} (${item.count}人）、`
+        })
+        this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
+        this.selectedPersonList = temArray
+      },
+      deep: true
+    }
+  },
+  components: {
+    comTest,
+    comPhone,
+    veTips
   }
+}
 </script>
 <style lang="scss" scoped src="../../css/live.scss">
 </style>
@@ -372,7 +438,11 @@
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 
-.edit-wx-page {
+.edit-wx-page /deep/ {
+  .com-input .limit.area {
+    bottom: 7px;
+    right: 7px;
+  }
   // height: 730px;
   position: relative;
   .select-receiver {

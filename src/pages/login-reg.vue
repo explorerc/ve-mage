@@ -1,27 +1,32 @@
 <template>
-  <div class="v-login-reg" @click="changeState">
-    <div class="v-info" id="toggler-div">
+  <div class="v-login-reg"
+       @click="changeState">
+    <div class="v-info"
+         id="toggler-div">
       <img :src="avatarImg" alt="" class="v-avatar" id="toggler-img" @avatarChange="avatarChange($event)">
-      <span class="v-name" id="toggler-span">{{name}}</span>
+      <span class="v-name"
+            id="toggler-span">{{name}}</span>
     </div>
-    <ul class="v-select" v-show="isShow">
-      <li id="preventClick" :title="name">
+    <ul class="v-select"
+        v-show="isShow">
+      <li id="preventClick"
+          :title="name">
         {{name}}
       </li>
       <li>
         <a href="/setAccount"><i class="iconfont icon-shezhi21"></i>账号设置</a>
       </li>
       <li>
-        <a href="javascript:;" @click="logOff()"><i class="iconfont icon-tuichu1"></i>退出</a>
+        <a href="javascript:;"
+           @click="logOff()"><i class="iconfont icon-tuichu1"></i>退出</a>
       </li>
     </ul>
   </div>
 </template>
 <script>
-import loginManage from 'src/api/login-manage'
-import {mapMutations, mapState} from 'vuex'
+import userService from 'src/api/user-service.js'
+import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
-import account from 'src/api/account-manage'
 import EventBus from 'src/utils/eventBus'
 export default {
   props: {
@@ -40,7 +45,8 @@ export default {
   },
   computed: {
     ...mapState('login', {
-      isLogin: state => state.isLogin
+      isLogin: state => state.isLogin,
+      accountInfo: state => state.accountInfo
     }),
     avatarImg: function () {
       return this.avatar ? this.$imgHost + '/' + this.avatar : ''
@@ -50,41 +56,39 @@ export default {
     EventBus.$on('avatarChange', (val) => {
       this.avatar = val
     })
+    if (this.accountInfo && this.accountInfo.userName) {
+      this.name = this.accountInfo.name
+      this.avatar = this.accountInfo.avatar
+    }
+  },
+  watch: {
+    'accountInfo.userName': {// 观看端 是否已登陆
+      handler (newValue) {
+        this.name = this.accountInfo.name
+        this.avatar = this.accountInfo.avatar
+      },
+      deep: true
+    }
   },
   mounted () {
-    let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-    if (accountInfo && accountInfo.userName) {
-      this.name = accountInfo.name
-      this.avatar = accountInfo.avatar
-    } else {
-      account.getAccount({}).then((res) => {
-        if (res.code !== 200) {
-        } else {
-          this.name = res.data.name
-          this.avatar = res.data.avatar
-          sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-        }
-      })
-    }
+    // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
   },
   methods: {
     ...mapMutations('login', {
-      setIsLogin: types.UPDATE_IS_LOGIN
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO
     }),
     changeState (event) {
       if (event.target.id === 'preventClick') return false
       this.$emit('changeState')
     },
     logOff () {
-      loginManage.logOff({}).then((res) => {
-        if (res.code !== 200) {
-        } else {
-          sessionStorage.removeItem('isLogin')
-          sessionStorage.removeItem('accountInfo')
-          sessionStorage.removeItem('contactInfo')
-          this.setIsLogin(0)
-          this.$router.replace('/login')
-        }
+      this.$post(userService.POST_LOGOUT).then((res) => {
+        sessionStorage.removeItem('isLogin')
+        // sessionStorage.removeItem('accountInfo')
+        // sessionStorage.removeItem('contactInfo')
+        this.setIsLogin(0)
+        this.$router.replace('/login')
       })
     }
   }
@@ -105,6 +109,7 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    vertical-align: middle;
   }
   .v-avatar {
     display: inline-block;
@@ -118,8 +123,8 @@ export default {
     width: 200px;
     position: absolute;
     z-index: 3;
-    top: 35px;
-    right: 30px;
+    top: 46px;
+    right: 10px;
     background-color: #fff;
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
     border-radius: 4px;

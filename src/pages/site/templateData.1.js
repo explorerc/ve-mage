@@ -265,7 +265,7 @@ export default {
         },
         font: {
           enable: true,
-          content: `<h1 style="text-align: center; line-height: 1.8;"><font color="#ffffff" style="font-size: 32px;">Adobe 峰会 | 数字营销大会模版2</font></h1><div style="text-align: center; line-height: 1.8;"><font color="#ffffff"><span style="font-size: 16px;">2017 年 3 月 19–23 日，拉斯维加斯</span><br></font></div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff"><span style="font-size: 16px;">参加最重要的数字营销专业人士活动，获得全球顶级数字营销专家的最新洞察。</span><br></font></div>`
+          content: `<h1 style="text-align: center; line-height: 1.8;"><font color="#ffffff" style="font-size: 32px;">Adobe 峰会 | 数字营销大会模板2</font></h1><div style="text-align: center; line-height: 1.8;"><font color="#ffffff"><span style="font-size: 16px;">2017 年 3 月 19–23 日，拉斯维加斯</span><br></font></div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff"><span style="font-size: 16px;">参加最重要的数字营销专业人士活动，获得全球顶级数字营销专家的最新洞察。</span><br></font></div>`
         },
         btn: {
           bgColor: 'rgba(255, 255, 255, 1)',

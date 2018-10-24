@@ -7,7 +7,7 @@
             <div class="overview-box">
               <div class="header">短信</div>
               <div class="msg-box">
-                【{{tag}}】您已预约成功<span class='webinar-name'>{{webinarName}}</span>，活动时间为<span class='date'>{{date}}</span>，请按时参加活动。查看详情{{link}}
+                【{{tag}}】您已预约成功<span class='webinar-name'>{{webinarName}}</span>，活动时间为<span class='date'>{{date}}</span>，请按时参加活动。查看详情 {{link}}
               </div>
             </div>
           </div>
@@ -15,7 +15,7 @@
             <div class="overview-box">
               <div class="header">短信</div>
               <div class="msg-box">
-                【{{tag}}】您已报名成功<span class='webinar-name'>{{webinarName}}</span>，活动时间为<span class='date'>{{date}}</span>，请按时参加活动。查看详情{{link}}
+                【{{tag}}】您已报名成功<span class='webinar-name'>{{webinarName}}</span>，活动时间为<span class='date'>{{date}}</span>，请按时参加活动。查看详情 {{link}}
               </div>
             </div>
           </div>
@@ -23,7 +23,7 @@
             <div class="overview-box">
               <div class="header">短信</div>
               <div class="msg-box">
-                【{{tag}}】您预约的<span class='webinar-name'> {{webinarName}} </span> 还有 {{countVal}} 就要开播了，快来观看吧,进入直播{{link}}
+                【{{tag}}】您预约的<span class='webinar-name'> {{webinarName}} </span> 还有 {{countVal}} 就要开播了，快来观看吧。进入直播 {{link}}
               </div>
             </div>
           </div>
@@ -39,7 +39,7 @@
             <div class="overview-box">
               <div class="header">短信</div>
               <div class="msg-box">
-                【{{tag}}】您关注的<span class='webinar-name'> {{webinarName}} </span>已设置回放，您可以点击链接回顾活动全程。查看详情{{link}}
+                【{{tag}}】您关注的<span class='webinar-name'> {{webinarName}} </span>已设置回放，您可以点击链接回顾活动全程。查看详情 {{link}}
               </div>
             </div>
           </div>
@@ -105,11 +105,11 @@
     </div>
     <p class="is-string" v-if='isString'>
       <template v-if="type === 'SMS'">
-        <template v-if="tpl === 1">【{{tag}}】您已预约成功 {{webinarName}}，活动时间为{{date}}，请按时参加活动。查看详情{{link}}</template>
-        <template v-if="tpl === 2">【{{tag}}】您已报名成功 {{webinarName}}，活动时间为{{date}}，请按时参加活动。查看详情{{link}}</template>
-        <template v-if="tpl === 3">【{{tag}}】您预约的 {{webinarName}}  还有 {{countVal}} 就要开播了，快来观看吧,进入直播{{link}}</template>
+        <template v-if="tpl === 1">【{{tag}}】您已预约成功 {{webinarName}}，活动时间为{{date}}，请按时参加活动。查看详情 {{link}}</template>
+        <template v-if="tpl === 2">【{{tag}}】您已报名成功 {{webinarName}}，活动时间为{{date}}，请按时参加活动。查看详情 {{link}}</template>
+        <template v-if="tpl === 3">【{{tag}}】您预约的 {{webinarName}}  还有 {{countVal}} 就要开播了，快来观看吧。进入直播 {{link}}</template>
         <template v-if="tpl === 4">【{{tag}}】您已成功订阅{{hostName}} 举办的活动，有关活动的最新资讯我们将第一时间给您推送。</template>
-        <template v-if="tpl === 5">【{{tag}}】您关注的 {{webinarName}} 已设置回放，您可以点击链接回顾活动全程。查看详情{{link}}</template>
+        <template v-if="tpl === 5">【{{tag}}】您关注的 {{webinarName}} 已设置回放，您可以点击链接回顾活动全程。查看详情 {{link}}</template>
       </template>
       <template v-if="type === 'WECHAT'">
         <template v-if="tpl === 1">您已预约成功，我们将及时提醒您参加活动。</template>
@@ -197,66 +197,66 @@
 </script>
 
 <style lang='scss'>
-.overview-box {
-  width: 375px;
-  height: 500px;
-  border: 1px solid #ccc;
-  position: absolute;
-  top: 100px;
-  right: 100px;
-  .header,
-  .footer {
-    text-align: center;
-    height: 50px;
-    line-height: 50px;
-    background: #000000;
-    color: #fff;
-  }
-  .footer {
-    background: #fff;
-    color: #000000;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #ccc;
-  }
-  .msg-box {
-    width: 300px;
-    height: 400px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 20px auto;
-    position: relative;
-    .title {
-      text-align: left;
-      font-size: 20px;
-      span {
-        display: block;
-        text-align: left;
-        font-size: 14px;
-      }
-    }
-    p {
-      text-align: left;
-      margin: 10px 0px;
-    }
-    p.detal {
-      span {
-        color: #ccc;
-        display: inline-block;
-        text-align: left;
-      }
-    }
-    span.webinar-name {
-      color: red;
-    }
-    span.host-name {
-      color: red;
-    }
-    span.date {
-      color: blue;
-    }
-  }
-}
+// .overview-box {
+//   width: 375px;
+//   height: 500px;
+//   border: 1px solid #ccc;
+//   position: absolute;
+//   top: 100px;
+//   right: 100px;
+//   .header,
+//   .footer {
+//     text-align: center;
+//     height: 50px;
+//     line-height: 50px;
+//     background: #000000;
+//     color: #fff;
+//   }
+//   .footer {
+//     background: #fff;
+//     color: #000000;
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     width: 100%;
+//     border-top: 1px solid #ccc;
+//   }
+//   .msg-box {
+//     width: 300px;
+//     height: 400px;
+//     border: 1px solid #ccc;
+//     padding: 20px;
+//     margin: 20px auto;
+//     position: relative;
+//     .title {
+//       text-align: left;
+//       font-size: 20px;
+//       span {
+//         display: block;
+//         text-align: left;
+//         font-size: 14px;
+//       }
+//     }
+//     p {
+//       text-align: left;
+//       margin: 10px 0px;
+//     }
+//     p.detal {
+//       span {
+//         color: #ccc;
+//         display: inline-block;
+//         text-align: left;
+//       }
+//     }
+//     span.webinar-name {
+//       color: red;
+//     }
+//     span.host-name {
+//       color: red;
+//     }
+//     span.date {
+//       color: blue;
+//     }
+//   }
+// }
 </style>

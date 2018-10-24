@@ -12,15 +12,15 @@
     </com-panel>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
       <com-font :edit="editAble" v-model="data.section3Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="3" :btn="false" v-model="data.section3Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
-      <com-block1 :edit="editAble" v-model="data.section4Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="3" v-model="data.section4Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section5" :edit="editAble" v-model="data.section5Data.panel">
       <com-font :edit="editAble" v-model="data.section5Data.font"></com-font>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section5Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="4" v-model="data.section5Data.block1"></com-block1>
     </com-panel>
     <com-panel class="section6" :edit="editAble" v-model="data.section6Data.panel">
       <com-share :edit="editAble" :share="shareData" v-model="data.section6Data.share"></com-share>
@@ -165,7 +165,9 @@ export default {
       text-align: center;
     }
     .mask {
-      height: 260px;
+      // height: 260px;
+      height: auto;
+      padding-bottom: 40px;
       position: absolute;
       bottom: 0;
       width: 100%;
@@ -249,9 +251,13 @@ export default {
       &.width3 {
         .block1-item {
           width: 340px;
-          height: 245px;
+          min-height: 245px;
+          height: auto;
           img {
             height: 100%;
+          }
+          .content {
+            position: static;
           }
         }
       }
@@ -316,9 +322,10 @@ export default {
   }
   .section7 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
+      padding-bottom: 50px;
     }
     .font-content {
       margin-top: 70px;
