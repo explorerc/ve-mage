@@ -144,12 +144,12 @@
 <script>
 import VeMsgTips from 'src/components/ve-msg-tips'
 import activityService from 'src/api/activity-service'
-import { mapState, mapMutations } from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import * as types from '../../../store/mutation-types'
 
 export default {
   name: 'edit-step-two',
-  components: { VeMsgTips },
+  components: {VeMsgTips},
   data () {
     return {
       outValue: '',
@@ -157,8 +157,8 @@ export default {
       selectPersonShow: false,
       sendType: 'AUTO',
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      personList: [{id: '', name: '', count: 0, isChecked: false}],
+      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectedCount: 0,
       disabledBtn: false,
@@ -190,7 +190,7 @@ export default {
   watch: {
     emailInfo: {
       handler (newVal) {
-        this.email = { ...this.email, ...newVal }
+        this.email = {...this.email, ...newVal}
         this.sendType = this.email.planTime ? 'ONCE' : 'AUTO'
       },
       immediate: true
@@ -325,7 +325,7 @@ export default {
       this.canPass = true
       this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
-        this.email = { ...this.email, ...res.data }
+        this.email = {...this.email, ...res.data}
         this.storeEmailInfo(this.email)
         this.$toast({
           header: `提示`,
