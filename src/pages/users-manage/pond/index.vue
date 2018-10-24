@@ -257,7 +257,6 @@ import comChoose from '../components/com-choose'
 import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
-import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -528,11 +527,6 @@ export default {
     },
     groupData (res) {
       console.log(res)
-    },
-    groupImportData (res) {
-      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
-        console.log(res)
-      })
     }
   },
   components: {
