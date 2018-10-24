@@ -76,11 +76,11 @@
       <div class="item-box hd-data-item fr">
         <span class="hd-title">聊天</span>
         <div class="hd-data">
-          <span class="data-link" @click="goChatDataDetail">{{interactCountData.nums}}</span>
+          <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.nums}}</span>
           <span>聊天人数</span>
         </div>
         <div class="hd-data">
-          <span class="data-link" @click="goChatDataDetail">{{interactCountData.msg}}</span>
+          <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.msg}}</span>
           <span>消息数量</span>
         </div>
       </div>
@@ -162,7 +162,7 @@
           <span>领取金额</span>
         </div>
       </div>
-      <div class="item-box hd-data-item fl" style="width: 66%;">
+      <div class="item-box hd-data-item fl">
         <span class="hd-title">商品推荐</span>
         <div class="hd-data" style="width: 25%;">
           <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
@@ -428,12 +428,14 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { lines, bars, barAndLine, scatter, random } from 'src/utils/chart-tool'
+  import {lines, bars, barAndLine, scatter, random} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
+  import {mapMutations} from 'vuex'
+  import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
         basicCountData: {
@@ -517,8 +519,12 @@
       })
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       goPage (url) {
         this.$router.push(`${url}/${this.$route.params.id}`)
+        this.storeSelectMenu(3)
       },
       initPage () {
         // 基础数据
@@ -609,9 +615,9 @@
           lines('chart01', {
             xAxisData: this.watcherLineData.hours.xAxis,
             datas: [
-              { name: '浏览次数', data: this.watcherLineData.hours.pv },
-              { name: '独立访问', data: this.watcherLineData.hours.uv },
-              { name: 'IP', data: this.watcherLineData.hours.ip }
+              {name: '浏览次数', data: this.watcherLineData.hours.pv},
+              {name: '独立访问', data: this.watcherLineData.hours.uv},
+              {name: 'IP', data: this.watcherLineData.hours.ip}
             ]
           })
         })
@@ -661,8 +667,8 @@
       goChatDataDetail () {
         this.chatDataDetail = true
         this.chatDataList = [
-          { 'userId': 10000, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '吃了吗？' },
-          { 'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...' }
+          {'userId': 10000, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '吃了吗？'},
+          {'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...'}
         ]
       },
       goPrizeDataDetail () {
@@ -693,8 +699,8 @@
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
-          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
+          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
+          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
         ]
       },
       goAnswerDataDetail () {
@@ -727,8 +733,8 @@
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 },
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 }
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
       },
       goRedBagDataDetail () {
@@ -763,8 +769,8 @@
       goGoodsDataDetail () {
         this.goodsDataDetail = true
         this.goodsDataList = [
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859 },
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859 }
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
         ]
       },
       changeMenu (val) {
@@ -774,9 +780,9 @@
         lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
-            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
+            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
+            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
           ]
         })
       },
@@ -822,30 +828,30 @@
           'msg': null,
           'data': {
             'list': [
-              { week: random(0, 6), time: '零点', value: random(1, 100) },
-              { week: random(0, 6), time: '1点', value: random(1, 100) },
-              { week: random(0, 6), time: '2点', value: random(1, 100) },
-              { week: random(0, 6), time: '3点', value: random(1, 100) },
-              { week: random(0, 6), time: '4点', value: random(1, 100) },
-              { week: random(0, 6), time: 5, value: random(1, 100) },
-              { week: random(0, 6), time: 6, value: random(1, 10) },
-              { week: random(0, 6), time: 7, value: random(1, 10) },
-              { week: random(0, 6), time: 8, value: random(1, 100) },
-              { week: random(0, 6), time: 9, value: random(1, 100) },
-              { week: random(0, 6), time: 10, value: random(1, 10) },
-              { week: random(0, 6), time: 11, value: random(1, 10) },
-              { week: random(0, 6), time: 12, value: random(1, 100) },
-              { week: random(0, 6), time: 13, value: random(1, 10) },
-              { week: random(0, 6), time: 14, value: random(1, 100) },
-              { week: random(0, 6), time: 15, value: random(1, 100) },
-              { week: random(0, 6), time: 16, value: random(1, 100) },
-              { week: random(0, 6), time: 17, value: random(1, 100) },
-              { week: random(0, 6), time: 18, value: random(1, 10) },
-              { week: random(0, 6), time: 19, value: random(1, 10) },
-              { week: random(0, 6), time: 20, value: random(1, 100) },
-              { week: random(0, 6), time: 21, value: random(1, 10) },
-              { week: random(0, 6), time: 22, value: random(1, 100) },
-              { week: random(0, 6), time: 23, value: random(1, 10) }
+              {week: random(0, 6), time: '零点', value: random(1, 100)},
+              {week: random(0, 6), time: '1点', value: random(1, 100)},
+              {week: random(0, 6), time: '2点', value: random(1, 100)},
+              {week: random(0, 6), time: '3点', value: random(1, 100)},
+              {week: random(0, 6), time: '4点', value: random(1, 100)},
+              {week: random(0, 6), time: 5, value: random(1, 100)},
+              {week: random(0, 6), time: 6, value: random(1, 10)},
+              {week: random(0, 6), time: 7, value: random(1, 10)},
+              {week: random(0, 6), time: 8, value: random(1, 100)},
+              {week: random(0, 6), time: 9, value: random(1, 100)},
+              {week: random(0, 6), time: 10, value: random(1, 10)},
+              {week: random(0, 6), time: 11, value: random(1, 10)},
+              {week: random(0, 6), time: 12, value: random(1, 100)},
+              {week: random(0, 6), time: 13, value: random(1, 10)},
+              {week: random(0, 6), time: 14, value: random(1, 100)},
+              {week: random(0, 6), time: 15, value: random(1, 100)},
+              {week: random(0, 6), time: 16, value: random(1, 100)},
+              {week: random(0, 6), time: 17, value: random(1, 100)},
+              {week: random(0, 6), time: 18, value: random(1, 10)},
+              {week: random(0, 6), time: 19, value: random(1, 10)},
+              {week: random(0, 6), time: 20, value: random(1, 100)},
+              {week: random(0, 6), time: 21, value: random(1, 10)},
+              {week: random(0, 6), time: 22, value: random(1, 100)},
+              {week: random(0, 6), time: 23, value: random(1, 10)}
             ]
           }
         }

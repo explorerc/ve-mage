@@ -15,3 +15,5 @@ export const EMAIL_INFO = 'EMAIL_INFO'
 export const ACCOUNT_INFO = 'ACCOUNT_INFO'
 // 指定联系人信息
 export const CONTACTINFO_INFO = 'CONTACTINFO_INFO'
+// 数据中心-当前选中菜单
+export const DATA_SELECT_MENU = 'DATA_SELECT_MENU'

@@ -41,7 +41,7 @@ import ComUpload from 'src/components/common/upload/com'
 
 export default {
   name: 've-upload-tx',
-  components: { ComUpload },
+  components: {ComUpload},
   data () {
     return {
       imgHost: '',

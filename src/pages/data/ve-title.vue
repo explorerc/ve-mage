@@ -28,6 +28,7 @@
   .ve-title{
     position: relative;
     display: inline-block;
+    user-select: none;
     .ve-tip-box{
       position: relative;
       display: inline-block;
