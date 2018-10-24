@@ -122,7 +122,7 @@ import comTest from '../com-test'
 import comPhone from '../com-phone'
 import veTips from 'src/components/ve-msg-tips'
 import ChatConfig from 'src/api/chat-config'
-import { mapMutations, mapState } from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 export default {
   data () {
@@ -165,8 +165,8 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      personList: [{id: '', name: '', count: 0, isChecked: false}],
+      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectPersonShow: false,
       selectedCount: 0,
@@ -186,7 +186,7 @@ export default {
     this.initSdk()
     this.queryPersonList()
     if (this.inviteId) {
-      this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
+      this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.inviteId
       }).then((res) => {
         this.titleValue = res.data.title
@@ -243,7 +243,7 @@ export default {
           })
           this.canPass = true
           // 跳转到列表页面
-          this.$router.push({ name: 'promoteWechat', params: { id: this.activityId } })
+          this.$router.push({name: 'promoteWechat', params: {id: this.activityId}})
         })
       })
     },
