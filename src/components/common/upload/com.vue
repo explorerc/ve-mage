@@ -36,7 +36,8 @@ const MIME_TYPES = {
   'm3u8': 'application/x-mpegURL',
   'mov': 'video/quicktime',
   'avi': 'video/x-msvideo',
-  'wmv': 'video/x-ms-wmv'
+  'wmv': 'video/x-ms-wmv',
+  'csv': 'application/vnd.ms-excel'
 }
 export default {
   name: 'ComUpload',
