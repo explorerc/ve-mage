@@ -107,7 +107,7 @@
 
   export default {
     name: 'viewer',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
         basicUserData: {}

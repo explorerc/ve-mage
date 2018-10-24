@@ -226,7 +226,7 @@
 
   export default {
     name: 'preview',
-    components: { VeTitle, VeCircle },
+    components: {VeTitle, VeCircle},
     data () {
       return {
         activityId: '',
