@@ -247,7 +247,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" @groupData="groupData"></com-import>
+        <com-import @handleClick="handleClick" @groupImportData="groupImportData"></com-import>
       </transition>
   </div>
 </template>
@@ -257,6 +257,7 @@ import comChoose from '../components/com-choose'
 import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -527,6 +528,11 @@ export default {
     },
     groupData (res) {
       console.log(res)
+    },
+    groupImportData (res) {
+      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
+        console.log(res)
+      })
     }
   },
   components: {

@@ -169,7 +169,7 @@ export default {
           describe: this.describe
         }
         // console.log(data)
-        this.$emit('groupData', data)
+        this.$emit('groupImportData', data)
       }
     },
     verifyEmpty () {

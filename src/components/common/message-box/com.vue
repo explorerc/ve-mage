@@ -140,7 +140,7 @@ export default {
   left: 0;
   right: 0;
   text-align: center;
-  z-index: 1005;
+  z-index: 2005;
   &::before {
     content: '';
     display: inline-block;
@@ -165,7 +165,7 @@ export default {
     border-radius: 4px;
     font-size: 16px;
     overflow: hidden;
-    z-index: 1006;
+    z-index: 2006;
     &:before {
       display: block;
       content: '';
@@ -274,7 +274,7 @@ export default {
         }
       }
       div[type='error'] {
-        .button--primary{
+        .button--primary {
           background-color: $color-red;
           &:hover {
             background: $color-red-hover;
