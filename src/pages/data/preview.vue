@@ -223,6 +223,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
+  import {sankey, random} from 'src/utils/chart-tool'
 
   export default {
     name: 'preview',
@@ -242,29 +243,183 @@
       this.initPage()
     },
     methods: {
+      initPage () {
+        // 微吼指数
+        this.vhallRate()
+        // 用户观看统计
+        this.activityScore()
+        // 用户观看统计
+        this.watcherCount()
+        // 观看影响系数因子
+        this.watchCoefficient()
+        // 用户旅途
+        this.renderChart()
+      },
+      vhallRate () {
+        let res = {
+          'code': 200,
+          'msg': null,
+          'data': {
+            value: random(),
+            ratio: -42.33,
+            average: 42.23
+          }
+        }
+        this.vhallRateData = res.data
+      },
+      activityScore () {
+        let res = {
+          'code': 200,
+          'msg': null,
+          'data': {
+            'viewer': random(),
+            'watchDuration': 42.33,
+            'spread': random(),
+            'extension': random(),
+            'interact': random()
+          }
+        }
+        this.activityScoreData = res.data
+      },
+      watcherCount () {
+        let res = {
+          'code': 200,
+          'msg': null,
+          'data': {
+            'watch': {
+              'value': 154,
+              'ratio': -42.33,
+              'average': 42.23
+            },
+            'viewer': {
+              'value': 186,
+              'ratio': 42.33,
+              'average': -20.23
+            },
+            'newUser': {
+              'value': 180,
+              'ratio': -12.33,
+              'average': 42.23
+            },
+            'newGoodUser': {
+              'value': 1800,
+              'ratio': 42.33,
+              'average': 42.23
+            }
+          }
+        }
+        this.watcherCountData = res.data
+      },
+      watchCoefficient () {
+        let res = {
+          'code': 200,
+          'msg': null,
+          'data': {
+            'watchTime': {
+              'value': 34,
+              'ratio': 42.33,
+              'average': 42.23
+            },
+            'extension': {
+              'value': 2.5,
+              'ratio': 42.33,
+              'average': 42.23
+            },
+            'spread': {
+              'value': 1.4,
+              'ratio': 42.33,
+              'average': 42.23
+            },
+            'interactint': {
+              'value': 3.2,
+              'ratio': 42.33,
+              'average': 42.23
+            }
+          }
+        }
+        this.watchCoefficientData = res.data
+      },
+      renderChart () {
+        let res = {
+          code: 200,
+          msg: null,
+          data: {
+            sourceList: [
+              {source: 1, sourceName: '邮件', value: random()},
+              {source: 2, sourceName: '短信', value: random()},
+              {source: 3, sourceName: 'a', value: random()},
+              {source: 4, sourceName: 'b', value: random()},
+              {source: 5, sourceName: 'c', value: random()},
+              {source: 6, sourceName: 'd', value: random()},
+              {source: 7, sourceName: 'e', value: random()},
+              {source: 8, sourceName: 'f', value: random()},
+              {source: 9, sourceName: 'g', value: random()},
+              {source: 10, sourceName: 'h', value: random()}
+            ],
+            sourceLinks: [
+              {source: 1, sourceName: '邮件', target: 3, targetName: '活动官网', value: random()},
+              {source: 2, sourceName: '短信', target: 3, targetName: '活动官网', value: random()},
+              {source: 3, sourceName: 'a', target: 8, targetName: 'f', value: random()},
+              {source: 4, sourceName: 'b', target: 8, targetName: 'f', value: random()},
+              {source: 5, sourceName: 'c', target: 2, targetName: '短信', value: random()},
+              {source: 8, sourceName: 'c', target: 9, targetName: 'g', value: random()},
+              {source: 9, sourceName: 'g', target: 7, targetName: 'e', value: random()},
+              {source: 10, sourceName: 'c', target: 9, targetName: 'g', value: random()},
+              {source: 5, sourceName: 'c', target: 1, targetName: '邮件', value: random()},
+              {source: 5, sourceName: 'c', target: 2, targetName: 'g', value: random()},
+              {source: 6, sourceName: 'e', target: 10, targetName: 'h', value: random()}
+            ]
+          }
+        }
+        let keyDatas = []
+        let links = []
+        res.data.sourceList.forEach((item) => {
+          keyDatas.push({
+            name: item.source + '',
+            showName: item.sourceName,
+            value: item.value
+          })
+        })
+        res.data.sourceLinks.forEach((item) => {
+          links.push({
+            source: item.source + '',
+            sourceName: item.sourceName,
+            target: item.target + '',
+            targetName: item.targetName,
+            value: item.value
+          })
+        })
+        this.$nextTick(() => {
+          sankey('myChart', {
+            data: keyDatas,
+            links: links
+          })
+        })
+      }
     }
   }
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-.preview {
-  .item-container {
-    .vhall-item /deep/ {
-      height: 180px;
-      width: 300px;
-      .item-mid {
-        height: 90px;
-        line-height: 80px;
+  .preview {
+    .item-container {
+      .vhall-item /deep/ {
+        height: 180px;
+        width: 300px;
+        .item-mid {
+          height: 90px;
+          line-height: 80px;
+        }
+        .ve-title {
+          padding: 10px 0;
+        }
       }
-      .ve-title {
-        padding: 10px 0;
+      .spread {
+        margin-left: 20px;
+        height: 180px;
+        width: calc(100% - 320px);
       }
-    }
-    .spread {
-      margin-left: 20px;
-      height: 180px;
-      width: calc(100% - 320px);
     }
   }
-}
+
 </style>
