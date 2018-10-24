@@ -52,14 +52,9 @@ export default {
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
-      selval: ''
-    }
-  },
-  props: {
-    groupData: {
-      type: Array,
-      default () {
-        return [{
+      selval: '',
+      groupData: [
+        {
           value: '1',
           label: '黄金糕'
         }, {
@@ -74,9 +69,11 @@ export default {
         }, {
           value: '5',
           label: '北京烤鸭'
-        }]
-      }
+        }
+      ]
     }
+  },
+  props: {
   },
   methods: {
     close () {
@@ -108,6 +105,8 @@ export default {
         }
         return true
       } else {
+        this.name = ''
+        this.desc = ''
         this.titleEmpty = false
         this.descEmpty = false
         return true

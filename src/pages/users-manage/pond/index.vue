@@ -235,7 +235,7 @@
     </div>
 
       <transition name='fade' mode='out-in' v-if="showAddgroup">
-        <com-addgroup  @handleClick="handleClick" @groupData='groupData'></com-addgroup>
+        <com-addgroup  @handleClick="handleClick" @groupData="groupData"></com-addgroup>
       </transition>
       <transition name='fade' mode='out-in' v-if="showChooseActive">
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectActiveConfirm' :checkedData='activityArray'  :max='10' @searchHandler='searchHandler' :name="'活动'"></com-choose>
@@ -523,6 +523,9 @@ export default {
       this.groupArray.id = res.id
     },
     searchHandler (res) {
+      console.log(res)
+    },
+    groupData (res) {
       console.log(res)
     }
   },
