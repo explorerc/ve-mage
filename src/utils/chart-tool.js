@@ -3,6 +3,7 @@ require('echarts/lib/chart/bar')
 require('echarts/lib/chart/line')
 require('echarts/lib/chart/pie')
 require('echarts/lib/chart/scatter')
+require('echarts/lib/chart/sankey')
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/legend')
 
@@ -619,6 +620,46 @@ export function scatter (id, datas, gridData) {
         return idx * 5
       }
     }]
+  }
+  let myChart = echarts.init(document.getElementById(id))
+  myChart.setOption(option)
+  return myChart
+}
+
+/***
+ * 桑基图
+ * @returns {Promise<Response>}
+ */
+export function sankey (id, datas) {
+  let option = {
+    tooltip: {
+      trigger: 'item',
+      formatter: (item) => {
+        if (item.data.sourceName) {
+          return `${item.data.sourceName}→${item.data.targetName} (${item.data.value})`
+        }
+        return ''
+      }
+    },
+    series: {
+      type: 'sankey',
+      layout: 'none',
+      left: 0,
+      right: '60',
+      label: {
+        normal: {
+          show: true,
+          formatter: (item) => {
+            return `${item.data.showName}\n(${item.data.value})`
+          },
+          textStyle: {
+            fontSize: 14
+          }
+        }
+      },
+      data: datas.data,
+      links: datas.links
+    }
   }
   let myChart = echarts.init(document.getElementById(id))
   myChart.setOption(option)
