@@ -8,7 +8,8 @@
       v-model="inputValue"
       type="date"
       placeholder="选择日期"
-      @blur="inputBlur()">
+      @blur="inputBlur()"
+      format='yyyy-MM-dd'>
     </el-date-picker>
     </template>
     <template v-else>
@@ -38,7 +39,12 @@ export default {
       this.isEdit = true
     },
     inputBlur () {
+      let date = new Date(this.inputValue)
+      this.$emit('saveInfo', this.format(date))
       this.isEdit = false
+    },
+    format (date) {
+      return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
     }
   }
 }

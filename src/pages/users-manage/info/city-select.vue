@@ -4,16 +4,8 @@
       {{title}}：
     </span>
     <template v-if="isEdit">
-      <el-select v-if="type === 'single'" v-model="inputValue" placeholder="请选择" @change="handleChange">
-        <el-option
-          v-for="item in selectValue"
-          :key="item.value"
-          :label="item.value"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-cascader v-else-if="type === 'double'"
-      :options="selectValue"
+      <el-cascader
+      :options="areas"
     v-model="selectedOptions"
     @change="handleChange">
       </el-cascader>
@@ -27,23 +19,37 @@
   </div>
 </template>
 <script>
+import { questionnaireCitys } from '../../../assets/js/citys.js'
+import { questionnaireProvinces } from '../../../assets/js/provinces.js'
 export default {
   data () {
     return {
       isEdit: false,
       inputValue: '',
       errorTips: '',
-      selectedOptions: []
+      selectedOptions: [],
+      areas: []
     }
   },
   props: {
     title: String,
     content: String,
-    type: String,
-    selectValue: Array // 下拉菜单选项
+    selectValue: Array
   },
-  created () {
+  mounted () {
     this.inputValue = this.content
+    let _citys = questionnaireCitys
+    let _provinces = questionnaireProvinces
+    this.areas = []
+    _provinces.forEach((item) => {
+      let area = { value: item.id, label: item.name, children: [] }
+      let temp = _citys.find((item) => item.pid === area.value)
+      let _province = { value: temp.id, label: temp.name, pid: temp.pid }
+      area.children.push(_province)
+      this.areas.push(area)
+    })
+    console.log(this.areas)
+    console.log(this.selectValue)
   },
   methods: {
     modify (val) {
@@ -51,11 +57,7 @@ export default {
     },
     handleChange (value) {
       debugger
-      if (this.type === 'single') {
-        this.$emit('saveInfo', this.inputValue)
-      } else {
-        this.$emit('saveInfo', this.selectedOptions)
-      }
+      this.$emit('saveInfo', this.selectedOptions)
       this.isEdit = false
     }
   }
