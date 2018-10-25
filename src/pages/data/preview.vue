@@ -223,11 +223,11 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {sankey, random} from 'src/utils/chart-tool'
+  import { sankey, random } from 'src/utils/chart-tool'
 
   export default {
     name: 'preview',
-    components: {VeTitle, VeCircle},
+    components: { VeTitle, VeCircle },
     data () {
       return {
         activityId: '',
@@ -345,29 +345,29 @@
           msg: null,
           data: {
             sourceList: [
-              {source: 1, sourceName: '邮件', value: random()},
-              {source: 2, sourceName: '短信', value: random()},
-              {source: 3, sourceName: 'a', value: random()},
-              {source: 4, sourceName: 'b', value: random()},
-              {source: 5, sourceName: 'c', value: random()},
-              {source: 6, sourceName: 'd', value: random()},
-              {source: 7, sourceName: 'e', value: random()},
-              {source: 8, sourceName: 'f', value: random()},
-              {source: 9, sourceName: 'g', value: random()},
-              {source: 10, sourceName: 'h', value: random()}
+              { source: 1, sourceName: '邮件', value: random() },
+              { source: 2, sourceName: '短信', value: random() },
+              { source: 3, sourceName: 'a', value: random() },
+              { source: 4, sourceName: 'b', value: random() },
+              { source: 5, sourceName: 'c', value: random() },
+              { source: 6, sourceName: 'd', value: random() },
+              { source: 7, sourceName: 'e', value: random() },
+              { source: 8, sourceName: 'f', value: random() },
+              { source: 9, sourceName: 'g', value: random() },
+              { source: 10, sourceName: 'h', value: random() }
             ],
             sourceLinks: [
-              {source: 1, sourceName: '邮件', target: 3, targetName: '活动官网', value: random()},
-              {source: 2, sourceName: '短信', target: 3, targetName: '活动官网', value: random()},
-              {source: 3, sourceName: 'a', target: 8, targetName: 'f', value: random()},
-              {source: 4, sourceName: 'b', target: 8, targetName: 'f', value: random()},
-              {source: 5, sourceName: 'c', target: 2, targetName: '短信', value: random()},
-              {source: 8, sourceName: 'c', target: 9, targetName: 'g', value: random()},
-              {source: 9, sourceName: 'g', target: 7, targetName: 'e', value: random()},
-              {source: 10, sourceName: 'c', target: 9, targetName: 'g', value: random()},
-              {source: 5, sourceName: 'c', target: 1, targetName: '邮件', value: random()},
-              {source: 5, sourceName: 'c', target: 2, targetName: 'g', value: random()},
-              {source: 6, sourceName: 'e', target: 10, targetName: 'h', value: random()}
+              { source: 1, sourceName: '邮件', target: 3, targetName: '活动官网', value: random() },
+              { source: 2, sourceName: '短信', target: 3, targetName: '活动官网', value: random() },
+              { source: 3, sourceName: 'a', target: 8, targetName: 'f', value: random() },
+              { source: 4, sourceName: 'b', target: 8, targetName: 'f', value: random() },
+              { source: 5, sourceName: 'c', target: 2, targetName: '短信', value: random() },
+              { source: 8, sourceName: 'c', target: 9, targetName: 'g', value: random() },
+              { source: 9, sourceName: 'g', target: 7, targetName: 'e', value: random() },
+              { source: 10, sourceName: 'c', target: 9, targetName: 'g', value: random() },
+              { source: 5, sourceName: 'c', target: 1, targetName: '邮件', value: random() },
+              { source: 5, sourceName: 'c', target: 2, targetName: 'g', value: random() },
+              { source: 6, sourceName: 'e', target: 10, targetName: 'h', value: random() }
             ]
           }
         }

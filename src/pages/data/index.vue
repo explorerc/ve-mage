@@ -21,12 +21,12 @@
 <script>
   import NavMenu from './nav-menu'
   import activityService from 'src/api/activity-service'
-  import {mapMutations, mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'data-main',
-    components: {NavMenu},
+    components: { NavMenu },
     data () {
       return {
         activeId: '',
