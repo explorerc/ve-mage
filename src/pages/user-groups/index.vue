@@ -5,8 +5,8 @@
       <div>
         <el-input size="small" placeholder="输入直播名称" suffix-icon="el-icon-search"
                   v-model="search.name" @keyup.enter.native="onSearch" clearable></el-input>
-        <el-button size="small" @click="showDialog('2')" round>新建固定群组</el-button>
-        <el-button size="small" @click="showDialog('3')" round>新建智能群组</el-button>
+        <el-button size="small" @click="showDialog(2)" round>新建固定群组</el-button>
+        <el-button size="small" @click="showDialog(3)" round>新建智能群组</el-button>
       </div>
     </div>
     <div class="table-box">
@@ -31,11 +31,11 @@
           <template slot-scope="scope">
             <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.group_id,scope.row.type)">详情
             </el-button>
-            <el-button class="btns" v-if="scope.row.type !== '1'" type="text" size="mini"
+            <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
                        @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">
               编辑
             </el-button>
-            <el-button class="btns" v-if="scope.row.type !== '1'" type="text" size="mini"
+            <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
                        @click="handleDelete(scope.row.group_id, scope.row.type,scope.$index)">删除
             </el-button>
           </template>
@@ -60,7 +60,7 @@
           </el-form-item>
         </el-form>
         <div class="screen">
-          <condOption v-if="Group.type==='3'" ref="cond_option" @optionData="optionData" :rule="Group.rule"
+          <condOption v-if="Group.type===3" ref="cond_option" @optionData="optionData" :rule="Group.rule"
                       :type="isAddOrEdit"></condOption>
         </div>
       </div>
@@ -87,13 +87,13 @@
       getType (val) {
         let _type = ''
         switch (val) {
-          case '1':
+          case 1:
             _type = '系统分组'
             break
-          case '2':
+          case 2:
             _type = '固定分组'
             break
-          case '3':
+          case 3:
             _type = '智能分组'
             break
           default:
@@ -156,14 +156,14 @@
         this.Group.title = title
         this.Group.describe = describe
         this.Group.type = type
-        if (type === '2') {
+        if (type === 2) {
           this.dialogTitle = '编辑固定群组'
         } else {
           this.$set(this.Group, 'rule', JSON.parse(rule))
           this.dialogTitle = '编辑智能群组'
         }
         this.dialogFixedOrIntel = true
-        console.log('此刻点击编辑，数据是：' + this.Group)
+        console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
       },
       handleDelete (id, type, index) { // 删除群组
         this.$confirm('<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ', '删除群组', {
@@ -200,12 +200,12 @@
         this.Group.describe = ''
         this.Group.rule = ''
         this.dialogFixedOrIntel = true
-        if (type === '2') {
+        if (type === 2) {
           this.dialogTitle = '创建固定群组'
         } else {
           this.dialogTitle = '创建智能群组'
         }
-        console.log('此刻点击新建，数据是：' + this.Group)
+        console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
       inpC (a, type) {
         type === 1 ? this.inpNameLen = a.length : this.inpDesLen = a.length
@@ -225,7 +225,7 @@
         this.$post(_url, this.Group)
           .then((res) => {
             if (res.code === 200) {
-              this.Group.type = ''
+              this.Group.type = -1
               this.onSearch()
             }
           })
@@ -233,12 +233,12 @@
       save (group) { // 保存按钮点击
         this.$refs[group].validate((valid) => {
           if (valid) {
-            if (this.Group.type === '2') { // 固定群组 直接发送数据
+            if (this.Group.type === 2) { // 固定群组 直接发送数据
               this.sendData()
-            } else if (this.Group.type === '3') { // 智能群组 调规则页面返回数据
+            } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
               this.$refs.cond_option.save()
             }
-            if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
+            // if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
             this.dialogFixedOrIntel = false
             this.isAddOrEdit = '' // 重置
           } else {
@@ -248,7 +248,8 @@
         })
       },
       handleCloseDialog (done) {
-        if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
+        // if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
+        this.isAddOrEdit = '' // 重置
         done()
       }
     }

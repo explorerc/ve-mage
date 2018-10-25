@@ -16,7 +16,7 @@
           批量操作<!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="import">导入</el-dropdown-item>
+          <el-dropdown-item command="import" v-if="type === 2">导入</el-dropdown-item>
           <el-dropdown-item>导出</el-dropdown-item>
           <el-dropdown-item disabled>添加到群组</el-dropdown-item>
         </el-dropdown-menu>
@@ -31,7 +31,7 @@
           </a>
           <el-form :model="Group" :rules="rules" ref="importData" label-width="100px">
             <el-form-item label="上传面板:">
-              <VeUpload title="请使用csv模板上传" accept="jpg" :defaultFile="defaultFile" :fileSize="2048"
+              <VeUpload title="请使用csv模板上传" accept="csv" :defaultFile="defaultFile" :fileSize="2048"
                         :errorMsg="uploadFileErrorMsg" @error="uploadError" @success="uploadfileSuccess"></VeUpload>
             </el-form-item>
             <el-form-item label="导入规则:">
@@ -181,7 +181,7 @@
           region: '',
           resource: '1'
         },
-        type: this.$route.params.type,
+        type: Number.parseInt(this.$route.params.type),
         search: {
           group_id: this.$route.params.id,
           name: '',

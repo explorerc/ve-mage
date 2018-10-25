@@ -41,7 +41,7 @@
               </el-date-picker>
               {{m.unit}}
             </div>
-            <i class="el-icon-delete" @click="del(ind,mind)"></i>
+            <i class="el-icon-delete" @click="del(ind,mind)" v-show="disDel"></i>
           </div>
           <el-button size="mini" @click="and(ind)">AND</el-button>
         </div>
@@ -60,6 +60,7 @@
     props: ['type', 'rule'],
     data () {
       return {
+        disDel: true,
         saveData: [],
         props: {
           value: 'key',
@@ -999,7 +1000,16 @@
         })
       },
       del (ind, mind) {
+        console.log(ind, mind)
         this.shadowOutD[ind].splice(mind, 1)
+        if (this.shadowOutD[ind].length < 1) {
+          this.shadowOutD.splice(ind, 1)
+        }
+        if (this.shadowOutD.length === 1) {
+          this.disDel = false
+        } else {
+          this.disDel = true
+        }
       },
       or () {
         this.shadowOutD.push([{
@@ -1007,27 +1017,39 @@
           condition: '',
           value: ''
         }])
+
+        console.log(this.shadowOutD.length)
+        if (this.shadowOutD.length < 2) {
+          this.disDel = false
+        } else {
+          this.disDel = true
+        }
       },
       save () {
         console.log(this.shadowOutD, 'before_save_data')
-        this.shadowOutD.map((item) => {
-          if (item === []) return
-          item.map((inItem) => {
-            if (inItem === []) return
-            inItem.key = inItem.keys[1]
-            if (inItem.type === 'date') {
-              let d = new Date(inItem.value)
-              inItem.value = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+        this.saveData = this.shadowOutD.filter((item) => {
+          let _item = item.filter((inItem) => {
+            if (inItem.condition !== '' || inItem.key !== '') {
+              console.log(inItem)
+              inItem.key = inItem.keys[1]
+              if (inItem.type === 'date') {
+                let d = new Date(inItem.value)
+                inItem.value = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
+              }
+              delete inItem.conds
+              delete inItem.keys
+              delete inItem.type
+              delete inItem.unit
+              delete inItem.optionValue
+              return inItem
             }
-            delete inItem.conds
-            delete inItem.keys
-            delete inItem.type
-            delete inItem.unit
-            delete inItem.optionValue
           })
-          // this.saveData.push(insideData)
+          // console.log('1111111', _item)
+          if (_item.length > 0) {
+            return _item
+          }
         })
-        this.saveData = this.shadowOutD
+        console.log(this.shadowOutD, 'this.shadowOutD')
         console.log(this.saveData, '_save_data')
         this.$emit('optionData', this.saveData)
       },
@@ -1069,6 +1091,7 @@
     mounted () {
       if (this.type === 'edit') {
         this.outD = this.rule
+        console.log(this.outD)
         this.analysisData()
       }
     }

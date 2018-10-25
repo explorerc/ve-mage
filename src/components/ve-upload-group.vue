@@ -33,7 +33,7 @@
 
     <com-upload
       :accept="accept"
-      actionUrl="/api/upload/image"
+      actionUrl="/common/group/user-import"
       inputName="file"
       :fileSize="fileSize"
       @error="uploadError"
