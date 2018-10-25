@@ -98,7 +98,7 @@ export default {
         }
         return true
       } else {
-        if (!this.selval.length) {
+        if (!this.selval) {
           this.optSel = true
           return false
         }
@@ -120,7 +120,7 @@ export default {
       array.forEach(item => {
         arr.push({
           id: item.group_id,
-          name: item.title
+          name: item.title + `(${item.user_count})`
         })
       })
       return arr
