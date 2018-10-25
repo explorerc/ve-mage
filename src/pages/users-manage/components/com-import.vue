@@ -36,6 +36,7 @@
               </dl>
               <dl class='uploading' v-if='uploadStatus === "finishUpload"'>
                 <dt></dt>
+                <dd class='re-upload' @click='reUpload'>重新上传</dd>
                 <dd>{{fileName}}</dd>
                 <dd>检测到{{fileCount}}位用户</dd>
               </dl>
@@ -45,7 +46,7 @@
         <div class="item">
           <label class='label'>导入规则:</label>
           <el-radio v-model="radio" label="1">新建固定群组</el-radio>
-          <el-radio v-model="radio" label="2">导入固定群组</el-radio>
+          <el-radio v-model="radio" label="0">导入固定群组</el-radio>
         </div>
         <div class="tab-box">
           <div class="tab" v-if='radio === "1"'>
@@ -64,9 +65,9 @@
               <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
                 <el-option
                   v-for="item in groupData"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </div>
@@ -120,23 +121,14 @@ export default {
       fileKey: '',
       errorTxt: '',
       groupData: [{
-        value: '1',
-        label: '黄金糕'
-      }, {
-        value: '2',
-        label: '双皮奶'
-      }, {
-        value: '3',
-        label: '蚵仔煎'
-      }, {
-        value: '4',
-        label: '龙须面'
-      }, {
-        value: '5',
-        label: '北京烤鸭'
+        id: '1',
+        name: '黄金糕'
       }],
       selval: ''
     }
+  },
+  mounted () {
+    this.initGrouplist()
   },
   methods: {
     close () {
@@ -217,7 +209,7 @@ export default {
         }
         return true
       } else {
-        if (!this.selval.length) {
+        if (!this.selval) {
           this.optSel = true
           return false
         }
@@ -238,6 +230,26 @@ export default {
           repeat: res.data.repeat
         }
       })
+    },
+    reUpload () {
+      this.fileKey = ''
+      this.uploadStatus = 'beforeUpload'
+    },
+    initGrouplist () {
+      this.$get(userManage.GET_GROUP_LIST).then((res) => {
+        console.log(res)
+        this.groupData = this.reArrange(res.data.list)
+      })
+    },
+    reArrange (array) {
+      const arr = []
+      array.forEach(item => {
+        arr.push({
+          id: item.group_id,
+          name: item.title
+        })
+      })
+      return arr
     }
   },
   components: {
@@ -421,6 +433,12 @@ export default {
         dd {
           padding-top: 5px;
           color: $color-gray;
+        }
+        dd.re-upload {
+          position: absolute;
+          top: 10px;
+          right: 14px;
+          font-size: 12px;
         }
         .progress {
           padding: 0;

@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -265,6 +266,33 @@ export default {
           }
           // console.log(this.restoreData)
         }
+      })
+    },
+    // 查询标签
+    queryTaglist (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal
+      }).then((res) => {
+        console.log(res)
+      })
+    },
+    // 查询群组
+    queryGrouplist (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal
+      }).then((res) => {
+        console.log(res)
+      })
+    },
+    // 查询活动
+    queryActList () {
+      const data = {
+        keyword: this.searchVal,
+        page: 1,
+        pageSize: 30
+      }
+      this.$get(userManage.GET_ACTIVE_LIST, data).then((res) => {
+        console.log(res)
       })
     }
   }

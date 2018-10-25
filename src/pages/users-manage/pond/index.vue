@@ -163,12 +163,17 @@
           </el-table-column>
           <el-table-column
             label="用户信息"
-            width="200">
+            width="210">
             <template slot-scope="scope">
               <dl class="users-info">
                 <dt><img :src="scope.row.avatar"></dt>
                 <dd>{{ scope.row.name }} {{ scope.row.gender }}</dd>
-                <dd>{{ scope.row.tag }}</dd>
+                <dd v-if="scope.row.level === 1">优质客户</dd>
+                <dd v-if="scope.row.level === 2">高价值用户</dd>
+                <dd v-if="scope.row.level === 3">一般用户</dd>
+                <dd v-if="scope.row.level === 4">潜在用户</dd>
+                <dd v-if="scope.row.level === 5">流失用户</dd>
+                <dd v-if="scope.row.level === 0">没有评级</dd>
               </dl>
             </template>
           </el-table-column>
@@ -180,7 +185,7 @@
             prop="mail"
             label="邮箱"
             show-overflow-tooltip>
-            <template slot-scope="scope">
+            <!-- <template slot-scope="scope">
               <el-popover trigger="hover" placement="bottom">
                 <p class='mail-tooltips' v-for="(item,idx) in scope.row.mail">
                   <span>{{item.value}}</span>
@@ -190,7 +195,7 @@
                   {{ scope.row.mail[1].value }}
                 </div>
               </el-popover>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column
             prop="count"
@@ -247,7 +252,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" @groupImportData="groupImportData"></com-import>
+        <com-import @handleClick="handleClick" ></com-import>
       </transition>
   </div>
 </template>
@@ -257,6 +262,7 @@ import comChoose from '../components/com-choose'
 import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -301,169 +307,71 @@ export default {
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '123@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 1,
+          count: '1'
         }, {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '435345@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 2,
+          count: '2'
         }, {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '435345@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 3,
+          count: '3'
         }, {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '435345@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 4,
+          count: '4'
         }, {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '435345@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 5,
+          count: '5'
         }, {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '435345@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 0,
+          count: '0'
         }, {
           avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '王小虎',
           gender: '男',
           phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
+          mail: '435345@qq.com',
           lastActive: '2018-10-11',
           comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
+          level: 0,
+          count: '0'
         }
       ],
       multipleSelection: [],
@@ -481,6 +389,9 @@ export default {
       showImport: false,
       chooseType: '活动'
     }
+  },
+  mounted () {
+    this.queryUserPool()
   },
   methods: {
     handleSelectionChange (val) {
@@ -527,6 +438,11 @@ export default {
     },
     groupData (res) {
       console.log(res)
+    },
+    queryUserPool (data) {
+      this.$get(userManage.GET_USERS_POOL, data).then((res) => {
+        console.log(res)
+      })
     }
   },
   components: {
