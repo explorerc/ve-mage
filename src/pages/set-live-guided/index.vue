@@ -150,8 +150,7 @@
         </div>
       </div>
       <button @click='save'
-              class='primary-button v-share-button'
-              v-if="published === 'N' || !activityId">
+              class='primary-button v-share-button'>
         保存
       </button>
     </div>
@@ -252,7 +251,7 @@ export default {
         'imgUrl': this.imgUrl,
         'description': this.description
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'

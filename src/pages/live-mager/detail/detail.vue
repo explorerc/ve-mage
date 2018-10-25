@@ -117,7 +117,8 @@
             </dl>
           </li>
           <li class='step statics'
-              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}">
+              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}"
+          @click="goDataCenter">
             <dl>
               <dt><i></i></dt>
               <dd>数据</dd>
@@ -129,26 +130,26 @@
         <div>
           <!-- <span>准备</span> -->
           <ol>
-            <li v-show="dataPrepare[0].switch">基本信息</li>
-            <li v-show="dataPrepare[1].switch">活动报名</li>
-            <li v-show="dataPrepare[2].switch">暖场设置</li>
+            <li v-show="dataPrepare[0].switch" @click="linkTo($event,'/liveMager/edit/')">基本信息</li>
+            <li v-show="dataPrepare[1].switch" @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">活动报名</li>
+            <li v-show="dataPrepare[2].switch" @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">暖场设置</li>
           </ol>
         </div>
         <div>
           <!-- <span>品牌</span> -->
           <ol>
-            <li v-show="dataBrand[0].switch">活动官网</li>
-            <li v-show="dataBrand[1].switch">直播引导页</li>
-            <li v-show="dataBrand[2].switch">观看页</li>
+            <li v-show="dataBrand[0].switch" @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网</li>
+            <li v-show="dataBrand[1].switch" @click="linkTo($event,'/setLiveGuided/')">直播引导页</li>
+            <li v-show="dataBrand[2].switch" @click="linkTo($event,'/setLiveWatch/')">观看页</li>
           </ol>
         </div>
         <div>
           <!-- <span>推广</span> -->
           <ol>
-            <li v-show="dataPromote[0].switch">自动化通知</li>
-            <li v-show="dataPromote[1].switch">邮件邀约</li>
-            <li v-show="dataPromote[2].switch">短信推广</li>
-            <li v-show="dataPromote[3].switch">微信推广</li>
+            <li v-show="dataPromote[0].switch" @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知</li>
+            <li v-show="dataPromote[1].switch" @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
+            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信推广</li>
+            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信推广</li>
           </ol>
         </div>
         <div>
@@ -161,7 +162,7 @@
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <li v-show="dataRecord[0].switch">设置回放</li>
+            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">设置回放</li>
           </ol>
         </div>
         <div>
@@ -570,25 +571,37 @@ export default {
         this.$router.push(link + this.activityId)
       }
     },
-    async turnOn () {
-      await this.$get(activityService.GET_HOSTING, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.hostOnline = res.data.hostOnline
-      })
-      if (this.hostOnline) {
-        this.$toast({
-          content: '主持人已进入直播前台，无法再次进入',
-          position: 'center'
-        })
-        return false
+    turnOn () {
+      let xmlHttp = new XMLHttpRequest()
+      const serverUrl = process.env.API_PATH
+      let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
+      xmlHttp.onreadystatechange = () => {
+        if (xmlHttp.readyState === 4) {
+          let responseText = xmlHttp.responseText
+          let data = JSON.parse(responseText)
+          if (data.code === 200) {
+            this.hostOnline = data.data.hostOnline
+            if (this.hostOnline) {
+              this.$toast({
+                content: '主持人已进入直播前台，无法再次进入',
+                position: 'center'
+              })
+              return false
+            }
+            if (this.isToday(this.startTime)) { // 在24小时之外
+              this.inCountdown = true
+              return false
+            }
+            this.judgePublish()
+          }
+        }
       }
-      if (this.isToday(this.startTime)) { // 在24小时之外
-        this.inCountdown = true
-        return false
-      }
-
-      this.judgePublish()
+      xmlHttp.open('GET', url, false) // 同步方式请求
+      xmlHttp.withCredentials = true
+      xmlHttp.send(null)
+    },
+    goDataCenter () {
+      this.$router.push(`/data/preview/${this.activityId}`)
     },
     isToday (str) {
       if (new Date(str).toDateString() === new Date().toDateString()) {
@@ -1074,6 +1087,10 @@ export default {
       background: rgba(239, 239, 239, 0.7);
       border-radius: 18px;
       border: 1px solid rgba(177, 177, 177, 1);
+      cursor: pointer;
+      &:hover {
+        background: rgba(255, 208, 33, 0.7);
+      }
     }
   }
 }

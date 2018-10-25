@@ -99,7 +99,7 @@ export default {
 } */
 
 .mu-text-field.has-label {
-  min-height: 72px;
+  min-height: 68px;
 }
 
 .mu-text-field-icon {
@@ -126,7 +126,7 @@ export default {
 
 .mu-text-field.has-label .mu-text-field-content {
   padding-top: 28px;
-  padding-bottom: 12px;
+  padding-bottom: 8px;
 }
 
 .mu-text-field-input {

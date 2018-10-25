@@ -76,6 +76,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "echarts": "^4.2.0-rc.2",
     "element-ui": "^2.4.6",
     "vue": "^2.5.16",
     "vue-html5-editor": "^1.1.1",

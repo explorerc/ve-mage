@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
 import userService from 'src/api/user-service'
+import store from '../store/index'
 
 Vue.use(Router)
 const router = new Router({
@@ -23,10 +24,13 @@ router.beforeEach((to, from, next) => {
         next('/liveMager/list')
       } else {
         vue
-          .$config({ loading: true, handlers: true })
+          .$config({
+            loading: true,
+            handlers: true
+          })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+            store.commit('login/ACCOUNT_INFO', res.data)
             sessionStorage.setItem('isLogin', true)
             next('/liveMager/list')
           })
@@ -44,8 +48,8 @@ router.beforeEach((to, from, next) => {
       return false
     } else {
       let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
-      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-      if (isLogin && accountInfo) {
+      let accountInfo = store.getters['login/accountInfo']
+      if (isLogin && accountInfo && accountInfo.userName) {
         if (accountInfo.hasPassword) {
           next()
           return false
@@ -54,11 +58,15 @@ router.beforeEach((to, from, next) => {
         return false
       } else {
         vue
-          .$config({ loading: true, handlers: true })
+          .$config({
+            loading: true,
+            handlers: true
+          })
           .$get(userService.GET_ACCOUNT)
           .then(res => {
             if (res.data.hasPassword) {
-              sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              // sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              store.commit('login/ACCOUNT_INFO', res.data)
               sessionStorage.setItem('isLogin', true)
               next()
             } else {
@@ -66,7 +74,8 @@ router.beforeEach((to, from, next) => {
             }
           })
           .catch(() => {
-            next('/login')
+            sessionStorage.setItem('isLogin', false)
+            to.name === 'login' ? next() : next('/login')
           })
       }
     }

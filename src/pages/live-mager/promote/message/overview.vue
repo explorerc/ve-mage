@@ -1,56 +1,4 @@
 <template>
-  <!-- <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="overview-wx-page live-mager">
-      <div class="from-box">
-        <div class="from-row">
-          <div class="from-title">短信标题：</div>
-          <div class="from-content">
-            {{title}}
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">收件人：</div>
-          <div class="from-content">
-            {{group}}
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">发送状态：</div>
-          <div class="from-content">
-            <span v-if="status === 'SEND'">已发送</span>
-            <span v-if="status === 'AWAIT'">已定时</span>
-            <span v-if="status === 'DRAFT'">草稿</span>
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">发送时间：</div>
-          <div class="from-content">
-            {{date}}
-          </div>
-        </div>
-        <div class="from-row">
-          <div class="from-title"></div>
-          <div class="from-content">
-            <el-button><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></el-button>
-            <el-button v-if="status !== 'SEND'">
-              <router-link :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}">编辑</router-link>
-            </el-button>
-            <el-button v-if="status === 'SEND'" disabled>已发送</el-button>
-            <el-button @click='sendNow' v-else>立即发送</el-button>
-          </div>
-        </div>
-      </div>
-      <div class="overview-box">
-        <div class="header">短信</div>
-        <div class="msg-box">
-          <div class="msg-title">
-            <p class="tips"><span>[ {{msgTag}} ]</span>{{msgContent}}</p>
-            <div class="footer">短信通知将于{{date}}发送</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <div class="content"
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
@@ -116,7 +64,7 @@
 </template>
 
 <script>
-import { formatDate } from 'src/assets/js/date'
+import {formatDate} from 'src/assets/js/date'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import comPhone from '../com-phone'
@@ -139,7 +87,7 @@ export default {
   },
   created () {
     this.queryInfo()
-    this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
+    this.$config({loading: true}).$get(noticeService.GET_QUERY_MSG, {
       inviteId: this.id
     }).then((res) => {
       this.group = res.data.groupId
@@ -163,7 +111,7 @@ export default {
       })
     },
     queryInfo () {
-      this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+      this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
         id: this.$route.params.id
       }).then((res) => {
         this.type = res.data.status

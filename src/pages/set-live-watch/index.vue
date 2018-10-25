@@ -66,8 +66,7 @@
             </div>
           </div>
           <button @click='brandClick'
-                  class='primary-button'
-                  v-if="status === 'PREPARE' || !activityId">
+                  class='primary-button'>
             保存
           </button>
         </com-tab>
@@ -165,8 +164,7 @@
             </div>
           </div>
           <button @click='shareClick'
-                  class='primary-button v-share-button'
-                  v-if="status === 'PREPARE' || !activityId">
+                  class='primary-button v-share-button'>
             保存
           </button>
         </com-tab>
@@ -179,6 +177,8 @@ import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import userService from 'src/api/user-service'
 import activityService from 'src/api/activity-service'
+import {mapMutations, mapState} from 'vuex'
+import * as types from 'src/store/mutation-types'
 
 export default {
   data () {
@@ -215,21 +215,21 @@ export default {
       this.$router.go(-1)
       return
     }
-    let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-    if (accountInfo && accountInfo.userName) {
-      this.name = accountInfo.name
-      this.avatar = accountInfo.avatar
+    if (this.accountInfo && this.accountInfo.userName) {
+      this.name = this.accountInfo.name
+      this.avatar = this.accountInfo.avatar
     } else {
       this.$get(userService.GET_ACCOUNT).then((res) => {
         this.name = res.data.name
         this.avatar = res.data.avatar
-        sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+        this.setAccountInfo(res.data)
       })
     }
     this.$get(activityService.GET_WEBINAR_INFO, {
       id: this.activityId
     }).then((res) => {
       this.status = res.data.status
+      this.activityTitle = res.data.title ? res.data.title : ''
     })
     this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
       if (res.data) {
@@ -240,7 +240,6 @@ export default {
         this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
         this.isShowGuided = res.data.page.indexOf('guide_route') > -1
         this.tabValue = 1
-        this.activityTitle = res.data.title ? res.data.title : ''
       }
     })
     this.$get(brandService.GET_LIVE_BRAND, data).then(res => {
@@ -252,6 +251,9 @@ export default {
     })
   },
   computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    }),
     defaultBgImg () {
       return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
     },
@@ -291,6 +293,9 @@ export default {
     })
   },
   methods: {
+    ...mapMutations('login', {
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
     uploadBgSuccess (data) {
       this.canPass = false
       this.bgImgUrl = data.name
@@ -322,7 +327,7 @@ export default {
         'backgroundUrl': this.bgImgUrl,
         'logoUrl': this.logoImgUrl
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
@@ -361,7 +366,7 @@ export default {
       if (this.isShowGuided) {
         data.page.push('guide_route')
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
         this.$toast({
           content: '保存成功'
@@ -500,12 +505,11 @@ export default {
       font-size: 16px;
       transform: scale(0.5);
       transform-origin: top left;
-      color: #fff;
+      color: #333;
     }
     .v-pc-icon {
       display: block;
       width: 87px;
-      margin-top: 7px;
     }
     .v-pc {
       width: 438px;

@@ -65,6 +65,18 @@
   transition: .3s;
 }
 
+/* 向上滑入，从是划出 */
+.slide-fade-enter-active {
+  transition: all .5s ease;
+}
+.slide-fade-leave-active {
+  transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(-100%);
+}
+
 /* 列表进入划出动画 */
 .list-item {
   display: inline-block;

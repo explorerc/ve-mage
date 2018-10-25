@@ -104,504 +104,507 @@
 </template>
 
 <script>
-  import MyInput from './login-input'
-  import userService from 'src/api/user-service'
-  import { mapMutations, mapState } from 'vuex'
-  import * as types from 'src/store/mutation-types'
+import MyInput from './login-input'
+import userService from 'src/api/user-service'
+import {mapMutations, mapState} from 'vuex'
+import * as types from 'src/store/mutation-types'
 
-  export default {
-    data () {
-      return {
-        isAccount: false,
-        userName: '',
-        passWord: '',
-        phone: '',
-        phoneStatus: false,
-        code: '',
-        type: 'password',
-        key: '',
-        isProhibit: true,
-        isSend: false,
-        second: 60,
-        timerr: '',
-        phoneKey: '',
-        isImg: false,
-        cap: null,
-        accountOpacity: 0,
-        mobileOpacity: 0,
-        accountError: '',
-        mobileError: '',
-        remember: false,
-        isActive: false,
-        isGoMaster: false
+export default {
+  data () {
+    return {
+      isAccount: false,
+      userName: '',
+      passWord: '',
+      phone: '',
+      phoneStatus: false,
+      code: '',
+      type: 'password',
+      key: '',
+      isProhibit: true,
+      isSend: false,
+      second: 60,
+      timerr: '',
+      phoneKey: '',
+      isImg: false,
+      cap: null,
+      accountOpacity: 0,
+      mobileOpacity: 0,
+      accountError: '',
+      mobileError: '',
+      remember: false,
+      isActive: false,
+      isGoMaster: false
+    }
+  },
+  components: {
+    'com-input': MyInput
+  },
+  computed: mapState('login', {
+    isLogin: state => state.isLogin,
+    accountInfo: state => state.accountInfo
+  }),
+  created () {
+    this.$config({handlers: true}).$get(userService.GET_CAPTCHA_ID).then((res) => {
+      let _self = this
+      this.key = res.data
+      window.initNECaptcha({
+        captchaId: _self.key,
+        element: '#captcha',
+        mode: 'float',
+        width: 260,
+        onReady: function (instance) {
+        },
+        onVerify: function (err, data) {
+          if (data) {
+            _self.phoneKey = data.validate
+            _self.isImg = true
+          }
+          if (err) {
+            console.log(err)
+          }
+        },
+        onError: function () {
+        }
+      }, function onload (instance) {
+        _self.cap = instance
+      })
+    }).catch(err => {
+      console.log(err.msg)
+    })
+  },
+  destroyed () {
+    clearInterval(this.timerr)
+  },
+  mounted () {
+  },
+  watch: {
+    phoneStatus: function (val) {
+      this.isGetCodePermission(true)
+    },
+    isImg: function (val) {
+      this.isGetCodePermission()
+    }
+  },
+  methods: {
+    ...mapMutations('login', {
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
+    changeFunction (item) {
+      if (item === '账号登录') {
+        this.isAccount = true
+        this.isActive = true
+      } else {
+        this.isAccount = false
+        this.isActive = false
       }
     },
-    components: {
-      'com-input': MyInput
+    change (type) {
+      this.type = type
     },
-    computed: mapState('login', {
-      isLogin: state => state.isLogin
-    }),
-    created () {
-      this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
-        let _self = this
-        this.key = res.data
-        window.initNECaptcha({
-          captchaId: _self.key,
-          element: '#captcha',
-          mode: 'float',
-          width: 260,
-          onReady: function (instance) {
-          },
-          onVerify: function (err, data) {
-            if (data) {
-              _self.phoneKey = data.validate
-              _self.isImg = true
-            }
-            if (err) {
-              console.log(err)
-            }
-          },
-          onError: function () {
-          }
-        }, function onload (instance) {
-          _self.cap = instance
+    accountSubmit () {
+      this.checkAccountForm()
+      if (this.accountError) {
+        return false
+      }
+      let data = {
+        'account': this.userName,
+        'password': this.passWord,
+        'remember': this.remember ? 1 : 0
+      }
+      this.$config({handlers: true}).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
+        sessionStorage.setItem('isLogin', true)
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          this.setAccountInfo(res.data)
         })
-      }).catch(err => {
-        console.log(err.msg)
+        this.setIsLogin(1)
+        let isGoMaster = sessionStorage.getItem('isGoMaster')
+        if (isGoMaster) {
+          this.$router.go(-1)
+        } else {
+          sessionStorage.removeItem('isGoMaster')
+          this.$router.replace('/liveMager/list')
+        }
+      }).catch((err) => {
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }, 1000)
+        this.accountError = err.msg
+        this.accountOpacity = 1
       })
     },
-    destroyed () {
-      clearInterval(this.timerr)
-    },
-    mounted () {
-    },
-    watch: {
-      phoneStatus: function (val) {
-        this.isGetCodePermission(true)
-      },
-      isImg: function (val) {
-        this.isGetCodePermission()
+    phoneSubmit () {
+      this.checkMobileForm()
+      if (this.mobileError) {
+        return false
       }
-    },
-    methods: {
-      ...mapMutations('login', {
-        setIsLogin: types.UPDATE_IS_LOGIN
-      }),
-      changeFunction (item) {
-        if (item === '账号登录') {
-          this.isAccount = true
-          this.isActive = true
-        } else {
-          this.isAccount = false
-          this.isActive = false
-        }
-      },
-      change (type) {
-        this.type = type
-      },
-      accountSubmit () {
-        this.checkAccountForm()
-        if (this.accountError) {
-          return false
-        }
-        let data = {
-          'account': this.userName,
-          'password': this.passWord,
-          'remember': this.remember ? 1 : 0
-        }
-        this.$config({ handlers: true }).$post(userService.POST_LOGIN_ACCOUNT, data).then((res) => {
-          sessionStorage.setItem('isLogin', true)
-          this.$get(userService.GET_ACCOUNT).then((res) => {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-          })
-          this.setIsLogin(1)
-          let isGoMaster = sessionStorage.getItem('isGoMaster')
-          if (isGoMaster) {
-            this.$router.go(-1)
-          } else {
-            sessionStorage.removeItem('isGoMaster')
-            this.$router.replace('/liveMager/list')
-          }
-        }).catch((err) => {
-          this.isSend = true
-          this.isProhibit = true
-          clearInterval(this.timerr)
-          this.timerr = setInterval(() => {
-            this.second--
-            if (this.second <= 0) {
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }, 1000)
-          this.accountError = err.msg
-          this.accountOpacity = 1
+      let data = {
+        'mobile': this.phone,
+        'code': this.code,
+        'remember': 0
+      }
+      this.$config({handlers: true}).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
+        sessionStorage.setItem('isLogin', true)
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          this.setAccountInfo(res.data)
         })
-      },
-      phoneSubmit () {
-        this.checkMobileForm()
-        if (this.mobileError) {
-          return false
-        }
-        let data = {
-          'mobile': this.phone,
-          'code': this.code,
-          'remember': 0
-        }
-        this.$config({ handlers: true }).$post(userService.POST_LOGIN_PHONE, data).then((res) => {
-          sessionStorage.setItem('isLogin', true)
-          this.$get(userService.GET_ACCOUNT).then((res) => {
-            sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-          })
-          this.setIsLogin(1)
-          this.isSend = true
-          this.isProhibit = true
-          clearInterval(this.timerr)
-          this.timerr = setInterval(() => {
-            this.second--
-            if (this.second <= 0) {
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }, 1000)
-          let isGoMaster = sessionStorage.getItem('isGoMaster')
-          if (isGoMaster) {
-            this.$router.go(-1)
-          } else {
-            sessionStorage.removeItem('isGoMaster')
-            this.$router.replace('/liveMager/list')
-          }
-        }).catch((err) => {
-          this.mobileError = err.msg
-          this.isSend = false
-          this.isProhibit = true
-          this.second = 60
-          this.isImg = false
-          this.phoneKey = ''
-          this.cap.refresh()
-          this.mobileOpacity = 1
-        })
-      },
-      getCode () {
-        // 获取验证码
-        if (this.isProhibit) {
-          return false
-        }
-
-        let data = {
-          'mobile': this.phone,
-          'type': 'BUSINESS_USER_LOGIN',
-          captcha: this.phoneKey
-        }
-        this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
-          this.isSend = true
-          this.isProhibit = true
-          clearInterval(this.timerr)
-          this.timerr = setInterval(() => {
-            this.second--
-            if (this.second <= 0) {
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }, 1000)
-        }).catch(err => {
-          if (err.code === 10050) {
-            this.mobileError = '验证码输入过于频繁'
-          } else {
-            this.mobileError = err.msg
-          }
-          this.mobileOpacity = 1
-          clearInterval(this.timerr)
-          this.isSend = false
-          this.isProhibit = true
-          this.second = 60
-          this.isImg = false
-          this.phoneKey = ''
-          this.cap.refresh()
-        })
-      },
-      isGetCodePermission (val) {
-        if (this.isImg && this.phoneStatus) {
-          this.isProhibit = false
-          if (this.second > 0) {
-            this.isSend = false
-            this.isProhibit = false
-            this.second = 60
-            this.mobileOpacity = 1
+        this.setIsLogin(1)
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
             clearInterval(this.timerr)
-            if (val) {
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
           }
+        }, 1000)
+        let isGoMaster = sessionStorage.getItem('isGoMaster')
+        if (isGoMaster) {
+          this.$router.go(-1)
         } else {
-          this.isProhibit = true
+          sessionStorage.removeItem('isGoMaster')
+          this.$router.replace('/liveMager/list')
         }
-      },
-      checkPhone (param) {
-        let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-        if (reg.test(parseInt(param))) {
-          this.phoneStatus = true
-        } else {
-          this.phoneStatus = false
-        }
-      },
-      checkAccountForm: function (e) {
-        if (!this.userName) {
-          this.accountError = '请输入用户名/手机号/邮箱'
-          this.accountOpacity = 1
-          return false
-        }
-        if (!this.passWord) {
-          this.accountError = '请输入密码'
-          this.accountOpacity = 1
-          return false
-        }
-        this.accountError = ''
-        this.accountOpacity = 0
-
-        // else if (!this.validEmail(this.email)) {
-        //   this.errors.push('Valid email required.')
-        // }
-      },
-      checkMobileForm: function (e) {
-        if (!this.phone) {
-          this.mobileError = '请输入手机号'
-          this.mobileOpacity = 1
-          return false
-        } else if (!this.validPhone(this.phone)) {
-          this.mobileError = '请输入正确的手机号'
-          this.mobileOpacity = 1
-          return false
-        }
-        if (!this.code) {
-          this.mobileError = '请输入验证码'
-          this.mobileOpacity = 1
-          return false
-        }
-        this.mobileError = ''
-        this.mobileOpacity = 0
-      },
-      inputFocus: function () {
-        this.accountError = ''
-        this.accountOpacity = 0
-        this.mobileError = ''
-        this.mobileOpacity = 0
-      },
-      validEmail: function (email) {
-        var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-        return re.test(email)
-      },
-      validPhone: function (phone) {
-        var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-        return re.test(phone)
+      }).catch((err) => {
+        this.mobileError = err.msg
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
+        this.mobileOpacity = 1
+      })
+    },
+    getCode () {
+      // 获取验证码
+      if (this.isProhibit) {
+        return false
       }
+
+      let data = {
+        'mobile': this.phone,
+        'type': 'BUSINESS_USER_LOGIN',
+        captcha: this.phoneKey
+      }
+      this.$config({handlers: true}).$get(userService.GET_CODE, data).then((res) => {
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }, 1000)
+      }).catch(err => {
+        if (err.code === 10050) {
+          this.mobileError = '验证码输入过于频繁'
+        } else {
+          this.mobileError = err.msg
+        }
+        this.mobileOpacity = 1
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
+      })
+    },
+    isGetCodePermission (val) {
+      if (this.isImg && this.phoneStatus) {
+        this.isProhibit = false
+        if (this.second > 0) {
+          this.isSend = false
+          this.isProhibit = false
+          this.second = 60
+          this.mobileOpacity = 1
+          clearInterval(this.timerr)
+          if (val) {
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }
+      } else {
+        this.isProhibit = true
+      }
+    },
+    checkPhone (param) {
+      let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      if (reg.test(parseInt(param))) {
+        this.phoneStatus = true
+      } else {
+        this.phoneStatus = false
+      }
+    },
+    checkAccountForm: function (e) {
+      if (!this.userName) {
+        this.accountError = '请输入用户名/手机号/邮箱'
+        this.accountOpacity = 1
+        return false
+      }
+      if (!this.passWord) {
+        this.accountError = '请输入密码'
+        this.accountOpacity = 1
+        return false
+      }
+      this.accountError = ''
+      this.accountOpacity = 0
+
+      // else if (!this.validEmail(this.email)) {
+      //   this.errors.push('Valid email required.')
+      // }
+    },
+    checkMobileForm: function (e) {
+      if (!this.phone) {
+        this.mobileError = '请输入手机号'
+        this.mobileOpacity = 1
+        return false
+      } else if (!this.validPhone(this.phone)) {
+        this.mobileError = '请输入正确的手机号'
+        this.mobileOpacity = 1
+        return false
+      }
+      if (!this.code) {
+        this.mobileError = '请输入验证码'
+        this.mobileOpacity = 1
+        return false
+      }
+      this.mobileError = ''
+      this.mobileOpacity = 0
+    },
+    inputFocus: function () {
+      this.accountError = ''
+      this.accountOpacity = 0
+      this.mobileError = ''
+      this.mobileOpacity = 0
+    },
+    validEmail: function (email) {
+      var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+      return re.test(email)
+    },
+    validPhone: function (phone) {
+      var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      return re.test(phone)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  .login-container /deep/ {
+.login-container /deep/ {
+  height: 100%;
+  min-height: 660px;
+  width: 100%;
+  min-width: 1200px;
+  overflow: auto;
+  overflow-y: hidden;
+
+  .v-left {
+    float: left;
+    width: 50%;
     height: 100%;
-    min-height: 660px;
-    width: 100%;
-    min-width: 1200px;
-    overflow: auto;
-    overflow-y: hidden;
-
-    .v-left {
-      float: left;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(
-          222deg,
-          rgba(255, 208, 33, 1) 0%,
-          rgba(255, 194, 0, 1) 100%
-      );
-      position: relative;
-      .v-logo {
-        position: absolute;
-        top: 20px;
-        left: 50px;
+    background: linear-gradient(
+      222deg,
+      rgba(255, 208, 33, 1) 0%,
+      rgba(255, 194, 0, 1) 100%
+    );
+    position: relative;
+    .v-logo {
+      position: absolute;
+      top: 20px;
+      left: 50px;
+      font-size: 36px;
+      color: #222;
+    }
+    .v-content {
+      width: 375px;
+      margin: 260px auto;
+      text-align: center;
+      .v-title {
         font-size: 36px;
         color: #222;
       }
-      .v-content {
-        width: 375px;
-        margin: 260px auto;
-        text-align: center;
-        .v-title {
-          font-size: 36px;
-          color: #222;
+      .v-subtitle {
+        font-size: 18px;
+        color: #222;
+        margin-top: 12px;
+      }
+    }
+  }
+  .v-right {
+    float: right;
+    width: 50%;
+    height: 100%;
+    position: relative;
+    .v-info {
+      width: 100%;
+      position: absolute;
+      bottom: 15px;
+      text-align: center;
+    }
+    .primary-button {
+      display: block;
+      width: 100%;
+      height: 44px;
+      border-radius: 4px;
+    }
+    .v-content {
+      width: 340px;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      margin: auto 0 auto -170px;
+      max-height: 475px;
+      text-aligun: left;
+      font-size: 22px;
+    }
+    .v-title {
+      font-size: 32px;
+      color: #333333;
+    }
+    .v-tabs {
+      margin-top: 45px;
+      span {
+        float: left;
+        color: #333333;
+        font-size: 20px;
+        line-height: 29px;
+      }
+      li {
+        float: left;
+        font-size: 22px;
+        color: #333333;
+        margin-right: 10px;
+        cursor: pointer;
+        &:last-child {
+          margin-left: 10px;
         }
-        .v-subtitle {
-          font-size: 18px;
-          color: #222;
-          margin-top: 12px;
+        &.active {
+          color: #ffd021;
         }
       }
     }
-    .v-right {
-      float: right;
-      width: 50%;
-      height: 100%;
+    .yidun.yidun--light {
+      width: 100% !important;
+      margin-top: 38px !important;
+      .yidun_control {
+        background-color: #fff !important;
+        border: 1px solid #c4c4c4 !important;
+      }
+    }
+    .input-form {
       position: relative;
-      .v-info {
-        width: 100%;
-        position: absolute;
-        bottom: 15px;
-        text-align: center;
-      }
-      .primary-button {
+      .v-error {
         display: block;
-        width: 100%;
-        height: 44px;
-        border-radius: 4px;
+        height: 40px;
+        line-height: 40px;
+        margin-top: 8px;
+        font-size: 12px;
+        color: #e62e2e;
       }
-      .v-content {
-        width: 340px;
-        position: absolute;
-        left: 50%;
-        top: 0;
-        bottom: 0;
-        margin: auto 0 auto -170px;
-        max-height: 475px;
-        text-align: left;
-        font-size: 22px;
-      }
-      .v-title {
-        font-size: 32px;
-        color: #333333;
-      }
-      .v-tabs {
-        margin-top: 45px;
-        span {
-          float: left;
-          color: #333333;
-          font-size: 20px;
-          line-height: 29px;
-        }
-        li {
-          float: left;
-          font-size: 22px;
-          color: #333333;
-          margin-right: 10px;
-          &:last-child {
-            margin-left: 10px;
-          }
-          &.active {
-            color: #ffd021;
-          }
-        }
-      }
-      .yidun.yidun--light {
-        width: 100% !important;
-        margin-top: 38px !important;
-        .yidun_control {
-          background-color: #fff !important;
-          border: 1px solid #c4c4c4 !important;
-        }
-      }
-      .input-form {
-        position: relative;
-        .v-error {
-          display: block;
-          height: 40px;
-          line-height: 40px;
-          margin-top: 8px;
-          font-size: 12px;
-          color: #e62e2e;
-        }
-        &.v-forget {
-          margin-top: 8px;
-          margin-bottom: 50px;
-          font-size: 13px;
-          .clickTag {
-            font-size: 13px;
-            color: #999;
-            vertical-align: middle;
-          }
-        }
-      }
-      .v-getcode {
-        background-color: #ffd021;
-        display: block;
-        width: 115px;
-        height: 34px;
-        line-height: 34px;
-        text-align: center;
+      &.v-forget {
+        margin-top: 8px;
+        margin-bottom: 50px;
         font-size: 13px;
-        color: #fff;
-        position: absolute;
-        bottom: 22px;
-        right: 0;
-        border-radius: 2px;
-        text-decoration: none;
-        &.prohibit {
+        .clickTag {
+          font-size: 13px;
+          color: #999;
+          vertical-align: middle;
+        }
+      }
+    }
+    .v-getcode {
+      background-color: #ffd021;
+      display: block;
+      width: 115px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+      position: absolute;
+      bottom: 22px;
+      right: 0;
+      border-radius: 2px;
+      text-decoration: none;
+      &.prohibit {
+        background-color: #ffd021;
+        opacity: 0.8;
+        &:hover {
           background-color: #ffd021;
           opacity: 0.8;
-          &:hover {
-            background-color: #ffd021;
-            opacity: 0.8;
-          }
-        }
-        &:hover {
-          background-color: #fdd43f;
-        }
-        &:active {
-          background-color: #eec11a;
-        }
-        .fr {
-          margin-left: 6px;
-          float: none;
         }
       }
-      .el-button {
-        margin-top: 10px;
+      &:hover {
+        background-color: #fdd43f;
       }
-      .el-checkbox__inner:hover,
-      .el-checkbox__input.is-focus .el-checkbox__inner {
-        border-color: #ffd021;
+      &:active {
+        background-color: #eec11a;
       }
-      .el-checkbox__input.is-checked .el-checkbox__inner,
-      .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-        background-color: #ffd021;
-        border-color: #ffd021;
-      }
-      .el-checkbox__label {
-        color: #999 !important;
+      .fr {
+        margin-left: 6px;
+        float: none;
       }
     }
+    .el-button {
+      margin-top: 10px;
+    }
+    .el-checkbox__inner:hover,
+    .el-checkbox__input.is-focus .el-checkbox__inner {
+      border-color: #ffd021;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+      background-color: #ffd021;
+      border-color: #ffd021;
+    }
+    .el-checkbox__label {
+      color: #999 !important;
+    }
   }
+}
 
-  @media screen and (max-width: 1200px) {
-    .login-container {
-      min-width: auto;
-    }
-    .login-container .v-left {
-      display: none;
-    }
-    .login-container .v-right {
-      width: 100%;
-    }
+@media screen and (max-width: 1200px) {
+  .login-container {
+    min-width: auto;
   }
+  .login-container .v-left {
+    display: none;
+  }
+  .login-container .v-right {
+    width: 100%;
+  }
+}
 </style>
 
