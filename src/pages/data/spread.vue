@@ -311,6 +311,10 @@
         barPile('chart01', {
           legendData: this.speadDatas.types,
           list: this.speadDatas.list
+        }, {
+          left: '36',
+          bottom: '1%',
+          top: '20'
         })
       },
       initAcitviteRatio () {
@@ -434,11 +438,11 @@
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-.spread {
-  .item-container {
-    .item-box {
-      height: 94px;
+  .spread {
+    .item-container {
+      .item-box {
+        height: 94px;
+      }
     }
   }
-}
 </style>

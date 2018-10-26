@@ -89,7 +89,6 @@
     background-color: #fff;
     padding: 20px;
     border-radius: 6px;
-    overflow: hidden;
     margin: 30px auto;
     width: 1366px;
     min-width: 1019px;

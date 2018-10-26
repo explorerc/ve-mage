@@ -117,22 +117,22 @@
           <span>收到数据</span>
         </div>
       </div>
+      <!--<div class="item-box hd-data-item fr">-->
+        <!--<span class="hd-title">答题</span>-->
+        <!--<div class="hd-data">-->
+          <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.push}}</span>-->
+          <!--<span>推送次数</span>-->
+        <!--</div>-->
+        <!--<div class="hd-data">-->
+          <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.join}}</span>-->
+          <!--<span>参与答题人数</span>-->
+        <!--</div>-->
+        <!--<div class="hd-data">-->
+          <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.win}}</span>-->
+          <!--<span>获得奖励人数</span>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="item-box hd-data-item fr">
-        <span class="hd-title">答题</span>
-        <div class="hd-data">
-          <span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.push}}</span>
-          <span>推送次数</span>
-        </div>
-        <div class="hd-data">
-          <span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.join}}</span>
-          <span>参与答题人数</span>
-        </div>
-        <div class="hd-data">
-          <span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.win}}</span>
-          <span>获得奖励人数</span>
-        </div>
-      </div>
-      <div class="item-box hd-data-item fl">
         <span class="hd-title">推荐卡片</span>
         <div class="hd-data">
           <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.push}}</span>
@@ -147,7 +147,7 @@
           <span>点击次数</span>
         </div>
       </div>
-      <div class="item-box hd-data-item fr">
+      <div class="item-box hd-data-item fl">
         <span class="hd-title">红包雨</span>
         <div class="hd-data">
           <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
@@ -162,7 +162,7 @@
           <span>领取金额</span>
         </div>
       </div>
-      <div class="item-box hd-data-item fl">
+      <div class="item-box hd-data-item fr">
         <span class="hd-title">商品推荐</span>
         <div class="hd-data" style="width: 25%;">
           <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
@@ -300,38 +300,38 @@
         </div>
       </div>
     </message-box>
-    <!-- 答题 -->
-    <message-box
-      v-show="answerDataDetail"
-      width="60%"
-      type="none"
-      header="问卷数据详情"
-      @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
-        <div class="table-box">
-          <el-table :data="answerDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="title" label="题目"></el-table-column>
-            <el-table-column prop="preMoney" label="预设奖金总额"></el-table-column>
-            <el-table-column prop="preCount" label="预设获奖人数"></el-table-column>
-            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
-            <el-table-column prop="correntCount" label="答对人数"></el-table-column>
-            <el-table-column prop="costMoney" label="实际消耗金额"></el-table-column>
-            <el-table-column prop="winCount" label="实际获奖人数"></el-table-column>
-            <el-table-column prop="successRate" label="正确率"></el-table-column>
-            <el-table-column label="详情数据">
-              <template slot-scope="scope">
-                <span class="data-link">下载</span>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </div>
-    </message-box>
+    <!--&lt;!&ndash; 答题 &ndash;&gt;-->
+    <!--<message-box-->
+      <!--v-show="answerDataDetail"-->
+      <!--width="60%"-->
+      <!--type="none"-->
+      <!--header="问卷数据详情"-->
+      <!--@handleClick="closeMesssageBox">-->
+      <!--<div class="msg-table-box" style="padding-top: 20px;">-->
+        <!--<div class="table-box">-->
+          <!--<el-table :data="answerDataList" style="width: 100%">-->
+            <!--<el-table-column label="序号">-->
+              <!--<template slot-scope="scope">-->
+                <!--{{scope.$index}}-->
+              <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="title" label="题目"></el-table-column>-->
+            <!--<el-table-column prop="preMoney" label="预设奖金总额"></el-table-column>-->
+            <!--<el-table-column prop="preCount" label="预设获奖人数"></el-table-column>-->
+            <!--<el-table-column prop="joinCount" label="参与人数"></el-table-column>-->
+            <!--<el-table-column prop="correntCount" label="答对人数"></el-table-column>-->
+            <!--<el-table-column prop="costMoney" label="实际消耗金额"></el-table-column>-->
+            <!--<el-table-column prop="winCount" label="实际获奖人数"></el-table-column>-->
+            <!--<el-table-column prop="successRate" label="正确率"></el-table-column>-->
+            <!--<el-table-column label="详情数据">-->
+              <!--<template slot-scope="scope">-->
+                <!--<span class="data-link">下载</span>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
+          <!--</el-table>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</message-box>-->
     <!-- 推荐卡片 -->
     <message-box
       v-show="cardDataDetail"
@@ -868,7 +868,7 @@
         }
         scatter('chart03', serveDatas, {
           left: 70,
-          right: 50,
+          right: 10,
           top: 20,
           bottom: 20
         })
