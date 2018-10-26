@@ -110,7 +110,9 @@ export default {
       }
     },
     initGrouplist () {
-      this.$get(userManage.GET_GROUP_LIST).then((res) => {
+      this.$get(userManage.GET_GROUP_LIST, {
+        type: '1'
+      }).then((res) => {
         console.log(res)
         this.groupData = this.reArrange(res.data.list)
       })

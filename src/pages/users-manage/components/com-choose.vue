@@ -155,7 +155,8 @@ export default {
     // 查询群组
     queryGrouplist (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
-        keyword: this.searchVal
+        keyword: this.searchVal,
+        type: '1'
       }).then((res) => {
         res.data.list.forEach(item => {
           this.groupListData.push({

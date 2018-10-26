@@ -49,14 +49,19 @@
           <div class='filter-item'>
             <div class="condition">
               <span class="label">所属地域</span>
-              <el-select v-model="grandVal" placeholder="请选择">
+              <!-- <el-select v-model="grandVal" placeholder="请选择">
                 <el-option
                   v-for="item in grands"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
                 </el-option>
-              </el-select>
+              </el-select> -->
+              <el-cascader
+                :options="districts"
+                v-model="districtsVal"
+                @change="handleDistrictChange">
+              </el-cascader>
             </div>
             <div class="condition">
               <span class="label">性别</span>
@@ -257,6 +262,7 @@ import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
+import districtData from 'src/assets/js/district.js'
 export default {
   data () {
     return {
@@ -321,10 +327,56 @@ export default {
       sexsVal: '',
       industrys: [
         {
-
+          value: '',
+          label: '全部'
+        },
+        {
+          value: 'IT/互联网',
+          label: 'IT/互联网'
+        }, {
+          value: '电子/通信/硬件',
+          label: '电子/通信/硬件'
+        }, {
+          value: '金融',
+          label: '金融'
+        }, {
+          value: '交通/贸易/物流',
+          label: '交通/贸易/物流'
+        }, {
+          value: '消费品',
+          label: '消费品'
+        }, {
+          value: '机械/制造',
+          label: '机械/制造'
+        }, {
+          value: '能源/矿产环保',
+          label: '能源/矿产环保'
+        }, {
+          value: '制药/医疗',
+          label: '制药/医疗'
+        }, {
+          value: '专业服务',
+          label: '专业服务'
+        }, {
+          value: '教育/培训',
+          label: '教育/培训'
+        }, {
+          value: '广告/媒体/娱乐/出版',
+          label: '广告/媒体/娱乐/出版'
+        }, {
+          value: '房地产/建筑',
+          label: '房地产/建筑'
+        }, {
+          value: '服务业',
+          label: '服务业'
+        }, {
+          value: '政府/非盈利机构/其它',
+          label: '政府/非盈利机构/其它'
         }
       ],
       industrysVal: '',
+      districts: [],
+      districtsVal: [],
       firstVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       lastVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       activityArray: {
@@ -389,6 +441,7 @@ export default {
   },
   mounted () {
     this.queryUserPool()
+    this.districts = districtData
   },
   filters: {
     filterLevel (val) {
@@ -463,6 +516,9 @@ export default {
       this.groupArray.name = res.name
       this.groupArray.id = res.id
       this.filterCondition.groups = res.id.toString()
+    },
+    handleDistrictChange (res) {
+      console.log(res)
     },
     searchHandler (res) {
       console.log(res)
@@ -726,6 +782,24 @@ export default {
       // border: 1px solid RGBA(226, 226, 226, 1);
       .el-input__inner {
         padding: 0 15px;
+        height: 34px;
+        line-height: 34px;
+      }
+      .el-input.is-focus .el-input__inner {
+        border-color: $color-blue;
+      }
+    }
+    .el-cascader {
+      width: 202px;
+      height: 34px;
+      line-height: 34px;
+      .el-input__suffix {
+        top: -2px;
+      }
+      &.is-opened .el-input__suffix {
+        top: 2px;
+      }
+      .el-input__inner {
         height: 34px;
         line-height: 34px;
       }
