@@ -26,7 +26,7 @@
               <el-dropdown-item command='del' :disabled="multipleSelection.length <= 0">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <el-button round @click=''>全部导出</el-button>
+          <el-button round @click='exportAll'>全部导出</el-button>
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
@@ -460,7 +460,7 @@ export default {
         tags: '', // 标签ID，多个标签ID用英文逗号","分割
         groups: '', // 所属群组ID，多个群组ID用英文逗号","分割
         page: 1, // 分页页码 默认不传为第一页
-        page_size: 10 // 每页显示条数 默认不传为每页显示10条
+        page_size: 30 // 每页显示条数 默认不传为每页显示10条
       }
     }
   },
@@ -523,7 +523,7 @@ export default {
       // })
     },
     currentChange (e) {
-      Object.assign(this.filterCondition, {'page': e})
+      Object.assign(this.filterCondition, { 'page': e })
       this.queryUserPool(this.filterCondition)
     },
     handleDel (idx, type) {
@@ -671,6 +671,9 @@ export default {
           })
           break
       }
+    },
+    exportAll () { // 导出全部
+      // this.$get(userManage.POST_USERS_POOL, data).then((res) => {
     }
   },
   watch: {
