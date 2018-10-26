@@ -1,5 +1,9 @@
 var questionnaireCitys = [
   {
+    'id': 1000,
+    'name': '全部'
+  },
+  {
     'id': 1001,
     'pid': 1,
     'name': '北京'

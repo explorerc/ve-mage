@@ -7,7 +7,7 @@
     <div class="content from-box">
       <div class="handle-bar">
         <div class="left">
-          <el-dropdown @command="handleCommandk">
+          <!-- <el-dropdown @command="handleCommandk">
             <span class="el-dropdown-link">
               <el-button round >选择</el-button>
             </span>
@@ -15,21 +15,22 @@
               <el-dropdown-item command='checkCurPage'>本页数据</el-dropdown-item>
               <el-dropdown-item command='checkAll'>列表所有数据</el-dropdown-item>
             </el-dropdown-menu>
-          </el-dropdown>
+          </el-dropdown> -->
           <el-dropdown @command="handleCommandk">
-            <span class="el-dropdown-link">
-              <el-button round>批量操作</el-button>
+            <span class="el-dropdown-link" >
+              <el-button round :disabled="multipleSelection.length <= 0">批量操作</el-button>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command='export'>导出</el-dropdown-item>
-              <el-dropdown-item command='addGroup'>添加到群组</el-dropdown-item>
-              <el-dropdown-item command='del'>删除</el-dropdown-item>
+              <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item>
+              <el-dropdown-item command='addGroup' :disabled="multipleSelection.length <= 0">添加到群组</el-dropdown-item>
+              <el-dropdown-item command='del' :disabled="multipleSelection.length <= 0">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+          <el-button round @click=''>全部导出</el-button>
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
-          <com-input :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱"   @focus=""></com-input>
+          <com-input :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱"   @focus="filterCondition.keyword=''" @keyup.enter.native='filterSearch'></com-input>
           <span @click='showFilter = !showFilter'>精准搜索<i class='el-submenu__icon-arrow el-icon-arrow-down' :class="{'is-open':showFilter }"></i></span>
         </div>
       </div>
@@ -64,11 +65,19 @@
             </div>
           </div>
           <div class='filter-item'>
-            <div class="condition">
+            <div class="condition area">
               <span class="label">所属地域</span>
-              <el-select v-model="grandVal" placeholder="请选择">
+              <el-select v-model="filterCondition.province" filterable placeholder="省份">
                 <el-option
                   v-for="item in districts"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name">
+                </el-option>
+              </el-select>
+              <el-select v-model="filterCondition.city" filterable placeholder="城市">
+                <el-option
+                  v-for="item in districtsCity"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name">
@@ -107,6 +116,7 @@
             <div class="condition">
             <span class="label">首次访问</span>
                <el-date-picker
+                :clearable="true"
                 v-model="firstVal"
                 type="datetimerange"
                 range-separator="至"
@@ -119,6 +129,7 @@
             <div class="condition">
             <span class="label">最后访问</span>
                <el-date-picker
+                :clearable="true"
                 v-model="lastVal"
                 type="datetimerange"
                 range-separator="至"
@@ -161,11 +172,11 @@
           </div>
           <div class="filter-confirm">
             <el-button round class='primary-button' @click='doFilter'>查询</el-button>
-            <el-button round>取消</el-button>
+            <el-button round @click='showFilter = false'>取消</el-button>
           </div>
         </div>
       </transition>
-      <div class="users-list page-bg">
+      <div class="users-list page-bg table_box">
         <el-table
           ref="multipleTable"
           :data="usersListData"
@@ -243,11 +254,11 @@
             </template>
           </el-table-column>
         </el-table>
-          <div class="pagination-box">
+          <div class="pagination-box" v-if="total>filterCondition.page_size">
             <div class="page-pagination">
                 <ve-pagination
                   :total="total"
-                  :pageSize="queryData.pageSize"
+                  :pageSize="filterCondition.page_size"
                   :currentPage="currPage"
                   @changePage="currentChange"/>
             </div>
@@ -280,7 +291,7 @@ import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
 import districtDataPro from 'src/assets/js/district-provience.js'
-// import districtDataCity from 'src/assets/js/district-city.js'
+import districtDataCity from 'src/assets/js/district-city.js'
 export default {
   data () {
     return {
@@ -311,7 +322,6 @@ export default {
           label: '没有评级'
         }
       ],
-      grandVal: '',
       sources: [
         {
           value: '',
@@ -394,9 +404,10 @@ export default {
       ],
       industrysVal: '',
       districts: [],
-      districtsVal: [''],
-      firstVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
-      lastVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
+      districtsCity: [],
+      // districtsVal: [''],
+      firstVal: [],
+      lastVal: [],
       activityArray: {
         'id': [],
         'name': []
@@ -423,13 +434,9 @@ export default {
         // }
       ],
       multipleSelection: [],
-      total: 7,
+      checkedArr: [],
+      total: 0,
       currPage: 1,
-      totalPage: 1,
-      queryData: {
-        page: 1,
-        pageSize: 10
-      },
       showAddgroup: false,
       showChooseActive: false,
       showChooseTag: false,
@@ -452,14 +459,15 @@ export default {
         activity_ids: '', // 参加过的活动ID，多个活动ID用英文逗号","分割
         tags: '', // 标签ID，多个标签ID用英文逗号","分割
         groups: '', // 所属群组ID，多个群组ID用英文逗号","分割
-        page: '', // 分页页码 默认不传为第一页
-        page_size: '' // 每页显示条数 默认不传为每页显示10条
+        page: 1, // 分页页码 默认不传为第一页
+        page_size: 10 // 每页显示条数 默认不传为每页显示10条
       }
     }
   },
   mounted () {
-    this.queryUserPool()
+    this.queryUserPool(this.filterCondition)
     this.districts = districtDataPro
+    this.districtsCity = districtDataCity
     // let arr = []
     // districtData.forEach(item => {
     //   item['children'].forEach(ele => {
@@ -510,6 +518,9 @@ export default {
   methods: {
     handleSelectionChange (val) {
       this.multipleSelection = val
+      // val.forEach(item => {
+      //   this.multipleSelection.push(item.business_consumer_uid)
+      // })
     },
     currentChange (e) {
       Object.assign(this.filterCondition, { 'page': e })
@@ -533,37 +544,84 @@ export default {
       console.log(res)
       this.activityArray.name = res.name
       this.activityArray.id = res.id
-      this.filterCondition.activity_ids = res.id.toString()
+      // this.filterCondition.activity_ids = res.id.toString()
     },
     selectTagConfirm (res) {
       console.log(res)
       this.tagArray.name = res.name
       this.tagArray.id = res.id
-      this.filterCondition.tags = res.id.toString()
+      // this.filterCondition.tags = res.id.toString()
     },
     selectGroupConfirm (res) {
       console.log(res)
       this.groupArray.name = res.name
       this.groupArray.id = res.id
-      this.filterCondition.groups = res.id.toString()
+      // this.filterCondition.groups = res.id.toString()
     },
-    handleDistrictChange (res) {
-      console.log(res)
-      this.filterCondition.province = res[0]
-      this.filterCondition.city = res[1] ? res[1] : ''
-      this.filterCondition.area = res[2] ? res[2] : ''
-    },
+    // handleDistrictChange (res) {
+    //   console.log(res)
+    //   this.filterCondition.province = res[0]
+    //   this.filterCondition.city = res[1] ? res[1] : ''
+    //   this.filterCondition.area = res[2] ? res[2] : ''
+    // },
     searchHandler (res) {
       console.log(res)
     },
+    filterSearch () {
+      console.log('search')
+      this.queryUserPool('search')
+    },
     groupData (res) {
-      console.log(res)
+      // console.log(res)
+      const data = res
+      Object.assign(data, {
+        'business_consumer_uids': this.checkedArr.toString()
+      })
+      console.log(data)
+      this.addGroup(data)
+    },
+    addGroup (data) {
+      this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
+        this.showAddgroup = false
+        this.$toast({
+          'content': '导入成功',
+          'position': 'center'
+        })
+      })
+    },
+    delUsers () {
+      const data = {}
+      Object.assign(data, {
+        'business_consumer_uids': this.checkedArr.toString()
+      })
+      this.$post(userManage.POST_DEL_USERS, data).then((res) => {
+        this.$toast({
+          'content': '删除成功',
+          'position': 'center'
+        })
+      })
     },
     queryUserPool (data) {
+      Object.assign(data, {
+        'activity_ids': this.activityArray.id.toString(),
+        'groups': this.groupArray.id.toString(),
+        'tags': this.tagArray.id.toString()
+      })
+      if (data === 'search') {
+        data = {
+          'keyword': this.filterCondition.keyword,
+          'page': 1 // 分页页码 默认不传为第一页
+        }
+      }
+      console.log(data)
       this.$get(userManage.GET_USERS_POOL, data).then((res) => {
+        const arr = []
         console.log(res)
+        this.total = res.data.count
+        this.currPage = res.data.page
         res.data.list.forEach(item => {
-          this.usersListData.push({
+          arr.push({
+            'business_consumer_uid': item.business_consumer_uid,
             'avatar': item.avatar ? item.avatar : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
             'name': item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...',
             'gender': item.sex === 'M' ? '男' : '女',
@@ -575,27 +633,42 @@ export default {
             'count': item.join_count
           })
         })
+        this.usersListData = arr
       })
     },
     doFilter () {
-      console.log(this.filterCondition)
+      this.queryUserPool(this.filterCondition)
     },
     handleCommandk (type) {
       switch (type) {
         case 'addGroup':
           this.showAddgroup = true
           break
-        case 'checkCurPage':
-          this.multipleSelection = this.usersListData
-          document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
-          break
-        case 'checkAll':
-          this.multipleSelection = this.usersListData
-          document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
-          break
+        // case 'checkCurPage':
+        //   // this.multipleSelection = this.usersListData
+        //   // this.selCur_txt = '本页数据''
+        //   document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
+        //   break
+        // case 'checkAll':
+        //   // this.multipleSelection = this.usersListData
+        //   document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
+        //   break
         case 'export': // 导出
           break
         case 'del': // 删除
+
+          this.$messageBox({
+            header: '提示',
+            width: '400px',
+            content: '是否确定删除该用户？',
+            cancelText: '否',
+            confirmText: '是',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.delUsers()
+              }
+            }
+          })
           break
       }
     }
@@ -603,17 +676,32 @@ export default {
   watch: {
     firstVal: {
       handler (val) {
-        this.filterCondition.first_visited_at_start = val[0]
-        this.filterCondition.first_visited_at_end = val[1]
-      },
-      immediate: true
+        if (val === null) {
+          this.filterCondition.first_visited_at_start = ''
+          this.filterCondition.first_visited_at_end = ''
+        } else {
+          this.filterCondition.first_visited_at_start = val[0]
+          this.filterCondition.first_visited_at_end = val[1]
+        }
+      }
     },
     lastVal: {
       handler (val) {
-        this.filterCondition.last_visited_at_start = val[0]
-        this.filterCondition.last_visited_at_end = val[1]
-      },
-      immediate: true
+        if (val === null) {
+          this.filterCondition.last_visited_at_start = ''
+          this.filterCondition.last_visited_at_end = ''
+        } else {
+          this.filterCondition.last_visited_at_start = val[0]
+          this.filterCondition.last_visited_at_end = val[1]
+        }
+      }
+    },
+    multipleSelection: {
+      handler (val) {
+        val.forEach(item => {
+          this.checkedArr.push(item.business_consumer_uid)
+        })
+      }
     }
   },
   components: {
@@ -780,6 +868,9 @@ export default {
           }
         }
       }
+      .condition.area .el-select {
+        width: 99px;
+      }
     }
     .users-list {
       .el-table {
@@ -845,6 +936,9 @@ export default {
         line-height: 34px;
       }
       .el-input.is-focus .el-input__inner {
+        border-color: $color-blue;
+      }
+      &:hover .el-input__inner {
         border-color: $color-blue;
       }
     }
