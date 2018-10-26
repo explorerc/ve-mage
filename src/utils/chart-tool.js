@@ -13,6 +13,8 @@ export function random (minVal, maxVal) {
   return Math.round(Math.random() * maxVal) + minVal
 }
 
+const COLORS = ['#4D84FF', '#FD8519', '#FEC400', '#63C8F5']
+const LINE_COLORS = ['rgba(254,201,25,1)', 'rgba(255,132,23,1)', 'rgba(99,200,245,1)', 'rgba(60,129,255,1)', 'rgba(175,173,174,1)']
 const lineColor = '#e2e2e2'
 const grid = {
   left: '2%',
@@ -62,8 +64,6 @@ const AxisCategory = {
   }
 }
 
-// const COLORS = ['#005ed2', '#e12001', '#fe2b00', '#ff4e18', '#ff7900', '#fe9b00', '#feb300', '#ffc602', '#fce693', '#67e8fe', '#00d7fe', '#00c0fe', '#009eff', '#0081d2']
-
 /***
  * 堆叠图
  * @returns {Promise<Response>}
@@ -108,6 +108,7 @@ export function barPile (id, data, gridData) {
       right: 10,
       data: data.legendData
     },
+    color: COLORS,
     grid: {
       ...grid,
       ...gridData
@@ -142,15 +143,30 @@ export function barPile (id, data, gridData) {
 export function lines (id, data) {
   let legendData = []
   let serveData = []
-  data.datas.forEach(item => {
+  data.datas.forEach((item, idx) => {
     legendData.push(item.name)
+    let areaStyle = null
+    if (data.datas.length === 1) {
+      areaStyle = {
+        normal: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1,
+            [
+              {offset: 0, color: LINE_COLORS[idx]},
+              {offset: 0.7, color: LINE_COLORS[idx].replace('1)', '0.3)')},
+              {offset: 1, color: 'rgba(255,255,255,0)'}
+            ]
+          )
+        }
+      }
+    }
     serveData.push({
       name: item.name,
       type: 'line',
       data: item.data,
       symbol: 'emptyCircle',
       smooth: true,
-      symbolSize: 6
+      symbolSize: 6,
+      areaStyle: areaStyle
     })
   })
   let option = {
@@ -170,6 +186,7 @@ export function lines (id, data) {
       ...grid,
       containLabel: true
     },
+    color: LINE_COLORS,
     xAxis: {
       ...AxisCategory,
       axisTick: {
