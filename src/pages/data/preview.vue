@@ -223,23 +223,74 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { sankey, random } from 'src/utils/chart-tool'
+  import {sankey} from 'src/utils/chart-tool'
 
   export default {
     name: 'preview',
-    components: { VeTitle, VeCircle },
+    components: {VeTitle, VeCircle},
     data () {
       return {
         activityId: '',
-        vhallRateData: {},
-        activityScoreData: {},
-        watcherCountData: {},
-        watchCoefficientData: {}
+        vhallRateData: {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        },
+        activityScoreData: {
+          'viewer': 0,
+          'watchDuration': 0,
+          'spread': 0,
+          'extension ': 0,
+          'interact': 0
+        },
+        watcherCountData: {
+          'watch': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'viewer': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'newUser': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'newGoodUser': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          }
+        },
+        watchCoefficientData: {
+          'watchTime': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'extension': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'spread': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'interactint': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          }
+        }
       }
     },
     created () {
       this.activityId = this.$route.params.id
-      console.log(dataService)
       this.initPage()
     },
     methods: {
@@ -256,143 +307,60 @@
         this.renderChart()
       },
       vhallRate () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            value: random(),
-            ratio: -42.33,
-            average: 42.23
-          }
-        }
-        this.vhallRateData = res.data
+        this.$get(dataService.GET_PREVIEW_COUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.vhallRateData = res.data
+        })
       },
       activityScore () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'viewer': random(),
-            'watchDuration': 42.33,
-            'spread': random(),
-            'extension': random(),
-            'interact': random()
-          }
-        }
-        this.activityScoreData = res.data
+        this.$get(dataService.GET_PREVIEW_SCORE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.activityScoreData = res.data
+        })
       },
       watcherCount () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'watch': {
-              'value': 154,
-              'ratio': -42.33,
-              'average': 42.23
-            },
-            'viewer': {
-              'value': 186,
-              'ratio': 42.33,
-              'average': -20.23
-            },
-            'newUser': {
-              'value': 180,
-              'ratio': -12.33,
-              'average': 42.23
-            },
-            'newGoodUser': {
-              'value': 1800,
-              'ratio': 42.33,
-              'average': 42.23
-            }
-          }
-        }
-        this.watcherCountData = res.data
+        this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.watcherCountData = res.data
+        })
       },
       watchCoefficient () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'watchTime': {
-              'value': 34,
-              'ratio': 42.33,
-              'average': 42.23
-            },
-            'extension': {
-              'value': 2.5,
-              'ratio': 42.33,
-              'average': 42.23
-            },
-            'spread': {
-              'value': 1.4,
-              'ratio': 42.33,
-              'average': 42.23
-            },
-            'interactint': {
-              'value': 3.2,
-              'ratio': 42.33,
-              'average': 42.23
-            }
-          }
-        }
-        this.watchCoefficientData = res.data
+        this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.watchCoefficientData = res.data
+        })
       },
       renderChart () {
-        let res = {
-          code: 200,
-          msg: null,
-          data: {
-            sourceList: [
-              { source: 1, sourceName: '邮件', value: random() },
-              { source: 2, sourceName: '短信', value: random() },
-              { source: 3, sourceName: 'a', value: random() },
-              { source: 4, sourceName: 'b', value: random() },
-              { source: 5, sourceName: 'c', value: random() },
-              { source: 6, sourceName: 'd', value: random() },
-              { source: 7, sourceName: 'e', value: random() },
-              { source: 8, sourceName: 'f', value: random() },
-              { source: 9, sourceName: 'g', value: random() },
-              { source: 10, sourceName: 'h', value: random() }
-            ],
-            sourceLinks: [
-              { source: 1, sourceName: '邮件', target: 3, targetName: '活动官网', value: random() },
-              { source: 2, sourceName: '短信', target: 3, targetName: '活动官网', value: random() },
-              { source: 3, sourceName: 'a', target: 8, targetName: 'f', value: random() },
-              { source: 4, sourceName: 'b', target: 8, targetName: 'f', value: random() },
-              { source: 5, sourceName: 'c', target: 2, targetName: '短信', value: random() },
-              { source: 8, sourceName: 'c', target: 9, targetName: 'g', value: random() },
-              { source: 9, sourceName: 'g', target: 7, targetName: 'e', value: random() },
-              { source: 10, sourceName: 'c', target: 9, targetName: 'g', value: random() },
-              { source: 5, sourceName: 'c', target: 1, targetName: '邮件', value: random() },
-              { source: 5, sourceName: 'c', target: 2, targetName: 'g', value: random() },
-              { source: 6, sourceName: 'e', target: 10, targetName: 'h', value: random() }
-            ]
-          }
-        }
-        let keyDatas = []
-        let links = []
-        res.data.sourceList.forEach((item) => {
-          keyDatas.push({
-            name: item.source + '',
-            showName: item.sourceName,
-            value: item.value
+        this.$get(dataService.GET_PREVIEW_USER_TRIP, {
+          activityId: this.activityId
+        }).then((res) => {
+          let keyDatas = []
+          let links = []
+          res.data.sourceList.forEach((item) => {
+            keyDatas.push({
+              name: item.source + '',
+              showName: item.sourceName,
+              value: item.value
+            })
           })
-        })
-        res.data.sourceLinks.forEach((item) => {
-          links.push({
-            source: item.source + '',
-            sourceName: item.sourceName,
-            target: item.target + '',
-            targetName: item.targetName,
-            value: item.value
+          res.data.sourceLinks.forEach((item) => {
+            links.push({
+              source: item.source + '',
+              sourceName: item.sourceName,
+              target: item.target + '',
+              targetName: item.targetName,
+              value: item.value
+            })
           })
-        })
-        this.$nextTick(() => {
-          sankey('myChart', {
-            data: keyDatas,
-            links: links
+          this.$nextTick(() => {
+            sankey('myChart', {
+              data: keyDatas,
+              links: links
+            })
           })
         })
       }
