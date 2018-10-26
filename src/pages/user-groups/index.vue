@@ -78,7 +78,7 @@
 
   export default {
     name: 'index',
-    components: {VePagination, condOption},
+    components: { VePagination, condOption },
     created () {
       this.onSearch()
     },
@@ -133,7 +133,7 @@
         rules: {
           title: [
             // { required: true, validator: validateName, trigger: 'change' }
-            {required: true, message: '群组名称不能为空', trigger: 'blur'}
+            { required: true, message: '群组名称不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -173,7 +173,7 @@
           customClass: 'userGroupDelConfirm',
           confirmButtonClass: 'userGroupDelConfirmBtn'
         }).then(() => {
-          this.$post(groupService.DEL_GROUP, {group_id: id, type: type})
+          this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
             .then(res => {
               this.tableData.splice(index, 1)
               this.$message({

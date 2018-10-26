@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import {formatDate} from 'src/assets/js/date'
+import { formatDate } from 'src/assets/js/date'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import comPhone from '../com-phone'
@@ -86,7 +86,7 @@ export default {
   },
   created () {
     this.queryInfo()
-    this.$config({loading: true}).$get(noticeService.GET_QUERY_WECHAT, {
+    this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
       inviteId: this.id
     }).then((res) => {
       this.group = res.data.groupId
@@ -111,7 +111,7 @@ export default {
       })
     },
     queryInfo () {
-      this.$config({loading: true}).$get(activityService.GET_WEBINAR_INFO, {
+      this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
         id: this.$route.params.id
       }).then((res) => {
         this.type = res.data.status
