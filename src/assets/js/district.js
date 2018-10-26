@@ -1,9 +1,5 @@
 const options = [
   {
-    'value': '',
-    'label': '全部'
-  },
-  {
     'value': '北京市',
     'label': '北京市',
     'children': [{

@@ -7,8 +7,25 @@
     <div class="content from-box">
       <div class="handle-bar">
         <div class="left">
-          <el-button round @click='showAddgroup = true'>选择</el-button>
-          <el-button round>批量操作</el-button>
+          <el-dropdown @command="handleCommandk">
+            <span class="el-dropdown-link">
+              <el-button round >选择</el-button>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command='checkCurPage'>本页数据</el-dropdown-item>
+              <el-dropdown-item command='checkAll'>列表所有数据</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-dropdown @command="handleCommandk">
+            <span class="el-dropdown-link">
+              <el-button round>批量操作</el-button>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command='export'>导出</el-dropdown-item>
+              <el-dropdown-item command='addGroup'>添加到群组</el-dropdown-item>
+              <el-dropdown-item command='del'>删除</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
@@ -49,19 +66,19 @@
           <div class='filter-item'>
             <div class="condition">
               <span class="label">所属地域</span>
-              <!-- <el-select v-model="grandVal" placeholder="请选择">
+              <el-select v-model="grandVal" placeholder="请选择">
                 <el-option
-                  v-for="item in grands"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in districts"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.name">
                 </el-option>
-              </el-select> -->
-              <el-cascader
+              </el-select>
+              <!-- <el-cascader
                 :options="districts"
                 v-model="districtsVal"
                 @change="handleDistrictChange">
-              </el-cascader>
+              </el-cascader> -->
             </div>
             <div class="condition">
               <span class="label">性别</span>
@@ -143,7 +160,7 @@
             </div>
           </div>
           <div class="filter-confirm">
-            <el-button round class='primary-button'>查询</el-button>
+            <el-button round class='primary-button' @click='doFilter'>查询</el-button>
             <el-button round>取消</el-button>
           </div>
         </div>
@@ -262,7 +279,8 @@ import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
-import districtData from 'src/assets/js/district.js'
+import districtDataPro from 'src/assets/js/district-provience.js'
+// import districtDataCity from 'src/assets/js/district-city.js'
 export default {
   data () {
     return {
@@ -376,7 +394,7 @@ export default {
       ],
       industrysVal: '',
       districts: [],
-      districtsVal: [],
+      districtsVal: [''],
       firstVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       lastVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       activityArray: {
@@ -441,7 +459,19 @@ export default {
   },
   mounted () {
     this.queryUserPool()
-    this.districts = districtData
+    this.districts = districtDataPro
+    // let arr = []
+    // districtData.forEach(item => {
+    //   item['children'].forEach(ele => {
+    //     if (item['children']) {
+    //       ele['children'] = []
+    //       arr.push(item)
+    //     }
+    //   })
+
+    // item['children']['children'] ? item['children']['children'] = []
+    // })
+    // console.log(JSON.parse(arr))
   },
   filters: {
     filterLevel (val) {
@@ -519,6 +549,9 @@ export default {
     },
     handleDistrictChange (res) {
       console.log(res)
+      this.filterCondition.province = res[0]
+      this.filterCondition.city = res[1] ? res[1] : ''
+      this.filterCondition.area = res[2] ? res[2] : ''
     },
     searchHandler (res) {
       console.log(res)
@@ -543,6 +576,28 @@ export default {
           })
         })
       })
+    },
+    doFilter () {
+      console.log(this.filterCondition)
+    },
+    handleCommandk (type) {
+      switch (type) {
+        case 'addGroup':
+          this.showAddgroup = true
+          break
+        case 'checkCurPage':
+          this.multipleSelection = this.usersListData
+          document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
+          break
+        case 'checkAll':
+          this.multipleSelection = this.usersListData
+          document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
+          break
+        case 'export': // 导出
+          break
+        case 'del': // 删除
+          break
+      }
     }
   },
   watch: {
@@ -607,6 +662,9 @@ export default {
     .handle-bar {
       .left {
         display: inline-block;
+        .el-dropdown {
+          margin-right: 10px;
+        }
       }
       .right {
         float: right;
@@ -741,6 +799,7 @@ export default {
             float: left;
             &:nth-of-type(1) {
               color: $color-font;
+              height: 23px;
             }
             &:nth-of-type(2) {
               color: $color-gray;
