@@ -440,13 +440,13 @@
       return {
         basicCountData: {
           live: {
-            nums: '',
-            times: '',
+            nums: 0,
+            times: 0,
             duration: 0
           },
           playBack: {
-            nums: '',
-            times: '',
+            nums: 0,
+            times: 0,
             duration: 0
           }
         },
@@ -513,7 +513,7 @@
       }
     },
     mounted () {
-      console.log(dataService)
+      this.activityId = this.$route.params.id
       this.$nextTick(() => {
         this.initPage()
       })
@@ -623,23 +623,11 @@
         })
       },
       basicCount () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            live: {
-              nums: random(),
-              times: random(),
-              duration: random(0, 10000)
-            },
-            playBack: {
-              nums: random(),
-              times: random(),
-              duration: random(0, 10000)
-            }
-          }
-        }
-        this.basicCountData = res.data
+        this.$get(dataService.GET_LIVE_COUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.basicCountData = res.data
+        })
       },
       goPreDataDetail () {
         this.preDataDetail = true

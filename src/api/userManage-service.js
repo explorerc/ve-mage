@@ -8,5 +8,9 @@ export default {
   // 查询所有活动
   GET_ACTIVE_LIST: '/manage/base-manage/list-activity',
   // 用户池查询
-  GET_USERS_POOL: '/user/customer/lists'
+  GET_USERS_POOL: '/user/customer/lists',
+  // 添加到群组
+  POST_ADD_TO_GROUP: '/common/group/user-add',
+  // 删除成员
+  POST_DEL_USERS: '/common/group/user-delete'
 }

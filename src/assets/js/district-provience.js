@@ -1,5 +1,9 @@
 var questionnaireProvinces = [
   {
+    'id': 0,
+    'name': '全部'
+  },
+  {
     'id': 1,
     'name': '北京'
   },
