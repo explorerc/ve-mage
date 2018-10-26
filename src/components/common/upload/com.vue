@@ -41,6 +41,7 @@ const MIME_TYPES = {
   'csv': 'application/vnd.ms-excel'
   // 'csv': 'text/csv'
   // 'csv': 'text/x-csv'
+
 }
 export default {
   name: 'ComUpload',

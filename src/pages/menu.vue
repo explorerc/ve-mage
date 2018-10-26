@@ -100,7 +100,7 @@
         <el-menu-item-group>
           <el-menu-item index="/userManage/overview">用户总览</el-menu-item>
           <el-menu-item index="/userManage/pond">用户池</el-menu-item>
-          <el-menu-item index="/userManage/group">用户群组</el-menu-item>
+          <el-menu-item index="/userManage/userGroupsIndex">用户群组</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <!-- <el-submenu index="4">
