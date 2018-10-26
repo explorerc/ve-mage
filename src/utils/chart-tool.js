@@ -16,9 +16,9 @@ export function random (minVal, maxVal) {
 const lineColor = '#e2e2e2'
 const grid = {
   left: '2%',
-  right: '1%',
+  right: 0,
   bottom: '1%',
-  top: '2%'
+  top: 20
 }
 const AxisValue = {
   type: 'value',
@@ -68,7 +68,7 @@ const AxisCategory = {
  * 堆叠图
  * @returns {Promise<Response>}
  */
-export function barPile (id, data) {
+export function barPile (id, data, gridData) {
   let yAxisData = []
   let serveData = []
   data.list.forEach(item => {
@@ -104,11 +104,14 @@ export function barPile (id, data) {
       }
     },
     legend: {
-      top: 0,
+      top: -2,
       right: 10,
       data: data.legendData
     },
-    grid: grid,
+    grid: {
+      ...grid,
+      ...gridData
+    },
     xAxis: AxisValue,
     yAxis: {
       ...AxisCategory,
@@ -160,6 +163,7 @@ export function lines (id, data) {
     legend: {
       data: legendData,
       right: 10,
+      top: -2,
       itemHeight: 10
     },
     grid: {
@@ -285,7 +289,7 @@ export function barRadius (id, data) {
       left: '3%',
       right: '1%',
       bottom: '8%',
-      top: '4%'
+      top: 20
     },
     xAxis: {
       ...AxisCategory,
@@ -564,7 +568,8 @@ export function scatter (id, datas, gridData) {
     },
     legend: {
       data: ['观看时长'],
-      left: 'right'
+      right: 10,
+      top: -4
     },
     tooltip: {
       position: 'top',
