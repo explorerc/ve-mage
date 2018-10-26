@@ -1,6 +1,6 @@
 <template>
   <div id="groupDetails">
-    <header>优质用户群组（987）</header>
+    <header>{{group_title}}群组（{{total}}）</header>
     <div class="operation">
       <el-dropdown @command="SelectData">
         <span class="el-dropdown-link">
@@ -21,74 +21,13 @@
           <el-dropdown-item disabled>添加到群组</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-dialog :title="dialogTitle" :visible.sync="dialogImport" width="30%">
-        <div v-if="!isClose">
-          <a href="javascript:void (0)" class="downLoad_tem">下载模板
-            <el-tooltip class="item" effect="dark" placement="left-start">
-              <div slot="content">导入用户数据时，手机号为必填项，<br/>如果单行用户数据未输入手机号码，<br/>该行数据将被忽略"</div>
-              <i>?</i>
-            </el-tooltip>
-          </a>
-          <el-form :model="Group" :rules="rules" ref="importData" label-width="100px">
-            <el-form-item label="上传面板:">
-              <VeUpload title="请使用csv模板上传" accept="csv" :defaultFile="defaultFile" :fileSize="2048"
-                        :errorMsg="uploadFileErrorMsg" @error="uploadError" @success="uploadfileSuccess"></VeUpload>
-            </el-form-item>
-            <el-form-item label="导入规则:">
-              <el-radio-group v-model="Group.resource">
-                <el-radio label="1">新建固定群组</el-radio>
-                <el-radio label="2">导入固定群组</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <div v-if="Group.resource == '1'">
-              <el-form-item prop="name" label="群组名称:">
-                <el-input @input="inpC(Group.name,1)" :maxlength=10 v-model="Group.name" placeholder="请输入群组名称">
-                  <template slot="append">{{inpNameLen}}/10</template>
-                </el-input>
-              </el-form-item>
-              <el-form-item prop="description" label="群组描述:">
-                <el-input @input="inpC(Group.description,2)" :maxlength=30 v-model="Group.description"
-                          placeholder="请输入群组描述">
-                  <template slot="append">{{inpDesLen}}/30</template>
-                </el-input>
-              </el-form-item>
-            </div>
-            <div v-else-if="Group.resource == '2'">
-              <el-form-item label="选择群组:" prop="region">
-                <el-select v-model="Group.region" placeholder="请选择群组">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-            </div>
-          </el-form>
-          <div></div>
-        </div>
-        <div v-else class="import_success">
-          <i></i>
-          <p>恭喜您，批量导入成功！</p>
-          <div>
-            <span>成功导入：<i>855</i></span>
-            <span>错误用户：<i>855</i></span>
-            <span>重复数据：<i>855</i></span>
-          </div>
-          <ul>
-            <li v-for="(item,ind) in repeatData" :key="ind" v-show="ind<8">{{item}}
-              <span v-show="ind != 3 || ind != 7"> 、</span>
 
-            </li>
-            <span v-if="repeatData.length>8">...</span>
-          </ul>
-        </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button size="small" v-if="isClose" @click="importFileClose">关 闭</el-button>
-          <el-button size="small" v-else @click="importFile">导 入</el-button>
-        </div>
-      </el-dialog>
-
+      <transition name='fade' mode='out-in' v-if="dialogImport">
+        <com-import @handleClick="handleClick"></com-import>
+      </transition>
 
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
-                v-model="search.name"></el-input>
+                v-model="search.name" @keyup.enter.native="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
       <el-table :data="tableData" border class="el-table">
@@ -97,8 +36,9 @@
           <template slot-scope="scope">
             <div class="user_info">
               <img src="./../../assets/image/icon_data_hover.png" alt="">
-              <div><span>{{scope.row.name}}</span>&nbsp;&nbsp; {{scope.row.sex| getSex}} <br>{{scope.row.user_level
-                |get_userLevel}}
+              <div>
+                <span>{{scope.row.real_name}}</span>&nbsp;&nbsp; {{scope.row.sex| getSex}} <br><span
+                v-html="scope.row.user_level "></span>
               </div>
             </div>
           </template>
@@ -126,48 +66,27 @@
 
 <script>
   import VePagination from 'src/components/ve-pagination'
-  import VeUpload from 'src/components/ve-upload-group'
   import groupService from 'src/api/user_group'
+  import comAddgroup from '../users-manage/components/com-addGroup'
+  import comImport from '../users-manage/components/com-import'
 
   export default {
     name: 'group-details',
-    components: { VePagination, VeUpload },
+    components: { VePagination, comImport, comAddgroup },
     created () {
       this.onSearch()
+      this.getGroupDetail()
     },
     filters: {
       getSex (a) {
         return a === 'M' ? '男' : '女'
-      },
-      get_userLevel (type) {
-        let level = ''
-        switch (type) {
-          case 1:
-            level = '<span style="color:#0FBDAA ;">优质用户</span>'
-            break
-          case 2:
-            level = '<span style="color:#714CEA ;">高价值用户</span>'
-            break
-          case 3:
-            level = '<span style="color:#FFAA00 ;">一般客户</span>'
-            break
-          case 4:
-            level = '<span style="color:#FB5757 ;">潜在用户</span>'
-            break
-          case 5:
-            level = '<span style="color: #333333; ">流失客户</span>'
-            break
-          case 0:
-            level = '<span style="color:#0FBDAA ;">没有评级</span>'
-            break
-        }
-        return level
       }
     },
     data () {
       return {
+        group_title: '',
+        tableData: [],
         isSelect: -1, // 当前是本页数据还是全部数据
-        repeatData: ['13555555555', '13555555555', '13555555555', '13555555555', '13555555555', '13555555555', '13555555555', '13555555555', '13555555555'],
         poster: '',
         uploadFileErrorMsg: '', // 上传文件错误提示
         isClose: false,
@@ -188,27 +107,7 @@
           page: 1,
           pageSize: 10
         },
-        total: 0,
-
-        tableData: [],
-        rules: {
-          name: [
-            // { required: true, validator: validateName, trigger: 'change' }
-            { message: '群组名称不能为空', trigger: 'blur' }
-            /* { min: 0, max: 10, message: '群组名称不能超过10个字', trigger: 'blur' } */
-          ],
-          resource: [
-            { message: '请选择', trigger: 'change' }
-          ],
-          region: [
-            { message: '请选择群组', trigger: 'change' }
-          ]
-        }
-      }
-    },
-    computed: {
-      defaultFile () {
-        return this.poster ? `${this.$imgHost}/${this.poster}` : ''
+        total: 0
       }
     },
     watch: {
@@ -223,11 +122,38 @@
 
     },
     methods: {
+      handleClick () {
+        this.dialogImport = false
+      },
       onSearch () {
         this.$post(groupService.USER_LISTS, this.search)
           .then(res => {
             console.log(res)
             this.total = Number.parseInt(res.data.count)
+            res.data.list.forEach((item) => {
+              let level
+              switch (item.user_level) {
+                case 1:
+                  level = '<span style="color:#0FBDAA;">优质用户</span>'
+                  break
+                case 2:
+                  level = '<span style="color:#714CEA;">高价值用户</span>'
+                  break
+                case 3:
+                  level = '<span style="color:#FFAA00;">一般客户</span>'
+                  break
+                case 4:
+                  level = '<span style="color:#FB5757;">潜在用户</span>'
+                  break
+                case 5:
+                  level = '<span style="color:#333333;">流失客户</span>'
+                  break
+                case 0:
+                  level = '<span style="color:#4B5AFE;">没有评级</span>'
+                  break
+              }
+              item.user_level = level
+            })
             this.tableData = res.data.list
           })
       },
@@ -238,31 +164,11 @@
       },
       handleDetails () { // 详情
       },
-      importFile () {
-        this.dialogTitle = '导入观众组'
-        this.isClose = true
-      },
-      importFileClose () {
-        setTimeout(() => {
-          this.isClose = false
-        }, 100)
-        this.dialogImport = false
-      },
-      inpC (a, type) {
-        type === 1 ? this.inpNameLen = a.length : this.inpDesLen = a.length
-      },
       dialogImportShow (a) {
         if (a === 'import') {
           this.dialogImport = true
           this.dialogTitle = '批量导入'
         }
-      },
-      uploadfileSuccess (data) {
-        this.poster = data.name
-      },
-      uploadError (data) {
-        console.log('上传失败:', data)
-        this.uploadFileErrorMsg = data.msg
       },
       selectCheck () {
         this.$nextTick(() => {
@@ -276,6 +182,12 @@
         } else {
           this.isSelect = 1
         }
+      },
+      getGroupDetail () {
+        this.$post(groupService.GROUP_DETAIL, { group_id: this.search.group_id })
+          .then((res) => {
+            this.group_title = res.data.title
+          })
       }
     }
   }

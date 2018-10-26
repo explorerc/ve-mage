@@ -15,7 +15,7 @@
           <template slot-scope="scope">
             <div>
               <span>{{scope.row.title}}</span>
-              <span class="default" v-if="scope.row.type=== '1'"></span>
+              <span class="default" v-if="scope.row.type=== 1"></span>
             </div>
           </template>
         </el-table-column>
@@ -32,8 +32,7 @@
             <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.group_id,scope.row.type)">详情
             </el-button>
             <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
-                       @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">
-              编辑
+                       @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">编辑
             </el-button>
             <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
                        @click="handleDelete(scope.row.group_id, scope.row.type,scope.$index)">删除
@@ -148,7 +147,7 @@
           })
       },
       handleDetails (id, type) { // 详情
-        this.$router.push(`/userGroupsDetails/${id}/${type}`)
+        this.$router.push(`/userManage/userGroupsDetails/${id}/${type}`)
       },
       handleEdit (groupId, title, describe, type, rule) { // 编辑
         this.isAddOrEdit = 'edit' // 当前点击是编辑
@@ -249,6 +248,7 @@
       },
       handleCloseDialog (done) {
         // if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
+        this.Group.type = -1
         this.isAddOrEdit = '' // 重置
         done()
       }

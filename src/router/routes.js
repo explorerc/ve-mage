@@ -299,12 +299,12 @@ export default [
       component: userGroup
     },
     {
-      path: '/userGroupsIndex',
+      path: '/userManage/userGroupsIndex',
       name: 'userGroupsIndex',
       component: userGroupsIndex
     },
     {
-      path: '/userGroupsDetails/:id/:type',
+      path: '/userManage/userGroupsDetails/:id/:type',
       name: 'userGroupsDetails',
       component: userGroupsDetails
     },

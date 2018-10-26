@@ -56,6 +56,8 @@
 </template>
 
 <script>
+  import groupService from 'src/api/user_group'
+
   export default {
     props: ['type', 'rule'],
     data () {
@@ -823,32 +825,20 @@
             keys: ['other', 'tags'],
             cons: [
               {
-                key: '1',
-                name: '固定',
-                type: 'cascader',
-                unit: ''
-              }, {
-                key: '2',
-                name: '相对',
-                type: 'cascader',
+                key: 'eq',
+                name: '等于',
+                type: 'select',
                 unit: ''
               }]
           },
           groups: {
             keys: ['other', 'groups'],
-            cons: [
-              {
-                key: '',
-                name: '固定',
-                type: 'cascader',
-                unit: ''
-              }, {
-                key: '',
-                name: '相对',
-                type: 'cascader',
-                unit: ''
-              }
-            ]
+            cons: [{
+              key: 'eq',
+              name: '等于',
+              type: 'select',
+              unit: ''
+            }]
           }
         },
 
@@ -971,7 +961,9 @@
               name: '全部',
               type: 'select',
               unit: ''
-            }]
+            }],
+          tags: [],
+          groups: []
         }
 
       }
@@ -1086,7 +1078,41 @@
             }
           ]
         ]
+      },
+      getTags () {
+        this.$post(groupService.ALL_TAGS)
+          .then(res => {
+            console.log(res)
+            res.data.list.forEach((item) => {
+              let obj = {
+                key: item.tag_id,
+                name: item.tag_name,
+                type: 'select',
+                unit: ''
+              }
+              this.valueOption.tags.push(obj)
+            })
+          })
+      },
+      getGroup () {
+        this.$post(groupService.ALL_GROUPS, { type: '2,3' })
+          .then(res => {
+            console.log(res)
+            res.data.list.forEach((item) => {
+              let obj = {
+                key: item.group_id,
+                name: item.title,
+                type: 'select',
+                unit: ''
+              }
+              this.valueOption.groups.push(obj)
+            })
+          })
       }
+    },
+    created () {
+      this.getTags()
+      this.getGroup()
     },
     mounted () {
       if (this.type === 'edit') {
