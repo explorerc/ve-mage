@@ -62,7 +62,7 @@
           <div class="tab" v-else>
              <div class="item spe" @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }" :disabled="groupId > 0">
                 <el-option
                   v-for="item in groupData"
                   :key="item.id"
@@ -127,8 +127,17 @@ export default {
       selval: ''
     }
   },
+  props: {
+    groupId: {
+      type: Number,
+      default: 0
+    }
+  },
   mounted () {
     this.initGrouplist()
+    if (this.groupId) {
+      this.selval = this.groupId
+    }
   },
   methods: {
     close () {

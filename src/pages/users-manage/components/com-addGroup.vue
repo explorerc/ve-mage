@@ -26,7 +26,7 @@
           <div class="tab" v-else>
              <div class="item spe"  @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }" >
                 <el-option
                   v-for="item in groupData"
                   :key="item.id"
@@ -62,8 +62,6 @@ export default {
         }
       ]
     }
-  },
-  props: {
   },
   mounted () {
     this.initGrouplist()
