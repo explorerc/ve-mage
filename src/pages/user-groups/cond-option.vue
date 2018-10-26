@@ -29,16 +29,11 @@
                 </el-option>
               </el-select>
 
-              <el-input v-if="m.type == 'number' ||m.type == 'text' "
-                        v-model="m.value"
-                        :type="m.type" placeholder="请输入内容"></el-input>
+              <el-input v-if="m.type === 'number' ||m.type === 'text' " v-model="m.value" :type="m.type"
+                        placeholder="请输入内容"></el-input>
 
-              <el-date-picker
-                v-else-if="m.type == 'date' "
-                v-model="m.value"
-                type="date"
-                placeholder="选择日期">
-              </el-date-picker>
+              <el-date-picker v-if="m.type === 'date' " v-model="m.value" type="date"
+                              placeholder="选择日期"></el-date-picker>
               {{m.unit}}
             </div>
             <i class="el-icon-delete" @click="del(ind,mind)" v-show="disDel"></i>
@@ -57,6 +52,7 @@
 
 <script>
   import groupService from 'src/api/user_group'
+  import province from 'src/assets/js/district'
 
   export default {
     props: ['type', 'rule'],
@@ -98,6 +94,22 @@
             }
           ]
         ],
+        /* {
+          name: '浏览行为',
+          key: 'browsing',
+          children: [
+            {
+              name: '用户常用设备',
+              key: 'common_device',
+              value: ''
+            },
+            {
+              name: '电脑观看常用浏览器',
+              key: 'common_browser',
+              value: ''
+            }
+          ]
+        }, */
         options: [{
           name: '观看直播相关',
           key: 'watch_live_dep',
@@ -139,21 +151,6 @@
             {
               name: '邀请好友',
               key: 'invite_friends_count',
-              value: ''
-            }
-          ]
-        }, {
-          name: '浏览行为',
-          key: 'browsing',
-          children: [
-            {
-              name: '用户常用设备',
-              key: 'common_device',
-              value: ''
-            },
-            {
-              name: '电脑观看常用浏览器',
-              key: 'common_browser',
               value: ''
             }
           ]
@@ -649,32 +646,32 @@
               {
                 key: 'contain',
                 name: '包含',
-                type: 'cascader ',
+                type: 'select ',
                 unit: ''
               }, {
                 key: 'not_contain',
                 name: '不包含',
-                type: 'cascader',
+                type: 'select',
                 unit: ''
               }, {
                 key: 'eq',
                 name: '是',
-                type: 'cascader',
+                type: 'select',
                 unit: ''
               }, {
                 key: 'neq',
                 name: '不是',
-                type: 'cascader',
+                type: 'select',
                 unit: ''
               }, {
                 key: 'head_eq',
                 name: '开头是',
-                type: 'cascader',
+                type: 'select',
                 unit: ''
               }, {
                 key: 'tail_eq',
                 name: '结尾是',
-                type: 'cascader',
+                type: 'select',
                 unit: ''
               }, {
                 key: 'not_null',
@@ -693,22 +690,22 @@
             cons: [{
               key: 'contain',
               name: '包含',
-              type: 'text',
+              type: 'select',
               unit: ''
             }, {
               key: 'not_contain',
               name: '不包含',
-              type: 'text',
+              type: 'select',
               unit: ''
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'text',
+              type: 'select',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'text',
+              type: 'select',
               unit: ''
             }]
           },
@@ -717,22 +714,22 @@
             cons: [{
               key: 'contain',
               name: '包含',
-              type: 'text',
+              type: 'cascader',
               unit: ''
             }, {
               key: 'not_contain',
               name: '不包含',
-              type: 'text',
+              type: 'cascader',
               unit: ''
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'text',
+              type: 'cascader',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'text',
+              type: 'cascader',
               unit: ''
             }]
           },
@@ -962,8 +959,89 @@
               type: 'select',
               unit: ''
             }],
+          industry: [
+            {
+              key: 'IT/互联网 ',
+              name: 'IT/互联网 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '电子/通信/硬件 ',
+              name: '电子/通信/硬件 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '金融 ',
+              name: '金融 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '交通/贸易/物流 ',
+              name: '交通/贸易/物流 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '消费品 ',
+              name: '消费品 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '能源/矿产环保',
+              name: '能源/矿产环保 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '制药/医疗 ',
+              name: '制药/医疗 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '专业服务 ',
+              name: '专业服务 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '教育/培训 ',
+              name: '教育/培训 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '广告/媒体/娱乐/出版 ',
+              name: '广告/媒体/娱乐/出版 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '房地产/建筑 ',
+              name: '房地产/建筑 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '服务业 ',
+              name: '服务业 ',
+              type: 'select',
+              unit: ''
+            },
+            {
+              key: '政府/非盈利机构/其它 ',
+              name: '政府/非盈利机构/其它 ',
+              type: 'select',
+              unit: ''
+            }],
           tags: [],
-          groups: []
+          groups: [],
+          province: [],
+          city: []
         }
 
       }
@@ -1082,7 +1160,6 @@
       getTags () {
         this.$post(groupService.ALL_TAGS)
           .then(res => {
-            console.log(res)
             res.data.list.forEach((item) => {
               let obj = {
                 key: item.tag_id,
@@ -1095,9 +1172,8 @@
           })
       },
       getGroup () {
-        this.$post(groupService.ALL_GROUPS, { type: '2,3' })
+        this.$post(groupService.ALL_GROUPS, { type: '2' })
           .then(res => {
-            console.log(res)
             res.data.list.forEach((item) => {
               let obj = {
                 key: item.group_id,
@@ -1108,11 +1184,27 @@
               this.valueOption.groups.push(obj)
             })
           })
+      },
+      province () {
+        console.log(province)
+        this.valueOption.city = province
+        province.forEach((item) => {
+          if (item.value) {
+            let obj = {
+              key: item.value,
+              name: item.value,
+              type: 'select',
+              unit: ''
+            }
+            this.valueOption.province.push(obj)
+          }
+        })
       }
     },
     created () {
       this.getTags()
       this.getGroup()
+      this.province()
     },
     mounted () {
       if (this.type === 'edit') {
