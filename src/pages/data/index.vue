@@ -21,12 +21,12 @@
 <script>
   import NavMenu from './nav-menu'
   import activityService from 'src/api/activity-service'
-  import {mapMutations, mapState} from 'vuex'
+  import { mapMutations, mapState } from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'data-main',
-    components: {NavMenu},
+    components: { NavMenu },
     data () {
       return {
         activeId: '',
@@ -89,7 +89,6 @@
     background-color: #fff;
     padding: 20px;
     border-radius: 6px;
-    overflow: hidden;
     margin: 30px auto;
     width: 1366px;
     min-width: 1019px;

@@ -117,22 +117,22 @@
           <span>收到数据</span>
         </div>
       </div>
+      <!--<div class="item-box hd-data-item fr">-->
+        <!--<span class="hd-title">答题</span>-->
+        <!--<div class="hd-data">-->
+          <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.push}}</span>-->
+          <!--<span>推送次数</span>-->
+        <!--</div>-->
+        <!--<div class="hd-data">-->
+          <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.join}}</span>-->
+          <!--<span>参与答题人数</span>-->
+        <!--</div>-->
+        <!--<div class="hd-data">-->
+          <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.win}}</span>-->
+          <!--<span>获得奖励人数</span>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="item-box hd-data-item fr">
-        <span class="hd-title">答题</span>
-        <div class="hd-data">
-          <span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.push}}</span>
-          <span>推送次数</span>
-        </div>
-        <div class="hd-data">
-          <span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.join}}</span>
-          <span>参与答题人数</span>
-        </div>
-        <div class="hd-data">
-          <span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.win}}</span>
-          <span>获得奖励人数</span>
-        </div>
-      </div>
-      <div class="item-box hd-data-item fl">
         <span class="hd-title">推荐卡片</span>
         <div class="hd-data">
           <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.push}}</span>
@@ -147,7 +147,7 @@
           <span>点击次数</span>
         </div>
       </div>
-      <div class="item-box hd-data-item fr">
+      <div class="item-box hd-data-item fl">
         <span class="hd-title">红包雨</span>
         <div class="hd-data">
           <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
@@ -162,7 +162,7 @@
           <span>领取金额</span>
         </div>
       </div>
-      <div class="item-box hd-data-item fl">
+      <div class="item-box hd-data-item fr">
         <span class="hd-title">商品推荐</span>
         <div class="hd-data" style="width: 25%;">
           <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
@@ -300,38 +300,38 @@
         </div>
       </div>
     </message-box>
-    <!-- 答题 -->
-    <message-box
-      v-show="answerDataDetail"
-      width="60%"
-      type="none"
-      header="问卷数据详情"
-      @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
-        <div class="table-box">
-          <el-table :data="answerDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="title" label="题目"></el-table-column>
-            <el-table-column prop="preMoney" label="预设奖金总额"></el-table-column>
-            <el-table-column prop="preCount" label="预设获奖人数"></el-table-column>
-            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
-            <el-table-column prop="correntCount" label="答对人数"></el-table-column>
-            <el-table-column prop="costMoney" label="实际消耗金额"></el-table-column>
-            <el-table-column prop="winCount" label="实际获奖人数"></el-table-column>
-            <el-table-column prop="successRate" label="正确率"></el-table-column>
-            <el-table-column label="详情数据">
-              <template slot-scope="scope">
-                <span class="data-link">下载</span>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
-      </div>
-    </message-box>
+    <!--&lt;!&ndash; 答题 &ndash;&gt;-->
+    <!--<message-box-->
+      <!--v-show="answerDataDetail"-->
+      <!--width="60%"-->
+      <!--type="none"-->
+      <!--header="问卷数据详情"-->
+      <!--@handleClick="closeMesssageBox">-->
+      <!--<div class="msg-table-box" style="padding-top: 20px;">-->
+        <!--<div class="table-box">-->
+          <!--<el-table :data="answerDataList" style="width: 100%">-->
+            <!--<el-table-column label="序号">-->
+              <!--<template slot-scope="scope">-->
+                <!--{{scope.$index}}-->
+              <!--</template>-->
+            <!--</el-table-column>-->
+            <!--<el-table-column prop="title" label="题目"></el-table-column>-->
+            <!--<el-table-column prop="preMoney" label="预设奖金总额"></el-table-column>-->
+            <!--<el-table-column prop="preCount" label="预设获奖人数"></el-table-column>-->
+            <!--<el-table-column prop="joinCount" label="参与人数"></el-table-column>-->
+            <!--<el-table-column prop="correntCount" label="答对人数"></el-table-column>-->
+            <!--<el-table-column prop="costMoney" label="实际消耗金额"></el-table-column>-->
+            <!--<el-table-column prop="winCount" label="实际获奖人数"></el-table-column>-->
+            <!--<el-table-column prop="successRate" label="正确率"></el-table-column>-->
+            <!--<el-table-column label="详情数据">-->
+              <!--<template slot-scope="scope">-->
+                <!--<span class="data-link">下载</span>-->
+              <!--</template>-->
+            <!--</el-table-column>-->
+          <!--</el-table>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</message-box>-->
     <!-- 推荐卡片 -->
     <message-box
       v-show="cardDataDetail"
@@ -428,14 +428,14 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {lines, bars, barAndLine, scatter, random} from 'src/utils/chart-tool'
+  import { lines, bars, barAndLine, scatter, random } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import {mapMutations} from 'vuex'
+  import { mapMutations } from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: {VeTitle, VeCircle, NavMenu},
+    components: { VeTitle, VeCircle, NavMenu },
     data () {
       return {
         basicCountData: {
@@ -615,9 +615,9 @@
           lines('chart01', {
             xAxisData: this.watcherLineData.hours.xAxis,
             datas: [
-              {name: '浏览次数', data: this.watcherLineData.hours.pv},
-              {name: '独立访问', data: this.watcherLineData.hours.uv},
-              {name: 'IP', data: this.watcherLineData.hours.ip}
+              { name: '浏览次数', data: this.watcherLineData.hours.pv },
+              { name: '独立访问', data: this.watcherLineData.hours.uv },
+              { name: 'IP', data: this.watcherLineData.hours.ip }
             ]
           })
         })
@@ -667,8 +667,8 @@
       goChatDataDetail () {
         this.chatDataDetail = true
         this.chatDataList = [
-          {'userId': 10000, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '吃了吗？'},
-          {'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...'}
+          { 'userId': 10000, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '吃了吗？' },
+          { 'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...' }
         ]
       },
       goPrizeDataDetail () {
@@ -699,8 +699,8 @@
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
-          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
+          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
+          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
         ]
       },
       goAnswerDataDetail () {
@@ -733,8 +733,8 @@
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
-          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
-          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
+          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 },
+          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 }
         ]
       },
       goRedBagDataDetail () {
@@ -769,8 +769,8 @@
       goGoodsDataDetail () {
         this.goodsDataDetail = true
         this.goodsDataList = [
-          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
-          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
+          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859 },
+          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859 }
         ]
       },
       changeMenu (val) {
@@ -780,9 +780,9 @@
         lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
-            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
-            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
+            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
+            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
+            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
           ]
         })
       },
@@ -828,30 +828,30 @@
           'msg': null,
           'data': {
             'list': [
-              {week: random(0, 6), time: '零点', value: random(1, 100)},
-              {week: random(0, 6), time: '1点', value: random(1, 100)},
-              {week: random(0, 6), time: '2点', value: random(1, 100)},
-              {week: random(0, 6), time: '3点', value: random(1, 100)},
-              {week: random(0, 6), time: '4点', value: random(1, 100)},
-              {week: random(0, 6), time: 5, value: random(1, 100)},
-              {week: random(0, 6), time: 6, value: random(1, 10)},
-              {week: random(0, 6), time: 7, value: random(1, 10)},
-              {week: random(0, 6), time: 8, value: random(1, 100)},
-              {week: random(0, 6), time: 9, value: random(1, 100)},
-              {week: random(0, 6), time: 10, value: random(1, 10)},
-              {week: random(0, 6), time: 11, value: random(1, 10)},
-              {week: random(0, 6), time: 12, value: random(1, 100)},
-              {week: random(0, 6), time: 13, value: random(1, 10)},
-              {week: random(0, 6), time: 14, value: random(1, 100)},
-              {week: random(0, 6), time: 15, value: random(1, 100)},
-              {week: random(0, 6), time: 16, value: random(1, 100)},
-              {week: random(0, 6), time: 17, value: random(1, 100)},
-              {week: random(0, 6), time: 18, value: random(1, 10)},
-              {week: random(0, 6), time: 19, value: random(1, 10)},
-              {week: random(0, 6), time: 20, value: random(1, 100)},
-              {week: random(0, 6), time: 21, value: random(1, 10)},
-              {week: random(0, 6), time: 22, value: random(1, 100)},
-              {week: random(0, 6), time: 23, value: random(1, 10)}
+              { week: random(0, 6), time: '零点', value: random(1, 100) },
+              { week: random(0, 6), time: '1点', value: random(1, 100) },
+              { week: random(0, 6), time: '2点', value: random(1, 100) },
+              { week: random(0, 6), time: '3点', value: random(1, 100) },
+              { week: random(0, 6), time: '4点', value: random(1, 100) },
+              { week: random(0, 6), time: 5, value: random(1, 100) },
+              { week: random(0, 6), time: 6, value: random(1, 10) },
+              { week: random(0, 6), time: 7, value: random(1, 10) },
+              { week: random(0, 6), time: 8, value: random(1, 100) },
+              { week: random(0, 6), time: 9, value: random(1, 100) },
+              { week: random(0, 6), time: 10, value: random(1, 10) },
+              { week: random(0, 6), time: 11, value: random(1, 10) },
+              { week: random(0, 6), time: 12, value: random(1, 100) },
+              { week: random(0, 6), time: 13, value: random(1, 10) },
+              { week: random(0, 6), time: 14, value: random(1, 100) },
+              { week: random(0, 6), time: 15, value: random(1, 100) },
+              { week: random(0, 6), time: 16, value: random(1, 100) },
+              { week: random(0, 6), time: 17, value: random(1, 100) },
+              { week: random(0, 6), time: 18, value: random(1, 10) },
+              { week: random(0, 6), time: 19, value: random(1, 10) },
+              { week: random(0, 6), time: 20, value: random(1, 100) },
+              { week: random(0, 6), time: 21, value: random(1, 10) },
+              { week: random(0, 6), time: 22, value: random(1, 100) },
+              { week: random(0, 6), time: 23, value: random(1, 10) }
             ]
           }
         }
@@ -868,7 +868,7 @@
         }
         scatter('chart03', serveDatas, {
           left: 70,
-          right: 50,
+          right: 10,
           top: 20,
           bottom: 20
         })
