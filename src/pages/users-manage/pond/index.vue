@@ -429,7 +429,7 @@ export default {
       this.multipleSelection = val
     },
     currentChange (e) {
-      Object.assign(this.filterCondition, { 'page': e })
+      Object.assign(this.filterCondition, {'page': e})
       this.queryUserPool(this.filterCondition)
     },
     handleDel (idx, type) {
