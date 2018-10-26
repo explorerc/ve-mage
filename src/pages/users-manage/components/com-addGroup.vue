@@ -29,9 +29,9 @@
               <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
                 <el-option
                   v-for="item in groupData"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -58,23 +59,14 @@ export default {
         {
           value: '1',
           label: '黄金糕'
-        }, {
-          value: '2',
-          label: '双皮奶'
-        }, {
-          value: '3',
-          label: '蚵仔煎'
-        }, {
-          value: '4',
-          label: '龙须面'
-        }, {
-          value: '5',
-          label: '北京烤鸭'
         }
       ]
     }
   },
   props: {
+  },
+  mounted () {
+    this.initGrouplist()
   },
   methods: {
     close () {
@@ -106,7 +98,7 @@ export default {
         }
         return true
       } else {
-        if (!this.selval.length) {
+        if (!this.selval) {
           this.optSel = true
           return false
         }
@@ -116,6 +108,22 @@ export default {
         this.descEmpty = false
         return true
       }
+    },
+    initGrouplist () {
+      this.$get(userManage.GET_GROUP_LIST).then((res) => {
+        console.log(res)
+        this.groupData = this.reArrange(res.data.list)
+      })
+    },
+    reArrange (array) {
+      const arr = []
+      array.forEach(item => {
+        arr.push({
+          id: item.group_id,
+          name: item.title + `(${item.user_count})`
+        })
+      })
+      return arr
     }
   }
 }

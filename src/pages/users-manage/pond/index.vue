@@ -12,7 +12,7 @@
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
-          <com-input :value.sync="filterVal" placeholder="姓名/昵称/手机号/邮箱"   @focus=""></com-input>
+          <com-input :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱"   @focus=""></com-input>
           <span @click='showFilter = !showFilter'>精准搜索<i class='el-submenu__icon-arrow el-icon-arrow-down' :class="{'is-open':showFilter }"></i></span>
         </div>
       </div>
@@ -21,7 +21,7 @@
           <div class='filter-item'>
             <div class="condition">
               <span class="label">用户级别</span>
-               <el-select v-model="grandVal" placeholder="请选择">
+               <el-select v-model="filterCondition.user_level" placeholder="请选择">
                 <el-option
                   v-for="item in grands"
                   :key="item.value"
@@ -32,9 +32,9 @@
             </div>
             <div class="condition">
               <span class="label">来源</span>
-               <el-select v-model="grandVal" placeholder="请选择">
+               <el-select v-model="filterCondition.source" placeholder="请选择">
                 <el-option
-                  v-for="item in grands"
+                  v-for="item in sources"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -43,14 +43,7 @@
             </div>
             <div class="condition">
               <span class="label">参与场次</span>
-              <el-select v-model="grandVal" placeholder="请选择">
-                <el-option
-                  v-for="item in grands"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
+              <com-input :type="'number'" :value.sync="filterCondition.join_count" placeholder="请输入参与活动次数"></com-input>
             </div>
           </div>
           <div class='filter-item'>
@@ -67,9 +60,9 @@
             </div>
             <div class="condition">
               <span class="label">性别</span>
-              <el-select v-model="grandVal" placeholder="请选择">
+              <el-select v-model="filterCondition.sex" placeholder="请选择">
                 <el-option
-                  v-for="item in grands"
+                  v-for="item in sexs"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -78,9 +71,9 @@
             </div>
             <div class="condition">
               <span class="label">所属行业</span>
-              <el-select v-model="grandVal" placeholder="请选择">
+              <el-select v-model="filterCondition.industry" placeholder="请选择">
                 <el-option
-                  v-for="item in grands"
+                  v-for="item in industrys"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -163,12 +156,18 @@
           </el-table-column>
           <el-table-column
             label="用户信息"
-            width="200">
+            width="250">
             <template slot-scope="scope">
-              <dl class="users-info">
+              <dl class="users-info clearfix">
                 <dt><img :src="scope.row.avatar"></dt>
-                <dd>{{ scope.row.name }} {{ scope.row.gender }}</dd>
-                <dd>{{ scope.row.tag }}</dd>
+                <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span></dd>
+                <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
+                <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
+                <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
+                <dd class='protential' v-if="scope.row.level === 4">潜在用户</dd>
+                <dd class='' v-if="scope.row.level === 5">流失用户</dd>
+                <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
+                <dd class="name"  :class="scope.row.level | filterLevelclass" >{{scope.row.level | filterLevel}}</dd>
               </dl>
             </template>
           </el-table-column>
@@ -180,7 +179,7 @@
             prop="mail"
             label="邮箱"
             show-overflow-tooltip>
-            <template slot-scope="scope">
+            <!-- <template slot-scope="scope">
               <el-popover trigger="hover" placement="bottom">
                 <p class='mail-tooltips' v-for="(item,idx) in scope.row.mail">
                   <span>{{item.value}}</span>
@@ -190,7 +189,7 @@
                   {{ scope.row.mail[1].value }}
                 </div>
               </el-popover>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column
             prop="count"
@@ -247,7 +246,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" @groupImportData="groupImportData"></com-import>
+        <com-import @handleClick="handleClick" ></com-import>
       </transition>
   </div>
 </template>
@@ -265,23 +264,67 @@ export default {
       showFilter: false,
       grands: [
         {
-          value: '选项1',
-          label: '黄金糕'
+          value: '',
+          label: '全部'
+        },
+        {
+          value: 1,
+          label: '优质客户'
         }, {
-          value: '选项2',
-          label: '双皮奶'
+          value: 2,
+          label: '高价值用户'
         }, {
-          value: '选项3',
-          label: '蚵仔煎'
+          value: 3,
+          label: '一般用户'
         }, {
-          value: '选项4',
-          label: '龙须面'
+          value: 4,
+          label: '潜在用户'
         }, {
-          value: '选项5',
-          label: '北京烤鸭'
+          value: 5,
+          label: '流失用户'
+        }, {
+          value: 0,
+          label: '没有评级'
         }
       ],
       grandVal: '',
+      sources: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: '导入',
+          label: '导入'
+        }, {
+          value: '微信注册',
+          label: '微信注册'
+        }, {
+          value: 'PC注册',
+          label: 'PC注册'
+        }
+      ],
+      sourcesVal: '',
+      sexs: [
+        {
+          value: '',
+          label: '全部'
+        },
+        {
+          value: 'M',
+          label: '男'
+        }, {
+          value: 'W',
+          label: '女'
+        }
+      ],
+      sexsVal: '',
+      industrys: [
+        {
+
+        }
+      ],
+      industrysVal: '',
       firstVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       lastVal: [new Date(2018, 10, 10, 10, 10), new Date(2018, 10, 11, 10, 10)],
       activityArray: {
@@ -297,175 +340,17 @@ export default {
         'name': []
       },
       usersListData: [
-        {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }, {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }, {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }, {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }, {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }, {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }, {
-          avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '王小虎',
-          gender: '男',
-          phone: '18513152512',
-          mail: [
-            {
-              type: 'import',
-              value: 'asdasd@qq.com'
-            }, {
-              type: 'center',
-              value: '123123@qq.com'
-            }, {
-              type: 'appoint',
-              value: 'gfhg@qq.com'
-            }, {
-              type: 'sruvey',
-              value: 'ghjgh@qq.com'
-            }
-          ],
-          lastActive: '2018-10-11',
-          comment: '哈哈',
-          tag: '潜力客户',
-          count: '10'
-        }
+        // {
+        //   avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
+        //   name: '王小虎',
+        //   gender: '男',
+        //   phone: '18513152512',
+        //   mail: '123@qq.com',
+        //   lastActive: '2018-10-11',
+        //   comment: '哈哈',
+        //   level: 1,
+        //   count: '1'
+        // }
       ],
       multipleSelection: [],
       total: 7,
@@ -480,7 +365,63 @@ export default {
       showChooseTag: false,
       showChooseGroup: false,
       showImport: false,
-      chooseType: '活动'
+      chooseType: '活动',
+      filterCondition: { // 精准搜索条件对象
+        keyword: '', // 关键字查询 模糊匹配 姓名 昵称 手机号 邮箱
+        user_level: '', // 用户级别
+        first_visited_at_start: '', // this.firstVal[0], // 首次访问时间开始日期
+        first_visited_at_end: '', // this.firstVal[1], // 首次访问时间结束日期
+        last_visited_at_start: '', // this.lastVal[0], // 最后活跃时间开始日期
+        last_visited_at_end: '', // this.lastVal[1], // 最后活跃时间结束日期
+        sex: '', // 性别 M 男 W 女
+        province: '', // 省
+        city: '', // 市
+        industry: '', // 行业
+        join_count: '', // 参与活动场次
+        source: '', // 来源 导入 微信注册 PC注册
+        activity_ids: '', // 参加过的活动ID，多个活动ID用英文逗号","分割
+        tags: '', // 标签ID，多个标签ID用英文逗号","分割
+        groups: '', // 所属群组ID，多个群组ID用英文逗号","分割
+        page: '', // 分页页码 默认不传为第一页
+        page_size: '' // 每页显示条数 默认不传为每页显示10条
+      }
+    }
+  },
+  mounted () {
+    this.queryUserPool()
+  },
+  filters: {
+    filterLevel (val) {
+      switch (val) {
+        case 1:
+          return '优质客户'
+        case 2:
+          return '高价值用户'
+        case 3:
+          return '一般用户'
+        case 4:
+          return '潜在用户'
+        case 5:
+          return '流失用户'
+        case 0:
+          return '没有评级'
+      }
+    },
+    filterLevelclass (val) {
+      switch (val) {
+        case 1:
+          return 'high'
+        case 2:
+          return 'good'
+        case 3:
+          return 'common'
+        case 4:
+          return 'protential'
+        case 5:
+          return ''
+        case 0:
+          return ''
+      }
     }
   },
   methods: {
@@ -488,11 +429,8 @@ export default {
       this.multipleSelection = val
     },
     currentChange (e) {
-      this.queryData.page = e
-      this.queryList()
-    },
-    queryList () {
-
+      Object.assign(this.filterCondition, { 'page': e })
+      this.queryUserPool(this.filterCondition)
     },
     handleDel (idx, type) {
       this[type].name.splice(idx, 1)
@@ -512,16 +450,19 @@ export default {
       console.log(res)
       this.activityArray.name = res.name
       this.activityArray.id = res.id
+      this.filterCondition.activity_ids = res.id.toString()
     },
     selectTagConfirm (res) {
       console.log(res)
       this.tagArray.name = res.name
       this.tagArray.id = res.id
+      this.filterCondition.tags = res.id.toString()
     },
     selectGroupConfirm (res) {
       console.log(res)
       this.groupArray.name = res.name
       this.groupArray.id = res.id
+      this.filterCondition.groups = res.id.toString()
     },
     searchHandler (res) {
       console.log(res)
@@ -529,10 +470,39 @@ export default {
     groupData (res) {
       console.log(res)
     },
-    groupImportData (res) {
-      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
+    queryUserPool (data) {
+      this.$get(userManage.GET_USERS_POOL, data).then((res) => {
         console.log(res)
+        res.data.list.forEach(item => {
+          this.usersListData.push({
+            'avatar': item.avatar ? item.avatar : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
+            'name': item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...',
+            'gender': item.sex === 'M' ? '男' : '女',
+            'phone': item.phone,
+            'mail': item.email,
+            'lastActive': item.last_visited_at,
+            'comment': item.remark,
+            'level': item.user_level,
+            'count': item.join_count
+          })
+        })
       })
+    }
+  },
+  watch: {
+    firstVal: {
+      handler (val) {
+        this.filterCondition.first_visited_at_start = val[0]
+        this.filterCondition.first_visited_at_end = val[1]
+      },
+      immediate: true
+    },
+    lastVal: {
+      handler (val) {
+        this.filterCondition.last_visited_at_start = val[0]
+        this.filterCondition.last_visited_at_end = val[1]
+      },
+      immediate: true
     }
   },
   components: {
@@ -586,10 +556,12 @@ export default {
         float: right;
         .com-input {
           margin-right: 10px;
+          width: 202px;
         }
         .com-input input {
           padding-right: 10px;
           padding-left: 15px;
+          border-radius: 4px;
         }
         span {
           cursor: pointer;
@@ -698,7 +670,7 @@ export default {
     .users-list {
       .el-table {
         .users-info {
-          width: 110px;
+          width: 140px;
           img {
             width: 32px;
             height: 32px;
@@ -728,6 +700,15 @@ export default {
               &.high {
                 color: #714cea;
               }
+            }
+            span {
+              overflow: hidden;
+              display: inline-block;
+            }
+            .name {
+              // width: 50px;
+              // text-overflow: ellipsis;
+              // white-space: nowrap;
             }
           }
         }
@@ -776,7 +757,7 @@ export default {
     .com-input input {
       height: 34px;
       line-height: 34px;
-      border-radius: 17px;
+      // border-radius: 17px;
     }
     .el-table tr {
       height: 70px;

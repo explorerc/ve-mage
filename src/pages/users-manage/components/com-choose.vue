@@ -11,6 +11,7 @@
           <input class='inp' v-model="searchVal" @keyup.enter='search' :placeholder="`输入${name}名称`"></input>
         </div>
         <el-checkbox-group v-model="restoreData.id" :max="max" :class='"data-list"'>
+          <span class='loading' v-if="dataList.length <=0 ">加载中...</span>
           <el-checkbox v-for="(item,idx) in dataList" :label="item.id" :key="idx" :checked="item.checked" @change='selectCheck($event,item.id)'>{{item.name}}</el-checkbox>
         </el-checkbox-group>
         <div class="foot-box">
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -33,160 +35,25 @@ export default {
       },
       dataList: [],
       groupListData: [
-        {
-          name: '互联网客户 (460人）',
-          id: 1,
-          checked: false
-        },
-        {
-          name: '物联网客户 (235人）',
-          id: 2,
-          checked: false
-        },
-        {
-          name: '产品团队 (22人）',
-          id: 3,
-          checked: false
-        },
-        {
-          name: '客户服务团队 (54人）',
-          id: 4,
-          checked: false
-        },
-        {
-          name: '客户服务团队 (54人）',
-          id: 5,
-          checked: false
-        }
+        // {
+        //   name: '互联网客户 (460人）',
+        //   id: 1,
+        //   checked: false
+        // }
       ],
       tagListData: [
-        {
-          name: '年龄/00后',
-          id: 1,
-          checked: false
-        },
-        {
-          name: '地区/北上广深',
-          id: 2,
-          checked: false
-        },
-        {
-          name: '资料完整度/参会人',
-          id: 3,
-          checked: false
-        },
-        {
-          name: '观看时完整度/完美用户',
-          id: 4,
-          checked: false
-        },
-        {
-          name: '地区/海外',
-          id: 5,
-          checked: false
-        }
+        // {
+        //   name: '年龄/00后',
+        //   id: 1,
+        //   checked: false
+        // }
       ],
       activelistData: [
-        {
-          name: '百度人工智能大会发布芯片',
-          id: 1,
-          checked: false
-        },
-        {
-          name: '创想聚能 艾瑞年对高峰会议',
-          id: 2,
-          checked: false
-        },
-        {
-          name: '艺术二维码的设计思路',
-          id: 3,
-          checked: false
-        },
-        {
-          name: '腾讯向爱而生文创生态大会',
-          id: 4,
-          checked: false
-        },
-        {
-          name: '2name:018西南互联网趋势峰会',
-          id: 5,
-          checked: false
-        },
-        {
-          name: '百度人工智能大会发布芯片',
-          id: 6,
-          checked: false
-        },
-        {
-          name: '创想聚能 艾瑞年对高峰会议',
-          id: 7,
-          checked: false
-        },
-        {
-          name: '艺术二维码的设计思路',
-          id: 8,
-          checked: false
-        },
-        {
-          name: '腾讯向爱而生文创生态大会',
-          id: 9,
-          checked: false
-        },
-        {
-          name: '2name:018西南互联网趋势峰会',
-          id: 10,
-          checked: false
-        },
-        {
-          name: '百度人工智能大会发布芯片',
-          id: 11,
-          checked: false
-        },
-        {
-          name: '创想聚能 艾瑞年对高峰会议',
-          id: 12,
-          checked: false
-        },
-        {
-          name: '艺术二维码的设计思路',
-          id: 13,
-          checked: false
-        },
-        {
-          name: '腾讯向爱而生文创生态大会',
-          id: 14,
-          checked: false
-        },
-        {
-          name: '2name:018西南互联网趋势峰会',
-          id: 15,
-          checked: false
-        },
-        {
-          name: '百度人工智能大会发布芯片',
-          id: 16,
-          checked: false
-        },
-        {
-          name: '创想聚能 艾瑞年对高峰会议',
-          id: 17,
-          checked: false
-        },
-        {
-          name: '艺术二维码的设计思路',
-          id: 18,
-          checked: false
-        },
-        {
-          name: '腾讯向爱而生文创生态大会',
-          id: 19,
-          checked: false
-        },
-        {
-          name: '2name:018西南互联网趋势峰会',
-          id: 20,
-          checked: false
-        }
+        // {
+        //   name: '百度人工智能大会发布芯片',
+        //   id: 1,
+        //   checked: false
+        // }
       ]
     }
   },
@@ -197,12 +64,15 @@ export default {
     switch (this.name) {
       case '活动':
         this.dataList = this.activelistData
+        this.queryActList()
         break
       case '标签':
         this.dataList = this.tagListData
+        this.queryTaglist()
         break
       case '固定群组':
         this.dataList = this.groupListData
+        this.queryGrouplist()
         break
     }
   },
@@ -265,6 +135,53 @@ export default {
           }
           // console.log(this.restoreData)
         }
+      })
+    },
+    // 查询标签
+    queryTaglist (keyword) {
+      this.$get(userManage.GET_TAG_LIST, {
+        keyword: this.searchVal
+      }).then((res) => {
+        console.log(res.data.list)
+        res.data.list.forEach(item => {
+          this.tagListData.push({
+            name: item.tag_name,
+            id: item.tag_id,
+            checked: false
+          })
+        })
+      })
+    },
+    // 查询群组
+    queryGrouplist (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal
+      }).then((res) => {
+        res.data.list.forEach(item => {
+          this.groupListData.push({
+            name: item.title + `(${item.user_count})`,
+            id: item.group_id,
+            checked: false
+          })
+        })
+      })
+    },
+    // 查询活动
+    queryActList () {
+      const data = {
+        keyword: this.searchVal,
+        page: 1,
+        pageSize: 30
+      }
+      this.$get(userManage.GET_ACTIVE_LIST, data).then((res) => {
+        console.log(res.data.list)
+        res.data.list.forEach(item => {
+          this.activelistData.push({
+            name: item.title,
+            id: item.id,
+            checked: false
+          })
+        })
       })
     }
   }
@@ -330,6 +247,15 @@ export default {
       margin: 20px 0 20px 0;
       height: 250px;
       overflow-y: scroll;
+      .loading {
+        display: block;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: $color-font;
+        font-size: 14px;
+      }
       label {
         margin: 0;
         display: block;
@@ -352,6 +278,7 @@ export default {
       }
     }
     .search-box {
+      line-height: 34px;
       .inp {
         width: 220px;
         padding: 0 15px;
