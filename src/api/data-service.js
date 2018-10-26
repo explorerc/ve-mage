@@ -24,5 +24,13 @@ export default {
   /* 直播数据--基本数据 */
   GET_LIVE_COUNT: '/manage/data-center/s/live',
   /* 直播数据--观众趋势图 */
-  GET_LIVE_VIEWER: '/manage/data-center/s/viewer'
+  GET_LIVE_VIEWER: '/manage/data-center/s/viewer',
+  /* 直播数据--直播观众时长分布图 */
+  GET_LIVE_DURATION: '/manage/data-center/s/viewer-duration',
+  /* 直播数据--观看回放时段 */
+  GET_LIVE_VIEW_RECORD: '/manage/data-center/s/view-record',
+  /* 直播数据--互动工具参与趋势图 */
+  GET_LIVE_TOOL: '/manage/data-center/s/tool',
+  /* 观众画像--地域占比 */
+  GET_VIEWER_REGION: '/manage/data-center/s/viewer-region'
 }
