@@ -20,7 +20,7 @@
 
 
             <div class="option-value">
-              <el-select v-model="m.value" v-if="m.type == 'select'" placeholder="请选择">
+              <el-select v-model="m.value" v-if="m.type == 'select'" filterable placeholder="请选择">
                 <el-option
                   v-for="(itemr,indexr) in m.optionValue"
                   :key="indexr.key"
@@ -52,7 +52,8 @@
 
 <script>
   import groupService from 'src/api/user_group'
-  import province from 'src/assets/js/district'
+  import province from 'src/assets/js/district-provience'
+  import city from 'src/assets/js/district-city'
 
   export default {
     props: ['type', 'rule'],
@@ -714,22 +715,22 @@
             cons: [{
               key: 'contain',
               name: '包含',
-              type: 'cascader',
+              type: 'select',
               unit: ''
             }, {
               key: 'not_contain',
               name: '不包含',
-              type: 'cascader',
+              type: 'select',
               unit: ''
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'cascader',
+              type: 'select',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'cascader',
+              type: 'select',
               unit: ''
             }]
           },
@@ -1088,7 +1089,7 @@
           value: ''
         }])
 
-        console.log(this.shadowOutD.length)
+        // console.log(this.shadowOutD.length)
         if (this.shadowOutD.length < 2) {
           this.disDel = false
         } else {
@@ -1119,8 +1120,8 @@
             return _item
           }
         })
-        console.log(this.shadowOutD, 'this.shadowOutD')
-        console.log(this.saveData, '_save_data')
+        // console.log(this.shadowOutD, 'this.shadowOutD')
+        // console.log(this.saveData, '_save_data')
         this.$emit('optionData', this.saveData)
       },
       analysisData () {
@@ -1129,9 +1130,6 @@
             item1.keys = this.condOption[item1.key].keys
             item1.optionValue = this.valueOption[item1.keys[1]]
             this.$set(item1, 'conds', this.condOption[item1.key].cons)
-            // this.$set(item1, 'keys', this.condOption[item1.key].keys);
-            // this.conds= this.condOption[item1.key].cons
-            // console.log(this.condOption[item1.key].cons);
             item1.type = this.condOption[item1.key].cons.find((item) => item.key === item1.condition).type
           })
         })
@@ -1185,31 +1183,39 @@
             })
           })
       },
-      province () {
-        console.log(province)
-        this.valueOption.city = province
+      getProvince () {
         province.forEach((item) => {
-          if (item.value) {
-            let obj = {
-              key: item.value,
-              name: item.value,
-              type: 'select',
-              unit: ''
-            }
-            this.valueOption.province.push(obj)
+          let obj = {
+            key: item.id,
+            name: item.name,
+            type: 'select',
+            unit: ''
           }
+          this.valueOption.province.push(obj)
+        })
+      },
+      getCity () {
+        city.forEach((item) => {
+          let obj = {
+            key: item.id,
+            name: item.name,
+            type: 'select',
+            unit: ''
+          }
+          this.valueOption.city.push(obj)
         })
       }
     },
     created () {
       this.getTags()
       this.getGroup()
-      this.province()
+      this.getProvince()
+      this.getCity()
     },
     mounted () {
       if (this.type === 'edit') {
         this.outD = this.rule
-        console.log(this.outD)
+        // console.log(this.outD)
         this.analysisData()
       }
     }

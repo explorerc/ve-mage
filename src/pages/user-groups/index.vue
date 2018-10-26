@@ -4,7 +4,7 @@
       <h4>用户群组</h4>
       <div>
         <el-input size="small" placeholder="输入直播名称" suffix-icon="el-icon-search"
-                  v-model="search.name" @keyup.enter.native="onSearch" clearable></el-input>
+                  v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
         <el-button size="small" @click="showDialog(2)" round>新建固定群组</el-button>
         <el-button size="small" @click="showDialog(3)" round>新建智能群组</el-button>
       </div>
@@ -117,7 +117,7 @@
         inpDesLen: 0,
         search: {
           pageSize: 10,
-          name: '',
+          keyword: '',
           page: 1
         },
         total: 0,

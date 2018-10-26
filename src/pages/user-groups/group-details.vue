@@ -2,35 +2,28 @@
   <div id="groupDetails">
     <header>{{group_title}}群组（{{total}}）</header>
     <div class="operation">
-      <el-dropdown @command="SelectData">
-        <span class="el-dropdown-link">
-          选择<!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="NowPage">全选本页数据</el-dropdown-item>
-          <el-dropdown-item command="AllPage">全选列表所有数据</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-dropdown @command="dialogImportShow">
-        <span class="el-dropdown-link">
-          批量操作<!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="import" v-if="type === 2">导入</el-dropdown-item>
-          <el-dropdown-item>导出</el-dropdown-item>
-          <el-dropdown-item disabled>添加到群组</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
-      <transition name='fade' mode='out-in' v-if="dialogImport">
-        <com-import @handleClick="handleClick"></com-import>
-      </transition>
-
+      <div class="opBtns">
+        <el-button size="small" round>导出全部数据</el-button>
+        <el-dropdown @command="dialogImportShow">
+          <span class="el-dropdown-link">
+            批量操作<!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>导出</el-dropdown-item>
+            <el-dropdown-item disabled>添加到群组</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
+        <transition name='fade' mode='out-in' v-if="dialogImport">
+          <com-import @handleClick="handleClick" :groupId="search.group_id"></com-import>
+        </transition>
+      </div>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
-                v-model="search.name" @keyup.enter.native="onSearch" clearable></el-input>
+                v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
-      <el-table :data="tableData" border class="el-table">
+      <!--@selection-change="handleSelectionChange"-->
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border class="el-table">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="用户信息">
           <template slot-scope="scope">
@@ -82,6 +75,17 @@
         return a === 'M' ? '男' : '女'
       }
     },
+    mounted () {
+      this.$refs.multipleTable.toggleRowSelection(this.tableData[1], true)
+      if (this.tableData) {
+        console.log('this.tableData有了')
+        // this.$nextTick(() => {
+        this.$refs.multipleTable.toggleRowSelection(this.tableData[1], true)
+        // })
+      } else {
+        console.log(111)
+      }
+    },
     data () {
       return {
         group_title: '',
@@ -103,7 +107,7 @@
         type: Number.parseInt(this.$route.params.type),
         search: {
           group_id: this.$route.params.id,
-          name: '',
+          keyword: '',
           page: 1,
           pageSize: 10
         },
@@ -111,14 +115,19 @@
       }
     },
     watch: {
-      search: {
+      /* tableData: {
         handler (val) {
-          if (this.isSelect === 1 && val) {
-            this.selectCheck()
-          }
+          this.handleSelectionChange()
+          console.log('page变了')
+          // console.log(this.isSelect)
+          /!*  if (this.isSelect === 1 && val) {
+              setTimeout(() => {
+                this.selectCheck()
+              }, 100)
+            } *!/
         },
         deep: true
-      }
+      } */
 
     },
     methods: {
@@ -161,14 +170,16 @@
         console.log(nowPage)
         this.search.page = nowPage
         this.onSearch()
+        this.handleSelectionChange()
       },
       handleDetails () { // 详情
       },
       dialogImportShow (a) {
-        if (a === 'import') {
-          this.dialogImport = true
-          this.dialogTitle = '批量导入'
-        }
+        console.log(a)
+      },
+      batchImport () {
+        this.dialogImport = true
+        this.dialogTitle = '批量导入'
       },
       selectCheck () {
         this.$nextTick(() => {
@@ -181,6 +192,7 @@
           this.isSelect = 0
         } else {
           this.isSelect = 1
+          // this.handleSelectionChange()
         }
       },
       getGroupDetail () {
@@ -188,6 +200,11 @@
           .then((res) => {
             this.group_title = res.data.title
           })
+      },
+      handleSelectionChange () {
+        this.$nextTick(() => {
+          this.$refs.multipleTable.toggleRowSelection(this.tableData[3], true)
+        })
       }
     }
   }
@@ -206,24 +223,27 @@
       margin-bottom: 23px;
     }
     .operation {
-      .el-dropdown {
-        span {
+      overflow: hidden;
+      .opBtns {
+        float: left;
+        .el-dropdown {
+          border: 1px solid rgba(136, 136, 136, 1);
+          border-radius: 17px;
+          transform: translateY(2px);
+          width: 120px;
+          padding: 5.5px;
+          display: inline-block;
+          text-align: center;
+        }
+        .el-button {
           display: inline-block;
           width: 120px;
-          height: 34px;
-          line-height: 34px;
+          height: 100%;
           text-align: center;
           border: 1px solid rgba(136, 136, 136, 1);
           border-radius: 17px;
         }
-        &:hover {
-          /*border: 1px solid rgba(75,90,254,1);*/
-          border-radius: 17px;
-          border-color: rgba(75, 90, 254, 1) !important;
-          color: rgba(75, 90, 254, 1);
-        }
       }
-
       .search {
         float: right;
         display: inline-block;
