@@ -51,6 +51,7 @@
       font-size: 14px;
       padding: 0 20px;
       border-right: solid 1px #e2e2e2;
+      min-width: 70px;
       &:last-child {
         border-right: none;
       }

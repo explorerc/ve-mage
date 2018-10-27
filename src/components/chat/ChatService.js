@@ -68,7 +68,7 @@ export default class ChatService {
   [msgHandler] () {
     console.log('[chat]listening...')
     window.vhallChat.onCustomMsg(res => {
-      let { type, body } = JSON.parse(res)
+      let {type, body} = JSON.parse(res)
       this[dispatchHandler](type, body)
     })
 

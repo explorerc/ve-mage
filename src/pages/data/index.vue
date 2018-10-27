@@ -21,18 +21,18 @@
 <script>
   import NavMenu from './nav-menu'
   import activityService from 'src/api/activity-service'
-  import { mapMutations, mapState } from 'vuex'
+  import {mapMutations, mapState} from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'data-main',
-    components: { NavMenu },
+    components: {NavMenu},
     data () {
       return {
         activeId: '',
         currentMenu: 0,
         activityInfo: {},
-        menuList: ['概览数据', '推广数据', '直播数据', '观众数据']
+        menuList: ['概览数据', '推广数据', '直播数据', '观众画像']
       }
     },
     computed: {
@@ -41,6 +41,7 @@
       })
     },
     created () {
+      debugger
       this.activeId = this.$route.params.id
       const linkName = this.$route.name
       if (linkName === 'preview') {
@@ -49,11 +50,10 @@
         this.currentMenu = 1
       } else if (linkName === 'live') {
         this.currentMenu = 2
-      } else if (linkName === 'viewer') {
+      } else if (linkName === 'viewer' || linkName === 'viewerList') {
         this.currentMenu = 3
       }
-      this.storeSelectMenu(parseInt(sessionStorage.getItem(types.DATA_SELECT_MENU)) || this.currentMenu)
-      sessionStorage.removeItem(types.DATA_SELECT_MENU)
+      this.storeSelectMenu(this.currentMenu)
       this.getDetails()
     },
     methods: {
