@@ -523,7 +523,7 @@ export default {
       // })
     },
     currentChange (e) {
-      Object.assign(this.filterCondition, {'page': e})
+      Object.assign(this.filterCondition, { 'page': e })
       this.queryUserPool(this.filterCondition)
     },
     handleDel (idx, type) {
@@ -593,6 +593,13 @@ export default {
       const data = {}
       Object.assign(data, {
         'business_consumer_uids': this.checkedArr.toString()
+      })
+      this.usersListData.forEach((item, idx) => {
+        this.checkedArr.forEach((ele, i) => {
+          if (item.business_consumer_uid === this.checkedArr[i]) {
+            this.usersListData.splice(idx, 1)
+          }
+        })
       })
       this.$post(userManage.POST_DEL_USERS, data).then((res) => {
         this.$toast({

@@ -12,5 +12,5 @@ export default {
   // 添加到群组
   POST_ADD_TO_GROUP: '/common/group/user-add',
   // 删除成员
-  POST_DEL_USERS: '/common/group/user-delete'
+  POST_DEL_USERS: '/user/customer/bath-delete'
 }
