@@ -1,27 +1,32 @@
 <template>
   <div class="data-box search-box">
-    <div v-if="!isHigh" class="search-item">
-      <span class="search-title">关键词搜索</span>
-      <com-input type="search"
-                 class="search-com"
-                 :value.sync="searchParams.keyword"
-                 :maxLength="30"
-                 @keyup.native.enter="searchEnter"
-                 placeholder="输入姓名/手机号/邮箱"></com-input>
-      <span class="data-link" style="font-size: 14px;" @click="isHigh=true">高级筛选</span>
+    <div class="search-total">
+      <button class="primary-button fl" @click="exportData">导出</button>
+      <div class="search-item fr">
+        <com-input type="search"
+                   style="width: 220px;"
+                   class="search-com"
+                   :value.sync="searchParams.keyword"
+                   :maxLength="30"
+                   @keyup.native.enter="searchEnter"
+                   placeholder="输入姓名/手机号/邮箱"></com-input>
+        <span class="data-link" style="font-size: 14px;" @click="isHigh=true">高级筛选</span>
+      </div>
     </div>
-    <div v-if="isHigh">
+    <div v-if="isHigh" class="data-pad">
       <div class="search-item">
         <span class="search-title">关键词搜索</span>
         <com-input type="search"
+                   style="width: 220px;"
                    class="search-com"
                    :value.sync="searchParams.keyword"
                    :maxLength="30"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入姓名/手机号/邮箱"></com-input>
       </div>
+      <br/>
       <div class="search-item">
-        <span class="search-title">性别</span>
+        <span class="search-title">用户性别</span>
         <el-select v-model="searchParams.gender"
                    placeholder="直播状态">
           <el-option v-for="item in genderList"
@@ -31,47 +36,8 @@
           </el-option>
         </el-select>
       </div>
-      <div class="search-item">
-        <span class="search-title">活动前用户级别</span>
-        <el-select v-model="searchParams.beforeLevel">
-          <el-option v-for="item in watcherTypeList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search-item">
-        <span class="search-title">活动后用户级别</span>
-        <el-select v-model="searchParams.afterLevel">
-          <el-option v-for="item in userTypeList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search-item">
-        <span class="search-title">地域</span>
-        <el-select style="width: 100px;"
-                   v-model="searchParams.provinceId">
-          <el-option v-for="item in provinceList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select style="width: 100px;"
-                   v-model="searchParams.cityId">
-          <el-option v-for="item in cityList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search-item">
-        <span class="search-title">行业</span>
+      <div class="search-item flm">
+        <span class="search-title">所属行业</span>
         <el-select v-model="searchParams.tradeId"
                    placeholder="直播状态">
           <el-option v-for="item in tradeList"
@@ -81,7 +47,49 @@
           </el-option>
         </el-select>
       </div>
+      <div class="search-item flm">
+        <span class="search-title">观看设备</span>
+        <el-select v-model="searchParams.device"
+                   placeholder="直播状态">
+          <el-option v-for="item in deviceList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">新老用户</span>
+        <el-select v-model="searchParams.userType"
+                   placeholder="直播状态">
+          <el-option v-for="item in userTypeList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
       <div class="search-item">
+        <span class="search-title">所属地域</span>
+        <el-select style="width: 100px;"
+                   v-model="searchParams.provinceId">
+          <el-option v-for="item in provinceList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select style="width: 112px;"
+                   v-model="searchParams.cityId">
+          <el-option v-for="item in cityList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+
+      <div class="search-item flm">
         <span class="search-title">进入时间</span>
         <el-date-picker
           v-model="enterTime"
@@ -93,7 +101,7 @@
           end-placeholder="结束日期">
         </el-date-picker>
       </div>
-      <div class="search-item">
+      <div class="search-item flm">
         <span class="search-title">离开时间</span>
         <el-date-picker
           v-model="leaveTime"
@@ -106,19 +114,8 @@
         </el-date-picker>
       </div>
       <div class="search-item">
-        <span class="search-title">观看设备</span>
-        <el-select v-model="searchParams.device"
-                   placeholder="直播状态">
-          <el-option v-for="item in deviceList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search-item">
         <span class="search-title">本次得分</span>
-        <el-select style="width: 80px;"
+        <el-select style="width: 100px;"
                    v-model="searchParams.scoreType"
                    placeholder="直播状态">
           <el-option v-for="item in scoreTypeList"
@@ -128,13 +125,23 @@
           </el-option>
         </el-select>
         <com-input type="number"
+                   style="width: 112px;"
                    :value.sync="searchParams.score"
                    :maxLength="30"></com-input>
       </div>
-      <div class="search-item">
-        <span class="search-title">新老用户</span>
-        <el-select v-model="searchParams.userType"
-                   placeholder="直播状态">
+      <div class="search-item flm">
+        <span class="search-title">活动前用户级别</span>
+        <el-select v-model="searchParams.beforeLevel">
+          <el-option v-for="item in watcherTypeList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">活动后用户级别</span>
+        <el-select v-model="searchParams.afterLevel">
           <el-option v-for="item in userTypeList"
                      :key="item.value"
                      :label="item.label"
@@ -142,16 +149,19 @@
           </el-option>
         </el-select>
       </div>
+      <div class="search-btns">
+        <button class="primary-button" @click="searchEnter">查询</button>
+        <button class="default-button" @click="cancelClick">取消</button>
+      </div>
     </div>
-    <div class="table-list-box">
-      <button class="primary-button export-btn" @click="exportData">导出</button>
-      <el-table :data="viewerList" style="width: 100%">
+    <div class="table-list-box data-pad">
+      <el-table :data="viewerList" :default-sort="{prop: 'score', order: 'descending'}" style="width: 100%">
         <el-table-column label="姓名">
           <template slot-scope="scope">
             {{scope.row.name}}
           </template>
         </el-table-column>
-        <el-table-column prop="score" label="本次得分"></el-table-column>
+        <el-table-column prop="score" sortable label="本次得分"></el-table-column>
         <el-table-column prop="level" label="会后级别"></el-table-column>
         <el-table-column prop="phoneNo" label="手机号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
@@ -328,7 +338,7 @@
             userId: 10001,
             name: '李四',
             headImg: '/dev/111/sss/i.jpg',
-            score: 50,
+            score: 48,
             level: 1,
             phoneNo: '1859912717',
             email: 'yy1221@vhall.com',
@@ -340,7 +350,7 @@
             userId: 10002,
             name: '刘德华',
             headImg: '/dev/111/sss/i.jpg',
-            score: 50,
+            score: 51,
             level: 1,
             phoneNo: '1859912717',
             email: 'yy1221@vhall.com',
@@ -351,6 +361,26 @@
         ]
       },
       searchEnter () {
+      },
+      cancelClick () {
+        this.searchParams = {
+          activityId: '',
+          keyword: '',
+          gender: '',
+          beforeLevel: '',
+          afterLevel: '',
+          provinceId: '',
+          cityId: '',
+          tradeId: '',
+          endterStartDate: '',
+          endterEndDate: '',
+          leaveStartDate: '',
+          leaveEndDate: '',
+          device: '',
+          scoreType: '',
+          score: '',
+          userType: ''
+        }
       }
     }
   }
@@ -358,25 +388,39 @@
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
   .data-box {
+    .data-pad {
+      padding-top: 20px;
+    }
     .search-box /deep/ {
       .search-com {
         margin: 0 10px;
-        width: 260px;
       }
       input {
         height: 30px;
         line-height: 30px;
       }
     }
+    .search-total {
+      height: 60px;
+    }
     .search-item /deep/ {
       display: inline-block;
-      margin: 10px 20px 10px 0;
+      margin: 10px 0 10px 0;
       .el-select {
         display: inline-block;
       }
       .search-title {
         margin-right: 5px;
         font-size: 14px;
+      }
+    }
+    .search-btns {
+      text-align: center;
+      margin-top: 20px;
+      button {
+        height: 34px;
+        line-height: 34px;
+        margin: 0 10px;
       }
     }
     .table-list-box {
@@ -394,6 +438,9 @@
         margin-top: 20px;
         float: right;
       }
+    }
+    .flm {
+      margin-left: 20px;
     }
   }
 </style>
