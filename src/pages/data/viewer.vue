@@ -103,12 +103,12 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {pie, barRadius} from 'src/utils/chart-tool'
+  import { pie, barRadius } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
     name: 'viewer',
-    components: {VeTitle, VeCircle, NavMenu},
+    components: { VeTitle, VeCircle, NavMenu },
     data () {
       return {
         basicUserData: {}
@@ -137,32 +137,32 @@
           msg: null,
           data: {
             viewer: [
-              {type: 0, 'name': '新观众', value: 10},
-              {type: 1, 'name': '老观众', value: 20}
+              { type: 0, 'name': '新观众', value: 10 },
+              { type: 1, 'name': '老观众', value: 20 }
             ],
             device: [
-              {type: 0, 'name': '电脑端', value: 10},
-              {type: 1, 'name': '移动端', value: 20}
+              { type: 0, 'name': '电脑端', value: 10 },
+              { type: 1, 'name': '移动端', value: 20 }
             ],
             system: [
-              {type: 0, 'name': 'Windows', value: 10},
-              {type: 1, 'name': 'Mac', value: 20},
-              {type: 1, 'name': 'IOS', value: 20},
-              {type: 1, 'name': 'Android', value: 20},
-              {type: 1, 'name': 'Other', value: 20}
+              { type: 0, 'name': 'Windows', value: 10 },
+              { type: 1, 'name': 'Mac', value: 20 },
+              { type: 1, 'name': 'IOS', value: 20 },
+              { type: 1, 'name': 'Android', value: 20 },
+              { type: 1, 'name': 'Other', value: 20 }
             ],
             browser: [
-              {type: 0, 'name': 'Safari电脑版', value: 10},
-              {type: 1, 'name': 'Chrome电脑版', value: 20},
-              {type: 1, 'name': 'UC移动版', value: 20},
-              {type: 1, 'name': '微信', value: 20},
-              {type: 1, 'name': 'QQ', value: 20},
-              {type: 1, 'name': 'Other', value: 20}
+              { type: 0, 'name': 'Safari电脑版', value: 10 },
+              { type: 1, 'name': 'Chrome电脑版', value: 20 },
+              { type: 1, 'name': 'UC移动版', value: 20 },
+              { type: 1, 'name': '微信', value: 20 },
+              { type: 1, 'name': 'QQ', value: 20 },
+              { type: 1, 'name': 'Other', value: 20 }
             ],
             gender: [
-              {type: 0, 'name': '男士', value: 10},
-              {type: 1, 'name': '女士', value: 20},
-              {type: 1, 'name': '未知', value: 20}
+              { type: 0, 'name': '男士', value: 10 },
+              { type: 1, 'name': '女士', value: 20 },
+              { type: 1, 'name': '未知', value: 20 }
             ]
           }
         }
@@ -171,14 +171,14 @@
           pie('chart01', res.data.viewer)
           // 各级别用户占比
           pie('chart02', [
-            {name: '观众总数', value: this.basicUserData.viewerCount},
-            {name: '老用户', value: this.basicUserData.oldUser},
-            {name: '新用户', value: this.basicUserData.newUser},
-            {name: '优质用户', value: this.basicUserData.highUser},
-            {name: '高价值用户', value: this.basicUserData.vipUser},
-            {name: '一般用户', value: this.basicUserData.ordinaryUser},
-            {name: '潜在用户', value: this.basicUserData.potentialUser},
-            {name: '流失用户', value: this.basicUserData.lossUser}
+            { name: '观众总数', value: this.basicUserData.viewerCount },
+            { name: '老用户', value: this.basicUserData.oldUser },
+            { name: '新用户', value: this.basicUserData.newUser },
+            { name: '优质用户', value: this.basicUserData.highUser },
+            { name: '高价值用户', value: this.basicUserData.vipUser },
+            { name: '一般用户', value: this.basicUserData.ordinaryUser },
+            { name: '潜在用户', value: this.basicUserData.potentialUser },
+            { name: '流失用户', value: this.basicUserData.lossUser }
           ])
           // 设备占比
           pie('chart03', res.data.device)

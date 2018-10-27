@@ -227,7 +227,7 @@ import userManage from 'src/api/userManage-service'
       },
       updateWebinfo (isNew, data) { // 新建 创建活动
         if (isNew) {
-          this.$config({'handlers': [2001]}).$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
+          this.$config({ 'handlers': [2001] }).$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
             this.canPaas = true
             this.successTxt = '创建成功'
@@ -243,7 +243,7 @@ import userManage from 'src/api/userManage-service'
             }
           })
         } else {
-          this.$config({'handlers': [2001]}).$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
+          this.$config({ 'handlers': [2001] }).$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
             this.createdSuccess = true
             this.canPaas = true
             this.successTxt = '更新成功'
