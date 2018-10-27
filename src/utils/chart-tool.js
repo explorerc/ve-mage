@@ -344,10 +344,16 @@ export function pieOne (id, percent) {
 export function barRadius (id, data) {
   let xAxisData = []
   let barData = []
+  let maxVal = 0
   data.forEach(item => {
     xAxisData.push(item.name)
     barData.push(item.value)
+    maxVal = maxVal > item.value ? maxVal : item.value
   })
+  let dataShadow = []
+  for (let i = 0; i < data.length; i++) {
+    dataShadow.push(maxVal)
+  }
   let option = {
     tooltip: {
       trigger: 'axis',
@@ -361,7 +367,7 @@ export function barRadius (id, data) {
     label: {
       normal: {
         textStyle: {
-          color: '#ff3b00'
+          color: '#FFD021'
         }
       },
       emphasis: {
@@ -390,41 +396,35 @@ export function barRadius (id, data) {
     },
     yAxis: {
       ...AxisValue,
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: lineColor,
-          width: 1,
-          type: 'dashed'
-        }
-      },
       axisTick: {
         show: true
       }
     },
+    dataZoom: [
+      {
+        type: 'inside'
+      }
+    ],
     series: [
       {
         type: 'bar',
-        barWidth: 20,
         itemStyle: {
           normal: {
-            barBorderRadius: [10, 10, 0, 0],
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-              offset: 0,
-              color: 'rgba(253,156,65,0.9)'
-            }, {
-              offset: 1,
-              color: 'rgba(249,109,0,0.9)'
-            }])
-          },
-          emphasis: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-              offset: 0,
-              color: 'rgba(255,231,25,0.9)'
-            }, {
-              offset: 1,
-              color: 'rgba(250,182,0,0.9)'
-            }])
+            barBorderRadius: [10, 10, 10, 10],
+            color: 'rgba(0,0,0,0.05)'
+          }
+        },
+        barGap: '-100%',
+        barCategoryGap: '40%',
+        data: dataShadow,
+        animation: false
+      },
+      {
+        type: 'bar',
+        itemStyle: {
+          normal: {
+            barBorderRadius: [10, 10, 10, 10],
+            color: '#FFD021'
           }
         },
         data: barData

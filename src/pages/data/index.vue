@@ -85,7 +85,7 @@
 
 <style lang="scss" scoped>
   .data-container {
-    margin: 30px auto;
+    margin: 40px auto;
     width: 1366px;
     min-width: 1019px;
     color: #222;

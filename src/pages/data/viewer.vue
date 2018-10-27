@@ -276,18 +276,18 @@
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
   .viewer {
-    .data-pad{
+    .data-pad {
       padding-bottom: 10px;
     }
-    .item-container{
+    .item-container {
       border: none;
-      .item-box:first-child{
+      .item-box:first-child {
         border-bottom: solid 1px #e2e2e2;
       }
     }
-    .chart-container{
-      .chart-box{
-        .title{
+    .chart-container {
+      .chart-box {
+        .title {
           text-align: center;
         }
       }
