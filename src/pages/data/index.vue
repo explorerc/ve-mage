@@ -41,7 +41,6 @@
       })
     },
     created () {
-      debugger
       this.activeId = this.$route.params.id
       const linkName = this.$route.name
       if (linkName === 'preview') {
@@ -86,9 +85,6 @@
 
 <style lang="scss" scoped>
   .data-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 6px;
     margin: 30px auto;
     width: 1366px;
     min-width: 1019px;

@@ -18,7 +18,7 @@ const LINE_COLORS = ['rgba(254,201,25,1)', 'rgba(255,132,23,1)', 'rgba(99,200,24
 const lineColor = '#e2e2e2'
 const grid = {
   left: '2%',
-  right: 0,
+  right: 30,
   bottom: '1%',
   top: 20
 }
@@ -127,6 +127,12 @@ export function barPile (id, data, gridData) {
           type: 'dashed'
         }
       },
+      axisLabel: {
+        textStyle: {
+          color: '#333',
+          fontSize: 12
+        }
+      },
       data: yAxisData
     },
     series: serveData
@@ -140,9 +146,10 @@ export function barPile (id, data, gridData) {
  * 折线图
  * @returns {Promise<Response>}
  */
-export function lines (id, data) {
+export function lines (id, data, colorParam, gridData) {
   let legendData = []
   let serveData = []
+  let tempColors = colorParam || LINE_COLORS
   data.datas.forEach((item, idx) => {
     legendData.push(item.name)
     let areaStyle = null
@@ -151,9 +158,8 @@ export function lines (id, data) {
         normal: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1,
             [
-              {offset: 0, color: LINE_COLORS[idx]},
-              {offset: 0.7, color: LINE_COLORS[idx].replace('1)', '0.3)')},
-              {offset: 1, color: 'rgba(255,255,255,0)'}
+              {offset: 0, color: tempColors[idx]},
+              {offset: 1, color: tempColors[idx].replace('1)', '0.3)')}
             ]
           )
         }
@@ -184,11 +190,13 @@ export function lines (id, data) {
     },
     grid: {
       ...grid,
+      ...gridData,
       containLabel: true
     },
-    color: LINE_COLORS,
+    color: tempColors,
     xAxis: {
       ...AxisCategory,
+      boundaryGap: false,
       axisTick: {
         show: true,
         alignWithLabel: true
@@ -241,9 +249,11 @@ export function pie (id, data) {
       textStyle: {
         fontSize: 12
       },
-      formatter: '{b}：{d}%'
+      formatter: (item) => {
+        return `${item.name}<br/>${item.value}(${item.percent})`
+      }
     },
-    color: ['#4f81bd', '#c0504d', '#9bbb59', '#8064a2'],
+    color: ['#40C5FF', '#FEC400', '#FF8419', '#5189EE', '#666666', '#E2E2E2', '#b6a2de', '#2ec7c9', '#5ab1ef', '#ffb980'],
     series: {
       name: '所占比例',
       type: 'pie',
@@ -263,6 +273,64 @@ export function pie (id, data) {
       },
       data: data
     }
+  }
+  let myChart = echarts.init(document.getElementById(id))
+  myChart.setOption(option)
+  return myChart
+}
+
+/***
+ * 饼图
+ * @returns {Promise<Response>}
+ */
+export function pieOne (id, percent) {
+  let option = {
+    series: [
+      {
+        type: 'pie',
+        hoverOffset: 5,
+        radius: ['78%', '90%'],
+        label: {
+          normal: {
+            position: 'center'
+          }
+        },
+        avoidLabelOverlap: false,
+        data: [
+          {
+            value: percent,
+            itemStyle: {
+              normal: {
+                color: '#f7c331',
+                borderColor: '#fff',
+                borderWidth: 1
+              }
+            },
+            label: {
+              normal: {
+                formatter: '{d}',
+                textStyle: {
+                  fontSize: 30
+                }
+              }
+            }
+          },
+          {
+            value: (100 - percent),
+            tooltip: {
+              show: false
+            },
+            itemStyle: {
+              normal: {
+                borderColor: '#fff',
+                borderWidth: 1,
+                color: '#e2e2e2'
+              }
+            }
+          }
+        ]
+      }
+    ]
   }
   let myChart = echarts.init(document.getElementById(id))
   myChart.setOption(option)
