@@ -178,64 +178,7 @@
               <com-tabs :value.sync="tabValue">
                 <com-tab label="用户足迹"
                         :index="1">
-                  <div class="v-footprints">
-                    <div class="v-footprint">
-                      <i class="iconfont icon-duigou1">
-                      </i>
-                      <i class="v-border"></i>
-                      <p class="v-time">
-                        2018-07-07 18:16:35
-                      </p>
-                      <p class="v-content">
-                        参加了活动 2018年云溪大会杭州分会场
-                        <button @click="showRecord()">
-                          查看详情
-                        </button>
-                      </p>
-                    </div>
-                    <div class="v-footprint">
-                      <i class="iconfont icon-duigou1">
-                      </i>
-                      <i class="v-border"></i>
-                      <p class="v-time">
-                        2018-07-07 18:16:35
-                      </p>
-                      <p class="v-content">
-                        参加了活动 2018年云溪大会杭州分会场
-                        <button @click="showRecord()">
-                          查看详情
-                        </button>
-                      </p>
-                    </div>
-                    <div class="v-footprint">
-                      <i class="iconfont icon-duigou1">
-                      </i>
-                      <i class="v-border"></i>
-                      <p class="v-time">
-                        2018-07-07 18:16:35
-                      </p>
-                      <p class="v-content">
-                        参加了活动 2018年云溪大会杭州分会场
-                        <button @click="showRecord()">
-                          查看详情
-                        </button>
-                      </p>
-                    </div>
-                    <div class="v-footprint">
-                      <i class="iconfont icon-duigou1">
-                      </i>
-                      <i class="v-border"></i>
-                      <p class="v-time">
-                        2018-07-07 18:16:35
-                      </p>
-                      <p class="v-content">
-                        参加了活动 2018年云溪大会杭州分会场
-                        <button @click="showRecord()">
-                          查看详情
-                        </button>
-                      </p>
-                    </div>
-                  </div>
+                  <com-footprints></com-footprints>
                 </com-tab>
                 <com-tab label="报名/问卷信息"
                         :index="2">
@@ -248,85 +191,17 @@
         </div>
       </div>
     </div>
-    <message-box v-show="recordBoxShow"
-                 @handleClick="recordBoxClick"
-                 width="450px"
-                 class="message-box v-record"
-                 confirmText="确定"
-                 type='prompt'
-                 header='行为记录'>
-      <div>
-        <p class="v-explain">
-          百度人工智能大会发布芯片
-        </p>
-        <p class="v-time">
-          2018-07-07 09:30:00
-        </p>
-        <div class="v-steps">
-          <div class="v-step">
-            <div class="v-content">
-              <i class="iconfont icon-duigou1">
-              </i>
-              <i class="v-border"></i>
-              <p class="v-content-time">
-                2017-07-07 09:30:05
-              </p>
-              <p class="v-content-title">
-                进入活动官网
-              </p>
-            </div>
-          </div>
-          <div class="v-step">
-            <div class="v-content">
-              <i class="iconfont icon-duigou1">
-              </i>
-              <i class="v-border"></i>
-              <p class="v-content-time">
-                2017-07-07 09:30:05
-              </p>
-              <p class="v-content-title">
-                进入活动官网
-              </p>
-            </div>
-          </div>
-          <div class="v-step">
-            <div class="v-content">
-              <i class="iconfont icon-duigou1">
-              </i>
-              <i class="v-border"></i>
-              <p class="v-content-time">
-                2017-07-07 09:30:05
-              </p>
-              <p class="v-content-title">
-                进入活动官网
-              </p>
-            </div>
-          </div>
-          <div class="v-step">
-            <div class="v-content">
-              <i class="iconfont icon-duigou1">
-              </i>
-              <i class="v-border"></i>
-              <p class="v-content-time">
-                2017-07-07 09:30:05
-              </p>
-              <p class="v-content-title">
-                进入活动官网
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </message-box>
   </div>
 </template>
 
 <script>
 import comSelect from '../components/com-select'
+import comFootprints from '../components/com-footprints'
 import singleInput from '../components/single-input'
 import dateSelect from '../components/date-select'
 import citySelect from '../components/city-select'
 import infoList from '../components/info-list'
+import userService from 'src/api/user-service'
 export default {
   data () {
     return {
@@ -375,16 +250,19 @@ export default {
           }]
         }]
       }],
-      tabValue: 1,
-      recordBoxShow: false // 行为记录框显示隐藏
+      tabValue: 1
     }
   },
   components: {
     'com-select': comSelect,
+    'com-footprints': comFootprints,
     'date-select': dateSelect,
     'single-input': singleInput,
     'city-select': citySelect,
     'info-list': infoList
+  },
+  created () {
+    this.getCustomerDetail()
   },
   methods: {
     saveInfo (val, type) {
@@ -401,17 +279,37 @@ export default {
     showRecord () {
       this.recordBoxShow = true
     },
-    recordBoxClick (e) {
-      if (e.action === 'cancel') {
-        this.recordBoxShow = false
-      }
+    getCustomerDetail () {
+      this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_DETAIL, {
+        business_consumer_uid: this.$route.params.id
+      }).then((res) => {
+        this.info = res.data
+        let arr = this.info.userLevel
+        let _this = this
+        arr.forEach(element => {
+          _this.uersInfo[arr.indexOf(element)].val = element
+          _this.uersInfo[arr.indexOf(element)].centage = Math.round(element / _this.info.total)
+        })
+        console.log(_this.uersInfo)
+      }).catch(err => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
-.pond-page {
+.pond-page /deep/ {
   border-radius: 5px;
   overflow: hidden;
   padding-bottom: 30px;

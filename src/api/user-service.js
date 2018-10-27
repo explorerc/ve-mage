@@ -14,5 +14,9 @@ export default {
   POST_BACK_PASSWORD: '/user/business-user/update-password-by-code-token',
   GET_INDUSTRIES: '/common/user/industry-list',
   GET_CODE: '/common/message/send-code',
-  GET_CAPTCHA_ID: '/common/message/get-captchaid'
+  GET_CAPTCHA_ID: '/common/message/get-captchaid',
+  GET_CUSTOMER_OVERVIEW: '/user/customer/overview', // 用户总览
+  GET_CUSTOMER_DETAIL: '/user/customer/detail', // 用户详情
+  GET_SURVER_LIST: '/user/customer/survey-list', // 用户详情报名/问卷列表
+  GET_BEHAVIOR_LIST: '/user/customer/behavior-list' // 用户详情足迹/行为列表
 }

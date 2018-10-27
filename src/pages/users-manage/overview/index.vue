@@ -8,7 +8,7 @@
       <ol class="clearfix">
         <li>
           <p class="v-data">
-            23837
+            {{info.total}}
           </p>
           <p class="v-title">
             用户总数
@@ -16,42 +16,42 @@
         </li>
         <li>
           <p class="v-data">
-            837
+            {{uersInfo[1].val}}
           </p>
           <p class="v-title">
-            优质用户 (14%)
+            优质用户 ({{uersInfo[1].centage}}%)
           </p>
         </li>
         <li>
           <p class="v-data">
-            1250
+            {{uersInfo[2].val}}
           </p>
           <p class="v-title">
-            高价值用户 (12%)
+            高价值用户 ({{uersInfo[2].centage}}%)
           </p>
         </li>
         <li>
           <p class="v-data">
-            3246
+            {{uersInfo[3].val}}
           </p>
           <p class="v-title">
-            潜力用户 (9%)
+            一般用户 ({{uersInfo[3].centage}}%)
           </p>
         </li>
         <li>
           <p class="v-data">
-            5983
+            {{uersInfo[4].val}}
           </p>
           <p class="v-title">
-            一般用户 (15%)
+            潜在用户 ({{uersInfo[4].centage}}%)
           </p>
         </li>
         <li>
           <p class="v-data">
-            10247
+            {{uersInfo[5].val}}
           </p>
           <p class="v-title">
-            流失用户 (60%)
+            流失用户 ({{uersInfo[5].centage}}%)
           </p>
         </li>
       </ol>
@@ -111,11 +111,14 @@
     </div>
   </div>
 </template>
-
 <script>
+import userService from 'src/api/user-service'
 export default {
   data () {
     return {
+      info: {
+      },
+      uersInfo: [{ val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }],
       tableList: [{
         title: '666',
         startTime: '2018-08-25',
@@ -130,6 +133,29 @@ export default {
         status: '265'
       }]
     }
+  },
+  created () {
+    this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
+      this.info = res.data
+      let arr = this.info.userLevel
+      let _this = this
+      arr.forEach(element => {
+        _this.uersInfo[arr.indexOf(element)].val = element
+        _this.uersInfo[arr.indexOf(element)].centage = Math.round(element / _this.info.total)
+      })
+      console.log(_this.uersInfo)
+    }).catch(err => {
+      this.$messageBox({
+        header: '提示',
+        content: err.msg,
+        confirmText: '确定',
+        handleClick: (e) => {
+          if (e.action === 'cancel') {
+          } else if (e.action === 'confirm') {
+          }
+        }
+      })
+    })
   }
 }
 </script>

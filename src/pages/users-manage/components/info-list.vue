@@ -15,18 +15,18 @@
           操作
         </div>
       </li>
-      <li class="clearfix" v-for="itemData in tableList" :key="itemData.id">
+      <li class="clearfix" v-for="itemData in tableList" :key="itemData.behavior_id">
         <div class="v-activity-content v-name">
-          {{itemData.title}}
+          {{itemData.activity_name}}
         </div>
         <div class="v-activity-content v-time">
-          {{itemData.startTime}}
+          {{itemData.generated_at}}
         </div>
         <div class="v-activity-content v-type">
-          {{itemData.status}}
+          {{itemData.type}}
         </div>
         <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/'+itemData.id">查看</a>
+          <a :href="PUBLIC_PATH+'subscribe/'+itemData.behavior_id">查看</a>
         </div>
       </li>
     </ol>
@@ -44,7 +44,7 @@
 <script>
 import { MessageBox } from 'components/common/message-box'
 import VePagination from 'src/components/ve-pagination'
-import activityService from 'src/api/activity-service'
+import userService from 'src/api/user-service'
 export default {
   components: { VePagination },
   data () {
@@ -52,9 +52,9 @@ export default {
       tableList: [],
       PUBLIC_PATH: process.env.PUBLIC_PATH,
       searchParams: {
+        business_consumer_uid: 0,
         page: 1,
-        pageSize: 9,
-        totalPage: 0
+        page_size: 9
       },
       total: 0,
       pageSize: 9
@@ -69,7 +69,8 @@ export default {
   },
   methods: {
     getDataList () {
-      this.$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
+      this.searchParams.business_consumer_uid = this.$route.params.id
+      this.$get(userService.GET_SURVER_LIST, this.searchParams).then((res) => {
         if (res.code === 200) { // 已报名弹框
           res.data.list.map((item, indx) => {
             if (item.imgUrl) {
@@ -82,7 +83,6 @@ export default {
           this.tableList = res.data.list
           this.total = res.data.total
           this.searchParams.page = parseInt(res.data.currPage)
-          this.searchParams.totalPage = res.data.totalPage
         } else { // 未报名提示
           MessageBox({
             header: '提示',
