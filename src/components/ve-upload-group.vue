@@ -56,7 +56,7 @@
 
   export default {
     name: 've-upload-group',
-    components: {ComUpload},
+    components: { ComUpload },
     data () {
       return {
         fileName: '', // 文件名称
