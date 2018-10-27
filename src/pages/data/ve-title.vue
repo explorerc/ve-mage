@@ -29,6 +29,7 @@
     position: relative;
     display: inline-block;
     user-select: none;
+    font-size: 14px;
     .ve-tip-box{
       position: relative;
       display: inline-block;
@@ -39,9 +40,9 @@
       text-align: left;
       i{
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
         text-align: center;
         border: solid 1px rgba(85,85,85,1);;
         border-radius: 50%;
