@@ -63,16 +63,28 @@ export default {
   mounted () {
     switch (this.name) {
       case '活动':
+        if (this.list.length) {
+          this.activelistData = this.list
+        } else {
+          this.queryActList()
+        }
         this.dataList = this.activelistData
-        this.queryActList()
         break
       case '标签':
+        if (this.list.length) {
+          this.tagListData = this.list
+        } else {
+          this.queryTaglist()
+        }
         this.dataList = this.tagListData
-        this.queryTaglist()
         break
       case '固定群组':
+        if (this.list.length) {
+          this.groupListData = this.list
+        } else {
+          this.queryGrouplist()
+        }
         this.dataList = this.groupListData
-        this.queryGrouplist()
         break
     }
   },
@@ -82,6 +94,12 @@ export default {
     // }
   },
   props: {
+    list: { // 传进来的数据 没有会自动请求替换
+      type: Array,
+      default () {
+        return []
+      }
+    },
     checkedData: { // 已选中的组别ID
       type: Object,
       default () {
@@ -156,7 +174,7 @@ export default {
     queryGrouplist (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
         keyword: this.searchVal,
-        type: '1'
+        type: '2'
       }).then((res) => {
         res.data.list.forEach(item => {
           this.groupListData.push({

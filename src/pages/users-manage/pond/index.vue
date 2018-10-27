@@ -660,7 +660,7 @@ export default {
           this.$messageBox({
             header: '提示',
             width: '400px',
-            content: '是否确定删除该用户？',
+            content: '删除用户后将无法恢复,是否确定删除该用户？',
             cancelText: '否',
             confirmText: '是',
             handleClick: (e) => {
