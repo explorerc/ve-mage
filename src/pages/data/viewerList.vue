@@ -10,7 +10,9 @@
                    :maxLength="30"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入姓名/手机号/邮箱"></com-input>
-        <span class="data-link" style="font-size: 14px;" @click="isHigh=true">高级筛选</span>
+        <span class="data-link" style="font-size: 14px;margin-left: 6px;" @click="isHigh=!isHigh">高级筛选
+        <i :class="{'iconfont':true, 'icon-Up':true, 'icon-down':!isHigh}"></i>
+        </span>
       </div>
     </div>
     <div v-if="isHigh" class="data-pad">
@@ -412,6 +414,15 @@
       .search-title {
         margin-right: 5px;
         font-size: 14px;
+      }
+      .iconfont {
+        display: inline-block;
+        font-size: 12px;
+        color: #2878FF;
+        transition: transform .2s;
+        &.icon-down {
+          transform: rotate(180deg);
+        }
       }
     }
     .search-btns {

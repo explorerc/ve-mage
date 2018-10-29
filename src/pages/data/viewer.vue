@@ -113,15 +113,24 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { pie, barRadius } from 'src/utils/chart-tool'
+  import {pie, barRadius} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
     name: 'viewer',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
-        basicUserData: {}
+        basicUserData: {
+          viewerCount: 0,
+          oldUser: 0,
+          newUser: 0,
+          highUser: 0,
+          vipUser: 0,
+          ordinaryUser: 0,
+          potentialUser: 0,
+          lossUser: 0
+        }
       }
     },
     created () {
@@ -136,86 +145,97 @@
         // 地域
         this.areaCountChart()
         // 基础数据
-        let basicUserData = await this.basicCount()
-        this.basicUserData = basicUserData
+        await this.basicCount()
         // 观众比例
         this.viewerRate()
       },
       viewerRate () {
-        let res = {
-          code: 200,
-          msg: null,
-          data: {
-            viewer: [
-              { type: 0, 'name': '新观众', value: 10 },
-              { type: 1, 'name': '老观众', value: 20 }
-            ],
-            device: [
-              { type: 0, 'name': '电脑端', value: 10 },
-              { type: 1, 'name': '移动端', value: 20 }
-            ],
-            system: [
-              { type: 0, 'name': 'Windows', value: 10 },
-              { type: 1, 'name': 'Mac', value: 20 },
-              { type: 1, 'name': 'IOS', value: 20 },
-              { type: 1, 'name': 'Android', value: 20 },
-              { type: 1, 'name': 'Other', value: 20 }
-            ],
-            browser: [
-              { type: 0, 'name': 'Safari电脑版', value: 10 },
-              { type: 1, 'name': 'Chrome电脑版', value: 20 },
-              { type: 1, 'name': 'UC移动版', value: 20 },
-              { type: 1, 'name': '微信', value: 20 },
-              { type: 1, 'name': 'QQ', value: 20 },
-              { type: 1, 'name': 'Other', value: 20 }
-            ],
-            gender: [
-              { type: 0, 'name': '男士', value: 10 },
-              { type: 1, 'name': '女士', value: 20 },
-              { type: 1, 'name': '未知', value: 20 }
-            ]
+        // let res = {
+        //   code: 200,
+        //   msg: null,
+        //   data: {
+        //     viewer: [
+        //       {type: 0, 'name': '新观众', value: 10},
+        //       {type: 1, 'name': '老观众', value: 20}
+        //     ],
+        //     device: [
+        //       {type: 0, 'name': '电脑端', value: 10},
+        //       {type: 1, 'name': '移动端', value: 20}
+        //     ],
+        //     system: [
+        //       {type: 0, 'name': 'Windows', value: 10},
+        //       {type: 1, 'name': 'Mac', value: 20},
+        //       {type: 1, 'name': 'IOS', value: 20},
+        //       {type: 1, 'name': 'Android', value: 20},
+        //       {type: 1, 'name': 'Other', value: 20}
+        //     ],
+        //     browser: [
+        //       {type: 0, 'name': 'Safari电脑版', value: 10},
+        //       {type: 1, 'name': 'Chrome电脑版', value: 20},
+        //       {type: 1, 'name': 'UC移动版', value: 20},
+        //       {type: 1, 'name': '微信', value: 20},
+        //       {type: 1, 'name': 'QQ', value: 20},
+        //       {type: 1, 'name': 'Other', value: 20}
+        //     ],
+        //     gender: [
+        //       {type: 0, 'name': '男士', value: 10},
+        //       {type: 1, 'name': '女士', value: 20},
+        //       {type: 1, 'name': '未知', value: 20}
+        //     ]
+        //   }
+        // }
+        return this.$get(dataService.GET_VIEWER_ROAT, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200) {
+            this.$nextTick(() => {
+              // 新老观众占比
+              pie('chart01', res.data.viewer)
+              // 设备占比
+              pie('chart03', res.data.device)
+              // 操作系统占比
+              pie('chart04', res.data.system)
+              // 浏览器占比
+              pie('chart05', res.data.browser)
+              // 性别占比
+              pie('chart06', res.data.gender)
+            })
           }
-        }
-        this.$nextTick(() => {
-          // 新老观众占比
-          pie('chart01', res.data.viewer)
-          // 各级别用户占比
-          pie('chart02', [
-            { name: '观众总数', value: this.basicUserData.viewerCount },
-            { name: '老用户', value: this.basicUserData.oldUser },
-            { name: '新用户', value: this.basicUserData.newUser },
-            { name: '优质用户', value: this.basicUserData.highUser },
-            { name: '高价值用户', value: this.basicUserData.vipUser },
-            { name: '一般用户', value: this.basicUserData.ordinaryUser },
-            { name: '潜在用户', value: this.basicUserData.potentialUser },
-            { name: '流失用户', value: this.basicUserData.lossUser }
-          ])
-          // 设备占比
-          pie('chart03', res.data.device)
-          // 操作系统占比
-          pie('chart04', res.data.system)
-          // 浏览器占比
-          pie('chart05', res.data.browser)
-          // 性别占比
-          pie('chart06', res.data.gender)
         })
       },
       basicCount () {
-        let res = {
-          code: 200,
-          msg: null,
-          data: {
-            'viewerCount': 12221,
-            'oldUser': 5305,
-            'newUser': 2561,
-            'highUser': 2561,
-            'vipUser': 2561,
-            'ordinaryUser': 2561,
-            'potentialUser': 2561,
-            'lossUser': 2561
+        // let res = {
+        //   code: 200,
+        //   msg: null,
+        //   data: {
+        //     'viewerCount': 12221,
+        //     'oldUser': 5305,
+        //     'newUser': 2561,
+        //     'highUser': 2561,
+        //     'vipUser': 2561,
+        //     'ordinaryUser': 2561,
+        //     'potentialUser': 2561,
+        //     'lossUser': 2561
+        //   }
+        // }
+        return this.$get(dataService.GET_VIEWER_BASE, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200) {
+            this.basicUserData = res.data
+            // 各级别用户占比
+            pie('chart02', [
+              {name: '观众总数', value: this.basicUserData.viewerCount},
+              {name: '老用户', value: this.basicUserData.oldUser},
+              {name: '新用户', value: this.basicUserData.newUser},
+              {name: '优质用户', value: this.basicUserData.highUser},
+              {name: '高价值用户', value: this.basicUserData.vipUser},
+              {name: '一般用户', value: this.basicUserData.ordinaryUser},
+              {name: '潜在用户', value: this.basicUserData.potentialUser},
+              {name: '流失用户', value: this.basicUserData.lossUser}
+            ])
           }
-        }
-        return res.data
+        })
       },
       areaCountChart () {
         // let res = {
