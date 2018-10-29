@@ -349,123 +349,36 @@
         })
       },
       renderChart () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'sourceList': [
-              {
-                'source': 4,
-                'sourceName': '活动官网',
-                'value': 14359
-              },
-              {
-                'source': 5,
-                'sourceName': '活动引导页',
-                'value': 18044
-              },
-              {
-                'source': 6,
-                'sourceName': '预约直播',
-                'value': 17847
-              },
-              {
-                'source': 7,
-                'sourceName': '直播观看页',
-                'value': 8024
-              }
-            ],
-            'sourceLinks': [
-              {
-                'source': 4,
-                'sourceName': '活动官网',
-                'target': 5,
-                'targetName': '活动引导页',
-                'value': 8392
-              },
-              {
-                'source': 4,
-                'sourceName': '活动官网',
-                'target': 6,
-                'targetName': '预约直播',
-                'value': 7685
-              },
-              {
-                'source': 4,
-                'sourceName': '活动官网',
-                'target': 7,
-                'targetName': '直播观看页',
-                'value': 4415
-              },
-              {
-                'source': 5,
-                'sourceName': '活动引导页',
-                'target': 7,
-                'targetName': '直播观看页',
-                'value': 3609
-              },
-              {
-                'source': 7,
-                'sourceName': '直播观看页',
-                'target': 6,
-                'targetName': '预约直播',
-                'value': 2474
-              }
-            ]
+        this.$get(dataService.GET_PREVIEW_USER_TRIP, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.data.sourceList && res.data.sourceList.length > 0) {
+            let keyDatas = []
+            let links = []
+            res.data.sourceList.forEach((item) => {
+              keyDatas.push({
+                name: item.source + '',
+                showName: item.sourceName,
+                value: item.value
+              })
+            })
+            res.data.sourceLinks.forEach((item) => {
+              links.push({
+                source: item.source + '',
+                sourceName: item.sourceName,
+                target: item.target + '',
+                targetName: item.targetName,
+                value: item.value
+              })
+            })
+            this.$nextTick(() => {
+              sankey('myChart', {
+                data: keyDatas,
+                links: links
+              })
+            })
           }
-        }
-        let keyDatas = []
-        let links = []
-        res.data.sourceList.forEach((item) => {
-          keyDatas.push({
-            name: item.source + '',
-            showName: item.sourceName,
-            value: item.value
-          })
         })
-        res.data.sourceLinks.forEach((item) => {
-          links.push({
-            source: item.source + '',
-            sourceName: item.sourceName,
-            target: item.target + '',
-            targetName: item.targetName,
-            value: item.value
-          })
-        })
-        this.$nextTick(() => {
-          sankey('myChart', {
-            data: keyDatas,
-            links: links
-          })
-        })
-        // this.$get(dataService.GET_PREVIEW_USER_TRIP, {
-        //   activityId: this.activityId
-        // }).then((res) => {
-        //   let keyDatas = []
-        //   let links = []
-        //   res.data.sourceList.forEach((item) => {
-        //     keyDatas.push({
-        //       name: item.source + '',
-        //       showName: item.sourceName,
-        //       value: item.value
-        //     })
-        //   })
-        //   res.data.sourceLinks.forEach((item) => {
-        //     links.push({
-        //       source: item.source + '',
-        //       sourceName: item.sourceName,
-        //       target: item.target + '',
-        //       targetName: item.targetName,
-        //       value: item.value
-        //     })
-        //   })
-        //   this.$nextTick(() => {
-        //     sankey('myChart', {
-        //       data: keyDatas,
-        //       links: links
-        //     })
-        //   })
-        // })
       }
     }
   }
