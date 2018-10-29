@@ -106,23 +106,42 @@
             </div>
             <div class="item-mid">{{leadPageData.times}}</div>
           </div>
-          <div class="box fl" style="width: 20%;">
+          <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
               <ve-title width="130px" title="预约人数" tip="直播开始前预约活动的人数"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.subscribe}}</div>
           </div>
-          <div class="box fl" style="width: 20%;">
+          <div class="box fl" style="width: 20%;" v-else>
+            <div class="item-title">
+              <ve-title width="130px" title="报名人数" tip="报名活动的总人数"></ve-title>
+            </div>
+            <div class="item-mid">{{leadPageData.signUp}}</div>
+          </div>
+          <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
               <ve-title width="130px" title="实到人数" tip="预约活动的人数中实际参加活动的人数"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.actual}}</div>
           </div>
-          <div class="box fl" style="width: 20%;">
+          <div class="box fl" style="width: 20%;" v-else>
+            <div class="item-title">
+              <ve-title width="130px" title="开播前报名人数" tip="在直播开始前进行报名的人数"></ve-title>
+            </div>
+            <div class="item-mid">{{leadPageData.beforeSignUp}}</div>
+          </div>
+          <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
               <ve-title width="130px" title="预约参会率" tip="本次直播的预约参会率"></ve-title>
             </div>
-            <div class="item-mid">{{(leadPageData.actual*100/leadPageData.subscribe).toFixed(2)}}%</div>
+            <div class="item-mid" v-if="leadPageData.subscribe">{{(leadPageData.actual*100/leadPageData.subscribe).toFixed(2)}}%</div>
+            <div class="item-mid" v-else>0%</div>
+          </div>
+          <div class="box fl" style="width: 20%;" v-else>
+            <div class="item-title">
+              <ve-title width="130px" title="开播后报名人数" tip="在直播开始后进行报名的人数"></ve-title>
+            </div>
+            <div class="item-mid">{{leadPageData.afterSignUp}}</div>
           </div>
         </div>
       </div>
@@ -143,7 +162,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {barPile, lines, random} from 'src/utils/chart-tool'
+  import {barPile, lines} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
@@ -162,7 +181,15 @@
         pageLinkDatas: {},
         spreadChannelData: {},
         officialChannelData: {},
-        leadPageData: {},
+        leadPageData: {
+          isSubscribe: 'NONE',
+          nums: 0,
+          times: 0,
+          subscribe: 0,
+          actual: 0,
+          beforeSignUp: 0,
+          afterSignUp: 0
+        },
         activityId: 0
       }
     },
@@ -197,18 +224,27 @@
         })
       },
       leadPage () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'nums': random(0, 90000),
-            'times': random(0, 90000),
-            'signUp': random(0, 90000),
-            'subscribe': random(0, 90000),
-            'actual': random(0, 90000)
+        // let res = {
+        //   'code': 200,
+        //   'msg': null,
+        //   'data': {
+        //     isSubscribe: 'none',
+        //     nums: random(0, 90000),
+        //     times: random(0, 90000),
+        //     subscribe: random(0, 90000),
+        //     actual: random(0, 90000),
+        //     signUp: random(0, 90000),
+        //     beforeSignUp: random(0, 90000),
+        //     afterSignUp: random(0, 90000)
+        //   }
+        // }
+        this.$get(dataService.GET_SPREAD_GUIDE_COUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200) {
+            this.leadPageData = res.data
           }
-        }
-        this.leadPageData = res.data
+        })
       },
       renderChart () {
         // 推广效果
