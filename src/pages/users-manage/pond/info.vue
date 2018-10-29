@@ -291,7 +291,7 @@ export default {
       this.recordBoxShow = true
     },
     getCustomerDetail () {
-      this.$config({handlers: true}).$get(userService.GET_CUSTOMER_DETAIL, {
+      this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_DETAIL, {
         business_consumer_uid: this.$route.params.id
       }).then((res) => {
         this.user = res.data

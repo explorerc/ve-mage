@@ -173,8 +173,8 @@ export function lines (id, data, colorParam, gridData) {
         normal: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1,
             [
-              {offset: 0, color: tempColors[idx]},
-              {offset: 1, color: tempColors[idx].replace('1)', '0.3)')}
+              { offset: 0, color: tempColors[idx] },
+              { offset: 1, color: tempColors[idx].replace('1)', '0.3)') }
             ]
           )
         }
@@ -611,10 +611,10 @@ export function barAndLine (id, data, gridData) {
     },
     toolbox: {
       feature: {
-        dataView: {show: true, readOnly: false},
-        magicType: {show: true, type: ['line', 'bar']},
-        restore: {show: true},
-        saveAsImage: {show: true}
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
       }
     },
     legend: {

@@ -198,7 +198,7 @@
 
   export default {
     name: 'viewerList',
-    components: {VePagination},
+    components: { VePagination },
     data () {
       return {
         isHigh: false,
@@ -227,53 +227,53 @@
           userType: ''
         },
         genderList: [
-          {value: '', label: '全部'},
-          {value: '1', label: '男'},
-          {value: '2', label: '女'}
+          { value: '', label: '全部' },
+          { value: '1', label: '男' },
+          { value: '2', label: '女' }
         ],
         watcherTypeList: [
-          {value: '', label: '全部用户'},
-          {value: 1, label: '优质用户'},
-          {value: 2, label: '潜在用户'},
-          {value: 3, label: '一般用户'},
-          {value: 4, label: '高价值用户'},
-          {value: 5, label: '流失用户'}
+          { value: '', label: '全部用户' },
+          { value: 1, label: '优质用户' },
+          { value: 2, label: '潜在用户' },
+          { value: 3, label: '一般用户' },
+          { value: 4, label: '高价值用户' },
+          { value: 5, label: '流失用户' }
         ],
         provinceList: [
-          {value: '', label: '省'},
-          {value: '1', label: '北京'},
-          {value: '2', label: '河南省'},
-          {value: '3', label: '河北省'},
-          {value: '4', label: '黑龙江'},
-          {value: '5', label: '湖北'}
+          { value: '', label: '省' },
+          { value: '1', label: '北京' },
+          { value: '2', label: '河南省' },
+          { value: '3', label: '河北省' },
+          { value: '4', label: '黑龙江' },
+          { value: '5', label: '湖北' }
         ],
         cityList: [
-          {value: '', label: '市'},
-          {value: '1', label: '北京市'},
-          {value: '2', label: '郑州市'},
-          {value: '3', label: '天津市'}
+          { value: '', label: '市' },
+          { value: '1', label: '北京市' },
+          { value: '2', label: '郑州市' },
+          { value: '3', label: '天津市' }
         ],
         tradeList: [
-          {value: '', label: '全部'},
-          {value: '1', label: '导入'},
-          {value: '2', label: '微信注册'},
-          {value: '3', label: 'PC注册'}
+          { value: '', label: '全部' },
+          { value: '1', label: '导入' },
+          { value: '2', label: '微信注册' },
+          { value: '3', label: 'PC注册' }
         ],
         deviceList: [
-          {value: '', label: '全部'},
-          {value: 'pc', label: '电脑'},
-          {value: 'phone', label: '手机'}
+          { value: '', label: '全部' },
+          { value: 'pc', label: '电脑' },
+          { value: 'phone', label: '手机' }
         ],
         scoreTypeList: [
-          {value: '', label: '全部'},
-          {value: 'big', label: '大于'},
-          {value: 'small', label: '小于'},
-          {value: 'equal', label: '等于'}
+          { value: '', label: '全部' },
+          { value: 'big', label: '大于' },
+          { value: 'small', label: '小于' },
+          { value: 'equal', label: '等于' }
         ],
         userTypeList: [
-          {value: '', label: '全部'},
-          {value: 'new', label: '新用户'},
-          {value: 'old', label: '老用户'}
+          { value: '', label: '全部' },
+          { value: 'new', label: '新用户' },
+          { value: 'old', label: '老用户' }
         ]
       }
     },

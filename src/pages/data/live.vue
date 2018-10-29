@@ -49,7 +49,7 @@
           <div class="chart-box" style="width: 100%;">
             <p class="title">观众趋势图（PV、UV）
               <span class="chart-menu">
-             <nav-menu :menus="['小时', '天']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
+             <nav-menu :menus="['直播', '回放']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
           </span></p>
             <div class="chart-item" id="chart01" style="height: 360px;"></div>
           </div>
@@ -497,7 +497,20 @@
           }
         },
         watchType: 0,
-        watcherLineData: {},
+        watcherLineData: {
+          live: {
+            xAxis: [],
+            pv: [],
+            uv: [],
+            ip: []
+          },
+          playback: {
+            xAxis: [],
+            pv: [],
+            uv: [],
+            ip: []
+          }
+        },
         preDataDetail: false, // 预约
         chatDataDetail: false, // 聊天
         prizeDataDetail: false, // 抽奖
@@ -600,7 +613,7 @@
         })
       },
       watcherCountData () {
-        if (this.watcherLineData.days) return
+        if (this.watcherLineData.live) return
         // let res = {
         //   'code': 200,
         //   'msg': null,
@@ -627,11 +640,11 @@
             this.$nextTick(() => {
               // 观众趋势图（PV、UV）
               lines('chart01', {
-                xAxisData: this.watcherLineData.hours.xAxis,
+                xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
-                  {name: '浏览次数', data: this.watcherLineData.hours.pv},
-                  {name: '独立访问', data: this.watcherLineData.hours.uv},
-                  {name: 'IP', data: this.watcherLineData.hours.ip}
+                  {name: '浏览次数', data: this.watcherLineData.live.pv},
+                  {name: '独立访问', data: this.watcherLineData.live.uv},
+                  {name: 'IP', data: this.watcherLineData.live.ip}
                 ]
               })
             })
@@ -780,7 +793,7 @@
       changeMenu (val) {
         if (this.watchType === val) return
         this.watchType = val
-        const typeAttr = this.watchType ? 'days' : 'hours'
+        const typeAttr = this.watchType ? 'live' : 'playback'
         if (!this.watcherLineData[typeAttr]) return
         lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,

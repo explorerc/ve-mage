@@ -42,11 +42,11 @@
   </div>
 </template>
 <script>
-import {MessageBox} from 'components/common/message-box'
+import { MessageBox } from 'components/common/message-box'
 import VePagination from 'src/components/ve-pagination'
 import userService from 'src/api/user-service'
 export default {
-  components: {VePagination},
+  components: { VePagination },
   data () {
     return {
       tableList: [],

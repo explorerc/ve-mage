@@ -56,7 +56,7 @@ import ComUpload from 'src/components/common/upload/com'
 
 export default {
   name: 've-upload-group',
-  components: {ComUpload},
+  components: { ComUpload },
   data () {
     return {
       fileName: '', // 文件名称

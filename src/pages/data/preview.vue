@@ -319,10 +319,12 @@
         this.$get(dataService.GET_PREVIEW_COUNT, {
           activityId: this.activityId
         }).then((res) => {
-          this.vhallRateData = res.data
-          this.$nextTick(() => {
-            pieOne('chartVallId', this.vhallRateData.value)
-          })
+          if (res.code === 200) {
+            this.vhallRateData = res.data
+            this.$nextTick(() => {
+              pieOne('chartVallId', this.vhallRateData.value)
+            })
+          }
         })
       },
       activityScore () {
