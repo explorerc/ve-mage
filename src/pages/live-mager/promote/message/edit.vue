@@ -237,10 +237,10 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
+      personList: [{id: '', name: '', count: 0, isChecked: false}],
       tagList: [],
       selectedTagList: [],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
       selectedPersonListStr: '',
       selectedTagListStr: '',
       selectPersonShow: false,
@@ -310,7 +310,7 @@ export default {
         })
         // 跳转到列表页面
         this.canPass = true
-        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
+        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
       })
     },
     test () {

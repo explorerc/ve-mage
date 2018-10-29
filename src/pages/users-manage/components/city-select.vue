@@ -19,8 +19,8 @@
   </div>
 </template>
 <script>
-import { questionnaireCitys } from '../../../assets/js/citys.js'
-import { questionnaireProvinces } from '../../../assets/js/provinces.js'
+import {questionnaireCitys} from '../../../assets/js/citys.js'
+import {questionnaireProvinces} from '../../../assets/js/provinces.js'
 export default {
   data () {
     return {
@@ -42,9 +42,9 @@ export default {
     let _provinces = questionnaireProvinces
     this.areas = []
     _provinces.forEach((item) => {
-      let area = { value: item.id, label: item.name, children: [] }
+      let area = {value: item.id, label: item.name, children: []}
       let temp = _citys.find((item) => item.pid === area.value)
-      let _province = { value: temp.id, label: temp.name, pid: temp.pid }
+      let _province = {value: temp.id, label: temp.name, pid: temp.pid}
       area.children.push(_province)
       this.areas.push(area)
     })

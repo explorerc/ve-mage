@@ -118,7 +118,7 @@ export default {
     return {
       info: {
       },
-      uersInfo: [{ val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }],
+      uersInfo: [{val: 0, centage: 0}, {val: 0, centage: 0}, {val: 0, centage: 0}, {val: 0, centage: 0}, {val: 0, centage: 0}, {val: 0, centage: 0}],
       tableList: [{
         title: '666',
         startTime: '2018-08-25',
@@ -135,7 +135,7 @@ export default {
     }
   },
   created () {
-    this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
+    this.$config({handlers: true}).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
       let _this = this

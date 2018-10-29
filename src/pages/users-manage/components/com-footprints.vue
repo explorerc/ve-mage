@@ -162,7 +162,7 @@ export default {
     },
     getDataList () {
       this.searchParams.business_consumer_uid = this.$route.params.id
-      this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchParams).then((res) => {
+      this.$config({handlers: true}).$get(userService.GET_BEHAVIOR_LIST, this.searchParams).then((res) => {
         this.dataList = res.data
         this.total = res.data.total
         this.searchParams.page = parseInt(res.data.currPage) + 1

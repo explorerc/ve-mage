@@ -1095,7 +1095,7 @@ export default {
         })
     },
     getGroup () {
-      this.$post(groupService.ALL_GROUPS, { type: '2,3' })
+      this.$post(groupService.ALL_GROUPS, {type: '2,3'})
         .then(res => {
           console.log(res)
           res.data.list.forEach((item) => {

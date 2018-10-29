@@ -72,7 +72,7 @@ import comImport from '../users-manage/components/com-import'
 
 export default {
   name: 'group-details',
-  components: { VePagination, comImport, comAddgroup },
+  components: {VePagination, comImport, comAddgroup},
   created () {
     this.onSearch()
     this.getGroupDetail()
@@ -184,7 +184,7 @@ export default {
       }
     },
     getGroupDetail () {
-      this.$post(groupService.GROUP_DETAIL, { group_id: this.search.group_id })
+      this.$post(groupService.GROUP_DETAIL, {group_id: this.search.group_id})
         .then((res) => {
           this.group_title = res.data.title
         })
