@@ -232,11 +232,11 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import {sankey, pieOne} from 'src/utils/chart-tool'
+  import { sankey, pieOne } from 'src/utils/chart-tool'
 
   export default {
     name: 'preview',
-    components: {VeTitle, VeCircle},
+    components: { VeTitle, VeCircle },
     data () {
       return {
         activityId: '',
