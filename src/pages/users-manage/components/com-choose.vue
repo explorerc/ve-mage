@@ -8,7 +8,7 @@
       </div>
       <div class="content">
         <div class="search-box">
-          <input class='inp' v-model="searchVal" @keyup.enter='search' :placeholder="`输入${name}名称`"></input>
+          <input class='inp' v-model="searchVal" @keyup.enter='search' :placeholder="`输入${name}名称`" />
         </div>
         <el-checkbox-group v-model="restoreData.id" :max="max" :class='"data-list"'>
           <span class='loading' v-if="dataList.length <=0 ">加载中...</span>
