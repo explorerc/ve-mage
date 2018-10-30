@@ -134,7 +134,9 @@
             <div class="item-title">
               <ve-title width="130px" title="预约参会率" tip="本次直播的预约参会率"></ve-title>
             </div>
-            <div class="item-mid" v-if="leadPageData.subscribe">{{(leadPageData.actual*100/leadPageData.subscribe).toFixed(2)}}%</div>
+            <div class="item-mid" v-if="leadPageData.subscribe">
+              {{(leadPageData.actual*100/leadPageData.subscribe).toFixed(2)}}%
+            </div>
             <div class="item-mid" v-else>0%</div>
           </div>
           <div class="box fl" style="width: 20%;" v-else>
@@ -193,11 +195,56 @@
         activityId: 0
       }
     },
+    beforeDestroy () {
+      window.callbackResize = null
+      if (this.effectChart) { // 推广效果
+        this.effectChart.dispose()
+      }
+      if (this.emailChart) { // 邮件活跃度
+        this.emailChart.dispose()
+      }
+      if (this.weChatChart) { // 微信活跃度
+        this.weChatChart.dispose()
+      }
+      if (this.smsChart) { // 短信活跃度
+        this.smsChart.dispose()
+      }
+      if (this.webChart) { // 活动官网--页面访问趋势图
+        this.webChart.dispose()
+      }
+      if (this.linkChart) { // 直播引导页--页面访问趋势图
+        this.linkChart.dispose()
+      }
+    },
     mounted () {
       this.activityId = this.$route.params.id
       this.initPage()
+      window.callbackResize = () => {
+        // 重新绘制
+        this.resizeRenderChart()
+      }
     },
     methods: {
+      resizeRenderChart () {
+        if (this.effectChart) { // 推广效果
+          this.effectChart.resize()
+        }
+        if (this.emailChart) { // 邮件活跃度
+          this.emailChart.resize()
+        }
+        if (this.weChatChart) { // 微信活跃度
+          this.weChatChart.resize()
+        }
+        if (this.smsChart) { // 短信活跃度
+          this.smsChart.resize()
+        }
+        if (this.webChart) { // 活动官网--页面访问趋势图
+          this.webChart.resize()
+        }
+        if (this.linkChart) { // 直播引导页--页面访问趋势图
+          this.linkChart.resize()
+        }
+      },
       initPage () {
         // 推广渠道--统计数据
         this.spreadChannel()
@@ -224,20 +271,6 @@
         })
       },
       leadPage () {
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     isSubscribe: 'none',
-        //     nums: random(0, 90000),
-        //     times: random(0, 90000),
-        //     subscribe: random(0, 90000),
-        //     actual: random(0, 90000),
-        //     signUp: random(0, 90000),
-        //     beforeSignUp: random(0, 90000),
-        //     afterSignUp: random(0, 90000)
-        //   }
-        // }
         this.$get(dataService.GET_SPREAD_GUIDE_COUNT, {
           activityId: this.activityId
         }).then((res) => {
@@ -256,54 +289,6 @@
         // 直播引导页--页面访问趋势图
         this.pageLinkChart()
       },
-      // changeEmailMenu (val) {
-      //   if (this.emailType === val) return
-      //   this.emailType = val
-      //   const typeAttr = this.emailType ? 'months' : 'days'
-      //   lines('chart02', {
-      //     xAxisData: this.ratioDataList.email[typeAttr].xAxis,
-      //     datas: [
-      //       {name: '活跃人数', data: this.ratioDataList.email[typeAttr].nums},
-      //       {name: '活跃次数', data: this.ratioDataList.email[typeAttr].times}
-      //     ]
-      //   })
-      // },
-      // changeWeChatMenu (val) {
-      //   if (this.weChatType === val) return
-      //   this.weChatType = val
-      //   const typeAttr = this.weChatType ? 'months' : 'days'
-      //   lines('chart03', {
-      //     xAxisData: this.ratioDataList.weChat[typeAttr].xAxis,
-      //     datas: [
-      //       {name: '活跃人数', data: this.ratioDataList.weChat[typeAttr].nums},
-      //       {name: '活跃次数', data: this.ratioDataList.weChat[typeAttr].times}
-      //     ]
-      //   })
-      // },
-      // changeSmsMenu (val) {
-      //   if (this.smsType === val) return
-      //   this.smsType = val
-      //   const typeAttr = this.smsType ? 'months' : 'days'
-      //   lines('chart04', {
-      //     xAxisData: this.ratioDataList.sms[typeAttr].xAxis,
-      //     datas: [
-      //       {name: '活跃人数', data: this.ratioDataList.sms[typeAttr].nums},
-      //       {name: '活跃次数', data: this.ratioDataList.sms[typeAttr].times}
-      //     ]
-      //   })
-      // },
-      // changeWebMenu (val) {
-      //   if (this.webwiteType === val) return
-      //   this.webwiteType = val
-      //   const typeAttr = this.webwiteType ? 'months' : 'days'
-      //   lines('chart05', {
-      //     xAxisData: this.webwiteDatas[typeAttr].xAxis,
-      //     datas: [
-      //       {name: 'UV', data: this.webwiteDatas[typeAttr].nums},
-      //       {name: 'PV', data: this.webwiteDatas[typeAttr].times}
-      //     ]
-      //   })
-      // },
       changePageLinkMenu (val) {
         if (this.pageLinkType === val) return
         this.pageLinkType = val
@@ -319,7 +304,7 @@
         }).then((res) => {
           this.speadDatas = res.data
           /* 绘制堆叠图 */
-          barPile('chart01', {
+          this.effectChart = barPile('chart01', {
             legendData: this.speadDatas.types,
             list: this.speadDatas.list
           }, {
@@ -336,21 +321,21 @@
         }).then((res) => {
           let ratioDataList = res.data
           /* 邮件活跃 */
-          lines('chart02', {
+          this.emailChart = lines('chart02', {
             xAxisData: ratioDataList.email.xAxis,
             datas: [
               { name: '活跃人数', data: ratioDataList.email.nums }
             ]
           }, ['rgba(77,132,255,1)'])
           /* 微信活跃 */
-          lines('chart03', {
+          this.weChatChart = lines('chart03', {
             xAxisData: ratioDataList.weChat.xAxis,
             datas: [
               { name: '活跃人数', data: ratioDataList.weChat.nums }
             ]
           }, ['rgba(253,133,25,1)'])
           /* 短信活跃 */
-          lines('chart04', {
+          this.smsChart = lines('chart04', {
             xAxisData: ratioDataList.sms.xAxis,
             datas: [
               { name: '活跃人数', data: ratioDataList.sms.nums }
@@ -363,7 +348,7 @@
           activityId: this.activityId
         }).then((res) => {
           // this.webwiteDatas = res.data
-          lines('chart05', {
+          this.webChart = lines('chart05', {
             xAxisData: res.data.xAxis,
             datas: [
               { name: 'UV', data: res.data.nums },
@@ -375,29 +360,6 @@
         })
       },
       pageLinkChart () {
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     xAxis: ['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04', '2018-01-05', '2018-01-06'],
-        //     email: {
-        //       nums: [random(0, 95), random(0, 95), random(0, 95), random(0, 95), random(0, 95), random(0, 95)],
-        //       times: [random(), random(), random(), random(), random(), random()]
-        //     },
-        //     sms: {
-        //       nums: [random(), random(), random(), random(), random(), random()],
-        //       times: [random(), random(), random(), random(), random(), random()]
-        //     },
-        //     weChat: {
-        //       nums: [random(), random(), random(), random(), random(), random()],
-        //       times: [random(), random(), random(), random(), random(), random()]
-        //     },
-        //     other: {
-        //       nums: [random(), random(), random(), random(), random(), random()],
-        //       times: [random(), random(), random(), random(), random(), random()]
-        //     }
-        //   }
-        // }
         this.$get(dataService.GET_SPREAD_GUIDE_TREND, {
           activityId: this.activityId
         }).then((res) => {
@@ -419,7 +381,7 @@
           pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums })
           pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times })
           this.pageLinkDatas = pageLinkDatas
-          lines('chart06', {
+          this.linkChart = lines('chart06', {
             xAxisData: this.pageLinkDatas.xAxisData,
             datas: this.pageLinkDatas.lineObj.pv
           }, null, {

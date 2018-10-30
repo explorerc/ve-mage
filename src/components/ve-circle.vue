@@ -78,13 +78,14 @@
       bottom: 10%;
       width: 200px;
       color: #fff;
-      background-color: rgba(10, 10, 10, .8);
+      background-color: rgba(10, 10, 10, .6);
       padding: 4px 10px;
       border-radius: 4px;
       font-size: 12px;
       opacity: 0;
       transition: opacity .3s;
       box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+      line-height: 20px;
       z-index: 3;
     }
     &:hover {

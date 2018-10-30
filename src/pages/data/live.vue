@@ -1,7 +1,7 @@
 <template>
   <div class="data-box spread">
     <div class="data-pad">
-      <p class="title">基础数据</p>
+      <p class="title">观看数据</p>
       <div class="item-container clearfix">
         <div class="item-box fl">
           <div class="box fl" style="width: 33.33333%;">
@@ -47,7 +47,8 @@
       <div class="chart-box">
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;">
-            <p class="title">观众趋势图（PV、UV）
+            <p class="title">
+              <ve-title width="200px" title="观众访问趋势图" tip="查看直播和回放过程中，观众人数随时间变化的趋势图"></ve-title>
               <span class="chart-menu">
              <nav-menu :menus="['直播', '回放']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
           </span></p>
@@ -56,11 +57,15 @@
         </div>
         <div class="chart-container">
           <div class="chart-box" style="width: 50%;">
-            <p class="title">直播观众时长分布图</p>
+            <p class="title">
+              <ve-title width="200px" title="观看时长与观众分布图" tip="查看直播过程中，不同观看时段的观众数量"></ve-title>
+            </p>
             <div class="chart-item" id="chart02" style="height: 360px;"></div>
           </div>
           <div class="chart-box" style="width: 50%;">
-            <p class="title">观看回放时段</p>
+            <p class="title">
+              <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图"></ve-title>
+            </p>
             <div class="chart-item" id="chart03" style="height: 360px;"></div>
           </div>
         </div>
@@ -188,7 +193,9 @@
       <div class="chart-box">
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;">
-            <p class="title">互动工具参与趋势图（PV、UV）</p>
+            <p class="title">
+              <ve-title width="200px" title="互动工具参与趋势图" tip="查看直播中主持人使用互动工具的情况以及观众的参与情况"></ve-title>
+            </p>
             <div class="chart-item" id="chart04" style="height: 400px;"></div>
           </div>
         </div>
@@ -529,16 +536,49 @@
         redBagDataList: []
       }
     },
+    beforeDestroy () {
+      window.callbackResize = null
+      if (this.watcherChart) { // 观众趋势图
+        this.watcherChart.dispose()
+      }
+      if (this.timeLongChart) { // 观众时长分布图
+        this.timeLongChart.dispose()
+      }
+      if (this.playBackTimeChart) { // 观看回放时段
+        this.playBackTimeChart.dispose()
+      }
+      if (this.hdChart) { // 互动工具参与趋势图（PV、UV）
+        this.hdChart.dispose()
+      }
+    },
     mounted () {
       this.activityId = this.$route.params.id
       this.$nextTick(() => {
         this.initPage()
       })
+      window.callbackResize = () => {
+        // 重新绘制
+        this.resizeRenderChart()
+      }
     },
     methods: {
       ...mapMutations('dataCenter', {
         storeSelectMenu: types.DATA_SELECT_MENU
       }),
+      resizeRenderChart () {
+        if (this.watcherChart) { // 观众趋势图
+          this.watcherChart.resize()
+        }
+        if (this.timeLongChart) { // 观众时长分布图
+          this.timeLongChart.resize()
+        }
+        if (this.playBackTimeChart) { // 观看回放时段
+          this.playBackTimeChart.resize()
+        }
+        if (this.hdChart) { // 互动工具参与趋势图（PV、UV）
+          this.hdChart.resize()
+        }
+      },
       goPage (url) {
         this.$router.push(`${url}/${this.$route.params.id}`)
         this.storeSelectMenu(3)
@@ -558,52 +598,6 @@
         this.hdTrendChart()
       },
       interactCount () {
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     signUp: random(),
-        //     subscribe: random(),
-        //     chat: {
-        //       nums: random(),
-        //       msg: random()
-        //     },
-        //     share: {
-        //       invite: random(),
-        //       effective: random()
-        //     },
-        //     prize: {
-        //       join: random(),
-        //       win: random()
-        //     },
-        //     pager: {
-        //       push: 3,
-        //       receive: 6023
-        //     },
-        //     answer: {
-        //       push: 8,
-        //       join: 6023,
-        //       win: 23
-        //     },
-        //     card: {
-        //       push: 8,
-        //       browse: 6023,
-        //       click: 23
-        //     },
-        //     goods: {
-        //       shelf: 7,
-        //       total: 20,
-        //       push: 10,
-        //       browse: 6023,
-        //       click: 23
-        //     },
-        //     redBag: {
-        //       join: random(),
-        //       receive: random(),
-        //       money: random()
-        //     }
-        //   }
-        // }
         this.$get(dataService.GET_LIVE_VIEWER_HD, {
           activityId: this.activityId
         }).then((res) => {
@@ -613,25 +607,6 @@
         })
       },
       watcherCountData () {
-        if (this.watcherLineData.live) return
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     'days': {
-        //       xAxis: ['2018-01-01', '2018-01-02', '2018-01-03', '2018-01-04', '2018-01-05'],
-        //       pv: [random(20, 100), random(20, 100), random(20, 100), 36, 40, 50],
-        //       uv: [random(20, 100), 20, random(20, 100), 36, 40, 50],
-        //       ip: [random(20, 100), 20, random(20, 100), 36, 40, 50]
-        //     },
-        //     'hours': {
-        //       xAxis: ['12:00', '13:00', '14:00', '15:00', '16:00'],
-        //       pv: [random(20, 100), 20, random(20, 100), 36, 40, 50],
-        //       uv: [random(20, 100), 20, random(20, 100), 36, 40, 50],
-        //       ip: [random(20, 100), 20, random(20, 100), 36, 40, 50]
-        //     }
-        //   }
-        // }
         this.$get(dataService.GET_LIVE_VIEWER, {
           activityId: this.activityId
         }).then((res) => {
@@ -639,7 +614,7 @@
             this.watcherLineData = res.data
             this.$nextTick(() => {
               // 观众趋势图（PV、UV）
-              lines('chart01', {
+              this.watcherChart = lines('chart01', {
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
                   { name: '浏览次数', data: this.watcherLineData.live.pv },
@@ -658,29 +633,6 @@
           this.basicCountData = res.data
         })
       },
-      // goPreDataDetail () {
-      //   this.preDataDetail = true
-      //   this.preDataList = [
-      //     {
-      //       'userId': 10000,
-      //       'name': '刘德华1',
-      //       'phone': '18577362273',
-      //       'enterDate': '2018-10-17 10:10',
-      //       'leaveDate': '2018-10-17 10:10',
-      //       'preDate': '2018-10-17 10:10',
-      //       'joinDate': '2018-10-17 10:10'
-      //     },
-      //     {
-      //       'userId': 10001,
-      //       'name': '刘德华2',
-      //       'phone': '18577362273',
-      //       'enterDate': '2018-10-17 10:10',
-      //       'leaveDate': '2018-10-17 10:10',
-      //       'preDate': '2018-10-17 10:10',
-      //       'joinDate': '2018-10-17 10:10'
-      //     }
-      //   ]
-      // },
       goChatDataDetail () {
         this.chatDataDetail = true
         this.chatDataList = [
@@ -688,31 +640,6 @@
           { 'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...' }
         ]
       },
-      // goPrizeDataDetail () {
-      //   this.prizeDataDetail = true
-      //   this.prizeDataList = [
-      //     {
-      //       'prizeId': 10000,
-      //       'name': '电饭锅',
-      //       'count': 50,
-      //       'openDate': '2018-10-17 10:10',
-      //       'joinType': 1,
-      //       'joinTypeName': '口令',
-      //       'online': 56975,
-      //       'joinCount': 46859
-      //     },
-      //     {
-      //       'prizeId': 10001,
-      //       'name': '电饼铛',
-      //       'count': 50,
-      //       'openDate': '2018-10-17 10:10',
-      //       'joinType': 1,
-      //       'joinTypeName': '口令',
-      //       'online': 56975,
-      //       'joinCount': 46859
-      //     }
-      //   ]
-      // },
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
@@ -720,33 +647,6 @@
           { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
         ]
       },
-      // goAnswerDataDetail () {
-      //   this.answerDataDetail = true
-      //   this.answerDataList = [
-      //     {
-      //       'answerId': 10000,
-      //       'title': '你最喜欢的艺术家',
-      //       'preMoney': 50,
-      //       'preCount': '222',
-      //       'joinCount': 1,
-      //       'correntCount': '123',
-      //       'costMoney': 56975,
-      //       'winCount': 46859,
-      //       'successRate': 50
-      //     },
-      //     {
-      //       'answerId': 10001,
-      //       'title': '特朗普...',
-      //       'preMoney': 50,
-      //       'preCount': '222',
-      //       'joinCount': 1,
-      //       'correntCount': '123',
-      //       'costMoney': 56975,
-      //       'winCount': 46859,
-      //       'successRate': 50
-      //     }
-      //   ]
-      // },
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
@@ -795,7 +695,7 @@
         this.watchType = val
         const typeAttr = this.watchType ? 'live' : 'playback'
         if (!this.watcherLineData[typeAttr]) return
-        lines('chart01', {
+        this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
             { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
@@ -805,39 +705,12 @@
         })
       },
       liveTimeLengthChart () {
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     'list': [
-        //       {
-        //         'name': '1%-10%',
-        //         'value': Math.round(Math.random() * 100)
-        //       }, {
-        //         'name': '10%-20%',
-        //         'value': Math.round(Math.random() * 100)
-        //       }, {
-        //         'name': '2%-30%',
-        //         'value': Math.round(Math.random() * 100)
-        //       }, {
-        //         'name': '30%-50%',
-        //         'value': Math.round(Math.random() * 100)
-        //       }, {
-        //         'name': '50%-70%',
-        //         'value': Math.round(Math.random() * 100)
-        //       }, {
-        //         'name': '70%以上',
-        //         'value': Math.round(Math.random() * 100)
-        //       }
-        //     ]
-        //   }
-        // }
         this.$get(dataService.GET_LIVE_DURATION, {
           activityId: this.activityId
         }).then((res) => {
           if (!res.data.list) return
           // 直播观众时长分布图
-          bars('chart02', res.data.list, {
+          this.timeLongChart = bars('chart02', res.data.list, {
             left: 48,
             right: 20,
             top: 20,
@@ -846,38 +719,6 @@
         })
       },
       playBackTimeScatter () {
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     'list': [
-        //       {week: random(0, 6), time: '零点', value: random(1, 100)},
-        //       {week: random(0, 6), time: '1点', value: random(1, 100)},
-        //       {week: random(0, 6), time: '2点', value: random(1, 100)},
-        //       {week: random(0, 6), time: '3点', value: random(1, 100)},
-        //       {week: random(0, 6), time: '4点', value: random(1, 100)},
-        //       {week: random(0, 6), time: 5, value: random(1, 100)},
-        //       {week: random(0, 6), time: 6, value: random(1, 10)},
-        //       {week: random(0, 6), time: 7, value: random(1, 10)},
-        //       {week: random(0, 6), time: 8, value: random(1, 100)},
-        //       {week: random(0, 6), time: 9, value: random(1, 100)},
-        //       {week: random(0, 6), time: 10, value: random(1, 10)},
-        //       {week: random(0, 6), time: 11, value: random(1, 10)},
-        //       {week: random(0, 6), time: 12, value: random(1, 100)},
-        //       {week: random(0, 6), time: 13, value: random(1, 10)},
-        //       {week: random(0, 6), time: 14, value: random(1, 100)},
-        //       {week: random(0, 6), time: 15, value: random(1, 100)},
-        //       {week: random(0, 6), time: 16, value: random(1, 100)},
-        //       {week: random(0, 6), time: 17, value: random(1, 100)},
-        //       {week: random(0, 6), time: 18, value: random(1, 10)},
-        //       {week: random(0, 6), time: 19, value: random(1, 10)},
-        //       {week: random(0, 6), time: 20, value: random(1, 100)},
-        //       {week: random(0, 6), time: 21, value: random(1, 10)},
-        //       {week: random(0, 6), time: 22, value: random(1, 100)},
-        //       {week: random(0, 6), time: 23, value: random(1, 10)}
-        //     ]
-        //   }
-        // }
         this.$get(dataService.GET_LIVE_VIEW_RECORD, {
           activityId: this.activityId
         }).then((res) => {
@@ -893,7 +734,7 @@
             xAxis: Array.from(new Set(xAxis)),
             data: sDatas
           }
-          scatter('chart03', serveDatas, {
+          this.playBackTimeChart = scatter('chart03', serveDatas, {
             left: 70,
             right: 10,
             top: 20,
@@ -902,32 +743,6 @@
         })
       },
       hdTrendChart () {
-        // let res = {
-        //   'code': 200,
-        //   'msg': null,
-        //   'data': {
-        //     'xAxis': ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15'],
-        //     'viewer': {
-        //       'name': '观众人数',
-        //       'dataList': [random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random()]
-        //     },
-        //     'interact': [
-        //       {
-        //         'name': '红包',
-        //         'dataList': [random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random()]
-        //       }, {
-        //         'name': '抽奖',
-        //         'dataList': [random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random()]
-        //       }, {
-        //         'name': '答题',
-        //         'dataList': [random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random()]
-        //       }, {
-        //         'name': '商品推荐',
-        //         'dataList': [random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random(), random()]
-        //       }
-        //     ]
-        //   }
-        // }
         this.$get(dataService.GET_LIVE_TOOL, {
           activityId: this.activityId
         }).then((res) => {
@@ -948,7 +763,7 @@
             list: serveDatas
           }
           // 互动工具参与趋势图（PV、UV）
-          barAndLine('chart04', chartDatas, {
+          this.hdChart = barAndLine('chart04', chartDatas, {
             left: 48,
             top: 20,
             bottom: 20
