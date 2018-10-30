@@ -613,7 +613,6 @@
         })
       },
       watcherCountData () {
-        if (this.watcherLineData.live) return
         // let res = {
         //   'code': 200,
         //   'msg': null,

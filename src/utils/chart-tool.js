@@ -327,7 +327,8 @@ export function pieOne (id, percent) {
               normal: {
                 formatter: '{d}',
                 textStyle: {
-                  fontSize: 30
+                  fontSize: 30,
+                  color: '#333'
                 }
               }
             }
@@ -474,14 +475,14 @@ export function bars (id, data, gridData) {
   data.forEach(item => {
     xAxisData.push(item.name)
     barData.push(item.value)
-    maxVal = maxVal > item.value ? maxVal : item.value
+    maxVal = maxVal > parseInt(item.value) ? maxVal : parseInt(item.value)
   })
   maxVal = intCount(maxVal)
   let dataShadow = []
   for (let i = 0; i < data.length; i++) {
     dataShadow.push(maxVal)
   }
-  let barWidth = data.length <= 5 ? '20' : '50%'
+  let barWidth = data.length <= 6 ? '30' : '50%'
   let option = {
     tooltip: {
       trigger: 'axis',
@@ -491,6 +492,9 @@ export function bars (id, data, gridData) {
       textStyle: {
         fontSize: 12
       }
+      // formatter: (item) => {
+      //   return `${item[1].name} : ${item[1].value}`
+      // }
     },
     label: {
       normal: {
@@ -550,7 +554,7 @@ export function bars (id, data, gridData) {
         type: 'bar',
         itemStyle: {
           normal: {
-            barBorderRadius: [10, 10, 10, 10],
+            barBorderRadius: [15, 15, 15, 15],
             color: 'rgba(0,0,0,0.05)'
           }
         },
@@ -565,7 +569,7 @@ export function bars (id, data, gridData) {
         barWidth: barWidth,
         itemStyle: {
           normal: {
-            barBorderRadius: [10, 10, 10, 10],
+            barBorderRadius: [15, 15, 15, 15],
             color: '#FFD021'
           }
         },
