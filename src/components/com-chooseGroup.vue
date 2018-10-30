@@ -161,6 +161,7 @@ export default {
       }).then((res) => {
         console.log(res)
         this.selectedCount = res.data.count
+        this.$emit('totalCount', this.selectedCount)
       })
     }
   },

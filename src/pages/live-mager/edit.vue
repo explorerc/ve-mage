@@ -51,15 +51,6 @@
                 <el-checkbox-button v-for="tag in sceneTag" :label="tag.id" :key="tag.id">{{tag.name}}</el-checkbox-button>
               </el-checkbox-group>
             </div>
-            <!-- <div class="tag-modal" v-show='showChooseTag'>
-              <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
-              </el-checkbox-group>
-            </div> -->
-            <!-- <div class="tag-modal" v-show='showChooseTag'>
-              <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
-                <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
-              </el-checkbox-group>
-            </div> -->
             <!-- <transition name='fade' mode='out-in' v-if="showChooseTag">
               <com-choose  @handleClick="handleClick" @selectComConfirm='selectTagConfirm' :list="tagList" :checkedData='tagArray'  :max='3' @searchHandler='searchHandler' :name="'标签'"></com-choose>
             </transition> -->
