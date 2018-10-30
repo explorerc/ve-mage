@@ -47,8 +47,14 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFixedOrIntel" width="30%" :before-close="handleCloseDialog">
       <div>
         <el-form :model="Group" :rules="rules" ref="Group">
-          <el-form-item prop="title">
-            <el-input @input="inpC(Group.title,1)" @blur="repeatTitle(Group.title)" :maxlength=10 v-model="Group.title"
+          <el-form-item prop="title" v-if="isAddOrEdit === 'add'">
+            <el-input @input="inpC(Group.title,1)" :maxlength=10 v-model="Group.title"
+                      placeholder="请输入群组名称">
+              <template slot="append">{{inpNameLen}}/10</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item v-else>
+            <el-input @input="inpC(Group.title,1)" :maxlength=10 v-model="Group.title"
                       placeholder="请输入群组名称">
               <template slot="append">{{inpNameLen}}/10</template>
             </el-input>
@@ -105,10 +111,21 @@
     },
     data () {
       let valiRepeatName = (rule, value, callback) => {
-        if (value && this.currCode !== 200) {
-          return callback(new Error('该群组名称已存在'))
-        }
-        if (!value) {
+        if (value) {
+          this.repeatTitle(value).then((res) => {
+            if (res.code !== 200) {
+              return callback(new Error('该群组名称已存在'))
+            } else {
+              callback()
+            }
+          }).catch((err) => {
+            if (err.code !== 200) {
+              return callback(new Error('该群组名称已存在'))
+            } else {
+              callback()
+            }
+          })
+        } else {
           return callback(new Error('群组名称不能为空'))
         }
       }
@@ -139,8 +156,7 @@
           describe: [
             { required: true, message: '群组描述不能为空', trigger: 'blur' }
           ]
-        },
-        currCode: 0
+        }
       }
     },
     methods: {
@@ -152,10 +168,7 @@
           })
       },
       repeatTitle (title) {
-        this.$post(groupService.VALI_TITLE, { title: title })
-          .then(res => {
-            this.currCode = res.code
-          })
+        return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, { title: title })
       },
       handleDetails (id, type) { // 详情
         this.$router.push(`/userManage/userGroupsDetails/${id}/${type}`)
