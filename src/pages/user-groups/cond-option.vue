@@ -57,18 +57,6 @@
           label: 'name'
         },
         outD: [
-          /* [
-            {
-              condition: 'eq',
-              key: 'common_browser',
-              value: 'Safari',
-            },
-            {
-              condition: 'gt',
-              key: 'invite_friends_count',
-              value: '5',
-            }
-          ], */
           [
             {
               condition: '',
