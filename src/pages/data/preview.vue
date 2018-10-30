@@ -221,7 +221,9 @@
     </div>
     <div class="data-pad">
       <div class="chart-box">
-        <p class="title">用户旅途</p>
+        <p class="title">
+          <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径"></ve-title>
+        </p>
         <div id="myChart" style="height: 500px;margin-bottom: 50px;"></div>
       </div>
     </div>
