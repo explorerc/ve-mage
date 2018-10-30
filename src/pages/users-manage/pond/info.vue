@@ -54,7 +54,7 @@
                     <span class="v-content">
                     {{user.email}}
                     </span>
-                    <i class="iconfont icon-duigou1"></i>
+                    <i class="iconfont icon-gengduo2" v-if="user.email_list.length > 0"></i>
                     <div class="v-emails" v-if="user.email_list.length > 0">
                       <div class="v-email" v-for="item in user.email_list" :key="item.consumer_email_id">
                         <span class="v-email-content">
@@ -103,18 +103,17 @@
               <div class="box4">
                 <p class="v-title">
                   所属群组
-                  <i class="iconfont icon-duigou1 fr"></i>
+                  <i class="iconfont icon-tianjia fr"></i>
                 </p>
                 <div class="v-groups clearfix">
-                  <span class="fl">
-                    世界互联网客户
-                  </span>
-                  <span class="fl">
-                    医疗客户
-                  </span>
-                  <span class="fl">
-                    全国物联网暨技术客户
-                  </span>
+                  <div class="v-item fl" v-for="item in user.group_list" :key="item.group_id">
+                    <span>
+                      {{item.title}}
+                    </span>
+                    <div class="v-description">
+                      {{item.describe}}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="box5">
@@ -122,15 +121,14 @@
                   所属标签
                 </p>
                 <div class="v-labels clearfix">
-                  <span class="fl">
-                    互联网
-                  </span>
-                  <span class="fl">
-                    医疗大会
-                  </span>
-                  <span class="fl">
-                    全国户
-                  </span>
+                  <div class="v-item fl" v-for="item in user.tag_list" :key="item.tag_id">
+                    <span>
+                      {{item.tag_name}}
+                    </span>
+                    <div class="v-description">
+                      {{item.describe}}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -164,7 +162,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    56
+                    {{watchTime}}
                   </p>
                   <p class="v-title">
                     累计观看 (分)
@@ -240,7 +238,27 @@ export default {
         join_count: '', // 参会次数
         last_visited_at: '', // 最近参会
         watch_live_time: '', // 观看直播时间
-        watch_replay_time: '' // 观看回放时间
+        watch_replay_time: '', // 观看回放时间
+        group_list: [{
+          group_id: '1',
+          business_uid: '1',
+          title: 'adfdas',
+          describe: 'fdafasfdasf'
+        }, {
+          group_id: '2',
+          business_uid: '1',
+          title: '666',
+          describe: '我是十个字我试试各自我是十个字我试试各自我是十个字我试试各自'
+        }], // 所属群组
+        tag_list: [{
+          tag_id: '1',
+          tag_name: 'adfdas',
+          describe: '我是十个字我试试各自我是十个字我试试各自我是十个字我试试各自'
+        }, {
+          tag_id: '2',
+          tag_name: 'sadfadsfdasf',
+          describe: 'jadsk'
+        }] // 标签
       }, // 用户信息
       selectValue: [{
         value: '黄金糕'
@@ -284,6 +302,11 @@ export default {
     'single-input': singleInput,
     'city-select': citySelect,
     'info-list': infoList
+  },
+  computed: {
+    watchTime () {
+      return parseInt(this.user.watch_live_time) + parseInt(this.user.watch_replay_time)
+    }
   },
   created () {
     this.getCustomerDetail()
@@ -344,7 +367,6 @@ export default {
 <style lang='scss' scoped>
 .pond-page /deep/ {
   border-radius: 5px;
-  overflow: hidden;
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
@@ -374,7 +396,7 @@ export default {
     // overflow: hidden;
     position: relative;
     .tt {
-      overflow: hidden;
+      overflow-y: hidden;
       position: relative;
     }
     .left {
@@ -554,6 +576,41 @@ export default {
         }
         .v-groups {
           width: 100%;
+          .v-item {
+            position: relative;
+            &:hover {
+              .v-description {
+                display: block;
+              }
+            }
+            .v-description {
+              position: absolute;
+              padding: 12px 13px;
+              width: 240px;
+              background-color: #313131;
+              box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+              border-radius: 4px;
+              z-index: 2;
+              font-size: 14px;
+              color: #fff;
+              bottom: 40px;
+              left: -15px;
+              display: none;
+              &::after {
+                display: block;
+                position: absolute;
+                content: '';
+                height: 0px;
+                width: 0px;
+                top: 22px;
+                left: 30px;
+                border-color: #313131 transparent transparent;
+                border-width: 5px 5px 5px;
+                border-style: solid;
+                position: relative;
+              }
+            }
+          }
           span {
             display: inline-block;
             padding: 5px 12px;
@@ -561,6 +618,7 @@ export default {
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
+            word-break: break-all;
             &:last-child {
               margin-right: 0;
             }
@@ -574,6 +632,41 @@ export default {
         }
         .v-labels {
           width: 100%;
+          .v-item {
+            position: relative;
+            &:hover {
+              .v-description {
+                display: block;
+              }
+            }
+            .v-description {
+              position: absolute;
+              padding: 12px 13px;
+              width: 240px;
+              background-color: #313131;
+              box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+              border-radius: 4px;
+              z-index: 2;
+              font-size: 14px;
+              color: #fff;
+              bottom: 40px;
+              left: -15px;
+              display: none;
+              &::after {
+                display: block;
+                position: absolute;
+                content: '';
+                height: 0px;
+                width: 0px;
+                top: 22px;
+                left: 30px;
+                border-color: #313131 transparent transparent;
+                border-width: 5px 5px 5px;
+                border-style: solid;
+                position: relative;
+              }
+            }
+          }
           span {
             display: inline-block;
             padding: 5px 12px;
@@ -581,6 +674,7 @@ export default {
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
+            word-break: break-all;
             &:last-child {
               margin-right: 0;
             }

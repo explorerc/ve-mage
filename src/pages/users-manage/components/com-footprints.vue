@@ -3,7 +3,7 @@
     <div class="v-footprints bscroll" ref="bscroll">
       <ol class="bscroll-container">
         <li class="v-footprint" v-for="itemData in dataList" :key="itemData.behavior_id">
-          <i class="iconfont icon-duigou1">
+          <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
           <p class="v-time">
@@ -17,7 +17,7 @@
           </p>
         </li>
         <li class="v-footprint">
-          <i class="iconfont icon-duigou1">
+          <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
           <p class="v-time">
@@ -51,7 +51,7 @@
             <ol class="bscroll-container">
               <li class="v-step" v-for="itemData in dataInfoList" :key="itemData.behavior_id">
                 <div class="v-content">
-                  <i class="iconfont icon-duigou1">
+                  <i class="iconfont icon-dian">
                   </i>
                   <i class="v-border"></i>
                   <p class="v-content-time">
@@ -64,7 +64,7 @@
               </li>
               <li class="v-step">
                 <div class="v-content">
-                  <i class="iconfont icon-duigou1">
+                  <i class="iconfont icon-dian">
                   </i>
                   <i class="v-border"></i>
                   <p class="v-content-time">
@@ -272,6 +272,13 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.v-footprints {
+  .v-footprint {
+    .iconfont {
+      color: #779fff;
+    }
+  }
+}
 .v-record /deep/ {
   .ve-message-box__container {
     max-height: 562px;
@@ -282,6 +289,9 @@ export default {
         width: 100%;
         overflow: hidden;
         height: calc(100%);
+        .iconfont {
+          color: #779fff;
+        }
       }
     }
   }
