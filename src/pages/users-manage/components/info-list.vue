@@ -15,35 +15,28 @@
           操作
         </div>
       </li>
-      <li class="clearfix" v-for="itemData in tableList" :key="itemData.behavior_id">
-        <div class="v-activity-content v-name">
-          {{itemData.activity_name}}
-        </div>
-        <div class="v-activity-content v-time">
-          {{itemData.generated_at}}
-        </div>
-        <div class="v-activity-content v-type">
-          {{itemData.type}}
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/'+itemData.behavior_id">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+      <template v-if="tableList.length > 0">
+        <li class="clearfix" v-for="itemData in tableList" :key="itemData.behavior_id">
+          <div class="v-activity-content v-name">
+            {{itemData.activity_name}}
+          </div>
+          <div class="v-activity-content v-time">
+            {{itemData.generated_at}}
+          </div>
+          <div class="v-activity-content v-type">
+            {{itemData.type}}
+          </div>
+          <div class="v-activity-content v-operation">
+            <a :href="PUBLIC_PATH+'subscribe/'+itemData.behavior_id">查看</a>
+          </div>
+        </li>
+      </template>
+      <li class="v-nodata" v-else>
+        <div>
+          暂无数据
         </div>
       </li>
-      <li class="clearfix">
+      <!-- <li class="clearfix">
         <div class="v-activity-content v-name">
           活动标题
         </div>
@@ -56,105 +49,7 @@
         <div class="v-activity-content v-operation">
           <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
         </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
-      <li class="clearfix">
-        <div class="v-activity-content v-name">
-          活动标题
-        </div>
-        <div class="v-activity-content v-time">
-          2018-07-24 12:24:23
-        </div>
-        <div class="v-activity-content v-type">
-          报名
-        </div>
-        <div class="v-activity-content v-operation">
-          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
-        </div>
-      </li>
+      </li> -->
     </ol>
     <div class="pagination-box">
       <div class="page-pagination"
@@ -266,6 +161,12 @@ export default {
       }
       &:hover {
         background-color: #f0f1fe;
+      }
+      &.v-nodata {
+        text-align: center;
+        &:hover {
+          background-color: #fff;
+        }
       }
       .v-activity-content {
         float: left;
