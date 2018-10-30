@@ -162,8 +162,6 @@ export default {
   },
   created () {
     this.initSdk()
-    this.queryGroupList()
-    this.queryTaglist()
     if (this.inviteId) {
       this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.inviteId
@@ -172,8 +170,13 @@ export default {
         this.sendSetting = res.data.status
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.wxContent = res.data.desc
+        setTimeout(() => {
+          this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        }, 500)
       })
     }
+    this.queryGroupList()
+    this.queryTaglist()
   },
   computed: {
     ...mapState('login', {
@@ -316,6 +319,34 @@ export default {
       this.selectedTagListStr = str.substring(0, str.length - 1)
       this.selectedTagList = arr
       this.tagIdStr = idStr
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.groupList[idx].isChecked = true
+            this.selectedGroupList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.tagList[idx].isChecked = true
+            this.selectedTagList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
     },
     /* 验证 */
     formValid () {

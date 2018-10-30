@@ -217,6 +217,9 @@ export default {
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
+        setTimeout(() => {
+          this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        }, 500)
       })
     }
   },
@@ -346,6 +349,34 @@ export default {
       this.selectedTagListStr = str.substring(0, str.length - 1)
       this.selectedTagList = arr
       this.tagIdStr = idStr
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.groupList[idx].isChecked = true
+            this.selectedGroupList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.tagList[idx].isChecked = true
+            this.selectedTagList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
     },
     /* 验证 */
     formValid () {
