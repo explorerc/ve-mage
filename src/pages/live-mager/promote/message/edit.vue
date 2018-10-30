@@ -24,6 +24,7 @@
             <div class="from-content">
               <el-button class='default-button select-receiver'
                          @click='selectPersonShow=true'>选择收信人</el-button>
+              <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
                                 tag="div"
@@ -32,7 +33,19 @@
                       v-for="(person,idx) in selectedPersonList"
                       :key="person.id">{{person.name}} ({{person.count}}人）
                   <i class="iconfont icon-shanchu"
-                     @click="delPerson(idx)"></i>
+                     @click="delGroupPerson(idx)"></i>
+                </span>
+              </transition-group>
+              <!-- 标签 -->
+              <transition-group name="list"
+                                class="edit-groups"
+                                tag="div"
+                                v-if="selectedTagList.length">
+                <span class="list-item"
+                      v-for="(tag,idx) in selectedTagList"
+                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
+                  <i class="iconfont icon-shanchu"
+                     @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
             </div>
@@ -111,11 +124,12 @@
                      @click="save" :disabled='saveDisabled'>保存</el-button>
         </div>
       </div>
+      <choose-group  :show="selectPersonShow" :personList="personList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter"></choose-group>
       <!-- 选择收件人 -->
-      <message-box v-if="selectPersonShow"
+      <!-- <message-box v-if="selectPersonShow"
                    width="740px"
                    type="prompt"
-                   header="选择观众组"
+                   header="选择接收组"
                    confirmText='确认'
                    class="select-person"
                    @handleClick="handleSelectPerson">
@@ -136,7 +150,7 @@
                          class="search-com"
                          :value.sync="searchPerson"
                          @keyup.native.enter="searchEnter"
-                         placeholder="输入直播名称"></com-input>
+                         placeholder="输入分组名称"></com-input>
             </div>
             <div class="select-person-box">
               <ul>
@@ -155,7 +169,7 @@
         </div>
         <div slot="bottom"
              class="select-bottom">
-          <span class="select-all fl">已选择{{selectedCount}}人：</span>
+          <span class="select-all fl">已选择{{selectedCount}}组：</span>
           <div class="select-list fl"
                :title="selectedPersonListStr">
             {{selectedPersonListStr}}
@@ -163,7 +177,7 @@
           <button class="primary-button"
                   @click="okSelectList">确定</button>
         </div>
-      </message-box>
+      </message-box> -->
     </div>
     <!-- 测试发送弹窗 -->
     <com-test v-if='testModal'
@@ -176,8 +190,9 @@
 </template>
 
 <script>
-// import createHttp from 'src/api/activity-manger'
+// import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
+import chooseGroup from 'src/components/com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
 export default {
@@ -223,10 +238,14 @@ export default {
       loading: false,
       searchPerson: '',
       personList: [{ id: '', name: '', count: 0, isChecked: false }],
+      tagList: [],
+      selectedTagList: [],
       selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
       selectedPersonListStr: '',
+      selectedTagListStr: '',
       selectPersonShow: false,
       selectedCount: 0,
+      checkedData: [],
       errorData: {
         titleError: '',
         msgError: '',
@@ -239,6 +258,8 @@ export default {
   },
   created () {
     this.queryPersonList()
+    this.queryTagList()
+    // this.queryGrouplist()
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.inviteId
@@ -307,33 +328,41 @@ export default {
       this.testModal = false
     },
     /* enter搜索 */
-    searchEnter () {
-      this.queryPersonList()
+    searchEnter (key, flag) {
+      if (flag === 'group') {
+        this.queryPersonList(key)
+      } else {
+        this.queryTagList(key)
+      }
+      // this.queryGrouplist()
     },
     /* 点击确定 */
     okSelectList () {
       this.selectPersonShow = false
     },
     /* 点击取消 */
-    handleSelectPerson (e) {
-      if (e.action === 'cancel') {
-        this.selectPersonShow = false
-      }
+    close () {
+      this.selectPersonShow = false
     },
-    /* 选中行 */
-    clickRow (idx) {
-      this.personList[idx].isChecked = !this.personList[idx].isChecked
-    },
-    /* 删除标签 */
-    delPerson (idx) {
+    // /* 选中行 */
+    // clickRow (idx) {
+    //   this.personList[idx].isChecked = !this.personList[idx].isChecked
+    // },
+    /* 删除分组 */
+    delGroupPerson (idx) {
       const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
       this.personList[delIdx].isChecked = false
     },
+    // 标签
+    delTagPerson (idx) {
+      const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
+      this.tagList[delIdx].isChecked = false
+    },
     /* 查询人员 */
-    queryPersonList () {
+    queryPersonList (key) {
       this.$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id,
-        name: this.searchPerson
+        name: key
       }).then((res) => {
         let temArray = []
         res.data.forEach((item) => {
@@ -345,6 +374,24 @@ export default {
           })
         })
         this.personList = temArray
+      })
+    },
+    /* 查询标签 */
+    queryTagList (key) {
+      this.$get(noticeService.GET_PERSON_LIST, {
+        activityId: this.$route.params.id,
+        name: key
+      }).then((res) => {
+        let temArray = []
+        res.data.forEach((item) => {
+          temArray.push({
+            id: item.id,
+            name: item.name,
+            count: 0,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
       })
     },
     /* 验证 */
@@ -403,11 +450,27 @@ export default {
         this.selectedPersonList = temArray
       },
       deep: true
+    },
+    tagList: {
+      handler (newArray) {
+        let temArray = []
+        let listStr = ''
+        newArray.forEach((item, idx) => {
+          if (!item.isChecked) return
+          temArray.push(item)
+          this.selectedCount += item.count
+          listStr += `${item.name} (${item.count}人）、`
+        })
+        this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
+        this.selectedTagList = temArray
+      },
+      deep: true
     }
   },
   components: {
     comTest,
-    comPhone
+    comPhone,
+    chooseGroup
   }
 }
 </script>

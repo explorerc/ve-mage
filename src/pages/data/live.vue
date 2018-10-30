@@ -49,7 +49,7 @@
           <div class="chart-box" style="width: 100%;">
             <p class="title">观众趋势图（PV、UV）
               <span class="chart-menu">
-             <nav-menu :menus="['小时', '天']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
+             <nav-menu :menus="['直播', '回放']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
           </span></p>
             <div class="chart-item" id="chart01" style="height: 360px;"></div>
           </div>
@@ -69,55 +69,70 @@
     <div class="data-pad">
       <p class="title">互动数据</p>
       <div class="item-container clearfix">
-        <div class="item-box hd-data-item fl">
-          <span class="hd-title">预约</span>
-          <div class="hd-data">
-            <span class="data-link" @click="goPreDataDetail">{{interactCountData.subscribe}}</span>
-            <span>预约人数</span>
-          </div>
-        </div>
-        <div class="item-box hd-data-item fr">
+        <!--<div class="item-box hd-data-item fl live-item live-item01">-->
+        <!--<span class="hd-title">预约</span>-->
+        <!--<div class="hd-data">-->
+        <!--<span class="data-link" @click="goPreDataDetail">{{interactCountData.subscribe}}</span>-->
+        <!--<span>预约人数</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="item-box hd-data-item fl live-item live-item01">
           <span class="hd-title">聊天</span>
-          <div class="hd-data">
+          <div class="hd-data" style="width: 50%;">
             <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.nums}}</span>
             <span>聊天人数</span>
           </div>
-          <div class="hd-data">
+          <div class="hd-data" style="width: 50%;">
             <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.msg}}</span>
             <span>消息数量</span>
           </div>
         </div>
-        <div class="item-box hd-data-item fl">
+        <div class="item-box hd-data-item fr live-item live-item02">
           <span class="hd-title">分享</span>
-          <div class="hd-data">
+          <div class="hd-data" style="width: 50%;">
             <span>{{interactCountData.share.effective}}</span>
             <span>有效分享</span>
           </div>
-          <div class="hd-data">
+          <div class="hd-data" style="width: 50%;">
             <span>{{interactCountData.share.invite}}</span>
             <span>邀请人数</span>
           </div>
         </div>
-        <div class="item-box hd-data-item fr">
-          <span class="hd-title">抽奖</span>
-          <div class="hd-data">
-            <span class="data-link" @click="goPrizeDataDetail">{{interactCountData.prize.win}}</span>
-            <span>中奖人数</span>
-          </div>
-          <div class="hd-data">
-            <span class="data-link" @click="goPrizeDataDetail">{{interactCountData.prize.join}}</span>
-            <span>参与人数</span>
-          </div>
-        </div>
-        <div class="item-box hd-data-item fl">
+        <!--<div class="item-box hd-data-item fr live-item live-item04">-->
+        <!--<span class="hd-title">抽奖</span>-->
+        <!--<div class="hd-data">-->
+        <!--<span class="data-link" @click="goPrizeDataDetail">{{interactCountData.prize.win}}</span>-->
+        <!--<span>中奖人数</span>-->
+        <!--</div>-->
+        <!--<div class="hd-data">-->
+        <!--<span class="data-link" @click="goPrizeDataDetail">{{interactCountData.prize.join}}</span>-->
+        <!--<span>参与人数</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="item-box hd-data-item fl live-item live-item03">
           <span class="hd-title">调查问卷</span>
-          <div class="hd-data">
+          <div class="hd-data" style="width: 50%;">
             <span class="data-link" @click="goPagerDataDetail">{{interactCountData.pager.push}}</span>
             <span>推送次数</span>
           </div>
-          <div class="hd-data">
+          <div class="hd-data" style="width: 50%;">
             <span class="data-link" @click="goPagerDataDetail">{{interactCountData.pager.receive}}</span>
             <span>收到数据</span>
+          </div>
+        </div>
+        <div class="item-box hd-data-item fr live-item live-item04">
+          <span class="hd-title">红包雨</span>
+          <div class="hd-data">
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
+            <span>参与人数</span>
+          </div>
+          <div class="hd-data">
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.receive}}</span>
+            <span>领取人数</span>
+          </div>
+          <div class="hd-data">
+            <span class="data-link" @click="goRedBagDataDetail">￥{{interactCountData.redBag.money}}</span>
+            <span>领取金额</span>
           </div>
         </div>
         <!--<div class="item-box hd-data-item fr">-->
@@ -135,37 +150,7 @@
         <!--<span>获得奖励人数</span>-->
         <!--</div>-->
         <!--</div>-->
-        <div class="item-box hd-data-item fr">
-          <span class="hd-title">推荐卡片</span>
-          <div class="hd-data">
-            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.push}}</span>
-            <span>推送次数</span>
-          </div>
-          <div class="hd-data">
-            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.browse}}</span>
-            <span>浏览次数</span>
-          </div>
-          <div class="hd-data">
-            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.click}}</span>
-            <span>点击次数</span>
-          </div>
-        </div>
-        <div class="item-box hd-data-item fl">
-          <span class="hd-title">红包雨</span>
-          <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
-            <span>参与人数</span>
-          </div>
-          <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.receive}}</span>
-            <span>领取人数</span>
-          </div>
-          <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">￥{{interactCountData.redBag.money}}</span>
-            <span>领取金额</span>
-          </div>
-        </div>
-        <div class="item-box hd-data-item fr">
+        <div class="item-box hd-data-item fl live-item live-item05" style="width: 100%;">
           <span class="hd-title">商品推荐</span>
           <div class="hd-data" style="width: 25%;">
             <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
@@ -182,6 +167,21 @@
           <div class="hd-data" style="width: 25%;">
             <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.click}}</span>
             <span>点击购买次数</span>
+          </div>
+        </div>
+        <div class="item-box hd-data-item fl live-item live-item06">
+          <span class="hd-title">推荐卡片</span>
+          <div class="hd-data">
+            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.push}}</span>
+            <span>推送次数</span>
+          </div>
+          <div class="hd-data">
+            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.browse}}</span>
+            <span>浏览次数</span>
+          </div>
+          <div class="hd-data">
+            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.click}}</span>
+            <span>点击次数</span>
           </div>
         </div>
       </div>
@@ -432,7 +432,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { lines, bars, barAndLine, scatter, random } from 'src/utils/chart-tool'
+  import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
   import { mapMutations } from 'vuex'
   import * as types from '../../store/mutation-types'
@@ -497,7 +497,20 @@
           }
         },
         watchType: 0,
-        watcherLineData: {},
+        watcherLineData: {
+          live: {
+            xAxis: [],
+            pv: [],
+            uv: [],
+            ip: []
+          },
+          playback: {
+            xAxis: [],
+            pv: [],
+            uv: [],
+            ip: []
+          }
+        },
         preDataDetail: false, // 预约
         chatDataDetail: false, // 聊天
         prizeDataDetail: false, // 抽奖
@@ -545,56 +558,62 @@
         this.hdTrendChart()
       },
       interactCount () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            signUp: random(),
-            subscribe: random(),
-            chat: {
-              nums: random(),
-              msg: random()
-            },
-            share: {
-              invite: random(),
-              effective: random()
-            },
-            prize: {
-              join: random(),
-              win: random()
-            },
-            pager: {
-              push: 3,
-              receive: 6023
-            },
-            answer: {
-              push: 8,
-              join: 6023,
-              win: 23
-            },
-            card: {
-              push: 8,
-              browse: 6023,
-              click: 23
-            },
-            goods: {
-              shelf: 7,
-              total: 20,
-              push: 10,
-              browse: 6023,
-              click: 23
-            },
-            redBag: {
-              join: random(),
-              receive: random(),
-              money: random()
-            }
+        // let res = {
+        //   'code': 200,
+        //   'msg': null,
+        //   'data': {
+        //     signUp: random(),
+        //     subscribe: random(),
+        //     chat: {
+        //       nums: random(),
+        //       msg: random()
+        //     },
+        //     share: {
+        //       invite: random(),
+        //       effective: random()
+        //     },
+        //     prize: {
+        //       join: random(),
+        //       win: random()
+        //     },
+        //     pager: {
+        //       push: 3,
+        //       receive: 6023
+        //     },
+        //     answer: {
+        //       push: 8,
+        //       join: 6023,
+        //       win: 23
+        //     },
+        //     card: {
+        //       push: 8,
+        //       browse: 6023,
+        //       click: 23
+        //     },
+        //     goods: {
+        //       shelf: 7,
+        //       total: 20,
+        //       push: 10,
+        //       browse: 6023,
+        //       click: 23
+        //     },
+        //     redBag: {
+        //       join: random(),
+        //       receive: random(),
+        //       money: random()
+        //     }
+        //   }
+        // }
+        this.$get(dataService.GET_LIVE_VIEWER_HD, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200) {
+            this.interactCountData = res.data
           }
-        }
-        this.interactCountData = res.data
+        })
       },
       watcherCountData () {
-        if (this.watcherLineData.days) return
+        if (this.watcherLineData.live) return
         // let res = {
         //   'code': 200,
         //   'msg': null,
@@ -616,19 +635,20 @@
         this.$get(dataService.GET_LIVE_VIEWER, {
           activityId: this.activityId
         }).then((res) => {
-          if (!res.data.hours) return
-          this.watcherLineData = res.data
-          this.$nextTick(() => {
-            // 观众趋势图（PV、UV）
-            lines('chart01', {
-              xAxisData: this.watcherLineData.hours.xAxis,
-              datas: [
-                { name: '浏览次数', data: this.watcherLineData.hours.pv },
-                { name: '独立访问', data: this.watcherLineData.hours.uv },
-                { name: 'IP', data: this.watcherLineData.hours.ip }
-              ]
+          if (res.code === 200) {
+            this.watcherLineData = res.data
+            this.$nextTick(() => {
+              // 观众趋势图（PV、UV）
+              lines('chart01', {
+                xAxisData: this.watcherLineData.live.xAxis,
+                datas: [
+                  { name: '浏览次数', data: this.watcherLineData.live.pv },
+                  { name: '独立访问', data: this.watcherLineData.live.uv },
+                  { name: 'IP', data: this.watcherLineData.live.ip }
+                ]
+              })
             })
-          })
+          }
         })
       },
       basicCount () {
@@ -638,29 +658,29 @@
           this.basicCountData = res.data
         })
       },
-      goPreDataDetail () {
-        this.preDataDetail = true
-        this.preDataList = [
-          {
-            'userId': 10000,
-            'name': '刘德华1',
-            'phone': '18577362273',
-            'enterDate': '2018-10-17 10:10',
-            'leaveDate': '2018-10-17 10:10',
-            'preDate': '2018-10-17 10:10',
-            'joinDate': '2018-10-17 10:10'
-          },
-          {
-            'userId': 10001,
-            'name': '刘德华2',
-            'phone': '18577362273',
-            'enterDate': '2018-10-17 10:10',
-            'leaveDate': '2018-10-17 10:10',
-            'preDate': '2018-10-17 10:10',
-            'joinDate': '2018-10-17 10:10'
-          }
-        ]
-      },
+      // goPreDataDetail () {
+      //   this.preDataDetail = true
+      //   this.preDataList = [
+      //     {
+      //       'userId': 10000,
+      //       'name': '刘德华1',
+      //       'phone': '18577362273',
+      //       'enterDate': '2018-10-17 10:10',
+      //       'leaveDate': '2018-10-17 10:10',
+      //       'preDate': '2018-10-17 10:10',
+      //       'joinDate': '2018-10-17 10:10'
+      //     },
+      //     {
+      //       'userId': 10001,
+      //       'name': '刘德华2',
+      //       'phone': '18577362273',
+      //       'enterDate': '2018-10-17 10:10',
+      //       'leaveDate': '2018-10-17 10:10',
+      //       'preDate': '2018-10-17 10:10',
+      //       'joinDate': '2018-10-17 10:10'
+      //     }
+      //   ]
+      // },
       goChatDataDetail () {
         this.chatDataDetail = true
         this.chatDataList = [
@@ -668,31 +688,31 @@
           { 'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...' }
         ]
       },
-      goPrizeDataDetail () {
-        this.prizeDataDetail = true
-        this.prizeDataList = [
-          {
-            'prizeId': 10000,
-            'name': '电饭锅',
-            'count': 50,
-            'openDate': '2018-10-17 10:10',
-            'joinType': 1,
-            'joinTypeName': '口令',
-            'online': 56975,
-            'joinCount': 46859
-          },
-          {
-            'prizeId': 10001,
-            'name': '电饼铛',
-            'count': 50,
-            'openDate': '2018-10-17 10:10',
-            'joinType': 1,
-            'joinTypeName': '口令',
-            'online': 56975,
-            'joinCount': 46859
-          }
-        ]
-      },
+      // goPrizeDataDetail () {
+      //   this.prizeDataDetail = true
+      //   this.prizeDataList = [
+      //     {
+      //       'prizeId': 10000,
+      //       'name': '电饭锅',
+      //       'count': 50,
+      //       'openDate': '2018-10-17 10:10',
+      //       'joinType': 1,
+      //       'joinTypeName': '口令',
+      //       'online': 56975,
+      //       'joinCount': 46859
+      //     },
+      //     {
+      //       'prizeId': 10001,
+      //       'name': '电饼铛',
+      //       'count': 50,
+      //       'openDate': '2018-10-17 10:10',
+      //       'joinType': 1,
+      //       'joinTypeName': '口令',
+      //       'online': 56975,
+      //       'joinCount': 46859
+      //     }
+      //   ]
+      // },
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
@@ -700,33 +720,33 @@
           { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
         ]
       },
-      goAnswerDataDetail () {
-        this.answerDataDetail = true
-        this.answerDataList = [
-          {
-            'answerId': 10000,
-            'title': '你最喜欢的艺术家',
-            'preMoney': 50,
-            'preCount': '222',
-            'joinCount': 1,
-            'correntCount': '123',
-            'costMoney': 56975,
-            'winCount': 46859,
-            'successRate': 50
-          },
-          {
-            'answerId': 10001,
-            'title': '特朗普...',
-            'preMoney': 50,
-            'preCount': '222',
-            'joinCount': 1,
-            'correntCount': '123',
-            'costMoney': 56975,
-            'winCount': 46859,
-            'successRate': 50
-          }
-        ]
-      },
+      // goAnswerDataDetail () {
+      //   this.answerDataDetail = true
+      //   this.answerDataList = [
+      //     {
+      //       'answerId': 10000,
+      //       'title': '你最喜欢的艺术家',
+      //       'preMoney': 50,
+      //       'preCount': '222',
+      //       'joinCount': 1,
+      //       'correntCount': '123',
+      //       'costMoney': 56975,
+      //       'winCount': 46859,
+      //       'successRate': 50
+      //     },
+      //     {
+      //       'answerId': 10001,
+      //       'title': '特朗普...',
+      //       'preMoney': 50,
+      //       'preCount': '222',
+      //       'joinCount': 1,
+      //       'correntCount': '123',
+      //       'costMoney': 56975,
+      //       'winCount': 46859,
+      //       'successRate': 50
+      //     }
+      //   ]
+      // },
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
@@ -773,7 +793,7 @@
       changeMenu (val) {
         if (this.watchType === val) return
         this.watchType = val
-        const typeAttr = this.watchType ? 'days' : 'hours'
+        const typeAttr = this.watchType ? 'live' : 'playback'
         if (!this.watcherLineData[typeAttr]) return
         lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
@@ -952,8 +972,13 @@
 <style lang="scss" scoped>
   .spread {
     .item-container {
+      border: none;
+      margin-bottom: 20px;
       .item-box {
-        height: 94px;
+        height: 110px;
+        .hd-title {
+          margin-top: 20px;
+        }
       }
     }
   }

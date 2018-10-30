@@ -13,6 +13,21 @@ export function random (minVal, maxVal) {
   return Math.round(Math.random() * maxVal) + minVal
 }
 
+/***
+ * 整数最值计算
+ * @param value
+ * @returns {number}
+ */
+function intCount (value) {
+  let val = value + ''
+  let s = ''
+  for (let i = 0; i < val.length - 1; i++) {
+    s += '0'
+  }
+  val = parseInt(val.substring(0, 1) + s)
+  return (value % val) ? val + parseInt(1 + s) : value
+}
+
 const COLORS = ['#4D84FF', '#FD8519', '#FEC400', '#63C8F5']
 const LINE_COLORS = ['rgba(254,201,25,1)', 'rgba(255,132,23,1)', 'rgba(99,200,245,1)', 'rgba(60,129,255,1)', 'rgba(175,173,174,1)']
 const lineColor = '#e2e2e2'
@@ -157,14 +172,9 @@ export function lines (id, data, colorParam, gridData) {
       areaStyle = {
         normal: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1,
-            [{
-              offset: 0,
-              color: tempColors[idx]
-            },
-            {
-              offset: 1,
-              color: tempColors[idx].replace('1)', '0.3)')
-            }
+            [
+              { offset: 0, color: tempColors[idx] },
+              { offset: 1, color: tempColors[idx].replace('1)', '0.3)') }
             ]
           )
         }
@@ -219,10 +229,11 @@ export function lines (id, data, colorParam, gridData) {
     yAxis: {
       ...AxisValue,
       splitArea: {
-        show: true,
-        areaStyle: {
-          color: ['#fafff9', '#fff']
-        }
+        show: false
+        // ,
+        // areaStyle: {
+        //   color: ['#fafff9', '#fff']
+        // }
       },
       splitLine: {
         show: true,
@@ -255,7 +266,7 @@ export function pie (id, data) {
         fontSize: 12
       },
       formatter: (item) => {
-        return `${item.name}<br/>${item.value}(${item.percent})`
+        return `${item.name}<br/>${item.value}(${item.percent}%)`
       }
     },
     color: ['#40C5FF', '#FEC400', '#FF8419', '#5189EE', '#666666', '#E2E2E2', '#b6a2de', '#2ec7c9', '#5ab1ef', '#ffb980'],
@@ -263,6 +274,7 @@ export function pie (id, data) {
       name: '所占比例',
       type: 'pie',
       radius: [0, '70%'],
+      center: ['50%', '54%'],
       label: {
         normal: {
           formatter: '{b}\n\n{d}%',
@@ -272,7 +284,7 @@ export function pie (id, data) {
       labelLine: {
         normal: {
           lineStyle: {
-            color: '#333'
+            color: '#666'
           }
         }
       },
@@ -290,49 +302,52 @@ export function pie (id, data) {
  */
 export function pieOne (id, percent) {
   let option = {
-    series: [{
-      type: 'pie',
-      hoverOffset: 5,
-      radius: ['78%', '90%'],
-      label: {
-        normal: {
-          position: 'center'
-        }
-      },
-      avoidLabelOverlap: false,
-      data: [{
-        value: percent,
-        itemStyle: {
-          normal: {
-            color: '#f7c331',
-            borderColor: '#fff',
-            borderWidth: 1
-          }
-        },
+    series: [
+      {
+        type: 'pie',
+        hoverOffset: 5,
+        radius: ['78%', '90%'],
         label: {
           normal: {
-            formatter: '{d}',
-            textStyle: {
-              fontSize: 30
+            position: 'center'
+          }
+        },
+        avoidLabelOverlap: false,
+        data: [
+          {
+            value: percent,
+            itemStyle: {
+              normal: {
+                color: '#f7c331',
+                borderColor: '#fff',
+                borderWidth: 1
+              }
+            },
+            label: {
+              normal: {
+                formatter: '{d}',
+                textStyle: {
+                  fontSize: 30
+                }
+              }
+            }
+          },
+          {
+            value: (100 - percent),
+            tooltip: {
+              show: false
+            },
+            itemStyle: {
+              normal: {
+                borderColor: '#fff',
+                borderWidth: 1,
+                color: '#e2e2e2'
+              }
             }
           }
-        }
-      },
-      {
-        value: (100 - percent),
-        tooltip: {
-          show: false
-        },
-        itemStyle: {
-          normal: {
-            borderColor: '#fff',
-            borderWidth: 1,
-            color: '#e2e2e2'
-          }
-        }
+        ]
       }
-      ]
-    }]
+    ]
   }
   let myChart = echarts.init(document.getElementById(id))
   myChart.setOption(option)
@@ -352,6 +367,7 @@ export function barRadius (id, data) {
     barData.push(item.value)
     maxVal = maxVal > item.value ? maxVal : item.value
   })
+  maxVal = intCount(maxVal)
   let dataShadow = []
   for (let i = 0; i < data.length; i++) {
     dataShadow.push(maxVal)
@@ -400,34 +416,46 @@ export function barRadius (id, data) {
       ...AxisValue,
       axisTick: {
         show: true
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: 'dashed',
+          color: lineColor
+        }
       }
     },
-    dataZoom: [{
-      type: 'inside'
-    }],
-    series: [{
-      type: 'bar',
-      itemStyle: {
-        normal: {
-          barBorderRadius: [10, 10, 10, 10],
-          color: 'rgba(0,0,0,0.05)'
-        }
+    dataZoom: [
+      {
+        type: 'inside'
+      }
+    ],
+    series: [
+      {
+        type: 'bar',
+        itemStyle: {
+          normal: {
+            barBorderRadius: [10, 10, 10, 10],
+            color: 'rgba(0,0,0,0.05)'
+          }
+        },
+        barGap: '-100%',
+        barWidth: '20',
+        barCategoryGap: '20',
+        data: dataShadow,
+        animation: false
       },
-      barGap: '-100%',
-      barCategoryGap: '40%',
-      data: dataShadow,
-      animation: false
-    },
-    {
-      type: 'bar',
-      itemStyle: {
-        normal: {
-          barBorderRadius: [10, 10, 10, 10],
-          color: '#FFD021'
-        }
-      },
-      data: barData
-    }
+      {
+        type: 'bar',
+        barWidth: '20',
+        itemStyle: {
+          normal: {
+            barBorderRadius: [10, 10, 10, 10],
+            color: '#FFD021'
+          }
+        },
+        data: barData
+      }
     ]
   }
   let myChart = echarts.init(document.getElementById(id))
@@ -442,10 +470,18 @@ export function barRadius (id, data) {
 export function bars (id, data, gridData) {
   let xAxisData = []
   let barData = []
+  let maxVal = 0
   data.forEach(item => {
     xAxisData.push(item.name)
     barData.push(item.value)
+    maxVal = maxVal > item.value ? maxVal : item.value
   })
+  maxVal = intCount(maxVal)
+  let dataShadow = []
+  for (let i = 0; i < data.length; i++) {
+    dataShadow.push(maxVal)
+  }
+  let barWidth = data.length <= 5 ? '20' : '50%'
   let option = {
     tooltip: {
       trigger: 'axis',
@@ -491,10 +527,11 @@ export function bars (id, data, gridData) {
     yAxis: {
       ...AxisValue,
       splitArea: {
-        show: true,
-        areaStyle: {
-          color: ['#fafff9', '#fff']
-        }
+        show: false
+        // ,
+        // areaStyle: {
+        //   color: ['#fafff9', '#fff']
+        // }
       },
       splitLine: {
         show: true,
@@ -508,32 +545,33 @@ export function bars (id, data, gridData) {
         show: true
       }
     },
-    series: [{
-      type: 'bar',
-      barWidth: '50%',
-      itemStyle: {
-        normal: {
-          barBorderRadius: [10, 10, 0, 0],
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-            offset: 0,
-            color: 'rgba(253,156,65,0.9)'
-          }, {
-            offset: 1,
-            color: 'rgba(249,109,0,0.9)'
-          }])
+    series: [
+      {
+        type: 'bar',
+        itemStyle: {
+          normal: {
+            barBorderRadius: [10, 10, 10, 10],
+            color: 'rgba(0,0,0,0.05)'
+          }
         },
-        emphasis: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-            offset: 0,
-            color: 'rgba(255,231,25,0.9)'
-          }, {
-            offset: 1,
-            color: 'rgba(250,182,0,0.9)'
-          }])
-        }
+        barGap: '-100%',
+        barWidth: barWidth,
+        barCategoryGap: barWidth,
+        data: dataShadow,
+        animation: false
       },
-      data: barData
-    }]
+      {
+        type: 'bar',
+        barWidth: barWidth,
+        itemStyle: {
+          normal: {
+            barBorderRadius: [10, 10, 10, 10],
+            color: '#FFD021'
+          }
+        },
+        data: barData
+      }
+    ]
   }
   let myChart = echarts.init(document.getElementById(id))
   myChart.setOption(option)
@@ -573,20 +611,10 @@ export function barAndLine (id, data, gridData) {
     },
     toolbox: {
       feature: {
-        dataView: {
-          show: true,
-          readOnly: false
-        },
-        magicType: {
-          show: true,
-          type: ['line', 'bar']
-        },
-        restore: {
-          show: true
-        },
-        saveAsImage: {
-          show: true
-        }
+        dataView: { show: true, readOnly: false },
+        magicType: { show: true, type: ['line', 'bar'] },
+        restore: { show: true },
+        saveAsImage: { show: true }
       }
     },
     legend: {
@@ -598,29 +626,31 @@ export function barAndLine (id, data, gridData) {
       ...grid,
       ...gridData
     },
-    xAxis: [{
-      ...AxisCategory,
-      axisTick: {
-        show: true,
-        alignWithLabel: true
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          color: lineColor,
-          width: 1,
-          type: 'dashed'
-        }
-      },
-      data: data.xAxis
-    }],
+    xAxis: [
+      {
+        ...AxisCategory,
+        axisTick: {
+          show: true,
+          alignWithLabel: true
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: lineColor,
+            width: 1,
+            type: 'dashed'
+          }
+        },
+        data: data.xAxis
+      }
+    ],
     yAxis: {
       ...AxisValue,
       splitArea: {
-        show: true,
-        areaStyle: {
-          color: ['#fafff9', '#fff']
-        }
+        show: false
+        // , areaStyle: {
+        //   color: ['#fafff9', '#fff']
+        // }
       },
       splitLine: {
         show: true,
@@ -648,14 +678,10 @@ export function barAndLine (id, data, gridData) {
 export function scatter (id, datas, gridData) {
   let maxValue = 0
   datas.data.forEach(item => {
-    maxValue = maxValue > item[2] ? maxValue : item[2]
+    maxValue = maxValue > parseInt(item[2]) ? maxValue : parseInt(item[2])
   })
   console.log('scatter-maxValue=' + maxValue)
   let option = {
-    title: {
-      text: 'Punch Card of Github',
-      link: 'https://github.com/pissang/echarts-next/graphs/punch-card'
-    },
     legend: {
       data: ['观看时长'],
       right: 10,
@@ -696,11 +722,11 @@ export function scatter (id, datas, gridData) {
         alignWithLabel: true
       },
       splitLine: {
-        show: true,
+        show: false,
         lineStyle: {
           color: lineColor,
           width: 1,
-          type: 'dashed'
+          type: 'solid'
         }
       }
     },
@@ -709,6 +735,13 @@ export function scatter (id, datas, gridData) {
       type: 'scatter',
       symbolSize: function (val) {
         return val[2] * 60 / maxValue
+      },
+      itemStyle: {
+        normal: {
+          color: '#4B5AFE',
+          shadowBlur: 10,
+          shadowColor: '#333'
+        }
       },
       data: datas.data,
       animationDelay: function (idx) {
@@ -729,13 +762,15 @@ export function sankey (id, datas) {
   let option = {
     tooltip: {
       trigger: 'item',
+      triggerOn: 'mousemove',
       formatter: (item) => {
         if (item.data.sourceName) {
           return `${item.data.sourceName}→${item.data.targetName} (${item.data.value})`
         }
-        return ''
+        return `${item.data.showName}: ${item.data.value}`
       }
     },
+    color: ['#FF8419', '#5189EE', '#FC5659', '#4B5AFE', '#FFD021', '#40C5FF'],
     series: {
       type: 'sankey',
       layout: 'none',
@@ -750,6 +785,15 @@ export function sankey (id, datas) {
           textStyle: {
             fontSize: 14
           }
+        }
+      },
+      itemStyle: {
+        borderColor: 'rgba(0,0,0,0)'
+      },
+      lineStyle: {
+        normal: {
+          color: 'source',
+          curveness: 0.3
         }
       },
       data: datas.data,

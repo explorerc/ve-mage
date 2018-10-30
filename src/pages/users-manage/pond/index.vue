@@ -594,6 +594,13 @@ export default {
       Object.assign(data, {
         'business_consumer_uids': this.checkedArr.toString()
       })
+      this.usersListData.forEach((item, idx) => {
+        this.checkedArr.forEach((ele, i) => {
+          if (item.business_consumer_uid === this.checkedArr[i]) {
+            this.usersListData.splice(idx, 1)
+          }
+        })
+      })
       this.$post(userManage.POST_DEL_USERS, data).then((res) => {
         this.$toast({
           'content': '删除成功',

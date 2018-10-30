@@ -134,9 +134,9 @@ import userManage from 'src/api/userManage-service'
     },
     created () {
       this.queryTags()
-      // this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
     },
     mounted () {
+      // this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
       if (this.activityId) { // 编辑页面请求接口返回活动信息
         this.isNew = false
         this.queryInfo()
@@ -179,7 +179,9 @@ import userManage from 'src/api/userManage-service'
           this.tagArray.id = res.data.tags
           // this.tagArray.name = res.data.tags
           this.status = res.data.status
-          this.restoreTag(res.data.tags)
+          setTimeout(() => { // 等this.tagList存完
+            this.restoreTag(res.data.tags)
+          }, 500)
         })
       },
       queryTags (keyword) {
