@@ -35,21 +35,34 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标签：</div>
           <div class="from-content">
-            <el-button round v-if='!tagArray.name.length' @click='showChooseTag = true'>选择标签</el-button>
+            <el-button round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
-              <li v-for="(item,idx) in tagArray.name" :key="idx">{{item}} <span @click="handleDel(idx,'tagArray')"></span></li>
+              <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
               <li class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
             </ol>
             <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
-            <!-- <div class="tag-modal" v-show='tagModal'>
+            <div class="tag-modal" v-show='showChooseTag'>
+              <div class='title'>选择标签,最多可选择 3 个</div>
+              <i class='el-submenu__icon-arrow el-icon-arrow-down arrow' @click="showChooseTag = false"></i>
+              <el-checkbox-group v-model="tagGroup" size="mini" :max='3' @change='selectTag'>
+                <div class='group-title'>行业标签</div>
+                <el-checkbox-button v-for="tag in industryTag" :label="tag.id" :key="tag.id">{{tag.name}}</el-checkbox-button>
+                <div class='group-title'>场景标签</div>
+                <el-checkbox-button v-for="tag in sceneTag" :label="tag.id" :key="tag.id">{{tag.name}}</el-checkbox-button>
+              </el-checkbox-group>
+            </div>
+            <!-- <div class="tag-modal" v-show='showChooseTag'>
+              <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
+              </el-checkbox-group>
+            </div> -->
+            <!-- <div class="tag-modal" v-show='showChooseTag'>
               <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
                 <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
               </el-checkbox-group>
             </div> -->
-
-            <transition name='fade' mode='out-in' v-if="showChooseTag">
+            <!-- <transition name='fade' mode='out-in' v-if="showChooseTag">
               <com-choose  @handleClick="handleClick" @selectComConfirm='selectTagConfirm' :list="tagList" :checkedData='tagArray'  :max='3' @searchHandler='searchHandler' :name="'标签'"></com-choose>
-            </transition>
+            </transition> -->
             <span class="error-tips" v-if='tagEmpty'>请添加直播标签</span>
           </div>
         </div>
@@ -93,7 +106,6 @@
   // import http from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import comChoose from 'src/pages/users-manage/components/com-choose'
-import userManage from 'src/api/userManage-service'
   export default {
     name: 'edit',
     data () {
@@ -110,12 +122,11 @@ import userManage from 'src/api/userManage-service'
         status: '',
         countCount: 0,
         tagList: [],
-        // tagGroup: [],
+        industryTag: [],
+        sceneTag: [],
+        tagGroup: [],
         poster: '',
-        tagArray: {
-          'id': [],
-          'name': []
-        },
+        tagArray: [],
         uploadImgErrorMsg: '', // 上传图片错误提示
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
@@ -175,37 +186,56 @@ import userManage from 'src/api/userManage-service'
           this.title = res.data.title
           this.poster = res.data.imgUrl
           this.editorContent = res.data.description
-          // this.tagGroup = res.data.tags
-          this.tagArray.id = res.data.tags
-          // this.tagArray.name = res.data.tags
+          this.tagArray = res.data.tags
           this.status = res.data.status
-          setTimeout(() => { // 等this.tagList存完
-            this.restoreTag(res.data.tags)
-          }, 500)
+          this.restoreTag(this.tagArray)
         })
       },
       queryTags (keyword) {
-        this.$get(userManage.GET_TAG_LIST, {
+        this.$get(activityService.GET_TAG_LIST, {
           keyword: this.tagKeyword
         }).then((res) => {
-          console.log(res.data.list)
-          res.data.list.forEach(item => {
-            this.tagList.push({
-              name: item.tag_name,
-              id: item.tag_id,
-              checked: false
+          console.log(res.data)
+          res.data.industry.forEach(item => {
+            this.industryTag.push({
+              name: item.name,
+              id: item.id
+            })
+          })
+          res.data.scene.forEach(item => {
+            this.sceneTag.push({
+              name: item.name,
+              id: item.id
             })
           })
         })
       },
       restoreTag (arr) {
-        this.tagList.forEach((item, idx) => {
-          arr.forEach((ele, i) => {
-            if (item.id === arr[i]) {
-              this.tagArray.name.push(item.name)
+        arr.forEach((item) => {
+          this.tagGroup.push(item.id)
+        })
+      },
+      selectTag (res) {
+        let tmpArr = []
+        res.forEach((item, idx) => {
+          this.industryTag.forEach((ele, i) => {
+            if (item === ele.id) {
+              tmpArr.push({
+                id: ele.id,
+                name: ele.name
+              })
+            }
+          })
+          this.sceneTag.forEach((ele, i) => {
+            if (item === ele.id) {
+              tmpArr.push({
+                id: item,
+                name: ele.name
+              })
             }
           })
         })
+        this.tagArray = tmpArr
       },
       comfirm () {
         // 提交数据
@@ -215,14 +245,14 @@ import userManage from 'src/api/userManage-service'
           title: this.title,
           imgUrl: this.poster,
           description: this.editorContent,
-          tags: this.tagArray.id
+          tags: this.tagGroup
         }
         // console.log(data)
         this.title.length ? this.titleEmpty = false : this.titleEmpty = true
-        this.tagArray.id.length ? this.tagEmpty = false : this.tagEmpty = true
+        this.tagArray.length ? this.tagEmpty = false : this.tagEmpty = true
         this.date.length ? this.dateEmpty = false : this.dateEmpty = true
         this.$nextTick(() => {
-          if (this.title.length && this.tagArray.id.length && this.date.length) {
+          if (this.title.length && this.tagArray.length && this.date.length) {
             this.updateWebinfo(this.isNew, data)
           }
         })
@@ -280,20 +310,20 @@ import userManage from 'src/api/userManage-service'
           this.showChooseTag = false
         }
       },
-      selectTagConfirm (res) {
-        console.log(res)
-        this.tagArray.name = res.name
-        this.tagArray.id = res.id
-      // this.filterCondition.tags = res.id.toString()
-      },
+      // selectTagConfirm (res) {
+      //   console.log(res)
+      //   this.tagArray.name = res.name
+      //   this.tagArray.id = res.id
+      // // this.filterCondition.tags = res.id.toString()
+      // },
       searchHandler (res) {
         console.log(res)
         this.tagKeyword = res
         this.queryTags()
       },
       handleDel (idx, type) {
-        this[type].name.splice(idx, 1)
-        this[type].id.splice(idx, 1)
+        this.tagArray.splice(idx, 1)
+        this.tagGroup.splice(idx, 1)
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
@@ -627,9 +657,43 @@ import userManage from 'src/api/userManage-service'
 }
 
 .tag-modal {
-  width: 200px;
-  height: 200px;
-  background: pink;
+  width: 100%;
+  height: 300px;
+  background: #f7f7f7;
+  padding: 10px 20px;
+  border-radius: 5px;
+  overflow-y: scroll;
+  position: relative;
+  .arrow {
+    position: absolute;
+    top: 27px;
+    right: 25px;
+    font-size: 20px;
+    cursor: pointer;
+    transform: rotate(180deg);
+  }
+  .group-title {
+    display: block;
+    font-size: 14px;
+    color: $color-font;
+    padding: 10px;
+  }
+  .title {
+    padding: 10px;
+    font-size: 16px;
+  }
+  .el-checkbox-button /deep/ {
+    margin: 5px;
+    span.el-checkbox-button__inner {
+      border-radius: 4px;
+      overflow: hidden;
+      border-left: 1px solid #dcdfe6;
+    }
+    &.is-checked span.el-checkbox-button__inner,
+    &.is-focus span.el-checkbox-button__inner {
+      border-left: 1px solid #409eff;
+    }
+  }
 }
 .from-box {
   // margin: 20px;

@@ -16,7 +16,7 @@
       <div class="middle">
         <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i></i></span></p>
         <p class='desc-label'>活动标签: <span class="tag"
-                v-for="item in tagList">{{item}}</span></p>
+                v-for="item in tagList">{{item.name}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <p class="desc-label tool">活动状态: <el-switch class='switch' v-model="isPublished" :active-text="isPublished ? '已发布' : '未发布' " inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchActive"></el-switch>
           <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true" @mouseout="showLinkBox = false"><i></i>复制链接
