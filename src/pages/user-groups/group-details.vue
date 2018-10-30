@@ -27,7 +27,7 @@
           <template slot-scope="scope">
             <div class="user_info">
               <img
-                :src="scope.row.avatar ? `${$imgHost}/${scope.row.avatar}` :require('./../../assets/image/icon_data_hover.png')"
+                :src="scope.row.avatar ? `${$imgHost}/${scope.row.avatar}` :require('assets/image/avatar@2x.png')"
                 alt="">
               <div>
                 <span class="table_info">{{scope.row.real_name}}</span> &nbsp;&nbsp;<span class="table_info">{{scope.row.sex| getSex}} </span>
@@ -155,6 +155,7 @@
         this.handleDelete(selectRowId.join())
       },
       exportFile () {
+        console.log('导出')
       },
       batchImport () {
         this.dialogImport = true
