@@ -56,7 +56,7 @@
             </div>
             <div class="item spe">
               <label class='label'>群组描述:</label>
-              <com-input type="textarea" :value.sync="describe" placeholder="输入群组描述" :max-length="10" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
+              <com-input type="textarea" :value.sync="describe" placeholder="输入群组描述" :max-length="30" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
             </div>
           </div>
           <div class="tab" v-else>

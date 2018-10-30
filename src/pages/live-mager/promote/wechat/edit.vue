@@ -23,9 +23,28 @@
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
               <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
-              <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
-                <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
-                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
+              <!-- 分组 -->
+              <transition-group name="list"
+                                class="edit-groups"
+                                tag="div"
+                                v-if="selectedGroupList.length">
+                <span class="list-item"
+                      v-for="(person,idx) in selectedGroupList"
+                      :key="person.id">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu"
+                     @click="delGroupPerson(idx)"></i>
+                </span>
+              </transition-group>
+              <!-- 标签 -->
+              <transition-group name="list"
+                                class="edit-groups sec"
+                                tag="div"
+                                v-if="selectedTagList.length">
+                <span class="list-item"
+                      v-for="(tag,idx) in selectedTagList"
+                      :key="tag.id">{{tag.name}}
+                  <i class="iconfont icon-shanchu"
+                     @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
             </div>
@@ -59,55 +78,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <message-box
-        v-if="selectPersonShow"
-        width="740px"
-        type="prompt"
-        header="选择观众组"
-        confirmText='确认'
-        class="select-person"
-        @handleClick="handleSelectPerson">
-        <div class="select-person-box">
-          <div class="select-nav fl">
-            <div class="select-item active">
-              <i class="iconfont icon-fenzu"></i>
-              <span>分组</span>
-            </div>
-            <div class="select-item">
-              <i class="iconfont icon-biaoqian"></i>
-              <span>标签</span>
-            </div>
-          </div>
-          <div class="select-content fl">
-            <div class="search-person-box">
-              <com-input type="search"
-                         class="search-com"
-                         :value.sync="searchPerson"
-                         @keyup.native.enter="searchEnter"
-                         placeholder="输入直播名称"></com-input>
-            </div>
-            <div class="select-person-box">
-              <ul>
-                <li
-                  v-for="(person,idx) in personList"
-                  @click.stop="clickRow(idx)"
-                  :class="{active:person.isChecked}"
-                  :key="person.id">
-                  {{person.name}} ({{person.count}}人）
-                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div slot="bottom" class="select-bottom">
-          <span class="select-all fl">已选择{{selectedCount}}人：</span>
-          <div class="select-list fl" :title="selectedPersonListStr">
-            {{selectedPersonListStr}}
-          </div>
-          <button class="primary-button" @click="okSelectList">确定</button>
-        </div>
-      </message-box>
+      <choose-group :webinarType="'WECHAT'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
       <!-- 测试发送弹窗 -->
       <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'" :deliverd.sync='deliverd'></com-test>
     </div>
@@ -115,6 +86,8 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
+import chooseGroup from 'src/components/com-chooseGroup'
 import ChatService from 'components/chat/ChatService.js'
 import playbackService from 'src/api/playback-service'
 import noticeService from 'src/api/notice-service'
@@ -165,26 +138,32 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonListStr: '',
+      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      tagList: [],
+      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedTagList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupListStr: '',
+      selectedTagListStr: '',
       selectPersonShow: false,
-      selectedCount: 0,
       errorData: {
         titleError: '',
         msgError: '',
         tagError: ''
       },
+      checkedData: [],
       isValided: false,
       canPass: true,
       sdkParam: {},
       saveDisabled: false,
-      deliverd: false
+      deliverd: false,
+      groupIdStr: '',
+      tagIdStr: ''
     }
   },
   created () {
     this.initSdk()
-    this.queryPersonList()
+    this.queryGroupList()
+    this.queryTaglist()
     if (this.inviteId) {
       this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.inviteId
@@ -225,7 +204,8 @@ export default {
         inviteId: this.inviteId,
         activityId: this.$route.params.id,
         title: this.titleValue,
-        groupId: '1', // 分组id
+        groupId: this.groupIdStr, // 分组id
+        tagId: this.tagIdStr,
         status: this.sendSetting.toLowerCase(),
         desc: this.wxContent,
         planTime: this.date
@@ -263,50 +243,79 @@ export default {
       this.testModal = false
     },
     /* enter搜索 */
-    searchEnter () {
-      this.queryPersonList()
+    searchEnter (key, flag) {
+      if (flag === 'group') {
+        this.queryGroupList(key)
+      } else {
+        this.queryTagList(key)
+      }
     },
     /* 点击确定 */
     okSelectList () {
       this.selectPersonShow = false
     },
     /* 点击取消 */
-    handleSelectPerson (e) {
-      if (e.action === 'cancel') {
-        this.selectPersonShow = false
-      }
+    close () {
+      this.selectPersonShow = false
     },
     /* 选中行 */
-    clickRow (idx) {
-      this.personList[idx].isChecked = !this.personList[idx].isChecked
-    },
+    // clickRow (idx) {
+    //   this.groupList[idx].isChecked = !this.groupList[idx].isChecked
+    // },
     /* 删除标签 */
     delPerson (idx) {
-      const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
-      this.personList[delIdx].isChecked = false
+      const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
+      this.groupList[delIdx].isChecked = false
     },
-    /* 查询人员 */
-    queryPersonList () {
-      this.$get(noticeService.GET_PERSON_LIST, {
-        activityId: this.$route.params.id,
-        name: this.searchPerson
+    /* 删除分组 */
+    delGroupPerson (idx) {
+      const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
+      this.groupList[delIdx].isChecked = false
+    },
+    // 查询群组
+    queryGroupList (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: keyword,
+        type: '2'
       }).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach((item) => {
           temArray.push({
-            id: item.id,
-            name: item.name,
-            count: 0,
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
             isChecked: false
           })
         })
-        this.personList = temArray
+        this.groupList = temArray
       })
-      // createHttp.queryPersonList({
-
-      // }).then((res) => {
-
-      // })
+    },
+    // 查询标签
+    queryTaglist (keyword) {
+      this.$get(userManage.GET_TAG_LIST, {
+        keyword: keyword
+      }).then((res) => {
+        console.log(res.data.list)
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.tag_id,
+            name: item.tag_name,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
+      })
+    },
+    selectedGroupListfn (arr, str, idStr) {
+      this.selectedGroupListStr = str.substring(0, str.length - 1)
+      this.selectedGroupList = arr
+      this.groupIdStr = idStr
+    },
+    selectedTagListfn (arr, str, idStr) {
+      this.selectedTagListStr = str.substring(0, str.length - 1)
+      this.selectedTagList = arr
+      this.tagIdStr = idStr
     },
     /* 验证 */
     formValid () {
@@ -390,26 +399,12 @@ export default {
         this.canPass = true
         newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
       }
-    },
-    personList: {
-      handler (newArray) {
-        let temArray = []
-        let listStr = ''
-        newArray.forEach((item, idx) => {
-          if (!item.isChecked) return
-          temArray.push(item)
-          this.selectedCount += item.count
-          listStr += `${item.name} (${item.count}人）、`
-        })
-        this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
-        this.selectedPersonList = temArray
-      },
-      deep: true
     }
   },
   components: {
     comTest,
     comPhone,
+    chooseGroup,
     veTips
   }
 }
@@ -488,8 +483,11 @@ export default {
     }
   }
   .edit-groups {
-    margin-top: 15px;
     width: 500px;
+    margin-top: 15px;
+    &.sec {
+      margin-top: 0px;
+    }
     span {
       display: inline-block;
       background-color: #f0f1fe;

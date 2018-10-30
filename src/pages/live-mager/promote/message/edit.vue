@@ -28,9 +28,9 @@
               <transition-group name="list"
                                 class="edit-groups"
                                 tag="div"
-                                v-if="selectedPersonList.length">
+                                v-if="selectedGroupList.length">
                 <span class="list-item"
-                      v-for="(person,idx) in selectedPersonList"
+                      v-for="(person,idx) in selectedGroupList"
                       :key="person.id">{{person.name}} ({{person.count}}人）
                   <i class="iconfont icon-shanchu"
                      @click="delGroupPerson(idx)"></i>
@@ -38,12 +38,12 @@
               </transition-group>
               <!-- 标签 -->
               <transition-group name="list"
-                                class="edit-groups"
+                                class="edit-groups sec"
                                 tag="div"
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
+                      :key="tag.id">{{tag.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -124,60 +124,8 @@
                      @click="save" :disabled='saveDisabled'>保存</el-button>
         </div>
       </div>
-      <choose-group  :show="selectPersonShow" :personList="personList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter"></choose-group>
       <!-- 选择收件人 -->
-      <!-- <message-box v-if="selectPersonShow"
-                   width="740px"
-                   type="prompt"
-                   header="选择接收组"
-                   confirmText='确认'
-                   class="select-person"
-                   @handleClick="handleSelectPerson">
-        <div class="select-person-box">
-          <div class="select-nav fl">
-            <div class="select-item active">
-              <i class="iconfont icon-fenzu"></i>
-              <span>分组</span>
-            </div>
-            <div class="select-item">
-              <i class="iconfont icon-biaoqian"></i>
-              <span>标签</span>
-            </div>
-          </div>
-          <div class="select-content fl">
-            <div class="search-person-box">
-              <com-input type="search"
-                         class="search-com"
-                         :value.sync="searchPerson"
-                         @keyup.native.enter="searchEnter"
-                         placeholder="输入分组名称"></com-input>
-            </div>
-            <div class="select-person-box">
-              <ul>
-                <li v-for="(person,idx) in personList"
-                    @click.stop="clickRow(idx)"
-                    :class="{active:person.isChecked}"
-                    :key="person.id">
-                  {{person.name}} ({{person.count}}人）
-                  <com-checkbox v-model="person.isChecked"
-                                class="fr"
-                                small></com-checkbox>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div slot="bottom"
-             class="select-bottom">
-          <span class="select-all fl">已选择{{selectedCount}}组：</span>
-          <div class="select-list fl"
-               :title="selectedPersonListStr">
-            {{selectedPersonListStr}}
-          </div>
-          <button class="primary-button"
-                  @click="okSelectList">确定</button>
-        </div>
-      </message-box> -->
+      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
     </div>
     <!-- 测试发送弹窗 -->
     <com-test v-if='testModal'
@@ -190,7 +138,7 @@
 </template>
 
 <script>
-// import userManage from 'src/api/userManage-service'
+import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
 import chooseGroup from 'src/components/com-chooseGroup'
 import comTest from '../com-test'
@@ -237,14 +185,13 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{ id: '', name: '', count: 0, isChecked: false }],
+      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
       tagList: [],
       selectedTagList: [],
-      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedPersonListStr: '',
+      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupListStr: '',
       selectedTagListStr: '',
       selectPersonShow: false,
-      selectedCount: 0,
       checkedData: [],
       errorData: {
         titleError: '',
@@ -253,13 +200,14 @@ export default {
       },
       isValided: false,
       canPass: true,
-      saveDisabled: false
+      saveDisabled: false,
+      groupIdStr: '',
+      tagIdStr: ''
     }
   },
   created () {
-    this.queryPersonList()
+    this.queryGroupList()
     this.queryTagList()
-    // this.queryGrouplist()
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.inviteId
@@ -292,7 +240,8 @@ export default {
         inviteId: this.inviteId,
         activityId: this.$route.params.id,
         title: this.titleValue,
-        groupId: '1', // 分组id
+        groupId: this.groupIdStr, // 分组id
+        tagId: this.tagIdStr,
         status: this.sendSetting.toLowerCase(),
         planTime: this.date,
         desc: this.msgContent,
@@ -330,11 +279,10 @@ export default {
     /* enter搜索 */
     searchEnter (key, flag) {
       if (flag === 'group') {
-        this.queryPersonList(key)
+        this.queryGroupList(key)
       } else {
         this.queryTagList(key)
       }
-      // this.queryGrouplist()
     },
     /* 点击确定 */
     okSelectList () {
@@ -344,36 +292,32 @@ export default {
     close () {
       this.selectPersonShow = false
     },
-    // /* 选中行 */
-    // clickRow (idx) {
-    //   this.personList[idx].isChecked = !this.personList[idx].isChecked
-    // },
     /* 删除分组 */
     delGroupPerson (idx) {
-      const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
-      this.personList[delIdx].isChecked = false
+      const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
+      this.groupList[delIdx].isChecked = false
     },
     // 标签
     delTagPerson (idx) {
       const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
       this.tagList[delIdx].isChecked = false
     },
-    /* 查询人员 */
-    queryPersonList (key) {
-      this.$get(noticeService.GET_PERSON_LIST, {
-        activityId: this.$route.params.id,
-        name: key
+    // 查询群组
+    queryGroupList (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal,
+        type: '2'
       }).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach((item) => {
           temArray.push({
-            id: item.id,
-            name: item.name,
-            count: 0,
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
             isChecked: false
           })
         })
-        this.personList = temArray
+        this.groupList = temArray
       })
     },
     /* 查询标签 */
@@ -387,12 +331,21 @@ export default {
           temArray.push({
             id: item.id,
             name: item.name,
-            count: 0,
             isChecked: false
           })
         })
         this.tagList = temArray
       })
+    },
+    selectedGroupListfn (arr, str, idStr) {
+      this.selectedGroupListStr = str.substring(0, str.length - 1)
+      this.selectedGroupList = arr
+      this.groupIdStr = idStr
+    },
+    selectedTagListfn (arr, str, idStr) {
+      this.selectedTagListStr = str.substring(0, str.length - 1)
+      this.selectedTagList = arr
+      this.tagIdStr = idStr
     },
     /* 验证 */
     formValid () {
@@ -435,37 +388,37 @@ export default {
         this.canPass = true
         newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
       }
-    },
-    personList: {
-      handler (newArray) {
-        let temArray = []
-        let listStr = ''
-        newArray.forEach((item, idx) => {
-          if (!item.isChecked) return
-          temArray.push(item)
-          this.selectedCount += item.count
-          listStr += `${item.name} (${item.count}人）、`
-        })
-        this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
-        this.selectedPersonList = temArray
-      },
-      deep: true
-    },
-    tagList: {
-      handler (newArray) {
-        let temArray = []
-        let listStr = ''
-        newArray.forEach((item, idx) => {
-          if (!item.isChecked) return
-          temArray.push(item)
-          this.selectedCount += item.count
-          listStr += `${item.name} (${item.count}人）、`
-        })
-        this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
-        this.selectedTagList = temArray
-      },
-      deep: true
     }
+    // groupList: {
+    //   handler (newArray) {
+    //     let temArray = []
+    //     let listStr = ''
+    //     newArray.forEach((item, idx) => {
+    //       if (!item.isChecked) return
+    //       temArray.push(item)
+    //       this.selectedCount += item.count
+    //       listStr += `${item.name} (${item.count}人）、`
+    //     })
+    //     this.selectedGroupListStr = listStr.substring(0, listStr.length - 1)
+    //     this.selectedGroupList = temArray
+    //   },
+    //   deep: true
+    // },
+    // tagList: {
+    //   handler (newArray) {
+    //     let temArray = []
+    //     let listStr = ''
+    //     newArray.forEach((item, idx) => {
+    //       if (!item.isChecked) return
+    //       temArray.push(item)
+    //       this.selectedCount += item.count
+    //       listStr += `${item.name}、`
+    //     })
+    //     this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
+    //     this.selectedTagList = temArray
+    //   },
+    //   deep: true
+    // }
   },
   components: {
     comTest,
@@ -596,6 +549,9 @@ export default {
   .edit-groups {
     margin-top: 15px;
     width: 500px;
+    &.sec {
+      margin-top: 0px;
+    }
     span {
       display: inline-block;
       background-color: #f0f1fe;
