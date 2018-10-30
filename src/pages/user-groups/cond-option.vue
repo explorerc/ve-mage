@@ -10,22 +10,15 @@
                          @change="handleItemChange(m,ind,mind)"></el-cascader>
 
             <el-select v-model="m.condition" value-key="name" placeholder="请选择" @change="optionItemChange(m,ind,mind)">
-              <el-option
-                v-for="(itemr,indexr) in m.conds"
-                :key="indexr.name"
-                :label="itemr.name"
-                :value="itemr.key">
-              </el-option>
+              <el-option v-for="(itemr,indexr) in m.conds" :key="indexr.name" :label="itemr.name"
+                         :value="itemr.key"></el-option>
             </el-select>
 
 
             <div class="option-value">
               <el-select v-model="m.value" v-if="m.type == 'select'" filterable placeholder="请选择">
-                <el-option
-                  v-for="(itemr,indexr) in m.optionValue"
-                  :key="indexr.key"
-                  :label="itemr.name"
-                  :value="itemr.key">
+                <el-option v-for="(itemr,indexr) in m.optionValue" :key="indexr.key" :label="itemr.name"
+                           :value="itemr.key">
                 </el-option>
               </el-select>
 
@@ -38,15 +31,13 @@
             </div>
             <i class="el-icon-delete" @click="del(ind,mind)" v-show="disDel"></i>
           </div>
-          <el-button size="mini" @click="and(ind)">AND</el-button>
+          <el-button size="mini" @click="and(ind)" v-show="shadowOutD[ind].length<10">AND</el-button>
         </div>
         <div class="orBtn">
-          <el-button size="mini" @click="or">OR</el-button>
+          <el-button size="mini" @click="or" v-show="shadowOutD.length<10">OR</el-button>
         </div>
       </li>
-
     </ul>
-    <!--<button @click="save">save</button>-->
   </div>
 </template>
 
@@ -1089,7 +1080,6 @@
           value: ''
         }])
 
-        // console.log(this.shadowOutD.length)
         if (this.shadowOutD.length < 2) {
           this.disDel = false
         } else {
@@ -1115,12 +1105,10 @@
               return inItem
             }
           })
-          // console.log('1111111', _item)
           if (_item.length > 0) {
             return _item
           }
         })
-        // console.log(this.shadowOutD, 'this.shadowOutD')
         // console.log(this.saveData, '_save_data')
         this.$emit('optionData', this.saveData)
       },
@@ -1134,26 +1122,6 @@
           })
         })
         this.shadowOutD = this.outD
-      },
-      clearRule () {
-        this.outD = [
-          [
-            {
-              condition: '',
-              key: '',
-              value: ''
-            }
-          ]
-        ]
-        this.shadowOutD = [
-          [
-            {
-              condition: '',
-              key: '',
-              value: ''
-            }
-          ]
-        ]
       },
       getTags () {
         this.$post(groupService.ALL_TAGS)

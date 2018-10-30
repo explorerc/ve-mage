@@ -3,7 +3,7 @@
     <div class="operation">
       <h4>用户群组</h4>
       <div>
-        <el-input size="small" placeholder="输入直播名称" suffix-icon="el-icon-search"
+        <el-input size="small" placeholder="输入群组名称" suffix-icon="el-icon-search"
                   v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
         <el-button size="small" @click="showDialog(2)" round>新建固定群组</el-button>
         <el-button size="small" @click="showDialog(3)" round>新建智能群组</el-button>
@@ -32,7 +32,8 @@
             <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.group_id,scope.row.type)">详情
             </el-button>
             <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
-                       @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">编辑
+                       @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">
+              编辑
             </el-button>
             <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
                        @click="handleDelete(scope.row.group_id, scope.row.type,scope.$index)">删除
@@ -47,7 +48,7 @@
       <div>
         <el-form :model="Group" :rules="rules" ref="Group">
           <el-form-item prop="title">
-            <el-input @input="inpC(Group.title,1)" :maxlength=10 v-model="Group.title" placeholder="请输入群组名称">
+            <el-input @input="inpC(Group.title,1)" @blur="repeatTitle(Group.title)" :maxlength=10 v-model="Group.title" placeholder="请输入群组名称">
               <template slot="append">{{inpNameLen}}/10</template>
             </el-input>
           </el-form-item>
@@ -102,14 +103,14 @@
       }
     },
     data () {
-      /* var validateName = (rule, value, callback) => {
+      let valiRepeatName = (rule, value, callback) => {
+        if (value && this.currCode !== 200) {
+          return callback(new Error('该群组名称已存在'))
+        }
         if (!value) {
           return callback(new Error('群组名称不能为空'))
         }
-        if (value.length > 10) {
-          return callback(new Error('群组名称不能超过10个字'))
-        }
-      } */
+      }
       return {
         dialogTitle: '',
         isAddOrEdit: '', // 当前点击的是新建还是编辑
@@ -132,10 +133,13 @@
         tableData: [],
         rules: {
           title: [
-            // { required: true, validator: validateName, trigger: 'change' }
-            { required: true, message: '群组名称不能为空', trigger: 'blur' }
+            { validator: valiRepeatName, trigger: 'blur' }
+          ],
+          describe: [
+            { required: true, message: '群组描述不能为空', trigger: 'blur' }
           ]
-        }
+        },
+        currCode: 0
       }
     },
     methods: {
@@ -144,6 +148,12 @@
           .then(res => {
             this.tableData = res.data.list
             this.total = Number.parseInt(res.data.count)
+          })
+      },
+      repeatTitle (title) {
+        this.$post(groupService.VALI_TITLE, { title: title })
+          .then(res => {
+            this.currCode = res.code
           })
       },
       handleDetails (id, type) { // 详情
@@ -207,7 +217,11 @@
         console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
       inpC (a, type) {
-        type === 1 ? this.inpNameLen = a.length : this.inpDesLen = a.length
+        if (type === 1) {
+          this.inpNameLen = a.length
+        } else {
+          this.inpDesLen = a.length
+        }
       },
       optionData (a) { // 新建或者编辑 返回的规则
         this.Group.rules = JSON.stringify(a)
@@ -225,6 +239,8 @@
           .then((res) => {
             if (res.code === 200) {
               this.Group.type = -1
+              this.dialogFixedOrIntel = false
+              this.isAddOrEdit = '' // 重置
               this.onSearch()
             }
           })
@@ -237,9 +253,6 @@
             } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
               this.$refs.cond_option.save()
             }
-            // if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
-            this.dialogFixedOrIntel = false
-            this.isAddOrEdit = '' // 重置
           } else {
             console.log('error submit!!')
             return false
@@ -247,7 +260,6 @@
         })
       },
       handleCloseDialog (done) {
-        // if (this.$refs.cond_option) this.$refs.cond_option.clearRule() // 如果是智能群组 每次关闭之后清除数据
         this.Group.type = -1
         this.isAddOrEdit = '' // 重置
         done()

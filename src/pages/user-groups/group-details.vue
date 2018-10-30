@@ -3,35 +3,33 @@
     <header>{{group_title}}群组（{{total}}）</header>
     <div class="operation">
       <div class="opBtns">
-        <el-button size="small" round>导出全部数据</el-button>
         <el-dropdown @command="dialogImportShow">
-          <span class="el-dropdown-link">
-            批量操作<!--<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-          </span>
+          <el-button size="small" round :disabled="selectRow.length < 1">批量操作</el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>导出</el-dropdown-item>
-            <el-dropdown-item disabled>添加到群组</el-dropdown-item>
+            <el-dropdown-item style="width: 96px;" command="export">导出</el-dropdown-item>
+            <el-dropdown-item style="width: 96px;" command="delall" v-if="type === 2">删除</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
+        <el-button size="small" round>全部导出</el-button>
         <transition name='fade' mode='out-in' v-if="dialogImport">
-          <com-import @handleClick="handleClick" :groupId="search.group_id"></com-import>
+          <com-import @handleClick="handleClick" :groupId="Number.parseInt(search.group_id)"></com-import>
         </transition>
       </div>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
-      <!--@selection-change="handleSelectionChange"-->
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border class="el-table">
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border class="el-table"
+                @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="用户信息">
           <template slot-scope="scope">
             <div class="user_info">
-              <img src="./../../assets/image/icon_data_hover.png" alt="">
+              <img :src="scope.row.avatar ? `${$imgHost}/${scope.row.avatar}` :require('./../../assets/image/icon_data_hover.png')" alt="">
               <div>
-                <span>{{scope.row.real_name}}</span>&nbsp;&nbsp; {{scope.row.sex| getSex}} <br><span
-                v-html="scope.row.user_level "></span>
+                <span class="table_info">{{scope.row.real_name}}</span> &nbsp;&nbsp;<span class="table_info">{{scope.row.sex| getSex}} </span>
+                <div v-html="scope.row.user_level "></div>
               </div>
             </div>
           </template>
@@ -43,10 +41,10 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.name,scope.row.date)">详情
+            <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.business_consumer_uid)">详情
             </el-button>
             <el-button v-if="type == 2 " class="btns" type="text" size="mini"
-                       @click="handleDelete(scope.row.business_consumer_uid)">删除
+                       @click="handleDelete(scope.row.business_consumer_uid ,scope.$index)">删除
             </el-button>
           </template>
         </el-table-column>
@@ -75,29 +73,13 @@
         return a === 'M' ? '男' : '女'
       }
     },
-    mounted () {
-      this.$refs.multipleTable.toggleRowSelection(this.tableData[1], true)
-      if (this.tableData) {
-        console.log('this.tableData有了')
-        // this.$nextTick(() => {
-        this.$refs.multipleTable.toggleRowSelection(this.tableData[1], true)
-        // })
-      } else {
-        console.log(111)
-      }
-    },
     data () {
       return {
+        selectRow: [],
         group_title: '',
         tableData: [],
-        isSelect: -1, // 当前是本页数据还是全部数据
-        poster: '',
-        uploadFileErrorMsg: '', // 上传文件错误提示
-        isClose: false,
         dialogTitle: '',
         dialogImport: false,
-        inpNameLen: 0,
-        inpDesLen: 0,
         Group: {
           name: '',
           description: '',
@@ -114,30 +96,14 @@
         total: 0
       }
     },
-    watch: {
-      /* tableData: {
-        handler (val) {
-          this.handleSelectionChange()
-          console.log('page变了')
-          // console.log(this.isSelect)
-          /!*  if (this.isSelect === 1 && val) {
-              setTimeout(() => {
-                this.selectCheck()
-              }, 100)
-            } *!/
-        },
-        deep: true
-      } */
-
-    },
     methods: {
       handleClick () {
         this.dialogImport = false
+        this.onSearch()
       },
       onSearch () {
         this.$post(groupService.USER_LISTS, this.search)
           .then(res => {
-            console.log(res)
             this.total = Number.parseInt(res.data.count)
             res.data.list.forEach((item) => {
               let level
@@ -167,33 +133,30 @@
           })
       },
       changePage (nowPage) {
-        console.log(nowPage)
         this.search.page = nowPage
         this.onSearch()
-        this.handleSelectionChange()
       },
-      handleDetails () { // 详情
+      handleDetails (id) { // 详情
+        this.$router.push(`userManage/info/${id}`)
       },
       dialogImportShow (a) {
-        console.log(a)
+        if (a === 'delall') {
+          this.delAll()
+        } else if (a === 'export') {
+          this.exportFile()
+        }
+      },
+      delAll () {
+        let selectRowId = this.selectRow.map((item) => {
+          return item.business_consumer_uid
+        })
+        this.handleDelete(selectRowId.join())
+      },
+      exportFile () {
       },
       batchImport () {
         this.dialogImport = true
         this.dialogTitle = '批量导入'
-      },
-      selectCheck () {
-        this.$nextTick(() => {
-          document.querySelector('.table_box th.el-table_1_column_1 span.el-checkbox__inner').click()
-        })
-      },
-      SelectData (a) {
-        this.selectCheck()
-        if (a === 'NowPage') {
-          this.isSelect = 0
-        } else {
-          this.isSelect = 1
-          // this.handleSelectionChange()
-        }
       },
       getGroupDetail () {
         this.$post(groupService.GROUP_DETAIL, { group_id: this.search.group_id })
@@ -201,9 +164,29 @@
             this.group_title = res.data.title
           })
       },
-      handleSelectionChange () {
-        this.$nextTick(() => {
-          this.$refs.multipleTable.toggleRowSelection(this.tableData[3], true)
+      handleSelectionChange (val) {
+        this.selectRow = val
+      },
+      handleDelete (userId, index) {
+        this.$confirm('是否从群组内删除该用户 ', '删除群组', {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '暂不删除',
+          dangerouslyUseHTMLString: true,
+          roundButton: true,
+          customClass: 'userGroupDelConfirm',
+          confirmButtonClass: 'userGroupDelConfirmBtn'
+        }).then(() => {
+          this.$post(groupService.DEL_GROUP_USER, { business_consumer_uids: userId, group_id: this.search.group_id })
+            .then((res) => {
+              // this.tableData.splice(index, 1)
+              setTimeout(() => {
+                this.onSearch()
+              }, 0)
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              })
+            })
         })
       }
     }
@@ -226,23 +209,6 @@
       overflow: hidden;
       .opBtns {
         float: left;
-        .el-dropdown {
-          border: 1px solid rgba(136, 136, 136, 1);
-          border-radius: 17px;
-          transform: translateY(2px);
-          width: 120px;
-          padding: 5.5px;
-          display: inline-block;
-          text-align: center;
-        }
-        .el-button {
-          display: inline-block;
-          width: 120px;
-          height: 100%;
-          text-align: center;
-          border: 1px solid rgba(136, 136, 136, 1);
-          border-radius: 17px;
-        }
       }
       .search {
         float: right;
@@ -274,6 +240,7 @@
           color: rgba(75, 90, 254, 1);
         }
       }
+
       .user_info {
         img {
           float: left;
@@ -285,6 +252,13 @@
         }
         div {
           overflow: hidden;
+          .table_info {
+            display: inline-block;
+            max-width: 90px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
         }
       }
     }
@@ -398,6 +372,20 @@
           }
         }
       }
+
     }
+  }
+
+  .userGroupDelConfirm {
+    border: none;
+    .el-message-box__header {
+      border-top: 6px solid #FC5659;
+    }
+    .userGroupDelConfirmBtn {
+      width: 120px;
+      background-color: #FC5659;
+      color: #222;
+    }
+
   }
 </style>
