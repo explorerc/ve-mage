@@ -35,7 +35,7 @@
       display: inline-block;
       top: -1px;
       width: 20px;
-      height: 20px;
+      height: 100%;
       z-index: 10;
       text-align: left;
       i{

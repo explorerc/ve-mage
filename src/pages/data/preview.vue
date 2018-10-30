@@ -19,7 +19,7 @@
               <i class="up" v-else>▲</i>
               {{Math.abs(vhallRateData.ratio)}}%
             </span>
-              <span>平均
+            <span>平均
               <i class="down" v-if="vhallRateData.average < 0">▼</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(vhallRateData.average)}}%
@@ -59,7 +59,7 @@
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
-              <ve-title width="100px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数"></ve-title>
+              <ve-title width="180px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数"></ve-title>
             </div>
             <ve-circle style="margin-top: 10px;" d="120px" :tips="'互动得分='+activityScoreData.interact+'分（满分100分）'"
                        :value="activityScoreData.interact"></ve-circle>
@@ -221,7 +221,9 @@
     </div>
     <div class="data-pad">
       <div class="chart-box">
-        <p class="title">用户旅途</p>
+        <p class="title">
+          <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径"></ve-title>
+        </p>
         <div id="myChart" style="height: 500px;margin-bottom: 50px;"></div>
       </div>
     </div>
@@ -229,176 +231,199 @@
 </template>
 
 <script>
-import VeTitle from './ve-title'
-import VeCircle from 'src/components/ve-circle'
-import dataService from 'src/api/data-service'
-import { sankey, pieOne } from 'src/utils/chart-tool'
+  import VeTitle from './ve-title'
+  import VeCircle from 'src/components/ve-circle'
+  import dataService from 'src/api/data-service'
+  import { sankey, pieOne } from 'src/utils/chart-tool'
 
-export default {
-  name: 'preview',
-  components: { VeTitle, VeCircle },
-  data () {
-    return {
-      activityId: '',
-      vhallRateData: {
-        'value': 0,
-        'ratio': 0,
-        'average': 0
-      },
-      activityScoreData: {
-        'viewer': 0,
-        'watchDuration': 0,
-        'spread': 0,
-        'extension ': 0,
-        'interact': 0
-      },
-      watcherCountData: {
-        'watch': {
+  export default {
+    name: 'preview',
+    components: { VeTitle, VeCircle },
+    data () {
+      return {
+        activityId: '',
+        vhallRateData: {
           'value': 0,
           'ratio': 0,
           'average': 0
         },
-        'viewer': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
+        activityScoreData: {
+          'viewer': 0,
+          'watchDuration': 0,
+          'spread': 0,
+          'extension ': 0,
+          'interact': 0
         },
-        'newUser': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
+        watcherCountData: {
+          'watch': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'viewer': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'newUser': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'newGoodUser': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          }
         },
-        'newGoodUser': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
+        watchCoefficientData: {
+          'watchTime': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'extension': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'spread': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          },
+          'interactint': {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          }
         }
+      }
+    },
+    beforeDestroy () {
+      window.callbackResize = null
+      if (this.userTrailChart) {
+        this.userTrailChart.dispose()
+      }
+    },
+    created () {
+      this.activityId = this.$route.params.id
+      this.initPage()
+      window.callbackResize = () => {
+        // 重新绘制
+        if (this.userTrailChart) {
+          this.userTrailChart.resize()
+        }
+      }
+    },
+    methods: {
+      initPage () {
+        // 微吼指数
+        this.vhallRate()
+        // 用户观看统计
+        this.activityScore()
+        // 用户观看统计
+        this.watcherCount()
+        // 观看影响系数因子
+        this.watchCoefficient()
+        // 用户旅途
+        this.renderChart()
       },
-      watchCoefficientData: {
-        'watchTime': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
-        },
-        'extension': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
-        },
-        'spread': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
-        },
-        'interactint': {
-          'value': 0,
-          'ratio': 0,
-          'average': 0
+      vhallRate () {
+        this.$get(dataService.GET_PREVIEW_COUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200) {
+            this.vhallRateData = res.data
+            this.$nextTick(() => {
+              pieOne('chartVallId', this.vhallRateData.value)
+            })
+          }
+        })
+      },
+      activityScore () {
+        this.$get(dataService.GET_PREVIEW_SCORE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.activityScoreData = res.data
+        })
+      },
+      watcherCount () {
+        this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.watcherCountData = res.data
+        })
+      },
+      watchCoefficient () {
+        this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.watchCoefficientData = res.data
+        })
+      },
+      renderChart () {
+        this.$get(dataService.GET_PREVIEW_USER_TRIP, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200) {
+            this.randerUserTrailChart(res.data)
+          }
+        })
+      },
+      /* 绘制用户旅途 */
+      randerUserTrailChart (data) {
+        if (data.sourceList && data.sourceList.length > 0) {
+          let keyDatas = []
+          let links = []
+          data.sourceList.forEach((item) => {
+            keyDatas.push({
+              name: item.source + '',
+              showName: item.sourceName,
+              value: item.value
+            })
+          })
+          data.sourceLinks.forEach((item) => {
+            links.push({
+              source: item.source + '',
+              sourceName: item.sourceName,
+              target: item.target + '',
+              targetName: item.targetName,
+              value: item.value
+            })
+          })
+          this.$nextTick(() => {
+            this.userTrailChart = sankey('myChart', {
+              data: keyDatas,
+              links: links
+            })
+          })
         }
       }
     }
-  },
-  created () {
-    this.activityId = this.$route.params.id
-    this.initPage()
-  },
-  methods: {
-    initPage () {
-      // 微吼指数
-      this.vhallRate()
-      // 用户观看统计
-      this.activityScore()
-      // 用户观看统计
-      this.watcherCount()
-      // 观看影响系数因子
-      this.watchCoefficient()
-      // 用户旅途
-      this.renderChart()
-    },
-    vhallRate () {
-      this.$get(dataService.GET_PREVIEW_COUNT, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.vhallRateData = res.data
-        this.$nextTick(() => {
-          pieOne('chartVallId', this.vhallRateData.value)
-        })
-      })
-    },
-    activityScore () {
-      this.$get(dataService.GET_PREVIEW_SCORE, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.activityScoreData = res.data
-      })
-    },
-    watcherCount () {
-      this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.watcherCountData = res.data
-      })
-    },
-    watchCoefficient () {
-      this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.watchCoefficientData = res.data
-      })
-    },
-    renderChart () {
-      this.$get(dataService.GET_PREVIEW_USER_TRIP, {
-        activityId: this.activityId
-      }).then((res) => {
-        let keyDatas = []
-        let links = []
-        res.data.sourceList.forEach((item) => {
-          keyDatas.push({
-            name: item.source + '',
-            showName: item.sourceName,
-            value: item.value
-          })
-        })
-        res.data.sourceLinks.forEach((item) => {
-          links.push({
-            source: item.source + '',
-            sourceName: item.sourceName,
-            target: item.target + '',
-            targetName: item.targetName,
-            value: item.value
-          })
-        })
-        this.$nextTick(() => {
-          sankey('myChart', {
-            data: keyDatas,
-            links: links
-          })
-        })
-      })
-    }
   }
-}
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-.preview {
-  .item-container {
-    .vhall-item /deep/ {
-      height: 180px;
-      width: 300px;
-      .item-mid {
-        height: 90px;
-        line-height: 80px;
+  .preview {
+    .item-container {
+      .vhall-item /deep/ {
+        height: 180px;
+        width: 300px;
+        .item-mid {
+          height: 90px;
+          line-height: 80px;
+        }
+        .ve-title {
+          padding: 10px 0;
+        }
       }
-      .ve-title {
-        padding: 10px 0;
+      .spread {
+        margin-left: 20px;
+        height: 180px;
+        width: calc(100% - 320px);
       }
-    }
-    .spread {
-      margin-left: 20px;
-      height: 180px;
-      width: calc(100% - 320px);
     }
   }
-}
+
 </style>

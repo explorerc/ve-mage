@@ -6,5 +6,7 @@ export default {
   USER_LISTS: '/common/group/user-lists', // 分组成员列表
   GROUP_DETAIL: '/common/group/detail', // 分组成员详情
   ALL_TAGS: '/common/tag/all-lists', // 标签列表
-  ALL_GROUPS: '/common/group/all-lists'// 分组列表
+  ALL_GROUPS: '/common/group/all-lists', // 分组列表
+  DEL_GROUP_USER: '/common/group/user-delete', // 删除成员
+  VALI_TITLE: '/common/group/check-title' // 验证分组标题是否存在
 }

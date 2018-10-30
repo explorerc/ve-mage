@@ -13,7 +13,7 @@
     <template v-else>
       <span class="v-content">
         {{content === '' ? '无' : content}}
-        <i class="iconfont icon-duigou1" @click="modify(content)"></i>
+        <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
   </div>
