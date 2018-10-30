@@ -19,7 +19,7 @@
                     {{user.sex}}
                   </span>
                   <span>
-                    ID:{{user.business_consumer_uid}}
+                    ID: v{{user.business_consumer_uid}}
                   </span>
                   <span>
                     |
@@ -54,9 +54,17 @@
                     <span class="v-content">
                     {{user.email}}
                     </span>
-                    <span class="v-type">
-                      导入
-                    </span>
+                    <i class="iconfont icon-duigou1"></i>
+                    <div class="v-emails" v-if="user.email_list.length > 0">
+                      <div class="v-email" v-for="item in user.email_list" :key="item.consumer_email_id">
+                        <span class="v-email-content">
+                          {{item.email}}
+                        </span>
+                        <span class="v-label">
+                          {{typeEmail(item.type)}}
+                        </span>
+                      </div>
+                    </div>
                   </span>
                 </div>
                 <div class="v-info">
@@ -211,7 +219,11 @@ export default {
         nickname: '', // 昵称
         phone: '', // 手机
         email: '', // 邮箱
-        email_list: [], // 邮箱
+        email_list: [{
+          consumer_email_id: 1,
+          email: '123@123.com',
+          type: 'APPLY'
+        }], // 邮箱
         wx_open_id: '', // 微信
         birthday: '2018-12-08', // 生日
         industry: '黄金糕', // 行业
@@ -275,6 +287,7 @@ export default {
   },
   created () {
     this.getCustomerDetail()
+    // console.log(this.user.emails)
   },
   methods: {
     saveInfo (val, type) {
@@ -308,6 +321,21 @@ export default {
           }
         })
       })
+    },
+    typeEmail (type) {
+      let strType = ''
+      switch (type) {
+        case 'APPLY':
+          strType = '报名'
+          break
+        case 'SURVEY':
+          strType = '问卷'
+          break
+        default:
+          strType = '导入'
+          break
+      }
+      return strType
     }
   }
 }
@@ -343,8 +371,12 @@ export default {
   .v-user-info {
     widows: 800px;
     min-height: 500px;
-    overflow: hidden;
+    // overflow: hidden;
     position: relative;
+    .tt {
+      overflow: hidden;
+      position: relative;
+    }
     .left {
       float: left;
       padding-bottom: 2333px;
@@ -355,7 +387,7 @@ export default {
         border: 1px solid #e2e2e2;
         padding: 0 25px;
         border-radius: 4px;
-        overflow: hidden;
+        // overflow: hidden;
       }
       .box1 {
         padding: 30px 0 20px;
@@ -398,6 +430,7 @@ export default {
         border-bottom: 1px solid #e2e2e2;
         font-size: 14px;
         .v-info {
+          position: relative;
           min-height: 40px;
           line-height: 40px;
           span {
@@ -415,6 +448,10 @@ export default {
             margin-left: 46px;
             &.v-fist {
               margin-left: 0px;
+              .v-content {
+                display: inline-block;
+                width: 142px;
+              }
             }
             .v-type {
               font-size: 12px;
@@ -422,6 +459,56 @@ export default {
               position: absolute;
               left: 0;
               bottom: -17px;
+            }
+          }
+          .iconfont {
+            &:hover {
+              & + .v-emails {
+                display: block;
+              }
+            }
+          }
+          .v-emails {
+            position: absolute;
+            padding: 12px 13px;
+            background-color: #313131;
+            box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            z-index: 2;
+            font-size: 14px;
+            color: #fff;
+            top: 35px;
+            right: -95px;
+            display: none;
+            &::after {
+              display: block;
+              position: absolute;
+              content: '';
+              height: 0px;
+              width: 0px;
+              top: -5px;
+              left: 50%;
+              margin-left: -2.5px;
+              border-width: 0 5px 5px;
+              border-style: solid;
+              border-color: transparent transparent #313131;
+            }
+            .v-email {
+              line-height: 24px;
+            }
+            .v-email-content {
+              display: inline-block;
+              max-width: 180px;
+              margin-right: 12px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .v-label {
+              color: #fff;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
         }
@@ -541,14 +628,32 @@ export default {
         border-radius: 4px;
         .com-tabs {
           width: 100%;
+          display: flex;
+          flex-direction: column;
+          .tab-container {
+            flex: 1;
+            height: 100%;
+          }
           .tab-header {
             margin-bottom: 0;
             border-bottom: 1px solid #e2e2e2;
             padding: 0 25px;
+            height: 60px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            right: 0;
           }
           .tab-content {
             padding: 30px;
+            height: 100%;
+            padding-top: 90px;
             .v-footprints {
+              position: relative;
+              width: 100%;
+              overflow: hidden;
+              height: calc(100%);
               .v-footprint {
                 height: 100px;
                 position: relative;
@@ -557,7 +662,7 @@ export default {
                   color: #888;
                   margin-bottom: 15px;
                 }
-                &:nth-last-child(2) {
+                &:last-child {
                   .v-border {
                     display: none;
                   }
@@ -569,9 +674,14 @@ export default {
                   border-radius: 50px;
                   width: 90px;
                   height: 30px;
-                  line-height: 28px;
+                  line-height: 27px;
                   text-align: center;
                   margin-left: 20px;
+                  &:hover {
+                    border-color: #4b5afe;
+                    background-color: #4b5afe;
+                    color: #fff;
+                  }
                 }
                 .iconfont {
                   position: absolute;

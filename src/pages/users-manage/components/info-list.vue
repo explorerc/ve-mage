@@ -29,6 +29,132 @@
           <a :href="PUBLIC_PATH+'subscribe/'+itemData.behavior_id">查看</a>
         </div>
       </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
+      <li class="clearfix">
+        <div class="v-activity-content v-name">
+          活动标题
+        </div>
+        <div class="v-activity-content v-time">
+          2018-07-24 12:24:23
+        </div>
+        <div class="v-activity-content v-type">
+          报名
+        </div>
+        <div class="v-activity-content v-operation">
+          <a :href="PUBLIC_PATH+'subscribe/666'">查看</a>
+        </div>
+      </li>
     </ol>
     <div class="pagination-box">
       <div class="page-pagination"
