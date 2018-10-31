@@ -139,10 +139,10 @@
         <div>
           <!-- <span>直播</span> -->
           <ol>
-            <li>问卷</li>
-            <li>红包雨</li>
-            <li>商品推荐</li>
-            <li>推荐卡片</li>
+            <li @click="linkTo($event,'/salesTools/questionnaire/')">问卷</li>
+            <li @click="linkTo($event,'/salesTools/redpack/')">红包雨</li>
+            <li @click="linkTo($event,'/salesTools/recommendGoods/')">商品推荐</li>
+            <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
         </div>
         <div>
@@ -455,7 +455,7 @@
       <div class="item living">
         <p class='block-separte'>直播</p>
         <div class="card-list clearfix">
-          <div class='item ques' @click="linkTo($event,'/liveMager/playBack/')">
+          <div class='item ques' @click="linkTo($event,'/salesTools/questionnaire/')">
             <div class="card">
               <div class='pic'>
               </div>
@@ -476,7 +476,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item redpack' @click="linkTo($event,'/liveMager/playBack/')">
+          <div class='item redpack' @click="linkTo($event,'/salesTools/redpack/')">
             <div class="card">
               <div class='pic'>
               </div>
@@ -497,7 +497,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item goods' @click="linkTo($event,'/liveMager/playBack/')">
+          <div class='item goods' @click="linkTo($event,'/salesTools/recommendGoods/')">
             <div class="card">
               <div class='pic'>
               </div>
@@ -518,7 +518,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item cards' @click="linkTo($event,'/liveMager/playBack/')">
+          <div class='item cards' @click="linkTo($event,'/salesTools/recommendCards/')">
             <div class="card">
               <div class='pic'>
               </div>
