@@ -17,6 +17,7 @@ import Button from './components/common/button'
 import Tabs from './components/common/tabs'
 import PlayVideo from './components/common/play-video'
 import Checkbox from './components/common/checkbox'
+import Drag from './components/common/drag'
 import Ajax from './utils/_ajax'
 
 Vue.use(Notification)
@@ -30,6 +31,7 @@ Vue.use(Button)
 Vue.use(Tabs)
 Vue.use(PlayVideo)
 Vue.use(Checkbox)
+Vue.use(Drag)
 Vue.use(Ajax)
 
 console.log(process.env.NODE_ENV)

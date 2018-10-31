@@ -1,6 +1,58 @@
 <template>
   <div>
-    <router-link to="/entry">bbbbb</router-link>
+    <!-- <com-red></com-red> -->
+    <!-- <button @click="addData">add data</button>
+    <button @click="delData">del data</button> -->
+    <div class="test-wrap">
+      <!-- <com-drag class="test-drag"
+                drag-target=".sort"
+                :custom-data="dragData"> -->
+      <com-q v-for="(item,index) in dragData"
+             :value.sync="item"
+             :edit="true"
+             :index="index+1"></com-q>
+      <!-- <com-q></com-q>
+      <com-q></com-q>
+      <com-q></com-q>
+      <com-q></com-q>
+      <com-q></com-q> -->
+      <!-- </com-drag> -->
+      <!-- <com-drag class="test-drag"
+                drag-target=".sort"
+                :custom-data="dragData">
+        <com-qu class="question-item"
+                v-for="(item,index) in dragData"
+                :key="`qu${index}`"
+                :index="index+1"
+                :value.sync="item"
+                @del="remove"></com-qu>
+      </com-drag> -->
+    </div>
+    <div class="test-wrap1">
+      <!-- <com-drag class="test-drag"
+                drag-target=".sort"
+                :custom-data="dragData"> -->
+      <com-q v-for="(item,index) in dragData"
+             :value.sync="item"
+             :index="index+1"></com-q>
+      <!-- <com-q></com-q>
+      <com-q></com-q>
+      <com-q></com-q>
+      <com-q></com-q>
+      <com-q></com-q> -->
+      <!-- </com-drag> -->
+      <!-- <com-drag class="test-drag"
+                drag-target=".sort"
+                :custom-data="dragData">
+        <com-qu class="question-item"
+                v-for="(item,index) in dragData"
+                :key="`qu${index}`"
+                :index="index+1"
+                :value.sync="item"
+                @del="remove"></com-qu>
+      </com-drag> -->
+    </div>
+    <!-- <router-link to="/entry">bbbbb</router-link>
     <com-dialog :visible.sync="show1"
                 header="提示"
                 center
@@ -71,17 +123,216 @@
         <com-tab label="xxxx"
                  :index="3">sdasdasdds</com-tab>
       </com-tabs>
-    </div>
+    </div> -->
+
   </div>
 </template>
 
 <script>
 // import testService from 'src/api/test'
+import { types as QTypes } from 'components/questionnaire/types'
+import red from 'components/red-packet-rain/com'
 import { Toast } from 'components/common/notification'
+import qq from 'components/questionnaire/wrap'
 
 export default {
+  components: {
+    comRed: red,
+    comQ: qq
+  },
   data () {
     return {
+      tIndex: 0,
+      dragData: [
+        {
+          title: '单选题',
+          errorTip: '',
+          type: QTypes.RADIO,
+          required: false,
+          detail: {
+            list: [
+              {
+                value: '选项'
+              }
+            ]
+          },
+          ext: {
+            name: '单选题'
+          }
+        },
+        {
+          title: '多选题',
+          errorTip: '',
+          type: QTypes.CHECKBOX,
+          value: [],
+          required: false,
+          detail: {
+            list: [
+              {
+                value: '选项'
+              }
+            ]
+          },
+          ext: {
+            name: '多选题'
+          }
+        },
+        {
+          title: '下拉题',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: false,
+          detail: {
+            list: [
+              {
+                value: '选项'
+              }
+            ]
+          },
+          ext: {
+            name: '下拉题'
+          }
+        },
+        {
+          title: '问答题',
+          errorTip: '',
+          type: QTypes.TEXT,
+          style: '',
+          required: false,
+          detail: {
+            format: 'textarea',
+            max: 300
+          },
+          ext: {
+            name: '问答题'
+          }
+        },
+        {
+          title: '姓名',
+          errorTip: '',
+          type: QTypes.TEXT,
+          required: false,
+          detail: {
+            format: 'text',
+            max: 10
+          },
+          ext: {
+            name: '姓名'
+          }
+        },
+        {
+          title: '手机号',
+          errorTip: '',
+          type: QTypes.TEXT,
+          required: false,
+          detail: {
+            format: 'mobile'
+          },
+          verification: 'Y',
+          ext: {
+            name: '手机号'
+          }
+        },
+        {
+          title: '邮箱',
+          errorTip: '',
+          type: QTypes.TEXT,
+          required: false,
+          detail: {
+            format: 'email',
+            max: 30
+          },
+          ext: {
+            name: '邮箱'
+          }
+        },
+        {
+          title: '性别',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: [
+            {
+              value: '男'
+            },
+            {
+              value: '女'
+            }
+          ],
+          ext: {
+            fixedness: true,
+            name: '性别'
+          }
+        },
+        {
+          title: '生日',
+          errorTip: '',
+          type: QTypes.DATE,
+          required: true,
+          ext: {
+            name: '生日'
+          }
+        },
+        // {
+        //   title: '地域',
+        //   errorTip: '',
+        //   type: QTypes.AREA,
+        //   required: true,
+        //   ext: {
+        //     name: '地域'
+        //   }
+        // },
+        {
+          title: '行业',
+          errorTip: '',
+          type: QTypes.INDUSTRY,
+          required: true,
+          ext: {
+            name: '行业'
+          }
+        },
+        {
+          title: '职位',
+          type: QTypes.TEXT,
+          required: true,
+          detail: {
+            format: 'text',
+            max: 10
+          },
+          ext: {
+            name: '职位'
+          }
+        },
+        {
+          title: '教育水平',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '博士'
+              },
+              {
+                value: '硕士'
+              },
+              {
+                value: '本科'
+              },
+              {
+                value: '大专'
+              },
+              {
+                value: '高中'
+              }
+            ]
+          },
+          ext: {
+            fixedness: true,
+            name: '教育水平'
+          }
+        }
+      ],
       at: 1,
       tabValue: 1,
       tabValue1: '1',
@@ -110,6 +361,19 @@ export default {
     // })
   },
   methods: {
+    remove (index) {
+
+    },
+    addData () {
+      this.dragData.push({
+        value: `aaa${this.tIndex}`,
+        index: this.tIndex
+      })
+      this.tIndex++
+    },
+    delData () {
+      this.dragData.pop()
+    },
     beforeClose (aa) {
       console.log('xxxxxxxxxxxxxx')
       aa()
@@ -162,9 +426,40 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+.test-drag {
+  margin: 20px 0 0 100px;
+  width: 600px;
+  height: 600px;
+  overflow: auto;
+  .custom-item {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border: 1px solid #dadada;
+    border-bottom: 0;
+    cursor: pointer;
+  }
+  .com-drag > div:nth-last-child(1) {
+    border-bottom: 1px solid #dadada;
+  }
+}
 .test-wrap {
-  padding: 20px;
+  width: 600px;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  bottom: 10px;
+  overflow: auto;
+}
+.test-wrap1 {
+  width: 600px;
+  position: absolute;
+  top: 10px;
+  left: 640px;
+  bottom: 10px;
+  overflow: auto;
 }
 .test-footer {
   padding: 10px 0;
