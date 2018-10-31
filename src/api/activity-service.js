@@ -1,4 +1,3 @@
-
 const ActivityManger = {
   /**
    *  查询直播列表
@@ -121,6 +120,8 @@ const ActivityManger = {
    */
   GET_PLAYBACK_INFO: '/frontend/replay/default-replay',
   // 获取主持人在线状态
-  GET_HOSTING: '/manage/role-manage/check-host-online'
+  GET_HOSTING: '/manage/role-manage/check-host-online',
+  // 获取标签列表
+  GET_TAG_LIST: '/manage/tags/list-tags'
 }
 export default ActivityManger

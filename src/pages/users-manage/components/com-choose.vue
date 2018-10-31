@@ -8,13 +8,14 @@
       </div>
       <div class="content">
         <div class="search-box">
-          <input class='inp' v-model="searchVal" @keyup.enter='search' :placeholder="`输入${name}名称`"></input>
+          <input class='inp' v-model="searchVal" @keyup.enter='search' :placeholder="`输入${name}名称`" />
         </div>
-        <el-checkbox-group v-model="checkedData" :max="max" :class='"data-list"'>
-          <el-checkbox v-for="(item,idx) in data" :label="item" :key="idx">{{item}}</el-checkbox>
+        <el-checkbox-group v-model="restoreData.id" :max="max" :class='"data-list"'>
+          <span class='loading' v-if="dataList.length <=0 ">加载中...</span>
+          <el-checkbox v-for="(item,idx) in dataList" :label="item.id" :key="idx" :checked="item.checked" @change='selectCheck($event,item.id)'>{{item.name}}</el-checkbox>
         </el-checkbox-group>
         <div class="foot-box">
-          <span class='count'>已选择 <i :class="{'max':checkedData.length === max}">{{checkedData.length}}</i> 场{{name}}</span>
+          <span class='count'>已选择 <i :class="{'max':restoreData.id.length === max}">{{restoreData.id.length}}</i> 个{{name}}</span>
           <el-button  class='primary-button confirm' @click='confirm'>确定</el-button>
         </div>
       </div>
@@ -23,25 +24,93 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
       searchVal: '',
-      checkedData: []
+      restoreData: {
+        id: [],
+        name: []
+      },
+      dataList: [],
+      groupListData: [
+        // {
+        //   name: '互联网客户 (460人）',
+        //   id: 1,
+        //   checked: false
+        // }
+      ],
+      tagListData: [
+        // {
+        //   name: '年龄/00后',
+        //   id: 1,
+        //   checked: false
+        // }
+      ],
+      activelistData: [
+        // {
+        //   name: '百度人工智能大会发布芯片',
+        //   id: 1,
+        //   checked: false
+        // }
+      ]
     }
   },
+  created () {
+    this.restoreData = this.checkedData
+  },
+  mounted () {
+    switch (this.name) {
+      case '活动':
+        if (this.list.length) {
+          this.activelistData = this.list
+        } else {
+          this.queryActList()
+        }
+        this.dataList = this.activelistData
+        break
+      case '标签':
+        if (this.list.length) {
+          this.tagListData = this.list
+        } else {
+          this.queryTaglist()
+        }
+        this.dataList = this.tagListData
+        break
+      case '固定群组':
+        if (this.list.length) {
+          this.groupListData = this.list
+        } else {
+          this.queryGrouplist()
+        }
+        this.dataList = this.groupListData
+        break
+    }
+  },
+  computed: {
+    // checkedData () {
+    //   this.restoreData.checkedId = this.checkedData
+    // }
+  },
   props: {
-    data: {
+    list: { // 传进来的数据 没有会自动请求替换
       type: Array,
       default () {
         return []
       }
     },
-    max: {
+    checkedData: { // 已选中的组别ID
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    max: { // 最大选中数量
       type: Number,
       default: 3
     },
-    name: {
+    name: { // 选择弹窗名称
       type: String,
       default: ''
     }
@@ -51,15 +120,88 @@ export default {
       this.$emit('handleClick', {
         action: 'cancel'
       })
-      this.checkedData = []
+      // this.checkedData = []
     },
     confirm () {
-      this.$emit('selectConfirm', this.checkedData)
+      this.$emit('selectComConfirm', this.restoreData)
       this.close()
     },
     search () {
       this.$emit('searchHandler', this.searchVal)
-      this.checkedData = []
+      // this.checkedData = []
+    },
+    selectCheck (res, id) {
+      const data = {
+        isChecked: res,
+        id: id
+      }
+      // this.$emit('selectCom', data)
+      this.regroupData(data, this.dataList)
+    },
+    regroupData (data, findArray) {
+      findArray.forEach((item, idx) => {
+        if (item.id === data.id) {
+          findArray[idx].checked = data.isChecked
+          if (data.isChecked) {
+            this.restoreData.name.push(item.name)
+          } else {
+            this.restoreData.name.forEach((element, count) => {
+              if (element === item.name) {
+                this.restoreData.name.splice(count, 1)
+              }
+            })
+          }
+          // console.log(this.restoreData)
+        }
+      })
+    },
+    // 查询标签
+    queryTaglist (keyword) {
+      this.$get(userManage.GET_TAG_LIST, {
+        keyword: this.searchVal
+      }).then((res) => {
+        console.log(res.data.list)
+        res.data.list.forEach(item => {
+          this.tagListData.push({
+            name: item.tag_name,
+            id: item.tag_id,
+            checked: false
+          })
+        })
+      })
+    },
+    // 查询群组
+    queryGrouplist (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal,
+        type: '2'
+      }).then((res) => {
+        res.data.list.forEach(item => {
+          this.groupListData.push({
+            name: item.title + `(${item.user_count})`,
+            id: item.group_id,
+            checked: false
+          })
+        })
+      })
+    },
+    // 查询活动
+    queryActList () {
+      const data = {
+        keyword: this.searchVal,
+        page: 1,
+        pageSize: 30
+      }
+      this.$get(userManage.GET_ACTIVE_LIST, data).then((res) => {
+        console.log(res.data.list)
+        res.data.list.forEach(item => {
+          this.activelistData.push({
+            name: item.title,
+            id: item.id,
+            checked: false
+          })
+        })
+      })
     }
   }
 }
@@ -124,6 +266,15 @@ export default {
       margin: 20px 0 20px 0;
       height: 250px;
       overflow-y: scroll;
+      .loading {
+        display: block;
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        color: $color-font;
+        font-size: 14px;
+      }
       label {
         margin: 0;
         display: block;
@@ -146,6 +297,7 @@ export default {
       }
     }
     .search-box {
+      line-height: 34px;
       .inp {
         width: 220px;
         padding: 0 15px;

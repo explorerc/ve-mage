@@ -40,21 +40,6 @@
           <li class='handle'>操作</li>
         </ul>
         <ol class='table-content'>
-          <!-- <li class='clearfix'>
-              <div class='spe'>
-                <el-select v-model="phone" disabled placeholder="请选择">
-                  <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
-                  </el-option>
-                </el-select>
-              </div>
-              <div>
-                <com-input class='inp' value="手机号" disabled :max-length="16"></com-input>
-              </div>
-              <div>
-                <com-input class='inp' value="请输入手机号" disabled :max-length="16"></com-input>
-              </div>
-              <div><div class='tips-box'><i class='el-icon-question tips' @mouseover='showTips=true' @mouseout='showTips=false'></i><div class='tips-txt' v-if='showTips'>1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写 手机号之后，须进行手机号验证</div></div></div>
-            </li> -->
           <li class='clearfix' v-for="(item,idx) in quesData" :key="idx">
             <div v-if="item.type === 'mobile'" class='spe moblie'>
               <i class='star'>*</i>
@@ -73,7 +58,8 @@
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div> -->
             <div>
-              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" placeholder="请输入信息描述"></com-input>
+              <!-- <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" placeholder="请输入信息描述"></com-input> -->
+              <com-input class='inp' value=""  :max-length="8" :placeholder="item.placeholder"></com-input>
             </div>
             <div v-if="item.type === 'mobile'" class='del-box'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
@@ -225,7 +211,7 @@
         this.canPaas = false
         let obj = {
           title: '标题',
-          placeholder: '描述描述',
+          placeholder: '请输入描述信息',
           label: '文本',
           type: 'text',
           detail: []

@@ -45,7 +45,8 @@ export default {
   },
   computed: {
     ...mapState('login', {
-      isLogin: state => state.isLogin
+      isLogin: state => state.isLogin,
+      accountInfo: state => state.accountInfo
     }),
     avatarImg: function () {
       return this.avatar ? this.$imgHost + '/' + this.avatar : ''
@@ -55,17 +56,27 @@ export default {
     EventBus.$on('avatarChange', (val) => {
       this.avatar = val
     })
+    if (this.accountInfo && this.accountInfo.userName) {
+      this.name = this.accountInfo.name
+      this.avatar = this.accountInfo.avatar
+    }
+  },
+  watch: {
+    'accountInfo.userName': {// 观看端 是否已登陆
+      handler (newValue) {
+        this.name = this.accountInfo.name
+        this.avatar = this.accountInfo.avatar
+      },
+      deep: true
+    }
   },
   mounted () {
-    let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-    if (accountInfo && accountInfo.userName) {
-      this.name = accountInfo.name
-      this.avatar = accountInfo.avatar
-    }
+    // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
   },
   methods: {
     ...mapMutations('login', {
-      setIsLogin: types.UPDATE_IS_LOGIN
+      setIsLogin: types.UPDATE_IS_LOGIN,
+      setAccountInfo: types.ACCOUNT_INFO
     }),
     changeState (event) {
       if (event.target.id === 'preventClick') return false
@@ -74,8 +85,8 @@ export default {
     logOff () {
       this.$post(userService.POST_LOGOUT).then((res) => {
         sessionStorage.removeItem('isLogin')
-        sessionStorage.removeItem('accountInfo')
-        sessionStorage.removeItem('contactInfo')
+        // sessionStorage.removeItem('accountInfo')
+        // sessionStorage.removeItem('contactInfo')
         this.setIsLogin(0)
         this.$router.replace('/login')
       })

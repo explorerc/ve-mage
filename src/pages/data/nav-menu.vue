@@ -38,10 +38,10 @@
   .nav-menu-box {
     display: inline-block;
     text-align: center;
-    height: 40px;
-    line-height: 40px;
+    height: 30px;
+    line-height: 30px;
     font-size: 0;
-    border-radius: 4px;
+    border-radius: 15px;
     border: solid 1px #e2e2e2;
     box-sizing: border-box;
     overflow: hidden;
@@ -51,6 +51,7 @@
       font-size: 14px;
       padding: 0 20px;
       border-right: solid 1px #e2e2e2;
+      min-width: 70px;
       &:last-child {
         border-right: none;
       }

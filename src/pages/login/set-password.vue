@@ -43,6 +43,8 @@
 </template>
 <script>
 import userService from 'src/api/user-service'
+import { mapMutations, mapState } from 'vuex'
+import * as types from 'src/store/mutation-types'
 export default {
   data () {
     return {
@@ -70,7 +72,15 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    })
+  },
   methods: {
+    ...mapMutations('login', {
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
     messageBoxClick (e) {
       if (e.action === 'confirm') {
         if (!this.isChecked) {
@@ -82,10 +92,10 @@ export default {
         }
         this.$config({ handlers: true }).$post(userService.POST_SET_PASSWORD, data).then((res) => {
           this.isWarning = false
-          let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-          if (accountInfo) {
-            accountInfo.hasPassword = true
-            sessionStorage.setItem('accountInfo', JSON.stringify(accountInfo))
+          if (this.accountInfo && this.accountInfo.hasPassword) {
+            let temp = JSON.parse(JSON.stringify(this.accountInfo))
+            temp.hasPassword = true
+            this.setAccountInfo(temp)
           }
           this.$router.replace('/liveMager/list')
         }).catch((err) => {

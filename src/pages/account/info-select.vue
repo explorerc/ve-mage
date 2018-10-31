@@ -63,7 +63,6 @@ export default {
     }
   },
   created () {
-    console.log(this.selectChildId)
     this.selectedVals.inputValueSedId = this.selectId
     this.selectedVals.inputValueSedId = this.industrySecondId
   },
