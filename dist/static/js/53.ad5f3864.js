@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[53],{625:function(e,n,t){},809:function(e,n,t){"use strict";var s=t(625);t.n(s).a},837:function(e,n,t){"use strict";t.r(n);var s=function(){var e=this.$createElement;return(this._self._c||e)("div",[this._v("商品推荐")])};s._withStripped=!0;var i={},o=(t(809),t(2)),r=Object(o.a)(i,s,[],!1,null,null,null);r.options.__file="src/pages/sales-tools/recommend-goods/index.vue";n.default=r.exports}}]);
-//# sourceMappingURL=53.ad5f3864.js.map
