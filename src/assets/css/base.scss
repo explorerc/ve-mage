@@ -28,11 +28,7 @@ table {
   padding: 0;
 }
 
-i {
-  font-style: normal;
-}
-
-em {
+em,i {
   font-style: normal;
 }
 
@@ -103,6 +99,14 @@ ol {
 
 .fs0 {
   font-size: 0;
+}
+
+.flex{
+  display: flex;
+}
+
+.box{
+  box-sizing: border-box;
 }
 
 embed,

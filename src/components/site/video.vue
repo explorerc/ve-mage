@@ -1,28 +1,42 @@
 <template>
-  <div class="video-container" v-if="value.enable">
-    <div ref="target" class="video-content">
-      <div v-if="value.videoType==='upload'" id="myVideo" class="video-wrap"></div>
-      <div v-if="value.videoType==='url'" v-html="value.url" class="iframe-wrap"></div>
+  <div class="video-container"
+       v-if="value.enable">
+    <div ref="target"
+         class="video-content">
+      <div v-if="value.videoType==='upload'"
+           :id="videoId"
+           class="video-wrap"></div>
+      <div v-if="value.videoType==='url'"
+           v-html="value.url"
+           class="iframe-wrap"></div>
     </div>
     <com-edit ref="editTarget" class="video-edit-content">
+      <div class="nav-blank-title">视频</div>
+      <label class='label-spe  label-spe-inner'>视频类型</label>
       <com-tabs :value="value.videoType" @change="checkInit">
-        <com-tab index="upload" >
-          <div slot="label"><el-radio v-model="value.videoType" label="upload">上传视频</el-radio></div>
+        <com-tab index="upload">
+          <div slot="label">
+            <el-radio v-model="value.videoType" label="upload">上传视频</el-radio>
+          </div>
           <div class="upload-field">
-            <com-button @click="doUpload">上传视频</com-button>
-            <el-progress v-if="percentVideo" type="circle" :percentage="percentVideo"></el-progress>
-            <span>{{uploadErrorMsg}}</span>
+            <div class='upload-video-box' @click="doUpload">
+              <i class="upload-video-icon"></i>
+              <span class='desc' >{{uploadErrorMsg}}</span>
+              <span v-if="percentVideo" class="progress"><i  :style="{ 'width':`${percentVideo}%` }"></i></span>
+            </div>
             <div class="hide">
-              <input type="file" ref="upload" id="upload"/>
-              <input type="text" id='rename'>
-              <button ref="confirmUpload" id="confirmUpload" class="saveBtn"></button>
+              <input type="file" ref="upload" :id="uploadId"/>
+              <input type="text" :id='nameId'>
+              <button ref="confirmUpload" :id="confirmId" class="saveBtn"></button>
             </div>
           </div>
         </com-tab>
-        <com-tab index="url" >
-          <div slot="label"><el-radio v-model="value.videoType" label="url">引用视频</el-radio></div>
+        <com-tab index="url">
+          <div slot="label">
+            <el-radio v-model="value.videoType" label="url">引用视频</el-radio>
+          </div>
           <div>
-            <com-input class="link-input" :rows="6" type="textarea" placeholder="视频url" v-model="value.url"></com-input>
+            <com-input class="link-input" :rows="6" type="textarea" placeholder="请输入嵌入视频url: <iframe src='' frameborder=0 'allowfullscreen'></iframe>" v-model="value.url"></com-input>
           </div>
         </com-tab>
       </com-tabs>
@@ -33,7 +47,7 @@
 <script>
 import editMixin from './mixin'
 import ComEdit from './edit'
-import LiveHttp from 'src/api/activity-manger'
+import activityService from 'src/api/activity-service'
 export default {
   mixins: [editMixin],
   components: {
@@ -41,9 +55,13 @@ export default {
   },
   data () {
     return {
+      uploadId: `vid_upload_${Math.floor(Math.random() * 10000)}`,
+      videoId: `vid_${Math.floor(Math.random() * 10000)}`,
+      confirmId: `vid_confirm_${Math.floor(Math.random() * 10000)}`,
+      nameId: `vid_name_${Math.floor(Math.random() * 10000)}`,
       vhallParams: {},
       percentVideo: 0,
-      uploadErrorMsg: ''
+      uploadErrorMsg: '视频仅支持mp4格式，文件大小不超过200M'
     }
   },
   methods: {
@@ -51,15 +69,16 @@ export default {
       this.$refs.upload.click()
     },
     initVhallUpload () {
-      window.vhallCloudDemandSDK('#upload', {
+      window.vhallCloudDemandSDK(`#${this.uploadId}`, {
         params: {
-          confirmBtn: '#confirmUpload', // 保存按钮的ID
-          name: '#rename',
+          confirmBtn: `#${this.confirmId}`, // 保存按钮的ID
+          name: `#${this.nameId}`,
           sign: this.vhallParams.sign,
           signed_at: this.vhallParams.signedAt,
           app_id: this.vhallParams.appId
         },
         beforeUpload: (file) => {
+          this.uploadErrorMsg = '准备上传...'
           if (file.type !== 'video/mp4') {
             this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
             return false
@@ -67,14 +86,15 @@ export default {
             this.uploadErrorMsg = '视频太大，请不要大于200M'
             return false
           }
-          this.uploadErrorMsg = ''
           this.percentVideo = 0
           return true
         },
         progress: (percent) => {
+          this.uploadErrorMsg = '上传中...'
           this.percentVideo = parseFloat(percent.replace('%', ''))
         },
         uploadSuccess: () => {
+          this.uploadErrorMsg = '上传成功!'
           this.$refs.confirmUpload.click()
         },
         saveSuccess: (res) => {
@@ -98,7 +118,7 @@ export default {
         window.VhallPlayer.init({
           recordId: this.value.recordId, // 回放Id，点播必填，直播不写
           type: 'vod', // 播放类型,必填，live 直播, vod 为点播
-          videoNode: 'myVideo', // 推流视频回显节点id，必填
+          videoNode: this.videoId, // 推流视频回显节点id，必填
           complete: function () {
             // window.VhallPlayer.play()
           },
@@ -116,7 +136,7 @@ export default {
     }
   },
   mounted () {
-    LiveHttp.queryPassSdkInfo().then((res) => {
+    this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
       this.vhallParams = res.data
       /* $nextTick保证dom被渲染之后进行paas插件初始化 */
       this.$nextTick(() => {
@@ -134,6 +154,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import 'assets/css/variable.scss';
 .video-container /deep/ {
   position: relative;
   .video-content {
@@ -150,10 +171,86 @@ export default {
     }
   }
   .video-edit-content {
+    .nav-blank-title {
+      text-align: center;
+      height: 50px;
+      line-height: 50px;
+      border-bottom: 1px solid rgba(226, 226, 226, 1);
+      font-size: 18px;
+      color: $color-font;
+    }
     .upload-field {
     }
     .link-input {
-      width: 400px;
+      width: 300px;
+      margin: 0 auto;
+    }
+    .label-spe {
+      padding: 10px 0px 0px 25px;
+      font-size: 14px;
+      color: $color-font-sub;
+      float: left;
+    }
+    .com-input textarea {
+      width: 300px;
+      margin: 0 auto;
+    }
+  }
+  .video-js .vjs-big-play-button {
+    width: 54px;
+    height: 54px;
+    border-radius: 500px;
+    top: 50%;
+    left: 50%;
+    margin-top: -27px;
+    margin-left: -27px;
+    line-height: 51px;
+  }
+}
+.upload-video-box {
+  cursor: pointer;
+  width: 300px;
+  margin: 0 auto;
+  height: 140px;
+  border: 1px dashed #e2e2e2;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  .upload-video-icon {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 15px auto 10px auto;
+    background-size: cover;
+    background-image: url('~assets/image/upload-video-icon@2x.png');
+  }
+  span.desc {
+    font-size: 14px;
+    line-height: 20px;
+    color: #888;
+    font-size: 14px;
+    width: 200px;
+    white-space: normal;
+    display: inline-block;
+    &.error {
+      color: $color-error;
+    }
+  }
+  span.progress {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background: white;
+    i {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: $color-default;
     }
   }
 }

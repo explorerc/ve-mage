@@ -1,31 +1,52 @@
 <template>
-  <div class="v-editor">
+  <div class="v-editor"
+       :class="classVal">
     <slot></slot>
-    <span class="v-info-label" v-if="!isEdit" :title="value">{{value===''?'无':value}}</span>
+    <span class="v-info-label"
+          v-if="!isEdit"
+          :title="value">{{value===''?'无':value}}</span>
     <template v-else-if="type !== 'readOnly'">
-      <el-select v-if="type === 'select'" v-model="inputValue" :value.sync="inputValue" @change="indexSelect" placeholder="请选择">
-        <el-option
-          v-for="item in selectValue"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-          >
+      <el-select v-if="type === 'select'"
+                 v-model="inputValue"
+                 :value.sync="inputValue"
+                 @change="indexSelect"
+                 placeholder="请选择">
+        <el-option v-for="item in selectValue"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
         </el-option>
       </el-select>
-      <el-select v-if="type === 'select'" v-model="inputValueSed" :value.sync="inputValueSed" placeholder="请选择">
-        <el-option
-          v-for="item in sedSelectValue"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+      <el-select v-if="type === 'select'"
+                 v-model="inputValueSed"
+                 :value.sync="inputValueSed"
+                 placeholder="请选择">
+        <el-option v-for="item in sedSelectValue"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
         </el-option>
       </el-select>
-      <com-input v-else-if="type === 'input'" :value.sync="inputValue" placeholder="" class="v-input" type="input" :max-length="maxLength" @blur="inputBlur()" :error-tips="errorTips"></com-input>
+      <com-input v-else-if="type === 'input'"
+                 :value.sync="inputValue"
+                 placeholder=""
+                 class="v-input"
+                 type="input"
+                 :max-length="maxLength"
+                 @blur="inputBlur()"
+                 :error-tips="errorTips"></com-input>
     </template>
     <template v-if="type !== 'readOnly'">
-      <a href="javascript:;" v-if="!isEdit||clickType!=='save'" @click="modify(clickType)"><span v-if=" (value === '无' || value === '' ) && btnName ==='' ">完善</span><span v-else-if="value !== '' && value !== '' && btnName ==='' ">修改</span><span v-else-if="btnName !=='' ">{{btnName}}</span></a>
-      <a href="javascript:;" v-if="isEdit && clickType==='save'" @click.prevent="save()">保存</a>
-      <a href="javascript:;" v-if="isEdit && clickType==='save'" @click="cancle" class="v-cancle">取消</a>
+      <a href="javascript:;"
+         v-if="!isEdit||clickType!=='save'"
+         @click="modify(clickType)"><span v-if=" (value === '无' || value === '' ) && btnName ==='' ">完善</span><span v-else-if="value !== '' && value !== '' && btnName ==='' ">修改</span><span v-else-if="btnName !=='' ">{{btnName}}</span></a>
+      <a href="javascript:;"
+         v-if="isEdit && clickType==='save'"
+         @click.prevent="save()">保存</a>
+      <a href="javascript:;"
+         v-if="isEdit && clickType==='save'"
+         @click="cancle"
+         class="v-cancle">取消</a>
     </template>
   </div>
 </template>
@@ -45,7 +66,8 @@ export default {
     }, // 修改按钮文案
     maxLength: Number,
     errorTips: String,
-    isEdit: Boolean
+    isEdit: Boolean,
+    classVal: String
   },
   data () {
     return {

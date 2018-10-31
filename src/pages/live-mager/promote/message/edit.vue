@@ -1,6 +1,9 @@
 <template>
-  <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="edit-msg-page live-mager">
+  <div class="content"
+       v-ComLoading="loading"
+       com-loading-text="拼命加载中">
+    <div class="edit-msg-page live-mager"
+         @mousedown="canPass = false">
       <div class="live-title">
         <span class="title">创建短信通知</span>
       </div>
@@ -9,40 +12,76 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>通知标题：</div>
             <div class="from-content">
-              <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="30" :error-tips='errorData.titleError' @focus="errorData.titleError=''"></com-input>
+              <com-input :value.sync="titleValue"
+                         placeholder="请输入标题"
+                         :max-length="15"
+                         :error-tips='errorData.titleError'
+                         @focus="errorData.titleError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title">接收人：</div>
             <div class="from-content">
-              <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
-              <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
-                <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
-                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
+              <el-button class='default-button select-receiver'
+                         @click='selectPersonShow=true'>选择收信人</el-button>
+              <!-- 分组 -->
+              <transition-group name="list"
+                                class="edit-groups"
+                                tag="div"
+                                v-if="selectedGroupList.length">
+                <span class="list-item"
+                      v-for="(person,idx) in selectedGroupList"
+                      :key="person.id">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu"
+                     @click="delGroupPerson(idx)"></i>
+                </span>
+              </transition-group>
+              <!-- 标签 -->
+              <transition-group name="list"
+                                class="edit-groups sec"
+                                tag="div"
+                                v-if="selectedTagList.length">
+                <span class="list-item"
+                      v-for="(tag,idx) in selectedTagList"
+                      :key="tag.id">{{tag.name}}
+                  <i class="iconfont icon-shanchu"
+                     @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信内容：</div>
-            <div class="from-content" @click="errorData.msgError=''">
-              <com-input type="textarea" class="msg-content" :value.sync="msgContent" placeholder="请输入短信内容" :max-length="60" :error-tips='errorData.msgError'  ></com-input>
+            <div class="from-content"
+                 @click="errorData.msgError=''">
+              <com-input type="textarea"
+                         class="msg-content"
+                         :value.sync="msgContent"
+                         placeholder="请输入短信内容"
+                         :max-length="100"
+                         :error-tips='errorData.msgError'></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>短信签名：</div>
             <div class="from-content">
-              <com-input :value.sync="msgTag" placeholder="请输入签名" :max-length="10" :error-tips="errorData.tagError" @focus="errorData.tagError=''"></com-input>
+              <com-input :value.sync="msgTag"
+                         placeholder="请输入签名"
+                         :max-length="10"
+                         :error-tips="errorData.tagError"
+                         @focus="errorData.tagError=''"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>发送时间：</div>
             <div class="from-content">
               <template>
-                <el-radio v-model="sendSetting" label="SEND">立即发送</el-radio>
-                <el-radio v-model="sendSetting" label="AWAIT">定时发送</el-radio>
+                <el-radio v-model="sendSetting"
+                          label="SEND">立即发送</el-radio>
+                <el-radio v-model="sendSetting"
+                          label="AWAIT">定时发送</el-radio>
               </template>
-            <!-- <div class="from-title">发送设置：</div>
+              <!-- <div class="from-title">发送设置：</div>
             <div class="from-content">
               <el-select v-model="sendSetting" placeholder="请选择">
                 <el-option v-for="item in sendOptions" :key="item.value" :label="item.label" :value="item.value">
@@ -51,10 +90,17 @@
             </div> -->
             </div>
           </div>
-          <div class="from-row" v-if='pickDate'>
+          <div class="from-row"
+               v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="date"
+                              :editable="false"
+                              format='yyyy-MM-dd HH:mm:ss'
+                              value-format="yyyy-MM-dd HH:mm:ss"
+                              type="datetime"
+                              placeholder="选择日期时间"
+                              :picker-options="pickerOptions">
               </el-date-picker>
             </div>
           </div>
@@ -66,73 +112,35 @@
             </div>
           </div> -->
           <!-- 模拟手机预览 -->
-          <com-phone :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx='false'></com-phone>
+          <com-phone :date='date'
+                     :wxContent='msgContent'
+                     :msgTag='msgTag'
+                     :isWx='false'></com-phone>
         </div>
         <div class="btn-group">
-          <el-button class='default-button' @click="test">测试发送</el-button>
-          <el-button class='primary-button' @click="save">保存</el-button>
+          <el-button class='default-button'
+                     @click="test">测试发送</el-button>
+          <el-button class='primary-button'
+                     @click="save" :disabled='saveDisabled'>保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
-      <message-box
-        v-if="selectPersonShow"
-        width="740px"
-        type="prompt"
-        header="选择观众组"
-        confirmText='确认'
-        class="select-person"
-        @handleClick="handleSelectPerson">
-        <div class="select-person-box">
-          <div class="select-nav fl">
-            <div class="select-item active">
-              <i class="iconfont icon-fenzu"></i>
-              <span>分组</span>
-            </div>
-            <div class="select-item">
-              <i class="iconfont icon-biaoqian"></i>
-              <span>标签</span>
-            </div>
-          </div>
-          <div class="select-content fl">
-            <div class="search-person-box">
-              <com-input type="search"
-                         class="search-com"
-                         :value.sync="searchPerson"
-                         @keyup.native.enter="searchEnter"
-                         placeholder="输入直播名称"></com-input>
-            </div>
-            <div class="select-person-box">
-              <ul>
-                <li
-                  v-for="(person,idx) in personList"
-                  @click.stop="clickRow(idx)"
-                  :class="{active:person.isChecked}"
-                  :key="person.id">
-                  {{person.name}} ({{person.count}}人）
-                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div slot="bottom" class="select-bottom">
-          <span class="select-all fl">已选择{{selectedCount}}人：</span>
-          <div class="select-list fl" :title="selectedPersonListStr">
-            {{selectedPersonListStr}}
-          </div>
-          <button class="primary-button" @click="okSelectList">确定</button>
-        </div>
-      </message-box>
+      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
     </div>
-
-      <!-- 测试发送弹窗 -->
-      <com-test  v-if='testModal' :msgContent='msgContent' @closeTest='closeTest' :type="'SMS'"></com-test>
-    </div>
+    <!-- 测试发送弹窗 -->
+    <com-test v-if='testModal'
+              :msgContent='msgContent'
+              @closeTest='closeTest'
+              :msgTag="msgTag"
+              :type="'SMS'"></com-test>
+  </div>
   </div>
 </template>
 
 <script>
-import createHttp from 'src/api/activity-manger'
+import userManage from 'src/api/userManage-service'
+import noticeService from 'src/api/notice-service'
+import chooseGroup from 'src/components/com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
 export default {
@@ -177,30 +185,41 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      personList: [{id: '', name: '', count: 0, isChecked: false}],
-      selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
-      selectedPersonListStr: '',
+      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      tagList: [],
+      selectedTagList: [],
+      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupListStr: '',
+      selectedTagListStr: '',
       selectPersonShow: false,
-      selectedCount: 0,
+      checkedData: [],
       errorData: {
         titleError: '',
         msgError: '',
         tagError: ''
       },
-      isValided: false
+      isValided: false,
+      canPass: true,
+      saveDisabled: false,
+      groupIdStr: '',
+      tagIdStr: ''
     }
   },
   created () {
-    this.queryPersonList()
+    this.queryGroupList()
+    this.queryTagList()
     if (this.inviteId) {
-      createHttp.queryMsg(this.inviteId).then((res) => {
+      this.$get(noticeService.GET_QUERY_MSG, {
+        inviteId: this.inviteId
+      }).then((res) => {
         this.titleValue = res.data.title
         this.sendSetting = res.data.status
-        this.date = res.data.sendTime.toString()
+        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
-      }).catch((e) => {
-        console.log(e)
+        setTimeout(() => {
+          this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        }, 500)
       })
     }
   },
@@ -218,34 +237,38 @@ export default {
       this.tagIdx = idx
     },
     save () {
+      this.saveDisabled = true
+      this.canPass = true
       let data = {
         inviteId: this.inviteId,
         activityId: this.$route.params.id,
         title: this.titleValue,
-        groupId: '1', // 分组id
+        groupId: this.groupIdStr, // 分组id
+        tagId: this.tagIdStr,
         status: this.sendSetting.toLowerCase(),
         planTime: this.date,
         desc: this.msgContent,
         signature: this.msgTag
       }
+      if (!this.formValid()) {
+        return false
+      }
       // 更新
-      createHttp.saveMsg(data).then((res) => {
+      this.$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
           content: '保存成功',
           position: 'center'
         })
         // 跳转到列表页面
-        this.$router.push({name: 'promoteMsg', params: {id: this.activitId}})
-      }).catch((res) => {
-        this.$toast({
-          content: '保存失败',
-          position: 'center'
-        })
+        this.canPass = true
+        this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       })
     },
     test () {
-      this.formValid()
+      if (!this.formValid()) {
+        return false
+      }
       this.$nextTick((res) => {
         if (this.isValided) {
           this.testModal = true
@@ -257,44 +280,102 @@ export default {
       this.testModal = false
     },
     /* enter搜索 */
-    searchEnter () {
-      this.queryPersonList()
+    searchEnter (key, flag) {
+      if (flag === 'group') {
+        this.queryGroupList(key)
+      } else {
+        this.queryTagList(key)
+      }
     },
     /* 点击确定 */
     okSelectList () {
       this.selectPersonShow = false
     },
     /* 点击取消 */
-    handleSelectPerson (e) {
-      if (e.action === 'cancel') {
-        this.selectPersonShow = false
-      }
+    close () {
+      this.selectPersonShow = false
     },
-    /* 选中行 */
-    clickRow (idx) {
-      this.personList[idx].isChecked = !this.personList[idx].isChecked
+    /* 删除分组 */
+    delGroupPerson (idx) {
+      const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
+      this.groupList[delIdx].isChecked = false
     },
-    /* 删除标签 */
-    delPerson (idx) {
-      const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
-      this.personList[delIdx].isChecked = false
+    // 标签
+    delTagPerson (idx) {
+      const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
+      this.tagList[delIdx].isChecked = false
     },
-    /* 查询人员 */
-    queryPersonList () {
-      createHttp.queryPersonList({
+    // 查询群组
+    queryGroupList (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal,
+        type: '2'
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
+            isChecked: false
+          })
+        })
+        this.groupList = temArray
+      })
+    },
+    /* 查询标签 */
+    queryTagList (key) {
+      this.$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id,
-        name: this.searchPerson
+        name: key
       }).then((res) => {
         let temArray = []
         res.data.forEach((item) => {
           temArray.push({
             id: item.id,
             name: item.name,
-            count: 0,
             isChecked: false
           })
         })
-        this.personList = temArray
+        this.tagList = temArray
+      })
+    },
+    selectedGroupListfn (arr, str, idStr) {
+      this.selectedGroupListStr = str.substring(0, str.length - 1)
+      this.selectedGroupList = arr
+      this.groupIdStr = idStr
+    },
+    selectedTagListfn (arr, str, idStr) {
+      this.selectedTagListStr = str.substring(0, str.length - 1)
+      this.selectedTagList = arr
+      this.tagIdStr = idStr
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.groupList[idx].isChecked = true
+            this.selectedGroupList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.tagList[idx].isChecked = true
+            this.selectedTagList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
       })
     },
     /* 验证 */
@@ -304,36 +385,76 @@ export default {
       this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
       if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
+        return true
       } else {
         this.isValided = false
+        return false
       }
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   },
   watch: {
     sendSetting: {
       handler (newValue) {
+        this.canPass = true
         newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
       }
-    },
-    personList: {
-      handler (newArray) {
-        let temArray = []
-        let listStr = ''
-        newArray.forEach((item, idx) => {
-          if (!item.isChecked) return
-          temArray.push(item)
-          this.selectedCount += item.count
-          listStr += `${item.name} (${item.count}人）、`
-        })
-        this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
-        this.selectedPersonList = temArray
-      },
-      deep: true
     }
+    // groupList: {
+    //   handler (newArray) {
+    //     let temArray = []
+    //     let listStr = ''
+    //     newArray.forEach((item, idx) => {
+    //       if (!item.isChecked) return
+    //       temArray.push(item)
+    //       this.selectedCount += item.count
+    //       listStr += `${item.name} (${item.count}人）、`
+    //     })
+    //     this.selectedGroupListStr = listStr.substring(0, listStr.length - 1)
+    //     this.selectedGroupList = temArray
+    //   },
+    //   deep: true
+    // },
+    // tagList: {
+    //   handler (newArray) {
+    //     let temArray = []
+    //     let listStr = ''
+    //     newArray.forEach((item, idx) => {
+    //       if (!item.isChecked) return
+    //       temArray.push(item)
+    //       this.selectedCount += item.count
+    //       listStr += `${item.name}、`
+    //     })
+    //     this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
+    //     this.selectedTagList = temArray
+    //   },
+    //   deep: true
+    // }
   },
   components: {
     comTest,
-    comPhone
+    comPhone,
+    chooseGroup
   }
 }
 </script>
@@ -363,7 +484,11 @@ export default {
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 
-.edit-msg-page {
+.edit-msg-page /deep/ {
+  .com-input .limit.area {
+    bottom: 7px;
+    right: 7px;
+  }
   // min-height: 730px;
   position: relative;
   .select-receiver {
@@ -455,6 +580,9 @@ export default {
   .edit-groups {
     margin-top: 15px;
     width: 500px;
+    &.sec {
+      margin-top: 0px;
+    }
     span {
       display: inline-block;
       background-color: #f0f1fe;

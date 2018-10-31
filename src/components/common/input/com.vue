@@ -1,35 +1,47 @@
 <template>
-  <div
-  class="com-input"
-  v-if="type!=='textarea'"
-  >
-    <i v-if="type==='search'" class="iconfont icon-search"></i>
-    <input
-    :type="inputType"
-    :style="style"
-    :class="{error:errorMsg}"
-    :placeholder="placeholder"
-    :disabled="disabled"
-    v-model="innerValue"
-    @focus="focusHandle"
-    @blur="blurHandle"
-    >
-    <i v-if="type==='search'" v-show="showDelete" class="iconfont icon-delete" @click="empty"></i>
-    <i v-if="type==='password'||(type==='password'&&inputType==='text')" class="iconfont" :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}" @click="toggleShow"></i>
-    <span class="limit" v-if="maxLength&&type==='input'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
-    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
+  <div class="com-input"
+       v-if="type!=='textarea'">
+    <i v-if="type==='search'"
+       class="iconfont icon-search"></i>
+    <input :type="inputType"
+           :style="style"
+           :class="{error:errorMsg}"
+           :placeholder="placeholder"
+           :disabled="disabled"
+           v-model="innerValue"
+           @focus="focusHandle"
+           @blur="blurHandle">
+    <i v-if="type==='search'"
+       v-show="showDelete"
+       class="iconfont icon-delete"
+       @click="empty"></i>
+    <i v-if="type==='password'||(type==='password'&&inputType==='text')"
+       class="iconfont"
+       :class="{'icon-guanbi-yanjing':inputType==='password','icon-faxian-yanjing':inputType==='text'}"
+       @click="toggleShow"></i>
+    <span class="limit"
+          v-if="maxLength&&(type==='input'||type==='mobile')">
+      <i class="length">{{isMobile?innerValue.length:innerValue.gbLength()}}</i>/
+      <i>{{maxLength}}</i>
+    </span>
+    <span class="error-msg"
+          v-if="errorMsg">{{errorMsg}}</span>
   </div>
-  <div class="com-input area"  v-else>
-    <textarea
-    ref="tarea"
-    v-model="innerValue"
-    :class="{error:errorMsg}"
-    :placeholder="placeholder"
-    :rows="rows"
-  placeholder="请输入内容"
-    ></textarea>
-    <span class="limit area" v-if="maxLength&&type==='textarea'"><i class="length" v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i></span>
-    <span class="error-msg" v-if="errorMsg">{{errorMsg}}</span>
+  <div class="com-input area"
+       v-else>
+    <textarea ref="tarea"
+              v-model="innerValue"
+              :class="{error:errorMsg}"
+              :placeholder="placeholder ? placeholder: '请输入内容'"
+              :rows="rows"></textarea>
+    <span class="limit area"
+          v-if="maxLength&&type==='textarea'">
+      <i class="length"
+         v-text="innerValue.gbLength()">0</i>/
+      <i>{{maxLength}}</i>
+    </span>
+    <span class="error-msg"
+          v-if="errorMsg">{{errorMsg}}</span>
   </div>
 </template>
 
@@ -54,6 +66,7 @@ export default {
   },
   data () {
     return {
+      isMobile: false,
       innerValue: '',
       showDelete: false,
       inputType: '',
@@ -82,6 +95,7 @@ export default {
     },
     empty () {
       this.innerValue = ''
+      this.$emit('empty')
     },
     toggleShow () {
       if (this.inputType === 'password') {
@@ -99,9 +113,15 @@ export default {
       let type = ''
       switch (this.type) {
         case 'password':
+          this.isMobile = false
           type = 'password'
           break
+        case 'mobile':
+          this.isMobile = true
+          type = 'text'
+          break
         default:
+          this.isMobile = false
           type = 'text'
           break
       }
@@ -110,15 +130,34 @@ export default {
   },
   watch: {
     innerValue (value) {
-      if (this.maxLength && value.gbLength() > this.maxLength) {
+      if (this.isMobile) {
+        this.innerValue = value.replace(/\D/g, '')
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
+      } else if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
       if (this.type === 'textarea' && this.autosize) {
         this.$refs.tarea.style.height = 'auto'
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
+      if (value.gbLength() === 0) {
+        this.limitColor = '#555'
+      } else {
+        this.limitColor = '#4b5afe'
+      }
       this.$emit('update:value', this.innerValue)
       this.$emit('input', this.innerValue)
+      // if (this.maxLength && value.gbLength() > this.maxLength) {
+      //   this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
+      // }
+      // if (this.type === 'textarea' && this.autosize) {
+      //   this.$refs.tarea.style.height = 'auto'
+      //   this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
+      // }
+      // this.$emit('update:value', this.innerValue)
+      // this.$emit('input', this.innerValue)
     },
     value: {
       handler (value) {
@@ -220,7 +259,9 @@ export default {
     &.area {
       transform: none;
       top: auto;
-      bottom: 10px;
+      bottom: 0;
+      line-height: normal;
+      right: -46px;
     }
   }
   .icon-search {

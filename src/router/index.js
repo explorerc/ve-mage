@@ -1,44 +1,55 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-import account from 'src/api/account-manage'
+import userService from 'src/api/user-service'
+import store from '../store/index'
 
 Vue.use(Router)
 const router = new Router({
   routes,
   mode: 'history',
   scrollBehavior (to, from, savedPosition) {
-    from.meta.scrollTop = document.querySelector('.main-container') ? document.querySelector('.main-container').scrollTop : 0
+    from.meta.scrollTop = document.querySelector('.main-container')
+      ? document.querySelector('.main-container').scrollTop
+      : 0
   }
 })
-
-router.beforeResolve((to, from, next) => {
-  if (to.meta.noLogin) { // 不需要登录
+const vue = new Vue()
+router.beforeEach((to, from, next) => {
+  if (to.meta.noLogin) {
+    // 不需要登录
     let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
     if (to.name === 'login') {
       if (isLogin) {
-        next('/setAccount')
+        next('/liveMager/list')
       } else {
-        account.getAccount({}).then((res) => {
-          if (res.code !== 200) {
-            next('/login')
-            return false
-          } else {
-            next('/setAccount')
-          }
-        })
+        vue
+          .$config({
+            loading: true,
+            handlers: true
+          })
+          .$get(userService.GET_ACCOUNT)
+          .then(res => {
+            store.commit('login/ACCOUNT_INFO', res.data)
+            sessionStorage.setItem('isLogin', true)
+            next('/liveMager/list')
+          })
+          .catch(() => {
+            next()
+          })
       }
     }
     next()
     return false
   } else {
-    if (to.meta.noAuth) { // 不需要验证是否这只密码
+    if (to.meta.noAuth) {
+      // 不需要验证是否这只密码
       next()
       return false
     } else {
       let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
-      let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-      if (isLogin && accountInfo) {
+      let accountInfo = store.getters['login/accountInfo']
+      if (isLogin && accountInfo && accountInfo.userName) {
         if (accountInfo.hasPassword) {
           next()
           return false
@@ -46,26 +57,38 @@ router.beforeResolve((to, from, next) => {
         next('/setPassword')
         return false
       } else {
-        account.getAccount({}).then((res) => {
-          if (res.code !== 200) {
-            next('/login')
-            return false
-          } else {
+        vue
+          .$config({
+            loading: true,
+            handlers: true
+          })
+          .$get(userService.GET_ACCOUNT)
+          .then(res => {
             if (res.data.hasPassword) {
-              sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              // sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
+              store.commit('login/ACCOUNT_INFO', res.data)
               sessionStorage.setItem('isLogin', true)
               next()
             } else {
               next('/setPassword')
             }
-          }
-        })
+          })
+          .catch(() => {
+            sessionStorage.setItem('isLogin', false)
+            to.name === 'login' ? next() : next('/login')
+          })
       }
     }
   }
-  if (to.meta.scrollTop && router.app) {
+})
+router.beforeResolve((to, from, next) => {
+  next()
+  if (router.app) {
     router.app.$nextTick(() => {
-      document.querySelector('.main-container').scrollTop = to.meta.scrollTop
+      if (document.querySelector('.main-container')) {
+        document.querySelector('.main-container').scrollTop =
+          to.meta.scrollTop || 0
+      }
     })
   }
 })

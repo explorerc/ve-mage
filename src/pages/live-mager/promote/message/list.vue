@@ -4,16 +4,16 @@
       <div class="live-title">
         <span class="title">短信通知</span>
         <div class="right-box">
-          <button class="default-button fr" ><router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }">新建微信</router-link></button>
+          <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信</button></router-link>
         </div>
       </div>
       <div class="content table">
         <el-table :data="tableData" stripe style="width: 100%">
           <el-table-column prop='title' label="短信标题" width="300">
           </el-table-column>
-          <el-table-column prop="planTime" label="发送时间" width="180">
+          <el-table-column prop="time" label="发送时间" width="180">
           </el-table-column>
-          <el-table-column prop="templateId" label="发送数量" width="150">
+          <el-table-column prop="sendCount" label="发送数量" width="150">
           </el-table-column>
           <!-- <el-table-column label="观众分组" width="200" prop='groupId'>
           </el-table-column> -->
@@ -29,7 +29,7 @@
             <template slot-scope="scope">
               <div class="tool-box">
                 <span><router-link :to="{ name:'msgOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
-                <span @click="del(scope.row.inviteId,scope.$index)">删除</span>
+                <span v-if='type === "PREPARE" && scope.row.status !== "SEND"' @click="del(scope.row.inviteId,scope.$index)">删除</span>
                 <!-- <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
                               <div class="tool" v-if='moreIdx == scope.$index ? true : false'>
                                 <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
@@ -64,8 +64,10 @@
 </template>
 
 <script>
-  import createHttp from 'src/api/activity-manger'
+  import noticeService from 'src/api/notice-service'
+  // import createHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
+  import activityService from 'src/api/activity-service'
   export default {
     data () {
       return {
@@ -92,11 +94,13 @@
         delConfirm: false,
         delId: '',
         delIdx: '',
+        type: '',
         loading: false
       }
     },
     created () {
       this.queryList()
+      this.queryInfo()
     },
     methods: {
       switchAutosend (idx, data) {
@@ -109,16 +113,26 @@
       },
       confirmDel (e) {
         if (e.action === 'confirm') {
-          createHttp.deleteMsg(this.delId).then((res) => {
+          this.$post(noticeService.POST_DELETE_MSG, {
+            inviteId: this.delId
+          }).then((res) => {
             this.tableData.splice(this.delIdx, 1)
             this.$toast({
               content: '删除成功',
               position: 'center'
             })
             this.delConfirm = false
-          }).catch((e) => {
-            console.log(e)
           })
+          // createHttp.deleteMsg(this.delId).then((res) => {
+          //   this.tableData.splice(this.delIdx, 1)
+          //   this.$toast({
+          //     content: '删除成功',
+          //     position: 'center'
+          //   })
+          //   this.delConfirm = false
+          // }).catch((e) => {
+          //   console.log(e)
+          // })
         }
         this.delConfirm = false
       },
@@ -138,17 +152,37 @@
         }
       },
       queryList () {
-        this.loading = true
-        createHttp.queryMsglist(this.queryData).then((res) => {
+        this.$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
           console.log(res)
           this.tableData = res.data.list
           this.currPage = parseInt(res.data.currPage)
           this.totalPage = parseInt(res.data.totalPage)
           this.total = parseInt(res.data.total)
-          this.loading = false
-        }).catch((e) => {
-          console.log(e)
-          this.loading = false
+          this.tableData.forEach(item => {
+            if (item.status === 'SEND') {
+              item.time = item.sendTime
+            } else if (item.status === 'AWAIT') {
+              item.time = item.planTime
+            }
+          })
+        })
+        // createHttp.queryMsglist(this.queryData).then((res) => {
+        //   console.log(res)
+        //   this.tableData = res.data.list
+        //   this.currPage = parseInt(res.data.currPage)
+        //   this.totalPage = parseInt(res.data.totalPage)
+        //   this.total = parseInt(res.data.total)
+        //   this.loading = false
+        // }).catch((e) => {
+        //   console.log(e)
+        //   this.loading = false
+        // })
+      },
+      queryInfo () {
+        this.$get(activityService.GET_WEBINAR_INFO, {
+          id: this.$route.params.id
+        }).then((res) => {
+          this.type = res.data.status
         })
       },
       currentChange (e) {
@@ -185,6 +219,9 @@
 .live-title {
   .right-box {
     float: right;
+    .btn {
+      margin: 10px 0;
+    }
   }
 }
 .from-row {

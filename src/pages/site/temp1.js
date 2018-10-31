@@ -1,11 +1,13 @@
 export default function () {
   return {
     tid: '0478320',
+    tplName: '模板名称1',
     section1Data: {
       panel: {
         bgType: 'color',
         videoType: 'upload',
         img: '',
+        link: '',
         color: 'rgba(255, 255, 255, 1)',
         enable: true
       },
@@ -20,19 +22,23 @@ export default function () {
           fontColor: 'rgba(34, 34, 34, 1)',
           list: [{
             text: '首页',
-            type: '_blank'
+            type: '_blank',
+            link: ''
           },
           {
             text: '活动协议',
-            type: '_blank'
+            type: '_blank',
+            link: ''
           },
           {
             text: '联系我们',
-            type: '_blank'
+            type: '_blank',
+            link: ''
           },
           {
             text: '立即报名',
-            type: '_self'
+            type: '_self',
+            link: ''
           }
           ]
         }
@@ -44,6 +50,7 @@ export default function () {
         videoType: 'upload',
         img: require('assets/image/tp_section2.jpg'),
         color: 'rgba(0, 0, 0, 1)',
+        link: '',
         enable: true
       },
       font: {
@@ -60,7 +67,8 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '活动报名',
         link: '',
-        enable: true
+        enable: true,
+        target: '_self'
       }
     },
     section3Data: {
@@ -68,6 +76,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         videoType: 'upload',
+        link: '',
         color: 'rgba(255, 255, 255, 1)'
       },
       font: {
@@ -81,13 +90,17 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px; background-color: rgb(255, 255, 255);">2018轰动设计奖活动</span></font><br></div>`,
           img: require('assets/image/tp_section3_1.jpg'),
-          btn: {}
+          btn: {},
+          link: '',
+          target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px; background-color: rgb(255, 255, 255);">2018知舍设计奖活动</span></font><br></div>`,
           img: require('assets/image/tp_section3_2.jpg'),
-          btn: {}
+          btn: {},
+          link: '',
+          target: '_self'
         }
         ]
       }
@@ -97,6 +110,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         videoType: 'upload',
+        link: '',
         color: 'rgba(247,247,247,1);'
       },
       font: {
@@ -110,19 +124,28 @@ export default function () {
           type: 'top',
           content: `<span style="font-size: 22px;">站酷客户端 - 站酷(ZCOOL)- 设计 师互动平台</span><div><br></div><div><span style="font-size: 16px;">站酷网，是综合性"设计师社区"，2006年8月创立于北京。站酷网聚集了中国部分设计师、艺术院校师生、潮流艺术家等年轻创意设计人群。现有注册设计师/艺术家200万，日上传原创作...</span><br></div><div><span style="font-size: 16px;"><br></span></div><div><br></div><div><span style="font-size: 16px;"><font color="#003399"><a href="http://www.baidu.com">了解详情 &gt;</a></font></span></div>`,
           img: '',
-          btn: {}
+          link: '',
+          btn: {
+            link: ''
+          }
         },
         {
           type: 'top',
           content: `<span style="font-size: 22px;">壹度创意规划设计网:休闲农业与乡 村旅游策划者与引领者</span><div><br></div><div><span style="font-size: 16px;">容以专业的精神致力于园区景观设计及品牌营销,以专注的态度研究田园综合体、特色小镇...的城市空间,需要学科之间的交叉融合,也需要更多的人加入到公众参与的设计活动中...</span><br></div><div><span style="font-size: 16px;"><br></span></div><div><br></div><div><span style="font-size: 16px;"><font color="#003399"><a href="http://www.baidu.com">了解详情 &gt;</a></font></span></div>`,
           img: '',
-          btn: {}
+          link: '',
+          btn: {
+            link: ''
+          }
         },
         {
           type: 'top',
           content: `<span style="font-size: 22px;">设计癖 | 关注设计癖 发现好设计</span><div><span style="font-size: 22px;"><br></span><div><br></div><div><span style="font-size: 16px;">图品汇为您优选500万张原创设计癖PSD模板,免抠素材元素,背景素材,图品汇已为50万设计师提高了10倍效率,10万设计师迅速定稿,业绩迅速上升!</span><br></div><div><span style="font-size: 16px;"><br></span></div><div><br></div><div><span style="font-size: 16px;"><font color="#003399"><a href="http://www.baidu.com">了解详情 &gt;</a></font></span></div></div>`,
           img: '',
-          btn: {}
+          link: '',
+          btn: {
+            link: ''
+          }
         }
         ]
       }
@@ -131,6 +154,7 @@ export default function () {
       panel: {
         enable: true,
         bgType: 'color',
+        link: '',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
@@ -145,19 +169,31 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_1.png'),
-          btn: {}
+          btn: {
+            link: ''
+          },
+          link: '',
+          target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_2.png'),
-          btn: {}
+          btn: {
+            link: ''
+          },
+          link: '',
+          target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_3.png'),
-          btn: {}
+          btn: {
+            link: ''
+          },
+          link: '',
+          target: '_self'
         }
         ]
       }
@@ -167,6 +203,7 @@ export default function () {
       panel: {
         enable: true,
         bgType: 'color',
+        link: '',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
@@ -185,6 +222,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         videoType: 'upload',
+        link: '',
         color: 'rgba(19,16,49,1)'
       },
       font: {
@@ -196,7 +234,8 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '立即了解',
         link: '',
-        enable: true
+        enable: true,
+        target: '_self'
       }
     }
   }

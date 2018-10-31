@@ -1,7 +1,8 @@
 <template>
-  <div class="edit-step-box">
+  <div class="edit-step-box" @keydown="canPass = false">
     <header class="email-header">
-      <div class="back-btn" @click="goBack">
+      <div class="back-btn"
+           @click="goBack">
         <i class="iconfont icon-jiantou"></i>
       </div>
       <span>步骤2 发送设置</span>
@@ -12,38 +13,57 @@
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>邮件标题：</div>
             <div class="from-content">
-              <com-input
-                placeholder="输入标题，可结合变量使用"
-                class="input-email"
-                :error-tips="errorMsg.title"
-                :value.sync="email.title"
-                :max-length="30"></com-input>
+              <com-input placeholder="输入标题，可结合变量使用"
+                         class="input-email"
+                         :error-tips="errorMsg.title"
+                         :value.sync="email.title"
+                         :max-length="30"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>发件人：</div>
             <div class="from-content">
-              <com-input
-                placeholder="输入发件人名称"
-                class="input-email"
-                :error-tips="errorMsg.senderName"
-                :value.sync="email.senderName"
-                :max-length="15"></com-input>
+              <com-input placeholder="输入发件人名称"
+                         class="input-email"
+                         :error-tips="errorMsg.senderName"
+                         :value.sync="email.senderName"
+                         :max-length="15"></com-input>
             </div>
           </div>
           <div class="from-row">
             <div class="from-title"><i class="star">*</i>收件人：</div>
             <div class="from-content">
               <div :class="{error:errorMsg.groupIds}">
-                <button class="default-button fl" @click="selectPersonShow=true">选择分组</button>
-                <span class="send-span">发送限额：0/400</span>
+                <button class="default-button fl"
+                        @click="selectPersonShow=true">选择分组</button>
+                <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/1000</span>
                 <ve-msg-tips tip-type="html"
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
-                <span class="error-msg" v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
+                <span class="error-msg"
+                      v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
               </div>
-              <transition-group name="list" class="edit-groups" tag="div" v-if="selectedPersonList.length">
-                <span class="list-item" v-for="(person,idx) in selectedPersonList" :key="person.id">{{person.name}} ({{person.count}}人）
-                  <i class="iconfont icon-shanchu" @click="delPerson(idx)"></i>
+              <!-- 分组 -->
+              <transition-group name="list"
+                                class="edit-groups"
+                                tag="div"
+                                v-if="selectedGroupList.length">
+                <span class="list-item"
+                      v-for="(person,idx) in selectedGroupList"
+                      :key="person.id">{{person.name}} ({{person.count}}人）
+                  <i class="iconfont icon-shanchu"
+                     @click="delGroupPerson(idx)"></i>
+                </span>
+              </transition-group>
+              <!-- 标签 -->
+              <transition-group name="list"
+                                class="edit-groups sec"
+                                tag="div"
+                                v-if="selectedTagList.length">
+                <span class="list-item"
+                      v-for="(tag,idx) in selectedTagList"
+                      :key="tag.id">{{tag.name}}
+                  <i class="iconfont icon-shanchu"
+                     @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
             </div>
@@ -52,275 +72,219 @@
             <div class="from-title">发送时间：</div>
             <div :class="{'from-content':true,error:errorMsg.planTime}">
               <div class="send-type-box">
-                <el-radio v-model="sendType" label="AUTO">立即发送</el-radio>
-                <el-radio v-model="sendType" label="ONCE">定时发送</el-radio>
+                <el-radio v-model="sendType"
+                          label="AUTO">立即发送</el-radio>
+                <el-radio v-model="sendType"
+                          label="ONCE">定时发送</el-radio>
               </div>
-              <el-date-picker
-                v-if="sendType=='ONCE'"
-                v-model="email.planTime"
-                type="datetime"
-                placeholder="选择日期时间"
-                align="right"
-                format="yyyy-MM-dd HH:mm"
-                value-format="yyyy-MM-dd HH:mm">
+              <el-date-picker v-if="sendType=='ONCE'"
+                              v-model="email.planTime"
+                              type="datetime"
+                              placeholder="选择日期时间"
+                              align="right"
+                              format="yyyy-MM-dd HH:mm"
+                              value-format="yyyy-MM-dd HH:mm">
               </el-date-picker>
-              <span class="error-msg" v-if="errorMsg.planTime">{{errorMsg.planTime}}</span>
+              <span class="error-msg"
+                    v-if="errorMsg.planTime">{{errorMsg.planTime}}</span>
             </div>
           </div>
         </div>
       </div>
       <!-- 选择收件人 -->
-      <message-box
-        v-if="selectPersonShow"
-        width="740px"
-        type="prompt"
-        header="选择观众组"
-        confirmText='确认'
-        class="select-person"
-        @handleClick="handleSelectPerson">
-        <div class="select-person-box">
-          <div class="select-nav fl">
-            <div class="select-item active">
-              <i class="iconfont icon-fenzu"></i>
-              <span>分组</span>
-            </div>
-            <div class="select-item">
-              <i class="iconfont icon-biaoqian"></i>
-              <span>标签</span>
-            </div>
-          </div>
-          <div class="select-content fl">
-            <div class="search-person-box">
-              <com-input type="search"
-                         class="search-com"
-                         :value.sync="searchPerson"
-                         @keyup.native.enter="searchEnter"
-                         placeholder="输入直播名称"></com-input>
-            </div>
-            <div class="select-person-box">
-              <ul>
-                <li
-                  v-for="(person,idx) in personList"
-                  @click.stop="clickRow(idx)"
-                  :class="{active:person.isChecked}"
-                  :key="person.id">
-                  {{person.name}} ({{person.count}}人）
-                  <com-checkbox v-model="person.isChecked" class="fr" small></com-checkbox>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div slot="bottom" class="select-bottom">
-          <span class="select-all fl">已选择{{selectedCount}}人：</span>
-          <div class="select-list fl" :title="selectedPersonListStr">
-            {{selectedPersonListStr}}
-          </div>
-          <button class="primary-button" @click="okSelectList">确定</button>
-        </div>
-      </message-box>
+      <choose-group :webinarType="'EMAIL'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn" @totalCount="totalCount"></choose-group>
     </div>
     <div class="email-bottom">
-      <button class="primary-button fr" @click="send">发送</button>
-      <button class="primary-button margin-fl fr" @click="saveEmail">保存草稿</button>
+      <button :class="{'primary-button':true, fr:true,disabled:disabledBtn}"
+              @click="send">发送</button>
+      <button class="primary-button margin-fl fr"
+              @click="saveEmail">保存草稿</button>
     </div>
   </div>
 </template>
 
 <script>
-  import VeMsgTips from 'src/components/ve-msg-tips'
-  import LiveHttp from 'src/api/activity-manger'
-  import {mapState, mapMutations} from 'vuex'
-  import * as types from '../../../store/mutation-types'
+import userManage from 'src/api/userManage-service'
+import noticeService from 'src/api/notice-service'
+import VeMsgTips from 'src/components/ve-msg-tips'
+import chooseGroup from 'src/components/com-chooseGroup'
+import activityService from 'src/api/activity-service'
+import { mapState, mapMutations } from 'vuex'
+import * as types from '../../../store/mutation-types'
 
-  export default {
-    name: 'edit-step-two',
-    components: {VeMsgTips},
-    data () {
-      return {
-        outValue: '',
-        isTimer: true,
-        selectPersonShow: false,
-        sendType: 'AUTO',
-        searchPerson: '',
-        personList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonListStr: '',
-        selectedCount: 0,
-        errorMsg: {
-          title: '',
-          content: '',
-          desc: '',
-          senderName: '',
-          planTime: '',
-          groupIds: ''
-        },
-        email: {
-          activityId: '',
-          emailInviteId: '',
-          emailTemplateId: 1,
-          title: '',
-          content: '',
-          senderName: '',
-          planTime: '',
-          groupIds: ''
-        }
-      }
-    },
-    computed: mapState('liveMager', {
-      emailInfo: state => state.emailInfo
-    }),
-    watch: {
-      emailInfo: {
-        handler (newVal) {
-          this.email = {...this.email, ...newVal}
-        },
-        immediate: true
+export default {
+  name: 'edit-step-two',
+  components: { VeMsgTips, chooseGroup },
+  data () {
+    return {
+      outValue: '',
+      isTimer: true,
+      selectPersonShow: false,
+      sendType: 'AUTO',
+      searchPerson: '',
+      personList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedPersonListStr: '',
+      selectedCount: 0,
+      disabledBtn: false,
+      canPass: true,
+      errorMsg: {
+        title: '',
+        content: '',
+        desc: '',
+        senderName: '',
+        planTime: '',
+        groupIds: ''
       },
       email: {
-        handler () {
-          this.clearError()
-        },
-        deep: true
+        activityId: '',
+        emailInviteId: '',
+        emailTemplateId: 1,
+        title: '',
+        content: '',
+        senderName: '',
+        planTime: '',
+        groupIds: '',
+        tagIdStr: ''
       },
-      personList: {
-        handler (newArray) {
-          let temArray = []
-          let listStr = ''
-          let groupIdsStr = ''
-          newArray.forEach((item, idx) => {
-            if (!item.isChecked) return
-            temArray.push(item)
-            this.selectedCount += item.count
-            listStr += `${item.name} (${item.count}人）、`
-            groupIdsStr += `${item.id},`
-          })
-          this.selectedPersonListStr = listStr.substring(0, listStr.length - 1)
-          this.email.groupIds = groupIdsStr.substring(0, groupIdsStr.length - 1)
-          this.selectedPersonList = temArray
-        },
-        deep: true
-      }
+      PC_HOST: location.protocol + process.env.PC_HOST,
+      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      tagList: [],
+      checkedData: [],
+      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedTagList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupListStr: '',
+      selectedTagListStr: '',
+      groupIdStr: '',
+      tagIdStr: '',
+      totalCountStr: ''
+    }
+  },
+  computed: mapState('liveMager', {
+    emailInfo: state => state.emailInfo
+  }),
+  watch: {
+    emailInfo: {
+      handler (newVal) {
+        this.email = { ...this.email, ...newVal }
+        this.sendType = this.email.planTime ? 'ONCE' : 'AUTO'
+      },
+      immediate: true
     },
-    created () {
-      if (!this.email.content) {
-        this.$router.go(-1)
+    email: {
+      handler () {
+        this.clearError()
+      },
+      deep: true
+    }
+  },
+  created () {
+    if (!this.email.content) {
+      this.$router.go(-1)
+      return
+    }
+    this.queryGroupList().then(() => {
+      this.queryTagList().then(() => {
+        console.log(this.tagList)
+        console.log(this.groupList)
+        this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
+      })
+    })
+  },
+  methods: {
+    ...mapMutations('liveMager', {
+      storeEmailInfo: types.EMAIL_INFO
+    }),
+    /* 清除错误信息 */
+    clearError () {
+      if (this.email.planTime) {
+        this.errorMsg.planTime = ''
+      } else {
         return
       }
-      this.queryPersonList()
+      if (this.email.title) {
+        this.errorMsg.title = ''
+      } else {
+        return
+      }
+      if (this.email.senderName) {
+        this.errorMsg.senderName = ''
+      } else {
+        return
+      }
+      if (this.email.groupIds) {
+        this.errorMsg.groupIds = ''
+      } else {
+        return
+      }
+      if (this.email.desc) {
+        this.errorMsg.desc = ''
+      } else {
+        return
+      }
+      if (this.email.content) {
+        this.errorMsg.content = ''
+      }
     },
-    methods: {
-      ...mapMutations('liveMager', {
-        storeEmailInfo: types.EMAIL_INFO
-      }),
-      /* 清除错误信息 */
-      clearError () {
-        if (this.email.planTime) {
-          this.errorMsg.planTime = ''
-        } else {
-          return
-        }
-        if (this.email.title) {
-          this.errorMsg.title = ''
-        } else {
-          return
-        }
-        if (this.email.senderName) {
-          this.errorMsg.senderName = ''
-        } else {
-          return
-        }
-        if (this.email.groupIds) {
-          this.errorMsg.groupIds = ''
-        } else {
-          return
-        }
-        if (this.email.desc) {
-          this.errorMsg.desc = ''
-        } else {
-          return
-        }
-        if (this.email.content) {
-          this.errorMsg.content = ''
-        }
-      },
-      /* enter搜索 */
-      searchEnter () {
-        this.queryPersonList()
-      },
-      /* 点击确定 */
-      okSelectList () {
+    /* enter搜索 */
+    // searchEnter () {
+    //   this.queryPersonList()
+    // },
+    /* 点击确定 */
+    okSelectList () {
+      this.selectPersonShow = false
+      if (this.email.groupIds) {
+        this.errorMsg.groupIds = ''
+      }
+    },
+    /* 点击取消 */
+    handleSelectPerson (e) {
+      if (e.action === 'cancel') {
         this.selectPersonShow = false
-        if (this.email.groupIds) {
-          this.errorMsg.groupIds = ''
-        }
-      },
-      /* 点击取消 */
-      handleSelectPerson (e) {
-        if (e.action === 'cancel') {
-          this.selectPersonShow = false
-        }
-      },
-      /* 选中行 */
-      clickRow (idx) {
-        this.personList[idx].isChecked = !this.personList[idx].isChecked
-      },
-      /* 删除已经选中的分组 */
-      delPerson (idx) {
-        const delIdx = this.personList.indexOf(this.selectedPersonList[idx])
-        this.personList[delIdx].isChecked = false
-      },
-      /* 查询人员 */
-      queryPersonList () {
-        LiveHttp.queryPersonList({
-          activityId: this.$route.params.id,
-          name: this.searchPerson
-        }).then((res) => {
-          let temArray = []
-          res.data.forEach((item) => {
-            temArray.push({
-              id: item.id,
-              name: item.name,
-              count: 0,
-              isChecked: false
-            })
-          })
-          this.personList = temArray
+      }
+    },
+    saveEmail () {
+      this.canPass = true
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
+      this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
+        this.email = { ...this.email, ...res.data }
+        this.storeEmailInfo(this.email)
+        this.$toast({
+          header: `提示`,
+          content: '保存草稿成功',
+          autoClose: 2000,
+          position: 'right-top'
         })
-      },
-      saveEmail () {
-        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
-        LiveHttp.saveEmailInfo(this.email).then((res) => {
-          if (res.code === 200) {
-            this.email = {...this.email, ...res.data}
-            this.storeEmailInfo(this.email)
-            this.$toast({
-              header: `提示`,
-              content: '保存草稿成功',
-              autoClose: 2000,
-              position: 'right-top'
-            })
-          }
+      })
+    },
+    sendEmail () {
+      this.canPass = true
+      if (this.isTimer && !this.email.planTime) {
+        this.errorMsg.planTime = '定时时间不能为空'
+        this.disabledBtn = false
+        return
+      }
+      if (!this.checkParams(this.isTimer)) {
+        this.disabledBtn = false
+        return
+      }
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
+      if (this.isTimer) { // 发送定时邮件
+        this.$post(activityService.POST_SEND_TIMER_EMAIL_INFO, this.email).then((res) => {
+          this.$router.push(`/liveMager/email/${this.email.activityId}`)
+          this.disabledBtn = false
         })
-      },
-      sendEmail () {
-        if (this.isTimer && !this.email.planTime) {
-          this.errorMsg.planTime = '定时时间不能为空'
-          return
-        }
-        if (!this.checkParams(this.isTimer)) return
-        this.email.content = this.email.content.replace('$$activity$$', `${location.protocol}//${location.host}/watcher/${this.email.activityId}`)
-        if (this.isTimer) { // 发送定时邮件
-          LiveHttp.sendTimerEmailInfo(this.email).then((res) => {
-            this.$router.push(`/liveMager/email/${this.email.activityId}`)
-          })
-        } else { // 保存并发送
-          LiveHttp.saveAndsendEmail(this.email).then((res) => {
-            this.$router.push(`/liveMager/email/${this.email.activityId}`)
-          })
-        }
-      },
-      send () {
+      } else { // 保存并发送
+        this.$post(activityService.POST_SAVE_SEND_EMAIL, this.email).then((res) => {
+          this.$router.push(`/liveMager/email/${this.email.activityId}`)
+          this.disabledBtn = false
+        })
+      }
+    },
+    send () {
+      this.canPass = true
+      this.disabledBtn = true
+      this.$nextTick(() => {
         if (this.sendType === 'AUTO') {
           this.isTimer = false
           this.immediatelySend()
@@ -328,36 +292,161 @@
           this.isTimer = true
           this.sendEmail()
         }
-      },
-      immediatelySend () {
-        this.email.planTime = ''
-        this.isTimer = false
-        this.sendEmail()
-      },
-      checkParams () {
-        this.errorMsg = {
-          title: '',
-          content: '',
-          senderName: '',
-          planTime: ''
-        }
-        if (!this.email.title) {
-          this.errorMsg.title = '标题不能为空'
-          return false
-        } else if (!this.email.senderName) {
-          this.errorMsg.senderName = '发件人不能为空'
-          return false
-        } else if (!this.email.groupIds) {
-          this.errorMsg.groupIds = '请选择收件人'
-          return false
-        }
-        return true
-      },
-      goBack () {
-        this.$router.go(-1)
+      })
+    },
+    immediatelySend () {
+      this.email.planTime = ''
+      this.isTimer = false
+      this.sendEmail()
+    },
+    checkParams () {
+      this.errorMsg = {
+        title: '',
+        content: '',
+        senderName: '',
+        planTime: ''
       }
+      if (!this.email.title) {
+        this.errorMsg.title = '标题不能为空'
+        return false
+      } else if (!this.email.senderName) {
+        this.errorMsg.senderName = '发件人不能为空'
+        return false
+      } else if (!this.email.groupIds) {
+        this.errorMsg.groupIds = '请选择收件人'
+        return false
+      }
+      return true
+    },
+    goBack () {
+      this.storeEmailInfo(this.email)
+      this.$router.go(-1)
+    },
+    /* enter搜索 */
+    searchEnter (key, flag) {
+      if (flag === 'group') {
+        this.queryGroupList(key)
+      } else {
+        this.queryTagList(key)
+      }
+    },
+    /* 点击取消 */
+    close () {
+      this.selectPersonShow = false
+    },
+    /* 删除分组 */
+    delGroupPerson (idx) {
+      const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
+      this.groupList[delIdx].isChecked = false
+    },
+    // 标签
+    delTagPerson (idx) {
+      const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
+      this.tagList[delIdx].isChecked = false
+    },
+    // 查询群组
+    async queryGroupList (keyword) {
+      await this.$get(userManage.GET_GROUP_LIST, {
+        keyword: this.searchVal,
+        type: '2'
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
+            isChecked: false
+          })
+        })
+        this.groupList = temArray
+        this.email.groupList = this.groupList
+      })
+    },
+    /* 查询标签 */
+    async queryTagList (key) {
+      await this.$get(noticeService.GET_PERSON_LIST, {
+        activityId: this.$route.params.id,
+        name: key
+      }).then((res) => {
+        let temArray = []
+        res.data.forEach((item) => {
+          temArray.push({
+            id: item.id,
+            name: item.name,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
+        this.email.tagList = this.tagList
+      })
+    },
+    selectedGroupListfn (arr, str, idStr) {
+      this.selectedGroupListStr = str.substring(0, str.length - 1)
+      this.selectedGroupList = arr
+      this.email.groupIds = idStr // 分组id
+    },
+    selectedTagListfn (arr, str, idStr) {
+      this.selectedTagListStr = str.substring(0, str.length - 1)
+      this.selectedTagList = arr
+      this.email.tagIds = idStr // 标签id
+    },
+    totalCount (res) {
+      this.totalCountStr = res
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.groupList[idx].isChecked = true
+            this.selectedGroupList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.email.selectedGroupList = this.selectedGroupList
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.tagList[idx].isChecked = true
+            this.selectedTagList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.email.selectedTagList = this.selectedTagList
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   }
+}
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
@@ -455,6 +544,9 @@
   .edit-groups {
     margin-top: 15px;
     width: 500px;
+    &.sec {
+      margin-top: 0px;
+    }
     span {
       display: inline-block;
       background-color: #f0f1fe;

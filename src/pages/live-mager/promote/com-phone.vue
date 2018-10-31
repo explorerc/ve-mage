@@ -3,18 +3,20 @@
   <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
   <div class="msg-box-overview" v-if='isWx'>
     <div class="detail">
-      <div class="msg-title-overview">{{titleValue}}</div>
-      <p class="time">{{date}}</p>
+      <!-- <div class="msg-title-overview">{{titleValue}}</div> -->
+      <div class="msg-title-overview">预约成功通知</div>
+      <p class="time" v-html="date.substr(0,10)"></p>
+      <!-- <p class="tips">{{wxContent}}</p> -->
       <p class="tips">{{wxContent}}</p>
       <p>标题：<span>{{webinarName}}</span></p>
-      <p>时间：<span>{{webinarTime}}</span></p>
-      <p style='padding-bottom:20px;'>内容：<span>点击查看详情</span></p>
+      <p style='padding-bottom:20px;'>时间：<span>{{webinarTime}}</span></p>
+      <!-- <p style='padding-bottom:20px;'>内容：<span>{{wxContent}}</span></p> -->
       <div class="footer">详情</div>
     </div>
   </div>
   <div class="msg-box-overview msg-box-message" v-else>
     <div class="detail">
-      <p class="tips">{{wxContent}}<br>【{{msgTag}}】</p>
+      <p class="">【{{msgTag}}】{{wxContent}}</p>
     </div>
     <div class="footer">{{date}} 发送</div>
   </div>
@@ -22,11 +24,23 @@
 </template>
 
 <script>
+import noticeService from 'src/api/notice-service'
 export default {
   data () {
     return {
-
+      activityId: this.$route.params.id,
+      webinarTime: '',
+      webinarName: ''
     }
+  },
+  created () {
+    this.$get(noticeService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.webinarName = res.data.title
+      this.webinarTime = res.data.startTime
+      this.$emit('webinarStatus', res.data.status)
+    })
   },
   props: {
     isWx: {
@@ -45,14 +59,6 @@ export default {
       type: String,
       default: '-----'
     },
-    webinarName: {
-      type: String,
-      default: '-----'
-    },
-    webinarTime: {
-      type: String,
-      default: '-----'
-    },
     msgTag: {
       type: String,
       default: '-----'
@@ -65,7 +71,7 @@ export default {
 @import '~assets/css/mixin.scss';
 .overview-box {
   position: absolute;
-  top: 100px;
+  top: 120px;
   right: 100px;
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {

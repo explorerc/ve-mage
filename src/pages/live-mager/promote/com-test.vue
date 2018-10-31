@@ -1,35 +1,47 @@
 <template>
   <transition name='fade'>
-      <div class="modal-cover" @click="closeModal" >
-        <div class='modal-box phone' v-if="type === 'SMS'">
-          <h4>短信测试发送 <span class='close' @click='closeModal'></span></h4>
-          <div class='content-box from-box'>
-            <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
-            <div>
-              <com-input placeholder="请输入手机号码" :value.sync='sendPhone' :error-tips="phoneError" @focus="phoneError = ''"></com-input>
-            </div>
-          </div>
-          <div class="btn-group">
-            <p>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
-            <el-button class='primary-button fr' @click='sendTest'>立即发送</el-button>
+    <div class="modal-cover"
+         @click="closeModal">
+      <div class='modal-box phone'
+           v-if="type === 'SMS'">
+        <h4>短信测试发送 <span class='close'
+                @click='closeModal'></span></h4>
+        <div class='content-box from-box'>
+          <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
+          <div>
+            <com-input placeholder="请输入手机号码"
+                       :value.sync='sendPhone'
+                       :error-tips="phoneError"
+                       @focus="phoneError = ''"></com-input>
           </div>
         </div>
-        <div class='modal-box ' v-else>
-          <h4>微信测试发送 <span class='close' @click='closeModal'></span></h4>
-          <div class='content-box'>
-            <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
-            <div class="from-row">
-              <img :src="imgUrl" class='qrcode'>
+        <div class="btn-group">
+          <p v-if="limitCount <= 0">今日限额已用完</p>
+          <p v-else>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
+          <el-button class='primary-button fr'
+                     @click='sendTest' :disabled="limitCount <= 0">立即发送</el-button>
+        </div>
+      </div>
+      <div class='modal-box '
+           v-else>
+        <h4>微信测试发送 <span class='close'
+                @click='closeModal'></span></h4>
+        <div class='content-box'>
+          <p class='color-blue'><i></i>每天只允许发送5条测试消息</p>
+          <div class="from-row">
+            <div class="qrcode" v-if="limitCount <= 0">今日限额已用完</div>
+            <img :src="imgUrl" class='qrcode' v-else>
             </div>
             <p>扫描二维码，授权后即可收到测试消息</p>
-            <p>微信限额：<span class='limit-count'>{{limitCount}}</span></p>
+            <p v-if="limitCount <= 0">今日限额已用完</p>
+            <p v-else>微信限额：<span class='limit-count'>{{limitCount}}</span></p>
           </div>
         </div>
       </div>
   </transition>
 </template>
 <script>
-import createHttp from 'src/api/activity-manger'
+import noticeService from 'src/api/notice-service'
 export default {
   name: 'com-test',
   data () {
@@ -59,10 +71,22 @@ export default {
     isAuto: {
       type: Boolean,
       default: false
+    },
+    wechatSuccess: {
+      type: Boolean,
+      default: false
+    },
+    deliverd: {
+      type: Boolean,
+      default: false
+    },
+    msgTag: {
+      type: String,
+      default: ''
     }
   },
   created () {
-    this.getCount()
+    this.getCount(this.type)
   },
   methods: {
     closeModal (e) {
@@ -90,31 +114,23 @@ export default {
         }
       }
     },
-    getCount () {
-      createHttp.msgLimit('sms').then((res) => {
-        if (res.code === 200) {
-          this.limitCount = res.data
-        }
-      }).catch((e) => { console.log(e) })
+    getCount (type) {
+      this.$get(noticeService.GET_MSG_LIMIT, {
+        type: type === 'SMS' ? 'sms' : 'wechat'
+      }).then((res) => {
+        this.limitCount = res.data
+      })
     },
     sendTestmsg () {
       const data = {
         content: this.msgContent,
-        receiverMobile: this.sendPhone
+        receiverMobile: this.sendPhone,
+        signature: this.msgTag
       }
-      createHttp.sendTestmsg(data).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
-          this.limitCount -= 1
-          this.$toast({
-            content: '发送成功',
-            position: 'center'
-          })
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
+        this.limitCount -= 1
         this.$toast({
-          content: '发送失败',
+          content: '发送成功',
           position: 'center'
         })
       })
@@ -124,18 +140,10 @@ export default {
         noticeTaskId: this.noticeId,
         mobile: this.sendPhone
       }
-      createHttp.autoSendtest(data).then((res) => {
-        if (res.code === 200) {
-          this.limitCount -= 1
-          this.$toast({
-            content: '发送成功',
-            position: 'center'
-          })
-        }
-      }).catch((e) => {
-        console.log(e)
+      this.$post(noticeService.POST_AUTO_SEND_TEST, data).then((res) => {
+        this.limitCount -= 1
         this.$toast({
-          content: '发送失败',
+          content: '发送成功',
           position: 'center'
         })
       })
@@ -143,6 +151,23 @@ export default {
     validPhone (phone) {
       var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
       return re.test(phone)
+    }
+  },
+  watch: {
+    wechatSuccess (newVal) {
+      console.log(newVal)
+      this.limitCount -= 1
+      this.$toast({
+        content: '信息已发送',
+        position: 'center'
+      })
+    },
+    deliverd (newVal) {
+      this.limitCount -= 1
+      this.$toast({
+        content: '信息已发送',
+        position: 'center'
+      })
     }
   }
 }
@@ -215,6 +240,8 @@ export default {
     .qrcode {
       width: 110px;
       height: 110px;
+      font-size: 12px;
+      line-height: 110px;
       display: block;
       margin: 20px auto;
       border: 1px solid rgba(226, 226, 226, 1);

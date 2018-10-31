@@ -31,6 +31,7 @@
   color: #222;
   background-color: $bg-color;
   box-sizing: border-box;
+  user-select: none;
   &:hover {
     transition: background-color .3s, opacity .1s;
     cursor: pointer;
@@ -85,7 +86,10 @@
 .primary-button {
   @include primary-button
 }
-
+.primary-button.is-round {
+  height:34px !important;
+  line-height: 34px !important;
+}
 .red-button {
   @include red-button
 }

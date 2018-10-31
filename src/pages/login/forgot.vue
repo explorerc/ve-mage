@@ -3,59 +3,126 @@
     <p class="v-title">
       找回密码
     </p>
-    <com-tabs :value.sync="activeName" class="v-forgot" disabled>
+    <com-tabs :value.sync="activeName"
+              class="v-forgot"
+              disabled>
       <com-tab index="first">
         <div slot="label">
           验证身份
-          <i class="iconfont icon-duigou1 v-icon1" v-if="isStepOneSuccess"></i>
-          <span class="v-circle active" v-else><i></i></span>
+          <i class="iconfont icon-duigou1 v-icon1"
+             v-if="isStepOneSuccess"></i>
+          <span class="v-circle active"
+                v-else>
+            <i></i>
+          </span>
           <span class="v-line"></span>
         </div>
         <div class="v-get-password">
-          <com-input class="v-input" :value.sync="userPhone" placeholder="输入手机号" @focus="passwordFocus('userPhone')" :error-tips="errorTips.userPhone"></com-input>
+          <com-input class="v-input"
+                     :value.sync="userPhone"
+                     placeholder="输入手机号"
+                     @focus="passwordFocus('userPhone')"
+                     :error-tips="errorTips.userPhone"></com-input>
           <div id="captcha"></div>
-          <com-input class="v-input phone-code" :value.sync="phoneCode" placeholder="动态码" @focus="passwordFocus('phoneCode')" :error-tips="errorTips.phoneCode">
+          <com-input class="v-input phone-code"
+                     :value.sync="phoneCode"
+                     placeholder="验证码"
+                     @focus="passwordFocus('phoneCode')"
+                     :error-tips="errorTips.phoneCode">
           </com-input>
-          <a href="javascript:;" class="v-getcode" :class="{prohibit:isProhibit}" @click="getCode()">获取验证码<span v-show="isSend" class="fr">(<em>{{second}}</em>s)</span></a>
-          <button class="primary-button" @click="verifyUser">提交</button>
+          <a href="javascript:;"
+             class="v-getcode"
+             :class="{prohibit:isProhibit}"
+             @click="getCode()">获取验证码
+            <span v-show="isSend"
+                  class="fr">(
+              <em>{{second}}</em>s)</span>
+          </a>
+          <button class="primary-button"
+                  @click="verifyUser">提交</button>
         </div>
       </com-tab>
       <com-tab index="second">
         <div slot="label">
           设置新密码
-          <i class="iconfont icon-duigou1 v-icon2" v-if="isStepTwoSuccess"></i>
-          <span class="v-circle" :class="{active: sedIsActive}" v-else><i></i></span>
+          <i class="iconfont icon-duigou1 v-icon2"
+             v-if="isStepTwoSuccess"></i>
+          <span class="v-circle"
+                :class="{active: sedIsActive}"
+                v-else>
+            <i></i>
+          </span>
         </div>
         <div class="v-get-password">
           <div class="v-psd">
-            <com-input class="v-input" :value.sync="password" placeholder="请输入新密码" :maxLength="30" type="password" @focus="passwordFocus('password')" @change="passwordChange()" @blur="passwordBlur()"  :error-tips="errorTips.password"></com-input>
-            <div class="v-verification" v-if="isShow">
+            <com-input class="v-input"
+                       :value.sync="password"
+                       placeholder="请输入新密码"
+                       :maxLength="30"
+                       type="password"
+                       @focus="passwordFocus('password')"
+                       @change="passwordChange()"
+                       @blur="passwordBlur()"
+                       :error-tips="errorTips.password"></com-input>
+            <div class="v-verification"
+                 v-if="isPasswordShow">
               <ul>
                 <p>密码至少包含：</p>
                 <li>
-                  <i class="iconfont icon-duigou1" :class="{isActive: isContainEn}"></i> 1个英文字母
+                  <i class="iconfont icon-duigou1"
+                     :class="{isActive: isContainEn}"></i> 1个英文字母
                 </li>
                 <li>
-                  <i class="iconfont icon-duigou1" :class="{isActive: isContainNum}"></i> 1个数字
+                  <i class="iconfont icon-duigou1"
+                     :class="{isActive: isContainNum}"></i> 1个数字
                 </li>
                 <li>
-                  <i class="iconfont icon-duigou1" :class="{isActive: isContainCount}"></i> 6～30个字符
+                  <i class="iconfont icon-duigou1"
+                     :class="{isActive: isContainCount}"></i> 6～30个字符
                 </li>
               </ul>
             </div>
           </div>
-          <com-input class="v-input" :value.sync="rePassword" placeholder="请确认新密码" :maxLength="30" type="password" @focus="passwordFocus('rePassword')" :error-tips="errorTips.rePassword">
-          </com-input>
-          <button class="primary-button" @click="undatePhone">提交</button>
+          <div class="v-new-psd">
+            <com-input class="v-input"
+                       :value.sync="rePassword"
+                       placeholder="请确认新密码"
+                       :maxLength="30"
+                       type="password"
+                       @focus="passwordFocus('rePassword')"
+                       @change="newPasswordChange()"
+                       @blur="newPasswordBlur()"
+                       :error-tips="errorTips.rePassword">
+            </com-input>
+            <div class="v-verification"
+                 v-if="isNewPasswordShow">
+              <ul>
+                <p>确认密码需要：</p>
+                <li>
+                  <i class="iconfont icon-duigou1"
+                     :class="{isActive: isSame}"></i> 与原密码一致
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button class="primary-button"
+                  @click="undatePhone">提交</button>
         </div>
       </com-tab>
       <com-tab index="third">
         <div slot="label">
           设置完成
-          <i class="iconfont icon-duigou1 v-icon2" v-if="isStepThreeSuccess"></i>
-          <span class="v-circle" :class="{active: thdIsActive}" v-else><i></i></span>
+          <i class="iconfont icon-duigou1 v-icon2"
+             v-if="isStepThreeSuccess"></i>
+          <span class="v-circle"
+                :class="{active: thdIsActive}"
+                v-else>
+            <i></i>
+          </span>
         </div>
-        <img src="../../assets/image/success@2x.png" alt="" class="v-success-img">
+        <img src="../../assets/image/success@2x.png"
+             alt=""
+             class="v-success-img">
         <p class="v-success">
           新密码设置成功
         </p>
@@ -67,286 +134,294 @@
   </div>
 </template>
 <script>
-  import account from 'src/api/account-manage'
-  import identifyingcodeManage from 'src/api/identifyingcode-manage'
-  export default {
-    data () {
-      return {
-        tabValue: 1,
-        outValue: '123',
+import userService from 'src/api/user-service'
+
+export default {
+  data () {
+    return {
+      tabValue: 1,
+      outValue: '123',
+      userPhone: '',
+      phoneCode: '',
+      token: '',
+      activeName: 'first',
+      phoneStatus: false,
+      type: 'password',
+      key: '',
+      isProhibit: true,
+      isSend: false,
+      second: 60,
+      timerr: '',
+      phoneKey: '',
+      isImg: false,
+      cap: null,
+      password: '',
+      rePassword: '',
+      isValidPassword: false,
+      sedIsActive: false,
+      thdIsActive: false,
+      time: 5,
+      isContainEn: 0,
+      isContainNum: 0,
+      isContainCount: 0,
+      isSame: 0,
+      isPasswordShow: false,
+      isNewPasswordShow: false,
+      errorTips: {
         userPhone: '',
         phoneCode: '',
-        token: '',
-        activeName: 'first',
-        phoneStatus: false,
-        type: 'password',
-        key: '',
-        isProhibit: true,
-        isSend: false,
-        second: 60,
-        timerr: '',
-        phoneKey: '',
-        isImg: false,
-        cap: null,
         password: '',
-        rePassword: '',
-        isValidPassword: false,
-        sedIsActive: false,
-        thdIsActive: false,
-        time: 5,
-        isContainEn: 0,
-        isContainNum: 0,
-        isContainCount: 0,
-        isShow: false,
-        errorTips: {
-          userPhone: '',
-          phoneCode: '',
-          password: '',
-          rePassword: ''
+        rePassword: ''
+      },
+      isStepOneSuccess: false,
+      isStepTwoSuccess: false,
+      isStepThreeSuccess: false
+    }
+  },
+  components: {
+  },
+  created () {
+    this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
+      let _self = this
+      this.key = res.data
+      window.initNECaptcha({
+        captchaId: _self.key,
+        element: '#captcha',
+        mode: 'float',
+        width: 450,
+        onReady: function (instance) {
         },
-        isStepOneSuccess: false,
-        isStepTwoSuccess: false,
-        isStepThreeSuccess: false
+        onVerify: function (err, data) {
+          if (data) {
+            _self.phoneKey = data.validate
+            _self.isImg = true
+          }
+          if (err) {
+            console.log(err)
+          }
+        },
+        onError: function () {
+        }
+      }, function onload (instance) {
+        _self.cap = instance
+      })
+    }).catch(err => {
+      console.log(err.msg)
+    })
+  },
+  destroyed () {
+    clearInterval(this.timerr)
+  },
+  mounted () {
+  },
+  watch: {
+    userPhone: function () {
+      this.checkPhone(this.userPhone)
+      this.isGetCodePermission(true)
+    },
+    phoneStatus: function (val) {
+      this.isGetCodePermission(true)
+    },
+    isImg: function (val) {
+      this.isGetCodePermission()
+    }
+  },
+  methods: {
+    setPassword () {
+      console.log(1)
+    },
+    isGetCodePermission (val) {
+      if (this.isImg && this.phoneStatus) {
+        this.isProhibit = false
+        if (this.second > 0) {
+          this.isSend = false
+          this.isProhibit = false
+          this.second = 60
+          this.mobileOpacity = 1
+          clearInterval(this.timerr)
+          if (val) {
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }
+      } else {
+        this.isProhibit = true
       }
     },
-    components: {
+    checkPhone (param) {
+      let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      if (reg.test(parseInt(param))) {
+        this.phoneStatus = true
+      } else {
+        this.phoneStatus = false
+      }
     },
-    created () {
-      let data = {}
-      identifyingcodeManage.getCodeId(data).then((res) => {
-        if (res.code !== 200) {
-          console.log(res.msg)
+    getCode () {
+      // 获取验证码
+      if (this.isProhibit) {
+        return false
+      }
+      let data = {
+        'mobile': this.userPhone,
+        'type': 'BUSINESS_USER_UPDATE_PASSWORD',
+        captcha: this.phoneKey
+      }
+      this.$config({ handlers: true }).$get(userService.GET_CODE, data).then((res) => {
+        this.errorTips.phoneCode = ''
+        this.isSend = true
+        this.isProhibit = true
+        clearInterval(this.timerr)
+        this.timerr = setInterval(() => {
+          this.second--
+          if (this.second <= 0) {
+            clearInterval(this.timerr)
+            this.isSend = false
+            this.isProhibit = true
+            this.second = 60
+            this.isImg = false
+            this.phoneKey = ''
+            this.cap.refresh()
+          }
+        }, 1000)
+      }).catch(err => {
+        if (err.code === 10050) {
+          this.errorTips.phoneCode = '验证码输入过于频繁'
         } else {
-          let _self = this
-          this.key = res.data
-          window.initNECaptcha({
-            captchaId: _self.key,
-            element: '#captcha',
-            mode: 'float',
-            width: 450,
-            onReady: function (instance) {
-            },
-            onVerify: function (err, data) {
-              if (data) {
-                _self.phoneKey = data.validate
-                _self.isImg = true
-              }
-              if (err) {
-                console.log(err)
-              }
-            },
-            onError: function () {
-            }
-          }, function onload (instance) {
-            _self.cap = instance
-          })
+          this.errorTips.phoneCode = err.msg
         }
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
       })
     },
-    destroyed () {
-      clearInterval(this.timerr)
+    verifyUser () {
+      if (!this.userPhone) {
+        this.errorTips.userPhone = '请输入手机号'
+        return false
+      }
+      if (!this.phoneStatus) {
+        this.errorTips.userPhone = '手机号格式不正确'
+        return false
+      }
+      if (!this.phoneCode) {
+        this.errorTips.phoneCode = '请输入验证码'
+        return false
+      }
+      let data = {
+        mobile: this.userPhone,
+        code: this.phoneCode,
+        type: 'BUSINESS_USER_UPDATE_PASSWORD'
+      }
+      this.$config({ handlers: true }).$post(userService.POST_VERIFY_MOBILE, data).then((res) => {
+        this.isStepOneSuccess = true
+        this.sedIsActive = true
+        this.activeName = 'second'
+        this.token = res.data.codeToken
+        this.phone = ''
+        this.messageBoxExplain = '验证成功，请输入新的手机号'
+        this.isOldphone = false
+        this.step = 'newPhone'
+        clearInterval(this.timerr)
+        this.isSend = false
+        this.isProhibit = true
+        this.second = 60
+        this.isImg = false
+        this.phoneKey = ''
+        this.cap.refresh()
+      }).catch(err => {
+        this.errorTips.phoneCode = err.msg
+      })
     },
-    mounted () {
+    undatePhone () {
+      if (!this.validPassword()) {
+        this.errorTips.password = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
+        return false
+      }
+      if (!this.rePassword) {
+        this.errorTips.rePassword = '请输入确认新密码'
+        return false
+      }
+      if (this.password !== this.rePassword) {
+        this.errorTips.rePassword = '两次密码输入不一致'
+        return false
+      }
+      let data = {
+        mobile: this.userPhone,
+        codeToken: this.token,
+        newPassword: this.password
+      }
+      this.$config({ handlers: true }).$post(userService.POST_BACK_PASSWORD, data).then((res) => {
+        setInterval(() => {
+          this.time--
+          if (this.time <= 0) {
+            this.$router.replace('/login')
+          }
+        }, 1000)
+        this.thdIsActive = true
+        this.isStepTwoSuccess = true
+        this.isStepThreeSuccess = true
+        this.activeName = 'third'
+      }).catch(err => {
+        this.errorTips.password = err.msg
+      })
     },
-    watch: {
-      userPhone: function () {
-        this.checkPhone(this.userPhone)
-        this.isGetCodePermission(true)
-      },
-      phoneStatus: function (val) {
-        this.isGetCodePermission(true)
-      },
-      isImg: function (val) {
-        this.isGetCodePermission()
+    validPhone: function (phone) {
+      let re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
+      return re.test(phone)
+    },
+    validPassword: function () {
+      let re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
+      return re.test(this.password)
+    },
+    passwordFocus (val) {
+      switch (val) {
+        case 'password': this.errorTips.password = ''
+          this.isPasswordShow = true
+          break
+        case 'rePassword': this.errorTips.rePassword = ''
+          this.isNewPasswordShow = true
+          break
+        case 'userPhone': this.errorTips.userPhone = ''
+          break
+        case 'phoneCode': this.errorTips.phoneCode = ''
+          break
       }
     },
-    methods: {
-      setPassword () {
-        console.log(1)
-      },
-      isGetCodePermission (val) {
-        if (this.isImg && this.phoneStatus) {
-          this.isProhibit = false
-          if (this.second > 0) {
-            this.isSend = false
-            this.isProhibit = false
-            this.second = 60
-            this.mobileOpacity = 1
-            clearInterval(this.timerr)
-            if (val) {
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }
-        } else {
-          this.isProhibit = true
-        }
-      },
-      checkPhone (param) {
-        let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-        if (reg.test(parseInt(param))) {
-          this.phoneStatus = true
-        } else {
-          this.phoneStatus = false
-        }
-      },
-      getCode () {
-        // 获取验证码
-        if (this.isProhibit) {
-          return false
-        }
-        let data = {
-          'mobile': this.userPhone,
-          'type': 'BUSINESS_USER_UPDATE_PASSWORD',
-          captcha: this.phoneKey
-        }
-        identifyingcodeManage.getCode(data).then((res) => {
-          if (res.code !== 200) {
-            if (res.code === 10050) {
-              this.errorTips.phoneCode = '验证码输入过于频繁'
-            } else {
-              this.errorTips.phoneCode = res.msg
-            }
-            clearInterval(this.timerr)
-            this.isSend = false
-            this.isProhibit = true
-            this.second = 60
-            this.isImg = false
-            this.phoneKey = ''
-            this.cap.refresh()
-          } else {
-            this.isSend = true
-            this.isProhibit = true
-            clearInterval(this.timerr)
-            this.timerr = setInterval(() => {
-              this.second--
-              if (this.second <= 0) {
-                clearInterval(this.timerr)
-                this.isSend = false
-                this.isProhibit = true
-                this.second = 60
-                this.isImg = false
-                this.phoneKey = ''
-                this.cap.refresh()
-              }
-            }, 1000)
-          }
-        })
-      },
-      verifyUser () {
-        if (!this.userPhone) {
-          this.errorTips.userPhone = '请输入手机号'
-          return false
-        }
-        if (!this.phoneStatus) {
-          this.errorTips.userPhone = '手机号格式不正确'
-          return false
-        }
-        if (!this.phoneCode) {
-          this.errorTips.phoneCode = '请输入验证码'
-          return false
-        }
-        let data = {
-          mobile: this.userPhone,
-          code: this.phoneCode,
-          type: 'BUSINESS_USER_UPDATE_PASSWORD'
-        }
-        account.verifyMobile(data).then((res) => {
-          if (res.code !== 200) {
-            this.errorTips.phoneCode = res.msg
-          } else {
-            this.isStepOneSuccess = true
-            this.sedIsActive = true
-            this.activeName = 'second'
-            this.token = res.data.codeToken
-            this.phone = ''
-            this.messageBoxExplain = '验证成功，请输入新的手机号'
-            this.isOldphone = false
-            this.step = 'newPhone'
-            clearInterval(this.timerr)
-            this.isSend = false
-            this.isProhibit = true
-            this.second = 60
-            this.isImg = false
-            this.phoneKey = ''
-            this.cap.refresh()
-          }
-        })
-      },
-      undatePhone () {
-        if (!this.validPassword()) {
-          this.errorTips.password = '密码支持6~30位的大小写英文和数字，必须包含英文和数字'
-          return false
-        }
-        if (!this.rePassword) {
-          this.errorTips.rePassword = '请输入确认新密码'
-          return false
-        }
-        if (this.password !== this.rePassword) {
-          this.errorTips.rePassword = '两次密码输入不一致'
-          return false
-        }
-        let data = {
-          mobile: this.userPhone,
-          codeToken: this.token,
-          newPassword: this.password
-        }
-        account.updateMobileByToken(data).then((res) => {
-          if (res.code !== 200) {
-            this.errorTips.password = res.msg
-          } else {
-            setInterval(() => {
-              this.time--
-              if (this.time <= 0) {
-                this.$router.replace('/login')
-              }
-            }, 1000)
-            this.thdIsActive = true
-            this.isStepTwoSuccess = true
-            this.isStepThreeSuccess = true
-            this.activeName = 'third'
-          }
-        })
-      },
-      validPhone: function (phone) {
-        let re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-        return re.test(phone)
-      },
-      validPassword: function () {
-        let re = /^(?!\d+$)(?![A-Za-z]+$)[a-zA-Z0-9]{6,30}$/
-        return re.test(this.password)
-      },
-      passwordFocus (val) {
-        switch (val) {
-          case 'password' : this.errorTips.password = ''
-            this.isShow = true
-            break
-          case 'rePassword' : this.errorTips.rePassword = ''
-            break
-          case 'userPhone' : this.errorTips.userPhone = ''
-            break
-          case 'phoneCode' : this.errorTips.phoneCode = ''
-            break
-        }
-      },
-      passwordChange () {
-        this.isContainCount = this.password.length >= 6 ? 1 : 0
-        var regNum = /^(?=.*\d.*\b)/
-        this.isContainNum = regNum.test(this.password) ? 1 : 0
-        var regEn = /[_a-zA-Z]/
-        this.isContainEn = regEn.test(this.password) ? 1 : 0
-        if (this.password.length >= 6 && regNum.test(this.password) && regEn.test(this.password)) {
-          this.isChecked = true
-        } else {
-          this.isChecked = false
-        }
-      },
-      passwordBlur () {
-        this.isShow = false
+    passwordChange () {
+      this.isContainCount = this.password.length >= 6 ? 1 : 0
+      var regNum = /^(?=.*\d.*\b)/
+      this.isContainNum = regNum.test(this.password) ? 1 : 0
+      var regEn = /[_a-zA-Z]/
+      this.isContainEn = regEn.test(this.password) ? 1 : 0
+      if (this.password.length >= 6 && regNum.test(this.password) && regEn.test(this.password)) {
+        this.isChecked = true
+      } else {
+        this.isChecked = false
       }
+      if (this.password !== this.rePassword) {
+        this.isSame = false
+      }
+    },
+    newPasswordChange () {
+      if (this.password === this.rePassword) {
+        this.isSame = true
+      } else {
+        this.isSame = false
+      }
+    },
+    passwordBlur () {
+      this.isPasswordShow = false
+    },
+    newPasswordBlur () {
+      this.isNewPasswordShow = false
     }
   }
+}
 </script>
 <style lang="scss" scoped>
 @import 'assets/css/mixin.scss';
@@ -438,7 +513,8 @@
     width: 450px;
     margin: 50px auto 0;
     position: relative;
-    .v-psd {
+    .v-psd,
+    .v-new-psd {
       position: relative;
       .v-verification {
         position: absolute;
@@ -470,6 +546,13 @@
               color: $color-blue;
             }
           }
+        }
+      }
+    }
+    .v-new-psd {
+      .v-verification {
+        ul {
+          height: 60px;
         }
       }
     }
@@ -506,6 +589,9 @@
           padding: 0 10px !important;
         }
       }
+      &.phone-code .limit {
+        display: none;
+      }
     }
     .v-getcode {
       position: absolute;
@@ -522,10 +608,18 @@
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {
-        background-color: #dedede;
+        background-color: #ffd021;
+        opacity: 0.8;
         &:hover {
-          background-color: #dedede;
+          background-color: #ffd021;
+          opacity: 0.8;
         }
+      }
+      &:hover {
+        background-color: #fdd43f;
+      }
+      &:active {
+        background-color: #eec11a;
       }
       .fr {
         margin-left: 6px;

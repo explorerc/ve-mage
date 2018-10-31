@@ -1,27 +1,33 @@
 <template>
   <el-container class="container">
-        <el-aside class="left-container" :class="{close:close}">
-            <com-menu :close.sync="close"></com-menu>
-        </el-aside>
-        <el-container class="main-box">
-            <el-header class="header-container">
-              <com-login :isShow="isShow" @changeState="changeState"></com-login>
-            </el-header>
-            <div class="top-notice" v-show="msg">
-                <div class="notice-box clearfix">
-                    <div class="fl notice-icon"><i class="iconfont icon-youcegonggao_icon"></i></div>
-                    <div class="text-box fl">
-                        <span class="notice-con">{{msg}}</span>
-                    </div>
-                </div>
-                <i class="el-icon-close" ></i>
-            </div>
-            <section class="main-container" :class="{close:close}">
-                <transition >
-                    <router-view class="app-view"></router-view>
-                </transition>
-            </section>
-        </el-container>
+    <el-aside class="left-container"
+              :class="{close:close}">
+      <com-menu :close.sync="close"></com-menu>
+    </el-aside>
+    <el-container class="main-box">
+      <el-header class="header-container">
+        <com-login :isShow="isShow"
+                   @changeState="changeState"></com-login>
+      </el-header>
+      <div class="top-notice"
+           v-show="msg">
+        <div class="notice-box clearfix">
+          <div class="fl notice-icon">
+            <i class="iconfont icon-youcegonggao_icon"></i>
+          </div>
+          <div class="text-box fl">
+            <span class="notice-con">{{msg}}</span>
+          </div>
+        </div>
+        <i class="el-icon-close"></i>
+      </div>
+      <section class="main-container"
+               :class="{close:close}">
+        <transition>
+          <router-view class="app-view"></router-view>
+        </transition>
+      </section>
+    </el-container>
   </el-container>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="ve-upload-box">
+  <div class="ve-upload-box" v-ComLoading="loading">
     <div class="upload-img-box" v-if="fileSrc||(!fileSrc && coverImg)">
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
@@ -24,6 +24,7 @@
       inputName="file"
       :fileSize="fileSize"
       @error="uploadError"
+      @selected="selected"
       @progress="uploadProgress"
       @load="uploadImgSuccess">
       <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
@@ -40,7 +41,7 @@
 
   export default {
     name: 've-upload-image',
-    components: {ComUpload},
+    components: { ComUpload },
     data () {
       return {
         imgHost: '',
@@ -48,7 +49,8 @@
         coverImg: '',
         tipTxt: '',
         percentImg: 0,
-        errorTxt: ''
+        errorTxt: '',
+        loading: false
       }
     },
     props: {
@@ -76,10 +78,17 @@
     watch: {
       errorMsg (value) {
         this.errorTxt = value
+        if (value.length) {
+          this.fileSrc = ''
+          this.coverImg = ''
+        }
       },
       defaultImg: {
         handler (val) {
           this.coverImg = val
+          if (!val) {
+            this.fileSrc = ''
+          }
         },
         immediate: true
       },
@@ -103,7 +112,12 @@
       overUpload () {
         this.$refs.uploadFile.click()
       },
+      selected () {
+        console.log('selected')
+        this.loading = true
+      },
       uploadProgress (data) {
+        this.loading = false
         this.percentImg = parseFloat(parseFloat(data.percent.replace('%', '')).toFixed(2))
         if (this.percentImg === 100) {
           this.percentImg = 0
@@ -116,8 +130,22 @@
         this.$emit('success', fildObj)
       },
       uploadError (data) {
+        this.loading = false
+        const state = data.data[0].state
+        let msg = ''
+        if (state === 'size-limit') {
+          msg = '上传图片过大'
+        } else if (state === 'type-limit') {
+          msg = '不支持该格式，请重新上传'
+        } else {
+          msg = '图片上传失败'
+        }
         this.fileSrc = ''
-        this.$emit('error', data)
+        this.coverImg = ''
+        this.$emit('error', {
+          type: state,
+          msg: msg
+        })
       }
     }
   }
@@ -127,13 +155,16 @@
 .fade-enter-active {
   transition: all 0.3s ease;
 }
+
 .fade-leave-active {
   transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
 }
+
 .ve-upload-box {
   position: relative;
   width: 440px;
@@ -169,7 +200,6 @@
     height: 100%;
     width: 249px;
     margin: 0 auto;
-    background-color: #666666;
     overflow: hidden;
     cursor: pointer;
     .temp-img {

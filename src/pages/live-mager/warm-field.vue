@@ -2,10 +2,9 @@
   <div class="live-mager">
     <div class="live-title">
       <span class="title">暖场设置</span>
-      <el-switch
-        v-model="isSwitch"
-        inactive-color="#DEE1FF"
-        active-color="#4B5AFE">
+      <el-switch v-model="isSwitch"
+                 inactive-color="#DEE1FF"
+                 active-color="#4B5AFE" @change='openSwitch'>
       </el-switch>
       <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
       <!--<button class="primary-button fr" @click="goBack">返回</button>-->
@@ -15,41 +14,46 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>暖场视频：</div>
           <div class="from-content">
-            <ve-upload-video
-              title="视频仅支持mp4格式，文件大小不超过200M"
-              accept="mp4"
-              :fileSize="204800"
-              :errorMsg="uploadVideoErrorMsg"
-              :sdk="sdkParam"
-              @handleClick="handleVideoClick"
-              @success="uploadVideoSuccess"></ve-upload-video>
+            <ve-upload-video title="视频仅支持mp4格式，文件大小不超过200M"
+                             accept="mp4"
+                             :fileSize="204800"
+                             :errorMsg="uploadVideoErrorMsg"
+                             :sdk="sdkParam"
+                             @error="errorUploadVideo"
+                             @handleClick="handleVideoClick"
+                             @success="uploadVideoSuccess"></ve-upload-video>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>播放模式：</div>
           <div class="from-content">
-            <el-radio v-model="warm.playMode" label="AUTO">自动循环</el-radio>
-            <el-radio v-model="warm.playMode" label="ONCE">单次播放</el-radio>
+            <el-radio v-model="warm.playMode"
+                      label="AUTO">自动循环
+            </el-radio>
+            <el-radio v-model="warm.playMode"
+                      label="ONCE">单次播放
+            </el-radio>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title">视频封面：</div>
           <div class="from-content">
             <div class="from-content">
-              <ve-upload-image
-                title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
-                accept="png|jpg|jpeg|bmp|gif"
-                :defaultImg="defaultImg"
-                :fileSize="2048"
-                :errorMsg="uploadImgErrorMsg"
-                @error="uploadError"
-                @success="uploadImgSuccess"></ve-upload-image>
+              <ve-upload-image title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M"
+                               accept="png|jpg|jpeg|bmp"
+                               :defaultImg="defaultImg"
+                               :fileSize="2048"
+                               :errorMsg="uploadImgErrorMsg"
+                               @error="uploadError"
+                               @success="uploadImgSuccess"></ve-upload-image>
             </div>
           </div>
         </div>
       </div>
       <div class="bottom-btn">
-        <button class="primary-button" @click="saveWarm">保存</button>
+        <button :class="{'primary-button':true,disabled:isDisabled}"
+                @click="saveWarm">保存
+        </button>
       </div>
     </div>
 
@@ -59,11 +63,11 @@
 <script>
   import VeUploadImage from 'src/components/ve-upload-image'
   import VeUploadVideo from 'src/components/ve-upload-video'
-  import LiveHttp from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
 
   export default {
     name: 'warm-field',
-    components: {VeUploadImage, VeUploadVideo},
+    components: { VeUploadImage, VeUploadVideo },
     data () {
       return {
         warm: {
@@ -72,14 +76,16 @@
           playCover: '',
           recordId: '',
           activityId: '',
-          filename: ''
+          filename: '',
+          fileSize: ''
         },
         sdkParam: { // sdk上传插件初始化参数
           sign: '',
           signed_at: '',
           app_id: '',
           fileName: '',
-          fileSize: ''
+          fileSize: '',
+          transcode_status: 0
         },
         sdkPlayParam: { // sdk播放器初始化参数
           app_id: '',
@@ -90,13 +96,14 @@
         },
         isSwitch: false,
         loading: false,
-        videoSize: '200', // 视频限制大小，单位兆
+        isDisabled: false,
         percentVideo: 0, // 上传进度
         percentImg: 0, // 图片上传进度
         uploadErrorMsg: '', // 上传错误信息
         uploadImgErrorMsg: '', // 图片上传错误信息
         uploadVideoErrorMsg: '', // 视频上传错误信息
-        playMsg: ''
+        playMsg: '',
+        canPass: true
       }
     },
     computed: {
@@ -104,9 +111,33 @@
         return this.warm.playCover ? `${this.$imgHost}/${this.warm.playCover}` : ''
       }
     },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      if (this.canPass) {
+        next(true)
+        return
+      }
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
+    },
     watch: {
       isSwitch (newVal) {
         this.warm.enabled = newVal ? 'Y' : 'N'
+      },
+      'warm.playMode' () {
+        this.canPass = false
       }
     },
     created () {
@@ -129,26 +160,29 @@
         })
       },
       initPage () {
-        LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+        this.$get(activityService.GET_WRAM_INFO, {
+          activityId: this.$route.params.id
+        }).then((res) => {
           /* 查询详情 */
-          if (res.code === 200 && res.data) {
+          if (res.data) {
             this.warm = {
               activityId: this.$route.params.id,
               enabled: res.data.enabled,
-              playMode: res.data.playType,
+              playMode: res.data.playType || this.warm.playMode,
               playCover: res.data.imgUrl,
               recordId: res.data.recordId,
-              filename: res.data.filename
+              filename: res.data.filename,
+              fileSize: res.data.fileSize || 0
             }
             this.isSwitch = res.data.enabled === 'Y'
             /* sdk参数赋值 */
             this.sdkPlayParam.recordId = res.data.recordId
             this.sdkParam.fileName = res.data.filename
-            this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+            this.sdkParam.fileSize = res.data.fileSize || 0
+            this.sdkParam.transcode_status = (res.data.record && res.data.record.list.length > 0) ? res.data.record.list[0].transcode_status : 0
           }
         }).then(() => {
-          /* 获取pass信息 */
-          LiveHttp.queryPassSdkInfo().then((res) => {
+          this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
             /* $nextTick保证dom被渲染之后进行paas插件初始化 */
             this.$nextTick(() => {
               // 初始化pass上传插件
@@ -162,38 +196,120 @@
             })
           })
         })
+        // LiveHttp.queryWarmInfoById(this.$route.params.id).then((res) => {
+        //   /* 查询详情 */
+        //   if (res.code === 200 && res.data) {
+        //     this.warm = {
+        //       activityId: this.$route.params.id,
+        //       enabled: res.data.enabled,
+        //       playMode: res.data.playType || this.warm.playMode,
+        //       playCover: res.data.imgUrl,
+        //       recordId: res.data.recordId,
+        //       filename: res.data.filename
+        //     }
+        //     this.isSwitch = res.data.enabled === 'Y'
+        //     /* sdk参数赋值 */
+        //     this.sdkPlayParam.recordId = res.data.recordId
+        //     this.sdkParam.fileName = res.data.filename
+        //     this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+        //     this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
+        //   }
+        //   this.isSwitch = res.data.enabled === 'Y'
+        //   /* sdk参数赋值 */
+        //   this.sdkPlayParam.recordId = res.data.recordId
+        //   this.sdkParam.fileName = res.data.filename
+        //   this.sdkParam.fileSize = res.data.record ? res.data.record.storage : 0
+        //   this.sdkParam.transcode_status = res.data.record.list[0].transcode_status
+        // }).then(() => {
+        //   this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
+        //     /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+        //     this.$nextTick(() => {
+        //       // 初始化pass上传插件
+        //       this.sdkParam.sign = res.data.sign
+        //       this.sdkParam.signed_at = res.data.signedAt
+        //       this.sdkParam.app_id = res.data.appId
+        //       // 初始化pass播放参数
+        //       this.sdkPlayParam.app_id = res.data.appId
+        //       this.sdkPlayParam.accountId = res.data.accountId
+        //       this.sdkPlayParam.token = res.data.token
+        //     })
+        //   })
+        // })
       },
       uploadVideo () {
         document.getElementById('upload').click()
       },
+      checkoutParams () {
+        if (!this.warm.recordId) {
+          this.$toast({
+            content: '请上传暖场视频',
+            position: 'center'
+          })
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isDisabled = false
+          }, 3000)
+          return false
+        }
+        return true
+      },
       /* 保存暖场信息 */
       saveWarm () {
-        LiveHttp.saveAndEditWarmInfo({
+        this.isDisabled = true
+        if (!this.checkoutParams()) return
+        this.$post(activityService.POST_SAVE_WRAM_INFO, {
           activityId: this.warm.activityId,
           recordId: this.warm.recordId,
           playType: this.warm.playMode,
           imgUrl: this.warm.playCover,
           enabled: this.warm.enabled,
-          filename: this.warm.filename
+          filename: this.warm.filename,
+          fileSize: parseInt(this.warm.fileSize)
         }).then((res) => {
-          if (res.code === 200) {
-            this.$toast({
-              header: `提示`,
-              content: '保存成功',
-              autoClose: 2000,
-              position: 'right-top'
-            })
-          }
+          this.canPass = true
+          this.$toast({
+            content: '保存成功',
+            position: 'center'
+          })
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isDisabled = false
+          }, 3000)
+        }).catch(() => {
+          this.isDisabled = false
         })
+        // LiveHttp.saveAndEditWarmInfo({
+        //   activityId: this.warm.activityId,
+        //   recordId: this.warm.recordId,
+        //   playType: this.warm.playMode,
+        //   imgUrl: this.warm.playCover,
+        //   enabled: this.warm.enabled,
+        //   filename: this.warm.filename
+        // }).then((res) => {
+        //   if (res.code === 200) {
+        //     this.$toast({
+        //       header: `提示`,
+        //       content: '保存成功',
+        //       autoClose: 2000,
+        //       position: 'right-top'
+        //     })
+        //   }
+        // })
       },
       /* 上传图片成功 */
       uploadImgSuccess (data) {
+        this.canPass = false
         this.warm.playCover = data.name
       },
       /* 上传视频成功 */
-      uploadVideoSuccess (recordId, fileName) {
+      uploadVideoSuccess (recordId, fileName, fileSize) {
+        this.canPass = false
         this.warm.recordId = recordId
         this.warm.filename = fileName
+        this.warm.fileSize = fileSize
+        this.sdkParam.fileName = fileName
+        this.sdkParam.fileSize = fileSize
+        this.sdkPlayParam.recordId = recordId
       },
       /* 预览，删除触发 */
       handleVideoClick (e) {
@@ -209,17 +325,49 @@
             type: 'error',
             handleClick: (e) => {
               if (e.action === 'confirm') {
+                this.canPass = false
+                this.uploadVideoErrorMsg = ''
                 this.warm.recordId = ''
                 this.warm.filename = ''
+                this.sdkPlayParam.recordId = ''
                 this.sdkParam.fileName = ''
                 this.sdkParam.fileSize = ''
+                this.sdkParam.transcode_status = 0
               }
             }
           })
         }
       },
+      errorUploadVideo (msg, file) {
+        this.sdkParam.fileName = file.name
+        this.uploadVideoErrorMsg = msg
+      },
       uploadError (data) {
-        this.uploadImgErrorMsg = '上传图片失败'
+        this.uploadImgErrorMsg = data.msg
+        this.warm.playCover = ''
+      },
+      openSwitch (type) {
+        const data = {
+          activityId: this.$route.params.id,
+          submodule: 'WARMUP',
+          enabled: type ? 'Y' : 'N'
+        }
+        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+          this.$toast({
+            content: '设置成功'
+          })
+        }).catch((res) => {
+          console.log(res)
+          if (res.code === 60706) {
+            this.isSwitch = !type
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+          }
+        })
       }
     }
   }
@@ -228,11 +376,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>

@@ -4,14 +4,15 @@ const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base.conf')
 const config = require('./config')
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 const webpackConfig = merge(baseConfig, {
   module: {
-    rules: [{
-        test: /\.scss/,
+    rules: [
+      {
+        test: /\.[s]?css/,
         use: [
           'vue-style-loader',
           'css-loader',
@@ -24,26 +25,16 @@ const webpackConfig = merge(baseConfig, {
           'sass-loader'
         ],
         include: resolve('src')
-      },
-      {
-        test: /\.css/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'postcss-loader'
-        ]
       }
     ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     inline: true,
     hot: true,
     contentBase: resolve('dist'),
     open: false,
-    https: false,
+    https: true,
     host: 'localhost',
     port: 2333,
     overlay: {
