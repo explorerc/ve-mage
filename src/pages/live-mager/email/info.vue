@@ -18,16 +18,26 @@
         </div>
         <div class="from-row">
           <div class="from-title">收件人：</div>
-          <div class="from-content">
-            <div>分组1、分组2、分组3（合计56人）</div>
-            <div style="border: solid 1px #e5e5e5;">
+          <div class="from-content receiver" >
+            <template v-if="selectedGroupList.length || selectedTagList.length">
+              <div >
+                <span v-for='item in selectedGroupList'>{{item.name}}（{{item.count}}）、</span>
+              </div>
+              <div>
+                <span v-for='item in selectedTagList'>{{item.name}}、</span>（合计{{email.sendCount}}人）
+              </div>
+            </template>
+            <template v-else>
+              暂未选择
+            </template>
+            <!-- <div style="border: solid 1px #e5e5e5;">
               <div>邮件1</div>
               <div>邮件2</div>
               <div>邮件3</div>
               <div>邮件4</div>
               <div>邮件5</div>
               <div>邮件6</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="from-row">
@@ -99,12 +109,12 @@ export default {
         senderName: '',
         sendCount: 0,
         status: '',
-        statusName: '',
-        groupList: [],
-        tagList: [],
-        selectedGroupList: [],
-        selectedTagList: []
-      }
+        statusName: ''
+      },
+      selectedGroupList: [],
+      selectedTagList: [],
+      groupList: [],
+      tagList: []
     }
   },
   computed: mapState('liveMager', {
@@ -121,13 +131,11 @@ export default {
   created () {
     // 如果vuex可以取到值就return
     if (this.email.emailInviteId) {
-      debugger
-      this.groupList = this.emailInfo.groupList
-      this.groupList = this.emailInfo.tagList
+      this.groupList = this.emailInfo.groupList ? this.emailInfo.groupList : []
+      this.tagList = this.emailInfo.tagList ? this.emailInfo.tagList : []
       this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
       return false
     }
-    debugger
     // 如果vuex不能取到值就查询接口
     const queryId = this.$route.params.id
     if (!queryId) {
@@ -135,9 +143,7 @@ export default {
       return
     }
     this.email.emailInviteId = this.$route.query.email
-    this.queryGroupList()
-    this.queryTagList()
-    this.queryEmailInfo()
+    this.queryTagList().then(this.queryGroupList()).then(this.queryEmailInfo())
   },
   methods: {
     ...mapMutations('liveMager', {
@@ -153,7 +159,7 @@ export default {
         this.email = res.data
         setTimeout(() => {
           this.reArrangeList(res.data.groupIds.split(','), res.data.tagIds.split(','))
-        })
+        }, 500)
         this.storeEmailInfo(this.email)
       })
     },
@@ -172,8 +178,8 @@ export default {
       this.$router.go(-1)
     },
     // 查询群组
-    queryGroupList (keyword) {
-      this.$get(userManage.GET_GROUP_LIST, {
+    async queryGroupList (keyword) {
+      await this.$get(userManage.GET_GROUP_LIST, {
         type: '2'
       }).then((res) => {
         let temArray = []
@@ -189,8 +195,8 @@ export default {
       })
     },
     /* 查询标签 */
-    queryTagList () {
-      this.$get(noticeService.GET_PERSON_LIST, {
+    async queryTagList () {
+      await this.$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id
       }).then((res) => {
         let temArray = []
@@ -208,7 +214,7 @@ export default {
       this.groupList.forEach((item, idx) => {
         group.forEach((ele, i) => {
           if (ele * 1 === item.id) {
-            this.groupList[idx].isChecked = true
+            // this.groupList[idx].isChecked = true
             this.selectedGroupList.push({
               count: 0,
               id: item.id,
@@ -221,7 +227,7 @@ export default {
       this.tagList.forEach((item, idx) => {
         tag.forEach((ele, i) => {
           if (ele * 1 === item.id) {
-            this.tagList[idx].isChecked = true
+            // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
               count: 0,
               id: item.id,
@@ -300,6 +306,10 @@ export default {
       transform: rotate(-45deg);
       background-color: #ffd021;
     }
+  }
+  .receiver div span {
+    display: inline-block;
+    padding: 0 0 10px 0;
   }
 }
 </style>
