@@ -81,6 +81,11 @@ const DataLive = () => import('src/pages/data/live')
 const Spread = () => import('src/pages/data/spread')
 const Viewer = () => import('src/pages/data/viewer')
 const ViewerList = () => import('src/pages/data/viewerList')
+/* 营销工具 */
+const questionnaire = () => import('src/pages/sales-tools/questionnaire')
+const redpack = () => import('src/pages/sales-tools/redpack')
+const recommendCards = () => import('src/pages/sales-tools/recommend-cards')
+const recommendGoods = () => import('src/pages/sales-tools/recommend-goods')
 
 export default [{
   path: '/test',
@@ -309,6 +314,26 @@ export default [{
     path: '/userManage/info/:id',
     name: 'userInfo',
     component: userInfo
+  },
+  {
+    path: '/salesTools/questionnaire/:id',
+    name: 'questionnaire',
+    component: questionnaire
+  },
+  {
+    path: '/salesTools/recommendGoods/:id',
+    name: 'recommendGoods',
+    component: recommendGoods
+  },
+  {
+    path: '/salesTools/recommendCards/:id',
+    name: 'recommendCards',
+    component: recommendCards
+  },
+  {
+    path: '/salesTools/redpack/:id',
+    name: 'redpack',
+    component: redpack
   },
   {
     path: '/data',

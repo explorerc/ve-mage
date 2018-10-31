@@ -95,6 +95,7 @@ export default {
     },
     empty () {
       this.innerValue = ''
+      this.$emit('empty')
     },
     toggleShow () {
       if (this.inputType === 'password') {
