@@ -1178,52 +1178,54 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   #cond-option {
     overflow: auto;
     max-height: 400px;
-    ul {
-      li {
-        .option-box {
-          background-color: #ccc;
-          padding: 10px;
-          .option_title {
-            color: rgba(34, 34, 34, 1);
-            height: 26px;
-            line-height: 26px;
-          }
-          div {
-            margin-bottom: 10px;
-            .el-cascader, .el-select {
-              width: 150px;
-              height: 40px;
+    /deep/{
+      ul {
+        li {
+          .option-box {
+            background-color: #ccc;
+            padding: 10px;
+            .option_title {
+              color: rgba(34, 34, 34, 1);
+              height: 26px;
+              line-height: 26px;
             }
-            .el-select .el-input__inner {
-              background-color: white;
-            }
-            .option-value {
-              display: inline-block;
-              .el-input, .el-select {
-                width: 120px;
-              }
-              i.el-input__icon {
+            div {
+              margin-bottom: 10px;
+              .el-cascader, .el-select {
+                width: 150px;
                 height: 40px;
-                line-height: 40px;
+              }
+              .el-select .el-input__inner {
+                background-color: white;
+              }
+              .option-value {
+                display: inline-block;
+                .el-input, .el-select {
+                  width: 120px;
+                }
+                i.el-input__icon {
+                  height: 40px;
+                  line-height: 40px;
+                }
+              }
+              i.el-icon-delete {
+                float: right;
+                font-size: 16px;
+                transform: translate(-4px, 12px);
               }
             }
-            i.el-icon-delete {
-              float: right;
-              font-size: 16px;
-              transform: translate(-4px, 12px);
-            }
           }
-        }
-        .orBtn {
-          text-align: center;
-          height: 48px;
-          line-height: 48px;
-        }
+          .orBtn {
+            text-align: center;
+            height: 48px;
+            line-height: 48px;
+          }
 
+        }
       }
     }
   }

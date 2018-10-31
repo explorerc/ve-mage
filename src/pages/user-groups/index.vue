@@ -189,27 +189,31 @@
         console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
       },
       handleDelete (id, type, index) { // 删除群组
-        this.$confirm('<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ', '删除群组', {
-          confirmButtonText: '删除',
-          cancelButtonText: '暂不',
-          dangerouslyUseHTMLString: true,
-          roundButton: true,
-          customClass: 'userGroupDelConfirm',
-          confirmButtonClass: 'userGroupDelConfirmBtn'
-        }).then(() => {
-          this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
-            .then(res => {
-              this.tableData.splice(index, 1)
+        this.$messageBox({
+          header: '删除群组',
+          type: 'error',
+          width: '450px',
+          content: '<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ',
+          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+          confirmText: '删除',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
               this.$message({
-                type: 'success',
-                message: '删除成功!'
+                type: 'info',
+                message: '已取消删除'
               })
-            })
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
+            } else if (e.action === 'confirm') {
+              this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
+                .then(res => {
+                  this.tableData.splice(index, 1)
+                  this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                  })
+                })
+            }
+          }
         })
       },
       changePage (curPage) { // 分页
@@ -284,126 +288,128 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   #userGroups {
     font-family: PingFangSC-Regular;
     padding: 40px 100px;
-    header {
-      height: 40px;
-      width: 100%;
-      line-height: 40px;
-      padding-left: 20px;
-      display: inline-block;
-      background: #cccccc;
-    }
-    .operation {
-      overflow: hidden;
-      h4 {
-        display: inline-block;
-        height: 26px;
-        color: rgba(34, 34, 34, 1);
-        line-height: 26px;
-        font-size: 24px;
-        float: left;
-        font-weight: 400;
-      }
-      div {
-        float: right;
-        .el-input {
-          float: left;
-          width: 220px;
-          height: 34px;
-          margin-right: 20px;
-          .el-input__inner {
-            border-radius: 20px;
-            border-color: rgba(136, 136, 136, 1);
-            &:hover {
-              border-color: #5D6AFE;
-            }
-          }
-        }
-        .el-button {
-          color: rgba(85, 85, 85, 1);
-          width: 120px;
-          height: 34px;
-          border-radius: 16px;
-          border: 1px solid rgba(136, 136, 136, 1);
-        }
-      }
-    }
-    .table-box {
-      margin-top: 22px;
-      padding: 30px;
-      border: 1px dashed #cccccc;
-      .el-table {
-
-        .btns {
-          color: rgba(34, 34, 34, 1);
-          &:hover {
-            color: rgba(75, 90, 254, 1);
-          }
-        }
-        .default:after {
-          content: '默认';
-          color: #4B5AFE;
-          height: 17px;
-          font-size: 10px;
-          padding: 0 3px;
-          border: 1px solid #4B5AFE;
-        }
-      }
-      .VePagination {
-        text-align: center;
-        margin-top: 20px;
-      }
-    }
-
-    .el-dialog {
-      .el-dialog__header {
+    /deep/ {
+      header {
         height: 40px;
-        background: rgba(255, 208, 33, 1);
-        .el-dialog__title {
+        width: 100%;
+        line-height: 40px;
+        padding-left: 20px;
+        display: inline-block;
+        background: #cccccc;
+      }
+      .operation {
+        overflow: hidden;
+        h4 {
           display: inline-block;
-          font-size: 16px;
-          transform: translateY(-5px);
+          height: 26px;
+          color: rgba(34, 34, 34, 1);
+          line-height: 26px;
+          font-size: 24px;
+          float: left;
+          font-weight: 400;
+        }
+        div {
+          float: right;
+          .el-input {
+            float: left;
+            width: 220px;
+            height: 34px;
+            margin-right: 20px;
+            .el-input__inner {
+              border-radius: 20px;
+              border-color: rgba(136, 136, 136, 1);
+              &:hover {
+                border-color: #5D6AFE;
+              }
+            }
+          }
+          .el-button {
+            color: rgba(85, 85, 85, 1);
+            width: 120px;
+            height: 34px;
+            border-radius: 16px;
+            border: 1px solid rgba(136, 136, 136, 1);
+          }
         }
       }
-      .el-dialog__body {
-        padding: 30px 30px 0;
-        .el-form {
-          .el-form-item {
-            .el-input {
-              position: relative;
-              .el-input__inner {
-                border-top-right-radius: 3px;
-                border-bottom-right-radius: 3px;
-              }
-              .el-input-group__append {
-                height: 38px;
-                line-height: 38px;
-                width: 50px;
-                position: absolute;
-                right: 8px;
-                color: #999999;
-                text-align: right;
-                top: 1px;
-                border: none;
-                padding: 0;
-                font-size: 12px;
+      .table-box {
+        margin-top: 22px;
+        padding: 30px;
+        border: 1px dashed #cccccc;
+        .el-table {
+
+          .btns {
+            color: rgba(34, 34, 34, 1);
+            &:hover {
+              color: rgba(75, 90, 254, 1);
+            }
+          }
+          .default:after {
+            content: '默认';
+            color: #4B5AFE;
+            height: 17px;
+            font-size: 10px;
+            padding: 0 3px;
+            border: 1px solid #4B5AFE;
+          }
+        }
+        .VePagination {
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
+
+      .el-dialog {
+        .el-dialog__header {
+          height: 40px;
+          background: rgba(255, 208, 33, 1);
+          .el-dialog__title {
+            display: inline-block;
+            font-size: 16px;
+            transform: translateY(-5px);
+          }
+        }
+        .el-dialog__body {
+          padding: 30px 30px 0;
+          .el-form {
+            .el-form-item {
+              .el-input {
+                position: relative;
+                .el-input__inner {
+                  border-top-right-radius: 3px;
+                  border-bottom-right-radius: 3px;
+                }
+                .el-input-group__append {
+                  height: 38px;
+                  line-height: 38px;
+                  width: 50px;
+                  position: absolute;
+                  right: 8px;
+                  color: #999999;
+                  text-align: right;
+                  top: 1px;
+                  border: none;
+                  padding: 0;
+                  font-size: 12px;
+                }
               }
             }
           }
         }
-      }
-      .dialog-footer {
-        .el-button {
-          width: 120px;
-          height: 40px;
-          margin: -15px 15px 20px auto;
-          background: rgba(255, 208, 33, 1);
-          border-radius: 20px;
-          span {
-            color: #222222;
+        .dialog-footer {
+          .el-button {
+            width: 120px;
+            height: 40px;
+            margin: -15px 15px 20px auto;
+            background: rgba(255, 208, 33, 1);
+            border-radius: 20px;
+            span {
+              color: #222222;
+            }
           }
         }
       }
@@ -422,4 +428,5 @@
     }
 
   }
+
 </style>
