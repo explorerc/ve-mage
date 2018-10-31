@@ -263,7 +263,7 @@ export default {
       }
       .block1-item {
         width: 540px;
-        height: 350px;
+        height: auto;
         margin-right: 40px;
         img {
           width: 100%;

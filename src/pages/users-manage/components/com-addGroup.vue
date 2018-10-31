@@ -20,18 +20,18 @@
             </div>
             <div class="item spe">
               <label class='label'>群组描述:</label>
-              <com-input type="textarea" :value.sync="desc" placeholder="输入群组描述" :max-length="10" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
+              <com-input type="textarea" :value.sync="desc" placeholder="输入群组描述" :max-length="30" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
             </div>
           </div>
           <div class="tab" v-else>
              <div class="item spe"  @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }" >
                 <el-option
                   v-for="item in groupData"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -58,23 +59,12 @@ export default {
         {
           value: '1',
           label: '黄金糕'
-        }, {
-          value: '2',
-          label: '双皮奶'
-        }, {
-          value: '3',
-          label: '蚵仔煎'
-        }, {
-          value: '4',
-          label: '龙须面'
-        }, {
-          value: '5',
-          label: '北京烤鸭'
         }
       ]
     }
   },
-  props: {
+  mounted () {
+    this.initGrouplist()
   },
   methods: {
     close () {
@@ -106,7 +96,7 @@ export default {
         }
         return true
       } else {
-        if (!this.selval.length) {
+        if (!this.selval) {
           this.optSel = true
           return false
         }
@@ -116,6 +106,24 @@ export default {
         this.descEmpty = false
         return true
       }
+    },
+    initGrouplist () {
+      this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        console.log(res)
+        this.groupData = this.reArrange(res.data.list)
+      })
+    },
+    reArrange (array) {
+      const arr = []
+      array.forEach(item => {
+        arr.push({
+          id: item.group_id,
+          name: item.title + `(${item.user_count})`
+        })
+      })
+      return arr
     }
   }
 }

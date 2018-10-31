@@ -69,6 +69,10 @@ const SiteTemplate2 = () => import('src/pages/site/template2.vue')
 const userOverview = () => import('src/pages/users-manage/overview')
 const userPond = () => import('src/pages/users-manage/pond')
 const userGroup = () => import('src/pages/users-manage/group')
+/* 用户群组 */
+const userGroupsIndex = () => import('src/pages/user-groups/index.vue')
+const userGroupsDetails = () => import('src/pages/user-groups/group-details.vue')
+const userInfo = () => import('src/pages/users-manage/pond/info')
 
 /* 数据中心 */
 const Data = () => import('src/pages/data/index')
@@ -77,6 +81,11 @@ const DataLive = () => import('src/pages/data/live')
 const Spread = () => import('src/pages/data/spread')
 const Viewer = () => import('src/pages/data/viewer')
 const ViewerList = () => import('src/pages/data/viewerList')
+/* 营销工具 */
+const questionnaire = () => import('src/pages/sales-tools/questionnaire')
+const redpack = () => import('src/pages/sales-tools/redpack')
+const recommendCards = () => import('src/pages/sales-tools/recommend-cards')
+const recommendGoods = () => import('src/pages/sales-tools/recommend-goods')
 
 export default [{
   path: '/test',
@@ -116,11 +125,7 @@ export default [{
 {
   path: '/exitEmail',
   name: 'exitEmail',
-  component: ExitEmail,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
+  component: ExitEmail
 },
 {
   path: '/',
@@ -294,6 +299,41 @@ export default [{
     path: '/userManage/group',
     name: 'userGroup',
     component: userGroup
+  },
+  {
+    path: '/userManage/userGroupsIndex',
+    name: 'userGroupsIndex',
+    component: userGroupsIndex
+  },
+  {
+    path: '/userManage/userGroupsDetails/:id/:type',
+    name: 'userGroupsDetails',
+    component: userGroupsDetails
+  },
+  {
+    path: '/userManage/info/:id',
+    name: 'userInfo',
+    component: userInfo
+  },
+  {
+    path: '/salesTools/questionnaire/:id',
+    name: 'questionnaire',
+    component: questionnaire
+  },
+  {
+    path: '/salesTools/recommendGoods/:id',
+    name: 'recommendGoods',
+    component: recommendGoods
+  },
+  {
+    path: '/salesTools/recommendCards/:id',
+    name: 'recommendCards',
+    component: recommendCards
+  },
+  {
+    path: '/salesTools/redpack/:id',
+    name: 'redpack',
+    component: redpack
   },
   {
     path: '/data',

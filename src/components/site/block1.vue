@@ -239,10 +239,11 @@ export default {
         }
         &.top {
           .content {
-            position: absolute;
-            position: absolute;
-            left: 0;
-            top: 0;
+            text-align: justify;
+            // position: absolute;
+            // position: absolute;
+            // left: 0;
+            // top: 0;
           }
         }
         &.right {

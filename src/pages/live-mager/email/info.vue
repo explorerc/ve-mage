@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
+import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
@@ -97,7 +99,11 @@ export default {
         senderName: '',
         sendCount: 0,
         status: '',
-        statusName: ''
+        statusName: '',
+        groupList: [],
+        tagList: [],
+        selectedGroupList: [],
+        selectedTagList: []
       }
     }
   },
@@ -114,7 +120,14 @@ export default {
   },
   created () {
     // 如果vuex可以取到值就return
-    if (this.email.emailInviteId) return
+    if (this.email.emailInviteId) {
+      debugger
+      this.groupList = this.emailInfo.groupList
+      this.groupList = this.emailInfo.tagList
+      this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
+      return false
+    }
+    debugger
     // 如果vuex不能取到值就查询接口
     const queryId = this.$route.params.id
     if (!queryId) {
@@ -122,6 +135,8 @@ export default {
       return
     }
     this.email.emailInviteId = this.$route.query.email
+    this.queryGroupList()
+    this.queryTagList()
     this.queryEmailInfo()
   },
   methods: {
@@ -136,13 +151,11 @@ export default {
       }).then((res) => {
         res.data.statusName = statusType[res.data.status]
         this.email = res.data
+        setTimeout(() => {
+          this.reArrangeList(res.data.groupIds.split(','), res.data.tagIds.split(','))
+        })
         this.storeEmailInfo(this.email)
       })
-      // LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
-      //   res.data.statusName = statusType[res.data.status]
-      //   this.email = res.data
-      //   this.storeEmailInfo(this.email)
-      // })
     },
     sendEmail () {
       this.$post(activityService.POST_SEND_EMAIL_INFO, {
@@ -151,21 +164,73 @@ export default {
         console.log('邮件发送成功')
         console.log(res)
       })
-      // LiveHttp.sendEmailInfo({
-      //   emailInviteId: this.email.emailInviteId
-      // }).then((res) => {
-      //   console.log('邮件发送成功')
-      //   console.log(res)
-      // }).catch((e) => {
-      //   console.log('邮件发送失败')
-      //   console.log(e)
-      // })
     },
     editEmail () {
       this.$router.push(`/liveMager/emailEditOne/${this.email.activityId}?email=${this.email.emailInviteId}`)
     },
     prePage () {
       this.$router.go(-1)
+    },
+    // 查询群组
+    queryGroupList (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
+            isChecked: false
+          })
+        })
+        this.groupList = temArray
+      })
+    },
+    /* 查询标签 */
+    queryTagList () {
+      this.$get(noticeService.GET_PERSON_LIST, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        let temArray = []
+        res.data.forEach((item) => {
+          temArray.push({
+            id: item.id,
+            name: item.name,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
+      })
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.groupList[idx].isChecked = true
+            this.selectedGroupList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.tagList[idx].isChecked = true
+            this.selectedTagList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
     }
   }
 }
