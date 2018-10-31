@@ -19,7 +19,7 @@
           <slot name="header"></slot>
           <div class="ve-message-box__content"
                v-if="(!this.$slots.default||this.$slots.default.length==0)&&content">
-            {{content}}
+            <!--{{content}}--> <span v-html="content"></span>
           </div>
           <slot></slot>
           <div class="ve-message-box__btns" v-if="type!=='none'">
