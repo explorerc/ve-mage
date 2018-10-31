@@ -47,13 +47,7 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFixedOrIntel" width="30%" :before-close="handleCloseDialog">
       <div>
         <el-form :model="Group" :rules="rules" ref="Group">
-          <el-form-item prop="title" v-if="isAddOrEdit === 'add'">
-            <el-input @input="inpC(Group.title,1)" :maxlength=10 v-model="Group.title"
-                      placeholder="请输入群组名称">
-              <template slot="append">{{inpNameLen}}/10</template>
-            </el-input>
-          </el-form-item>
-          <el-form-item v-else>
+          <el-form-item prop="title">
             <el-input @input="inpC(Group.title,1)" :maxlength=10 v-model="Group.title"
                       placeholder="请输入群组名称">
               <template slot="append">{{inpNameLen}}/10</template>
@@ -112,7 +106,13 @@
     data () {
       let valiRepeatName = (rule, value, callback) => {
         if (value) {
-          this.repeatTitle(value).then((res) => {
+          let par = {
+            title: value
+          }
+          if (this.isAddOrEdit === 'edit') { // 编辑不用检查自身是否重复
+            this.$set(par, 'group_id', this.Group.group_id)
+          }
+          this.repeatTitle(par).then((res) => {
             if (res.code !== 200) {
               return callback(new Error('该群组名称已存在'))
             } else {
@@ -167,8 +167,8 @@
             this.total = Number.parseInt(res.data.count)
           })
       },
-      repeatTitle (title) {
-        return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, { title: title })
+      repeatTitle (par) {
+        return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
       },
       handleDetails (id, type) { // 详情
         this.$router.push(`/userManage/userGroupsDetails/${id}/${type}`)
@@ -255,6 +255,8 @@
               this.Group.type = -1
               this.dialogFixedOrIntel = false
               this.isAddOrEdit = '' // 重置
+              this.inpNameLen = 0
+              this.inpDesLen = 0
               this.onSearch()
             }
           })
