@@ -171,223 +171,224 @@
         this.selectRow = val
       },
       handleDelete (userId, index) {
-        this.$confirm('是否从群组内删除该用户 ', '删除群组', {
-          confirmButtonText: '确定删除',
-          cancelButtonText: '暂不删除',
-          dangerouslyUseHTMLString: true,
-          roundButton: true,
-          customClass: 'userGroupDelConfirm',
-          confirmButtonClass: 'userGroupDelConfirmBtn'
-        }).then(() => {
-          this.$post(groupService.DEL_GROUP_USER, { business_consumer_uids: userId, group_id: this.search.group_id })
-            .then((res) => {
-              // this.tableData.splice(index, 1)
-              setTimeout(() => {
-                this.onSearch()
-              }, 0)
+        this.$messageBox({
+          header: '删除用戶',
+          type: 'error',
+          width: '450px',
+          content: '是否从群组内删除该用户',
+          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+          confirmText: '删除',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
               this.$message({
-                type: 'success',
-                message: '删除成功!'
+                type: 'info',
+                message: '已取消删除'
               })
-            })
+            } else if (e.action === 'confirm') {
+              this.$post(groupService.DEL_GROUP_USER, {
+                business_consumer_uids: userId,
+                group_id: this.search.group_id
+              })
+                .then((res) => {
+                  // this.tableData.splice(index, 1)
+                  setTimeout(() => {
+                    this.onSearch()
+                  }, 0)
+                  this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                  })
+                })
+            }
+          }
         })
       }
     }
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   #groupDetails {
     padding: 50px 100px;
     font-family: PingFangSC-Regular;
-    header {
-      height: 26px;
-      font-size: 24px;
-      font-weight: 400;
-      color: rgba(34, 34, 34, 1);
-      line-height: 26px;
-      margin-bottom: 23px;
-    }
-    .operation {
-      overflow: hidden;
-      .opBtns {
-        float: left;
-      }
-      .search {
-        float: right;
-        display: inline-block;
-        width: 220px;
-        .el-input__inner {
-          border-radius: 20px;
-          border-color: rgba(136, 136, 136, 1);
-        }
-      }
-    }
-    .table_box {
-      border: 1px dashed #cccccc;
-      margin: 20px auto;
-      padding: 30px;
-      th.el-table_1_column_1 span.el-checkbox__inner {
-        background-color: transparent;
-        border: none;
-      }
-      th.el-table_1_column_1 span.el-checkbox__inner:before {
-        content: "选择";
-      }
-      th.el-table_1_column_1 span.el-checkbox__inner:after {
-        border: none;
-      }
-      .btns {
+    /deep/ {
+      header {
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
         color: rgba(34, 34, 34, 1);
-        &:hover {
-          color: rgba(75, 90, 254, 1);
-        }
+        line-height: 26px;
+        margin-bottom: 23px;
       }
-
-      .user_info {
-        img {
+      .operation {
+        overflow: hidden;
+        .opBtns {
           float: left;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          margin-right: 5px;
-          margin-top: 10px;
         }
-        div {
-          overflow: hidden;
-          .table_info {
-            display: inline-block;
-            max-width: 90px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-        }
-      }
-    }
-    .VePagination {
-      text-align: center;
-      margin-top: 20px;
-    }
-    .el-dialog {
-      .el-dialog__header {
-        height: 40px;
-        background: rgba(255, 208, 33, 1);
-        .el-dialog__title {
+        .search {
+          float: right;
           display: inline-block;
-          font-size: 16px;
-          transform: translateY(-5px);
-        }
-      }
-      .downLoad_tem {
-        width: 100%;
-        display: block;
-        text-align: right;
-        margin-bottom: 10px;
-        i {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          line-height: 16px;
-          text-align: center;
-          border: 1px solid #222222;
-          border-radius: 50%;
-          margin-left: 5px;
-        }
-      }
-      .el-dialog__body {
-        padding: 30px 30px 0;
-        .el-form {
-          overflow: hidden;
-          .el-form-item {
-            .el-input {
-              position: relative;
-              border: 1px solid #cccccc;
-              border-radius: 3px;
-              .el-input__inner {
-                border-top-right-radius: 3px;
-                border-bottom-right-radius: 3px;
-              }
-              .el-input-group__append {
-                height: 38px;
-                line-height: 38px;
-                width: 50px;
-                position: absolute;
-                right: 8px;
-                color: #999999;
-                text-align: right;
-                top: 1px;
-                border: none;
-                padding: 0;
-                font-size: 12px;
-              }
-            }
+          width: 220px;
+          .el-input__inner {
+            border-radius: 20px;
+            border-color: rgba(136, 136, 136, 1);
           }
         }
-        .import_success {
-          > i {
-            display: block;
-            margin: auto;
-            width: 60px;
-            height: 60px;
-            background: url('../../assets/image/import.png') center;
-            background-size: cover;
+      }
+      .table_box {
+        border: 1px dashed #cccccc;
+        margin: 20px auto;
+        padding: 30px;
+        th.el-table_1_column_1 span.el-checkbox__inner {
+          background-color: transparent;
+          border: none;
+        }
+        th.el-table_1_column_1 span.el-checkbox__inner:before {
+          content: "选择";
+        }
+        th.el-table_1_column_1 span.el-checkbox__inner:after {
+          border: none;
+        }
+        .btns {
+          color: rgba(34, 34, 34, 1);
+          &:hover {
+            color: rgba(75, 90, 254, 1);
           }
-          p {
-            margin: 15px auto 26px auto;
-            text-align: center;
-            font-size: 24px;
-            color: #222222;
+        }
+
+        .user_info {
+          img {
+            float: left;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 5px;
+            margin-top: 10px;
           }
           div {
-            display: flex;
-            font-size: 16px;
-            margin-bottom: 10px;
-            span {
-              text-align: center;
-              flex: 1;
+            overflow: hidden;
+            .table_info {
+              display: inline-block;
+              max-width: 90px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
             }
-            span:nth-child(3) {
-              i {
-                color: red;
+          }
+        }
+      }
+      .VePagination {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .el-dialog {
+        .el-dialog__header {
+          height: 40px;
+          background: rgba(255, 208, 33, 1);
+          .el-dialog__title {
+            display: inline-block;
+            font-size: 16px;
+            transform: translateY(-5px);
+          }
+        }
+        .downLoad_tem {
+          width: 100%;
+          display: block;
+          text-align: right;
+          margin-bottom: 10px;
+          i {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            border: 1px solid #222222;
+            border-radius: 50%;
+            margin-left: 5px;
+          }
+        }
+        .el-dialog__body {
+          padding: 30px 30px 0;
+          .el-form {
+            overflow: hidden;
+            .el-form-item {
+              .el-input {
+                position: relative;
+                border: 1px solid #cccccc;
+                border-radius: 3px;
+                .el-input__inner {
+                  border-top-right-radius: 3px;
+                  border-bottom-right-radius: 3px;
+                }
+                .el-input-group__append {
+                  height: 38px;
+                  line-height: 38px;
+                  width: 50px;
+                  position: absolute;
+                  right: 8px;
+                  color: #999999;
+                  text-align: right;
+                  top: 1px;
+                  border: none;
+                  padding: 0;
+                  font-size: 12px;
+                }
               }
             }
           }
-          ul {
-            width: 90%;
-            li {
-              text-align: left;
-              display: inline-block;
-              width: 25%;
+          .import_success {
+            > i {
+              display: block;
+              margin: auto;
+              width: 60px;
+              height: 60px;
+              background: url('../../assets/image/import.png') center;
+              background-size: cover;
+            }
+            p {
+              margin: 15px auto 26px auto;
+              text-align: center;
+              font-size: 24px;
+              color: #222222;
+            }
+            div {
+              display: flex;
+              font-size: 16px;
+              margin-bottom: 10px;
+              span {
+                text-align: center;
+                flex: 1;
+              }
+              span:nth-child(3) {
+                i {
+                  color: red;
+                }
+              }
+            }
+            ul {
+              width: 90%;
+              li {
+                text-align: left;
+                display: inline-block;
+                width: 25%;
+              }
+            }
+          }
+        }
+        .dialog-footer {
+          .el-button {
+            width: 120px;
+            height: 40px;
+            margin: -15px 15px 20px auto;
+            background: rgba(255, 208, 33, 1);
+            border-radius: 20px;
+            span {
+              color: #222222;
             }
           }
         }
       }
-      .dialog-footer {
-        .el-button {
-          width: 120px;
-          height: 40px;
-          margin: -15px 15px 20px auto;
-          background: rgba(255, 208, 33, 1);
-          border-radius: 20px;
-          span {
-            color: #222222;
-          }
-        }
-      }
     }
-  }
-
-  .userGroupDelConfirm {
-    border: none;
-    .el-message-box__header {
-      border-top: 6px solid #FC5659;
-    }
-    .userGroupDelConfirmBtn {
-      width: 120px;
-      background-color: #FC5659;
-      color: #222;
-    }
-
   }
 </style>
