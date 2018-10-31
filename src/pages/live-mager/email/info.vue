@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
+import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
@@ -113,6 +115,8 @@ export default {
     }
   },
   created () {
+    this.queryGroupList()
+    this.queryTagList()
     // 如果vuex可以取到值就return
     if (this.email.emailInviteId) return
     // 如果vuex不能取到值就查询接口
@@ -166,6 +170,39 @@ export default {
     },
     prePage () {
       this.$router.go(-1)
+    },
+    // 查询群组
+    queryGroupList (keyword) {
+      this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
+            isChecked: false
+          })
+        })
+        this.groupList = temArray
+      })
+    },
+    /* 查询标签 */
+    queryTagList () {
+      this.$get(noticeService.GET_PERSON_LIST, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        let temArray = []
+        res.data.forEach((item) => {
+          temArray.push({
+            id: item.id,
+            name: item.name,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
+      })
     }
   }
 }
