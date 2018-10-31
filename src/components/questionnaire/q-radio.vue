@@ -4,6 +4,7 @@
               class="q-select-item"
               :class="{display:!edit}"
               v-model="value.value"
+              @change="change"
               :label="index">
       <com-input v-if="edit"
                  v-model="item.value"
@@ -15,6 +16,9 @@
             v-if="edit&&value.detail.list.length>1"
             @click="delItem(index)">删</span>
     </el-radio>
+    <div v-if="!edit&&errorTip"
+         class="error-msg">{{errorTip}}
+    </div>
   </div>
 </template>
 
@@ -32,9 +36,24 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      errorTip: ''
+    }
+  },
   methods: {
     delItem (index) {
       this.value.detail.list.splice(index, 1)
+    },
+    change () {
+      this.errorTip = ''
+    },
+    check () {
+      if (this.value.required && !this.value.value) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      return true
     }
   }
 }
@@ -43,6 +62,13 @@ export default {
 <style scoped lang="scss">
 .q-edit-content {
   /deep/ {
+    .error-msg {
+      position: absolute;
+      color: #fc5659;
+      padding-left: 10px;
+      line-height: 20px;
+      font-size: 12px;
+    }
     .q-select-item {
       width: 100%;
       position: relative;

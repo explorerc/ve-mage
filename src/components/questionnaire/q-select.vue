@@ -8,7 +8,7 @@
       <span class="select-icon">√</span>
       <div class="select-input">
         <com-input v-model="item.value"
-                   :disabled="value.ext.fixedness"
+                   :disabled="value.ext.fixedness?true:false"
                    :max-length="value.ext.fixedness?0:30"></com-input>
         <span class="remove"
               v-if="value.detail.list.length>1&&!value.ext.fixedness"
@@ -17,12 +17,16 @@
     </div>
     <el-select v-if="!edit"
                v-model="value.value"
+               @change="change"
                placeholder="请选择">
       <el-option v-for="item in value.detail.list"
                  :label="item.value"
                  :value="item.id">
       </el-option>
     </el-select>
+    <div v-if="!edit&&errorTip"
+         class="error-msg">{{errorTip}}
+    </div>
   </div>
 </template>
 
@@ -40,9 +44,24 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      errorTip: ''
+    }
+  },
   methods: {
     delItem (index) {
       this.value.detail.list.splice(index, 1)
+    },
+    change () {
+      this.errorTip = ''
+    },
+    check () {
+      if (this.value.required && !this.value.valu) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      return true
     }
   }
 }
@@ -55,6 +74,13 @@ export default {
     margin-bottom: 0;
   }
   /deep/ {
+    .error-msg {
+      position: absolute;
+      color: #fc5659;
+      padding-left: 10px;
+      line-height: 20px;
+      font-size: 12px;
+    }
     .q-select-item {
       width: 100%;
       position: relative;

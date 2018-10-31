@@ -32,7 +32,8 @@
       <!-- <com-drag class="test-drag"
                 drag-target=".sort"
                 :custom-data="dragData"> -->
-      <com-q v-for="(item,index) in dragData"
+      <com-q :ref="`com${index}`"
+             v-for="(item,index) in dragData"
              :value.sync="item"
              :index="index+1"></com-q>
       <!-- <com-q></com-q>
@@ -148,7 +149,7 @@ export default {
           title: '单选题',
           errorTip: '',
           type: QTypes.RADIO,
-          required: false,
+          required: true,
           detail: {
             list: [
               {
@@ -165,7 +166,7 @@ export default {
           errorTip: '',
           type: QTypes.CHECKBOX,
           value: [],
-          required: false,
+          required: true,
           detail: {
             list: [
               {
@@ -181,10 +182,11 @@ export default {
           title: '下拉题',
           errorTip: '',
           type: QTypes.SELECT,
-          required: false,
+          required: true,
           detail: {
             list: [
               {
+                id: 1,
                 value: '选项'
               }
             ]
@@ -213,7 +215,7 @@ export default {
           type: QTypes.TEXT,
           required: false,
           detail: {
-            format: 'text',
+            format: 'input',
             max: 10
           },
           ext: {
@@ -226,7 +228,8 @@ export default {
           type: QTypes.TEXT,
           required: false,
           detail: {
-            format: 'mobile'
+            format: 'mobile',
+            max: 11
           },
           verification: 'Y',
           ext: {
@@ -251,14 +254,16 @@ export default {
           errorTip: '',
           type: QTypes.SELECT,
           required: true,
-          detail: [
-            {
-              value: '男'
-            },
-            {
-              value: '女'
-            }
-          ],
+          detail: {
+            list: [
+              {
+                value: '男'
+              },
+              {
+                value: '女'
+              }
+            ]
+          },
           ext: {
             fixedness: true,
             name: '性别'
@@ -269,6 +274,9 @@ export default {
           errorTip: '',
           type: QTypes.DATE,
           required: true,
+          detail: {
+            format: 'yyyy-MM-dd'
+          },
           ext: {
             name: '生日'
           }
@@ -296,7 +304,7 @@ export default {
           type: QTypes.TEXT,
           required: true,
           detail: {
-            format: 'text',
+            format: 'input',
             max: 10
           },
           ext: {
@@ -359,6 +367,9 @@ export default {
     // }).then((res) => {
     //   console.log('登陆成功')
     // })
+  },
+  mounted () {
+    console.log(this.$refs['com2'][0].$refs['content'].check())
   },
   methods: {
     remove (index) {

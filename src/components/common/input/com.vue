@@ -33,7 +33,9 @@
               v-model="innerValue"
               :class="{error:errorMsg}"
               :placeholder="placeholder ? placeholder: '请输入内容'"
-              :rows="rows"></textarea>
+              :rows="rows"
+              @focus="focusHandle"
+              @blur="blurHandle"></textarea>
     <span class="limit area"
           v-if="maxLength&&type==='textarea'">
       <i class="length"
@@ -61,7 +63,7 @@ export default {
       default: 2
     },
     autosize: Boolean,
-    disabled: String,
+    disabled: Boolean,
     errorTips: String
   },
   data () {
@@ -111,9 +113,9 @@ export default {
     },
     getType () {
       let type = ''
+      this.isMobile = false
       switch (this.type) {
         case 'password':
-          this.isMobile = false
           type = 'password'
           break
         case 'mobile':
@@ -121,7 +123,6 @@ export default {
           type = 'text'
           break
         default:
-          this.isMobile = false
           type = 'text'
           break
       }
@@ -263,7 +264,7 @@ export default {
     &.area {
       transform: none;
       top: auto;
-      bottom: 0;
+      bottom: 2px;
       line-height: normal;
       right: -50px;
     }
