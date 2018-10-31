@@ -35,22 +35,6 @@
           </ul>
           </span>
         </p>
-        <!-- <ol class='clearfix'>
-          <li class='icon page'><i></i>
-            <router-link target="_blank" :to="`${this.PC_HOST}site/${activityId}`">活动页面</router-link>
-          </li>
-          <li class="icon link copy"
-              @click="copy('copyContent')">
-            <i></i>复制链接
-            <input type="text" :value="`https${this.PC_HOST}watch/${this.activityId}`" id="copyContent" style="position:absolute;opacity:0;">
-          </li>
-          <li class='icon offline offline'
-              @click="offlineActive"
-              v-if="isPublished"><i></i>下线活动</li>
-          <li class='icon offline offline'
-              @click="publishActive"
-              v-else><i></i>发布活动</li>
-        </ol> -->
       </div>
       <div class="right">
         <p class="title"
@@ -155,8 +139,10 @@
         <div>
           <!-- <span>直播</span> -->
           <ol>
-            <!-- <li>直播监控</li> -->
-            <!-- <li>聊天审核</li> -->
+            <li>问卷</li>
+            <li>红包雨</li>
+            <li>商品推荐</li>
+            <li>推荐卡片</li>
           </ol>
         </div>
         <div>
@@ -168,8 +154,8 @@
         <div>
           <!-- <span>数据</span> -->
           <ol>
-            <li>数据报表</li>
-            <li>详细数据导出</li>
+            <li>数据</li>
+            <li>观众</li>
           </ol>
         </div>
       </div>
@@ -213,17 +199,17 @@
                   <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息
                   </template>
                     <!-- 未设置已开启 -->
-<template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">
-  暂未设置
-</template>
-                    <!-- 已设置已开启 -->
-<template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">
-  已设置活动报名
-</template>
-                    <!-- 已设置未开启 -->
-<template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">
-  已设置活动报名
-</template>
+                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">
+                      暂未设置
+                    </template>
+                                        <!-- 已设置已开启 -->
+                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">
+                      已设置活动报名
+                    </template>
+                                        <!-- 已设置未开启 -->
+                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">
+                      已设置活动报名
+                    </template>
                   </span>
                 </div>
               </div>
@@ -242,21 +228,21 @@
                   <span>暖场设置</span>
                   <span class='des'>
                     <!-- 未设置未开启 -->
-<template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">
-  为活动设置暖场视频
-</template>
-                    <!-- 未设置已开启 -->
-<template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">
-  暂未设置
-</template>
-                    <!-- 已设置已开启 -->
-<template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">
-  {{dataPrepare[2].desc}}
-</template>
-                    <!-- 已设置未开启 -->
-<template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">
-  {{dataPrepare[2].desc}}
-</template>
+                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">
+                      为活动设置暖场视频
+                    </template>
+                                        <!-- 未设置已开启 -->
+                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">
+                      暂未设置
+                    </template>
+                                        <!-- 已设置已开启 -->
+                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">
+                      {{dataPrepare[2].desc}}
+                    </template>
+                                        <!-- 已设置未开启 -->
+                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">
+                      {{dataPrepare[2].desc}}
+                    </template>
                   </span>
                 </div>
               </div>
@@ -267,6 +253,83 @@
             </div>
           </div>
         </div>
+
+      <div class="item promote">
+        <p class='block-separte'>品牌</p>
+        <div class="card-list clearfix">
+          <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">
+            <!-- 活动官网 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
+              </div>
+              <div class='desc'>
+                <span>活动官网</span>
+                <span class='des'>
+                  <template v-if="dataBrand[0].switch">
+                    <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}
+                    </template>
+                                      </template>
+
+                  <template v-else>
+                    打造活动品牌聚合页面
+                  </template>
+                </span>
+              </div>
+            </div>
+            <div class="btm">
+              <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
+              <!-- <span class='set'>设置</span> -->
+            </div>
+          </div>
+            <div class='item guide' @click="linkTo($event,'/setLiveGuided/')">
+            <!-- 直播引导页 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
+              </div>
+              <div class='desc'>
+                <span>直播引导页</span>
+                <span class='des'>
+                  <!-- 已发布 -->
+                  <template v-if="isPublished">
+                    已发布
+                  </template>
+                  <!-- 未发布 -->
+                  <template v-else>
+                    {{dataBrand[1].isSet ? '未发布' : '最精简的活动品牌页'}}
+                  </template>
+                </span>
+              </div>
+            </div>
+            <div class="btm">
+            </div>
+          </div>
+            <div class='item watch' @click="linkTo($event,'/setLiveWatch/')">
+            <!-- 观看页 -->
+            <div class="card">
+              <div class='pic'>
+                <!-- <img :src="propImg"> -->
+              </div>
+              <div class='desc'>
+                <span>观看页</span>
+                <span class='des'>
+                  <!-- 已设置 -->
+                  <template v-if="dataBrand[2].isSet">
+                    {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+                  </template>
+                                      <!-- 未设置 -->
+                  <template v-else>
+                    订制直播观看页面
+                  </template>
+                </span>
+              </div>
+            </div>
+            <div class="btm">
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="item marketing" id="tg">
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
@@ -280,32 +343,32 @@
                 <div class='desc'>
                   <span>自动化通知</span>
                   <span class='des'>
-<template v-if="isPublished">
-  <!-- 未开启 -->
-  <template v-if="dataPromote[0].switch === false">已开启</template>
-  <!-- 已开启 -->
-  <!-- <template v-if="dataPromote[0].switch === true">已开启</template> -->
-  <!-- 已开启 -->
-  <template v-if="dataPromote[0].switch === true">
-    <template v-if="dataPromote[0].desc === 'PREPARE'">
-      <template v-if="isAppoint">报名</template>
-      <template v-else>预约</template>
-    </template>
-    <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-    <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
-  </template>
-  <!-- 已设置未开启 -->
-  <template v-if="dataPromote[0].switch === false">
-    <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
-    <template v-if="dataPromote[0].desc === 'PREPARE'">
-      <template v-if="isAppoint">报名</template>
-      <template v-else>预约</template>
-    </template>
-    <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-    <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
-  </template>
-</template>
-<template v-else>设置自动化活动通知提醒</template>
+                    <template v-if="isPublished">
+                      <!-- 未开启 -->
+                      <template v-if="dataPromote[0].switch === false">已开启</template>
+                      <!-- 已开启 -->
+                      <!-- <template v-if="dataPromote[0].switch === true">已开启</template> -->
+                      <!-- 已开启 -->
+                      <template v-if="dataPromote[0].switch === true">
+                        <template v-if="dataPromote[0].desc === 'PREPARE'">
+                          <template v-if="isAppoint">报名</template>
+                          <template v-else>预约</template>
+                        </template>
+                        <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                        <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                      </template>
+                      <!-- 已设置未开启 -->
+                      <template v-if="dataPromote[0].switch === false">
+                        <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
+                        <template v-if="dataPromote[0].desc === 'PREPARE'">
+                          <template v-if="isAppoint">报名</template>
+                          <template v-else>预约</template>
+                        </template>
+                        <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                        <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                      </template>
+                    </template>
+                    <template v-else>设置自动化活动通知提醒</template>
                   </span>
                 </div>
               </div>
@@ -325,13 +388,13 @@
                   <span>邮箱</span>
                   <span class='des'>
                     <!-- 已设置 -->
-<template v-if="dataPromote[1].isSet">
-  已设置邮件邀约
-</template>
-                    <!-- 未设置 -->
-<template v-else>
-  通过邮件进行活动推广
-</template>
+                    <template v-if="dataPromote[1].isSet">
+                      已设置邮件邀约
+                    </template>
+                                        <!-- 未设置 -->
+                    <template v-else>
+                      通过邮件进行活动推广
+                    </template>
                   </span>
                 </div>
               </div>
@@ -349,13 +412,13 @@
                   <span>短信</span>
                   <span class='des'>
                     <!-- 已设置 -->
-<template v-if="dataPromote[2].isSet">
-  已设置短信通知
-</template>
-                    <!-- 未设置 -->
-<template v-else>
-  通过短信进行活动推广
-</template>
+                    <template v-if="dataPromote[2].isSet">
+                      已设置短信通知
+                    </template>
+                                        <!-- 未设置 -->
+                    <template v-else>
+                      通过短信进行活动推广
+                    </template>
                   </span>
                 </div>
               </div>
@@ -373,13 +436,13 @@
                   <span>微信</span>
                   <span class='des'>
                     <!-- 已设置 -->
-<template v-if="dataPromote[3].isSet">
-  已设置微信通知
-</template>
-                    <!-- 未设置 -->
-<template v-else>
-  通过微信进行活动推广
-</template>
+                    <template v-if="dataPromote[3].isSet">
+                      已设置微信通知
+                    </template>
+                                        <!-- 未设置 -->
+                    <template v-else>
+                      通过微信进行活动推广
+                    </template>
                   </span>
                 </div>
               </div>
@@ -389,83 +452,93 @@
 
         </div>
       </div>
-      <div class="item promote">
-        <p class='block-separte'>品牌</p>
+      <div class="item living">
+        <p class='block-separte'>直播</p>
         <div class="card-list clearfix">
-           <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">
-              <!-- 活动官网 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>活动官网</span>
-                  <span class='des'>
-<template v-if="dataBrand[0].switch">
-  <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}
-  </template>
-                    </template>
-
-<template v-else>
-  打造活动品牌聚合页面
-</template>
-                  </span>
-                </div>
+          <div class='item ques' @click="linkTo($event,'/liveMager/playBack/')">
+            <div class="card">
+              <div class='pic'>
               </div>
-              <div class="btm">
-                <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
-                <!-- <span class='set'>设置</span> -->
+              <div class='desc'>
+                <span>问卷</span>
+                <span class='des'>
+                  <!-- 已设置 -->
+                  <template v-if="dataBrand[2].isSet">
+                    {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+                  </template>
+                  <!-- 未设置 -->
+                  <template v-else>
+                    直播中收集观众问卷数据
+                  </template>
+                </span>
               </div>
             </div>
-
-             <div class='item guide' @click="linkTo($event,'/setLiveGuided/')">
-              <!-- 直播引导页 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>直播引导页</span>
-                  <span class='des'>
-                    <!-- 已发布 -->
-<template v-if="isPublished">
-  已发布
-</template>
-<!-- 未发布 -->
-<template v-else>
-  {{dataBrand[1].isSet ? '未发布' : '最精简的活动品牌页'}}
-</template>
-                  </span>
-                </div>
+            <div class="btm">
+            </div>
+          </div>
+          <div class='item redpack' @click="linkTo($event,'/liveMager/playBack/')">
+            <div class="card">
+              <div class='pic'>
               </div>
-              <div class="btm">
+              <div class='desc'>
+                <span>红包雨</span>
+                <span class='des'>
+                  <!-- 已设置 -->
+                  <template v-if="dataBrand[2].isSet">
+                    {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+                  </template>
+                  <!-- 未设置 -->
+                  <template v-else>
+                    发放现金红包活跃观众气氛
+                  </template>
+                </span>
               </div>
             </div>
-
-             <div class='item watch' @click="linkTo($event,'/setLiveWatch/')">
-              <!-- 观看页 -->
-              <div class="card">
-                <div class='pic'>
-                  <!-- <img :src="propImg"> -->
-                </div>
-                <div class='desc'>
-                  <span>观看页</span>
-                  <span class='des'>
-                    <!-- 已设置 -->
-<template v-if="dataBrand[2].isSet">
-  {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
-</template>
-                    <!-- 未设置 -->
-<template v-else>
-  订制直播观看页面
-</template>
-                  </span>
-                </div>
+            <div class="btm">
+            </div>
+          </div>
+          <div class='item goods' @click="linkTo($event,'/liveMager/playBack/')">
+            <div class="card">
+              <div class='pic'>
               </div>
-              <div class="btm">
+              <div class='desc'>
+                <span>商品推荐</span>
+                <span class='des'>
+                  <!-- 已设置 -->
+                  <template v-if="dataBrand[2].isSet">
+                    {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+                  </template>
+                  <!-- 未设置 -->
+                  <template v-else>
+                    在直播中给观众推荐商品
+                  </template>
+                </span>
               </div>
             </div>
-
+            <div class="btm">
+            </div>
+          </div>
+          <div class='item cards' @click="linkTo($event,'/liveMager/playBack/')">
+            <div class="card">
+              <div class='pic'>
+              </div>
+              <div class='desc'>
+                <span>推荐卡片</span>
+                <span class='des'>
+                  <!-- 已设置 -->
+                  <template v-if="dataBrand[2].isSet">
+                    {{dataBrand[2].desc ==='N' ? '未发布' : '已发布'}}
+                  </template>
+                  <!-- 未设置 -->
+                  <template v-else>
+                    创建直播中观众引流通道
+                  </template>
+                </span>
+              </div>
+            </div>
+            <div class="btm">
+            </div>
+          </div>
         </div>
       </div>
       <div class="item setting">
@@ -481,13 +554,13 @@
                   <span>设置回放</span>
                   <span class='des'>
                     <!-- 已设置 -->
-<template v-if="dataRecord[0].isSet">
-  已设置默认回放
-</template>
-                    <!-- 未设置 -->
-<template v-else>
-  设置活动后的回放视频
-</template>
+                    <template v-if="dataRecord[0].isSet">
+                      已设置默认回放
+                    </template>
+                                        <!-- 未设置 -->
+                    <template v-else>
+                      设置活动后的回放视频
+                    </template>
                   </span>
                 </div>
               </div>
