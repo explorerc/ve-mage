@@ -195,11 +195,6 @@ export default {
         this.canPass = true
         this.testEmailCount = res.data
       })
-      // LiveHttp.queryTestEmailInfo({
-      //   type: 'email'
-      // }).then((res) => {
-      //   this.testEmailCount = res.data
-      // })
     },
     emailHandleClick (e) {
       if (e.action === 'cancel') {
@@ -216,10 +211,6 @@ export default {
         this.email = res.data
         this.storeEmailInfo(this.email)
       })
-      // LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
-      //   this.email = res.data
-      //   this.storeEmailInfo(this.email)
-      // })
     },
     queryEmailTemp () {
       this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
@@ -230,13 +221,6 @@ export default {
           this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
         }
       })
-      // LiveHttp.queryEmailTemplateList().then((res) => {
-      //   if (!res.data.list) return
-      //   this.emailList = res.data.list
-      //   if (!this.email.emailInviteId) { // 如果不是编辑
-      //     this.email.content = this.emailList[0].content
-      //   }
-      // })
     },
     sendTestEmail () {
       if (!this.testEmailAddress) {

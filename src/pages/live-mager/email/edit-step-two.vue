@@ -183,8 +183,13 @@ export default {
       this.$router.go(-1)
       return
     }
-    this.queryGroupList()
-    this.queryTagList()
+    this.queryGroupList().then(() => {
+      this.queryTagList().then(() => {
+        console.log(this.tagList)
+        console.log(this.groupList)
+        this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
+      })
+    })
   },
   methods: {
     ...mapMutations('liveMager', {
@@ -340,8 +345,8 @@ export default {
       this.tagList[delIdx].isChecked = false
     },
     // 查询群组
-    queryGroupList (keyword) {
-      this.$get(userManage.GET_GROUP_LIST, {
+    async queryGroupList (keyword) {
+      await this.$get(userManage.GET_GROUP_LIST, {
         keyword: this.searchVal,
         type: '2'
       }).then((res) => {
@@ -355,11 +360,12 @@ export default {
           })
         })
         this.groupList = temArray
+        this.email.groupList = this.groupList
       })
     },
     /* 查询标签 */
-    queryTagList (key) {
-      this.$get(noticeService.GET_PERSON_LIST, {
+    async queryTagList (key) {
+      await this.$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id,
         name: key
       }).then((res) => {
@@ -372,6 +378,7 @@ export default {
           })
         })
         this.tagList = temArray
+        this.email.tagList = this.tagList
       })
     },
     selectedGroupListfn (arr, str, idStr) {
@@ -382,7 +389,7 @@ export default {
     selectedTagListfn (arr, str, idStr) {
       this.selectedTagListStr = str.substring(0, str.length - 1)
       this.selectedTagList = arr
-      this.email.tagId = idStr // 分组id
+      this.email.tagIds = idStr // 标签id
     },
     totalCount (res) {
       this.totalCountStr = res
@@ -401,6 +408,7 @@ export default {
           }
         })
       })
+      this.email.selectedGroupList = this.selectedGroupList
       this.tagList.forEach((item, idx) => {
         tag.forEach((ele, i) => {
           if (ele * 1 === item.id) {
@@ -414,6 +422,7 @@ export default {
           }
         })
       })
+      this.email.selectedTagList = this.selectedTagList
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
