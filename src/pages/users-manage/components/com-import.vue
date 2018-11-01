@@ -78,10 +78,10 @@
       <div class="content import-success" v-else>
         <dl>
           <dt></dt>
-          <dd>恭喜您，批量倒入成功!</dd>
+          <dd>恭喜您，批量导入成功!</dd>
         </dl>
         <div class='tips'>
-          <span>成功倒入<i>{{importSuccessData.success}}</i>位</span>
+          <span>成功导入<i>{{importSuccessData.success}}</i>位</span>
           <span>错误用户<i>{{importSuccessData.error}}</i>位</span>
           <span>重复数据<i>{{importSuccessData.repeat.length}}</i><em>位</em></span>
         </div>

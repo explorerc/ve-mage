@@ -369,7 +369,6 @@ export default {
           if (ele * 1 === item.id) {
             this.tagList[idx].isChecked = true
             this.selectedTagList.push({
-              count: 0,
               id: item.id,
               isChecked: true,
               name: item.name
