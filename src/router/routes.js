@@ -85,7 +85,8 @@ const ViewerList = () => import('src/pages/data/viewerList')
 const questionnaire = () => import('src/pages/sales-tools/questionnaire')
 const redpack = () => import('src/pages/sales-tools/redpack')
 const recommendCards = () => import('src/pages/sales-tools/recommend-cards')
-const recommendGoods = () => import('src/pages/sales-tools/recommend-goods')
+const recommendGoodsList = () => import('src/pages/sales-tools/recommend-goods/index')
+const recommendGoodsInfo = () => import('src/pages/sales-tools/recommend-goods/info')
 
 export default [{
   path: '/test',
@@ -321,9 +322,14 @@ export default [{
     component: questionnaire
   },
   {
-    path: '/salesTools/recommendGoods/:id',
-    name: 'recommendGoods',
-    component: recommendGoods
+    path: '/salesTools/recommendGoodsList',
+    name: 'recommendGoodsList',
+    component: recommendGoodsList
+  },
+  {
+    path: '/salesTools/recommendGoodsInfo',
+    name: 'recommendGoodsInfo',
+    component: recommendGoodsInfo
   },
   {
     path: '/salesTools/recommendCards/:id',
