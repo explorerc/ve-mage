@@ -110,7 +110,7 @@
             <div class="item-title">
               <ve-title width="130px" title="预约人数" tip="直播开始前预约活动的人数"></ve-title>
             </div>
-            <div class="item-mid">{{leadPageData.subscribe}}</div>
+            <div class="item-mid data-link" @click="goPreDataDetail">{{leadPageData.subscribe}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
@@ -157,6 +157,33 @@
         </div>
       </div>
     </div>
+    <!-- 预约/报名数据 -->
+    <message-box
+      v-show="preDataDetail"
+      width="60%"
+      type="none"
+      :header="header"
+      @handleClick="closeMesssageBox">
+      <div class="msg-table-box">
+        <button class="primary-button export-btn fr">导出</button>
+        <div class="table-box">
+          <el-table :data="preDataList" style="width: 100%">
+            <el-table-column label="序号">
+              <template slot-scope="scope">
+                {{scope.$index}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="consumer_uid" label="用户Id"></el-table-column>
+            <el-table-column prop="nickname" label="姓名"></el-table-column>
+            <el-table-column prop="phone" label="手机号"></el-table-column>
+            <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
+            <el-table-column prop="guide_page_leave_at" label="离开引导页时间（最后一次）"></el-table-column>
+            <el-table-column prop="appointment_time" label="预约时间"></el-table-column>
+            <el-table-column prop="first_join_at" label="参会时间"></el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -164,22 +191,19 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { barPile, lines } from 'src/utils/chart-tool'
+  import {barPile, lines} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
 
   export default {
     name: 'spead',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
-        // emailType: 0,
-        // weChatType: 0,
-        // smsType: 0,
+        preDataDetail: false,
+        preDataList: [],
+        header: '预约数据详情|报名数据详情',
         webwiteType: 0,
         pageLinkType: 0,
-        // ratioDataList: {},
-        // speadDatas: {},
-        // webwiteDatas: {},
         pageLinkDatas: {},
         spreadChannelData: {},
         officialChannelData: {},
@@ -192,7 +216,10 @@
           beforeSignUp: 0,
           afterSignUp: 0
         },
-        activityId: 0
+        activityId: 0,
+        page: 1,
+        pageSize: 10,
+        total: 0
       }
     },
     beforeDestroy () {
@@ -254,6 +281,21 @@
         this.leadPage()
         this.$nextTick(() => {
           this.renderChart()
+        })
+      },
+      goPreDataDetail () { // 预约/报名数据
+        this.$get(dataService.GET_SPREAD_USER_LIST, {
+          activityId: this.activityId,
+          page: this.page,
+          pageSize: this.pageSize
+        }).then((res) => {
+          if (res.code === 200) {
+            this.preDataDetail = true
+            this.preDataList = res.data.list
+            this.total = res.data.count
+            // 预约数据详情|报名数据详情
+            this.header = res.data.viewCondition === 'APPOINT' ? '报名数据详情' : '预约数据详情'
+          }
         })
       },
       spreadChannel () {
@@ -324,21 +366,21 @@
           this.emailChart = lines('chart02', {
             xAxisData: ratioDataList.email.xAxis,
             datas: [
-              { name: '活跃人数', data: ratioDataList.email.nums }
+              {name: '活跃人数', data: ratioDataList.email.nums}
             ]
           }, ['rgba(77,132,255,1)'])
           /* 微信活跃 */
           this.weChatChart = lines('chart03', {
             xAxisData: ratioDataList.weChat.xAxis,
             datas: [
-              { name: '活跃人数', data: ratioDataList.weChat.nums }
+              {name: '活跃人数', data: ratioDataList.weChat.nums}
             ]
           }, ['rgba(253,133,25,1)'])
           /* 短信活跃 */
           this.smsChart = lines('chart04', {
             xAxisData: ratioDataList.sms.xAxis,
             datas: [
-              { name: '活跃人数', data: ratioDataList.sms.nums }
+              {name: '活跃人数', data: ratioDataList.sms.nums}
             ]
           }, ['rgba(82,219,237,1)'])
         })
@@ -351,8 +393,8 @@
           this.webChart = lines('chart05', {
             xAxisData: res.data.xAxis,
             datas: [
-              { name: 'UV', data: res.data.nums },
-              { name: 'PV', data: res.data.times }
+              {name: 'UV', data: res.data.nums},
+              {name: 'PV', data: res.data.times}
             ]
           }, null, {
             left: 0
@@ -370,16 +412,16 @@
               pv: []
             }
           }
-          pageLinkDatas.lineObj.uv.push({ name: '全部', data: res.data.all.nums })
-          pageLinkDatas.lineObj.pv.push({ name: '全部', data: res.data.all.times })
-          pageLinkDatas.lineObj.uv.push({ name: '邮件', data: res.data.email.nums })
-          pageLinkDatas.lineObj.pv.push({ name: '邮件', data: res.data.email.times })
-          pageLinkDatas.lineObj.uv.push({ name: '短信', data: res.data.sms.nums })
-          pageLinkDatas.lineObj.pv.push({ name: '短信', data: res.data.sms.times })
-          pageLinkDatas.lineObj.uv.push({ name: '微信', data: res.data.weChat.nums })
-          pageLinkDatas.lineObj.pv.push({ name: '微信', data: res.data.weChat.times })
-          pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums })
-          pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times })
+          pageLinkDatas.lineObj.uv.push({name: '全部', data: res.data.all.nums})
+          pageLinkDatas.lineObj.pv.push({name: '全部', data: res.data.all.times})
+          pageLinkDatas.lineObj.uv.push({name: '邮件', data: res.data.email.nums})
+          pageLinkDatas.lineObj.pv.push({name: '邮件', data: res.data.email.times})
+          pageLinkDatas.lineObj.uv.push({name: '短信', data: res.data.sms.nums})
+          pageLinkDatas.lineObj.pv.push({name: '短信', data: res.data.sms.times})
+          pageLinkDatas.lineObj.uv.push({name: '微信', data: res.data.weChat.nums})
+          pageLinkDatas.lineObj.pv.push({name: '微信', data: res.data.weChat.times})
+          pageLinkDatas.lineObj.uv.push({name: '其他', data: res.data.other.nums})
+          pageLinkDatas.lineObj.pv.push({name: '其他', data: res.data.other.times})
           this.pageLinkDatas = pageLinkDatas
           this.linkChart = lines('chart06', {
             xAxisData: this.pageLinkDatas.xAxisData,
@@ -388,6 +430,9 @@
             left: 0
           })
         })
+      },
+      closeMesssageBox () {
+        this.preDataDetail = false
       }
     }
   }
