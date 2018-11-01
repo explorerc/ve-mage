@@ -30,7 +30,7 @@
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
-          <com-input :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱"   @focus="filterCondition.keyword=''" @keyup.enter.native='filterSearch'></com-input>
+          <com-input :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱" @keyup.enter.native='filterSearch'></com-input>
           <span @click='showFilter = !showFilter'>精准搜索<i class='el-submenu__icon-arrow el-icon-arrow-down' :class="{'is-open':showFilter }"></i></span>
         </div>
       </div>
@@ -245,12 +245,13 @@
             label="操作"
             width="150">
             <template slot-scope="scope">
+              <router-link :to="`/userManage/info/${scope.row.business_consumer_uid}`">
               <el-button class='detail'
-                @click.native.prevent="deleteRow(scope.$index, tableData4)"
                 type="text"
                 size="small">
                 详情
               </el-button>
+              </router-link>
             </template>
           </el-table-column>
         </el-table>
@@ -982,7 +983,7 @@ export default {
         height: 34px;
         line-height: 34px;
         padding: 0 8px;
-        width: 260px;
+        width: 270px;
       }
       .el-range__icon {
         display: none;

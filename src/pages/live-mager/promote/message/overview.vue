@@ -19,8 +19,7 @@
             <div class="from-content">
               <template v-for="item in selectedGroupList">{{item.name}}({{item.count}})、</template>
               <template v-for="item in selectedTagList">{{item.name}}、</template>
-              <!-- <el-button v-if="status === 'SEND'" class='send-detail default-button'>发送详情</el-button> -->
-              <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
+              <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
           <div class="from-row">
@@ -59,7 +58,9 @@
         </div>
       </div>
     </div>
-    <com-detail type="SMS" v-if="sendDetail"></com-detail>
+    <transition name='fade' mode='out-in' v-if="sendDetail">
+      <com-detail _type="SMS"  @handleClick="handleClick"></com-detail>
+    </transition>
   </div>
 </template>
 
@@ -93,21 +94,19 @@ export default {
     }
   },
   created () {
-    this.queryGroupList()
-    this.queryTagList()
     this.queryInfo()
-    this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
-      inviteId: this.id
-    }).then((res) => {
-      this.group = res.data.groupId
-      this.title = res.data.title
-      this.status = res.data.status
-      this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
-      this.msgTag = res.data.signature
-      this.msgContent = res.data.desc
-      setTimeout(() => {
+    this.queryGroupList().then(this.queryTagList()).then(() => {
+      this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
+        inviteId: this.id
+      }).then((res) => {
+        this.group = res.data.groupId
+        this.title = res.data.title
+        this.status = res.data.status
+        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
+        this.msgTag = res.data.signature
+        this.msgContent = res.data.desc
         this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
-      }, 500)
+      })
     })
   },
   methods: {
@@ -130,8 +129,8 @@ export default {
       })
     },
     // 查询群组
-    queryGroupList (keyword) {
-      this.$get(userManage.GET_GROUP_LIST, {
+    async queryGroupList (keyword) {
+      await this.$get(userManage.GET_GROUP_LIST, {
         type: '2'
       }).then((res) => {
         let temArray = []
@@ -147,8 +146,8 @@ export default {
       })
     },
     /* 查询标签 */
-    queryTagList (key) {
-      this.$get(noticeService.GET_PERSON_LIST, {
+    async queryTagList (key) {
+      await this.$get(noticeService.GET_PERSON_LIST, {
         activityId: this.$route.params.id
       }).then((res) => {
         let temArray = []
@@ -182,6 +181,12 @@ export default {
           }
         })
       })
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.sendDetail = false
+      }
     }
   },
   components: {

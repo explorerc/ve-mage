@@ -26,6 +26,7 @@
               <div>
                 <span v-for='item in selectedTagList'>{{item.name}}、</span>（合计{{email.sendCount}}人）
               </div>
+              <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </template>
             <template v-else>
               暂未选择
@@ -79,6 +80,9 @@
         </div>
       </div>
     </div>
+    <transition name='fade' mode='out-in' v-if="sendDetail">
+      <com-detail _type="EMAIL"  @handleClick="handleClick"></com-detail>
+    </transition>
   </div>
 </template>
 
@@ -88,6 +92,7 @@ import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
+import comDetail from 'src/pages/live-mager/promote/com-detail'
 
 const statusType = {
   DRAFT: '草稿',
@@ -114,8 +119,12 @@ export default {
       selectedGroupList: [],
       selectedTagList: [],
       groupList: [],
-      tagList: []
+      tagList: [],
+      sendDetail: false
     }
+  },
+  components: {
+    comDetail
   },
   computed: mapState('liveMager', {
     emailInfo: state => state.emailInfo
@@ -237,6 +246,12 @@ export default {
           }
         })
       })
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.sendDetail = false
+      }
     }
   }
 }
@@ -307,9 +322,22 @@ export default {
       background-color: #ffd021;
     }
   }
-  .receiver div span {
-    display: inline-block;
-    padding: 0 0 10px 0;
+  .receiver {
+    position: relative;
+    .el-button {
+      position: absolute;
+      top: -10px;
+      margin-left: 10px;
+    }
+    div {
+      display: inline-block;
+
+      span {
+        display: inline-block;
+        padding: 0 0 10px 0;
+        padding-bottom: 0px;
+      }
+    }
   }
 }
 </style>

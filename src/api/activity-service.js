@@ -122,6 +122,8 @@ const ActivityManger = {
   // 获取主持人在线状态
   GET_HOSTING: '/manage/role-manage/check-host-online',
   // 获取标签列表
-  GET_TAG_LIST: '/manage/tags/list-tags'
+  GET_TAG_LIST: '/manage/tags/list-tags',
+  /* 查询发送详情 */
+  GET_SEND_LIST: '/expand/sms-invite/invite-list'
 }
 export default ActivityManger
