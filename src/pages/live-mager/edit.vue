@@ -648,13 +648,15 @@
 }
 
 .tag-modal {
+  margin-top: 20px;
   width: 100%;
-  height: 300px;
+  height: 337px;
   background: #f7f7f7;
   padding: 10px 20px;
   border-radius: 5px;
   overflow-y: scroll;
   position: relative;
+  border: 1px solid #e2e2e2;
   .arrow {
     position: absolute;
     top: 27px;

@@ -15,7 +15,7 @@
           <div class="upload-box" :class="{ 'error':fileEmpty }" @click='fileEmpty = false' >
 
             <com-upload
-              :accept="'csv'"
+              accept="xlsx"
               :fileSize="1024"
               actionUrl="/api/common/group/import"
               inputName="file"
