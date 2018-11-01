@@ -156,9 +156,9 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="page-pagination" v-if="total>this.searchParams.pageSize">
+      <div class="page-pagination" v-if="total>searchParams.pageSize">
         <ve-pagination :total="total"
-                       :pageSize="this.searchParams.pageSize"
+                       :pageSize="searchParams.pageSize"
                        @changePage="changePage"/>
       </div>
     </div>

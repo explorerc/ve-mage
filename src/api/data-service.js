@@ -35,6 +35,10 @@ export default {
   GET_LIVE_VIEW_RECORD: '/manage/data-center/s/view-record',
   /* 直播数据--互动工具参与趋势图 */
   GET_LIVE_TOOL: '/manage/data-center/s/tool',
+  /* 直播数据--聊天--数据列表 */
+  GET_LIVE_CHAT_LIST: '/manage/data-center/chat-list',
+  /* 直播数据--聊天--数据列表--导出 */
+  GET_LIVE_CHAT_LIST_EXPORT: '/manage/data-center/download-chat-list',
   /* 观众画像--地域占比 */
   GET_VIEWER_REGION: '/manage/data-center/s/viewer-region',
   /* 观众画像--基础数据 */
