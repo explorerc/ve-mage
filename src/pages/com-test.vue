@@ -282,15 +282,15 @@ export default {
         //     name: '地域'
         //   }
         // },
-        {
-          title: '行业',
-          errorTip: '',
-          type: QTypes.INDUSTRY,
-          required: true,
-          ext: {
-            name: '行业'
-          }
-        },
+        // {
+        //   title: '行业',
+        //   errorTip: '',
+        //   type: QTypes.INDUSTRY,
+        //   required: true,
+        //   ext: {
+        //     name: '行业'
+        //   }
+        // },
         {
           title: '职位',
           type: QTypes.TEXT,
