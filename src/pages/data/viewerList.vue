@@ -1,7 +1,7 @@
 <template>
   <div class="data-box search-box">
     <div class="search-total">
-      <button class="default-button fl" @click="exportData">导出</button>
+      <button class="default-button export-btn fl" @click="exportData">导出</button>
       <div class="search-item fr">
         <com-input type="search"
                    style="width: 220px;"
@@ -323,6 +323,11 @@
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
   .data-box {
+    .export-btn{
+      height: 30px;
+      line-height: 30px;
+      padding: 0 20px;
+    }
     .data-pad {
       padding-top: 20px;
     }
