@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[52],{634:function(e,n,t){},830:function(e,n,t){"use strict";var s=t(634);t.n(s).a},886:function(e,n,t){"use strict";t.r(n);var s=function(){var e=this.$createElement;return(this._self._c||e)("div",[this._v("商品卡片")])};s._withStripped=!0;var i={},r=(t(830),t(2)),c=Object(r.a)(i,s,[],!1,null,null,null);c.options.__file="src/pages/sales-tools/recommend-cards/index.vue";n.default=c.exports}}]);
-//# sourceMappingURL=52.c3077566.js.map
