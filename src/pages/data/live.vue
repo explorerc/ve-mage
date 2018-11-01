@@ -235,21 +235,25 @@
       type="none"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box">
-        <button class="primary-button export-btn fr">导出</button>
+      <div class="msg-table-box" v-ComLoading="loading">
+        <button class="primary-button export-btn fr" @click="exportFile('chart')">导出</button>
         <div class="table-box">
           <el-table :data="chatDataList" style="width: 100%">
             <el-table-column label="序号">
               <template slot-scope="scope">
-                {{scope.$index}}
+                {{ (page-1)*pageSize + scope.$index + 1}}
               </template>
             </el-table-column>
-            <el-table-column prop="userId" label="用户Id"></el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>
+            <el-table-column prop="nickname" label="姓名"></el-table-column>
             <el-table-column prop="phone" label="手机号"></el-table-column>
-            <el-table-column prop="chatMsg" label="聊天内容"></el-table-column>
-            <el-table-column prop="chatDate" label="聊天时间"></el-table-column>
+            <el-table-column prop="message" label="聊天内容"></el-table-column>
+            <el-table-column prop="time" label="聊天时间"></el-table-column>
           </el-table>
+        </div>
+        <div class="page-pagination" v-if="total>pageSize">
+          <ve-pagination :total="total"
+                         :pageSize="pageSize"
+                         @changePage="changePage"/>
         </div>
       </div>
     </message-box>
@@ -436,19 +440,21 @@
 </template>
 
 <script>
+  import VePagination from 'src/components/ve-pagination'
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
+  import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu, VePagination},
     data () {
       return {
+        loading: false,
         basicCountData: {
           live: {
             nums: 0,
@@ -533,7 +539,10 @@
         answerDataList: [],
         cardDataList: [],
         goodsDataList: [],
-        redBagDataList: []
+        redBagDataList: [],
+        page: 1,
+        pageSize: 10,
+        total: 0
       }
     },
     beforeDestroy () {
@@ -597,6 +606,27 @@
         // 互动工具参与趋势图（PV、UV）
         this.hdTrendChart()
       },
+      exportFile (type) {
+        let url = ''
+        if (type === 'chart') { /* 聊天信息导出 */
+          url = process.env.API_PATH + dataService.GET_LIVE_CHAT_LIST_EXPORT + '?activityId=' + this.activityId
+        }
+        window.open(encodeURI(encodeURI(url)))
+      },
+      changePage (idx) {
+        this.page = idx
+        // preDataDetail: false, // 预约
+        //   chatDataDetail: false, // 聊天
+        //   prizeDataDetail: false, // 抽奖
+        //   pagerDataDetail: false, // 问卷
+        //   answerDataDetail: false, // 答案
+        //   cardDataDetail: false, // 推荐卡片
+        //   goodsDataDetail: false, // 商品推荐
+        //   redBagDataDetail: false, // 红包
+        if (this.chatDataDetail) { // 聊天分页
+          this.goChatDataDetail()
+        }
+      },
       interactCount () {
         this.$get(dataService.GET_LIVE_VIEWER_HD, {
           activityId: this.activityId
@@ -617,9 +647,9 @@
               this.watcherChart = lines('chart01', {
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
-                  { name: '浏览次数', data: this.watcherLineData.live.pv },
-                  { name: '独立访问', data: this.watcherLineData.live.uv },
-                  { name: 'IP', data: this.watcherLineData.live.ip }
+                  {name: '浏览次数', data: this.watcherLineData.live.pv},
+                  {name: '独立访问', data: this.watcherLineData.live.uv},
+                  {name: 'IP', data: this.watcherLineData.live.ip}
                 ]
               })
             })
@@ -635,23 +665,33 @@
       },
       goChatDataDetail () {
         this.chatDataDetail = true
-        this.chatDataList = [
-          { 'userId': 10000, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '吃了吗？' },
-          { 'userId': 10001, 'name': '刘德华', 'phone': 50, 'chatDate': '2018-10-17 10:10', 'chatMsg': '肚子好饿...' }
-        ]
+        this.loading = true
+        this.$get(dataService.GET_LIVE_CHAT_LIST, {
+          activityId: this.activityId,
+          page: this.page,
+          pageSize: this.pageSize
+        }).then((res) => {
+          this.loading = false
+          if (res.code === 200) {
+            this.chatDataList = res.data.list
+            this.total = res.data.total
+          }
+        }).catch(() => {
+          this.loading = false
+        })
       },
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
-          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
+          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
+          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
         ]
       },
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 },
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 }
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
       },
       goRedBagDataDetail () {
@@ -686,8 +726,8 @@
       goGoodsDataDetail () {
         this.goodsDataDetail = true
         this.goodsDataList = [
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859 },
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859 }
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
         ]
       },
       changeMenu (val) {
@@ -698,9 +738,9 @@
         this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
-            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
+            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
+            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
           ]
         })
       },
@@ -779,6 +819,19 @@
         this.cardDataDetail = false
         this.redBagDataDetail = false
         this.goodsDataDetail = false
+        this.$nextTick(() => {
+          this.preDataList = []
+          this.chatDataList = []
+          this.prizeDataList = []
+          this.pagerDataList = []
+          this.answerDataList = []
+          this.cardDataList = []
+          this.goodsDataList = []
+          this.redBagDataList = []
+          this.page = 1
+          this.pageSize = 10
+          this.total = 0
+        })
       }
     }
   }
@@ -786,6 +839,10 @@
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
   .spread {
+    .page-pagination {
+      position: relative;
+      top: 10px;
+    }
     .item-container {
       border: none;
       margin-bottom: 20px;
