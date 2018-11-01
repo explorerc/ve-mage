@@ -42,5 +42,7 @@ export default {
   /* 观众画像--观众比例 */
   GET_VIEWER_ROAT: '/manage/data-center/s/representation-proportion',
   /* 用户总览--各级别用户趋势图 */
-  GET_ACTIVITY_RECENT: '/user/customer/get-activity-recent'
+  GET_ACTIVITY_RECENT: '/user/customer/get-activity-recent',
+  /* 观众画像--观众列表 */
+  GET_VIEWER_LIST: '/manage/data-center/user-list'
 }
