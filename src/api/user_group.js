@@ -8,5 +8,6 @@ export default {
   ALL_TAGS: '/common/tag/all-lists', // 标签列表
   ALL_GROUPS: '/common/group/all-lists', // 分组列表
   DEL_GROUP_USER: '/common/group/user-delete', // 删除成员
-  VALI_TITLE: '/common/group/check-title' // 验证分组标题是否存在
+  VALI_TITLE: '/common/group/check-title', // 验证分组标题是否存在
+  USER_EXPORT: '/common/group/user-export' // 分组成员导出
 }

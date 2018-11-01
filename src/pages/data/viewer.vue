@@ -115,6 +115,8 @@
   import dataService from 'src/api/data-service'
   import { pie, barRadius } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
+  import { mapMutations } from 'vuex'
+  import * as types from '../../store/mutation-types'
 
   export default {
     name: 'viewer',
@@ -158,6 +160,7 @@
       }
     },
     created () {
+      this.storeSelectMenu(3)
       this.activityId = this.$route.params.id
       this.initPage()
       window.callbackResize = () => {
@@ -166,6 +169,9 @@
       }
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       resizeRenderChart () {
         if (this.basicChart) { // 各级用户占比
           this.basicChart.resize()

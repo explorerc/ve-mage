@@ -165,7 +165,7 @@
       :header="header"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box">
-        <button class="primary-button export-btn fr">导出</button>
+        <button class="primary-button export-btn fr" @click="exportDataList">导出</button>
         <div class="table-box">
           <el-table :data="preDataList" style="width: 100%">
             <el-table-column label="序号">
@@ -173,7 +173,6 @@
                 {{scope.$index}}
               </template>
             </el-table-column>
-            <el-table-column prop="consumer_uid" label="用户Id"></el-table-column>
             <el-table-column prop="nickname" label="姓名"></el-table-column>
             <el-table-column prop="phone" label="手机号"></el-table-column>
             <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
@@ -292,11 +291,15 @@
           if (res.code === 200) {
             this.preDataDetail = true
             this.preDataList = res.data.list
-            this.total = res.data.count
+            this.total = res.data.total
             // 预约数据详情|报名数据详情
             this.header = res.data.viewCondition === 'APPOINT' ? '报名数据详情' : '预约数据详情'
           }
         })
+      },
+      exportDataList () {
+        const url = process.env.API_PATH + dataService.GET_SPREAD_USER_LIST_EXPORT + '?activityId=' + this.activityId
+        window.open(encodeURI(encodeURI(url)))
       },
       spreadChannel () {
         this.$get(dataService.GET_SPREAD_COUNT, {
