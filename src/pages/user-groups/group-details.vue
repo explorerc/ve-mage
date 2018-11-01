@@ -11,7 +11,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
-        <el-button size="small" round>全部导出</el-button>
+        <el-button size="small" round @click="exportFile">全部导出</el-button>
         <transition name='fade' mode='out-in' v-if="dialogImport">
           <com-import @handleClick="handleClick" :groupId="Number.parseInt(search.group_id)"></com-import>
         </transition>
@@ -139,7 +139,7 @@
         this.onSearch()
       },
       handleDetails (id) { // 详情
-        this.$router.push(`userManage/info/${id}`)
+        this.$router.push(`/userManage/info/${id}`)
       },
       dialogImportShow (a) {
         if (a === 'delall') {
@@ -155,7 +155,8 @@
         this.handleDelete(selectRowId.join())
       },
       exportFile () {
-        console.log('导出')
+        let _url = `/api${groupService.USER_EXPORT}?group_id=${this.search.group_id}&&keyword=${this.search.keyword}`
+        window.location.href = _url
       },
       batchImport () {
         this.dialogImport = true
