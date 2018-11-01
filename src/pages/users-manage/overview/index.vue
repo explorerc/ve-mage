@@ -56,82 +56,87 @@
         </li>
       </ol>
     </div>
-    <div class="v-data-list clearfix">
+    <div class="v-data-chart">
       <p class="v-title">
-        数据详情
+        各级别用户趋势图
       </p>
-      <ol>
-        <li class="clearfix">
-          <div class="v-activity-content v-name">
-            活动名称
-          </div>
-          <div class="v-activity-content v-time">
-            时间
-          </div>
-          <div class="v-activity-content v-type">
-            流失用户
-          </div>
-          <div class="v-activity-content v-operation">
-            一般用户
-          </div>
-          <div class="v-activity-content v-operation">
-            潜力用户
-          </div>
-          <div class="v-activity-content v-operation">
-            高价值用户
-          </div>
-          <div class="v-activity-content v-operation">
-            优质用户
-          </div>
-        </li>
-        <li class="clearfix" v-for="itemData in tableList" :key="itemData.id">
-          <div class="v-activity-content v-name">
-            {{itemData.title}}
-          </div>
-          <div class="v-activity-content v-time">
-            {{itemData.startTime}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.status}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.status}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.status}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.status}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.status}}
-          </div>
-        </li>
-      </ol>
+      <ul class="v-btns clearfix">
+        <li @click="selectCount($event,'isActive3')" :class="{ active: isActive3 }">3场</li>
+        <li @click="selectCount($event,'isActive7')" :class="{ active: isActive7 }">7场</li>
+        <li @click="selectCount($event,'isActive10')" :class="{ active: isActive10 }">10场</li>
+      </ul>
+      <div class="chart-item" id="chart01" style="height: 380px;"></div>
+    </div>
+    <div class="v-data-list clearfix">
+        <p class="v-title">
+          数据详情
+        </p>
+        <ol>
+          <li class="clearfix">
+            <div class="v-activity-content v-name">
+              活动名称
+            </div>
+            <div class="v-activity-content v-time">
+              时间
+            </div>
+            <div class="v-activity-content v-type">
+              流失用户
+            </div>
+            <div class="v-activity-content v-operation">
+              一般用户
+            </div>
+            <div class="v-activity-content v-operation">
+              潜力用户
+            </div>
+            <div class="v-activity-content v-operation">
+              高价值用户
+            </div>
+            <div class="v-activity-content v-operation">
+              优质用户
+            </div>
+          </li>
+          <li class="clearfix" v-for="itemData in tableList" :key="itemData.id">
+            <div class="v-activity-content v-name">
+              {{itemData.title}}
+            </div>
+            <div class="v-activity-content v-time">
+              {{itemData.startTime}}
+            </div>
+            <div class="v-activity-content">
+              {{itemData.val0}}
+            </div>
+            <div class="v-activity-content">
+              {{itemData.val1}}
+            </div>
+            <div class="v-activity-content">
+              {{itemData.val2}}
+            </div>
+            <div class="v-activity-content">
+              {{itemData.val3}}
+            </div>
+            <div class="v-activity-content">
+              {{itemData.val4}}
+            </div>
+          </li>
+        </ol>
     </div>
   </div>
 </template>
 <script>
 import userService from 'src/api/user-service'
+import dataService from 'src/api/data-service'
+import { barPile } from 'src/utils/chart-tool'
 export default {
   data () {
     return {
       info: {
       },
+      datas: {}, // 各级别用户趋势图数据
       uersInfo: [{ val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }],
-      tableList: [{
-        title: '666',
-        startTime: '2018-08-25',
-        status: '265'
-      }, {
-        title: '666',
-        startTime: '2018-08-25',
-        status: '265'
-      }, {
-        title: '666',
-        startTime: '2018-08-25',
-        status: '265'
-      }]
+      tableList: [], // 数据详情
+      isActive3: true,
+      isActive7: false,
+      isActive10: false
     }
   },
   created () {
@@ -143,7 +148,6 @@ export default {
         _this.uersInfo[arr.indexOf(element)].val = element
         _this.uersInfo[arr.indexOf(element)].centage = Math.round(element / _this.info.total)
       })
-      console.log(_this.uersInfo)
     }).catch(err => {
       this.$messageBox({
         header: '提示',
@@ -156,6 +160,60 @@ export default {
         }
       })
     })
+    this.getData(3)
+  },
+  methods: {
+    getData (count) {
+      this.$get(dataService.GET_ACTIVITY_RECENT, {
+        count: count
+      }).then((res) => {
+        this.datas = res.data
+        // this.datas = res.data
+        /* 绘制堆叠图 */
+        this.effectChart = barPile('chart01', {
+          legendData: this.datas.types,
+          list: this.datas.list
+        }, {
+          left: 130,
+          bottom: 70,
+          top: 30,
+          right: 20
+        })
+        this.datas.list.forEach((element, index) => {
+          let template = {}
+          template.title = this.datas.names[index]
+          template.startTime = element.name.toString().substring(0, 10)
+          template.val0 = element.data[0]
+          template.val1 = element.data[1]
+          template.val2 = element.data[2]
+          template.val3 = element.data[3]
+          template.val4 = element.data[4]
+          this.tableList.push(template)
+        })
+      })
+    },
+    selectCount (ele, btn) {
+      switch (btn) {
+        case 'isActive3':
+          this.isActive3 = true
+          this.isActive7 = false
+          this.isActive10 = false
+          this.getData(3)
+          break
+        case 'isActive7':
+          this.isActive3 = false
+          this.isActive7 = true
+          this.isActive10 = false
+          this.getData(7)
+          break
+        case 'isActive10':
+          this.isActive3 = false
+          this.isActive7 = false
+          this.isActive10 = true
+          this.getData(10)
+          break
+      }
+    }
   }
 }
 </script>
@@ -207,6 +265,51 @@ export default {
       }
     }
   }
+  .v-data-chart {
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    padding: 30px 32px;
+    margin-top: 20px;
+    .v-btns {
+      display: block;
+      position: absolute;
+      top: 28px;
+      right: 30px;
+      background-color: #fff;
+      z-index: 1;
+      li {
+        width: 80px;
+        height: 30px;
+        line-height: 28px;
+        border: 1px solid #bbb;
+        float: left;
+        text-align: center;
+        color: #888;
+        &.active {
+          color: #222;
+          background-color: #ffd021;
+          border-color: #ffd021;
+        }
+        &:hover {
+          color: #222;
+        }
+        &:not(:first-child) {
+          border-left: none;
+        }
+      }
+      :first-child {
+        border-radius: 50px 0 0 50px;
+      }
+      :last-child {
+        border-radius: 0 50px 50px 0;
+      }
+    }
+  }
   .v-data-list {
     width: 100%;
     position: relative;
@@ -216,7 +319,7 @@ export default {
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     padding: 30px 32px;
-    margin-top: 40px;
+    margin-top: 20px;
     .v-title {
       font-size: 20px;
       margin-bottom: 20px;

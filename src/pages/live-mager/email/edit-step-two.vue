@@ -183,13 +183,8 @@ export default {
       this.$router.go(-1)
       return
     }
-    this.queryGroupList().then(() => {
-      this.queryTagList().then(() => {
-        console.log(this.tagList)
-        console.log(this.groupList)
-        this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
-      })
-    })
+    this.totalCountStr = this.emailInfo.sendCount
+    this.queryGroupList().then(this.queryTagList()).then(this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(',')))
   },
   methods: {
     ...mapMutations('liveMager', {
