@@ -153,14 +153,14 @@ export default {
     },
     /* 查询标签 */
     async queryTagList (key) {
-      await this.$get(noticeService.GET_PERSON_LIST, {
+      await this.$get(userManage.GET_TAG_LIST, {
         activityId: this.$route.params.id
       }).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach((item) => {
           temArray.push({
-            id: item.id,
-            name: item.name,
+            name: item.tag_name,
+            id: item.tag_id,
             isChecked: false
           })
         })

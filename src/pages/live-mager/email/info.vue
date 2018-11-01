@@ -88,7 +88,7 @@
 
 <script>
 import userManage from 'src/api/userManage-service'
-import noticeService from 'src/api/notice-service'
+// import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
@@ -140,9 +140,11 @@ export default {
   created () {
     // 如果vuex可以取到值就return
     if (this.email.emailInviteId) {
-      this.groupList = this.emailInfo.groupList ? this.emailInfo.groupList : []
-      this.tagList = this.emailInfo.tagList ? this.emailInfo.tagList : []
-      this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
+      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : []
+      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : []
+      this.queryTagList().then(this.queryGroupList()).then(() => {
+        this.reArrangeList(listStr.split(','), tagStr.split(','))
+      })
       return false
     }
     // 如果vuex不能取到值就查询接口
@@ -205,14 +207,12 @@ export default {
     },
     /* 查询标签 */
     async queryTagList () {
-      await this.$get(noticeService.GET_PERSON_LIST, {
-        activityId: this.$route.params.id
-      }).then((res) => {
+      await this.$get(userManage.GET_TAG_LIST).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach(item => {
           temArray.push({
-            id: item.id,
-            name: item.name,
+            name: item.tag_name,
+            id: item.tag_id,
             isChecked: false
           })
         })

@@ -21,12 +21,13 @@
               <el-button round :disabled="multipleSelection.length <= 0">批量操作</el-button>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item>
+              <!-- <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item> -->
               <el-dropdown-item command='addGroup' :disabled="multipleSelection.length <= 0">添加到群组</el-dropdown-item>
               <el-dropdown-item command='del' :disabled="multipleSelection.length <= 0">删除</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <el-button round @click='exportAll'>全部导出</el-button>
+          <el-button round @click='exportAll()'>全部导出</el-button>
+          <!-- <el-button round @click='addGroupAll()'>全部添加到群组</el-button> -->
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
@@ -461,8 +462,9 @@ export default {
         tags: '', // 标签ID，多个标签ID用英文逗号","分割
         groups: '', // 所属群组ID，多个群组ID用英文逗号","分割
         page: 1, // 分页页码 默认不传为第一页
-        page_size: 30 // 每页显示条数 默认不传为每页显示10条
-      }
+        page_size: 100 // 每页显示条数 默认不传为每页显示10条
+      },
+      exportStr: '' // 导出数据的拼接str
     }
   },
   mounted () {
@@ -590,6 +592,9 @@ export default {
         })
       })
     },
+    // addGroupAll () {
+
+    // },
     delUsers () {
       const data = {}
       Object.assign(data, {
@@ -615,6 +620,12 @@ export default {
         'groups': this.groupArray.id.toString(),
         'tags': this.tagArray.id.toString()
       })
+      if (data.city === '全部') {
+        data.city = ''
+      }
+      if (data.province === '全部') {
+        data.province = ''
+      }
       if (data === 'search') {
         data = {
           'keyword': this.filterCondition.keyword,
@@ -681,7 +692,27 @@ export default {
       }
     },
     exportAll () { // 导出全部
-      // this.$get(userManage.POST_USERS_POOL, data).then((res) => {
+      Object.assign(this.filterCondition, {
+        'activity_ids': this.activityArray.id.toString(),
+        'groups': this.groupArray.id.toString(),
+        'tags': this.tagArray.id.toString()
+      })
+      this.exportStr = ''
+      if (this.filterCondition.city === '全部') {
+        this.filterCondition.city = ''
+      }
+      if (this.filterCondition.province === '全部') {
+        this.filterCondition.province = ''
+      }
+      for (const key in this.filterCondition) {
+        if (this.filterCondition.hasOwnProperty(key)) {
+          const element = this.filterCondition[key]
+          // console.log(element)
+          this.exportStr += `?${key}=${element}`
+        }
+      }
+      window.location.href = `/api/user/customer/export${this.exportStr}`
+      debugger
     }
   },
   watch: {
@@ -921,6 +952,7 @@ export default {
             span {
               overflow: hidden;
               display: inline-block;
+              min-width: 37px;
             }
             .name {
               // width: 50px;
