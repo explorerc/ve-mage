@@ -139,6 +139,12 @@ export default {
       isActive10: false
     }
   },
+  beforeDestroy () {
+    window.callbackResize = null
+    if (this.effectChart) {
+      this.effectChart.dispose()
+    }
+  },
   created () {
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
@@ -160,9 +166,18 @@ export default {
         }
       })
     })
+    window.callbackResize = () => {
+      // 重新绘制
+      this.resizeRenderChart()
+    }
     this.getData(3)
   },
   methods: {
+    resizeRenderChart () {
+      if (this.effectChart) {
+        this.effectChart.resize()
+      }
+    },
     getData (count) {
       this.$get(dataService.GET_ACTIVITY_RECENT, {
         count: count
