@@ -172,9 +172,14 @@ export function lines (id, data, colorParam, gridData) {
       areaStyle = {
         normal: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1,
-            [
-              { offset: 0, color: tempColors[idx] },
-              { offset: 1, color: tempColors[idx].replace('1)', '0.3)') }
+            [{
+              offset: 0,
+              color: tempColors[idx]
+            },
+            {
+              offset: 1,
+              color: tempColors[idx].replace('1)', '0.3)')
+            }
             ]
           )
         }
@@ -302,53 +307,50 @@ export function pie (id, data) {
  */
 export function pieOne (id, percent) {
   let option = {
-    series: [
-      {
-        type: 'pie',
-        hoverOffset: 5,
-        radius: ['78%', '90%'],
-        label: {
+    series: [{
+      type: 'pie',
+      hoverOffset: 5,
+      radius: ['78%', '90%'],
+      label: {
+        normal: {
+          position: 'center'
+        }
+      },
+      avoidLabelOverlap: false,
+      data: [{
+        value: percent,
+        itemStyle: {
           normal: {
-            position: 'center'
+            color: '#f7c331',
+            borderColor: '#fff',
+            borderWidth: 1
           }
         },
-        avoidLabelOverlap: false,
-        data: [
-          {
-            value: percent,
-            itemStyle: {
-              normal: {
-                color: '#f7c331',
-                borderColor: '#fff',
-                borderWidth: 1
-              }
-            },
-            label: {
-              normal: {
-                formatter: '{d}',
-                textStyle: {
-                  fontSize: 30,
-                  color: '#333'
-                }
-              }
-            }
-          },
-          {
-            value: (100 - percent),
-            tooltip: {
-              show: false
-            },
-            itemStyle: {
-              normal: {
-                borderColor: '#fff',
-                borderWidth: 1,
-                color: '#e2e2e2'
-              }
+        label: {
+          normal: {
+            formatter: '{d}',
+            textStyle: {
+              fontSize: 30,
+              color: '#333'
             }
           }
-        ]
+        }
+      },
+      {
+        value: (100 - percent),
+        tooltip: {
+          show: false
+        },
+        itemStyle: {
+          normal: {
+            borderColor: '#fff',
+            borderWidth: 1,
+            color: '#e2e2e2'
+          }
+        }
       }
-    ]
+      ]
+    }]
   }
   let myChart = echarts.init(document.getElementById(id))
   myChart.setOption(option)
@@ -426,37 +428,34 @@ export function barRadius (id, data) {
         }
       }
     },
-    dataZoom: [
-      {
-        type: 'inside'
-      }
-    ],
-    series: [
-      {
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            barBorderRadius: [10, 10, 10, 10],
-            color: 'rgba(0,0,0,0.05)'
-          }
-        },
-        barGap: '-100%',
-        barWidth: '20',
-        barCategoryGap: '20',
-        data: dataShadow,
-        animation: false
+    dataZoom: [{
+      type: 'inside'
+    }],
+    series: [{
+      type: 'bar',
+      itemStyle: {
+        normal: {
+          barBorderRadius: [10, 10, 10, 10],
+          color: 'rgba(0,0,0,0.05)'
+        }
       },
-      {
-        type: 'bar',
-        barWidth: '20',
-        itemStyle: {
-          normal: {
-            barBorderRadius: [10, 10, 10, 10],
-            color: '#FFD021'
-          }
-        },
-        data: barData
-      }
+      barGap: '-100%',
+      barWidth: '20',
+      barCategoryGap: '20',
+      data: dataShadow,
+      animation: false
+    },
+    {
+      type: 'bar',
+      barWidth: '20',
+      itemStyle: {
+        normal: {
+          barBorderRadius: [10, 10, 10, 10],
+          color: '#FFD021'
+        }
+      },
+      data: barData
+    }
     ]
   }
   let myChart = echarts.init(document.getElementById(id))
@@ -549,32 +548,31 @@ export function bars (id, data, gridData) {
         show: true
       }
     },
-    series: [
-      {
-        type: 'bar',
-        itemStyle: {
-          normal: {
-            barBorderRadius: [15, 15, 15, 15],
-            color: 'rgba(0,0,0,0.05)'
-          }
-        },
-        barGap: '-100%',
-        barWidth: barWidth,
-        barCategoryGap: barWidth,
-        data: dataShadow,
-        animation: false
+    series: [{
+      type: 'bar',
+      itemStyle: {
+        normal: {
+          barBorderRadius: [15, 15, 15, 15],
+          color: 'rgba(0,0,0,0.05)'
+        }
       },
-      {
-        type: 'bar',
-        barWidth: barWidth,
-        itemStyle: {
-          normal: {
-            barBorderRadius: [15, 15, 15, 15],
-            color: '#FFD021'
-          }
-        },
-        data: barData
-      }
+      barGap: '-100%',
+      barWidth: barWidth,
+      barCategoryGap: barWidth,
+      data: dataShadow,
+      animation: false
+    },
+    {
+      type: 'bar',
+      barWidth: barWidth,
+      itemStyle: {
+        normal: {
+          barBorderRadius: [15, 15, 15, 15],
+          color: '#FFD021'
+        }
+      },
+      data: barData
+    }
     ]
   }
   let myChart = echarts.init(document.getElementById(id))
@@ -615,10 +613,20 @@ export function barAndLine (id, data, gridData) {
     },
     toolbox: {
       feature: {
-        dataView: { show: true, readOnly: false },
-        magicType: { show: true, type: ['line', 'bar'] },
-        restore: { show: true },
-        saveAsImage: { show: true }
+        dataView: {
+          show: true,
+          readOnly: false
+        },
+        magicType: {
+          show: true,
+          type: ['line', 'bar']
+        },
+        restore: {
+          show: true
+        },
+        saveAsImage: {
+          show: true
+        }
       }
     },
     legend: {
@@ -630,24 +638,22 @@ export function barAndLine (id, data, gridData) {
       ...grid,
       ...gridData
     },
-    xAxis: [
-      {
-        ...AxisCategory,
-        axisTick: {
-          show: true,
-          alignWithLabel: true
-        },
-        splitLine: {
-          show: true,
-          lineStyle: {
-            color: lineColor,
-            width: 1,
-            type: 'dashed'
-          }
-        },
-        data: data.xAxis
-      }
-    ],
+    xAxis: [{
+      ...AxisCategory,
+      axisTick: {
+        show: true,
+        alignWithLabel: true
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: lineColor,
+          width: 1,
+          type: 'dashed'
+        }
+      },
+      data: data.xAxis
+    }],
     yAxis: {
       ...AxisValue,
       splitArea: {

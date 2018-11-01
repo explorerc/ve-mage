@@ -130,6 +130,10 @@ export default {
   },
   watch: {
     innerValue (value) {
+      if (!value) {
+        this.innerValue = ''
+        return
+      }
       if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
@@ -142,7 +146,7 @@ export default {
         this.$refs.tarea.style.height = 'auto'
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
-      if (value.gbLength() === 0) {
+      if (value && value.gbLength() === 0) {
         this.limitColor = '#555'
       } else {
         this.limitColor = '#4b5afe'
@@ -161,7 +165,7 @@ export default {
     },
     value: {
       handler (value) {
-        this.innerValue = value
+        this.innerValue = value || ''
         this.$emit('change')
       },
       immediate: true
@@ -187,7 +191,7 @@ export default {
         ret.paddingLeft = '36px'
         ret.paddingRight = '30px'
       } else if (this.maxLength) {
-        ret.paddingRight = '45px'
+        ret.paddingRight = '50px'
       } else if (this.type === 'password') {
         ret.paddingRight = '30px'
       }
@@ -261,7 +265,7 @@ export default {
       top: auto;
       bottom: 0;
       line-height: normal;
-      right: -46px;
+      right: -50px;
     }
   }
   .icon-search {
