@@ -1,7 +1,7 @@
 <template>
   <div class="data-box search-box">
     <div class="search-total">
-      <button class="primary-button fl" @click="exportData">导出</button>
+      <button class="default-button fl" @click="exportData">导出</button>
       <div class="search-item fr">
         <com-input type="search"
                    style="width: 220px;"
@@ -132,24 +132,24 @@
       <el-table :data="viewerList" :default-sort="{prop: 'score', order: 'descending'}" style="width: 100%">
         <el-table-column label="姓名">
           <template slot-scope="scope">
-            {{scope.row.name}}
+            {{scope.row.nickname}}
           </template>
         </el-table-column>
         <el-table-column prop="score" sortable label="本次得分"></el-table-column>
-        <el-table-column prop="level" label="会后级别"></el-table-column>
-        <el-table-column prop="phoneNo" label="手机号"></el-table-column>
+        <el-table-column prop="end_user_level" label="会后级别"></el-table-column>
+        <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column label="参会时间（第一次）">
           <template slot-scope="scope">
-            {{scope.row.meetingDate.substring(0,16)}}
+            {{scope.row.first_join_at&&scope.row.first_join_at.substring(0,16)}}
           </template>
         </el-table-column>
         <el-table-column label="观看时长">
           <template slot-scope="scope">
-            {{scope.row.watchTimes|fmtTime}}
+            {{scope.row.watch_time|fmtTime}}
           </template>
         </el-table-column>
-        <el-table-column prop="channelName" label="渠道来源"></el-table-column>
+        <el-table-column prop="source" label="渠道来源"></el-table-column>
         <el-table-column label="详情">
           <template slot-scope="scope">
             <span class="data-link" @click="goPageDetail(scope.row.userId)">详情</span>
@@ -176,7 +176,6 @@
       return {
         isHigh: false,
         enterOutTime: [],
-        // leaveTime: [],
         total: 0,
         viewerList: [],
         searchParams: {
@@ -279,18 +278,13 @@
         this.queryList()
       },
       exportData () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'downUrl': 'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1540275596&di=578ef951e10175ca4850b13935f0f9eb&src=http://pic.92to.com/360/201604/08/19864861_13.jpg'
-          }
+        let paramStr = '?'
+        for (let key in this.searchParams) {
+          paramStr += `${key}=${this.searchParams[key]}&`
         }
-        if (res.data.downUrl) {
-          let dl = document.createElement('a')
-          dl.href = res.data.downUrl
-          dl.click()
-        }
+        paramStr = paramStr.substring(0, paramStr.length - 1)
+        const url = process.env.API_PATH + dataService.GET_VIEWER_LIST_EXPORT + paramStr
+        window.open(encodeURI(encodeURI(url)))
       },
       queryList () {
         return this.$get(dataService.GET_VIEWER_LIST, {
