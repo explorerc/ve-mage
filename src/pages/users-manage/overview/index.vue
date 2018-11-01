@@ -178,6 +178,9 @@ export default {
           bottom: 70,
           top: 30,
           right: 20
+        }, {
+          left: 'center',
+          top: '350px'
         })
         this.datas.list.forEach((element, index) => {
           let template = {}
