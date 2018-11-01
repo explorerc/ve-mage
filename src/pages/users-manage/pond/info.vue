@@ -25,7 +25,7 @@
                     |
                   </span>
                   <span class="v-type">
-                    {{user.user_level}}
+                    {{getUserLevel(user.user_level)}}
                   </span>
                 </p>
               </div>
@@ -332,7 +332,6 @@ export default {
       }).then((res) => {
         this.user = res.data
       }).catch(err => {
-        debugger
         this.$messageBox({
           header: '提示',
           content: err.msg,
@@ -359,6 +358,33 @@ export default {
           break
       }
       return strType
+    },
+    getUserLevel (level) {
+      let strLevel = ''
+      switch (level) {
+        case '0':
+          strLevel = '没有评级'
+          break
+        case '1':
+          strLevel = '优质用户'
+          break
+        case '2':
+          strLevel = '高价值用户'
+          break
+        case '3':
+          strLevel = '一般用户'
+          break
+        case '4':
+          strLevel = '潜在用户'
+          break
+        case '5':
+          strLevel = '流失用户'
+          break
+        default:
+          strLevel = '没有评级'
+          break
+      }
+      return strLevel
     }
   }
 }
