@@ -6,7 +6,7 @@
         <span>开播时间 {{activityInfo.startTime}}</span>
         <span>直播时长 2小时23分</span>
       </p>
-      <div class="nav-menu-box">
+      <div class="nav-menu-box" v-if="selectMenu!==false">
         <nav-menu :menus="menuList"
                   :currentMenu="selectMenu"
                   @changeMenu="changeMenu"></nav-menu>

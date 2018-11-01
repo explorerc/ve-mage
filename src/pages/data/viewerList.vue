@@ -168,7 +168,8 @@
 <script>
   import VePagination from 'src/components/ve-pagination'
   import dataService from 'src/api/data-service'
-
+  import { mapMutations } from 'vuex'
+  import * as types from '../../store/mutation-types'
   export default {
     name: 'viewerList',
     components: { VePagination },
@@ -266,10 +267,14 @@
       }
     },
     created () {
+      this.storeSelectMenu(false)
       this.searchParams.activityId = this.$route.params.id
       this.queryList()
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       goPageDetail (id) {
         this.$router.push(`/user/detail/${id}`)
       },
@@ -292,7 +297,7 @@
         }).then((res) => {
           if (res.code === 200) {
             this.viewerList = res.data.list
-            this.total = res.data.count
+            this.total = res.data.total
           }
         })
       },

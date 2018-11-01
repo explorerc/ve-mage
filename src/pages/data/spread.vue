@@ -173,7 +173,6 @@
                 {{scope.$index}}
               </template>
             </el-table-column>
-            <el-table-column prop="consumer_uid" label="用户Id"></el-table-column>
             <el-table-column prop="nickname" label="姓名"></el-table-column>
             <el-table-column prop="phone" label="手机号"></el-table-column>
             <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
@@ -292,7 +291,7 @@
           if (res.code === 200) {
             this.preDataDetail = true
             this.preDataList = res.data.list
-            this.total = res.data.count
+            this.total = res.data.total
             // 预约数据详情|报名数据详情
             this.header = res.data.viewCondition === 'APPOINT' ? '报名数据详情' : '预约数据详情'
           }

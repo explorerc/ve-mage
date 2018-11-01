@@ -113,12 +113,14 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { pie, barRadius } from 'src/utils/chart-tool'
+  import {pie, barRadius} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
+  import {mapMutations} from 'vuex'
+  import * as types from '../../store/mutation-types'
 
   export default {
     name: 'viewer',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
         basicUserData: {
@@ -158,6 +160,7 @@
       }
     },
     created () {
+      this.storeSelectMenu(3)
       this.activityId = this.$route.params.id
       this.initPage()
       window.callbackResize = () => {
@@ -166,6 +169,9 @@
       }
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       resizeRenderChart () {
         if (this.basicChart) { // 各级用户占比
           this.basicChart.resize()
@@ -228,14 +234,14 @@
             this.basicUserData = res.data
             // 各级别用户占比
             this.basicChart = pie('chart02', [
-              { name: '观众总数', value: this.basicUserData.viewerCount },
-              { name: '老用户', value: this.basicUserData.oldUser },
-              { name: '新用户', value: this.basicUserData.newUser },
-              { name: '优质用户', value: this.basicUserData.highUser },
-              { name: '高价值用户', value: this.basicUserData.vipUser },
-              { name: '一般用户', value: this.basicUserData.ordinaryUser },
-              { name: '潜在用户', value: this.basicUserData.potentialUser },
-              { name: '流失用户', value: this.basicUserData.lossUser }
+              {name: '观众总数', value: this.basicUserData.viewerCount},
+              {name: '老用户', value: this.basicUserData.oldUser},
+              {name: '新用户', value: this.basicUserData.newUser},
+              {name: '优质用户', value: this.basicUserData.highUser},
+              {name: '高价值用户', value: this.basicUserData.vipUser},
+              {name: '一般用户', value: this.basicUserData.ordinaryUser},
+              {name: '潜在用户', value: this.basicUserData.potentialUser},
+              {name: '流失用户', value: this.basicUserData.lossUser}
             ])
           }
         })
