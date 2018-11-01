@@ -40,5 +40,7 @@ export default {
   /* 观众画像--基础数据 */
   GET_VIEWER_BASE: '/manage/data-center/s/representation-base',
   /* 观众画像--观众比例 */
-  GET_VIEWER_ROAT: '/manage/data-center/s/representation-proportion'
+  GET_VIEWER_ROAT: '/manage/data-center/s/representation-proportion',
+  /* 观众画像--观众列表 */
+  GET_VIEWER_LIST: '/manage/data-center/user-list'
 }
