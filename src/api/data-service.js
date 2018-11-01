@@ -48,5 +48,7 @@ export default {
   /* 观众画像--观众列表--导出 */
   GET_VIEWER_LIST_EXPORT: '/manage/data-center/download-user-list',
   /* 推广渠道-预约/报名--数据详情 */
-  GET_SPREAD_USER_LIST: '/manage/data-center/sign-list'
+  GET_SPREAD_USER_LIST: '/manage/data-center/sign-list',
+  /* 推广渠道-预约/报名--导出 */
+  GET_SPREAD_USER_LIST_EXPORT: '/manage/data-center/download-sign-list'
 }

@@ -165,7 +165,7 @@
       :header="header"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box">
-        <button class="primary-button export-btn fr">导出</button>
+        <button class="primary-button export-btn fr" @click="exportDataList">导出</button>
         <div class="table-box">
           <el-table :data="preDataList" style="width: 100%">
             <el-table-column label="序号">
@@ -297,6 +297,10 @@
             this.header = res.data.viewCondition === 'APPOINT' ? '报名数据详情' : '预约数据详情'
           }
         })
+      },
+      exportDataList () {
+        const url = process.env.API_PATH + dataService.GET_SPREAD_USER_LIST_EXPORT + '?activityId=' + this.activityId
+        window.open(encodeURI(encodeURI(url)))
       },
       spreadChannel () {
         this.$get(dataService.GET_SPREAD_COUNT, {
