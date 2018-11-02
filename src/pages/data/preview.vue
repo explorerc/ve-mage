@@ -253,7 +253,7 @@
           'viewer': 0,
           'watchDuration': 0,
           'spread': 0,
-          'extension ': 0,
+          'extension': 0,
           'interact': 0
         },
         watcherCountData: {
