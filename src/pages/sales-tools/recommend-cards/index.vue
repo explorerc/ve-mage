@@ -1,5 +1,11 @@
 <template>
-  <div>商品卡片</div>
+  <div class='wrap-page'>
+    <div class="page-title">
+        <span class="title" >商品卡片</span>
+    </div>
+    <div class="content from-box">
+    </div>
+  </div>
 </template>
 
 <script>
