@@ -31,7 +31,10 @@
       return {
         activeId: '',
         currentMenu: 0,
-        activityInfo: {},
+        activityInfo: {
+          title: '',
+          startTime: ''
+        },
         menuList: ['概览数据', '推广数据', '直播数据', '观众画像']
       }
     },
@@ -75,7 +78,6 @@
         this.$get(activityService.GET_DETAILS, {
           activityId: this.activeId
         }).then((res) => {
-          console.log(res)
           this.activityInfo = res.data.activity
         })
       }
@@ -86,19 +88,13 @@
 <style lang="scss" scoped>
   .data-container {
     margin: 40px auto;
-    width: 1366px;
-    min-width: 1019px;
+    max-width: 1366px;
+    min-width: 1109px;
     color: #222;
     /* 设备宽度大于 1600 */
     @media all and (min-width: 1600px) {
       width: 1366px;
     }
-
-    /* 设备宽度小于 1600px */
-    @media all and (max-width: 1600px) {
-      width: 1019px;
-    }
-
     .data-header {
       .nav-menu-box {
         float: right;

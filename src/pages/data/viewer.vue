@@ -210,7 +210,7 @@
         return this.$get(dataService.GET_VIEWER_ROAT, {
           activityId: this.activityId
         }).then((res) => {
-          if (res.code === 200) {
+          if (res.code === 200 && res.data.length !== 0) {
             this.$nextTick(() => {
               // 新老观众占比
               this.newOldUserChart = pie('chart01', res.data.viewer)
@@ -230,10 +230,19 @@
         return this.$get(dataService.GET_VIEWER_BASE, {
           activityId: this.activityId
         }).then((res) => {
-          if (res.code === 200) {
+          let serveData = [
+            { name: '观众总数', value: 0 },
+            { name: '老用户', value: 0 },
+            { name: '新用户', value: 0 },
+            { name: '优质用户', value: 0 },
+            { name: '高价值用户', value: 0 },
+            { name: '一般用户', value: 0 },
+            { name: '潜在用户', value: 0 },
+            { name: '流失用户', value: 0 }
+          ]
+          if (res.code === 200 && res.data.length !== 0) {
             this.basicUserData = res.data
-            // 各级别用户占比
-            this.basicChart = pie('chart02', [
+            serveData = [
               { name: '观众总数', value: this.basicUserData.viewerCount },
               { name: '老用户', value: this.basicUserData.oldUser },
               { name: '新用户', value: this.basicUserData.newUser },
@@ -242,17 +251,24 @@
               { name: '一般用户', value: this.basicUserData.ordinaryUser },
               { name: '潜在用户', value: this.basicUserData.potentialUser },
               { name: '流失用户', value: this.basicUserData.lossUser }
-            ])
+            ]
           }
+          // 各级别用户占比
+          this.$nextTick(() => {
+            this.basicChart = pie('chart02', serveData)
+          })
         })
       },
       areaCountChart () {
         this.$get(dataService.GET_VIEWER_REGION, {
           activityId: this.activityId
         }).then((res) => {
-          if (!res.data.list) return
+          let listData = [{ name: '', value: 0 }]
+          if (res.code === 200 && res.data.length !== 0) {
+            listData = res.data.list
+          }
           this.$nextTick(() => {
-            this.areaChart = barRadius('chart07', res.data.list)
+            this.areaChart = barRadius('chart07', listData)
           })
         })
       }
