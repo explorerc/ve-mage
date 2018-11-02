@@ -36,7 +36,7 @@
               <div :class="{error:errorMsg.groupIds}">
                 <button class="default-button fl"
                         @click="selectPersonShow=true">选择分组</button>
-                <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/5000</span>
+                <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/{{countBalance}}</span>
                 <ve-msg-tips tip-type="html"
                              tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
                 <span class="error-msg"
@@ -157,7 +157,8 @@ export default {
       selectedTagListStr: '',
       groupIdStr: '',
       tagIdStr: '',
-      totalCountStr: ''
+      totalCountStr: '',
+      countBalance: 0
     }
   },
   computed: mapState('liveMager', {
@@ -184,6 +185,7 @@ export default {
       return
     }
     this.totalCountStr = this.emailInfo.sendCount
+    this.getLimit()
     this.queryGroupList().then(this.queryTagList()).then(this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(',')))
   },
   methods: {
@@ -239,6 +241,13 @@ export default {
       }
     },
     saveEmail () {
+      if (this.totalCountStr > this.countBalance) {
+        this.$toast({
+          content: '收件人数量超出限额',
+          position: 'center'
+        })
+        return false
+      }
       this.canPass = true
       this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
@@ -277,6 +286,13 @@ export default {
       }
     },
     send () {
+      if (this.totalCountStr > this.countBalance) {
+        this.$toast({
+          content: '收件人数量超出限额',
+          position: 'center'
+        })
+        return false
+      }
       this.canPass = true
       this.disabledBtn = true
       this.$nextTick(() => {
@@ -417,6 +433,16 @@ export default {
         })
       })
       this.email.selectedTagList = this.selectedTagList
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.email.activityId,
+        type: 'EMAIL'
+      }).then((res) => {
+        console.log(res)
+        this.countBalance = res.data.balance
+      })
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
