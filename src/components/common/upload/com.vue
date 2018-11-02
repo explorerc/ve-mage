@@ -38,9 +38,10 @@ const MIME_TYPES = {
   'avi': 'video/x-msvideo',
   'wmv': 'video/x-ms-wmv',
   // 'csv': 'text/comma-separated-values',
-  'csv': 'application/vnd.ms-excel'
+  'csv': 'text/csv|application/vnd.ms-excel'
   // 'csv': 'text/csv'
   // 'csv': 'text/x-csv'
+
 }
 export default {
   name: 'ComUpload',
@@ -133,14 +134,14 @@ export default {
         }
       })
       if (this.error.length > 0) {
-        this.$emit('error', {code: 503, data: this.error})
+        this.$emit('error', { code: 503, data: this.error })
         return
       }
       if (this.currentCount + this.list.length > this.totalCount) {
-        this.$emit('error', {code: 502})
+        this.$emit('error', { code: 502 })
         return
       }
-      this.$emit('selected', {data: this.list})
+      this.$emit('selected', { data: this.list })
       if (this.queue.length > 0) {
         this.doWork()
       }
@@ -170,18 +171,18 @@ export default {
       }
       xhr.upload.onprogress = (e) => {
         if (e.lengthComputable) {
-          this.$emit('progress', {name: this.current, loaded: e.loaded, total: e.total, percent: `${(e.loaded / e.total * 100).toFixed(2)}%`})
+          this.$emit('progress', { name: this.current, loaded: e.loaded, total: e.total, percent: `${(e.loaded / e.total * 100).toFixed(2)}%` })
         }
       }
       xhr.onload = (e) => {
-        this.$emit('load', {name: this.current, data: xhr.responseText})
+        this.$emit('load', { name: this.current, data: xhr.responseText })
         this.doWork()
       }
       xhr.ontimeout = (e) => {
-        this.$emit('error', {name: this.current, code: 501, error: e})
+        this.$emit('error', { name: this.current, code: 501, error: e })
       }
       xhr.onerror = (e) => {
-        this.$emit('error', {name: this.current, code: 501, error: e})
+        this.$emit('error', { name: this.current, code: 501, error: e })
       }
       xhr.send(formData)
     }

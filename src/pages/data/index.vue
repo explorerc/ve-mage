@@ -6,9 +6,9 @@
         <span>开播时间 {{activityInfo.startTime}}</span>
         <span>直播时长 2小时23分</span>
       </p>
-      <div class="nav-menu-box">
+      <div class="nav-menu-box" v-if="selectMenu!==false">
         <nav-menu :menus="menuList"
-                  :currentMenu="currentMenu"
+                  :currentMenu="selectMenu"
                   @changeMenu="changeMenu"></nav-menu>
       </div>
     </div>
@@ -21,17 +21,24 @@
 <script>
   import NavMenu from './nav-menu'
   import activityService from 'src/api/activity-service'
+  import { mapMutations, mapState } from 'vuex'
+  import * as types from '../../store/mutation-types'
 
   export default {
     name: 'data-main',
-    components: {NavMenu},
+    components: { NavMenu },
     data () {
       return {
         activeId: '',
         currentMenu: 0,
         activityInfo: {},
-        menuList: ['概览数据', '推广数据', '直播数据', '观众数据']
+        menuList: ['概览数据', '推广数据', '直播数据', '观众画像']
       }
+    },
+    computed: {
+      ...mapState('dataCenter', {
+        selectMenu: state => state.selectMenu
+      })
     },
     created () {
       this.activeId = this.$route.params.id
@@ -42,12 +49,16 @@
         this.currentMenu = 1
       } else if (linkName === 'live') {
         this.currentMenu = 2
-      } else if (linkName === 'viewer') {
+      } else if (linkName === 'viewer' || linkName === 'viewerList') {
         this.currentMenu = 3
       }
+      this.storeSelectMenu(this.currentMenu)
       this.getDetails()
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       changeMenu (idx) {
         if (idx === 0) {
           this.$router.push(`/data/preview/${this.activeId}`)
@@ -58,6 +69,7 @@
         } else if (idx === 3) {
           this.$router.push(`/data/viewer/${this.activeId}`)
         }
+        this.storeSelectMenu(this.currentMenu)
       },
       getDetails () {
         this.$get(activityService.GET_DETAILS, {
@@ -73,11 +85,7 @@
 
 <style lang="scss" scoped>
   .data-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 6px;
-    overflow: hidden;
-    margin: 30px auto;
+    margin: 40px auto;
     width: 1366px;
     min-width: 1019px;
     color: #222;
@@ -87,7 +95,7 @@
     }
 
     /* 设备宽度小于 1600px */
-    @media all and (max-width:1600px) {
+    @media all and (max-width: 1600px) {
       width: 1019px;
     }
 

@@ -10,6 +10,9 @@ $color-ui-components:#4B5AFE;
     color: #555;
   }
 }
+.el-select-dropdown {
+  z-index: 9999!important;
+}
 .live-mager .el-select-dropdown{
   .popper__arrow{
     display: none;
@@ -128,4 +131,10 @@ $color-ui-components:#4B5AFE;
 .el-date-editor .el-range-separator {
   width: 20px;
   text-align: center;
+}
+
+.el-select-dropdown__item.selected,
+.el-cascader-menu__item.is-active {
+  color: $color-blue;
+  font-weight: normal;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="chart-circle" :style="{width:d,height:d}">
     <div class="chart-avg" :style="{width:mid,height:mid}"></div>
-    <div class="chart-value" :style="{width:wh,height:wh}"></div>
+    <div class="chart-value" :style="{width:wh,height:wh,opacity:opacity}"></div>
     <div class="chart-tips" v-if="tips">{{tips}}</div>
   </div>
 </template>
@@ -33,6 +33,9 @@
       wh () {
         return (this.value / this.maxValue) * 100 + '%'
       },
+      opacity () {
+        return 0.9 * (this.value / this.maxValue)
+      },
       mid () {
         return (this.avg / this.maxValue) * 100 + '%'
       }
@@ -55,7 +58,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      border: dashed 1px #FC5659;
+      border: dashed 1px #683D1D;
       box-sizing: border-box;
       z-index: 1;
     }
@@ -66,8 +69,7 @@
       transform: translate(-50%, -50%);
       border-radius: 50%;
       box-sizing: border-box;
-      background-color: #2878FF;
-      opacity: .5;
+      background-color: #FFDD21;
       z-index: 2;
     }
     .chart-tips {
@@ -76,13 +78,14 @@
       bottom: 10%;
       width: 200px;
       color: #fff;
-      background-color: rgba(10, 10, 10, .8);
+      background-color: rgba(10, 10, 10, .6);
       padding: 4px 10px;
       border-radius: 4px;
       font-size: 12px;
       opacity: 0;
       transition: opacity .3s;
       box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+      line-height: 20px;
       z-index: 3;
     }
     &:hover {

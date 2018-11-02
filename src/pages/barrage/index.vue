@@ -1,31 +1,28 @@
 <template>
   <section>
-    <canvas ref="cvs" class="cvs" width="400px" height="200px"></canvas>
+    <canvas ref="cvs"
+            class="cvs"
+            width="800px"
+            height="500px"></canvas>
     <!-- width="800px" height="400px" -->
     <div>
-      <el-input clearable v-model="content"></el-input>
-      <el-button @click="addBarrage">添加</el-button>
+      <el-input clearable></el-input>
+      <el-button @click="start">添加</el-button>
       <span>{{fps}}</span>
     </div>
     <div>
       <span>{{to}}</span>
-      <el-button @click="countTO">to 100</el-button>
+      <!-- <el-button @click="countTO">to 100</el-button> -->
     </div>
   </section>
 </template>
 
 <script>
 import Barrage from '../../components/barrage/Barrage.js'
-import CountTo from '../../utils/countTo.js'
+// import CountTo from '../../utils/countTo.js'
 export default {
   created () {
     this.barrageSystem = new Barrage()
-    // let opt = {
-    //   x: 100,
-    //   y: 100,
-    //   r: 50
-    // }
-    // this.c = new Progress(opt)
   },
   mounted () {
   },
@@ -36,10 +33,18 @@ export default {
     }
   },
   methods: {
-    countTO () {
-      CountTo.start(0, 100, 10, 0.2, i => {
-        console.log(i)
-      })
+    start () {
+      let c = this.$refs.cvs
+      this.barrageSystem.registRenderer('normal', c, {})
+      // debugger
+      this.addBarrage()
+
+      this.barrageSystem.start()
+    },
+    addBarrage () {
+      setInterval(() => {
+        this.barrageSystem.add(Math.random())
+      }, 50)
     }
   }
 }

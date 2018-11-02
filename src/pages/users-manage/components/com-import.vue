@@ -6,18 +6,18 @@
         <span class="title">批量导入</span>
         <button @click='close'><i class="iconfont icon-close"></i></button>
       </div>
-      <div class="content">
+      <div class="content" v-if='!importSuccess'>
         <div class="item clearfix">
-          <p class='tips-box'>下载模版 <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
+          <p class='tips-box'><router-link to="" target="_blank">下载模版</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
         </div>
         <div class="item upload-box-item clearfix">
           <label class="label">上传封面:</label>
-          <div class="upload-box">
+          <div class="upload-box" :class="{ 'error':fileEmpty }" @click='fileEmpty = false' >
 
             <com-upload
-              :accept="'csv'"
-              :fileSize="1024"
-              actionUrl="/common/group/import"
+              accept="csv"
+              :fileSize="10240"
+              actionUrl="/api/common/group/import"
               inputName="file"
               @error="uploadError"
               @selected="selected"
@@ -36,8 +36,9 @@
               </dl>
               <dl class='uploading' v-if='uploadStatus === "finishUpload"'>
                 <dt></dt>
+                <dd class='re-upload' @click='reUpload'>重新上传</dd>
                 <dd>{{fileName}}</dd>
-                <dd>检测到38位用户</dd>
+                <dd>检测到{{fileCount}}位用户</dd>
               </dl>
             </com-upload>
           </div>
@@ -45,34 +46,48 @@
         <div class="item">
           <label class='label'>导入规则:</label>
           <el-radio v-model="radio" label="1">新建固定群组</el-radio>
-          <el-radio v-model="radio" label="2">导入固定群组</el-radio>
+          <el-radio v-model="radio" label="0">导入固定群组</el-radio>
         </div>
         <div class="tab-box">
           <div class="tab" v-if='radio === "1"'>
             <div class="item spe">
               <label class='label'>群组名称:</label>
-              <com-input :value.sync="name" placeholder="输入固定群组名称" :max-length="10" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
+              <com-input :value.sync="title" placeholder="输入固定群组名称" :max-length="10" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
             </div>
             <div class="item spe">
               <label class='label'>群组描述:</label>
-              <com-input type="textarea" :value.sync="desc" placeholder="输入群组描述" :max-length="10" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
+              <com-input type="textarea" :value.sync="describe" placeholder="输入群组描述" :max-length="30" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
             </div>
           </div>
           <div class="tab" v-else>
-             <div class="item spe">
+             <div class="item spe" @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }" :disabled="groupId > 0">
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in groupData"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </div>
           </div>
         </div>
-        <el-button round class='primary-button confirm'>导入</el-button>
+        <el-button round class='primary-button confirm' @click="addHandler">导入</el-button>
+      </div>
+      <div class="content import-success" v-else>
+        <dl>
+          <dt></dt>
+          <dd>恭喜您，批量导入成功!</dd>
+        </dl>
+        <div class='tips'>
+          <span>成功导入<i> {{importSuccessData.success}} </i>位 </span>
+          <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
+          <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
+        </div>
+        <ul>
+          <li v-for="item in importSuccessData.repeat" :key="item">{{item}}、</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -81,36 +96,47 @@
 <script>
 import veTips from 'src/components/ve-msg-tips'
 import ComUpload from 'src/components/common/upload/com'
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
-      name: '',
-      desc: '',
+      title: '',
+      describe: '',
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
+      fileEmpty: false,
       loading: false,
+      optSel: false,
+      importSuccess: false,
+      importSuccessData: {
+        success: 0,
+        error: 0,
+        repeat: [123, 123, 334334]
+      },
       uploadStatus: 'beforeUpload',
       percentImg: 0,
+      fileCount: 0,
       fileName: '',
+      fileKey: '',
       errorTxt: '',
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+      groupData: [{
+        id: '1',
+        name: '黄金糕'
       }],
       selval: ''
+    }
+  },
+  props: {
+    groupId: {
+      type: Number,
+      default: 0
+    }
+  },
+  mounted () {
+    this.initGrouplist()
+    if (this.groupId) {
+      this.selval = this.groupId
     }
   },
   methods: {
@@ -137,8 +163,17 @@ export default {
     },
     uploadSuccess (data) {
       this.uploadStatus = 'finishUpload'
-      const fildObj = JSON.parse(data.data).data
-      console.log(fildObj)
+      const obj = JSON.parse(data.data)
+      if (obj.code === 200) {
+        const fileObj = obj.data
+        console.log(fileObj)
+        this.fileCount = fileObj.num
+        this.fileKey = fileObj.key
+      } else {
+        this.uploadStatus = 'beforeUpload'
+        this.loading = false
+        this.errorTxt = obj.msg
+      }
     },
     uploadError (data) {
       this.uploadStatus = 'beforeUpload'
@@ -152,6 +187,80 @@ export default {
       } else {
         this.errorTxt = '图片上传失败'
       }
+    },
+    addHandler () {
+      if (this.verifyEmpty()) {
+        const data = {
+          type: this.radio,
+          group_id: this.selval,
+          key: this.fileKey,
+          title: this.title,
+          describe: this.describe
+        }
+        // console.log(data)
+        this.groupImportData(data)
+      }
+    },
+    verifyEmpty () {
+      if (this.fileKey === '') {
+        this.fileEmpty = true
+        this.errorTxt = '请上传模版文件'
+        return false
+      }
+      if (this.radio === '1') {
+        if (!this.title.length) {
+          this.titleEmpty = true
+          return false
+        }
+        if (!this.describe.length) {
+          this.descEmpty = true
+          return false
+        }
+        return true
+      } else {
+        if (!this.selval) {
+          this.optSel = true
+          return false
+        }
+        this.title = ''
+        this.desc = ''
+        this.titleEmpty = false
+        this.descEmpty = false
+        return true
+      }
+    },
+    groupImportData (res) {
+      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
+        console.log(res)
+        this.importSuccess = true
+        this.importSuccessData = {
+          success: res.data.success,
+          error: res.data.invalid,
+          repeat: res.data.repeat
+        }
+      })
+    },
+    reUpload () {
+      this.fileKey = ''
+      this.uploadStatus = 'beforeUpload'
+    },
+    initGrouplist () {
+      this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        console.log(res)
+        this.groupData = this.reArrange(res.data.list)
+      })
+    },
+    reArrange (array) {
+      const arr = []
+      array.forEach(item => {
+        arr.push({
+          id: item.group_id,
+          name: item.title + `(${item.user_count})`
+        })
+      })
+      return arr
     }
   },
   components: {
@@ -224,14 +333,63 @@ export default {
       border: 1px solid #e2e2e2;
       width: 400px;
     }
+    .el-select.error .el-input__inner {
+      border-color: $color-error;
+    }
     .confirm {
       position: absolute;
       bottom: 20px;
       right: 52px;
     }
   }
+  .import-success {
+    dl {
+      text-align: center;
+    }
+    dt {
+      width: 122px;
+      height: 90px;
+      margin: 0 auto;
+      background: url('~assets/image/success@2x.png') no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+    dd {
+      font-size: 24px;
+      color: $color-font;
+    }
+    .tips {
+      padding-top: 30px;
+      padding-bottom: 10px;
+      text-align: center;
+      span {
+        color: $color-font-sub;
+        i {
+          color: $color-font;
+        }
+        em {
+          color: $color-error;
+        }
+      }
+    }
+    ul {
+      background: rgba(245, 245, 245, 1);
+      border-radius: 2px;
+      padding: 10px;
+      height: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      li {
+        display: inline-block;
+      }
+    }
+  }
   .com-input {
     width: 400px;
+    &.error input,
+    &.error textarea {
+      border-color: $color-error;
+    }
   }
   textarea {
     height: 68px;
@@ -257,6 +415,18 @@ export default {
     .tips-box {
       float: right;
       padding-right: 16px;
+      a {
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+      .msg-tip-box span {
+        display: none;
+      }
+      .msg-tip-box i:hover + span {
+        display: block;
+      }
     }
     .upload-box {
       float: left;
@@ -267,6 +437,9 @@ export default {
       border: 1px dashed rgba(226, 226, 226, 1);
       cursor: pointer;
       position: relative;
+      &.error {
+        border-color: $color-error;
+      }
       dl {
         width: 240px;
         height: 100px;
@@ -283,6 +456,12 @@ export default {
         dd {
           padding-top: 5px;
           color: $color-gray;
+        }
+        dd.re-upload {
+          position: absolute;
+          top: 10px;
+          right: 14px;
+          font-size: 12px;
         }
         .progress {
           padding: 0;

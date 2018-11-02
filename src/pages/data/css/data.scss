@@ -1,11 +1,26 @@
 @import "assets/css/mixin.scss";
 .data-box{
+  .pad{
+    padding: 0 30px;
+  }
+  .data-pad{
+    padding:0 30px 30px 30px;
+    margin-top: 20px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: solid 1px $color-bd;
+    &:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+    }
+  }
   .title {
-    font-size: 16px;
+    font-size: 20px;
     margin: 20px 0 10px 0;
-    padding: 10px 0;
-    font-weight: bold;
-    border-bottom: solid 1px $color-bd;
+    box-sizing: border-box;
   }
   .data-link{
     user-select: none;
@@ -15,27 +30,31 @@
       color: $color-blue-hover;
     }
   }
+  .chart-box /deep/{
+    .ve-title{
+      font-size: 16px;
+      color: #333;
+    }
+  }
   .item-container {
+    border-bottom: solid 1px $color-bd;
     .item-box {
-      border: solid 1px $color-bd;
       border-radius: 4px;
-      padding: 10px;
       box-sizing: border-box;
-      height: 124px;
       width: 100%;
-      margin: 10px 0;
+      margin: 20px 0 0 0;
       font-size: 14px;
+      text-align: left;
+      line-height: 40px;
       .item-title {
         display: block;
-        text-align: center;
         font-size: 18px;
       }
       .item-mid {
-        height: 60px;
-        line-height: 60px;
+        height: 50px;
+        line-height: 30px;
         font-size: 30px;
         font-weight: 600;
-        text-align: center;
         span {
           display: inline-block;
           border: solid 1px $color-bd;
@@ -48,14 +67,17 @@
         }
       }
       .item-bottom {
-        text-align: center;
+        line-height: 0;
+        margin-top: 10px;
         span {
-          padding: 0 5px;
           .down {
             color: $color-red;
           }
           .up {
             color: green;
+          }
+          &:last-child{
+            margin-left: 10px;
           }
         }
       }
@@ -64,16 +86,20 @@
       width: calc(50% - 10px);
       text-align: left;
       font-size: 0;
+      background-color: #F7F7F7;
       .hd-title{
         display: block;
         font-size: 16px;
         font-weight: bold;
         line-height: 38px;
+        user-select: none;
+        text-indent: 30px;
       }
       .hd-data{
         display: inline-block;
         width: 33.333%;
         line-height: 30px;
+        text-indent: 30px;
         span:first-child{
           font-size: 24px;
           font-weight: bold;
@@ -84,6 +110,46 @@
         }
       }
     }
+    .live-item{
+      position: relative;
+      &:before{
+        position: absolute;
+        display: inline-block;
+        content: '';
+        width: 4px;
+        height: 100%;
+      }
+    }
+    .live-item01{
+      &:before{
+        background-color: #FF6B6D;
+      }
+    }
+    .live-item02{
+      &:before{
+        background-color: #A05AFB;
+      }
+    }
+    .live-item03{
+      &:before{
+        background-color: #63C8F5;
+      }
+    }
+    .live-item04{
+      &:before{
+        background-color: #FFD021;
+      }
+    }
+    .live-item05{
+      &:before{
+        background-color: #AFADAE;
+      }
+    }
+    .live-item06{
+      &:before{
+        background-color: #FD9130;
+      }
+    }
   }
   .chart-container {
     display: flex;
@@ -92,10 +158,10 @@
       width: 32%;
       .title{
         position: relative;
-        padding: 5px 10px 0 10px;
-        margin: 10px 0;
+        margin: 20px 0;
         font-weight: normal;
         border: none;
+        font-size: 16px;
         .chart-menu/deep/{
           display: inline-block;
           position: absolute;
@@ -120,7 +186,7 @@
     }
     .export-btn{
       position: absolute;
-      top: -5px;
+      top: 0;
       right: 0;
       height: 34px;
       line-height: 1;

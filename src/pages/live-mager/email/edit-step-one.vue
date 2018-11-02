@@ -1,7 +1,9 @@
 <template>
-  <div class="edit-step-box" @keydown="canPass = false">
+  <div class="edit-step-box"
+       @keydown="canPass = false">
     <header class="email-header">
-      <div class="back-btn" @click="goBack">
+      <div class="back-btn"
+           @click="goBack">
         <i class="iconfont icon-jiantou"></i>
       </div>
       <span>步骤1 邮件内容</span>
@@ -14,14 +16,16 @@
         <div class="edit-content-temp fr">
           <div class="temp-title">
             <span>选择模板</span>
-            <button class="default-button fr" @click="recoverDefault">恢复默认
+            <button class="default-button fr"
+                    @click="recoverDefault">恢复默认
             </button>
           </div>
           <div class="temp-boxs">
             <div v-for="(emailItem,idx) in emailList"
                  :class="{'temp-item':true,fl:true,active:emailItem.emailTemplateId==email.emailTemplateId}"
                  @click.stop="changeTemp(idx)">
-              <div class="temp-item-box" :style="{backgroundColor:emailItem.cover}"></div>
+              <div class="temp-item-box"
+                   :style="{backgroundColor:emailItem.cover}"></div>
               <span class="temp-item-title">{{emailItem.title}}</span>
             </div>
           </div>
@@ -29,24 +33,36 @@
       </div>
     </div>
     <!-- 发送测试邮件 -->
-    <message-box v-show="testEmailShow" header="邮件测试发送" type="prompt" width="450px" @handleClick="emailHandleClick">
+    <message-box v-show="testEmailShow"
+                 header="邮件测试发送"
+                 type="prompt"
+                 width="450px"
+                 @handleClick="emailHandleClick">
       <div class="email-box">
         <span class="test-tip">每天只允许发送5条测试邮件：</span>
-        <com-input :value.sync="testEmailAddress" :error-tips="emailError" :maxLength="40"
-                   @keyup.enter.native="sendTestEmail" placeholder="输入邮件地址"/>
+        <com-input :value.sync="testEmailAddress"
+                   :error-tips="emailError"
+                   :maxLength="40"
+                   @keyup.enter.native="sendTestEmail"
+                   placeholder="输入邮件地址" />
       </div>
-      <div class="step-one-btns" slot="bottom">
+      <div class="step-one-btns"
+           slot="bottom">
         <span>邮件限额：{{testEmailCount}}</span>
-        <button class="primary-button" @click="sendTestEmail">立即发送
+        <button class="primary-button"
+                @click="sendTestEmail">立即发送
         </button>
       </div>
     </message-box>
     <div class="email-bottom">
-      <button class="default-button fl" @click="clickSendTestEmail">发送测试邮件
+      <button class="default-button fl"
+              @click="clickSendTestEmail">发送测试邮件
       </button>
-      <button class="primary-button fr" @click="nextEmail">下一步
+      <button class="primary-button fr"
+              @click="nextEmail">下一步
       </button>
-      <button :class="{'default-button':true, 'margin-fl':true, fr:true,disabled:isDisabled}" @click="saveEmail">保存草稿
+      <button :class="{'default-button':true, 'margin-fl':true, fr:true,disabled:isDisabled}"
+              @click="saveEmail">保存草稿
 
       </button>
     </div>
@@ -195,11 +211,6 @@ export default {
         this.canPass = true
         this.testEmailCount = res.data
       })
-      // LiveHttp.queryTestEmailInfo({
-      //   type: 'email'
-      // }).then((res) => {
-      //   this.testEmailCount = res.data
-      // })
     },
     emailHandleClick (e) {
       if (e.action === 'cancel') {
@@ -216,10 +227,6 @@ export default {
         this.email = res.data
         this.storeEmailInfo(this.email)
       })
-      // LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
-      //   this.email = res.data
-      //   this.storeEmailInfo(this.email)
-      // })
     },
     queryEmailTemp () {
       this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
@@ -227,16 +234,9 @@ export default {
         this.emailList = res.data.list
         if (!this.email.emailInviteId && !this.isHistory) { // 如果不是编辑
           let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-          this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
+          this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
         }
       })
-      // LiveHttp.queryEmailTemplateList().then((res) => {
-      //   if (!res.data.list) return
-      //   this.emailList = res.data.list
-      //   if (!this.email.emailInviteId) { // 如果不是编辑
-      //     this.email.content = this.emailList[0].content
-      //   }
-      // })
     },
     sendTestEmail () {
       if (!this.testEmailAddress) {
@@ -260,7 +260,7 @@ export default {
       }
       this.testEmailShow = false
       let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
       this.$post(activityService.POST_SEND_TEST_EMAIL_INFO, {
         content: this.email.content,
         receiverEmail: this.testEmailAddress
@@ -292,7 +292,7 @@ export default {
       this.isDisabled = true
       this.canPass = true
       let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
+      this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
       this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
         // 回写邮件id
         if (!this.email.emailInviteId) {
@@ -349,7 +349,7 @@ export default {
           if (e.action === 'confirm') {
             this.email.emailTemplateId = this.emailList[idx].emailTemplateId
             let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-            this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
+            this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
           }
         }
       })
@@ -368,7 +368,7 @@ export default {
               const emailObj = this.emailList[i]
               if (emailObj.emailTemplateId === this.email.emailTemplateId) {
                 let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-                this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?shareId=${shareId}`)
+                this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
                 break
               }
             }

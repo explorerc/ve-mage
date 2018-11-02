@@ -29,7 +29,7 @@
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
             <span class="disabled" @click.stop="handleClick(action.viewer)">观众</span>
-            <span class="disabled" @click.stop="handleClick(action.data)">数据</span>
+            <span @click.stop="handleClick(action.data)">数据</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -107,7 +107,7 @@
     },
     methods: {
       handleClick (action) {
-        this.$emit('handleClick', {...action, ...this.liveData})
+        this.$emit('handleClick', { ...action, ...this.liveData })
       }
     }
   }

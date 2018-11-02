@@ -18,16 +18,27 @@
         </div>
         <div class="from-row">
           <div class="from-title">收件人：</div>
-          <div class="from-content">
-            <div>分组1、分组2、分组3（合计56人）</div>
-            <div style="border: solid 1px #e5e5e5;">
+          <div class="from-content receiver" >
+            <template v-if="selectedGroupList.length || selectedTagList.length">
+              <div >
+                <span v-for='item in selectedGroupList'>{{item.name}}（{{item.count}}）、</span>
+              </div>
+              <div>
+                <span v-for='item in selectedTagList'>{{item.name}}、</span>（合计{{email.sendCount}}人）
+              </div>
+              <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
+            </template>
+            <template v-else>
+              暂未选择
+            </template>
+            <!-- <div style="border: solid 1px #e5e5e5;">
               <div>邮件1</div>
               <div>邮件2</div>
               <div>邮件3</div>
               <div>邮件4</div>
               <div>邮件5</div>
               <div>邮件6</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="from-row">
@@ -69,13 +80,19 @@
         </div>
       </div>
     </div>
+    <transition name='fade' mode='out-in' v-if="sendDetail">
+      <com-detail _type="EMAIL"  @handleClick="handleClick"></com-detail>
+    </transition>
   </div>
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
+// import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
-import {mapState, mapMutations} from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
+import comDetail from 'src/pages/live-mager/promote/com-detail'
 
 const statusType = {
   DRAFT: '草稿',
@@ -98,8 +115,16 @@ export default {
         sendCount: 0,
         status: '',
         statusName: ''
-      }
+      },
+      selectedGroupList: [],
+      selectedTagList: [],
+      groupList: [],
+      tagList: [],
+      sendDetail: false
     }
+  },
+  components: {
+    comDetail
   },
   computed: mapState('liveMager', {
     emailInfo: state => state.emailInfo
@@ -107,14 +132,21 @@ export default {
   watch: {
     emailInfo: {
       handler (newVal) {
-        this.email = {...newVal}
+        this.email = { ...newVal }
       },
       immediate: true
     }
   },
   created () {
     // 如果vuex可以取到值就return
-    if (this.email.emailInviteId) return
+    if (this.email.emailInviteId) {
+      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : []
+      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : []
+      this.queryTagList().then(this.queryGroupList()).then(() => {
+        this.reArrangeList(listStr.split(','), tagStr.split(','))
+      })
+      return false
+    }
     // 如果vuex不能取到值就查询接口
     const queryId = this.$route.params.id
     if (!queryId) {
@@ -122,7 +154,7 @@ export default {
       return
     }
     this.email.emailInviteId = this.$route.query.email
-    this.queryEmailInfo()
+    this.queryTagList().then(this.queryGroupList()).then(this.queryEmailInfo())
   },
   methods: {
     ...mapMutations('liveMager', {
@@ -136,13 +168,11 @@ export default {
       }).then((res) => {
         res.data.statusName = statusType[res.data.status]
         this.email = res.data
+        setTimeout(() => {
+          this.reArrangeList(res.data.groupIds.split(','), res.data.tagIds.split(','))
+        }, 500)
         this.storeEmailInfo(this.email)
       })
-      // LiveHttp.queryEmailInfoById(this.email.emailInviteId).then((res) => {
-      //   res.data.statusName = statusType[res.data.status]
-      //   this.email = res.data
-      //   this.storeEmailInfo(this.email)
-      // })
     },
     sendEmail () {
       this.$post(activityService.POST_SEND_EMAIL_INFO, {
@@ -151,21 +181,77 @@ export default {
         console.log('邮件发送成功')
         console.log(res)
       })
-      // LiveHttp.sendEmailInfo({
-      //   emailInviteId: this.email.emailInviteId
-      // }).then((res) => {
-      //   console.log('邮件发送成功')
-      //   console.log(res)
-      // }).catch((e) => {
-      //   console.log('邮件发送失败')
-      //   console.log(e)
-      // })
     },
     editEmail () {
       this.$router.push(`/liveMager/emailEditOne/${this.email.activityId}?email=${this.email.emailInviteId}`)
     },
     prePage () {
       this.$router.go(-1)
+    },
+    // 查询群组
+    async queryGroupList (keyword) {
+      await this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
+            isChecked: false
+          })
+        })
+        this.groupList = temArray
+      })
+    },
+    /* 查询标签 */
+    async queryTagList () {
+      await this.$get(userManage.GET_TAG_LIST).then((res) => {
+        let temArray = []
+        res.data.list.forEach(item => {
+          temArray.push({
+            name: item.tag_name,
+            id: item.tag_id,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
+      })
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            // this.groupList[idx].isChecked = true
+            this.selectedGroupList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            // this.tagList[idx].isChecked = true
+            this.selectedTagList.push({
+              count: 0,
+              id: item.id,
+              isChecked: true,
+              name: item.name
+            })
+          }
+        })
+      })
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.sendDetail = false
+      }
     }
   }
 }
@@ -234,6 +320,23 @@ export default {
       left: 3px;
       transform: rotate(-45deg);
       background-color: #ffd021;
+    }
+  }
+  .receiver {
+    position: relative;
+    .el-button {
+      position: absolute;
+      top: -10px;
+      margin-left: 10px;
+    }
+    div {
+      display: inline-block;
+
+      span {
+        display: inline-block;
+        padding: 0 0 10px 0;
+        padding-bottom: 0px;
+      }
     }
   }
 }
