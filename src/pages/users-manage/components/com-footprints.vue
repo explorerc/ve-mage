@@ -11,7 +11,7 @@
           </p>
           <p class="v-content">
             {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_name?itemData.data.activity_name:''}}
-            <button @click="showRecord(itemData.behavior_id)">
+            <button @click="showRecord(itemData.behavior_id,itemData.data.activity_name,itemData.generated_at)">
               查看详情
             </button>
           </p>
@@ -41,10 +41,10 @@
                  header='行为记录'>
       <div>
         <p class="v-explain">
-          百度人工智能大会发布芯片
+          {{showActivity.name}}
         </p>
         <p class="v-time">
-          2018-07-07 09:30:00
+          {{showActivity.time}}
         </p>
         <div class="v-steps-content">
           <div class="v-steps bscroll" ref="infoscroll">
@@ -102,6 +102,10 @@ export default {
         page: 1,
         page_size: 20
       },
+      showActivity: {
+        name: '',
+        time: ''
+      },
       total: 0,
       infoTotal: 0,
       recordBoxShow: false // 行为记录框显示隐藏
@@ -112,8 +116,10 @@ export default {
     this.initScroll()
   },
   methods: {
-    showRecord (activityId) {
+    showRecord (activityId, name, time) {
       this.recordBoxShow = true
+      this.showActivity.name = name
+      this.showActivity.time = time
       this.getDataInfoList(activityId)
       this.initInfoScroll()
     },
@@ -125,23 +131,27 @@ export default {
     getDataList () {
       this.searchParams.business_consumer_uid = this.$route.params.id
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchParams).then((res) => {
-        res.data.list.forEach(element => {
-          this.dataList.push(element)
-        })
-        this.total = res.data.total
-        this.searchParams.page = parseInt(res.data.currPage) + 1
-        this.searchParams.total = res.data.total
+        if (res.data && res.data.list) {
+          res.data.list.forEach(element => {
+            this.dataList.push(element)
+          })
+          this.total = res.data.total
+          this.searchParams.page = parseInt(res.data.currPage) + 1
+          this.searchParams.total = res.data.total
+        }
       }).catch(err => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+        if (err.code !== 201) {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
             }
-          }
-        })
+          })
+        }
       })
     },
     initScroll () {
@@ -177,16 +187,18 @@ export default {
         this.searchInfoParams.page = parseInt(res.data.currPage) + 1
         this.searchInfoParams.total = res.data.total
       }).catch(err => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+        if (err.code !== 201) {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
             }
-          }
-        })
+          })
+        }
       })
     },
     initInfoScroll () {

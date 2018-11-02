@@ -63,7 +63,7 @@
   </div>
 </template>
 <script>
-import { MessageBox } from 'components/common/message-box'
+// import { MessageBox } from 'components/common/message-box'
 import VePagination from 'src/components/ve-pagination'
 import userService from 'src/api/user-service'
 export default {
@@ -91,7 +91,7 @@ export default {
   methods: {
     getDataList () {
       this.searchParams.business_consumer_uid = this.$route.params.id
-      this.$get(userService.GET_SURVER_LIST, this.searchParams).then((res) => {
+      this.$config({ handlers: true }).$get(userService.GET_SURVER_LIST, this.searchParams).then((res) => {
         if (res.code === 200) { // 已报名弹框
           res.data.list.map((item, indx) => {
             if (item.imgUrl) {
@@ -104,12 +104,18 @@ export default {
           this.tableList = res.data.list
           this.total = res.data.total
           this.searchParams.page = parseInt(res.data.currPage)
-        } else { // 未报名提示
-          MessageBox({
+        }
+      }).catch(err => {
+        if (err.code !== 201) {
+          this.$messageBox({
             header: '提示',
-            content: res.msg,
-            autoClose: 10,
-            confirmText: '知道了'
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
           })
         }
       })
