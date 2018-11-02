@@ -4,7 +4,7 @@
       <span class="title">邮件邀约</span>
       <button class="primary-button fr"
               @click="addEmail">新建邮件</button>
-      <span class="send-box fr">发送限额：2399/10000</span>
+      <span class="send-box fr">发送限额：2399/5000</span>
     </div>
     <div class="email-table-box"
          v-ComLoading="loading">

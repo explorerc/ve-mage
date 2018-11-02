@@ -74,14 +74,24 @@ export default {
     },
     addHandler () {
       if (this.verifyEmpty()) {
-        const data = {
-          type: this.radio,
-          group_id: this.selval,
-          title: this.name,
-          describe: this.desc
+        if (this.radio === '1') {
+          const data = {
+            type: this.radio,
+            group_id: this.selval,
+            title: this.name,
+            describe: this.desc
+          }
+          this.$emit('groupData', data)
+        } else {
+          this.groupData.forEach((item) => {
+            if (item.id === this.selval) {
+              this.$emit('groupData', Object.assign(item, {
+                group_id: this.selval,
+                type: this.radio
+              }))
+            }
+          })
         }
-        // console.log(data)
-        this.$emit('groupData', data)
       }
     },
     verifyEmpty () {
@@ -113,12 +123,14 @@ export default {
       }).then((res) => {
         console.log(res)
         this.groupData = this.reArrange(res.data.list)
+        console.log(this.groupData)
       })
     },
     reArrange (array) {
       const arr = []
       array.forEach(item => {
         arr.push({
+          describe: item.describe,
           id: item.group_id,
           name: item.title + `(${item.user_count})`
         })
