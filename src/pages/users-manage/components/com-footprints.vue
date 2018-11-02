@@ -16,7 +16,7 @@
             </button>
           </p>
         </li>
-        <li class="v-footprint">
+        <!-- <li class="v-footprint">
           <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
@@ -29,7 +29,7 @@
               查看详情
             </button>
           </p>
-        </li>
+        </li> -->
       </ol>
     </div>
     <message-box v-show="recordBoxShow"
@@ -62,7 +62,7 @@
                   </p>
                 </div>
               </li>
-              <li class="v-step">
+              <!-- <li class="v-step">
                 <div class="v-content">
                   <i class="iconfont icon-dian">
                   </i>
@@ -74,7 +74,7 @@
                     进入活动官网
                   </p>
                 </div>
-              </li>
+              </li> -->
             </ol>
           </div>
         </div>
