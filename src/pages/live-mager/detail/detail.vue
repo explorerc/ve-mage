@@ -101,8 +101,7 @@
             </dl>
           </li>
           <li class='step statics'
-              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}"
-          @click="goDataCenter">
+              :class="{ 'highlight':this.currStep.search('end') > -1, 'active':this.currStep === 'isPublish live end'}">
             <dl>
               <dt><i></i></dt>
               <dd>数据</dd>
@@ -154,7 +153,7 @@
         <div>
           <!-- <span>数据</span> -->
           <ol>
-            <li>数据</li>
+            <li @click="goDataCenter">数据</li>
             <li>观众</li>
           </ol>
         </div>

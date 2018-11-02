@@ -224,7 +224,9 @@
         <p class="title">
           <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径"></ve-title>
         </p>
-        <div id="myChart" style="height: 500px;margin-bottom: 50px;"></div>
+        <div id="myChart" style="height: 500px;margin-bottom: 50px;">
+          <span v-if="tripNoneData" class="none-chart">暂无数据</span>
+        </div>
       </div>
     </div>
   </div>
@@ -234,11 +236,11 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { sankey, pieOne } from 'src/utils/chart-tool'
+  import {sankey, pieOne} from 'src/utils/chart-tool'
 
   export default {
     name: 'preview',
-    components: { VeTitle, VeCircle },
+    components: {VeTitle, VeCircle},
     data () {
       return {
         activityId: '',
@@ -297,7 +299,8 @@
             'ratio': 0,
             'average': 0
           }
-        }
+        },
+        tripNoneData: false
       }
     },
     beforeDestroy () {
@@ -318,48 +321,60 @@
     },
     methods: {
       initPage () {
-        // 微吼指数
-        this.vhallRate()
         // 用户观看统计
         this.activityScore()
         // 用户观看统计
         this.watcherCount()
         // 观看影响系数因子
         this.watchCoefficient()
-        // 用户旅途
-        this.renderChart()
+        this.$nextTick(() => {
+          // 微吼指数
+          this.vhallRate()
+          // 用户旅途
+          this.renderChart()
+        })
       },
       vhallRate () {
         this.$get(dataService.GET_PREVIEW_COUNT, {
           activityId: this.activityId
         }).then((res) => {
-          if (res.code === 200) {
+          if (res.code === 200 && res.data.length !== 0) {
             this.vhallRateData = res.data
-            this.$nextTick(() => {
-              pieOne('chartVallId', this.vhallRateData.value)
-            })
+          } else {
+            this.vhallRateData = {
+              'value': 0,
+              'ratio': 0,
+              'average': 0
+            }
           }
+          pieOne('chartVallId', this.vhallRateData.value)
         })
       },
       activityScore () {
         this.$get(dataService.GET_PREVIEW_SCORE, {
           activityId: this.activityId
         }).then((res) => {
-          this.activityScoreData = res.data
+          if (res.code === 200 && res.data.length !== 0) {
+            this.activityScoreData = res.data
+          }
         })
       },
       watcherCount () {
         this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
           activityId: this.activityId
         }).then((res) => {
-          this.watcherCountData = res.data
+          if (res.code === 200 && res.data.length !== 0) {
+            this.watcherCountData = res.data
+          }
         })
       },
       watchCoefficient () {
         this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
           activityId: this.activityId
         }).then((res) => {
-          this.watchCoefficientData = res.data
+          if (res.code === 200 && res.data.length !== 0) {
+            this.watchCoefficientData = res.data
+          }
         })
       },
       renderChart () {
@@ -367,7 +382,11 @@
           activityId: this.activityId
         }).then((res) => {
           if (res.code === 200) {
-            this.randerUserTrailChart(res.data)
+            if (res.data.length <= 0) {
+              this.tripNoneData = true
+            } else {
+              this.randerUserTrailChart(res.data)
+            }
           }
         })
       },

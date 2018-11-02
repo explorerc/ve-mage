@@ -444,14 +444,14 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
+  import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: { VeTitle, VeCircle, NavMenu, VePagination },
+    components: {VeTitle, VeCircle, NavMenu, VePagination},
     data () {
       return {
         loading: false,
@@ -631,7 +631,7 @@
         this.$get(dataService.GET_LIVE_VIEWER_HD, {
           activityId: this.activityId
         }).then((res) => {
-          if (res.code === 200) {
+          if (res.code === 200 && res.data.length !== 0) {
             this.interactCountData = res.data
           }
         })
@@ -640,16 +640,16 @@
         this.$get(dataService.GET_LIVE_VIEWER, {
           activityId: this.activityId
         }).then((res) => {
-          if (res.code === 200) {
+          if (res.code === 200 && res.data.length !== 0) {
             this.watcherLineData = res.data
             this.$nextTick(() => {
               // 观众趋势图（PV、UV）
               this.watcherChart = lines('chart01', {
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
-                  { name: '浏览次数', data: this.watcherLineData.live.pv },
-                  { name: '独立访问', data: this.watcherLineData.live.uv },
-                  { name: 'IP', data: this.watcherLineData.live.ip }
+                  {name: '浏览次数', data: this.watcherLineData.live.pv},
+                  {name: '独立访问', data: this.watcherLineData.live.uv},
+                  {name: 'IP', data: this.watcherLineData.live.ip}
                 ]
               })
             })
@@ -660,7 +660,9 @@
         this.$get(dataService.GET_LIVE_COUNT, {
           activityId: this.activityId
         }).then((res) => {
-          this.basicCountData = res.data
+          if (res.code === 200 && res.data.length !== 0) {
+            this.basicCountData = res.data
+          }
         })
       },
       goChatDataDetail () {
@@ -672,7 +674,7 @@
           pageSize: this.pageSize
         }).then((res) => {
           this.loading = false
-          if (res.code === 200) {
+          if (res.code === 200 && res.data.length !== 0) {
             this.chatDataList = res.data.list
             this.total = res.data.total
           }
@@ -683,15 +685,15 @@
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
-          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
+          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
+          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
         ]
       },
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 },
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 }
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
       },
       goRedBagDataDetail () {
@@ -726,8 +728,8 @@
       goGoodsDataDetail () {
         this.goodsDataDetail = true
         this.goodsDataList = [
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859 },
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859 }
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
         ]
       },
       changeMenu (val) {
@@ -738,9 +740,9 @@
         this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
-            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
+            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
+            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
           ]
         })
       },
@@ -748,31 +750,42 @@
         this.$get(dataService.GET_LIVE_DURATION, {
           activityId: this.activityId
         }).then((res) => {
-          if (!res.data.list) return
-          // 直播观众时长分布图
-          this.timeLongChart = bars('chart02', res.data.list, {
-            left: 48,
-            right: 20,
-            top: 20,
-            bottom: 20
-          })
+          if (res.code === 200 && res.data.length !== 0) {
+            if (!res.data.list) return
+            // 直播观众时长分布图
+            this.timeLongChart = bars('chart02', res.data.list, {
+              left: 48,
+              right: 20,
+              top: 20,
+              bottom: 20
+            })
+          }
         })
       },
       playBackTimeScatter () {
         this.$get(dataService.GET_LIVE_VIEW_RECORD, {
           activityId: this.activityId
         }).then((res) => {
-          if (!res.data.list) return
-          let xAxis = []
-          let sDatas = []
-          res.data.list.forEach(item => {
-            xAxis.push(item.time)
-            sDatas.push([item.time, item.week, item.value])
-          })
-          let serveDatas = {
-            yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-            xAxis: Array.from(new Set(xAxis)),
-            data: sDatas
+          let serveDatas = null
+          if (res.code === 200 && res.data.length !== 0) {
+            if (!res.data.list) return
+            let xAxis = []
+            let sDatas = []
+            res.data.list.forEach(item => {
+              xAxis.push(item.time)
+              sDatas.push([item.time, item.week, item.value])
+            })
+            serveDatas = {
+              yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+              xAxis: Array.from(new Set(xAxis)),
+              data: sDatas
+            }
+          } else {
+            serveDatas = {
+              yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+              xAxis: Array.from(new Set([0])),
+              data: [[0, 0, 0]]
+            }
           }
           this.playBackTimeChart = scatter('chart03', serveDatas, {
             left: 70,
@@ -786,21 +799,50 @@
         this.$get(dataService.GET_LIVE_TOOL, {
           activityId: this.activityId
         }).then((res) => {
-          if (!res.data.xAxis) return
-          let serveDatas = res.data.interact.map(item => {
-            item['type'] = 'bar'
-            item.data = item.dataList
-            delete item.dataList
-            return item
-          })
-          serveDatas.push({
-            name: res.data.viewer.name,
-            type: 'line',
-            data: res.data.viewer.dataList
-          })
-          const chartDatas = {
-            xAxis: res.data.xAxis,
-            list: serveDatas
+          let chartDatas = null
+          if (res.code === 200 && res.data.length !== 0) {
+            res.data.xAxis = res.data.xAxis || ['']
+            res.data.interact = res.data.interact || [
+              {
+                'name': '红包',
+                'dataList': [0]
+              }, {
+                'name': '抽奖',
+                'dataList': [0]
+              }, {
+                'name': '答题',
+                'dataList': [0]
+              }, {
+                'name': '商品推荐',
+                'dataList': [0]
+              }
+            ]
+            let serveDatas = res.data.interact.map(item => {
+              item['type'] = 'bar'
+              item.data = item.dataList
+              delete item.dataList
+              return item
+            })
+            serveDatas.push({
+              name: res.data.viewer.name,
+              type: 'line',
+              data: res.data.viewer.dataList || [0]
+            })
+            chartDatas = {
+              xAxis: res.data.xAxis,
+              list: serveDatas
+            }
+          } else {
+            chartDatas = {
+              xAxis: [''],
+              list: [
+                {
+                  name: '观众人数',
+                  type: 'line',
+                  data: [0]
+                }
+              ]
+            }
           }
           // 互动工具参与趋势图（PV、UV）
           this.hdChart = barAndLine('chart04', chartDatas, {
