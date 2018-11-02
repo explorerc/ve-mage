@@ -1,4 +1,6 @@
 export default {
+  /* 活动信息 */
+  GET_ACTIVITY_INFO: '/manage/data-center/activity-info',
   /* 预览数据--微吼指数 */
   GET_PREVIEW_COUNT: '/manage/data-center/s/preview',
   /* 预览数据--活动得分 */
