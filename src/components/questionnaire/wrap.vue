@@ -15,7 +15,8 @@
              class="q-subject"
              v-text="value.title"></div>
         <!-- 问题描述区 -->
-        <component :is="QComs[value.type]"
+        <component ref="content"
+                   :is="QComs[value.type]"
                    v-model="value"
                    :edit="edit"></component>
       </div>
@@ -24,13 +25,23 @@
         <a v-if="showAddItem"
            class="add-select-item"
            @click="addItem">添加选项</a>
-        <span class="required-des">必填</span>
+        <span v-if="!(value.detail&&value.detail.format==='mobile')"
+              class="required-des">必填</span>
         <el-switch class='switch'
+                   v-if="!(value.detail&&value.detail.format==='mobile')"
                    v-model="value.required"
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort">排序</div>
+        <span v-if="value.detail&&value.detail.format==='mobile'"
+              class="required-des">短信验证</span>
+        <el-switch class='switch'
+                   v-if="value.detail&&value.detail.format==='mobile'"
+                   v-model="value.verifiy"
+                   inactive-color="#DEE1FF"
+                   :width="32"
+                   active-color="#FFD021"></el-switch>
+        <div class="sort fuck">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -45,6 +56,7 @@ import qCheckbox from './q-checkbox'
 import qSelect from './q-select'
 import qText from './q-text'
 import qDate from './q-date'
+import qArea from './q-area'
 
 export default {
   components: {
@@ -52,7 +64,8 @@ export default {
     qCheckbox,
     qSelect,
     qText,
-    qDate
+    qDate,
+    qArea
   },
   props: {
     index: {
@@ -77,6 +90,11 @@ export default {
       QComs: QComs
     }
   },
+  mounted () {
+    if (this.value.verification === 'Y') {
+      this.value.verifiy = true
+    }
+  },
   methods: {
     addItem () {
       if (this.value.detail.list.length < 20) {
@@ -85,10 +103,22 @@ export default {
         })
       }
     },
-
     remove () {
       this.$emit('remove', this.index)
     }
+  },
+  watch: {
+    'value.verifiy': {
+      handler (val) {
+        if (val) {
+          this.value.verification = 'Y'
+        } else {
+          this.value.verification = 'N'
+        }
+      },
+      deep: true
+    }
+
   },
   computed: {
     showAddItem () {
@@ -136,7 +166,7 @@ export default {
         padding: 0 10px;
         margin-bottom: 15px;
         &.display {
-          margin-bottom: 0;
+          // margin-bottom: 0;
         }
         .q-subject {
           margin-bottom: 14px;

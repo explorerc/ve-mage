@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-        <span class="title" >总览</span>
+      <span class="title">总览</span>
     </div>
     <div class="content from-box">
       <ol class="clearfix">
@@ -61,64 +61,71 @@
         各级别用户趋势图
       </p>
       <ul class="v-btns clearfix">
-        <li @click="selectCount($event,'isActive3')" :class="{ active: isActive3 }">3场</li>
-        <li @click="selectCount($event,'isActive7')" :class="{ active: isActive7 }">7场</li>
-        <li @click="selectCount($event,'isActive10')" :class="{ active: isActive10 }">10场</li>
+        <li @click="selectCount($event,'isActive3')"
+            :class="{ active: isActive3 }">3场</li>
+        <li @click="selectCount($event,'isActive7')"
+            :class="{ active: isActive7 }">7场</li>
+        <li @click="selectCount($event,'isActive10')"
+            :class="{ active: isActive10 }">10场</li>
       </ul>
-      <div class="chart-item" id="chart01" style="height: 380px;"></div>
+      <div class="chart-item"
+           id="chart01"
+           style="height: 380px;"></div>
     </div>
     <div class="v-data-list clearfix">
-        <p class="v-title">
-          数据详情
-        </p>
-        <ol>
-          <li class="clearfix">
-            <div class="v-activity-content v-name">
-              活动名称
-            </div>
-            <div class="v-activity-content v-time">
-              时间
-            </div>
-            <div class="v-activity-content v-type">
-              流失用户
-            </div>
-            <div class="v-activity-content v-operation">
-              一般用户
-            </div>
-            <div class="v-activity-content v-operation">
-              潜力用户
-            </div>
-            <div class="v-activity-content v-operation">
-              高价值用户
-            </div>
-            <div class="v-activity-content v-operation">
-              优质用户
-            </div>
-          </li>
-          <li class="clearfix" v-for="itemData in tableList" :key="itemData.id">
-            <div class="v-activity-content v-name">
-              {{itemData.title}}
-            </div>
-            <div class="v-activity-content v-time">
-              {{itemData.startTime}}
-            </div>
-            <div class="v-activity-content">
-              {{itemData.val0}}
-            </div>
-            <div class="v-activity-content">
-              {{itemData.val1}}
-            </div>
-            <div class="v-activity-content">
-              {{itemData.val2}}
-            </div>
-            <div class="v-activity-content">
-              {{itemData.val3}}
-            </div>
-            <div class="v-activity-content">
-              {{itemData.val4}}
-            </div>
-          </li>
-        </ol>
+      <p class="v-title">
+        数据详情
+      </p>
+      <ol>
+        <li class="clearfix">
+          <div class="v-activity-content v-name">
+            活动名称
+          </div>
+          <div class="v-activity-content v-time">
+            时间
+          </div>
+          <div class="v-activity-content v-type">
+            流失用户
+          </div>
+          <div class="v-activity-content v-operation">
+            一般用户
+          </div>
+          <div class="v-activity-content v-operation">
+            潜力用户
+          </div>
+          <div class="v-activity-content v-operation">
+            高价值用户
+          </div>
+          <div class="v-activity-content v-operation">
+            优质用户
+          </div>
+        </li>
+        <li class="clearfix"
+            v-for="itemData in tableList"
+            :key="itemData.id">
+          <div class="v-activity-content v-name">
+            {{itemData.title}}
+          </div>
+          <div class="v-activity-content v-time">
+            {{itemData.startTime}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val0}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val1}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val2}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val3}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val4}}
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 </template>
@@ -149,10 +156,9 @@ export default {
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
-      let _this = this
       arr.forEach(element => {
-        _this.uersInfo[arr.indexOf(element)].val = element
-        _this.uersInfo[arr.indexOf(element)].centage = Math.round(element / _this.info.total)
+        this.uersInfo[arr.indexOf(element)].val = element
+        this.uersInfo[arr.indexOf(element)].centage = Math.round(element / this.info.total)
       })
     }).catch(err => {
       this.$messageBox({

@@ -1,10 +1,12 @@
 <template>
   <div class="q-edit-content">
-    <el-checkbox-group v-model="value.value">
+    <el-checkbox-group v-model="value.value"
+                       @change="change">
       <el-checkbox v-for="(item,index) in value.detail.list"
                    class="q-select-item"
                    :class="{display:!edit}"
-                   :label="index">
+                   :label="index"
+                   :key="index">
         <com-input v-if="edit"
                    v-model="item.value"
                    :max-length="30"></com-input>
@@ -16,6 +18,9 @@
               @click="delItem(index)">删</span>
       </el-checkbox>
     </el-checkbox-group>
+    <div v-if="!edit&&errorTip"
+         class="error-msg">{{errorTip}}
+    </div>
   </div>
 </template>
 
@@ -33,9 +38,24 @@ export default {
       default: false
     }
   },
+  data () {
+    return {
+      errorTip: ''
+    }
+  },
   methods: {
     delItem (index) {
       this.value.list.detail.splice(index, 1)
+    },
+    change () {
+      this.errorTip = ''
+    },
+    check () {
+      if (this.value.required && (!this.value.value || this.value.value.length === 0)) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      return true
     }
   }
 }
@@ -44,6 +64,13 @@ export default {
 <style scoped lang="scss">
 .q-edit-content {
   /deep/ {
+    .error-msg {
+      position: absolute;
+      color: #fc5659;
+      padding-left: 10px;
+      line-height: 20px;
+      font-size: 12px;
+    }
     .q-select-item {
       width: 100%;
       position: relative;
