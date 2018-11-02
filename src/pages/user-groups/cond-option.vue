@@ -50,7 +50,7 @@
     props: ['type', 'rule'],
     data () {
       return {
-        disDel: true,
+        disDel: false,
         saveData: [],
         props: {
           value: 'key',
@@ -1048,18 +1048,26 @@
           condition: '',
           value: ''
         })
+        this.$nextTick(() => {
+          if (this.shadowOutD[ind].length > 1) {
+            this.disDel = true
+          }
+        })
       },
       del (ind, mind) {
-        console.log(ind, mind)
+        // console.log(ind, mind)
+        // console.log(this.shadowOutD)
         this.shadowOutD[ind].splice(mind, 1)
         if (this.shadowOutD[ind].length < 1) {
           this.shadowOutD.splice(ind, 1)
         }
-        if (this.shadowOutD.length === 1) {
-          this.disDel = false
-        } else {
-          this.disDel = true
-        }
+        this.$nextTick(() => {
+          if (this.shadowOutD && this.shadowOutD.length < 2 && this.shadowOutD[0].length === 1) {
+            this.disDel = false
+          } else {
+            this.disDel = true
+          }
+        })
       },
       or () {
         this.shadowOutD.push([{
@@ -1067,12 +1075,13 @@
           condition: '',
           value: ''
         }])
-
-        if (this.shadowOutD.length < 2) {
-          this.disDel = false
-        } else {
-          this.disDel = true
-        }
+        this.$nextTick(() => {
+          if (this.shadowOutD.length < 2) {
+            this.disDel = false
+          } else {
+            this.disDel = true
+          }
+        })
       },
       save () {
         console.log(this.shadowOutD, 'before_save_data')
@@ -1172,6 +1181,11 @@
       if (this.type === 'edit') {
         this.outD = this.rule
         // console.log(this.outD)
+        if (this.outD.length > 1 || (this.outD.length === 1 && this.outD[0].length > 1)) {
+          this.disDel = true
+        } else {
+          this.disDel = false
+        }
         this.analysisData()
       }
     }
@@ -1182,7 +1196,7 @@
   #cond-option {
     overflow: auto;
     max-height: 400px;
-    /deep/{
+    /deep/ {
       ul {
         li {
           .option-box {
