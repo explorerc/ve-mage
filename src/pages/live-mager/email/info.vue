@@ -26,6 +26,7 @@
               <div>
                 <span v-for='item in selectedTagList'>{{item.name}}、</span>（合计{{email.sendCount}}人）
               </div>
+              <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </template>
             <template v-else>
               暂未选择
@@ -79,15 +80,19 @@
         </div>
       </div>
     </div>
+    <transition name='fade' mode='out-in' v-if="sendDetail">
+      <com-detail _type="EMAIL"  @handleClick="handleClick"></com-detail>
+    </transition>
   </div>
 </template>
 
 <script>
 import userManage from 'src/api/userManage-service'
-import noticeService from 'src/api/notice-service'
+// import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
+import comDetail from 'src/pages/live-mager/promote/com-detail'
 
 const statusType = {
   DRAFT: '草稿',
@@ -114,8 +119,12 @@ export default {
       selectedGroupList: [],
       selectedTagList: [],
       groupList: [],
-      tagList: []
+      tagList: [],
+      sendDetail: false
     }
+  },
+  components: {
+    comDetail
   },
   computed: mapState('liveMager', {
     emailInfo: state => state.emailInfo
@@ -131,9 +140,11 @@ export default {
   created () {
     // 如果vuex可以取到值就return
     if (this.email.emailInviteId) {
-      this.groupList = this.emailInfo.groupList ? this.emailInfo.groupList : []
-      this.tagList = this.emailInfo.tagList ? this.emailInfo.tagList : []
-      this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(','))
+      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : []
+      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : []
+      this.queryTagList().then(this.queryGroupList()).then(() => {
+        this.reArrangeList(listStr.split(','), tagStr.split(','))
+      })
       return false
     }
     // 如果vuex不能取到值就查询接口
@@ -196,14 +207,12 @@ export default {
     },
     /* 查询标签 */
     async queryTagList () {
-      await this.$get(noticeService.GET_PERSON_LIST, {
-        activityId: this.$route.params.id
-      }).then((res) => {
+      await this.$get(userManage.GET_TAG_LIST).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach(item => {
           temArray.push({
-            id: item.id,
-            name: item.name,
+            name: item.tag_name,
+            id: item.tag_id,
             isChecked: false
           })
         })
@@ -237,6 +246,12 @@ export default {
           }
         })
       })
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.sendDetail = false
+      }
     }
   }
 }
@@ -307,9 +322,22 @@ export default {
       background-color: #ffd021;
     }
   }
-  .receiver div span {
-    display: inline-block;
-    padding: 0 0 10px 0;
+  .receiver {
+    position: relative;
+    .el-button {
+      position: absolute;
+      top: -10px;
+      margin-left: 10px;
+    }
+    div {
+      display: inline-block;
+
+      span {
+        display: inline-block;
+        padding: 0 0 10px 0;
+        padding-bottom: 0px;
+      }
+    }
   }
 }
 </style>

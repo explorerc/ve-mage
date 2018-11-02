@@ -1,7 +1,7 @@
 <template>
   <div class="data-box search-box">
     <div class="search-total">
-      <button class="primary-button fl" @click="exportData">导出</button>
+      <button class="default-button export-btn fl" @click="exportData">导出</button>
       <div class="search-item fr">
         <com-input type="search"
                    style="width: 220px;"
@@ -27,10 +27,42 @@
                    placeholder="输入姓名/手机号/邮箱"></com-input>
       </div>
       <br/>
-      <div class="search-item">
+      <div class="search-item flm">
+        <span class="search-title">用户级别</span>
+        <el-select v-model="searchParams.user_level">
+          <el-option v-for="item in watcherTypeList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">本次得分</span>
+        <el-select
+          v-model="searchParams.score"
+          placeholder="本次得分">
+          <el-option v-for="item in scoreTypeList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">新老用户</span>
+        <el-select v-model="searchParams.is_new">
+          <el-option v-for="item in userTypeList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="search-item flm">
         <span class="search-title">用户性别</span>
-        <el-select v-model="searchParams.gender"
-                   placeholder="直播状态">
+        <el-select v-model="searchParams.sex"
+                   placeholder="用户性别">
           <el-option v-for="item in genderList"
                      :key="item.value"
                      :label="item.label"
@@ -40,8 +72,8 @@
       </div>
       <div class="search-item flm">
         <span class="search-title">所属行业</span>
-        <el-select v-model="searchParams.tradeId"
-                   placeholder="直播状态">
+        <el-select v-model="searchParams.industry"
+                   placeholder="所属行业">
           <el-option v-for="item in tradeList"
                      :key="item.value"
                      :label="item.label"
@@ -52,7 +84,7 @@
       <div class="search-item flm">
         <span class="search-title">观看设备</span>
         <el-select v-model="searchParams.device"
-                   placeholder="直播状态">
+                   placeholder="观看设备">
           <el-option v-for="item in deviceList"
                      :key="item.value"
                      :label="item.label"
@@ -61,20 +93,9 @@
         </el-select>
       </div>
       <div class="search-item flm">
-        <span class="search-title">新老用户</span>
-        <el-select v-model="searchParams.userType"
-                   placeholder="直播状态">
-          <el-option v-for="item in userTypeList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search-item">
         <span class="search-title">所属地域</span>
         <el-select style="width: 100px;"
-                   v-model="searchParams.provinceId">
+                   v-model="searchParams.province">
           <el-option v-for="item in provinceList"
                      :key="item.value"
                      :label="item.label"
@@ -82,7 +103,7 @@
           </el-option>
         </el-select>
         <el-select style="width: 112px;"
-                   v-model="searchParams.cityId">
+                   v-model="searchParams.city">
           <el-option v-for="item in cityList"
                      :key="item.value"
                      :label="item.label"
@@ -90,66 +111,17 @@
           </el-option>
         </el-select>
       </div>
-
       <div class="search-item flm">
-        <span class="search-title">进入时间</span>
+        <span class="search-title">观众出入时段</span>
         <el-date-picker
-          v-model="enterTime"
+          v-model="enterOutTime"
           format="yyyy-MM-dd HH:mm"
           value-format="yyyy-MM-dd HH:mm"
-          type="daterange"
+          type="datetimerange"
           range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
+          start-placeholder="输入进入时间"
+          end-placeholder="输入离开时间">
         </el-date-picker>
-      </div>
-      <div class="search-item flm">
-        <span class="search-title">离开时间</span>
-        <el-date-picker
-          v-model="leaveTime"
-          format="yyyy-MM-dd HH:mm"
-          value-format="yyyy-MM-dd HH:mm"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-      </div>
-      <div class="search-item">
-        <span class="search-title">本次得分</span>
-        <el-select style="width: 100px;"
-                   v-model="searchParams.scoreType"
-                   placeholder="直播状态">
-          <el-option v-for="item in scoreTypeList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-        <com-input type="number"
-                   style="width: 112px;"
-                   :value.sync="searchParams.score"
-                   :maxLength="30"></com-input>
-      </div>
-      <div class="search-item flm">
-        <span class="search-title">活动前用户级别</span>
-        <el-select v-model="searchParams.beforeLevel">
-          <el-option v-for="item in watcherTypeList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-      </div>
-      <div class="search-item flm">
-        <span class="search-title">活动后用户级别</span>
-        <el-select v-model="searchParams.afterLevel">
-          <el-option v-for="item in userTypeList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
       </div>
       <div class="search-btns">
         <button class="primary-button" @click="searchEnter">查询</button>
@@ -160,33 +132,33 @@
       <el-table :data="viewerList" :default-sort="{prop: 'score', order: 'descending'}" style="width: 100%">
         <el-table-column label="姓名">
           <template slot-scope="scope">
-            {{scope.row.name}}
+            {{scope.row.nickname}}
           </template>
         </el-table-column>
         <el-table-column prop="score" sortable label="本次得分"></el-table-column>
-        <el-table-column prop="level" label="会后级别"></el-table-column>
-        <el-table-column prop="phoneNo" label="手机号"></el-table-column>
+        <el-table-column prop="end_user_level" label="会后级别"></el-table-column>
+        <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column label="参会时间（第一次）">
           <template slot-scope="scope">
-            {{scope.row.meetingDate.substring(0,16)}}
+            {{scope.row.first_join_at&&scope.row.first_join_at.substring(0,16)}}
           </template>
         </el-table-column>
         <el-table-column label="观看时长">
           <template slot-scope="scope">
-            {{scope.row.watchTimes|fmtTime}}
+            {{scope.row.watch_time|fmtTime}}
           </template>
         </el-table-column>
-        <el-table-column prop="channelName" label="渠道来源"></el-table-column>
+        <el-table-column prop="source" label="渠道来源"></el-table-column>
         <el-table-column label="详情">
           <template slot-scope="scope">
             <span class="data-link" @click="goPageDetail(scope.row.userId)">详情</span>
           </template>
         </el-table-column>
       </el-table>
-      <div class="page-pagination" v-if="total>pageSize">
+      <div class="page-pagination" v-if="total>searchParams.pageSize">
         <ve-pagination :total="total"
-                       :pageSize="pageSize"
+                       :pageSize="searchParams.pageSize"
                        @changePage="changePage"/>
       </div>
     </div>
@@ -195,41 +167,38 @@
 
 <script>
   import VePagination from 'src/components/ve-pagination'
-
+  import dataService from 'src/api/data-service'
+  import { mapMutations } from 'vuex'
+  import * as types from '../../store/mutation-types'
   export default {
     name: 'viewerList',
     components: { VePagination },
     data () {
       return {
         isHigh: false,
-        enterTime: [],
-        leaveTime: [],
+        enterOutTime: [],
         total: 0,
-        page: 1,
-        pageSize: 10,
         viewerList: [],
         searchParams: {
           activityId: '',
           keyword: '',
-          gender: '',
-          beforeLevel: '',
-          afterLevel: '',
-          provinceId: '',
-          cityId: '',
-          tradeId: '',
-          endterStartDate: '',
-          endterEndDate: '',
-          leaveStartDate: '',
-          leaveEndDate: '',
+          sex: '',
+          user_level: '',
+          is_new: '',
+          province: '',
+          city: '',
+          industry: '',
+          first_join_at: '',
+          last_leave_at: '',
           device: '',
-          scoreType: '',
           score: '',
-          userType: ''
+          page: 1,
+          pageSize: 10
         },
         genderList: [
           { value: '', label: '全部' },
-          { value: '1', label: '男' },
-          { value: '2', label: '女' }
+          { value: 'M', label: '男' },
+          { value: 'W', label: '女' }
         ],
         watcherTypeList: [
           { value: '', label: '全部用户' },
@@ -241,23 +210,23 @@
         ],
         provinceList: [
           { value: '', label: '省' },
-          { value: '1', label: '北京' },
-          { value: '2', label: '河南省' },
-          { value: '3', label: '河北省' },
-          { value: '4', label: '黑龙江' },
-          { value: '5', label: '湖北' }
+          { value: 1, label: '北京' },
+          { value: 2, label: '河南省' },
+          { value: 3, label: '河北省' },
+          { value: 4, label: '黑龙江' },
+          { value: 5, label: '湖北' }
         ],
         cityList: [
           { value: '', label: '市' },
-          { value: '1', label: '北京市' },
-          { value: '2', label: '郑州市' },
-          { value: '3', label: '天津市' }
+          { value: 1, label: '北京市' },
+          { value: 2, label: '郑州市' },
+          { value: 3, label: '天津市' }
         ],
         tradeList: [
           { value: '', label: '全部' },
-          { value: '1', label: '导入' },
-          { value: '2', label: '微信注册' },
-          { value: '3', label: 'PC注册' }
+          { value: 1, label: '导入' },
+          { value: 2, label: '微信注册' },
+          { value: 3, label: 'PC注册' }
         ],
         deviceList: [
           { value: '', label: '全部' },
@@ -266,14 +235,15 @@
         ],
         scoreTypeList: [
           { value: '', label: '全部' },
-          { value: 'big', label: '大于' },
-          { value: 'small', label: '小于' },
-          { value: 'equal', label: '等于' }
+          { value: 1, label: '100>得分>90' },
+          { value: 2, label: '90>得分>80' },
+          { value: 3, label: '80>得分>60' },
+          { value: 4, label: '60>得分' }
         ],
         userTypeList: [
           { value: '', label: '全部' },
-          { value: 'new', label: '新用户' },
-          { value: 'old', label: '老用户' }
+          { value: 0, label: '老用户' },
+          { value: 1, label: '新用户' }
         ]
       }
     },
@@ -286,102 +256,70 @@
       }
     },
     watch: {
-      enterTime (vals) {
-        if (vals.length !== 2) return
-        this.searchParams.endterStartDate = vals[0]
-        this.searchParams.endterEndDate = vals[1]
-      },
-      leaveTime (vals) {
-        if (vals.length !== 2) return
-        this.searchParams.leaveStartDate = vals[0]
-        this.searchParams.leaveEndDate = vals[1]
+      enterOutTime (vals) {
+        if (!vals) {
+          this.searchParams.first_join_at = ''
+          this.searchParams.last_leave_at = ''
+          return
+        }
+        this.searchParams.first_join_at = vals[0]
+        this.searchParams.last_leave_at = vals[1]
       }
     },
     created () {
+      this.storeSelectMenu(false)
+      this.searchParams.activityId = this.$route.params.id
       this.queryList()
     },
     methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
       goPageDetail (id) {
         this.$router.push(`/user/detail/${id}`)
       },
       changePage (pageIdx) {
-        this.page = pageIdx
+        this.searchParams.page = pageIdx
         this.queryList()
       },
       exportData () {
-        let res = {
-          'code': 200,
-          'msg': null,
-          'data': {
-            'downUrl': 'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1540275596&di=578ef951e10175ca4850b13935f0f9eb&src=http://pic.92to.com/360/201604/08/19864861_13.jpg'
-          }
+        let paramStr = '?'
+        for (let key in this.searchParams) {
+          paramStr += `${key}=${this.searchParams[key]}&`
         }
-        if (res.data.downUrl) {
-          let dl = document.createElement('a')
-          dl.href = res.data.downUrl
-          dl.click()
-        }
+        paramStr = paramStr.substring(0, paramStr.length - 1)
+        const url = process.env.API_PATH + dataService.GET_VIEWER_LIST_EXPORT + paramStr
+        window.open(encodeURI(encodeURI(url)))
       },
       queryList () {
-        this.viewerList = [
-          {
-            userId: 10000,
-            name: '张三',
-            headImg: '/dev/111/sss/i.jpg',
-            score: 50,
-            level: 1,
-            phoneNo: '1859912717',
-            email: 'yy1221@vhall.com',
-            meetingDate: '2018-10-17 10:10:19',
-            watchTimes: 111002343,
-            channelName: '微信'
-          },
-          {
-            userId: 10001,
-            name: '李四',
-            headImg: '/dev/111/sss/i.jpg',
-            score: 48,
-            level: 1,
-            phoneNo: '1859912717',
-            email: 'yy1221@vhall.com',
-            meetingDate: '2018-10-17 10:10:19',
-            watchTimes: 3600,
-            channelName: '手机'
-          },
-          {
-            userId: 10002,
-            name: '刘德华',
-            headImg: '/dev/111/sss/i.jpg',
-            score: 51,
-            level: 1,
-            phoneNo: '1859912717',
-            email: 'yy1221@vhall.com',
-            meetingDate: '2018-10-17 10:10:19',
-            watchTimes: 111002343,
-            channelName: '微信'
+        return this.$get(dataService.GET_VIEWER_LIST, {
+          ...this.searchParams
+        }).then((res) => {
+          if (res.code === 200) {
+            this.viewerList = res.data.list
+            this.total = res.data.total
           }
-        ]
+        })
       },
       searchEnter () {
+        this.queryList()
       },
       cancelClick () {
         this.searchParams = {
           activityId: '',
           keyword: '',
-          gender: '',
-          beforeLevel: '',
-          afterLevel: '',
-          provinceId: '',
-          cityId: '',
-          tradeId: '',
-          endterStartDate: '',
-          endterEndDate: '',
-          leaveStartDate: '',
-          leaveEndDate: '',
+          sex: '',
+          user_level: '',
+          is_new: '',
+          province: '',
+          city: '',
+          industry: '',
+          first_join_at: '',
+          last_leave_at: '',
           device: '',
-          scoreType: '',
           score: '',
-          userType: ''
+          page: 1,
+          pageSize: 10
         }
       }
     }
@@ -390,6 +328,11 @@
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
   .data-box {
+    .export-btn{
+      height: 30px;
+      line-height: 30px;
+      padding: 0 20px;
+    }
     .data-pad {
       padding-top: 20px;
     }
@@ -451,7 +394,7 @@
       }
     }
     .flm {
-      margin-left: 20px;
+      margin-left: 14px;
     }
   }
 </style>

@@ -17,8 +17,9 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              {{group}}
-              <el-button v-if="status === 'SEND'" class='send-detail default-button'>发送详情</el-button>
+              <template v-for="item in selectedGroupList">{{item.name}}({{item.count}})、</template>
+              <template v-for="item in selectedTagList">{{item.name}}、</template>
+              <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
           <div class="from-row">
@@ -60,6 +61,9 @@
         </div>
       </div>
     </div>
+    <transition name='fade' mode='out-in' v-if="sendDetail">
+      <com-detail _type="WECHAT"  @handleClick="handleClick"></com-detail>
+    </transition>
   </div>
 </template>
 
@@ -67,7 +71,9 @@
 import { formatDate } from 'src/assets/js/date'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
+import userManage from 'src/api/userManage-service'
 import comPhone from '../com-phone'
+import comDetail from '../com-detail'
 export default {
   data () {
     return {
@@ -80,21 +86,32 @@ export default {
       tpl: '',
       date: '',
       loading: false,
+      sendDetail: false,
       wxContent: '',
-      type: ''
+      webinarName: '',
+      type: '',
+      selectedGroupList: [],
+      selectedTagList: [],
+      groupList: [],
+      tagList: []
     }
   },
   created () {
     this.queryInfo()
-    this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
-      inviteId: this.id
-    }).then((res) => {
-      this.group = res.data.groupId
-      this.title = res.data.title
-      this.tpl = res.data.templateId
-      this.status = res.data.status
-      this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
-      this.wxContent = res.data.desc
+    this.queryGroupList().then(this.queryTagList()).then(() => {
+      this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
+        inviteId: this.id
+      }).then((res) => {
+        this.group = res.data.groupId
+        this.title = res.data.title
+        this.tpl = res.data.templateId
+        this.status = res.data.status
+        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
+        this.wxContent = res.data.desc
+        setTimeout(() => {
+          this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        }, 500)
+      })
     })
   },
   methods: {
@@ -116,10 +133,70 @@ export default {
       }).then((res) => {
         this.type = res.data.status
       })
+    },
+    // 查询群组
+    async queryGroupList (keyword) {
+      await this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            id: item.group_id,
+            name: item.title,
+            count: item.user_count,
+            isChecked: false
+          })
+        })
+        this.groupList = temArray
+      })
+    },
+    /* 查询标签 */
+    async queryTagList (key) {
+      await this.$get(userManage.GET_TAG_LIST, {
+        activityId: this.$route.params.id
+      }).then((res) => {
+        let temArray = []
+        res.data.list.forEach((item) => {
+          temArray.push({
+            name: item.tag_name,
+            id: item.tag_id,
+            isChecked: false
+          })
+        })
+        this.tagList = temArray
+      })
+    },
+    reArrangeList (group, tag) {
+      this.groupList.forEach((item, idx) => {
+        group.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.selectedGroupList.push({
+              name: item.name,
+              count: item.count
+            })
+          }
+        })
+      })
+      this.tagList.forEach((item, idx) => {
+        tag.forEach((ele, i) => {
+          if (ele * 1 === item.id) {
+            this.selectedTagList.push({
+              name: item.name
+            })
+          }
+        })
+      })
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.sendDetail = false
+      }
     }
   },
   components: {
-    comPhone
+    comPhone, comDetail
   }
 }
 </script>

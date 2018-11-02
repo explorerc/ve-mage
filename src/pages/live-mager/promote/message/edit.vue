@@ -325,15 +325,12 @@ export default {
     },
     /* 查询标签 */
     queryTagList (key) {
-      this.$get(noticeService.GET_PERSON_LIST, {
-        activityId: this.$route.params.id,
-        name: key
-      }).then((res) => {
+      this.$get(userManage.GET_TAG_LIST).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach(item => {
           temArray.push({
-            id: item.id,
-            name: item.name,
+            name: item.tag_name,
+            id: item.tag_id,
             isChecked: false
           })
         })
@@ -369,7 +366,6 @@ export default {
           if (ele * 1 === item.id) {
             this.tagList[idx].isChecked = true
             this.selectedTagList.push({
-              count: 0,
               id: item.id,
               isChecked: true,
               name: item.name

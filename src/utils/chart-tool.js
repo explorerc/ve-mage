@@ -28,7 +28,7 @@ function intCount (value) {
   return (value % val) ? val + parseInt(1 + s) : value
 }
 
-const COLORS = ['#4D84FF', '#FD8519', '#FEC400', '#63C8F5']
+const COLORS = ['#4D84FF', '#FD8519', '#FEC400', '#63C8F5', '#F96669', '#D1D0D0']
 const LINE_COLORS = ['rgba(254,201,25,1)', 'rgba(255,132,23,1)', 'rgba(99,200,245,1)', 'rgba(60,129,255,1)', 'rgba(175,173,174,1)']
 const lineColor = '#e2e2e2'
 const grid = {
@@ -83,7 +83,7 @@ const AxisCategory = {
  * 堆叠图
  * @returns {Promise<Response>}
  */
-export function barPile (id, data, gridData) {
+export function barPile (id, data, gridData, legendGrid) {
   let yAxisData = []
   let serveData = []
   data.list.forEach(item => {
@@ -121,6 +121,7 @@ export function barPile (id, data, gridData) {
     legend: {
       top: -2,
       right: 10,
+      ...legendGrid,
       data: data.legendData
     },
     color: COLORS,

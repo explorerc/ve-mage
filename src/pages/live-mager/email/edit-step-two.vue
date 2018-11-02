@@ -105,7 +105,7 @@
 
 <script>
 import userManage from 'src/api/userManage-service'
-import noticeService from 'src/api/notice-service'
+// import noticeService from 'src/api/notice-service'
 import VeMsgTips from 'src/components/ve-msg-tips'
 import chooseGroup from 'src/components/com-chooseGroup'
 import activityService from 'src/api/activity-service'
@@ -360,15 +360,14 @@ export default {
     },
     /* 查询标签 */
     async queryTagList (key) {
-      await this.$get(noticeService.GET_PERSON_LIST, {
-        activityId: this.$route.params.id,
-        name: key
+      await this.$get(userManage.GET_TAG_LIST, {
+        keyword: key
       }).then((res) => {
         let temArray = []
-        res.data.forEach((item) => {
+        res.data.list.forEach(item => {
           temArray.push({
-            id: item.id,
-            name: item.name,
+            name: item.tag_name,
+            id: item.tag_id,
             isChecked: false
           })
         })
