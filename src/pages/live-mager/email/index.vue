@@ -4,7 +4,7 @@
       <span class="title">邮件邀约</span>
       <button class="primary-button fr"
               @click="addEmail">新建邮件</button>
-      <span class="send-box fr">发送限额：2399/5000</span>
+      <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
     </div>
     <div class="email-table-box"
          v-ComLoading="loading">
@@ -152,7 +152,9 @@ export default {
           status: '',
           statusName: ''
         }
-      ]
+      ],
+      countTotal: 0,
+      countBalance: 0
     }
   },
   computed: {
@@ -166,6 +168,7 @@ export default {
       this.$router.go(-1)
     }
     this.activeId = queryId
+    this.getLimit()
     this.queryEmailListById()
   },
   methods: {
@@ -267,6 +270,16 @@ export default {
     },
     addEmail () {
       this.$router.push(`/liveMager/emailEditOne/${this.activeId}`)
+    },
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.activeId,
+        type: 'EMAIL'
+      }).then((res) => {
+        console.log(res)
+        this.countBalance = res.data.balance
+        this.countTotal = res.data.total
+      })
     }
   }
 }
