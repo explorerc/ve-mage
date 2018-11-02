@@ -8,7 +8,7 @@
       </div>
       <div class="content" v-if='!importSuccess'>
         <div class="item clearfix">
-          <p class='tips-box'>下载模版 <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
+          <p class='tips-box'><router-link to="" target="_blank">下载模版</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
         </div>
         <div class="item upload-box-item clearfix">
           <label class="label">上传封面:</label>
@@ -81,9 +81,9 @@
           <dd>恭喜您，批量导入成功!</dd>
         </dl>
         <div class='tips'>
-          <span>成功导入<i>{{importSuccessData.success}}</i>位</span>
-          <span>错误用户<i>{{importSuccessData.error}}</i>位</span>
-          <span>重复数据<i>{{importSuccessData.repeat.length}}</i><em>位</em></span>
+          <span>成功导入<i> {{importSuccessData.success}} </i>位 </span>
+          <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
+          <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
         </div>
         <ul>
           <li v-for="item in importSuccessData.repeat" :key="item">{{item}}、</li>
@@ -415,6 +415,18 @@ export default {
     .tips-box {
       float: right;
       padding-right: 16px;
+      a {
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+      .msg-tip-box span {
+        display: none;
+      }
+      .msg-tip-box i:hover + span {
+        display: block;
+      }
     }
     .upload-box {
       float: left;
