@@ -1,16 +1,13 @@
 <template>
   <div class="v-from">
     <span class="v-title">
-      {{title}}：
+      {{title}}:
     </span>
     <template v-if="isEdit">
-      <com-input :value.sync="inputValue"
-                 :placeholder="`请输入${title}`"
+      <component v-model="inputValue"
                  class="v-input"
-                 type="input"
-                 @blur="inputBlur()"
-                 :error-tips="errorTips"
-                 :max-length="maxLength"></com-input>
+                 @change="inputBlur()"
+                v-bind:is="selectType"></component>
     </template>
     <template v-else>
       <span class="v-content">
@@ -21,7 +18,13 @@
   </div>
 </template>
 <script>
+import comIndustry from '../../../components/com-industry'
+import comEducation from '../../../components/com-education'
 export default {
+  components: {
+    comIndustry,
+    comEducation
+  },
   data () {
     return {
       isEdit: false,
@@ -32,7 +35,8 @@ export default {
   props: {
     title: String,
     content: String,
-    maxLength: Number
+    maxLength: Number,
+    selectType: String
   },
   methods: {
     modify (val) {
@@ -55,6 +59,10 @@ export default {
     line-height: 20px;
     display: inline-block;
     vertical-align: top;
+  }
+  .v-input {
+    display: inline-block;
+    width: 155px;
   }
   .v-content {
     color: #222;

@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-        <span class="title" >用户池</span>
+        <span class="title" >用户详情</span>
     </div>
     <div class="content from-box">
       <div class="v-user-info">
@@ -78,15 +78,15 @@
               </div>
               <div class="box3">
                 <date-select title="生日" :content="user.birthday" @saveInfo="saveInfo($event,'birthday')"> </date-select>
-                <com-select title="行业" :content="user.industry" :selectValue="selectValue" type="single" @saveInfo="saveInfo($event,'industry')"></com-select>
-                <com-select title="职位" :content="user.position" :selectValue="selectValue" type="single" @saveInfo="saveInfo($event,'position')"></com-select>
-                <com-select title="教育" :content="user.education_level" :selectValue="selectValue" type="single" @saveInfo="saveInfo($event,'education')"></com-select>
+                <industry-select title="行业" :content="user.industry" selectType="comIndustry" @saveInfo="saveInfo($event,'industry')"></industry-select>
+                <single-input title="职位" :content="user.position" @saveInfo="saveInfo($event,'position')" :maxLength='10'></single-input>
+                <industry-select title="教育" :content="user.education_level" selectType="comEducation" type="single" @saveInfo="saveInfo($event,'education_level')"></industry-select>
                 <div class="v-from">
                   <span class="v-title">
                     来源：
                   </span>
                   <span class="v-content">
-                    {{user.source666 === '' ? '无' : user.source666}}
+                    {{user.source === '' ? '无' : user.source}}
                   </span>
                 </div>
                 <div class="v-from">
@@ -97,16 +97,16 @@
                     {{user.province}}-{{user.city}}
                   </span>
                 </div>
-                <single-input title="地址" :content="user.area"></single-input>
-                <single-input title="备注" :content="user.remark"></single-input>
+                <single-input title="地址" :content="user.address" @saveInfo="saveInfo($event,'address')"></single-input>
+                <single-input title="备注" :content="user.remark" @saveInfo="saveInfo($event,'remark')" :maxLength='40'></single-input>
               </div>
               <div class="box4">
                 <p class="v-title">
                   所属群组
-                  <i class="iconfont icon-tianjia fr"></i>
+                  <i class="iconfont icon-tianjia fr" @click="addGroups"></i>
                 </p>
                 <div class="v-groups clearfix">
-                  <div class="v-item fl" v-for="item in user.group_list" :key="item.group_id">
+                  <div class="v-item fl" v-for="item in user.group_list" :key="item.title">
                     <span>
                       {{item.title}}
                     </span>
@@ -189,27 +189,34 @@
                   <info-list></info-list>
                 </com-tab>
               </com-tabs>
-
             </div>
           </div>
         </div>
       </div>
     </div>
+    <transition name='fade' mode='out-in' v-if="showAddgroup">
+      <com-addgroup  @handleClick="handleClick" @groupData="groupData"></com-addgroup>
+    </transition>
   </div>
 </template>
 
 <script>
 import comSelect from '../components/com-select'
+
 import comFootprints from '../components/com-footprints'
 import singleInput from '../components/single-input'
+import industrySelect from '../components/industry-select'
 import dateSelect from '../components/date-select'
 import citySelect from '../components/city-select'
 import infoList from '../components/info-list'
 import userService from 'src/api/user-service'
+import comAddgroup from '../components/com-addGroup'
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
       user: {
+        consumer_uid: '',
         real_name: '姓名', // 姓名
         sex: '男', // 性别
         business_consumer_uid: 'V123141', // id
@@ -223,16 +230,17 @@ export default {
           type: 'APPLY'
         }], // 邮箱
         wx_open_id: '', // 微信
-        birthday: '2018-12-08', // 生日
-        industry: '黄金糕', // 行业
-        position: '黄金糕', // 职位
-        education_level: '黄金糕', // 教育
-        source666: '666', // 来源
+        birthday: '', // 生日
+        industry: '', // 行业
+        position: '', // 职位
+        education_level: '', // 教育
+        source: '', // 来源
         city: '', // 地区 需要写计算属性，根据id赋值
         province: '',
-        area: '地址地址地址地址地址地址', // 地址
+        area: '', // 地域
+        address: '', // 地址
         avatar: '', // 头像
-        remark: '6666', // 备注
+        remark: '', // 备注
         invite_friends_count: '', // 邀请好友个数
         first_visited_at: '', // 首次参会
         join_count: '', // 参会次数
@@ -260,39 +268,8 @@ export default {
           describe: 'jadsk'
         }] // 标签
       }, // 用户信息
-      selectValue: [{
-        value: '黄金糕'
-      }, {
-        value: '双皮奶'
-      }, {
-        value: '蚵仔煎'
-      }, {
-        value: '龙须面'
-      }, {
-        value: '北京烤鸭'
-      }],
-      options: [{
-        value: 'zhinan',
-        label: '指南',
-        children: [{
-          value: 'shejiyuanze',
-          label: '设计原则',
-          children: [{
-            value: 'yizhi',
-            label: '一致'
-          }, {
-            value: 'fankui',
-            label: '反馈'
-          }, {
-            value: 'xiaolv',
-            label: '效率'
-          }, {
-            value: 'kekong',
-            label: '可控'
-          }]
-        }]
-      }],
-      tabValue: 1
+      tabValue: 1,
+      showAddgroup: false
     }
   },
   components: {
@@ -301,7 +278,9 @@ export default {
     'date-select': dateSelect,
     'single-input': singleInput,
     'city-select': citySelect,
-    'info-list': infoList
+    'info-list': infoList,
+    'industry-select': industrySelect,
+    'com-addgroup': comAddgroup
   },
   computed: {
     watchTime () {
@@ -314,14 +293,23 @@ export default {
   },
   methods: {
     saveInfo (val, type) {
-      switch (type) {
-        case 'birthday':
-          this.user.birthday = val
-          break
-        case 'industry':
-          this.user.industry = val
-          break
-      }
+      this.user[type] = val
+      let data = {}
+      data.business_consumer_uid = this.$route.params.id
+      data[type] = val
+      this.$config({ handlers: true }).$post(userService.POST_CUSTOMER_UPDATE, data).then((res) => {
+      }).catch(err => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
     },
     showRecord () {
       this.recordBoxShow = true
@@ -385,6 +373,35 @@ export default {
           break
       }
       return strLevel
+    },
+    addGroups () {
+      this.showAddgroup = true
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.showAddgroup = false
+      }
+    },
+    groupData (res) {
+      const data = res
+      Object.assign(data, {
+        'business_consumer_uids': this.user.business_consumer_uid
+      })
+      this.addGroup(data)
+    },
+    addGroup (data) {
+      this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
+        let addData = {}
+        addData.title = data.type === '1' ? data.title : data.name
+        addData.describe = data.describe
+        this.user.group_list.push(addData)
+        this.showAddgroup = false
+        this.$toast({
+          'content': '导入成功',
+          'position': 'center'
+        })
+      })
     }
   }
 }
