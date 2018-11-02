@@ -4,38 +4,23 @@
     <!-- <button @click="addData">add data</button>
     <button @click="delData">del data</button> -->
     <div class="test-wrap">
-      <!-- <com-drag class="test-drag"
-                drag-target=".sort"
-                :custom-data="dragData"> -->
-      <com-q v-for="(item,index) in dragData"
-             :value.sync="item"
-             :edit="true"
-             :index="index+1"></com-q>
-      <!-- <com-q></com-q>
-      <com-q></com-q>
-      <com-q></com-q>
-      <com-q></com-q>
-      <com-q></com-q> -->
-      <!-- </com-drag> -->
-      <!-- <com-drag class="test-drag"
-                drag-target=".sort"
-                :custom-data="dragData">
-        <com-qu class="question-item"
-                v-for="(item,index) in dragData"
-                :key="`qu${index}`"
-                :index="index+1"
-                :value.sync="item"
-                @del="remove"></com-qu>
-      </com-drag> -->
+      <draggable v-model="myArray"
+                 :options="{draggable:'.index'}">
+        <com-q v-for="(item,index) in dragData"
+               :value.sync="item"
+               :edit="true"
+               :index="index+1"
+               :key="index">></com-q>
+      </draggable>
     </div>
     <div class="test-wrap1">
       <!-- <com-drag class="test-drag"
                 drag-target=".sort"
                 :custom-data="dragData"> -->
-      <com-q :ref="`com${index}`"
+      <!-- <com-q :ref="`com${index}`"
              v-for="(item,index) in dragData"
              :value.sync="item"
-             :index="index+1"></com-q>
+             :index="index+1"></com-q> -->
       <!-- <com-q></com-q>
       <com-q></com-q>
       <com-q></com-q>
@@ -130,6 +115,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 // import testService from 'src/api/test'
 import { types as QTypes } from 'components/questionnaire/types'
 import red from 'components/red-packet-rain/com'
@@ -139,10 +125,21 @@ import qq from 'components/questionnaire/wrap'
 export default {
   components: {
     comRed: red,
-    comQ: qq
+    comQ: qq,
+    draggable
   },
   data () {
     return {
+      myArray: [{
+        id: '1',
+        name: 'aaaaaaaaaaaaa'
+      }, {
+        id: '2',
+        name: 'bbbbbbbbbbbbb'
+      }, {
+        id: '3',
+        name: 'ccccccccccccccc'
+      }],
       tIndex: 0,
       dragData: [
         {
@@ -226,7 +223,7 @@ export default {
           title: '手机号',
           errorTip: '',
           type: QTypes.TEXT,
-          required: false,
+          required: true,
           detail: {
             format: 'mobile',
             max: 11
@@ -280,7 +277,7 @@ export default {
           ext: {
             name: '生日'
           }
-        },
+        }
         // {
         //   title: '地域',
         //   errorTip: '',
@@ -299,47 +296,47 @@ export default {
         //     name: '行业'
         //   }
         // },
-        {
-          title: '职位',
-          type: QTypes.TEXT,
-          required: true,
-          detail: {
-            format: 'input',
-            max: 10
-          },
-          ext: {
-            name: '职位'
-          }
-        },
-        {
-          title: '教育水平',
-          errorTip: '',
-          type: QTypes.SELECT,
-          required: true,
-          detail: {
-            list: [
-              {
-                value: '博士'
-              },
-              {
-                value: '硕士'
-              },
-              {
-                value: '本科'
-              },
-              {
-                value: '大专'
-              },
-              {
-                value: '高中'
-              }
-            ]
-          },
-          ext: {
-            fixedness: true,
-            name: '教育水平'
-          }
-        }
+        // {
+        //   title: '职位',
+        //   type: QTypes.TEXT,
+        //   required: true,
+        //   detail: {
+        //     format: 'input',
+        //     max: 10
+        //   },
+        //   ext: {
+        //     name: '职位'
+        //   }
+        // },
+        // {
+        //   title: '教育水平',
+        //   errorTip: '',
+        //   type: QTypes.SELECT,
+        //   required: true,
+        //   detail: {
+        //     list: [
+        //       {
+        //         value: '博士'
+        //       },
+        //       {
+        //         value: '硕士'
+        //       },
+        //       {
+        //         value: '本科'
+        //       },
+        //       {
+        //         value: '大专'
+        //       },
+        //       {
+        //         value: '高中'
+        //       }
+        //     ]
+        //   },
+        //   ext: {
+        //     fixedness: true,
+        //     name: '教育水平'
+        //   }
+        // }
       ],
       at: 1,
       tabValue: 1,
@@ -369,7 +366,7 @@ export default {
     // })
   },
   mounted () {
-    console.log(this.$refs['com2'][0].$refs['content'].check())
+    // console.log(this.$refs['com2'][0].$refs['content'].check())
   },
   methods: {
     remove (index) {
@@ -439,10 +436,10 @@ export default {
 
 <style lang="scss">
 .test-drag {
-  margin: 20px 0 0 100px;
-  width: 600px;
-  height: 600px;
-  overflow: auto;
+  // margin: 20px 0 0 100px;
+  // width: 600px;
+  // height: 600px;
+  // overflow: auto;
   .custom-item {
     width: 100%;
     height: 50px;

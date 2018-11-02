@@ -5,14 +5,21 @@
                @blur="check"
                :type="value.detail.format"
                :max-length="value.detail.max?value.detail.max:0"
-               v-model="value.value"
-               :errorTips="errorTip"></com-input>
+               :value.sync="value.value"></com-input>
     <com-input v-if="!edit&&value.verification==='Y'"
+               class="code"
                @focus="focus"
                @blur="check"
+               :local="true"
                :max-length="6"
-               v-model="value.value"
-               :errorTips="errorTip"></com-input>
+               placeholder="请输入验证码"
+               v-model="value.code"></com-input>
+    <com-button class="code"
+                @click="getCode"
+                v-if="!edit&&value.verification==='Y'">获取验证码</com-button>
+    <div v-if="!edit&&errorTip"
+         class="error-msg">{{errorTip}}
+    </div>
   </div>
 </template>
 
@@ -36,11 +43,14 @@ export default {
     }
   },
   methods: {
+    getCode () {
+      alert('获取验证码稍后实现')
+    },
     focus () {
       this.errorTip = ''
     },
     check () {
-      if (this.value.required && !this.value.value) {
+      if (this.value.required && !this.value.value && this.value.detail.format !== 'mobile') {
         this.errorTip = '此项为必填项'
         return false
       } else if (this.value.detail.format === 'email' && this.value.value) {
@@ -49,9 +59,11 @@ export default {
           this.errorTip = '请输入正确的邮箱格式'
         }
         return false
-      } else if (this.value.detail.format === 'mobile' && this.value.value) {
-        if (this.value.value.length < 11) {
+      } else if (this.value.detail.format === 'mobile') {
+        if (!this.value.value || this.value.value.length < 11) {
           this.errorTip = '请输入正确的手机号'
+        } else if (!this.value.code && this.value.verification === 'Y') {
+          this.errorTip = '请输入验证码'
         }
         return false
       }
@@ -65,7 +77,26 @@ export default {
 .q-edit-content {
   width: 90%;
   /deep/ {
+    .com-input {
+      &.code {
+        margin-top: 5px;
+        width: 60%;
+      }
+    }
+    .com-button {
+      font-size: 12px;
+      padding: 6px 20px;
+      &.code {
+        margin-top: 5px;
+        width: 39%;
+        margin-left: 1px;
+      }
+    }
     .error-msg {
+      position: absolute;
+      color: #fc5659;
+      padding-left: 10px;
+      line-height: 20px;
       font-size: 12px;
     }
   }

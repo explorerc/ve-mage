@@ -5,7 +5,8 @@
               :class="{display:!edit}"
               v-model="value.value"
               @change="change"
-              :label="index">
+              :label="index"
+              :key="index">
       <com-input v-if="edit"
                  v-model="item.value"
                  :max-length="30"></com-input>

@@ -4,7 +4,8 @@
     <div v-if="edit"
          v-for="(item,index) in value.detail.list"
          class="q-select-item"
-         :label="index">
+         :label="index"
+         :key="index">
       <span class="select-icon">√</span>
       <div class="select-input">
         <com-input v-model="item.value"
@@ -19,9 +20,10 @@
                v-model="value.value"
                @change="change"
                placeholder="请选择">
-      <el-option v-for="item in value.detail.list"
+      <el-option v-for="(item,index) in value.detail.list"
                  :label="item.value"
-                 :value="item.id">
+                 :value="item.id"
+                 :key="index">
       </el-option>
     </el-select>
     <div v-if="!edit&&errorTip"

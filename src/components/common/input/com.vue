@@ -21,7 +21,7 @@
        @click="toggleShow"></i>
     <span class="limit"
           v-if="maxLength&&(type==='input'||type==='mobile')">
-      <i class="length">{{isMobile?innerValue.length:innerValue.gbLength()}}</i>/
+      <i class="length">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -64,7 +64,11 @@ export default {
     },
     autosize: Boolean,
     disabled: Boolean,
-    errorTips: String
+    errorTips: String,
+    local: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -135,7 +139,11 @@ export default {
         this.innerValue = ''
         return
       }
-      if (this.isMobile) {
+      if (this.local) {
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
+      } else if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
