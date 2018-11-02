@@ -1,11 +1,8 @@
 <template>
   <div>
-    <!-- <com-red></com-red> -->
-    <!-- <button @click="addData">add data</button>
-    <button @click="delData">del data</button> -->
     <div class="test-wrap">
-      <draggable v-model="myArray"
-                 :options="{draggable:'.index'}">
+      <draggable v-model="dragData"
+                 :options="{handle:'.sort'}">
         <com-q v-for="(item,index) in dragData"
                :value.sync="item"
                :edit="true"
@@ -14,109 +11,20 @@
       </draggable>
     </div>
     <div class="test-wrap1">
-      <!-- <com-drag class="test-drag"
-                drag-target=".sort"
-                :custom-data="dragData"> -->
-      <!-- <com-q :ref="`com${index}`"
-             v-for="(item,index) in dragData"
-             :value.sync="item"
-             :index="index+1"></com-q> -->
-      <!-- <com-q></com-q>
-      <com-q></com-q>
-      <com-q></com-q>
-      <com-q></com-q>
-      <com-q></com-q> -->
-      <!-- </com-drag> -->
-      <!-- <com-drag class="test-drag"
-                drag-target=".sort"
-                :custom-data="dragData">
-        <com-qu class="question-item"
-                v-for="(item,index) in dragData"
-                :key="`qu${index}`"
-                :index="index+1"
-                :value.sync="item"
-                @del="remove"></com-qu>
-      </com-drag> -->
+      <draggable v-model="dragData"
+                 :options="{handle:'.sort'}">
+        <com-q :ref="`com${index}`"
+               v-for="(item,index) in dragData"
+               :value.sync="item"
+               :index="index+1"
+               :key="index"></com-q>
+      </draggable>
     </div>
-    <!-- <router-link to="/entry">bbbbb</router-link>
-    <com-dialog :visible.sync="show1"
-                header="提示"
-                center
-                :beforeClose="beforeClose"
-                @close="close"
-                @closed="closed">
-      <div v-if="at===1">
-        <com-input type="input"></com-input>
-      </div>
-      <div v-else-if="at===2">
-        <com-input type="password"></com-input>
-      </div>
-      <div class="test-footer"
-           slot="footer">
-        <com-button>取消</com-button>
-        <com-button type="primary"
-                    :loading="true"
-                    @click="ttt">确定</com-button>
-      </div>
-    </com-dialog>
-    <button @click="testCom">test1</button>
-    <button @click="testCom1">test11</button>
-    <div class="test-wrap"
-         v-ComLoading="show1"
-         com-loading-text="拼命加载中">
-      <button @click="testFun">test2</button>
-    </div>
-    <com-notification v-show="show"
-                      :header="header"
-                      :content="content">
-      <div slot="header">我是header</div>
-      <p>我是content</p>
-    </com-notification>
-    <div class="test-wrap">
-      <com-input :value.sync="outValue"
-                 placeholder="请输入公司名称"
-                 type="textarea"
-                 autosize
-                 :maxLength="50"></com-input>
-    </div>
-    <div class="test-wrap">
-      <com-upload accept="png|jpg|jpeg|bmp|gif|mp4"
-                  uploadTxt="xxx"
-                  actionUrl="/api/upload/image"
-                  inputName="file"
-                  :fileSize="fileSize"
-                  :exParams="exParams"
-                  @selected="uploadSelected"
-                  @progress="uploadProgress"
-                  @load="uploadLoad"
-                  @error="uploadError"
-                  @over="uploadOver">
-        <div class="test-upload">我是自定义区域</div>
-      </com-upload>
-    </div>
-    <div class="test-wrap"
-         style="width:600px;height:400px;">
-      <com-tabs :value.sync="tabValue">
-        <com-tab label="用户管理"
-                 :index="1">
-          <div>
-            <com-input :value.sync="outValue"></com-input>
-            <span>{{outValue}}</span>
-          </div>
-        </com-tab>
-        <com-tab label="配置管理"
-                 :index="2">配置管理的内容详情</com-tab>
-        <com-tab label="xxxx"
-                 :index="3">sdasdasdds</com-tab>
-      </com-tabs>
-    </div> -->
-
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-// import testService from 'src/api/test'
 import { types as QTypes } from 'components/questionnaire/types'
 import red from 'components/red-packet-rain/com'
 import { Toast } from 'components/common/notification'
@@ -130,16 +38,6 @@ export default {
   },
   data () {
     return {
-      myArray: [{
-        id: '1',
-        name: 'aaaaaaaaaaaaa'
-      }, {
-        id: '2',
-        name: 'bbbbbbbbbbbbb'
-      }, {
-        id: '3',
-        name: 'ccccccccccccccc'
-      }],
       tIndex: 0,
       dragData: [
         {
@@ -277,66 +175,66 @@ export default {
           ext: {
             name: '生日'
           }
+        },
+        {
+          title: '地域',
+          errorTip: '',
+          type: QTypes.AREA,
+          required: true,
+          ext: {
+            name: '地域'
+          }
+        },
+        {
+          title: '行业',
+          errorTip: '',
+          type: QTypes.INDUSTRY,
+          required: true,
+          ext: {
+            name: '行业'
+          }
+        },
+        {
+          title: '职位',
+          type: QTypes.TEXT,
+          required: true,
+          detail: {
+            format: 'input',
+            max: 10
+          },
+          ext: {
+            name: '职位'
+          }
+        },
+        {
+          title: '教育水平',
+          errorTip: '',
+          type: QTypes.SELECT,
+          required: true,
+          detail: {
+            list: [
+              {
+                value: '博士'
+              },
+              {
+                value: '硕士'
+              },
+              {
+                value: '本科'
+              },
+              {
+                value: '大专'
+              },
+              {
+                value: '高中'
+              }
+            ]
+          },
+          ext: {
+            fixedness: true,
+            name: '教育水平'
+          }
         }
-        // {
-        //   title: '地域',
-        //   errorTip: '',
-        //   type: QTypes.AREA,
-        //   required: true,
-        //   ext: {
-        //     name: '地域'
-        //   }
-        // },
-        // {
-        //   title: '行业',
-        //   errorTip: '',
-        //   type: QTypes.INDUSTRY,
-        //   required: true,
-        //   ext: {
-        //     name: '行业'
-        //   }
-        // },
-        // {
-        //   title: '职位',
-        //   type: QTypes.TEXT,
-        //   required: true,
-        //   detail: {
-        //     format: 'input',
-        //     max: 10
-        //   },
-        //   ext: {
-        //     name: '职位'
-        //   }
-        // },
-        // {
-        //   title: '教育水平',
-        //   errorTip: '',
-        //   type: QTypes.SELECT,
-        //   required: true,
-        //   detail: {
-        //     list: [
-        //       {
-        //         value: '博士'
-        //       },
-        //       {
-        //         value: '硕士'
-        //       },
-        //       {
-        //         value: '本科'
-        //       },
-        //       {
-        //         value: '大专'
-        //       },
-        //       {
-        //         value: '高中'
-        //       }
-        //     ]
-        //   },
-        //   ext: {
-        //     fixedness: true,
-        //     name: '教育水平'
-        //   }
-        // }
       ],
       at: 1,
       tabValue: 1,
@@ -354,47 +252,7 @@ export default {
       fileSize: 200000
     }
   },
-  created () {
-    // this.$loading({target: '.test-wrap'})
-    // testService.login({
-    //   username: 18513848725,
-    //   password: 'm123123',
-    //   type: 1,
-    //   remeber: 1
-    // }).then((res) => {
-    //   console.log('登陆成功')
-    // })
-  },
-  mounted () {
-    // console.log(this.$refs['com2'][0].$refs['content'].check())
-  },
   methods: {
-    remove (index) {
-
-    },
-    addData () {
-      this.dragData.push({
-        value: `aaa${this.tIndex}`,
-        index: this.tIndex
-      })
-      this.tIndex++
-    },
-    delData () {
-      this.dragData.pop()
-    },
-    beforeClose (aa) {
-      console.log('xxxxxxxxxxxxxx')
-      aa()
-    },
-    close () {
-      console.log('close')
-    },
-    closed () {
-      console.log('closed')
-    },
-    ttt () {
-      alert(11)
-    },
     uploadSelected (data) {
       console.log('选中文件', data)
     },

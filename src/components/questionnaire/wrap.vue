@@ -56,6 +56,7 @@ import qCheckbox from './q-checkbox'
 import qSelect from './q-select'
 import qText from './q-text'
 import qDate from './q-date'
+import qArea from './q-area'
 
 export default {
   components: {
@@ -63,7 +64,8 @@ export default {
     qCheckbox,
     qSelect,
     qText,
-    qDate
+    qDate,
+    qArea
   },
   props: {
     index: {
