@@ -393,7 +393,7 @@ export default {
     addGroup (data) {
       this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
         let addData = {}
-        addData.title = data.type === 1 ? data.title : data.name
+        addData.title = data.type === '1' ? data.title : data.name
         addData.describe = data.describe
         this.user.group_list.push(addData)
         this.showAddgroup = false
