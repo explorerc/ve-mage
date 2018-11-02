@@ -10,7 +10,7 @@
         <div class="item">
           <label class='label'>导入规则:</label>
           <el-radio v-model="radio" label="1">新建固定群组</el-radio>
-          <el-radio v-model="radio" label="2">导入固定群组</el-radio>
+          <el-radio v-model="radio" label="0">导入固定群组</el-radio>
         </div>
         <div class="tab-box">
           <div class="tab" v-if='radio === "1"'>
@@ -20,30 +20,31 @@
             </div>
             <div class="item spe">
               <label class='label'>群组描述:</label>
-              <com-input type="textarea" :value.sync="desc" placeholder="输入群组描述" :max-length="10" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
+              <com-input type="textarea" :value.sync="desc" placeholder="输入群组描述" :max-length="30" class='inp inp-desc' :class="{ 'error':descEmpty }" @focus='descEmpty = false'></com-input>
             </div>
           </div>
           <div class="tab" v-else>
-             <div class="item spe">
+             <div class="item spe"  @click='optSel = false'>
               <label class='label'>选择群组:</label>
-              <el-select v-model="selval" placeholder="请选择">
+              <el-select v-model="selval" placeholder="请选择" :class="{ 'error':optSel }" >
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in groupData"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
                 </el-option>
               </el-select>
             </div>
           </div>
         </div>
-        <el-button round class='primary-button confirm'>添加</el-button>
+        <el-button round class='primary-button confirm' @click='addHandler'>添加</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import userManage from 'src/api/userManage-service'
 export default {
   data () {
     return {
@@ -52,30 +53,89 @@ export default {
       radio: '1',
       titleEmpty: false,
       descEmpty: false,
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      selval: ''
+      optSel: false,
+      selval: '',
+      groupData: [
+        {
+          value: '1',
+          label: '黄金糕'
+        }
+      ]
     }
+  },
+  mounted () {
+    this.initGrouplist()
   },
   methods: {
     close () {
       this.$emit('handleClick', {
         action: 'cancel'
       })
+    },
+    addHandler () {
+      if (this.verifyEmpty()) {
+        if (this.radio === '1') {
+          const data = {
+            type: this.radio,
+            group_id: this.selval,
+            title: this.name,
+            describe: this.desc
+          }
+          this.$emit('groupData', data)
+        } else {
+          this.groupData.forEach((item) => {
+            if (item.id === this.selval) {
+              this.$emit('groupData', Object.assign(item, {
+                group_id: this.selval,
+                type: this.radio
+              }))
+            }
+          })
+        }
+      }
+    },
+    verifyEmpty () {
+      if (this.radio === '1') {
+        if (!this.name.length) {
+          this.titleEmpty = true
+          return false
+        }
+        if (!this.desc.length) {
+          this.descEmpty = true
+          return false
+        }
+        return true
+      } else {
+        if (!this.selval) {
+          this.optSel = true
+          return false
+        }
+        this.name = ''
+        this.desc = ''
+        this.titleEmpty = false
+        this.descEmpty = false
+        return true
+      }
+    },
+    initGrouplist () {
+      this.$get(userManage.GET_GROUP_LIST, {
+        type: '2'
+      }).then((res) => {
+        console.log(res)
+        this.groupData = this.reArrange(res.data.list)
+        console.log(this.groupData)
+      })
+    },
+    reArrange (array) {
+      const arr = []
+      array.forEach(item => {
+        arr.push({
+          describe: item.describe,
+          id: item.group_id,
+          name: item.title + `(${item.user_count})`
+        })
+      })
+      return arr
     }
   }
 }
@@ -145,6 +205,9 @@ export default {
       border: 1px solid #e2e2e2;
       width: 330px;
     }
+    .el-select.error .el-input__inner {
+      border-color: $color-error;
+    }
     .confirm {
       position: absolute;
       bottom: 20px;
@@ -153,6 +216,10 @@ export default {
   }
   .com-input {
     width: 330px;
+    &.error input,
+    &.error textarea {
+      border-color: $color-error;
+    }
   }
   textarea {
     height: 68px;

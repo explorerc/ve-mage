@@ -35,15 +35,25 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标签：</div>
           <div class="from-content">
-            <ol class='tag-list clearfix'>
-              <li v-for="(idx,item) in tagGroup" :key="idx">{{item}}</li>
+            <el-button  round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
+            <ol class='tag-list clearfix' v-else>
+              <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
+              <li class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
             </ol>
-            <el-button @click='tagModal=true,tagEmpty = false' round class="add-tag">+</el-button>
-            <div class="tag-modal" v-show='tagModal'>
-              <el-checkbox-group v-model="tagGroup" size="mini" :max='6'>
-                <el-checkbox-button v-for="tag in tagList" :label="tag" :key="tag">{{tag}}</el-checkbox-button>
+            <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
+            <div class="tag-modal" v-show='showChooseTag'>
+              <div class='title'>选择标签,最多可选择 3 个</div>
+              <i class='el-submenu__icon-arrow el-icon-arrow-down arrow' @click="showChooseTag = false"></i>
+              <el-checkbox-group v-model="tagGroup" size="mini" :max='3' @change='selectTag'>
+                <div class='group-title'>行业标签</div>
+                <el-checkbox-button v-for="tag in industryTag" :label="tag.id" :key="tag.id">{{tag.name}}</el-checkbox-button>
+                <div class='group-title'>场景标签</div>
+                <el-checkbox-button v-for="tag in sceneTag" :label="tag.id" :key="tag.id">{{tag.name}}</el-checkbox-button>
               </el-checkbox-group>
             </div>
+            <!-- <transition name='fade' mode='out-in' v-if="showChooseTag">
+              <com-choose  @handleClick="handleClick" @selectComConfirm='selectTagConfirm' :list="tagList" :checkedData='tagArray'  :max='3' @searchHandler='searchHandler' :name="'标签'"></com-choose>
+            </transition> -->
             <span class="error-tips" v-if='tagEmpty'>请添加直播标签</span>
           </div>
         </div>
@@ -86,11 +96,12 @@
   import VeEditer from 'src/components/ve-html5-editer'
   // import http from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
+  import comChoose from 'src/pages/users-manage/components/com-choose'
   export default {
     name: 'edit',
     data () {
       return {
-        tagModal: false,
+        showChooseTag: false,
         isNew: true, // 是否是新建活动
         date: '',
         title: '',
@@ -102,8 +113,11 @@
         status: '',
         countCount: 0,
         tagList: [],
+        industryTag: [],
+        sceneTag: [],
         tagGroup: [],
         poster: '',
+        tagArray: [],
         uploadImgErrorMsg: '', // 上传图片错误提示
         percentImg: 0, // 图片上传进度
         createdSuccess: false,
@@ -121,7 +135,10 @@
       }
     },
     created () {
-      this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
+      this.queryTags()
+    },
+    mounted () {
+      // this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
       if (this.activityId) { // 编辑页面请求接口返回活动信息
         this.isNew = false
         this.queryInfo()
@@ -160,9 +177,56 @@
           this.title = res.data.title
           this.poster = res.data.imgUrl
           this.editorContent = res.data.description
-          this.tagGroup = res.data.tags
+          this.tagArray = res.data.tags
           this.status = res.data.status
+          this.restoreTag(this.tagArray)
         })
+      },
+      queryTags (keyword) {
+        this.$get(activityService.GET_TAG_LIST, {
+          keyword: this.tagKeyword
+        }).then((res) => {
+          console.log(res.data)
+          res.data.industry.forEach(item => {
+            this.industryTag.push({
+              name: item.name,
+              id: item.id
+            })
+          })
+          res.data.scene.forEach(item => {
+            this.sceneTag.push({
+              name: item.name,
+              id: item.id
+            })
+          })
+        })
+      },
+      restoreTag (arr) {
+        arr.forEach((item) => {
+          this.tagGroup.push(item.id)
+        })
+      },
+      selectTag (res) {
+        let tmpArr = []
+        res.forEach((item, idx) => {
+          this.industryTag.forEach((ele, i) => {
+            if (item === ele.id) {
+              tmpArr.push({
+                id: ele.id,
+                name: ele.name
+              })
+            }
+          })
+          this.sceneTag.forEach((ele, i) => {
+            if (item === ele.id) {
+              tmpArr.push({
+                id: item,
+                name: ele.name
+              })
+            }
+          })
+        })
+        this.tagArray = tmpArr
       },
       comfirm () {
         // 提交数据
@@ -176,10 +240,10 @@
         }
         // console.log(data)
         this.title.length ? this.titleEmpty = false : this.titleEmpty = true
-        this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true
+        this.tagArray.length ? this.tagEmpty = false : this.tagEmpty = true
         this.date.length ? this.dateEmpty = false : this.dateEmpty = true
         this.$nextTick(() => {
-          if (this.title.length && this.tagGroup.length && this.date.length) {
+          if (this.title.length && this.tagArray.length && this.date.length) {
             this.updateWebinfo(this.isNew, data)
           }
         })
@@ -230,6 +294,27 @@
         this.$router.push({
           path: '/liveMager/list'
         })
+      },
+      /* 点击取消 */
+      handleClick (e) {
+        if (e.action === 'cancel') {
+          this.showChooseTag = false
+        }
+      },
+      // selectTagConfirm (res) {
+      //   console.log(res)
+      //   this.tagArray.name = res.name
+      //   this.tagArray.id = res.id
+      // // this.filterCondition.tags = res.id.toString()
+      // },
+      searchHandler (res) {
+        console.log(res)
+        this.tagKeyword = res
+        this.queryTags()
+      },
+      handleDel (idx, type) {
+        this.tagArray.splice(idx, 1)
+        this.tagGroup.splice(idx, 1)
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
@@ -260,7 +345,8 @@
     },
     components: {
       VeEditer,
-      VeUpload
+      VeUpload,
+      comChoose
     }
   }
 </script>
@@ -354,14 +440,25 @@
       width: 200px;
     }
     .add-tag {
-      margin: 11px 0;
-      padding: 0px;
-      width: 18px;
-      height: 18px;
-      line-height: 17px;
-      text-align: center;
-      border-radius: 20px;
-      border: 1px solid rgba(226, 226, 226, 1);
+      cursor: pointer;
+      display: inline-block;
+      border-radius: 100px;
+      width: 19px;
+      height: 19px;
+      padding: 0;
+      margin: 0;
+      border: 1px solid rgba(136, 136, 136, 1);
+      background: url('~assets/image/add_icon.svg') no-repeat;
+      background-position: center;
+      background-size: contain;
+      position: relative;
+      top: 4px;
+      span {
+        display: none;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
     }
     .editor {
       width: 729px;
@@ -523,37 +620,73 @@
 
 .tag-list {
   li {
-    padding: 5px 30px;
+    display: inline-block;
+    padding: 6px 12px;
     background: rgba(240, 241, 254, 1);
     border-radius: 20px;
     border: 1px solid rgba(240, 241, 254, 1);
-    border: 1px solid #ccc;
-    position: relative;
-    display: inline-block;
     margin-right: 10px;
-    &:before {
-      content: '×';
+    margin-bottom: 10px;
+    span {
       cursor: pointer;
-      width: 15px;
-      height: 15px;
-      text-align: center;
-      line-height: 16px;
-      position: absolute;
-      border: 1px solid #ccc;
+      display: inline-block;
+      position: relative;
+      top: 2px;
+      background: url('~assets/image/close.svg') no-repeat;
+      background-position: center;
+      background-size: 6px;
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
       border-radius: 100px;
-      font-size: 12px;
-      top: 5px;
-      right: 5px;
-      background: #4b5afe;
-      color: #fff;
+      border: 1px solid rgba(75, 90, 254, 1);
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 }
 
 .tag-modal {
-  width: 200px;
-  height: 200px;
-  background: pink;
+  margin-top: 20px;
+  width: 100%;
+  height: 337px;
+  background: #f7f7f7;
+  padding: 10px 20px;
+  border-radius: 5px;
+  overflow-y: scroll;
+  position: relative;
+  border: 1px solid #e2e2e2;
+  .arrow {
+    position: absolute;
+    top: 27px;
+    right: 25px;
+    font-size: 20px;
+    cursor: pointer;
+    transform: rotate(180deg);
+  }
+  .group-title {
+    display: block;
+    font-size: 14px;
+    color: $color-font;
+    padding: 10px;
+  }
+  .title {
+    padding: 10px;
+    font-size: 16px;
+  }
+  .el-checkbox-button /deep/ {
+    margin: 5px;
+    span.el-checkbox-button__inner {
+      border-radius: 4px;
+      overflow: hidden;
+      border-left: 1px solid #dcdfe6;
+    }
+    &.is-checked span.el-checkbox-button__inner,
+    &.is-focus span.el-checkbox-button__inner {
+      border-left: 1px solid #409eff;
+    }
+  }
 }
 .from-box {
   // margin: 20px;

@@ -21,7 +21,7 @@
        @click="toggleShow"></i>
     <span class="limit"
           v-if="maxLength&&(type==='input'||type==='mobile')">
-      <i class="length">{{isMobile?innerValue.length:innerValue.gbLength()}}</i>/
+      <i class="length">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -33,7 +33,9 @@
               v-model="innerValue"
               :class="{error:errorMsg}"
               :placeholder="placeholder ? placeholder: '请输入内容'"
-              :rows="rows"></textarea>
+              :rows="rows"
+              @focus="focusHandle"
+              @blur="blurHandle"></textarea>
     <span class="limit area"
           v-if="maxLength&&type==='textarea'">
       <i class="length"
@@ -61,8 +63,12 @@ export default {
       default: 2
     },
     autosize: Boolean,
-    disabled: String,
-    errorTips: String
+    disabled: Boolean,
+    errorTips: String,
+    local: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -95,6 +101,7 @@ export default {
     },
     empty () {
       this.innerValue = ''
+      this.$emit('empty')
     },
     toggleShow () {
       if (this.inputType === 'password') {
@@ -110,17 +117,19 @@ export default {
     },
     getType () {
       let type = ''
+      this.isMobile = false
       switch (this.type) {
         case 'password':
-          this.isMobile = false
           type = 'password'
+          break
+        case 'number':
+          type = 'number'
           break
         case 'mobile':
           this.isMobile = true
           type = 'text'
           break
         default:
-          this.isMobile = false
           type = 'text'
           break
       }
@@ -129,7 +138,15 @@ export default {
   },
   watch: {
     innerValue (value) {
-      if (this.isMobile) {
+      if (!value) {
+        this.innerValue = ''
+        return
+      }
+      if (this.local) {
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
+      } else if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
@@ -141,7 +158,7 @@ export default {
         this.$refs.tarea.style.height = 'auto'
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
-      if (value.gbLength() === 0) {
+      if (value && value.gbLength() === 0) {
         this.limitColor = '#555'
       } else {
         this.limitColor = '#4b5afe'
@@ -160,7 +177,7 @@ export default {
     },
     value: {
       handler (value) {
-        this.innerValue = value
+        this.innerValue = value || ''
         this.$emit('change')
       },
       immediate: true
@@ -186,7 +203,7 @@ export default {
         ret.paddingLeft = '36px'
         ret.paddingRight = '30px'
       } else if (this.maxLength) {
-        ret.paddingRight = '45px'
+        ret.paddingRight = '50px'
       } else if (this.type === 'password') {
         ret.paddingRight = '30px'
       }
@@ -258,9 +275,9 @@ export default {
     &.area {
       transform: none;
       top: auto;
-      bottom: 0;
+      bottom: 2px;
       line-height: normal;
-      right: -46px;
+      right: -50px;
     }
   }
   .icon-search {

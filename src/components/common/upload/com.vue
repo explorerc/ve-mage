@@ -37,7 +37,11 @@ const MIME_TYPES = {
   'mov': 'video/quicktime',
   'avi': 'video/x-msvideo',
   'wmv': 'video/x-ms-wmv',
-  'csv': 'text/comma-separated-values'
+  // 'csv': 'text/comma-separated-values',
+  'csv': 'text/csv|application/vnd.ms-excel'
+  // 'csv': 'text/csv'
+  // 'csv': 'text/x-csv'
+
 }
 export default {
   name: 'ComUpload',

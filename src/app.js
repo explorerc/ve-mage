@@ -17,6 +17,7 @@ import Button from './components/common/button'
 import Tabs from './components/common/tabs'
 import PlayVideo from './components/common/play-video'
 import Checkbox from './components/common/checkbox'
+import Drag from './components/common/drag'
 import Ajax from './utils/_ajax'
 
 Vue.use(Notification)
@@ -30,6 +31,7 @@ Vue.use(Button)
 Vue.use(Tabs)
 Vue.use(PlayVideo)
 Vue.use(Checkbox)
+Vue.use(Drag)
 Vue.use(Ajax)
 
 console.log(process.env.NODE_ENV)
@@ -40,6 +42,12 @@ Vue.prototype.$imgHost = process.env.IMGHOST
 Vue.filter('isEmpty', function (value, replaceStr) {
   replaceStr = replaceStr || '--'
   return value || replaceStr
+})
+Vue.filter('fmtTime', (value) => {
+  let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+  let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+  let s = ((value % 60 >> 0) + '').padStart(2, 0)
+  return `${h}:${m}:${s}`
 })
 
 new Vue({
@@ -74,4 +82,16 @@ window.Vhall.config = options => {
   if (exec) return
   exec = true
   config(options)
+}
+window.callbackResize = null
+let timeout = null
+window.onresize = function callbackResizeFn () {
+  if (timeout) return
+  if (window.callbackResize) {
+    timeout = setTimeout(() => {
+      clearTimeout(timeout)
+      timeout = null
+      window.callbackResize()
+    }, 500)
+  }
 }
