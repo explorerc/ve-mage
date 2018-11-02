@@ -21,7 +21,7 @@
        @click="toggleShow"></i>
     <span class="limit"
           v-if="maxLength&&(type==='input'||type==='mobile')">
-      <i class="length">{{isMobile?innerValue.length:innerValue.gbLength()}}</i>/
+      <i class="length">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/
       <i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
@@ -33,7 +33,9 @@
               v-model="innerValue"
               :class="{error:errorMsg}"
               :placeholder="placeholder ? placeholder: '请输入内容'"
-              :rows="rows"></textarea>
+              :rows="rows"
+              @focus="focusHandle"
+              @blur="blurHandle"></textarea>
     <span class="limit area"
           v-if="maxLength&&type==='textarea'">
       <i class="length"
@@ -61,8 +63,12 @@ export default {
       default: 2
     },
     autosize: Boolean,
-    disabled: String,
-    errorTips: String
+    disabled: Boolean,
+    errorTips: String,
+    local: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -111,9 +117,9 @@ export default {
     },
     getType () {
       let type = ''
+      this.isMobile = false
       switch (this.type) {
         case 'password':
-          this.isMobile = false
           type = 'password'
           break
         case 'mobile':
@@ -121,7 +127,6 @@ export default {
           type = 'text'
           break
         default:
-          this.isMobile = false
           type = 'text'
           break
       }
@@ -134,7 +139,11 @@ export default {
         this.innerValue = ''
         return
       }
-      if (this.isMobile) {
+      if (this.local) {
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
+      } else if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
@@ -263,7 +272,7 @@ export default {
     &.area {
       transform: none;
       top: auto;
-      bottom: 0;
+      bottom: 2px;
       line-height: normal;
       right: -50px;
     }

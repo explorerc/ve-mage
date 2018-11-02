@@ -48,9 +48,9 @@ export default {
       this.$slots.default = this.$slots.default.filter((item) => {
         return !item.elm || (item.elm.classList && !item.elm.classList.contains('shadow-item'))
       })
-      console.log(this.$slots.default)
+      // console.log(this.$slots.default)
       if (this.currentIndex >= 0) {
-        console.log(this.currentIndex)
+        // console.log(this.currentIndex)
         const shadow = (<div class="shadow-item" style={this.shadowStyle}></div>)
         this.$slots.default.splice(this.currentIndex, 0, shadow)
       }
@@ -67,15 +67,27 @@ export default {
         if (this.isHolding) {
           let top = e.pageY - this.offsetTop - this.offsetY + this.$refs.dragWrap.scrollTop
           this.currentTarget.style.top = `${top}px`
-          let itemHeight = parseInt(this.shadowStyle.height)
-          this.currentIndex = Math.round((e.pageY - this.offsetTop + this.$refs.dragWrap.scrollTop) / itemHeight)
-          console.log(this.currentIndex)
-          if (this.currentIndex < 0) {
-            this.currentIndex = 0
-          }
-          if (this.currentIndex > this.customData.length) {
-            this.currentIndex = this.customData.length
-          }
+          // console.log(top)
+          top = e.pageY
+          this.$slots.default.forEach((item, index) => {
+            if (!item.elm.classList.contains('shadow-item') && item.elm !== this.currentTarget) {
+              if (top - item.elm.offsetTop > 50) {
+                // console.log(index)
+                console.log(index)
+                // this.currentIndex = index
+              }
+            }
+          })
+          // this.currentTarget.style.top = `${top}px`
+          // let itemHeight = parseInt(this.shadowStyle.height)
+          // this.currentIndex = Math.round((e.pageY - this.offsetTop + this.$refs.dragWrap.scrollTop) / itemHeight)
+          // console.log(this.currentIndex)
+          // if (this.currentIndex < 0) {
+          //   this.currentIndex = 0
+          // }
+          // if (this.currentIndex > this.customData.length) {
+          //   this.currentIndex = this.customData.length
+          // }
           // console.log(`当前插入位置${this.currentIndex}`)
         }
       })
@@ -113,7 +125,7 @@ export default {
       // if (!this.shadowStyle.height) {
       //   this.shadowStyle.height = `${elm.offsetHeight}px`
       // }
-      // this.shadowStyle.height = `${elm.offsetHeight}px`
+      this.shadowStyle.height = `${elm.offsetHeight}px`
       let _index = this.getIndex(elm)
       this.isHolding = true
       this.startIndex = _index
