@@ -154,13 +154,13 @@ export default {
     },
     // 获取用户数量
     getMemberCount () {
-      this.$get(userManage.GET_GROUP_LIST, {
+      this.$get(userManage.GET_CUSTON_NUM, {
         fileds: this.webinarType,
         group_ids: this.groupArr.toString(),
         tag_ids: this.tagArr.toString()
       }).then((res) => {
         console.log(res)
-        this.selectedCount = res.data.count
+        this.selectedCount = res.data
         this.$emit('totalCount', this.selectedCount)
       })
     }
@@ -188,7 +188,7 @@ export default {
       deep: true
     },
     tagList: {
-      handler (newArray) {
+      handler (newArray, oldArray) {
         let temArray = []
         let listStr = ''
         let temArr = []

@@ -8,7 +8,6 @@
              :style="{backgroundImage:'url('+coverImg+')'}"></div>
       </transition>
       <div class="over-upload">
-        <span>{{nowIndex}}</span>
         <span @click.stop="deleteImage">
           <i class="iconfont icon-icon-shanchu"></i>
           删除

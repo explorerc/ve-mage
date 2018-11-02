@@ -38,7 +38,7 @@ const MIME_TYPES = {
   'avi': 'video/x-msvideo',
   'wmv': 'video/x-ms-wmv',
   // 'csv': 'text/comma-separated-values',
-  'csv': 'application/vnd.ms-excel'
+  'csv': 'text/csv|application/vnd.ms-excel'
   // 'csv': 'text/csv'
   // 'csv': 'text/x-csv'
 
