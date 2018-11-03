@@ -22,8 +22,10 @@
                 </el-option>
               </el-select>
 
-              <el-input v-if="m.type === 'number' ||m.type === 'text' " v-model="m.value" :type="m.type"
-                        placeholder="请输入内容"></el-input>
+              <el-input v-if="m.type === 'text' " v-model="m.value" :type="m.type" placeholder="请输入内容"></el-input>
+
+              <el-input-number v-if="m.type === 'number'" v-model="m.value" placeholder="请输入" :controls=false :min="1"
+                               :max="365"></el-input-number>
 
               <el-date-picker v-if="m.type === 'date' " v-model="m.value" type="date"
                               placeholder="选择日期"></el-date-picker>
@@ -1027,6 +1029,12 @@
       }
     },
     methods: {
+      filVal (target) {
+        if (target < 1) {
+          target = 1
+        }
+        console.log(target)
+      },
       handleItemChange (item, outInd, inInd) {
         item.conds = this.condOption[item.keys[1]].cons
         this.shadowOutD[outInd][inInd].condition = ''
@@ -1116,6 +1124,7 @@
             item1.optionValue = this.valueOption[item1.keys[1]]
             this.$set(item1, 'conds', this.condOption[item1.key].cons)
             item1.type = this.condOption[item1.key].cons.find((item) => item.key === item1.condition).type
+            item1.unit = this.condOption[item1.key].cons.find((item) => item.key === item1.condition).unit
           })
         })
         this.shadowOutD = this.outD
@@ -1210,7 +1219,7 @@
             div {
               margin-bottom: 10px;
               .el-cascader, .el-select {
-                width: 150px;
+                width: 130px;
                 height: 40px;
               }
               .el-select .el-input__inner {
@@ -1218,8 +1227,8 @@
               }
               .option-value {
                 display: inline-block;
-                .el-input, .el-select {
-                  width: 120px;
+                .el-input, .el-select, .el-input-number {
+                  width: 150px;
                 }
                 i.el-input__icon {
                   height: 40px;

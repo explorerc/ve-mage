@@ -25,7 +25,11 @@
           </template>
         </el-table-column>
         <el-table-column prop="user_count" label="群组人数"></el-table-column>
-        <el-table-column prop="updated_at" label="更新时间"></el-table-column>
+        <el-table-column label="更新时间">
+          <template slot-scope="scope">
+            <span>{{scope.row.updated_at?scope.row.updated_at:scope.row.created_at}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="describe" label="群组描述"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -48,16 +52,16 @@
       <div>
         <el-form :model="Group" :rules="rules" ref="Group">
           <el-form-item prop="title">
-            <el-input @input="inpC(Group.title,1)" :maxlength=10 v-model="Group.title"
-                      placeholder="请输入群组名称">
-              <template slot="append">{{inpNameLen}}/10</template>
-            </el-input>
+            <com-input v-if="dialogFixedOrIntel" class="input_s" @input="inpC(Group.title,1)" :max-length=10
+                       v-model.trim="Group.title"
+                       placeholder="请输入群组名称">
+            </com-input>
           </el-form-item>
           <el-form-item prop="describe">
-            <el-input @input="inpC(Group.describe,2)" :maxlength=30 v-model="Group.describe"
-                      placeholder="请输入群组描述">
-              <template slot="append">{{inpDesLen}}/30</template>
-            </el-input>
+            <com-input v-if="dialogFixedOrIntel" class="input_s" @input="inpC(Group.describe,2)" :max-length=30
+                       v-model.trim="Group.describe"
+                       placeholder="请输入群组描述">
+            </com-input>
           </el-form-item>
         </el-form>
         <div class="screen">
@@ -159,6 +163,11 @@
         }
       }
     },
+    /* watch: {
+      dialogFixedOrIntel (nval, oval) {
+        if (this.$refs['Group']) this.$refs['Group'].resetFields()
+      }
+    }, */
     methods: {
       onSearch () { // 搜索
         this.$post(groupService.GROUPS_LIST, this.search)
@@ -284,6 +293,7 @@
       handleCloseDialog (done) {
         this.Group.type = -1
         this.isAddOrEdit = '' // 重置
+        this.dialogFixedOrIntel = false
         done()
       }
     }
@@ -379,6 +389,9 @@
           padding: 30px 30px 0;
           .el-form {
             .el-form-item {
+              .input_s {
+                width: 100%;
+              }
               .el-input {
                 position: relative;
                 .el-input__inner {
