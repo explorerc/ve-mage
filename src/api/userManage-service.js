@@ -14,5 +14,7 @@ export default {
   // 删除成员
   POST_DEL_USERS: '/user/customer/bath-delete',
   // 导出
-  GET_EXPORT_USERS: '/user/customer/export'
+  GET_EXPORT_USERS: '/user/customer/export',
+  // 获取用户数
+  GET_CUSTON_NUM: '/user/customer/get-num'
 }

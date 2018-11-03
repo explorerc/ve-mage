@@ -62,7 +62,7 @@
             </div>
             <div class="condition">
               <span class="label">参与场次</span>
-              <com-input :type="'number'" :value.sync="filterCondition.join_count" placeholder="请输入参与活动次数"></com-input>
+              <com-input :value.sync="filterCondition.join_count" placeholder="请输入参与活动次数" :type="'number'"></com-input>
             </div>
           </div>
           <div class='filter-item'>
@@ -590,6 +590,8 @@ export default {
           'content': '导入成功',
           'position': 'center'
         })
+        this.checkedArr = []
+        this.$refs.multipleTable.clearSelection()
       })
     },
     // addGroupAll () {
@@ -708,7 +710,9 @@ export default {
         if (this.filterCondition.hasOwnProperty(key)) {
           const element = this.filterCondition[key]
           // console.log(element)
-          this.exportStr += `?${key}=${element}`
+          if (element !== '' && key !== 'page' && key !== 'page_size') {
+            this.exportStr += `?${key}=${element}`
+          }
         }
       }
       window.location.href = `/api/user/customer/export${this.exportStr}`

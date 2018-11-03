@@ -35,7 +35,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标签：</div>
           <div class="from-content">
-            <el-button round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
+            <el-button  round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
               <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
               <li class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>

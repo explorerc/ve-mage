@@ -399,7 +399,7 @@ export function barRadius (id, data) {
       }
     },
     grid: {
-      left: '3%',
+      left: '4%',
       right: '1%',
       bottom: '8%',
       top: 20

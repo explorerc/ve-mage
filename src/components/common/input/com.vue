@@ -123,6 +123,9 @@ export default {
         case 'password':
           type = 'password'
           break
+        case 'number':
+          type = 'number'
+          break
         case 'mobile':
           this.isMobile = true
           type = 'text'

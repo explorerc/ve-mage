@@ -178,6 +178,8 @@
         this.Group.group_id = groupId
         this.Group.title = title
         this.Group.describe = describe
+        this.inpNameLen = title.length
+        this.inpDesLen = describe.length
         this.Group.type = type
         if (type === 2) {
           this.dialogTitle = '编辑固定群组'

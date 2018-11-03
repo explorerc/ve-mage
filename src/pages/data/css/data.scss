@@ -193,4 +193,18 @@
       z-index: 2;
     }
   }
+  .none-chart{
+    display: block;
+    height: 100%;
+    text-align: center;
+    color: #8E9198;
+    user-select: none;
+    &::before{
+      content: '';
+      display: inline-block;
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
 }
