@@ -48,31 +48,35 @@
       <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
     <!--dialog-->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFixedOrIntel" width="30%" :before-close="handleCloseDialog">
-      <div>
-        <el-form :model="Group" :rules="rules" ref="Group">
-          <el-form-item prop="title">
-            <com-input v-if="dialogFixedOrIntel" class="input_s" @input="inpC(Group.title,1)" :max-length=10
-                       v-model.trim="Group.title"
-                       placeholder="请输入群组名称">
-            </com-input>
-          </el-form-item>
-          <el-form-item prop="describe">
-            <com-input v-if="dialogFixedOrIntel" class="input_s" @input="inpC(Group.describe,2)" :max-length=30
-                       v-model.trim="Group.describe"
-                       placeholder="请输入群组描述">
-            </com-input>
-          </el-form-item>
-        </el-form>
-        <div class="screen">
-          <condOption v-if="Group.type===3" ref="cond_option" @optionData="optionData" :rule="Group.rule"
-                      :type="isAddOrEdit"></condOption>
+    <message-box v-show="isShow"
+                 :header="dialogTitle"
+                 width="590px"
+                 type="prompt"
+                 confirmText='保存'
+                 @handleClick="saveHandleClick">
+      <div class="prop-input">
+        <div>
+          <el-form :model="Group" :rules="rules" ref="Group">
+            <el-form-item prop="title">
+              <com-input class="input_s" @keyup.native="inpTitle($event)" :max-length=10 :errorTips="errTitle"
+                         v-model.trim="Group.title"
+                         placeholder="请输入群组名称">
+              </com-input>
+            </el-form-item>
+            <el-form-item prop="describe">
+              <com-input class="input_s" @keyup.native="inpDes($event)" :max-length=30 :errorTips="errDes"
+                         v-model.trim="Group.describe"
+                         placeholder="请输入群组描述">
+              </com-input>
+            </el-form-item>
+          </el-form>
+          <div class="screen">
+            <condOption v-if="Group.type===3" ref="cond_option" @optionData="optionData" :rule="Group.rule"
+                        :type="isAddOrEdit"></condOption>
+          </div>
         </div>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="save('Group')">保 存</el-button>
-      </div>
-    </el-dialog>
+    </message-box>
   </div>
 
 </template>
@@ -109,7 +113,7 @@
     },
     data () {
       let valiRepeatName = (rule, value, callback) => {
-        if (value) {
+        if (value && value != null) {
           let par = {
             title: value
           }
@@ -134,6 +138,10 @@
         }
       }
       return {
+        isDisr: '',
+        errTitle: '',
+        errDes: '',
+        isShow: false,
         dialogTitle: '',
         isAddOrEdit: '', // 当前点击的是新建还是编辑
         inpNameLen: 0,
@@ -155,7 +163,7 @@
         tableData: [],
         rules: {
           title: [
-            { validator: valiRepeatName, trigger: 'blur' }
+            { validator: valiRepeatName, trigger: 'blur.native' }
           ],
           describe: [
             { required: true, message: '群组描述不能为空', trigger: 'blur' }
@@ -163,17 +171,29 @@
         }
       }
     },
-    /* watch: {
+    watch: {
       dialogFixedOrIntel (nval, oval) {
         if (this.$refs['Group']) this.$refs['Group'].resetFields()
       }
-    }, */
+    },
     methods: {
+      saveHandleClick (data) {
+        if (data.action === 'cancel') {
+          this.Group.type = ''
+          this.errTitle = ''
+          this.errDes = ''
+          this.isShow = false
+        } else {
+          this.save()
+        }
+      },
       onSearch () { // 搜索
         this.$post(groupService.GROUPS_LIST, this.search)
           .then(res => {
             this.tableData = res.data.list
             this.total = Number.parseInt(res.data.count)
+            this.errTitle = ''
+            this.errDes = ''
           })
       },
       repeatTitle (par) {
@@ -196,7 +216,7 @@
           this.$set(this.Group, 'rule', JSON.parse(rule))
           this.dialogTitle = '编辑智能群组'
         }
-        this.dialogFixedOrIntel = true
+        this.isShow = true
         console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
       },
       handleDelete (id, type, index) { // 删除群组
@@ -208,7 +228,6 @@
           cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
           confirmText: '删除',
           handleClick: (e) => {
-            console.log(e)
             if (e.action === 'cancel') {
               this.$message({
                 type: 'info',
@@ -232,12 +251,12 @@
         this.onSearch()
       },
       showDialog (type) { // 新建群组弹框
+        this.isShow = true
         this.isAddOrEdit = 'add' // 点击的是新建
         this.Group.type = type // 智能群组还是固定群组
         this.Group.title = ''
         this.Group.describe = ''
         this.Group.rule = ''
-        this.dialogFixedOrIntel = true
         if (type === 2) {
           this.dialogTitle = '创建固定群组'
         } else {
@@ -245,11 +264,43 @@
         }
         console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
-      inpC (a, type) {
-        if (type === 1) {
-          this.inpNameLen = a.length
-        } else {
-          this.inpDesLen = a.length
+      inpTitle (a) {
+        if (this.timer) return
+        this.timer = setTimeout(() => {
+          clearTimeout(this.timer)
+          this.timer = null
+          a = a.target.value
+          if (a) {
+            let par = {
+              title: a
+            }
+            if (this.isAddOrEdit === 'edit') { // 编辑不用检查自身是否重复
+              this.$set(par, 'group_id', this.Group.group_id)
+            }
+            this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
+              .then((res) => {
+                if (res.code === 200) {
+                  this.errTitle = ''
+                  this.isDisr = true
+                } else {
+                  this.isDisr = false
+                  this.errTitle = '分组名称不能重名'
+                }
+              })
+              .catch(() => {
+                this.isDisr = false
+                this.errTitle = '分组名称不能重名'
+              })
+          } else {
+            this.errTitle = '分组名称不能为空'
+          }
+        }, 500)
+      },
+      inpDes (a) {
+        a = a.target.value
+        if (!a) {
+          this.isDisr = false
+          this.errDes = '分组描述不能为空'
         }
       },
       optionData (a) { // 新建或者编辑 返回的规则
@@ -268,33 +319,25 @@
           .then((res) => {
             if (res.code === 200) {
               this.Group.type = -1
-              this.dialogFixedOrIntel = false
               this.isAddOrEdit = '' // 重置
               this.inpNameLen = 0
               this.inpDesLen = 0
-              this.onSearch()
+              this.isShow = false
             }
+            setTimeout(() => {
+              this.onSearch()
+            }, 100)
           })
       },
       save (group) { // 保存按钮点击
-        this.$refs[group].validate((valid) => {
-          if (valid) {
-            if (this.Group.type === 2) { // 固定群组 直接发送数据
-              this.sendData()
-            } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
-              this.$refs.cond_option.save()
-            }
-          } else {
-            console.log('error submit!!')
-            return false
+        if (this.Group.title !== '' && this.Group.describe !== '') {
+          if (this.Group.type === 2) { // 固定群组 直接发送数据
+            this.sendData()
+            this.isShow = false
+          } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
+            this.$refs.cond_option.save()
           }
-        })
-      },
-      handleCloseDialog (done) {
-        this.Group.type = -1
-        this.isAddOrEdit = '' // 重置
-        this.dialogFixedOrIntel = false
-        done()
+        }
       }
     }
   }
@@ -374,59 +417,8 @@
           margin-top: 20px;
         }
       }
-
-      .el-dialog {
-        .el-dialog__header {
-          height: 40px;
-          background: rgba(255, 208, 33, 1);
-          .el-dialog__title {
-            display: inline-block;
-            font-size: 16px;
-            transform: translateY(-5px);
-          }
-        }
-        .el-dialog__body {
-          padding: 30px 30px 0;
-          .el-form {
-            .el-form-item {
-              .input_s {
-                width: 100%;
-              }
-              .el-input {
-                position: relative;
-                .el-input__inner {
-                  border-top-right-radius: 3px;
-                  border-bottom-right-radius: 3px;
-                }
-                .el-input-group__append {
-                  height: 38px;
-                  line-height: 38px;
-                  width: 50px;
-                  position: absolute;
-                  right: 8px;
-                  color: #999999;
-                  text-align: right;
-                  top: 1px;
-                  border: none;
-                  padding: 0;
-                  font-size: 12px;
-                }
-              }
-            }
-          }
-        }
-        .dialog-footer {
-          .el-button {
-            width: 120px;
-            height: 40px;
-            margin: -15px 15px 20px auto;
-            background: rgba(255, 208, 33, 1);
-            border-radius: 20px;
-            span {
-              color: #222222;
-            }
-          }
-        }
+      .input_s {
+        width: 100%;
       }
     }
   }
