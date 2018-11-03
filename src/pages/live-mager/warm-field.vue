@@ -20,6 +20,7 @@
                              :errorMsg="uploadVideoErrorMsg"
                              :sdk="sdkParam"
                              @error="errorUploadVideo"
+                             @progress="uploadProgress"
                              @handleClick="handleVideoClick"
                              @success="uploadVideoSuccess"></ve-upload-video>
           </div>
@@ -103,7 +104,8 @@
         uploadImgErrorMsg: '', // 图片上传错误信息
         uploadVideoErrorMsg: '', // 视频上传错误信息
         playMsg: '',
-        canPass: true
+        canPass: true,
+        progress: 0
       }
     },
     computed: {
@@ -236,10 +238,24 @@
         //   })
         // })
       },
+      uploadProgress (progress) {
+        this.progress = progress
+      },
       uploadVideo () {
         document.getElementById('upload').click()
       },
       checkoutParams () {
+        if (this.progress !== 0 && this.progress !== 100) {
+          this.$toast({
+            content: '请等待视频上传完成后保存',
+            position: 'center'
+          })
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isDisabled = false
+          }, 3000)
+          return false
+        }
         if (!this.warm.recordId) {
           this.$toast({
             content: '请上传暖场视频',
@@ -333,6 +349,7 @@
                 this.sdkParam.fileName = ''
                 this.sdkParam.fileSize = ''
                 this.sdkParam.transcode_status = 0
+                this.progress = 0
               }
             }
           })
