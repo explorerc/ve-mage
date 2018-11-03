@@ -138,7 +138,6 @@
         }
       }
       return {
-        isDisr: '',
         errTitle: '',
         errDes: '',
         isShow: false,
@@ -281,15 +280,14 @@
               .then((res) => {
                 if (res.code === 200) {
                   this.errTitle = ''
-                  this.isDisr = true
-                } else {
-                  this.isDisr = false
-                  this.errTitle = '分组名称不能重名'
                 }
               })
-              .catch(() => {
-                this.isDisr = false
-                this.errTitle = '分组名称不能重名'
+              .catch((err) => {
+                if (err.code === 20002) {
+                  this.errTitle = '分组名称不能重名'
+                } else if (err.code === 201) {
+                  this.errTitle = '分组名称不能为空'
+                }
               })
           } else {
             this.errTitle = '分组名称不能为空'
@@ -299,7 +297,6 @@
       inpDes (a) {
         a = a.target.value
         if (!a) {
-          this.isDisr = false
           this.errDes = '分组描述不能为空'
         }
       },

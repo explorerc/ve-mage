@@ -12,9 +12,8 @@
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
         <el-button size="small" round @click="exportFile" :disabled="!tableData.length>0">全部导出</el-button>
-        <transition name='fade' mode='out-in' v-if="dialogImport">
-          <com-import @handleClick="handleClick" :groupId="Number.parseInt(search.group_id)"></com-import>
-        </transition>
+        <com-import v-if="dialogImport" @handleClick="handleClick"
+                    :groupId="Number.parseInt(search.group_id)"></com-import>
       </div>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>

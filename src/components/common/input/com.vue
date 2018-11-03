@@ -8,7 +8,7 @@
            :class="{error:errorMsg}"
            :placeholder="placeholder"
            :disabled="disabled"
-           v-model="innerValue"
+           v-model.trim="innerValue"
            @focus="focusHandle"
            @blur="blurHandle">
     <i v-if="type==='search'"
