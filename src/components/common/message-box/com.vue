@@ -140,7 +140,7 @@ export default {
   left: 0;
   right: 0;
   text-align: center;
-  z-index: 2005;
+  z-index: 2000;
   &::before {
     content: '';
     display: inline-block;
