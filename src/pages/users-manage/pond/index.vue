@@ -177,7 +177,7 @@
           </div>
         </div>
       </transition>
-      <div class="users-list page-bg table_box">
+      <div class="users-list page-bg table_box " :class='{"has-page":total>filterCondition.page_size}'>
         <el-table
           ref="multipleTable"
           :data="usersListData"
@@ -256,6 +256,7 @@
             </template>
           </el-table-column>
         </el-table>
+          <div class="total">共 <span>{{total}}</span> 条数据</div>
           <div class="pagination-box" v-if="total>filterCondition.page_size">
             <div class="page-pagination">
                 <ve-pagination
@@ -330,13 +331,13 @@ export default {
           label: '全部'
         },
         {
-          value: '导入',
+          value: 'IMPORT',
           label: '导入'
         }, {
-          value: '微信注册',
-          label: '微信注册'
+          value: 'WAP',
+          label: '手机注册'
         }, {
-          value: 'PC注册',
+          value: 'PC',
           label: 'PC注册'
         }
       ],
@@ -645,7 +646,7 @@ export default {
             'business_consumer_uid': item.business_consumer_uid,
             'avatar': item.avatar ? item.avatar : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
             'name': item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...',
-            'gender': item.sex === 'M' ? '男' : '女',
+            'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
             'phone': item.phone,
             'mail': item.email,
             'lastActive': item.last_visited_at,
@@ -744,9 +745,11 @@ export default {
     },
     multipleSelection: {
       handler (val) {
+        const arr = []
         val.forEach(item => {
-          this.checkedArr.push(item.business_consumer_uid)
+          arr.push(item.business_consumer_uid)
         })
+        this.checkedArr = arr
       }
     }
   },
@@ -767,6 +770,16 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
+  .total {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+    padding-left: 15px;
+    span {
+      color: $color-error;
+    }
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -841,6 +854,10 @@ export default {
       border-radius: 4px;
       border: 1px solid rgba(226, 226, 226, 1);
       margin-top: 20px;
+      padding-bottom: 70px;
+      &.has-page {
+        padding-bottom: 30px;
+      }
     }
     .handle-filter {
       .label {

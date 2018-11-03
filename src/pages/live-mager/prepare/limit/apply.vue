@@ -50,7 +50,7 @@
             </div>
             <div v-else  class='spe'>
               <el-select v-model="item.type" placeholder="请选择" @change='selectChange(idx,item.type)'>
-                <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
+                <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value" :disabled="opt.disabled">
                 </el-option>
               </el-select>
             </div>
@@ -61,7 +61,7 @@
               <!-- <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" placeholder="请输入信息描述"></com-input> -->
               <com-input class='inp' value=""  :max-length="8" :placeholder="item.placeholder"></com-input>
             </div>
-            <div v-if="item.type === 'mobile'" class='del-box'>
+            <div v-if="item.type === 'mobile'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
@@ -115,7 +115,9 @@
         questionId: '',
         canPaas: true,
         canSave: true,
-        saveData: {}
+        saveData: {},
+        hasEmail: false,
+        hasName: false
       }
     },
     created () {
@@ -126,10 +128,10 @@
         value: 'text',
         txt: '文本'
       },
-      // {
-      //   value: 'mobile',
-      //   txt: '手机'
-      // },
+      {
+        value: 'name',
+        txt: '姓名'
+      },
       {
         value: 'integer',
         txt: '数字'
@@ -152,34 +154,6 @@
         // }
       ]
       this.quesData = [
-        // {
-        //   info: '标题',
-        //   desc: '描述描述',
-        //   label: '文本',
-        //   detail: []
-        // },
-        // {
-        //   info: '标题a',
-        //   desc: '描述描述a',
-        //   label: '姓名',
-        //   detail: []
-        // },
-        // {
-        //   info: '标题b',
-        //   desc: '描述描述b',
-        //   label: '数字',
-        //   detail: []
-        // },
-        // {
-        //   info: '下拉',
-        //   desc: '描述下拉',
-        //   label: '下拉选择',
-        //   detail: [
-        //     '男',
-        //     '女',
-        //     '奥克兰圣'
-        //   ]
-        // }
       ]
     },
     methods: {
@@ -333,7 +307,7 @@
           'submodule': 'APPOINT',
           'enabled': ref ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({ handlers: [60706] }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           if (res.code === 200) {
             if (ref) {
               let obj = {
@@ -391,7 +365,34 @@
     watch: {
       quesData: {
         handler (newValue) {
-          console.log('change')
+          this.hasEmail = false
+          this.hasName = false
+          newValue.forEach((item) => {
+            switch (item.type) {
+              case 'email':
+                this.hasEmail = true
+                break
+              case 'name':
+                this.hasName = true
+                break
+            }
+          })
+          this.options.forEach((item) => {
+            if (item.value === 'email') {
+              if (this.hasEmail === true) {
+                item.disabled = true
+              } else {
+                item.disabled = false
+              }
+            }
+            if (item.value === 'name') {
+              if (this.hasName === true) {
+                item.disabled = true
+              } else {
+                item.disabled = false
+              }
+            }
+          })
         },
         deep: true
       },
@@ -486,7 +487,6 @@
   }
   .table-content {
     & > li {
-      line-height: 40px;
       margin: 20px 0;
       & > div {
         float: left;
@@ -499,17 +499,19 @@
           .star {
             color: #fc5659;
             position: absolute;
-            top: 3px;
+            top: 15px;
             z-index: 9;
             left: 14px;
           }
         }
         &.del-box /deep/ {
+          line-height: 40px;
           width: 100px;
           .msg-tip-box span {
+            position: absolute;
             max-width: 500px;
             width: 270px;
-            top: -30px;
+            top: 10px;
             left: 30px;
           }
         }
