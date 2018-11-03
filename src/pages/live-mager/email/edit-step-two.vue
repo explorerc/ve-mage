@@ -282,10 +282,8 @@
           this.storeEmailInfo(this.email)
           this.$router.replace(`/liveMager/emailEditTwo/${this.email.activityId}?email=${this.email.emailInviteId}`)
           this.$toast({
-            header: `提示`,
             content: '保存草稿成功',
-            autoClose: 2000,
-            position: 'right-top'
+            position: 'center'
           })
         })
       },
