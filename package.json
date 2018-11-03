@@ -13,9 +13,7 @@
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/",
     "server": "http-server dist -g -a 0.0.0.0 -p 8088 -o "
   },
-  "pre-commit": [
-    "lint-fix"
-  ],
+  "pre-commit": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
