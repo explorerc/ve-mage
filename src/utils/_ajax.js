@@ -1,11 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import {
-  Loading
-} from 'components/common/loading'
-import {
-  MessageBox
-} from 'components/common/message-box'
+import { Loading } from 'components/common/loading'
+import { MessageBox } from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
 
@@ -64,7 +60,10 @@ class $Http {
     return this.ajax(url)
   }
   ajax (url) {
-    this.options.url = BASE_URL + url
+    this.options.url = url
+    if (!~url.indexOf('http')) {
+      this.options.url = BASE_URL + url
+    }
     let _options = Object.assign({}, defaultOptions, this.options)
     if (this.config.loading) {
       Loading(true)
@@ -80,7 +79,7 @@ class $Http {
           return Promise.reject(err)
         } else if (
           Object.prototype.toString.call(this.config.handlers) ===
-          '[object Array]' &&
+            '[object Array]' &&
           ~this.config.handlers.indexOf(err.code)
         ) {
           return Promise.reject(err)
