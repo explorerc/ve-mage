@@ -187,13 +187,19 @@
         }
       },
       onSearch () { // 搜索
-        this.$post(groupService.GROUPS_LIST, this.search)
-          .then(res => {
-            this.tableData = res.data.list
-            this.total = Number.parseInt(res.data.count)
-            this.errTitle = ''
-            this.errDes = ''
-          })
+        let timer
+        if (timer) return
+        timer = setTimeout(() => {
+          clearTimeout(timer)
+          timer = null
+          this.$post(groupService.GROUPS_LIST, this.search)
+            .then(res => {
+              this.tableData = res.data.list
+              this.total = Number.parseInt(res.data.count)
+              this.errTitle = ''
+              this.errDes = ''
+            })
+        }, 500)
       },
       repeatTitle (par) {
         return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
@@ -256,6 +262,8 @@
         this.Group.title = ''
         this.Group.describe = ''
         this.Group.rule = ''
+        this.errTitle = ''
+        this.errDes = ''
         if (type === 2) {
           this.dialogTitle = '创建固定群组'
         } else {
@@ -264,10 +272,11 @@
         console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
       inpTitle (a) {
-        if (this.timer) return
-        this.timer = setTimeout(() => {
-          clearTimeout(this.timer)
-          this.timer = null
+        let timer
+        if (timer) return
+        timer = setTimeout(() => {
+          clearTimeout(timer)
+          timer = null
           a = a.target.value
           if (a) {
             let par = {
@@ -298,6 +307,8 @@
         a = a.target.value
         if (!a) {
           this.errDes = '分组描述不能为空'
+        } else {
+          this.errDes = ''
         }
       },
       optionData (a) { // 新建或者编辑 返回的规则
@@ -320,20 +331,24 @@
               this.inpNameLen = 0
               this.inpDesLen = 0
               this.isShow = false
+              this.errTitle = ''
+              this.errDes = ''
             }
             setTimeout(() => {
               this.onSearch()
-            }, 100)
+            }, 0)
           })
       },
       save (group) { // 保存按钮点击
-        if (this.Group.title !== '' && this.Group.describe !== '') {
+        if (this.Group.title !== '' && this.Group.describe !== '' && this.errTitle === '' && this.errDes === '') {
           if (this.Group.type === 2) { // 固定群组 直接发送数据
             this.sendData()
             this.isShow = false
           } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
             this.$refs.cond_option.save()
           }
+          this.errTitle = ''
+          this.errDes = ''
         }
       }
     }
