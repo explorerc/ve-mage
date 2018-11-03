@@ -717,7 +717,6 @@ export default {
         }
       }
       window.location.href = `/api/user/customer/export${this.exportStr}`
-      debugger
     }
   },
   watch: {
