@@ -232,7 +232,7 @@
       },
       changePage (currentPage) {
         this.searchParams.page = currentPage
-        this.queryList()
+        // this.queryList()
       },
       changeSearch () {
         this.searchParams.page = 1

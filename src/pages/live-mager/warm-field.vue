@@ -6,7 +6,7 @@
                  inactive-color="#DEE1FF"
                  active-color="#4B5AFE" @change='openSwitch'>
       </el-switch>
-      <span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>
+      <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
       <!--<button class="primary-button fr" @click="goBack">返回</button>-->
     </div>
     <div class="mager-box border-box">
