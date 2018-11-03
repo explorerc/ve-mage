@@ -83,7 +83,7 @@
                class="v-getcode"
                :class="{prohibit:isProhibit}"
                @click="getCode()">获取验证码<span v-show="isSend"
-                                             class="fr">(<em>{{second}}</em>s)</span></a>
+                    class="fr">(<em>{{second}}</em>s)</span></a>
           </com-input>
           <div class="input-form v-label"
                style="margin-top:-28px;"
@@ -96,8 +96,7 @@
         </div>
       </div>
       <div class="v-info">
-        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a
-        href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
       </div>
     </div>
   </div>
@@ -226,21 +225,24 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
-        this.isSend = true
-        this.isProhibit = true
-        clearInterval(this.timerr)
-        this.timerr = setInterval(() => {
-          this.second--
-          if (this.second <= 0) {
-            clearInterval(this.timerr)
-            this.isSend = false
-            this.isProhibit = true
-            this.second = 60
-            this.isImg = false
-            this.phoneKey = ''
-            this.cap.refresh()
-          }
-        }, 1000)
+        if (!this.isAccount) {
+          this.isSend = true
+          this.isProhibit = true
+          clearInterval(this.timerr)
+          this.timerr = setInterval(() => {
+            this.second--
+            if (this.second <= 0) {
+              clearInterval(this.timerr)
+              this.isSend = false
+              this.isProhibit = true
+              this.second = 60
+              this.isImg = false
+              this.phoneKey = ''
+              this.cap.refresh()
+            }
+          }, 1000)
+        }
+
         this.accountError = err.msg
         this.accountOpacity = 1
       })

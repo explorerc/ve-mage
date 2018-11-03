@@ -138,7 +138,7 @@
               <ol class="clearfix">
                 <li>
                   <p class="v-data">
-                    {{user.join_count}}
+                    {{user.join_count?user.join_count:0}}
                   </p>
                   <p class="v-title">
                     参会次数
@@ -146,7 +146,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at}}6
+                    {{user.first_visited_at?user.first_visited_at:'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -154,7 +154,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at}}6
+                    {{user.last_visited_at?user.last_visited_at:'-'}}
                   </p>
                   <p class="v-title">
                     最近参会
@@ -170,7 +170,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.invite_friends_count}}
+                    {{user.invite_friends_count?user.invite_friends_count:0}}
                   </p>
                   <p class="v-title">
                     邀请好友 (个)
@@ -224,11 +224,7 @@ export default {
         nickname: '', // 昵称
         phone: '', // 手机
         email: '', // 邮箱
-        email_list: [{
-          consumer_email_id: 1,
-          email: '123@123.com',
-          type: 'APPLY'
-        }], // 邮箱
+        email_list: [], // 邮箱
         wx_open_id: '', // 微信
         birthday: '', // 生日
         industry: '', // 行业
@@ -247,26 +243,7 @@ export default {
         last_visited_at: '', // 最近参会
         watch_live_time: '', // 观看直播时间
         watch_replay_time: '', // 观看回放时间
-        group_list: [{
-          group_id: '1',
-          business_uid: '1',
-          title: 'adfdas',
-          describe: 'fdafasfdasf'
-        }, {
-          group_id: '2',
-          business_uid: '1',
-          title: '666',
-          describe: '我是十个字我试试各自我是十个字我试试各自我是十个字我试试各自'
-        }], // 所属群组
-        tag_list: [{
-          tag_id: '1',
-          tag_name: 'adfdas',
-          describe: '我是十个字我试试各自我是十个字我试试各自我是十个字我试试各自'
-        }, {
-          tag_id: '2',
-          tag_name: 'sadfadsfdasf',
-          describe: 'jadsk'
-        }] // 标签
+        group_list: [] // 标签
       }, // 用户信息
       tabValue: 1,
       showAddgroup: false

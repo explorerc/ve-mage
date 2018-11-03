@@ -48,10 +48,11 @@
               <el-radio v-model="showType"
                         label='DESCRIPTION'>显示直播简介</el-radio>
               <el-radio v-model="showType"
-                        label='COUNTDOWN'>活动开始前显示直播倒计时</el-radio>
+                        label='COUNTDOWN'>显示直播倒计时</el-radio>
               <com-input type="textarea"
                          :value.sync="description"
-                         placeholder="请输入简介"
+                         :disabled="showType==='COUNTDOWN'"
+                         placeholder="请输入简介111"
                          :max-length="50"></com-input>
             </p>
           </div>
