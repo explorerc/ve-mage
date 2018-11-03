@@ -230,7 +230,7 @@ export default {
       }
     },
     groupImportData (res) {
-      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
+      this.$config({ handlers: true }).$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
         console.log(res)
         this.importSuccess = true
         this.importSuccessData = {
@@ -238,6 +238,10 @@ export default {
           error: res.data.invalid,
           repeat: res.data.repeat
         }
+      }).catch((res) => {
+        this.uploadStatus = 'beforeUpload'
+        this.loading = false
+        this.errorTxt = res.msg
       })
     },
     reUpload () {
