@@ -19,7 +19,7 @@
                     {{user.sex}}
                   </span>
                   <span>
-                    ID: v{{user.business_consumer_uid}}
+                    ID： v{{user.business_consumer_uid}}
                   </span>
                   <span>
                     |
