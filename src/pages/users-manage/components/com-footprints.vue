@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%;">
-    <div class="v-footprints bscroll" ref="bscroll">
+    <div class="v-footprints bscroll" ref="bscroll" @scroll="scrollEvent($event)">
       <ol class="bscroll-container">
         <li class="v-footprint" v-for="itemData in dataList" :key="itemData.behavior_id">
           <i class="iconfont icon-dian">
@@ -16,7 +16,7 @@
             </button>
           </p>
         </li>
-        <!-- <li class="v-footprint">
+         <!-- <li class="v-footprint">
           <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
@@ -88,6 +88,7 @@ import BScroll from 'better-scroll'
 export default {
   data () {
     return {
+      scrollEvent: null,
       dataList: {},
       dataInfoList: {},
       searchParams: {
@@ -111,11 +112,33 @@ export default {
       recordBoxShow: false // 行为记录框显示隐藏
     }
   },
-  created () {
+  mounted () {
     this.getDataList()
-    this.initScroll()
+    // this.initScroll()
+  },
+  created () {
+    this.scrollEvent = this.debounce(e => {
+      if (this.$refs.bscroll.offsetHeight + this.$refs.bscroll.scrollTop > this.$refs.bscroll.scrollHeight - 100) {
+        this.getDataList()
+      }
+    }, 50)
   },
   methods: {
+    debounce (func, wait, immediate) {
+      var timeout
+      return function () {
+        var context = this
+        var args = arguments
+        var later = function () {
+          timeout = null
+          if (!immediate) func.apply(context, args)
+        }
+        var callNow = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+        if (callNow) func.apply(context, args)
+      }
+    },
     showRecord (activityId, name, time) {
       this.recordBoxShow = true
       this.showActivity.name = name
@@ -154,28 +177,28 @@ export default {
         }
       })
     },
-    initScroll () {
-      let _this = this
-      this.$nextTick(() => {
-        let bscrollDom = this.$refs.bscroll
-        this.aBScroll = new BScroll(bscrollDom, {
-          'scrollbar': true,
-          'click': true,
-          'mouseWheel': true,
-          'probeType ': 3,
-          'pullup': true
-          // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
-        })
-        this.aBScroll.on('scrollEnd', () => {
-          // 滚动到底部
-          if (this.aBScroll.y <= (this.aBScroll.maxScrollY)) {
-            if (_this.searchParams.page <= _this.searchParams.total) {
-              _this.getDataList()
-            }
-          }
-        })
-      })
-    },
+    // initScroll () {
+    //   let _this = this
+    //   this.$nextTick(() => {
+    //     let bscrollDom = this.$refs.bscroll
+    //     this.aBScroll = new BScroll(bscrollDom, {
+    //       'scrollbar': true,
+    //       'click': true,
+    //       'mouseWheel': true,
+    //       'probeType ': 3,
+    //       'pullup': true
+    //       // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
+    //     })
+    //     this.aBScroll.on('scrollEnd', () => {
+    //       // 滚动到底部
+    //       if (this.aBScroll.y <= (this.aBScroll.maxScrollY)) {
+    //         if (_this.searchParams.page <= _this.searchParams.total) {
+    //           this.getDataList()
+    //         }
+    //       }
+    //     })
+    //   })
+    // },
     getDataInfoList (activityId) {
       this.searchInfoParams.business_consumer_uid = this.$route.params.id
       this.searchInfoParams.activity_id = activityId
