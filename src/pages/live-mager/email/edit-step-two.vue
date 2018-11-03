@@ -117,12 +117,12 @@
   import VeMsgTips from 'src/components/ve-msg-tips'
   import chooseGroup from 'src/components/com-chooseGroup'
   import activityService from 'src/api/activity-service'
-  import {mapState, mapMutations} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
-    components: {VeMsgTips, chooseGroup},
+    components: { VeMsgTips, chooseGroup },
     data () {
       return {
         outValue: '',
@@ -130,8 +130,8 @@
         selectPersonShow: false,
         sendType: 'AUTO',
         searchPerson: '',
-        personList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedPersonList: [{id: '', name: '', count: 0, isChecked: false}],
+        personList: [{ id: '', name: '', count: 0, isChecked: false }],
+        selectedPersonList: [{ id: '', name: '', count: 0, isChecked: false }],
         selectedPersonListStr: '',
         selectedCount: 0,
         disabledBtn: false,
@@ -156,11 +156,11 @@
           tagIdStr: ''
         },
         PC_HOST: location.protocol + process.env.PC_HOST,
-        groupList: [{id: '', name: '', count: 0, isChecked: false}],
+        groupList: [{ id: '', name: '', count: 0, isChecked: false }],
         tagList: [],
         checkedData: [],
-        selectedGroupList: [{id: '', name: '', count: 0, isChecked: false}],
-        selectedTagList: [{id: '', name: '', count: 0, isChecked: false}],
+        selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
+        selectedTagList: [{ id: '', name: '', count: 0, isChecked: false }],
         selectedGroupListStr: '',
         selectedTagListStr: '',
         groupIdStr: '',
@@ -175,7 +175,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = {...this.email, ...newVal}
+          this.email = { ...this.email, ...newVal }
           this.sendType = this.email.planTime ? 'ONCE' : 'AUTO'
         },
         immediate: true
@@ -278,7 +278,7 @@
         this.canPass = true
         this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
         this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
-          this.email = {...this.email, ...res.data}
+          this.email = { ...this.email, ...res.data }
           this.storeEmailInfo(this.email)
           this.$router.replace(`/liveMager/emailEditTwo/${this.email.activityId}?email=${this.email.emailInviteId}`)
           this.$toast({
