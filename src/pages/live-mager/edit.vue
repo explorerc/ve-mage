@@ -38,11 +38,11 @@
             <el-button  round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
               <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
-              <li class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
+              <li v-if="tagArray.length<3" class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
             </ol>
             <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
             <div class="tag-modal" v-show='showChooseTag'>
-              <div class='title'>选择标签,最多可选择 3 个</div>
+              <div class='title'>选择标签，最多可选择 3 个</div>
               <i class='el-submenu__icon-arrow el-icon-arrow-down arrow' @click="showChooseTag = false"></i>
               <el-checkbox-group v-model="tagGroup" size="mini" :max='3' @change='selectTag'>
                 <div class='group-title'>行业标签</div>
