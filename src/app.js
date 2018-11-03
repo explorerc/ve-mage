@@ -43,9 +43,9 @@ Vue.filter('isEmpty', function (value, replaceStr) {
   replaceStr = replaceStr || '--'
   return value || replaceStr
 })
-Vue.filter('fmtTime', (value) => {
-  let h = ((value / 3600 >> 0) + '').padStart(2, 0)
-  let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+Vue.filter('fmtTime', value => {
+  let h = (((value / 3600) >> 0) + '').padStart(2, 0)
+  let m = (((value / 60) % 60 >> 0) + '').padStart(2, 0)
   let s = ((value % 60 >> 0) + '').padStart(2, 0)
   return `${h}:${m}:${s}`
 })

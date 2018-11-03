@@ -31,6 +31,7 @@
        v-else>
     <textarea ref="tarea"
               v-model="innerValue"
+              :disabled="disabled"
               :class="{error:errorMsg}"
               :placeholder="placeholder ? placeholder: '请输入内容'"
               :rows="rows"

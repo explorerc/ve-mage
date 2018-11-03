@@ -264,7 +264,7 @@ export default {
       return this.shareImgUrl ? this.$imgHost + '/' + this.shareImgUrl : ''
     },
     avatarImg: function () {
-      return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      return this.avatar ? this.$imgHost + '/' + this.avatar : require('assets/image/avatar@2x.png')
     }
   },
   mounted () {
