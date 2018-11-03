@@ -1,7 +1,7 @@
 <template>
   <div class="v-from">
     <span class="v-title">
-      {{title}}:
+      {{title}}：
     </span>
     <template v-if="isEdit">
       <component v-model="inputValue"

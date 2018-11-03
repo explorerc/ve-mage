@@ -19,7 +19,7 @@
                     {{user.sex}}
                   </span>
                   <span>
-                    ID: v{{user.business_consumer_uid}}
+                    ID： {{user.account_id}}
                   </span>
                   <span>
                     |
@@ -217,9 +217,10 @@ export default {
     return {
       user: {
         consumer_uid: '',
-        real_name: '姓名', // 姓名
-        sex: '男', // 性别
-        business_consumer_uid: 'V123141', // id
+        account_id: '',
+        real_name: '', // 姓名
+        sex: '', // 性别
+        business_consumer_uid: '', // id
         user_level: '', // 用户等级
         nickname: '', // 昵称
         phone: '', // 手机
@@ -766,7 +767,7 @@ export default {
             .v-footprints {
               position: relative;
               width: 100%;
-              overflow: hidden;
+              overflow: auto;
               height: calc(100%);
               .v-footprint {
                 height: 100px;

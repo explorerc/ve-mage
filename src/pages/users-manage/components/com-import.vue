@@ -8,10 +8,10 @@
       </div>
       <div class="content" v-if='!importSuccess'>
         <div class="item clearfix">
-          <p class='tips-box'><router-link to="" target="_blank">下载模版</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
+          <p class='tips-box'><router-link to="" target="_blank">下载模板</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
         </div>
         <div class="item upload-box-item clearfix">
-          <label class="label">上传封面:</label>
+          <label class="label">选择模板:</label>
           <div class="upload-box" :class="{ 'error':fileEmpty }" @click='fileEmpty = false' >
 
             <com-upload
@@ -25,7 +25,7 @@
               @load="uploadSuccess">
               <dl class='dl'  ref="uploadFile" title="点击上传" v-if='uploadStatus === "beforeUpload"'>
                 <dt></dt>
-                <dd v-if="!errorTxt" >请使用csv模版上传</dd>
+                <dd v-if="!errorTxt" >请使用csv模板上传</dd>
                 <dd class="error-msg" v-else>{{errorTxt}}</dd>
               </dl>
               <dl class='uploading' v-if='uploadStatus === "uploading"'>
@@ -204,7 +204,7 @@ export default {
     verifyEmpty () {
       if (this.fileKey === '') {
         this.fileEmpty = true
-        this.errorTxt = '请上传模版文件'
+        this.errorTxt = '请上传模板文件'
         return false
       }
       if (this.radio === '1') {
@@ -230,7 +230,7 @@ export default {
       }
     },
     groupImportData (res) {
-      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
+      this.$config({ handlers: true }).$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
         console.log(res)
         this.importSuccess = true
         this.importSuccessData = {
@@ -238,6 +238,10 @@ export default {
           error: res.data.invalid,
           repeat: res.data.repeat
         }
+      }).catch((res) => {
+        this.uploadStatus = 'beforeUpload'
+        this.loading = false
+        this.errorTxt = res.msg
       })
     },
     reUpload () {

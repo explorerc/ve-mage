@@ -142,7 +142,7 @@
                   </div>
                   <span href="javascript:;"
                         class="v-pc-enroll">
-                    报名
+                    {{viewCondition === 'APPOINT'? '报名':'预约'}}
                   </span>
                 </div>
               </div>

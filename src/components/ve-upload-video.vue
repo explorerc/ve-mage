@@ -174,6 +174,7 @@
               const temPercent = parseFloat(percent.replace('%', ''))
               if (_this.percentVideo >= temPercent) return
               _this.percentVideo = temPercent
+              _this.$emit('progress', temPercent)
             },
             uploadSuccess () {
               document.getElementById('confirmUpload').click()
