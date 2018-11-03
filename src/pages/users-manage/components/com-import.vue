@@ -239,6 +239,8 @@ export default {
           repeat: res.data.repeat
         }
       }).catch((res) => {
+        this.uploadStatus = 'beforeUpload'
+        this.loading = false
         this.errorTxt = res.msg
       })
     },
