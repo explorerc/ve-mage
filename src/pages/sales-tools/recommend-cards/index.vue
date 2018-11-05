@@ -6,7 +6,7 @@
     <div class="content from-box">
       <template v-if="tableData.length>0">
         <div class="top-bar">
-          <el-button :disabled="tableData.length >=20">新建卡片 {{tableData.length}}/20</el-button>
+          <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
           <el-button>查看活动数据</el-button>
         </div>
         <el-table :data="tableData" stripe style="width: 100%" :class="'table-box'">
@@ -23,7 +23,7 @@
           </el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-              <el-button round>编辑</el-button>
+              <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.id}`"><el-button round>编辑</el-button></router-link>
               <el-button round @click='del(scope.row.id,scope.row.name)'>删除</el-button>
             </template>
           </el-table-column>
@@ -45,7 +45,15 @@
 export default {
   data () {
     return {
+      activityId: this.$route.params.id,
       tableData: [
+        {
+          id: 0,
+          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
+          name: '安监局安静安静啊',
+          desc: '阿克苏角度看拉萨的',
+          link: 'www.baidu.com'
+        },
         {
           id: 1,
           pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
@@ -69,13 +77,6 @@ export default {
         },
         {
           id: 4,
-          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '安监局安静安静啊',
-          desc: '阿克苏角度看拉萨的',
-          link: 'www.baidu.com'
-        },
-        {
-          id: 5,
           pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
           name: '安监局安静安静啊',
           desc: '阿克苏角度看拉萨的',
@@ -106,7 +107,7 @@ export default {
       })
     },
     delItem (id) {
-
+      this.tableData.splice(id, 1)
     }
   }
 }
@@ -114,48 +115,49 @@ export default {
 
 <style lang='scss' scope>
 @import '~assets/css/mixin.scss';
-.wrap-page {
-  border-radius: 5px;
-  overflow: hidden;
-  padding-bottom: 30px;
-  margin: 0 auto;
-  color: #222;
-  /* 设备宽度大于 1600 */
-  @media all and (min-width: 1600px) {
-    width: 1366px;
-  }
-  /* 设备宽度小于 1600px */
-  @media all and (max-width: 1600px) {
-    width: 1019px;
-    .content .handle-filter .selected {
-      max-width: 880px !important;
-    }
-  }
-  .page-title {
-    // border-bottom: 1px solid $color-bd;
-    line-height: 60px;
-    span.title {
-      display: inline-block;
-      font-size: 24px;
-    }
-  }
-  .content {
-    font-size: 14px;
-    width: 100%;
-    padding: 30px;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 4px;
-    border: 1px solid rgba(226, 226, 226, 1);
-    .table-box {
-      margin-top: 20px;
-      .img {
-        width: 32px;
-        height: 32px;
-        border-radius: 500px;
-      }
-    }
-    .empty-box {
-    }
-  }
-}
+@import './common.scss';
+// .wrap-page {
+//   border-radius: 5px;
+//   overflow: hidden;
+//   padding-bottom: 30px;
+//   margin: 0 auto;
+//   color: #222;
+//   /* 设备宽度大于 1600 */
+//   @media all and (min-width: 1600px) {
+//     width: 1366px;
+//   }
+//   /* 设备宽度小于 1600px */
+//   @media all and (max-width: 1600px) {
+//     width: 1019px;
+//     .content .handle-filter .selected {
+//       max-width: 880px !important;
+//     }
+//   }
+//   .page-title {
+//     // border-bottom: 1px solid $color-bd;
+//     line-height: 60px;
+//     span.title {
+//       display: inline-block;
+//       font-size: 24px;
+//     }
+//   }
+//   .content {
+//     font-size: 14px;
+//     width: 100%;
+//     padding: 30px;
+//     background: rgba(255, 255, 255, 1);
+//     border-radius: 4px;
+//     border: 1px solid rgba(226, 226, 226, 1);
+//     .table-box {
+//       margin-top: 20px;
+//       .img {
+//         width: 32px;
+//         height: 32px;
+//         border-radius: 500px;
+//       }
+//     }
+//     .empty-box {
+//     }
+//   }
+// }
 </style>
