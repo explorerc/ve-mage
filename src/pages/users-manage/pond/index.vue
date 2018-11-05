@@ -124,6 +124,7 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 format="yyyy-MM-dd hh:mm"
+                :editable="false"
                 align="left">
               </el-date-picker>
             </div>
@@ -137,6 +138,7 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 format="yyyy-MM-dd hh:mm"
+                :editable="false"
                 align="left">
               </el-date-picker>
             </div>
@@ -465,7 +467,8 @@ export default {
         page: 1, // 分页页码 默认不传为第一页
         page_size: 100 // 每页显示条数 默认不传为每页显示10条
       },
-      exportStr: '' // 导出数据的拼接str
+      exportStr: '', // 导出数据的拼接str
+      imgHost: process.env.IMGHOST + '/'
     }
   },
   mounted () {
@@ -600,16 +603,16 @@ export default {
     // },
     delUsers () {
       const data = {}
+      const tempArr = []
       Object.assign(data, {
         'business_consumer_uids': this.checkedArr.toString()
       })
       this.usersListData.forEach((item, idx) => {
-        this.checkedArr.forEach((ele, i) => {
-          if (item.business_consumer_uid === this.checkedArr[i]) {
-            this.usersListData.splice(idx, 1)
-          }
-        })
+        if (this.checkedArr.indexOf(item.business_consumer_uid) === -1) {
+          tempArr.push(item)
+        }
       })
+      this.usersListData = tempArr
       this.$post(userManage.POST_DEL_USERS, data).then((res) => {
         this.$toast({
           'content': '删除成功',
@@ -644,8 +647,8 @@ export default {
         res.data.list.forEach(item => {
           arr.push({
             'business_consumer_uid': item.business_consumer_uid,
-            'avatar': item.avatar ? item.avatar : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-            'name': item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...',
+            'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
+            'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nickname.length <= 5 ? item.nickname : item.nickname.substr(0, 5) + '...'),
             'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
             'phone': item.phone,
             'mail': item.email,
@@ -937,7 +940,7 @@ export default {
     .users-list {
       .el-table {
         .users-info {
-          width: 140px;
+          width: 160px;
           img {
             width: 32px;
             height: 32px;

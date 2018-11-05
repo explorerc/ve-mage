@@ -2,45 +2,59 @@
   <div class="q-edit-content">
     <div class="q-edit-select">
       <el-select v-model="value.province"
-                 @change="change"
+                 @change="changeProvince"
+                 @focus="focusProvince"
+                 @blur="blurProvince"
                  placeholder="省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
-                   :label="item.value"
-                   :value="item.id"
+                   :label="item.label"
+                   :value="item.value"
                    :key="index">
         </el-option>
       </el-select>
     </div>
     <div class="q-edit-select">
       <el-select v-model="value.city"
-                 @change="change"
+                 @change="changeCity"
+                 @focus="focusCity"
+                 @blur="blurCity"
                  placeholder="市">
         <el-option v-for="(item,index) in cities"
-                   :label="item.value"
-                   :value="item.id"
+                   :label="item.label"
+                   :value="item.value"
                    :key="index">
         </el-option>
       </el-select>
 
     </div>
-    <div class="q-edit-select">
+    <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
+         class="q-edit-select">
       <el-select v-model="value.county"
-                 @change="change"
+                 @change="changeCounty"
+                 @focus="focusCounty"
+                 @blur="blurCounty"
                  placeholder="区/县">
         <el-option v-for="(item,index) in counties"
-                   :label="item.value"
-                   :value="item.id"
+                   :label="item.label"
+                   :value="item.value"
                    :key="index">
         </el-option>
       </el-select>
-      <span @click="setLevel('county')"
-            class="remove">显</span>
+      <span v-if="edit"
+            @click="setLevel('county')"
+            class="remove">{{getCountyState}}</span>
     </div>
-    <div class="q-edit-select">
+    <div v-if="edit||(!edit&&this.value.detail.level === 'address')"
+         class="q-edit-select">
       <com-input placeholder="详细地址"
-                 :disabled="true"></com-input>
-      <span @click="setLevel('address')"
-            class="remove">显</span>
+                 :disabled="edit"
+                 v-model="value.address"
+                 @focus="focusAddress"
+                 @blur="blurAddress"
+                 :max-length="50"></com-input>
+      <span v-if="edit"
+            @click="setLevel('address')"
+            class="remove">{{getAddressState}}</span>
     </div>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
@@ -49,6 +63,11 @@
 </template>
 
 <script>
+import questionService from 'src/api/questionnaire-service'
+
+// import province from 'components/province.json'
+// import city from 'components/city.json'
+// import county from 'components/county.json'
 export default {
   props: {
     value: {
@@ -64,6 +83,7 @@ export default {
   },
   data () {
     return {
+      area: {},
       province: '',
       city: '',
       county: '',
@@ -73,19 +93,102 @@ export default {
       errorTip: ''
     }
   },
+  mounted () {
+    this.$get(questionService.GET_AREA_JSON).then((res) => {
+      this.area = res
+      this.provinces = this.area.provinces
+      // console.log(res)
+      // eval(res)
+      // console.log(window.provinces)
+    })
+  },
   methods: {
     setLevel (level) {
-      this.value.detail.level = level
+      if (level === 'address' && this.value.detail.level === level) {
+        this.value.detail.level = 'county'
+      } else if (level === 'county' && (this.value.detail.level === level || this.value.detail.level === 'address')) {
+        this.value.detail.level = 'city'
+      } else {
+        this.value.detail.level = level
+      }
     },
-    change () {
+    changeProvince (value) {
+      this.cities = this.area.cities[value]
+    },
+    focusProvince () {
       this.errorTip = ''
     },
+    blurProvince () {
+      setTimeout(() => {
+        if (this.value.required && !this.value.province) {
+          this.errorTip = '此项为必填项'
+        }
+      }, 300)
+    },
+    changeCity (value) {
+      this.counties = this.area.counties[value]
+    },
+    focusCity () {
+      this.errorTip = ''
+    },
+    blurCity () {
+      setTimeout(() => {
+        if (this.value.required && !this.value.city) {
+          this.errorTip = '此项为必填项'
+        }
+      }, 300)
+    },
+    changeCounty () {
+
+    },
+    focusCounty () {
+      this.errorTip = ''
+    },
+    blurCounty () {
+      setTimeout(() => {
+        if (this.value.required && !this.value.county) {
+          this.errorTip = '此项为必填项'
+        }
+      }, 300)
+    },
+    focusAddress () {
+      this.errorTip = ''
+    },
+    blurAddress () {
+      if (this.value.required && !this.value.address) {
+        this.errorTip = '此项为必填项'
+      }
+    },
     check () {
-      if (this.value.required && !this.value.valu) {
+      if (this.value.required && (!this.value.province || !this.value.city)) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      if (this.value.required && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.value.county) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      if (this.value.required && this.value.detail.level === 'address' && !this.value.address) {
         this.errorTip = '此项为必填项'
         return false
       }
       return true
+    }
+  },
+  computed: {
+    getCountyState () {
+      if (this.value.detail.level === 'county' || this.value.detail.level === 'address') {
+        return '隐'
+      } else {
+        return '显'
+      }
+    },
+    getAddressState () {
+      if (this.value.detail.level === 'address') {
+        return '隐'
+      } else {
+        return '显'
+      }
     }
   }
 }

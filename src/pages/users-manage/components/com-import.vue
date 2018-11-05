@@ -238,6 +238,7 @@ export default {
           error: res.data.invalid,
           repeat: res.data.repeat
         }
+        this.$emit('importSuccess')
       }).catch((res) => {
         this.uploadStatus = 'beforeUpload'
         this.loading = false
