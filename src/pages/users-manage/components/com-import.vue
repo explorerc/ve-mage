@@ -238,6 +238,9 @@ export default {
           error: res.data.invalid,
           repeat: res.data.repeat
         }
+        setTimeout(() => {
+          window.location.reload()
+        }, 500)
       }).catch((res) => {
         this.uploadStatus = 'beforeUpload'
         this.loading = false
