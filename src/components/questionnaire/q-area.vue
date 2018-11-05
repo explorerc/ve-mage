@@ -3,6 +3,8 @@
     <div class="q-edit-select">
       <el-select v-model="value.province"
                  @change="changeProvince"
+                 @focus="focusProvince"
+                 @blur="blurProvince"
                  placeholder="省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
                    :label="item.label"
@@ -14,6 +16,8 @@
     <div class="q-edit-select">
       <el-select v-model="value.city"
                  @change="changeCity"
+                 @focus="focusCity"
+                 @blur="blurCity"
                  placeholder="市">
         <el-option v-for="(item,index) in cities"
                    :label="item.label"
@@ -27,6 +31,8 @@
          class="q-edit-select">
       <el-select v-model="value.county"
                  @change="changeCounty"
+                 @focus="focusCounty"
+                 @blur="blurCounty"
                  placeholder="区/县">
         <el-option v-for="(item,index) in counties"
                    :label="item.label"
@@ -43,6 +49,8 @@
       <com-input placeholder="详细地址"
                  :disabled="edit"
                  v-model="value.address"
+                 @focus="focusAddress"
+                 @blur="blurAddress"
                  :max-length="50"></com-input>
       <span v-if="edit"
             @click="setLevel('address')"
@@ -55,11 +63,11 @@
 </template>
 
 <script>
-// import questionService from 'src/api/questionnaire-service'
+import questionService from 'src/api/questionnaire-service'
 
-import province from 'components/province.json'
-import city from 'components/city.json'
-import county from 'components/county.json'
+// import province from 'components/province.json'
+// import city from 'components/city.json'
+// import county from 'components/county.json'
 export default {
   props: {
     value: {
@@ -75,19 +83,24 @@ export default {
   },
   data () {
     return {
+      area: {},
       province: '',
       city: '',
       county: '',
-      provinces: province,
+      provinces: [],
       cities: [],
       counties: [],
       errorTip: ''
     }
   },
   mounted () {
-    // this.$get(questionService.GET_AREA_JSON).then((res) => {
-    //   console.log(res)
-    // })
+    this.$get(questionService.GET_AREA_JSON).then((res) => {
+      this.area = res
+      this.provinces = this.area.provinces
+      // console.log(res)
+      // eval(res)
+      // console.log(window.provinces)
+    })
   },
   methods: {
     setLevel (level) {
@@ -100,16 +113,51 @@ export default {
       }
     },
     changeProvince (value) {
-      this.cities = city[value]
+      this.cities = this.area.cities[value]
+    },
+    focusProvince () {
+      this.errorTip = ''
+    },
+    blurProvince () {
+      setTimeout(() => {
+        if (this.value.required && !this.value.province) {
+          this.errorTip = '此项为必填项'
+        }
+      }, 300)
     },
     changeCity (value) {
-      this.counties = county[value]
+      this.counties = this.area.counties[value]
+    },
+    focusCity () {
+      this.errorTip = ''
+    },
+    blurCity () {
+      setTimeout(() => {
+        if (this.value.required && !this.value.city) {
+          this.errorTip = '此项为必填项'
+        }
+      }, 300)
     },
     changeCounty () {
 
     },
-    change () {
+    focusCounty () {
       this.errorTip = ''
+    },
+    blurCounty () {
+      setTimeout(() => {
+        if (this.value.required && !this.value.county) {
+          this.errorTip = '此项为必填项'
+        }
+      }, 300)
+    },
+    focusAddress () {
+      this.errorTip = ''
+    },
+    blurAddress () {
+      if (this.value.required && !this.value.address) {
+        this.errorTip = '此项为必填项'
+      }
     },
     check () {
       if (this.value.required && (!this.value.province || !this.value.city)) {

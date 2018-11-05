@@ -7,27 +7,25 @@ module.exports = {
       jsx: true
     }
   },
-  plugins: [
-    'html'
-  ],
+  plugins: ['html'],
   parser: 'babel-eslint',
   env: {
-    browser: true,
+    browser: true
   },
   rules: {
     'no-extend-native': 'off',
     'no-new': 'off',
-    "no-alert": 0,
-    "no-spaced-func": 2,
-    "no-var": 0,
-    "no-debugger": 'off',
-    "no-useless-constructor": 'off',
-    "object-curly-spacing": 1
+    'no-eval': 'off',
+    'no-alert': 'off',
+    'no-spaced-func': 'off',
+    'no-var': 'off',
+    'no-debugger': 'off',
+    'no-useless-constructor': 'off',
+    'object-curly-spacing': 'off'
   },
   globals: {
     Vhall: true,
     VhallInteraction: true,
     VhallInteractionGuest: true
   }
-
 }
