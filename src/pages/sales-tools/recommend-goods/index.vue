@@ -5,7 +5,7 @@
       <el-button size="mini" @click="check" round>查看活动数据</el-button>
     </div>
     <div class="table-box">
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableData" border class="el-table">
         <el-table-column type="index" label="序号" width="50"></el-table-column>
         <el-table-column prop="date" label="封面图"></el-table-column>
         <el-table-column prop="date" label="商品名称"></el-table-column>
@@ -69,8 +69,16 @@
   #goods-list {
     padding: 40px 100px;
     /deep/ {
-      .table-box .el-table .el-button {
-        color: blue;
+      .table-box {
+        margin-top: 22px;
+        padding: 30px;
+        border: 1px dashed #cccccc;
+        .el-table{
+
+          .el-button{
+            color: #2878FF;
+          }
+        }
       }
     }
   }

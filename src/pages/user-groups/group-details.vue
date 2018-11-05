@@ -179,11 +179,10 @@
           cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
           confirmText: '删除',
           handleClick: (e) => {
-            console.log(e)
             if (e.action === 'cancel') {
-              this.$message({
-                type: 'info',
-                message: '已取消删除'
+              this.$toast({
+                content: '已取消删除!',
+                position: 'center'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP_USER, {
@@ -195,9 +194,9 @@
                   setTimeout(() => {
                     this.onSearch()
                   }, 0)
-                  this.$message({
-                    type: 'success',
-                    message: '删除成功!'
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
                   })
                 })
             }

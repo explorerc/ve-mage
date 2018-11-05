@@ -162,7 +162,7 @@
         tableData: [],
         rules: {
           title: [
-            { validator: valiRepeatName, trigger: 'blur.native' }
+            { validator: valiRepeatName, trigger: 'blur' }
           ],
           describe: [
             { required: true, message: '群组描述不能为空', trigger: 'blur' }
@@ -228,17 +228,17 @@
           confirmText: '删除',
           handleClick: (e) => {
             if (e.action === 'cancel') {
-              this.$message({
-                type: 'info',
-                message: '已取消删除'
+              this.$toast({
+                content: '已取消删除',
+                position: 'center'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
                 .then(res => {
                   this.tableData.splice(index, 1)
-                  this.$message({
-                    type: 'success',
-                    message: '删除成功!'
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
                   })
                 })
             }
@@ -330,7 +330,7 @@
             }
             setTimeout(() => {
               this.onSearch()
-            }, 500)
+            }, 1000)
           })
       },
       save (group) { // 保存按钮点击
