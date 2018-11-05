@@ -12,7 +12,7 @@
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
         <el-button size="small" round @click="exportFile" :disabled="!tableData.length>0">全部导出</el-button>
-        <com-import v-if="dialogImport" @handleClick="handleClick"
+        <com-import v-if="dialogImport" @handleClick="handleClick" :isFixed="'0'" :isDis=true
                     :groupId="Number.parseInt(search.group_id)"></com-import>
       </div>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"

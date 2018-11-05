@@ -48,7 +48,7 @@
       <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
     <!--dialog-->
-    <message-box v-show="isShow"
+    <message-box v-if="isShow"
                  :header="dialogTitle"
                  width="590px"
                  type="prompt"
@@ -187,19 +187,13 @@
         }
       },
       onSearch () { // 搜索
-        let timer
-        if (timer) return
-        timer = setTimeout(() => {
-          clearTimeout(timer)
-          timer = null
-          this.$post(groupService.GROUPS_LIST, this.search)
-            .then(res => {
-              this.tableData = res.data.list
-              this.total = Number.parseInt(res.data.count)
-              this.errTitle = ''
-              this.errDes = ''
-            })
-        }, 500)
+        this.$post(groupService.GROUPS_LIST, this.search)
+          .then(res => {
+            this.tableData = res.data.list
+            this.total = Number.parseInt(res.data.count)
+            this.errTitle = ''
+            this.errDes = ''
+          })
       },
       repeatTitle (par) {
         return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
@@ -336,14 +330,14 @@
             }
             setTimeout(() => {
               this.onSearch()
-            }, 0)
+            }, 500)
           })
       },
       save (group) { // 保存按钮点击
         if (this.Group.title !== '' && this.Group.describe !== '' && this.errTitle === '' && this.errDes === '') {
           if (this.Group.type === 2) { // 固定群组 直接发送数据
             this.sendData()
-            this.isShow = false
+            // this.isShow = false
           } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
             this.$refs.cond_option.save()
           }
