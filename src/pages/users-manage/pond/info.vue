@@ -212,6 +212,7 @@ import infoList from '../components/info-list'
 import userService from 'src/api/user-service'
 import comAddgroup from '../components/com-addGroup'
 import userManage from 'src/api/userManage-service'
+import groupService from 'src/api/user_group'
 export default {
   data () {
     return {
@@ -310,6 +311,13 @@ export default {
         })
       })
     },
+    getGroupList () {
+      this.$post(groupService.GROUPS_LIST, {
+        page: 1
+      }).then(res => {
+
+      })
+    },
     typeEmail (type) {
       let strType = ''
       switch (type) {
@@ -369,7 +377,7 @@ export default {
       this.addGroup(data)
     },
     addGroup (data) {
-      this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
+      this.$config({ handlers: true }).$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
         let addData = {}
         addData.title = data.type === '1' ? data.title : data.name
         addData.describe = data.describe
@@ -377,6 +385,11 @@ export default {
         this.showAddgroup = false
         this.$toast({
           'content': '导入成功',
+          'position': 'center'
+        })
+      }).catch(err => {
+        this.$toast({
+          'content': err.msg,
           'position': 'center'
         })
       })
@@ -482,18 +495,24 @@ export default {
           .v-label {
             color: #888;
             width: 42px;
+            position: absolute;
+            top: 0;
+            left: 0;
           }
           .v-content {
             color: #222;
+            word-break: break-all;
+            max-width: 225px;
+            padding-left: 55px;
           }
           .v-email-info {
             position: relative;
             margin-left: 46px;
+            width: 100%;
             &.v-fist {
               margin-left: 0px;
               .v-content {
                 display: inline-block;
-                width: 142px;
               }
             }
             .v-type {

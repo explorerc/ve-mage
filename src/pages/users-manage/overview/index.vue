@@ -16,7 +16,8 @@
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[1].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.highQuality+'/1'">
+            {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
             优质用户 ({{uersInfo[1].centage}}%)
@@ -24,7 +25,8 @@
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[2].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.highValue+'/1'">
+            {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
             高价值用户 ({{uersInfo[2].centage}}%)
@@ -32,7 +34,8 @@
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[3].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.general+'/1'">
+            {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
             一般用户 ({{uersInfo[3].centage}}%)
@@ -40,15 +43,17 @@
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[4].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.potential+'/1'">
+            {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜在用户 ({{uersInfo[4].centage}}%)
+            潜力用户 ({{uersInfo[4].centage}}%)
           </p>
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[5].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.loss+'/1'">
+            {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
             流失用户 ({{uersInfo[5].centage}}%)
@@ -133,6 +138,7 @@
 import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
+import groupService from 'src/api/user_group'
 export default {
   data () {
     return {
@@ -143,7 +149,15 @@ export default {
       tableList: [], // 数据详情
       isActive3: true,
       isActive7: false,
-      isActive10: false
+      isActive10: false,
+      url: {
+        total: '',
+        highQuality: '',
+        highValue: '',
+        general: '',
+        potential: '',
+        loss: ''
+      }
     }
   },
   beforeDestroy () {
@@ -177,6 +191,7 @@ export default {
       this.resizeRenderChart()
     }
     this.getData(3)
+    this.getGroudList()
   },
   methods: {
     resizeRenderChart () {
@@ -189,6 +204,7 @@ export default {
         count: count
       }).then((res) => {
         this.datas = res.data
+        this.tableList.splice(0, this.tableList.length)
         // this.datas = res.data
         /* 绘制堆叠图 */
         this.effectChart = barPile('chart01', {
@@ -214,6 +230,26 @@ export default {
           template.val4 = element.data[4]
           this.tableList.push(template)
         })
+      })
+    },
+    getGroudList () {
+      this.$post(groupService.GROUPS_LIST, {
+        page: 1
+      }).then(res => {
+        let dataList = res.data.list
+        for (let i = 0; i < dataList.length; i++) {
+          if (dataList[i].title === '优质用户') {
+            this.url.highQuality = dataList[i].business_uid
+          } else if (dataList[i].title === '流失用户') {
+            this.url.loss = dataList[i].business_uid
+          } else if (dataList[i].title === '一般用户') {
+            this.url.general = dataList[i].business_uid
+          } else if (dataList[i].title === '高价值用户') {
+            this.url.highValue = dataList[i].business_uid
+          } else if (dataList[i].title === '潜力用户') {
+            this.url.potential = dataList[i].business_uid
+          }
+        }
       })
     },
     selectCount (ele, btn) {
