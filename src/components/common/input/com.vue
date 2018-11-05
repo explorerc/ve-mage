@@ -141,6 +141,8 @@ export default {
     innerValue (value) {
       if (!value) {
         this.innerValue = ''
+        this.$emit('update:value', this.innerValue)
+        this.$emit('input', this.innerValue)
         return
       }
       if (this.local) {

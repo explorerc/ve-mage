@@ -2,45 +2,51 @@
   <div class="q-edit-content">
     <div class="q-edit-select">
       <el-select v-model="value.province"
-                 @change="change"
+                 @change="changeProvince"
                  placeholder="省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
-                   :label="item.value"
-                   :value="item.id"
+                   :label="item.label"
+                   :value="item.value"
                    :key="index">
         </el-option>
       </el-select>
     </div>
     <div class="q-edit-select">
       <el-select v-model="value.city"
-                 @change="change"
+                 @change="changeCity"
                  placeholder="市">
         <el-option v-for="(item,index) in cities"
-                   :label="item.value"
-                   :value="item.id"
+                   :label="item.label"
+                   :value="item.value"
                    :key="index">
         </el-option>
       </el-select>
 
     </div>
-    <div class="q-edit-select">
+    <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
+         class="q-edit-select">
       <el-select v-model="value.county"
-                 @change="change"
+                 @change="changeCounty"
                  placeholder="区/县">
         <el-option v-for="(item,index) in counties"
-                   :label="item.value"
-                   :value="item.id"
+                   :label="item.label"
+                   :value="item.value"
                    :key="index">
         </el-option>
       </el-select>
-      <span @click="setLevel('county')"
-            class="remove">显</span>
+      <span v-if="edit"
+            @click="setLevel('county')"
+            class="remove">{{getCountyState}}</span>
     </div>
-    <div class="q-edit-select">
+    <div v-if="edit||(!edit&&this.value.detail.level === 'address')"
+         class="q-edit-select">
       <com-input placeholder="详细地址"
-                 :disabled="true"></com-input>
-      <span @click="setLevel('address')"
-            class="remove">显</span>
+                 :disabled="edit"
+                 v-model="value.address"
+                 :max-length="50"></com-input>
+      <span v-if="edit"
+            @click="setLevel('address')"
+            class="remove">{{getAddressState}}</span>
     </div>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
@@ -49,6 +55,11 @@
 </template>
 
 <script>
+// import questionService from 'src/api/questionnaire-service'
+
+import province from 'components/province.json'
+import city from 'components/city.json'
+import county from 'components/county.json'
 export default {
   props: {
     value: {
@@ -67,25 +78,69 @@ export default {
       province: '',
       city: '',
       county: '',
-      provinces: [],
+      provinces: province,
       cities: [],
       counties: [],
       errorTip: ''
     }
   },
+  mounted () {
+    // this.$get(questionService.GET_AREA_JSON).then((res) => {
+    //   console.log(res)
+    // })
+  },
   methods: {
     setLevel (level) {
-      this.value.detail.level = level
+      if (level === 'address' && this.value.detail.level === level) {
+        this.value.detail.level = 'county'
+      } else if (level === 'county' && (this.value.detail.level === level || this.value.detail.level === 'address')) {
+        this.value.detail.level = 'city'
+      } else {
+        this.value.detail.level = level
+      }
+    },
+    changeProvince (value) {
+      this.cities = city[value]
+    },
+    changeCity (value) {
+      this.counties = county[value]
+    },
+    changeCounty () {
+
     },
     change () {
       this.errorTip = ''
     },
     check () {
-      if (this.value.required && !this.value.valu) {
+      if (this.value.required && (!this.value.province || !this.value.city)) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      if (this.value.required && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.value.county) {
+        this.errorTip = '此项为必填项'
+        return false
+      }
+      if (this.value.required && this.value.detail.level === 'address' && !this.value.address) {
         this.errorTip = '此项为必填项'
         return false
       }
       return true
+    }
+  },
+  computed: {
+    getCountyState () {
+      if (this.value.detail.level === 'county' || this.value.detail.level === 'address') {
+        return '隐'
+      } else {
+        return '显'
+      }
+    },
+    getAddressState () {
+      if (this.value.detail.level === 'address') {
+        return '隐'
+      } else {
+        return '显'
+      }
     }
   }
 }
