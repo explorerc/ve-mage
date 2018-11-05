@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title"><i class="star">*</i>卡片描述：</div>
+        <div class="from-title">卡片描述：</div>
         <div class="from-content">
               <com-input type="textarea"
                          class="msg-content"
@@ -36,19 +36,19 @@
       <div class="from-row" v-if="btnSwitch">
         <div class="from-title"><i class="star">*</i>按钮文案：</div>
         <div class="from-content">
-          <com-input :value.sync="btnTxt" placeholder="请输入按钮文案" :max-length="6"></com-input>
+          <com-input :value.sync="btnTxt" placeholder="请输入按钮文案" :max-length="6" :error-tips='btnTxtError' @focus="btnTxtError=''"></com-input>
         </div>
       </div>
       <div class="from-row" v-if="btnSwitch">
         <div class="from-title"><i class="star">*</i>按钮链接：</div>
         <div class="from-content">
-          <com-input :value.sync="btnLink" placeholder="请输入按钮链接"></com-input>
+          <com-input :value.sync="btnLink" placeholder="请输入按钮链接" :error-tips='btnLinkError' @focus="btnLinkError=''"></com-input>
         </div>
       </div>
       <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content btn-box">
-          <el-button class='primary-button'>保存</el-button>
+          <el-button class='primary-button' @click='save'>保存</el-button>
         </div>
       </div>
       <div class="overview">
@@ -77,11 +77,14 @@
         descError: '',
         btnSwitch: false,
         btnTxt: '',
+        btnTxtError: '',
         btnLink: '',
+        btnLinkError: '',
         poster: '',
         imgHost: process.env.IMGHOST + '/',
         uploadImgErrorMsg: '',
-        cardId: this.$route.query.cardId
+        cardId: this.$route.query.cardId,
+        isVaild: true
       }
     },
     methods: {
@@ -94,6 +97,38 @@
       },
       switchChange (res) {
 
+      },
+      save () {
+        this.valid()
+        if (this.isVaild) {
+          console.log('提交')
+          if (this.cardId === 'new') {
+            console.log('新建')
+          } else {
+            console.log('更新')
+          }
+        }
+      },
+      valid () {
+        this.isVaild = true
+        if (!this.title.length) {
+          this.isVaild = false
+          this.titleError = '请输入卡片标题'
+        }
+        if (!this.poster.length) {
+          this.isVaild = false
+          this.uploadImgErrorMsg = '请上传卡片图片'
+        }
+        if (this.btnSwitch) {
+          if (!this.btnTxt.length) {
+            this.isVaild = false
+            this.btnTxtError = '请输入按钮名称'
+          }
+          if (!this.btnLink.length) {
+            this.isVaild = false
+            this.btnLinkError = '请输入按钮链接'
+          }
+        }
       }
     },
     computed: {
