@@ -648,7 +648,7 @@ export default {
           arr.push({
             'business_consumer_uid': item.business_consumer_uid,
             'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-            'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nick_name.length <= 5 ? item.nick_name : item.nick_name.substr(0, 5) + '...'),
+            'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nickname.length <= 5 ? item.nickname : item.nickname.substr(0, 5) + '...'),
             'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
             'phone': item.phone,
             'mail': item.email,
