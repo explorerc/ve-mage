@@ -89,8 +89,8 @@ export default {
   data () {
     return {
       scrollEvent: null,
-      dataList: {},
-      dataInfoList: {},
+      dataList: [],
+      dataInfoList: [],
       searchParams: {
         business_consumer_uid: 0,
         type: 1,
@@ -202,6 +202,7 @@ export default {
     getDataInfoList (activityId) {
       this.searchInfoParams.business_consumer_uid = this.$route.params.id
       this.searchInfoParams.activity_id = activityId
+      debugger
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
         res.data.list.forEach(element => {
           this.dataInfoList.push(element)
