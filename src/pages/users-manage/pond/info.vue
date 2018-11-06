@@ -146,7 +146,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at?user.first_visited_at:'-'}}
+                    {{user.first_visited_at?user.first_visited_at.substring(0,11):'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -154,7 +154,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at?user.last_visited_at:'-'}}
+                    {{user.last_visited_at?user.last_visited_at.substring(0,11):'-'}}
                   </p>
                   <p class="v-title">
                     最近参会
@@ -202,7 +202,6 @@
 
 <script>
 import comSelect from '../components/com-select'
-
 import comFootprints from '../components/com-footprints'
 import singleInput from '../components/single-input'
 import industrySelect from '../components/industry-select'
@@ -263,7 +262,14 @@ export default {
   },
   computed: {
     watchTime () {
-      return parseInt(this.user.watch_live_time) + parseInt(this.user.watch_replay_time)
+      let time = 0
+      if (this.user.watch_live_time) {
+        time += parseInt(this.user.watch_live_time)
+      }
+      if (this.user.watch_replay_time) {
+        time += parseInt(this.user.watch_replay_time)
+      }
+      return time || '-'
     }
   },
   created () {
