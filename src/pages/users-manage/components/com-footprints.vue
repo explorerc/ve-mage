@@ -11,7 +11,7 @@
           </p>
           <p class="v-content">
             {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_name?itemData.data.activity_name:''}}
-            <button @click="showRecord(itemData.behavior_id,itemData.data.activity_name,itemData.generated_at)">
+            <button @click="showRecord(itemData.activity_id,itemData.data.activity_name,itemData.generated_at)">
               查看详情
             </button>
           </p>
@@ -143,6 +143,7 @@ export default {
       this.recordBoxShow = true
       this.showActivity.name = name
       this.showActivity.time = time
+      this.searchInfoParams.page = 1
       this.getDataInfoList(activityId)
       this.initInfoScroll()
     },
@@ -159,7 +160,7 @@ export default {
             this.dataList.push(element)
           })
           this.total = res.data.total
-          this.searchParams.page = parseInt(res.data.currPage) + 1
+          this.searchParams.page = parseInt(res.data.page) + 1
           this.searchParams.total = res.data.total
         }
       }).catch(err => {
@@ -207,7 +208,8 @@ export default {
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total
-        this.searchInfoParams.page = parseInt(res.data.currPage) + 1
+        this.searchInfoParams.page = parseInt(res.data.page) + 1
+        console.log(this.searchInfoParams.page)
         this.searchInfoParams.total = res.data.total
       }).catch(err => {
         if (err.code !== 201) {
