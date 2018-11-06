@@ -284,7 +284,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" @importSuccess='importSuccess'></com-import>
+        <com-import @handleClick="handleClick" ></com-import>
       </transition>
   </div>
 </template>
@@ -635,7 +635,8 @@ export default {
       if (data === 'search') {
         data = {
           'keyword': this.filterCondition.keyword,
-          'page': 1 // 分页页码 默认不传为第一页
+          'page': 1, // 分页页码 默认不传为第一页
+          'page_size': 100
         }
       }
       console.log(data)
