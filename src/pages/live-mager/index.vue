@@ -6,7 +6,6 @@
       <span class="title">活动列表</span>
       <div class="search-box fr">
         <el-select v-model="searchParams.status"
-                   @change="changeSearch"
                    placeholder="直播状态">
           <el-option v-for="item in optionsStates"
                      :key="item.value"
@@ -15,7 +14,6 @@
           </el-option>
         </el-select>
         <el-select v-model="searchParams.sortBy"
-                   @change="changeSearch"
                    placeholder="请选择">
           <el-option v-for="item in optionsOrder"
                      :key="item.value"
@@ -233,10 +231,6 @@
       changePage (currentPage) {
         this.searchParams.page = currentPage
         // this.queryList()
-      },
-      changeSearch () {
-        this.searchParams.page = 1
-        this.queryList()
       },
       searchEnter () {
         this.queryList()

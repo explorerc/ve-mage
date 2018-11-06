@@ -58,8 +58,8 @@
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div> -->
             <div>
-              <!-- <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" placeholder="请输入信息描述"></com-input> -->
-              <com-input class='inp' value=""  :max-length="8" :placeholder="item.placeholder"></com-input>
+              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
+              <!-- <com-input class='inp' value=""  :max-length="8" :placeholder.sync="item.placeholder"></com-input> -->
             </div>
             <div v-if="item.type === 'mobile'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
@@ -185,7 +185,8 @@
         this.canPaas = false
         let obj = {
           title: '标题',
-          placeholder: '请输入描述信息',
+          placeholder: '',
+          place: '请输入描述信息',
           label: '文本',
           type: 'text',
           detail: []
@@ -312,7 +313,8 @@
             if (ref) {
               let obj = {
                 title: '手机号码',
-                placeholder: '请输入手机号码',
+                placeholder: '',
+                place: '请输入手机号码',
                 label: '手机号码',
                 type: 'mobile',
                 detail: []
