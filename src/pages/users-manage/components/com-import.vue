@@ -155,6 +155,9 @@ export default {
       this.$emit('handleClick', {
         action: 'cancel'
       })
+      if (this.importSuccess) {
+        window.location.reload()
+      }
     },
     overUpload () {
       this.$refs.uploadFile.click()
@@ -249,9 +252,6 @@ export default {
           error: res.data.invalid,
           repeat: res.data.repeat
         }
-        setTimeout(() => {
-          window.location.reload()
-        }, 500)
       }).catch((res) => {
         this.uploadStatus = 'beforeUpload'
         this.loading = false
