@@ -24,8 +24,8 @@
 
               <el-input v-if="m.type === 'text' " v-model="m.value" :type="m.type" placeholder="请输入内容"></el-input>
 
-              <el-input-number v-if="m.type === 'number'" v-model="m.value" placeholder="请输入" :controls=false :min="1"
-                               :max="365"></el-input-number>
+              <el-input-number v-if="m.type === 'number'" v-model="m.value" placeholder="请输入" :controls=false
+                               :min="1" :max="100000000000"></el-input-number>
 
               <el-date-picker v-if="m.type === 'date' " v-model="m.value" type="date"
                               placeholder="选择日期"></el-date-picker>
@@ -543,42 +543,42 @@
               {
                 key: 'contain',
                 name: '包含',
-                type: 'text',
+                type: 'number',
                 unit: ''
               }, {
                 key: 'not_contain',
                 name: '不包含',
-                type: 'text',
+                type: 'number',
                 unit: ''
               }, {
                 key: 'eq',
                 name: '是',
-                type: 'text',
+                type: 'number',
                 unit: ''
               }, {
                 key: 'neq',
                 name: '不是',
-                type: 'text',
+                type: 'number',
                 unit: ''
               }, {
                 key: 'head_eq',
                 name: '开头是',
-                type: 'text',
+                type: 'number',
                 unit: ''
               }, {
                 key: 'tail_eq',
                 name: '结尾是',
-                type: 'text',
+                type: 'number',
                 unit: ''
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -597,17 +597,17 @@
             cons: [
               {
                 key: 'eq',
-                name: '是（那一天）',
+                name: '是（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
                 key: 'gt',
-                name: '早于（那一天）',
+                name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
                 key: 'lt',
-                name: '晚于（那一天）',
+                name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
@@ -730,17 +730,17 @@
             cons: [
               {
                 key: 'eq',
-                name: '是（那一天）',
+                name: '是（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
                 key: 'gt',
-                name: '早于（那一天）',
+                name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
                 key: 'lt',
-                name: '晚于（那一天）',
+                name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
@@ -760,17 +760,17 @@
             cons: [
               {
                 key: 'eq',
-                name: '是（那一天）',
+                name: '是（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
                 key: 'gt',
-                name: '早于（那一天）',
+                name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
                 key: 'lt',
-                name: '晚于（那一天）',
+                name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
@@ -789,12 +789,12 @@
             keys: ['other', 'created_at'],
             cons: [
               {
-                key: '固定',
+                key: 'eq',
                 name: '固定',
                 type: 'date',
                 unit: ''
               }, {
-                key: '相对',
+                key: 'lt',
                 name: '相对',
                 type: 'number',
                 unit: ''

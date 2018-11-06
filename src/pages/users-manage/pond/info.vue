@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-        <span class="title" >用户详情</span>
+      <span class="title" >用户详情</span>
     </div>
     <div class="content from-box">
       <div class="v-user-info">
@@ -12,11 +12,11 @@
               <div class="box1">
                 <img src="../../../assets/image/avatar@2x.png" alt="" class="v-avatar">
                 <p class="v-name">
-                  {{user.real_name}}
+                  {{user.real_name?user.real_name:'-'}}
                 </p>
                 <p class="v-account-info">
                   <span v-if="user.sex!=''">
-                    {{user.sex}}
+                    {{user.sex?user.sex:'-'}}
                   </span>
                   <span>
                     ID： {{user.account_id}}
@@ -35,7 +35,7 @@
                     昵称：
                   </span>
                   <span class="v-content">
-                    {{user.nickname}}
+                    {{user.nickname?user.nickname:'-'}}
                   </span>
                 </div>
                 <div class="v-info">
@@ -43,7 +43,7 @@
                     手机：
                   </span>
                   <span class="v-content">
-                    {{user.phone}}
+                    {{user.phone?user.phone:'-'}}
                   </span>
                 </div>
                 <div class="v-info">
@@ -52,7 +52,7 @@
                   </span>
                   <span class="v-email-info v-fist">
                     <span class="v-content">
-                    {{user.email}}
+                    {{user.email?user.email:'-'}}
                     </span>
                     <i class="iconfont icon-gengduo2" v-if="user.email_list.length > 0"></i>
                     <div class="v-emails" v-if="user.email_list.length > 0">
@@ -72,7 +72,7 @@
                     微信：
                   </span>
                   <span class="v-content">
-                    {{user.wx_open_id}}
+                    {{user.wx_open_id?user.wx_open_id:'-'}}
                   </span>
                 </div>
               </div>
@@ -86,7 +86,7 @@
                     来源：
                   </span>
                   <span class="v-content">
-                    {{user.source === '' ? '无' : user.source}}
+                    {{user.source === '' ? '-' : user.source}}
                   </span>
                 </div>
                 <div class="v-from">
@@ -146,7 +146,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at?user.first_visited_at:'-'}}
+                    {{user.first_visited_at?user.first_visited_at.substring(0,11):'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -154,7 +154,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at?user.last_visited_at:'-'}}
+                    {{user.last_visited_at?user.last_visited_at.substring(0,11):'-'}}
                   </p>
                   <p class="v-title">
                     最近参会
@@ -181,11 +181,11 @@
             <div class="rb">
               <com-tabs :value.sync="tabValue">
                 <com-tab label="用户足迹"
-                        :index="1">
+                         :index="1">
                   <com-footprints></com-footprints>
                 </com-tab>
                 <com-tab label="报名/问卷信息"
-                        :index="2">
+                         :index="2">
                   <info-list></info-list>
                 </com-tab>
               </com-tabs>
@@ -202,7 +202,6 @@
 
 <script>
 import comSelect from '../components/com-select'
-
 import comFootprints from '../components/com-footprints'
 import singleInput from '../components/single-input'
 import industrySelect from '../components/industry-select'
@@ -212,6 +211,7 @@ import infoList from '../components/info-list'
 import userService from 'src/api/user-service'
 import comAddgroup from '../components/com-addGroup'
 import userManage from 'src/api/userManage-service'
+import groupService from 'src/api/user_group'
 export default {
   data () {
     return {
@@ -262,7 +262,14 @@ export default {
   },
   computed: {
     watchTime () {
-      return parseInt(this.user.watch_live_time) + parseInt(this.user.watch_replay_time)
+      let time = 0
+      if (this.user.watch_live_time) {
+        time += parseInt(this.user.watch_live_time)
+      }
+      if (this.user.watch_replay_time) {
+        time += parseInt(this.user.watch_replay_time)
+      }
+      return time || '-'
     }
   },
   created () {
@@ -308,6 +315,13 @@ export default {
             }
           }
         })
+      })
+    },
+    getGroupList () {
+      this.$post(groupService.GROUPS_LIST, {
+        page: 1
+      }).then(res => {
+
       })
     },
     typeEmail (type) {
@@ -369,7 +383,7 @@ export default {
       this.addGroup(data)
     },
     addGroup (data) {
-      this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
+      this.$config({ handlers: true }).$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
         let addData = {}
         addData.title = data.type === '1' ? data.title : data.name
         addData.describe = data.describe
@@ -377,6 +391,11 @@ export default {
         this.showAddgroup = false
         this.$toast({
           'content': '导入成功',
+          'position': 'center'
+        })
+      }).catch(err => {
+        this.$toast({
+          'content': err.msg,
           'position': 'center'
         })
       })
@@ -482,18 +501,24 @@ export default {
           .v-label {
             color: #888;
             width: 42px;
+            position: absolute;
+            top: 0;
+            left: 0;
           }
           .v-content {
             color: #222;
+            word-break: break-all;
+            max-width: 225px;
+            padding-left: 55px;
           }
           .v-email-info {
             position: relative;
             margin-left: 46px;
+            width: 100%;
             &.v-fist {
               margin-left: 0px;
               .v-content {
                 display: inline-block;
-                width: 142px;
               }
             }
             .v-type {
