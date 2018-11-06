@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{content === '' ? '无' : format(content)}}
+        {{content === '' ? '-' : format(content)}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
@@ -32,6 +32,10 @@ export default {
   props: {
     title: String,
     content: String
+  },
+  mounted () {
+    debugger
+    this.inputValue = (this.content === null || !this.content) ? '-' : this.content
   },
   methods: {
     modify (val) {

@@ -152,7 +152,7 @@
         <el-table-column prop="source" label="渠道来源"></el-table-column>
         <el-table-column label="详情">
           <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.userId)">详情</span>
+            <span class="data-link" @click="goPageDetail(scope.row.consumer_uid)">详情</span>
           </template>
         </el-table-column>
       </el-table>
@@ -168,11 +168,12 @@
 <script>
   import VePagination from 'src/components/ve-pagination'
   import dataService from 'src/api/data-service'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
+
   export default {
     name: 'viewerList',
-    components: { VePagination },
+    components: {VePagination},
     data () {
       return {
         isHigh: false,
@@ -196,54 +197,54 @@
           pageSize: 10
         },
         genderList: [
-          { value: '', label: '全部' },
-          { value: 'M', label: '男' },
-          { value: 'W', label: '女' }
+          {value: '', label: '全部'},
+          {value: 'M', label: '男'},
+          {value: 'W', label: '女'}
         ],
         watcherTypeList: [
-          { value: '', label: '全部用户' },
-          { value: 1, label: '优质用户' },
-          { value: 2, label: '潜在用户' },
-          { value: 3, label: '一般用户' },
-          { value: 4, label: '高价值用户' },
-          { value: 5, label: '流失用户' }
+          {value: '', label: '全部用户'},
+          {value: 1, label: '优质用户'},
+          {value: 2, label: '潜在用户'},
+          {value: 3, label: '一般用户'},
+          {value: 4, label: '高价值用户'},
+          {value: 5, label: '流失用户'}
         ],
         provinceList: [
-          { value: '', label: '省' },
-          { value: 1, label: '北京' },
-          { value: 2, label: '河南省' },
-          { value: 3, label: '河北省' },
-          { value: 4, label: '黑龙江' },
-          { value: 5, label: '湖北' }
+          {value: '', label: '省'},
+          {value: 1, label: '北京'},
+          {value: 2, label: '河南省'},
+          {value: 3, label: '河北省'},
+          {value: 4, label: '黑龙江'},
+          {value: 5, label: '湖北'}
         ],
         cityList: [
-          { value: '', label: '市' },
-          { value: 1, label: '北京市' },
-          { value: 2, label: '郑州市' },
-          { value: 3, label: '天津市' }
+          {value: '', label: '市'},
+          {value: 1, label: '北京市'},
+          {value: 2, label: '郑州市'},
+          {value: 3, label: '天津市'}
         ],
         tradeList: [
-          { value: '', label: '全部' },
-          { value: 1, label: '导入' },
-          { value: 2, label: '微信注册' },
-          { value: 3, label: 'PC注册' }
+          {value: '', label: '全部'},
+          {value: 1, label: '导入'},
+          {value: 2, label: '微信注册'},
+          {value: 3, label: 'PC注册'}
         ],
         deviceList: [
-          { value: '', label: '全部' },
-          { value: 'pc', label: '电脑' },
-          { value: 'phone', label: '手机' }
+          {value: '', label: '全部'},
+          {value: 'pc', label: '电脑'},
+          {value: 'phone', label: '手机'}
         ],
         scoreTypeList: [
-          { value: '', label: '全部' },
-          { value: 1, label: '100>得分>90' },
-          { value: 2, label: '90>得分>80' },
-          { value: 3, label: '80>得分>60' },
-          { value: 4, label: '60>得分' }
+          {value: '', label: '全部'},
+          {value: 1, label: '100>得分>90'},
+          {value: 2, label: '90>得分>80'},
+          {value: 3, label: '80>得分>60'},
+          {value: 4, label: '60>得分'}
         ],
         userTypeList: [
-          { value: '', label: '全部' },
-          { value: 0, label: '老用户' },
-          { value: 1, label: '新用户' }
+          {value: '', label: '全部'},
+          {value: 0, label: '老用户'},
+          {value: 1, label: '新用户'}
         ]
       }
     },
@@ -269,14 +270,34 @@
     created () {
       this.storeSelectMenu(false)
       this.searchParams.activityId = this.$route.params.id
+      this.dealSearchParam()
       this.queryList()
     },
     methods: {
       ...mapMutations('dataCenter', {
         storeSelectMenu: types.DATA_SELECT_MENU
       }),
+      dealSearchParam () {
+        let type = this.$route.query.type
+        console.log(type)
+        if (type === 'old') { // 老用户
+          this.searchParams.is_new = 0
+        } else if (type === 'new') { // 新用户
+          this.searchParams.is_new = 1
+        } else if (type === 'high') { // 优质用户
+          this.searchParams.user_level = 1
+        } else if (type === 'vip') { // 高价值用户
+          this.searchParams.user_level = 4
+        } else if (type === 'ord') { // 一般用户
+          this.searchParams.user_level = 3
+        } else if (type === 'potent') { // 潜在用户
+          this.searchParams.user_level = 2
+        } else if (type === 'loss') { // 流失用户
+          this.searchParams.user_level = 5
+        }
+      },
       goPageDetail (id) {
-        this.$router.push(`/user/detail/${id}`)
+        this.$router.push(`/userManage/info/${id}`)
       },
       changePage (pageIdx) {
         this.searchParams.page = pageIdx
@@ -328,7 +349,7 @@
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
   .data-box {
-    .export-btn{
+    .export-btn {
       height: 30px;
       line-height: 30px;
       padding: 0 20px;
