@@ -20,7 +20,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{content === '' ? '无' : content}}
+        {{content === '' ? '-' : content}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>

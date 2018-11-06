@@ -144,7 +144,8 @@ export default {
       this.showActivity.name = name
       this.showActivity.time = time
       this.searchInfoParams.page = 1
-      this.getDataInfoList(activityId)
+      this.searchInfoParams.activity_id = activityId
+      this.getDataInfoList(false)
       this.initInfoScroll()
     },
     recordBoxClick (e) {
@@ -200,16 +201,17 @@ export default {
     //     })
     //   })
     // },
-    getDataInfoList (activityId) {
+    getDataInfoList (isAdd) {
       this.searchInfoParams.business_consumer_uid = this.$route.params.id
-      this.searchInfoParams.activity_id = activityId
+      if (!isAdd) {
+        this.dataInfoList = []
+      }
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
         res.data.list.forEach(element => {
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total
         this.searchInfoParams.page = parseInt(res.data.page) + 1
-        console.log(this.searchInfoParams.page)
         this.searchInfoParams.total = res.data.total
       }).catch(err => {
         if (err.code !== 201) {
@@ -240,9 +242,10 @@ export default {
         })
         this.infoscroll.on('scrollEnd', () => {
           // 滚动到底部
-          if (this.infoscroll.y <= (this.infoscroll.maxScrollY)) {
+          console.log(this.infoscroll.y + ',' + this.infoscroll.maxScrollY)
+          if (this.infoscroll.y === (this.infoscroll.maxScrollY)) {
             if (_this.searchInfoParams.page <= _this.searchInfoParams.total) {
-              _this.getDataInfoList()
+              _this.getDataInfoList(true)
             }
           }
         })
