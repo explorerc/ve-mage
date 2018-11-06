@@ -12,9 +12,8 @@
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
         <el-button size="small" round @click="exportFile" :disabled="!tableData.length>0">全部导出</el-button>
-        <transition name='fade' mode='out-in' v-if="dialogImport">
-          <com-import @handleClick="handleClick" :groupId="Number.parseInt(search.group_id)"></com-import>
-        </transition>
+        <com-import v-if="dialogImport" @handleClick="handleClick" :isFixed="'0'" :isDis=true
+                    :groupId="Number.parseInt(search.group_id)"></com-import>
       </div>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
@@ -180,11 +179,10 @@
           cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
           confirmText: '删除',
           handleClick: (e) => {
-            console.log(e)
             if (e.action === 'cancel') {
-              this.$message({
-                type: 'info',
-                message: '已取消删除'
+              this.$toast({
+                content: '已取消删除!',
+                position: 'center'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP_USER, {
@@ -196,9 +194,9 @@
                   setTimeout(() => {
                     this.onSearch()
                   }, 0)
-                  this.$message({
-                    type: 'success',
-                    message: '删除成功!'
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
                   })
                 })
             }
