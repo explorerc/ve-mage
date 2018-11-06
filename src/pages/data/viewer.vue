@@ -231,9 +231,9 @@
           activityId: this.activityId
         }).then((res) => {
           let serveData = [
-            { name: '观众总数', value: 0 },
-            { name: '老用户', value: 0 },
-            { name: '新用户', value: 0 },
+            // { name: '观众总数', value: 0 },
+            // { name: '老用户', value: 0 },
+            // { name: '新用户', value: 0 },
             { name: '优质用户', value: 0 },
             { name: '高价值用户', value: 0 },
             { name: '一般用户', value: 0 },
@@ -243,9 +243,9 @@
           if (res.code === 200 && res.data.length !== 0) {
             this.basicUserData = res.data
             serveData = [
-              { name: '观众总数', value: this.basicUserData.viewerCount },
-              { name: '老用户', value: this.basicUserData.oldUser },
-              { name: '新用户', value: this.basicUserData.newUser },
+              // { name: '观众总数', value: this.basicUserData.viewerCount },
+              // { name: '老用户', value: this.basicUserData.oldUser },
+              // { name: '新用户', value: this.basicUserData.newUser },
               { name: '优质用户', value: this.basicUserData.highUser },
               { name: '高价值用户', value: this.basicUserData.vipUser },
               { name: '一般用户', value: this.basicUserData.ordinaryUser },
