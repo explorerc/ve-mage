@@ -29,7 +29,8 @@
                 :src="scope.row.avatar ? `${$imgHost}/${scope.row.avatar}` :require('assets/image/avatar@2x.png')"
                 alt="">
               <div>
-                <span class="table_info">{{scope.row.real_name}}</span> &nbsp;&nbsp;<span class="table_info">{{scope.row.sex| getSex}} </span>
+                <span class="table_info">{{scope.row.real_name?scope.row.real_name:scope.row.nickname}}</span> &nbsp;&nbsp;
+                <span class="table_info">{{scope.row.sex| getSex}} </span>
                 <div v-html="scope.row.user_level "></div>
               </div>
             </div>
@@ -37,7 +38,7 @@
         </el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="attention_goods_count" label="参与（次）"></el-table-column>
+        <el-table-column prop="join_count" label="参与（次）"></el-table-column>
         <el-table-column prop="updated_at" label="最后活跃"></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">
@@ -52,7 +53,6 @@
       </el-table>
       <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
-
   </div>
 </template>
 

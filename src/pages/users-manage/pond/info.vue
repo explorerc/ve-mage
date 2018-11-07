@@ -194,9 +194,7 @@
         </div>
       </div>
     </div>
-    <transition name='fade' mode='out-in' v-if="showAddgroup">
-      <com-addgroup  @handleClick="handleClick" @groupData="groupData"></com-addgroup>
-    </transition>
+    <com-addgroup v-if="showAddgroup" @handleClick="handleClick" @groupData="groupData"></com-addgroup>
   </div>
 </template>
 
