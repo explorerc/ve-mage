@@ -438,12 +438,12 @@
                 }, {
                   key: 'not_null',
                   name: '不为空',
-                  type: 'text',
+                  type: '',
                   unit: ''
                 }, {
                   key: 'is_null',
                   name: '为空',
-                  type: 'text',
+                  type: '',
                   unit: ''
                 }]
             },
@@ -483,12 +483,12 @@
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -528,12 +528,12 @@
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -682,12 +682,12 @@
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'select',
+              type: '',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'select',
+              type: '',
               unit: ''
             }]
           },
@@ -706,12 +706,12 @@
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'select',
+              type: '',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'select',
+              type: '',
               unit: ''
             }]
           },
