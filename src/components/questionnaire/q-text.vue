@@ -67,7 +67,7 @@ export default {
         }
         return false
       }
-      return true
+      return { id: this.value.id, value: this.value.value }
     }
   }
 }

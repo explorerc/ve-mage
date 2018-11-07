@@ -71,10 +71,10 @@
         </el-select>
       </div>
       <div class="search-item flm">
-        <span class="search-title">所属行业</span>
+        <span class="search-title">渠道来源</span>
         <el-select v-model="searchParams.industry"
-                   placeholder="所属行业">
-          <el-option v-for="item in tradeList"
+                   placeholder="渠道来源">
+          <el-option v-for="item in sourceList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -95,7 +95,7 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-select style="width: 100px;"
-                   v-model="searchParams.province">
+                   v-model="searchParams.provinceId">
           <el-option v-for="item in provinceList"
                      :key="item.value"
                      :label="item.label"
@@ -103,7 +103,7 @@
           </el-option>
         </el-select>
         <el-select style="width: 112px;"
-                   v-model="searchParams.city">
+                   v-model="searchParams.cityId">
           <el-option v-for="item in cityList"
                      :key="item.value"
                      :label="item.label"
@@ -132,16 +132,30 @@
       <el-table :data="viewerList" :default-sort="{prop: 'score', order: 'descending'}" style="width: 100%">
         <el-table-column label="姓名">
           <template slot-scope="scope">
-            {{scope.row.nickname}}
+            <div class="user-info">
+              <span class="user-avatar" v-if="!scope.row.avatar"></span>
+              <span class="user-avatar" v-else :style="{backgroundImage:`url(${$imgHost}/${scope.row.avatar})`}"></span>
+              <div>
+                <span :title="scope.row.nickname">{{scope.row.nickname?scope.row.nickname:'无'}}</span>
+                <span :class="{level4:scope.row.end_user_level==4}">{{scope.row.end_user_level|fmtUserLevel}}</span>
+              </div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="score" sortable label="本次得分"></el-table-column>
-        <el-table-column prop="end_user_level" label="会后级别"></el-table-column>
-        <el-table-column prop="phone" label="手机号"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column label="参会时间（第一次）">
+        <el-table-column label="手机号">
           <template slot-scope="scope">
-            {{scope.row.first_join_at&&scope.row.first_join_at.substring(0,16)}}
+            {{scope.row.phone|isEmpty}}
+          </template>
+        </el-table-column>
+        <el-table-column label="邮箱">
+          <template slot-scope="scope">
+            {{scope.row.email|isEmpty}}
+          </template>
+        </el-table-column>
+        <el-table-column label="参会时间(首次)">
+          <template slot-scope="scope">
+            <span :title="scope.row.first_join_at&&scope.row.first_join_at.substring(0,16)">{{scope.row.first_join_at&&scope.row.first_join_at.substring(0,16)}}</span>
           </template>
         </el-table-column>
         <el-table-column label="观看时长">
@@ -152,7 +166,7 @@
         <el-table-column prop="source" label="渠道来源"></el-table-column>
         <el-table-column label="详情">
           <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.consumer_uid)">详情</span>
+            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
           </template>
         </el-table-column>
       </el-table>
@@ -170,6 +184,8 @@
   import dataService from 'src/api/data-service'
   import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
+  import province from '../../components/province'
+  import city from '../../components/city'
 
   export default {
     name: 'viewerList',
@@ -186,7 +202,9 @@
           sex: '',
           user_level: '',
           is_new: '',
+          provinceId: '',
           province: '',
+          cityId: '',
           city: '',
           industry: '',
           first_join_at: '',
@@ -204,29 +222,22 @@
         watcherTypeList: [
           {value: '', label: '全部用户'},
           {value: 1, label: '优质用户'},
-          {value: 2, label: '潜在用户'},
+          {value: 2, label: '高价值用户'},
           {value: 3, label: '一般用户'},
-          {value: 4, label: '高价值用户'},
+          {value: 4, label: '潜在用户'},
           {value: 5, label: '流失用户'}
         ],
         provinceList: [
           {value: '', label: '省'},
-          {value: 1, label: '北京'},
-          {value: 2, label: '河南省'},
-          {value: 3, label: '河北省'},
-          {value: 4, label: '黑龙江'},
-          {value: 5, label: '湖北'}
+          ...province
         ],
         cityList: [
-          {value: '', label: '市'},
-          {value: 1, label: '北京市'},
-          {value: 2, label: '郑州市'},
-          {value: 3, label: '天津市'}
+          {value: '', label: '市'}
         ],
-        tradeList: [
+        sourceList: [
           {value: '', label: '全部'},
           {value: 1, label: '导入'},
-          {value: 2, label: '微信注册'},
+          {value: 2, label: '手机注册'},
           {value: 3, label: 'PC注册'}
         ],
         deviceList: [
@@ -254,6 +265,17 @@
         let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
         let s = ((value % 60 >> 0) + '').padStart(2, 0)
         return `${h}:${m}:${s}`
+      },
+      fmtUserLevel (value) {
+        let obj = {
+          0: '没有评级',
+          1: '优质用户',
+          2: '高价值用户',
+          3: '一般用户',
+          4: '一般用户',
+          5: '流失用户'
+        }
+        return obj[value]
       }
     },
     watch: {
@@ -265,6 +287,27 @@
         }
         this.searchParams.first_join_at = vals[0]
         this.searchParams.last_leave_at = vals[1]
+      },
+      'searchParams.provinceId' (newVal) {
+        if (newVal) {
+          for (let i = 0; i < province.length; i++) {
+            if (province[i].value === newVal) {
+              this.searchParams.province = province[i].label
+              break
+            }
+          }
+          this.cityList = [...this.cityList, ...city[newVal]]
+        }
+        this.searchParams.cityId = ''
+        this.searchParams.city = ''
+      },
+      'searchParams.cityId' (newVal) {
+        for (let i = 0; i < this.cityList.length; i++) {
+          if (this.cityList[i].value === newVal) {
+            this.searchParams.city = this.cityList[i].label
+            break
+          }
+        }
       }
     },
     created () {
@@ -416,6 +459,40 @@
     }
     .flm {
       margin-left: 14px;
+    }
+    .user-info {
+      .user-avatar {
+        margin: 8px 0;
+        display: inline-block;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        vertical-align: middle;
+        background-image: url("../../assets/image/avatar@2x.png");
+        background-size: cover;
+      }
+      div {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 10px;
+        span {
+          display: block;
+          width: 82px;
+          line-height: 24px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          &:first-child {
+            color: #333;
+          }
+          &:last-child {
+            color: #999;
+          }
+        }
+      }
+      .level4 {
+        color: #FC5659;
+      }
     }
   }
 </style>

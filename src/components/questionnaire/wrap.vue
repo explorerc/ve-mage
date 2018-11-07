@@ -41,7 +41,7 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort fuck">排序</div>
+        <div class="sort">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
