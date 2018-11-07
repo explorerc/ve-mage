@@ -35,9 +35,9 @@
                     :class="{active:person.isChecked}"
                     :key="person.id">
                   {{person.name}} ({{person.count}}人）
-                  <com-checkbox v-model="person.isChecked"
+                  <el-checkbox v-model="person.isChecked"
                                 class="fr"
-                                small></com-checkbox>
+                                small></el-checkbox>
                 </li>
               </ul>
             </div>
@@ -59,9 +59,9 @@
                     :class="{active:tag.isChecked}"
                     :key="tag.id">
                   {{tag.name}}
-                  <com-checkbox v-model="tag.isChecked"
+                  <el-checkbox v-model="tag.isChecked"
                                 class="fr"
-                                small></com-checkbox>
+                                small></el-checkbox>
                 </li>
               </ul>
             </div>
