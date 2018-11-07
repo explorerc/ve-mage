@@ -20,7 +20,7 @@
           </el-table-column>
           <el-table-column
             prop="content"
-            label="邮箱地址"
+            :label="_type === 'SMS'? '手机号' : '邮箱'"
             width="220"
             show-overflow-tooltip>
           </el-table-column>
@@ -102,10 +102,10 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -240px;
+  margin-top: -340px;
   margin-left: -300px;
   width: 600px;
-  height: 480px;
+  height: 680px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
