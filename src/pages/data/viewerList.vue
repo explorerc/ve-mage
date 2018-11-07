@@ -163,7 +163,11 @@
             {{scope.row.watch_time|fmtTime}}
           </template>
         </el-table-column>
-        <el-table-column prop="source" label="渠道来源"></el-table-column>
+        <el-table-column label="渠道来源">
+          <template slot-scope="scope">
+            {{scope.row.source|fmtSource}}
+          </template>
+        </el-table-column>
         <el-table-column label="详情">
           <template slot-scope="scope">
             <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
@@ -236,9 +240,10 @@
         ],
         sourceList: [
           {value: '', label: '全部'},
-          {value: 1, label: '导入'},
-          {value: 2, label: '手机注册'},
-          {value: 3, label: 'PC注册'}
+          {value: 'IMPORT', label: '导入'},
+          {value: 'MOBILE', label: '手机注册'},
+          {value: 'PC', label: 'PC注册'},
+          {value: 'WECHAT', label: '微信注册'}
         ],
         deviceList: [
           {value: '', label: '全部'},
@@ -274,6 +279,16 @@
           3: '一般用户',
           4: '一般用户',
           5: '流失用户'
+        }
+        return obj[value]
+      },
+      fmtSource (value) {
+        let obj = {
+          '': '没有来源',
+          'IMPORT': '导入',
+          'MOBILE': '手机注册',
+          'PC': 'PC注册',
+          'WECHAT': '微信注册'
         }
         return obj[value]
       }
