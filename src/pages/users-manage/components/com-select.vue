@@ -20,7 +20,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{(this.content === null || !this.content) ? '-' : content}}
+        {{(this.content === null || !this.content || this.content === "0") ? '-' : content}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
@@ -43,7 +43,7 @@ export default {
     selectValue: Array // 下拉菜单选项
   },
   created () {
-    this.inputValue = (this.content === null || !this.content) ? '-' : this.content
+    this.inputValue = (this.content === null || !this.content || this.content === '0') ? '-' : this.content
   },
   methods: {
     modify (val) {
