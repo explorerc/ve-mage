@@ -242,8 +242,7 @@
           {value: '', label: '全部'},
           {value: 'IMPORT', label: '导入'},
           {value: 'MOBILE', label: '手机注册'},
-          {value: 'PC', label: 'PC注册'},
-          {value: 'WECHAT', label: '微信注册'}
+          {value: 'PC', label: 'PC注册'}
         ],
         deviceList: [
           {value: '', label: '全部'},
@@ -287,8 +286,7 @@
           '': '没有来源',
           'IMPORT': '导入',
           'MOBILE': '手机注册',
-          'PC': 'PC注册',
-          'WECHAT': '微信注册'
+          'PC': 'PC注册'
         }
         return obj[value]
       }

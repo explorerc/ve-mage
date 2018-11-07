@@ -16,19 +16,25 @@
             <div class="item-title">
               <ve-title title="观众总数"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('all')">{{basicUserData.viewerCount}}</div>
+            <div class="item-mid data-link" @click="goPage('all',basicUserData.viewerCount)">
+              {{basicUserData.viewerCount}}
+            </div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
               <ve-title title="老用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('old')">{{basicUserData.oldUser}}</div>
+            <div class="item-mid data-link" @click="goPage('old',basicUserData.oldUser)">
+              {{basicUserData.oldUser}}
+            </div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
               <ve-title title="新用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('new')">{{basicUserData.newUser}}</div>
+            <div class="item-mid data-link" @click="goPage('new',basicUserData.newUser)">
+              {{basicUserData.newUser}}
+            </div>
           </div>
         </div>
         <div class="item-box fl">
@@ -36,31 +42,41 @@
             <div class="item-title">
               <ve-title title="优质用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('high')">{{basicUserData.highUser}}</div>
+            <div class="item-mid data-link" @click="goPage('high',basicUserData.highUser)">
+              {{basicUserData.highUser}}
+            </div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
               <ve-title width="180px" title="高价值用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('vip')">{{basicUserData.vipUser}}</div>
+            <div class="item-mid data-link" @click="goPage('vip',basicUserData.vipUser)">
+              {{basicUserData.vipUser}}
+            </div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
               <ve-title width="180px" title="一般用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('ord')">{{basicUserData.ordinaryUser}}</div>
+            <div class="item-mid data-link" @click="goPage('ord',basicUserData.ordinaryUser)">
+              {{basicUserData.ordinaryUser}}
+            </div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
               <ve-title width="180px" title="潜在用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('potent')">{{basicUserData.potentialUser}}</div>
+            <div class="item-mid data-link" @click="goPage('potent',basicUserData.potentialUser)">
+              {{basicUserData.potentialUser}}
+            </div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
               <ve-title width="180px" title="流失用户"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('loss')">{{basicUserData.lossUser}}</div>
+            <div class="item-mid data-link" @click="goPage('loss',basicUserData.lossUser)">
+              {{basicUserData.lossUser}}
+            </div>
           </div>
         </div>
       </div>
@@ -113,14 +129,14 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { pie, barRadius } from 'src/utils/chart-tool'
+  import {pie, barRadius} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'viewer',
-    components: { VeTitle, VeCircle, NavMenu },
+    components: {VeTitle, VeCircle, NavMenu},
     data () {
       return {
         basicUserData: {
@@ -195,8 +211,10 @@
           this.genderChart.resize()
         }
       },
-      goPage (type) {
-        this.$router.push(`/data/viewerList/${this.$route.params.id}?type=${type}`)
+      goPage (type, limit) {
+        if (limit !== 0) {
+          this.$router.push(`/data/viewerList/${this.$route.params.id}?type=${type}`)
+        }
       },
       async initPage () {
         // 地域
@@ -234,11 +252,11 @@
             // { name: '观众总数', value: 0 },
             // { name: '老用户', value: 0 },
             // { name: '新用户', value: 0 },
-            { name: '优质用户', value: 0 },
-            { name: '高价值用户', value: 0 },
-            { name: '一般用户', value: 0 },
-            { name: '潜在用户', value: 0 },
-            { name: '流失用户', value: 0 }
+            {name: '优质用户', value: 0},
+            {name: '高价值用户', value: 0},
+            {name: '一般用户', value: 0},
+            {name: '潜在用户', value: 0},
+            {name: '流失用户', value: 0}
           ]
           if (res.code === 200 && res.data.length !== 0) {
             this.basicUserData = res.data
@@ -246,11 +264,11 @@
               // { name: '观众总数', value: this.basicUserData.viewerCount },
               // { name: '老用户', value: this.basicUserData.oldUser },
               // { name: '新用户', value: this.basicUserData.newUser },
-              { name: '优质用户', value: this.basicUserData.highUser },
-              { name: '高价值用户', value: this.basicUserData.vipUser },
-              { name: '一般用户', value: this.basicUserData.ordinaryUser },
-              { name: '潜在用户', value: this.basicUserData.potentialUser },
-              { name: '流失用户', value: this.basicUserData.lossUser }
+              {name: '优质用户', value: this.basicUserData.highUser},
+              {name: '高价值用户', value: this.basicUserData.vipUser},
+              {name: '一般用户', value: this.basicUserData.ordinaryUser},
+              {name: '潜在用户', value: this.basicUserData.potentialUser},
+              {name: '流失用户', value: this.basicUserData.lossUser}
             ]
           }
           // 各级别用户占比
@@ -263,7 +281,7 @@
         this.$get(dataService.GET_VIEWER_REGION, {
           activityId: this.activityId
         }).then((res) => {
-          let listData = [{ name: '', value: 0 }]
+          let listData = [{name: '', value: 0}]
           if (res.code === 200 && res.data.length !== 0) {
             listData = res.data.list
           }
