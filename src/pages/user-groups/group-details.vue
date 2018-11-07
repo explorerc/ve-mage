@@ -71,7 +71,7 @@
     },
     filters: {
       getSex (a) {
-        return a === 'M' ? '男' : '女'
+        return a ? (a === 'M' ? '男' : '女') : '未知'
       }
     },
     data () {

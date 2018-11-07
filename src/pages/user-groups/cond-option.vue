@@ -339,7 +339,6 @@
               unit: '条'
             }]
           },
-
           share_count: {
             keys: ['propagation', 'share_count'],
             cons: [
@@ -380,13 +379,12 @@
                 unit: '人'
               }]
           },
-
           common_device: {
             keys: ['browsing', 'common_device'],
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -396,57 +394,56 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
           },
-          real_name:
-            {
-              keys: ['user_attr', 'real_name'],
-              cons:
-                [{
-                  key: 'contain',
-                  name: '包含',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'not_contain',
-                  name: '不包含',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'eq',
-                  name: '是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'neq',
-                  name: '不是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'head_eq',
-                  name: '开头是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'tail_eq',
-                  name: '结尾是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'not_null',
-                  name: '不为空',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'is_null',
-                  name: '为空',
-                  type: 'text',
-                  unit: ''
-                }]
-            },
+          real_name: {
+            keys: ['user_attr', 'real_name'],
+            cons: [
+              {
+                key: 'contain',
+                name: '包含',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'not_contain',
+                name: '不包含',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'eq',
+                name: '是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'neq',
+                name: '不是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'head_eq',
+                name: '开头是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'tail_eq',
+                name: '结尾是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'not_null',
+                name: '不为空',
+                type: '',
+                unit: ''
+              }, {
+                key: 'is_null',
+                name: '为空',
+                type: '',
+                unit: ''
+              }]
+          },
           position: {
             keys: ['user_attr', 'position'],
             cons: [
@@ -483,12 +480,12 @@
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -528,12 +525,12 @@
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -587,7 +584,7 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -682,12 +679,12 @@
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'select',
+              type: '',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'select',
+              type: '',
               unit: ''
             }]
           },
@@ -706,12 +703,12 @@
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'select',
+              type: '',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'select',
+              type: '',
               unit: ''
             }]
           },
@@ -720,7 +717,7 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -805,7 +802,7 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -814,7 +811,7 @@
             keys: ['other', 'groups'],
             cons: [{
               key: 'eq',
-              name: '等于',
+              name: '是',
               type: 'select',
               unit: ''
             }]
