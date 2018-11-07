@@ -71,10 +71,10 @@
         </el-select>
       </div>
       <div class="search-item flm">
-        <span class="search-title">所属行业</span>
+        <span class="search-title">渠道来源</span>
         <el-select v-model="searchParams.industry"
-                   placeholder="所属行业">
-          <el-option v-for="item in tradeList"
+                   placeholder="渠道来源">
+          <el-option v-for="item in sourceList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -184,6 +184,8 @@
   import dataService from 'src/api/data-service'
   import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
+  import province from '../../components/province'
+  import city from '../../components/city'
 
   export default {
     name: 'viewerList',
@@ -225,22 +227,15 @@
         ],
         provinceList: [
           {value: '', label: '省'},
-          {value: 1, label: '北京'},
-          {value: 2, label: '河南省'},
-          {value: 3, label: '河北省'},
-          {value: 4, label: '黑龙江'},
-          {value: 5, label: '湖北'}
+          ...province
         ],
         cityList: [
-          {value: '', label: '市'},
-          {value: 1, label: '北京市'},
-          {value: 2, label: '郑州市'},
-          {value: 3, label: '天津市'}
+          {value: '', label: '市'}
         ],
-        tradeList: [
+        sourceList: [
           {value: '', label: '全部'},
           {value: 1, label: '导入'},
-          {value: 2, label: '微信注册'},
+          {value: 2, label: '手机注册'},
           {value: 3, label: 'PC注册'}
         ],
         deviceList: [
@@ -290,6 +285,12 @@
         }
         this.searchParams.first_join_at = vals[0]
         this.searchParams.last_leave_at = vals[1]
+      },
+      'searchParams.province' (newVal) {
+        if (newVal) {
+          this.cityList = [...this.cityList, ...city[newVal]]
+        }
+        this.searchParams.city = ''
       }
     },
     created () {
