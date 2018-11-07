@@ -223,6 +223,7 @@
             'questionList': this.quesData
           }
         }
+        console.log(JSON.stringify(this.saveData.detail))
         this.saveData.detail.questionList.forEach(item => {
           if (item.type === 'mobile') {
             item.required = 'Y'
