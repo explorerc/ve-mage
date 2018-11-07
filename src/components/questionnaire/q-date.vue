@@ -41,7 +41,7 @@ export default {
         this.errorTip = '此项为必填项'
         return false
       }
-      return true
+      return { id: this.value.id, value: this.value.value }
     }
   }
 }
