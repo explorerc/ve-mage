@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{(this.content === null || !this.content) ? '-' : format(content)}}
+        {{(this.content === null || !this.content || this.content === "0") ? '-' : format(content)}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
@@ -34,7 +34,7 @@ export default {
     content: String
   },
   mounted () {
-    this.inputValue = (this.content === null || !this.content) ? '-' : this.content
+    this.inputValue = (this.content === null || !this.content || this.content === '0') ? '-' : this.content
   },
   methods: {
     modify (val) {
@@ -42,7 +42,7 @@ export default {
       this.isEdit = true
     },
     inputBlur () {
-      if (this.content === null || !this.content) {
+      if (this.content === null || !this.content || this.content === '0') {
         this.isEdit = false
       } else {
         this.$emit('saveInfo', this.format(this.inputValue))

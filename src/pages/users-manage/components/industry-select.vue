@@ -11,7 +11,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{(this.content === null || !this.content) ? '-' : content}}
+        {{(this.content === null || !this.content || this.content === "0") ? '-' : content}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
