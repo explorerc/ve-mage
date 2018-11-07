@@ -40,7 +40,7 @@
           <div class='filter-item'>
             <div class="condition">
               <span class="label">用户级别</span>
-               <el-select v-model="filterCondition.user_level" placeholder="请选择">
+               <el-select v-model="filterCondition.user_level" placeholder="请选择" style="width:216px;">
                 <el-option
                   v-for="item in grands"
                   :key="item.value"
@@ -68,27 +68,38 @@
           <div class='filter-item'>
             <div class="condition area">
               <span class="label">所属地域</span>
-              <el-select v-model="filterCondition.province" filterable placeholder="省份">
+              <!-- <el-select v-model="filterCondition.province" filterable placeholder="省份">
                 <el-option
-                  v-for="item in districts"
+                  v-for="item in provinceList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name">
                 </el-option>
+              </el-select> -->
+
+              <el-select style="width: 100px;" v-model="provinceId" placeholder="省份">
+                <el-option v-for="item in provinceList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                </el-option>
               </el-select>
-              <el-select v-model="filterCondition.city" filterable placeholder="城市">
+              <!-- <el-select v-model="filterCondition.city" filterable placeholder="城市">
                 <el-option
-                  v-for="item in districtsCity"
+                  v-for="item in cityList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name">
                 </el-option>
+              </el-select> -->
+
+              <el-select style="width: 112px;" v-model="cityId" placeholder="城市">
+                <el-option v-for="item in cityList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                </el-option>
               </el-select>
-              <!-- <el-cascader
-                :options="districts"
-                v-model="districtsVal"
-                @change="handleDistrictChange">
-              </el-cascader> -->
             </div>
             <div class="condition">
               <span class="label">性别</span>
@@ -295,8 +306,8 @@ import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
-import districtDataPro from 'src/assets/js/district-provience.js'
-import districtDataCity from 'src/assets/js/district-city.js'
+import province from 'src/components/province'
+import city from 'src/components/city'
 export default {
   data () {
     return {
@@ -408,8 +419,13 @@ export default {
         }
       ],
       industrysVal: '',
-      districts: [],
-      districtsCity: [],
+      provinceList: [
+        {value: '', label: '全部'},
+        ...province
+      ],
+      cityList: [
+        {value: '', label: '全部'}
+      ],
       // districtsVal: [''],
       firstVal: [],
       lastVal: [],
@@ -448,6 +464,8 @@ export default {
       showChooseGroup: false,
       showImport: false,
       chooseType: '活动',
+      provinceId: '',
+      cityId: '',
       filterCondition: { // 精准搜索条件对象
         keyword: '', // 关键字查询 模糊匹配 姓名 昵称 手机号 邮箱
         user_level: '', // 用户级别
@@ -473,20 +491,6 @@ export default {
   },
   mounted () {
     this.queryUserPool(this.filterCondition)
-    this.districts = districtDataPro
-    this.districtsCity = districtDataCity
-    // let arr = []
-    // districtData.forEach(item => {
-    //   item['children'].forEach(ele => {
-    //     if (item['children']) {
-    //       ele['children'] = []
-    //       arr.push(item)
-    //     }
-    //   })
-
-    // item['children']['children'] ? item['children']['children'] = []
-    // })
-    // console.log(JSON.parse(arr))
   },
   filters: {
     filterLevel (val) {
@@ -525,9 +529,6 @@ export default {
   methods: {
     handleSelectionChange (val) {
       this.multipleSelection = val
-      // val.forEach(item => {
-      //   this.multipleSelection.push(item.business_consumer_uid)
-      // })
     },
     currentChange (e) {
       Object.assign(this.filterCondition, { 'page': e })
@@ -565,12 +566,6 @@ export default {
       this.groupArray.id = res.id
       // this.filterCondition.groups = res.id.toString()
     },
-    // handleDistrictChange (res) {
-    //   console.log(res)
-    //   this.filterCondition.province = res[0]
-    //   this.filterCondition.city = res[1] ? res[1] : ''
-    //   this.filterCondition.area = res[2] ? res[2] : ''
-    // },
     searchHandler (res) {
       console.log(res)
     },
@@ -753,6 +748,26 @@ export default {
           arr.push(item.business_consumer_uid)
         })
         this.checkedArr = arr
+      }
+    },
+    'provinceId' (newVal) {
+      if (newVal) {
+        for (let i = 0; i < province.length; i++) {
+          if (province[i].value === newVal) {
+            this.filterCondition.province = province[i].label
+            break
+          }
+        }
+        this.cityList = [{value: '', label: '全部'}, ...city[newVal]]
+        this.filterCondition.city = ''
+      }
+    },
+    'cityId' (newVal) {
+      for (let i = 0; i < this.cityList.length; i++) {
+        if (this.cityList[i].value === newVal) {
+          this.filterCondition.city = this.cityList[i].label
+          break
+        }
       }
     }
   },
@@ -1001,6 +1016,7 @@ export default {
         padding: 0 15px;
         height: 34px;
         line-height: 34px;
+        text-overflow: ellipsis;
       }
       .el-input.is-focus .el-input__inner {
         border-color: $color-blue;
