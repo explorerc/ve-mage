@@ -170,11 +170,18 @@
           </ol>
         </div>
         <div>
-          <!-- <span>数据</span> -->
-          <ol>
-            <li @click="goDataCenter">数据</li>
-            <li>观众</li>
-          </ol>
+          <template  v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+            <ol title='预告、直播中状态不能进入数据中心'>
+              <li @click="linkTo($event,'/data/preview/')" :class="'disabled'">数据</li>
+              <li :class="'disabled'">观众</li>
+            </ol>
+          </template>
+          <template v-else>
+            <ol>
+              <li @click="linkTo($event,'/data/preview/')">数据</li>
+              <li>观众</li>
+            </ol>
+          </template>
         </div>
       </div>
     </div>
@@ -700,18 +707,6 @@
         xmlHttp.open('GET', url, false) // 同步方式请求
         xmlHttp.withCredentials = true
         xmlHttp.send(null)
-      },
-      goDataCenter () {
-        if (this.statusClass === 'live' || this.statusClass === 'preview') {
-          this.$messageBox({
-            header: '提示',
-            content: '预告、直播中状态不能进入数据中心',
-            autoClose: 5,
-            confirmText: '知道了'
-          })
-        } else {
-          this.$router.push(`/data/preview/${this.activityId}`)
-        }
       },
       isToday (str) {
         if (new Date(str).toDateString() === new Date().toDateString()) {
