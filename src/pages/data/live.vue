@@ -8,7 +8,9 @@
             <div class="item-title">
               <ve-title title="观看直播人数"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('/data/viewerList')">{{basicCountData.live.nums}}</div>
+            <div class="item-mid data-link" @click="goPage('/data/viewerList',basicCountData.live.nums)">
+              {{basicCountData.live.nums}}
+            </div>
           </div>
           <div class="box fl" style="width: 33.33333%;">
             <div class="item-title">
@@ -28,7 +30,9 @@
             <div class="item-title">
               <ve-title title="观看回放人数"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('/data/viewerList')">{{basicCountData.playBack.nums}}</div>
+            <div class="item-mid data-link" @click="goPage('/data/viewerList',basicCountData.playBack.nums)">
+              {{basicCountData.playBack.nums}}
+            </div>
           </div>
           <div class="box fl" style="width: 33.33333%;">
             <div class="item-title">
@@ -444,14 +448,14 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
-  import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
+  import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import { mapMutations } from 'vuex'
+  import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: { VeTitle, VeCircle, NavMenu, VePagination },
+    components: {VeTitle, VeCircle, NavMenu, VePagination},
     data () {
       return {
         loading: false,
@@ -588,9 +592,11 @@
           this.hdChart.resize()
         }
       },
-      goPage (url) {
-        this.$router.push(`${url}/${this.$route.params.id}`)
-        this.storeSelectMenu(3)
+      goPage (url, limit) {
+        if (limit !== 0) {
+          this.$router.push(`${url}/${this.$route.params.id}`)
+          this.storeSelectMenu(3)
+        }
       },
       initPage () {
         // 基础数据
@@ -647,9 +653,9 @@
               this.watcherChart = lines('chart01', {
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
-                  { name: '浏览次数', data: this.watcherLineData.live.pv },
-                  { name: '独立访问', data: this.watcherLineData.live.uv },
-                  { name: 'IP', data: this.watcherLineData.live.ip }
+                  {name: '浏览次数', data: this.watcherLineData.live.pv},
+                  {name: '独立访问', data: this.watcherLineData.live.uv},
+                  {name: 'IP', data: this.watcherLineData.live.ip}
                 ]
               })
             })
@@ -685,15 +691,15 @@
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
-          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
+          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
+          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
         ]
       },
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 },
-          { 'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100 }
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
       },
       goRedBagDataDetail () {
@@ -728,8 +734,8 @@
       goGoodsDataDetail () {
         this.goodsDataDetail = true
         this.goodsDataList = [
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859 },
-          { 'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859 }
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
+          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
         ]
       },
       changeMenu (val) {
@@ -740,9 +746,9 @@
         this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
-            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
+            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
+            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
           ]
         })
       },
