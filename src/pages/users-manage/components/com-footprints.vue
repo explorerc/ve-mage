@@ -10,8 +10,8 @@
             {{itemData.generated_at}}
           </p>
           <p class="v-content">
-            {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_name?itemData.data.activity_name:''}}
-            <button @click="showRecord(itemData.activity_id,itemData.data.activity_name,itemData.generated_at)" v-if="itemData.event!='FIRST_VISIT'">
+            {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_title?itemData.data.activity_title:''}}
+            <button @click="showRecord(itemData.activity_id,itemData.data.activity_title,itemData.generated_at)" v-if="itemData.event!='FIRST_VISIT'">
               查看详情
             </button>
           </p>

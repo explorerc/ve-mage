@@ -90,44 +90,50 @@
             时间
           </div>
           <div class="v-activity-content v-type">
-            流失用户
+            观众总数
           </div>
           <div class="v-activity-content v-operation">
-            一般用户
-          </div>
-          <div class="v-activity-content v-operation">
-            潜力用户
+            优质用户
           </div>
           <div class="v-activity-content v-operation">
             高价值用户
           </div>
           <div class="v-activity-content v-operation">
-            优质用户
+            潜力用户
+          </div>
+          <div class="v-activity-content v-operation">
+            一般用户
+          </div>
+          <div class="v-activity-content v-type">
+            流失用户
           </div>
         </li>
         <li class="clearfix"
-            v-for="itemData in tableList"
+            v-for="(itemData,index) in tableList"
             :key="itemData.id">
           <div class="v-activity-content v-name">
             {{itemData.title}}
           </div>
           <div class="v-activity-content v-time">
-            {{itemData.startTime}}
+            {{times[index]}}
           </div>
           <div class="v-activity-content">
-            {{itemData.val0}}
+            {{itemData.val5}}
           </div>
           <div class="v-activity-content">
-            {{itemData.val1}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.val2}}
+            {{itemData.val4}}
           </div>
           <div class="v-activity-content">
             {{itemData.val3}}
           </div>
           <div class="v-activity-content">
-            {{itemData.val4}}
+            {{itemData.val2}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val1}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val0}}
           </div>
         </li>
       </ol>
@@ -157,7 +163,8 @@ export default {
         general: '',
         potential: '',
         loss: ''
-      }
+      },
+      times: []
     }
   },
   beforeDestroy () {
@@ -204,6 +211,10 @@ export default {
         count: count
       }).then((res) => {
         this.datas = res.data
+        for (let i = 0; i < this.datas.list.length; i++) {
+          this.times[i] = this.datas.list[i].name
+          this.datas.list[i].name = this.datas.names[i].length > 10 ? this.datas.names[i].substring(0, 10) : this.datas.names[i]
+        }
         this.tableList.splice(0, this.tableList.length)
         // this.datas = res.data
         /* 绘制堆叠图 */
@@ -228,6 +239,7 @@ export default {
           template.val2 = element.data[2]
           template.val3 = element.data[3]
           template.val4 = element.data[4]
+          template.val5 = element.data[5]
           this.tableList.push(template)
         })
       })
@@ -416,7 +428,7 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-          width: 12%;
+          width: 10%;
         }
         .v-name {
           width: 26%;
