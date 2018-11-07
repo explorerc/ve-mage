@@ -608,10 +608,10 @@ export default {
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {
-        background-color: #ffd021;
+        background-color: #e2e2e2;
         opacity: 0.8;
         &:hover {
-          background-color: #ffd021;
+          background-color: #e2e2e2;
           opacity: 0.8;
         }
       }

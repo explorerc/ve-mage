@@ -411,10 +411,10 @@ export default {
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {
-        background-color: #ffd021;
+        background-color: #e2e2e2;
         opacity: 0.8;
         &:hover {
-          background-color: #ffd021;
+          background-color: #e2e2e2;
           opacity: 0.8;
         }
       }
@@ -452,10 +452,10 @@ export default {
       div {
         font-size: 20px;
         color: #222;
-        &.ve-message-box__btns{
+        &.ve-message-box__btns {
           margin-top: 44px;
         }
-        &.ve-message-box__container{
+        &.ve-message-box__container {
           padding: 25px 30px 20px 30px;
         }
       }
@@ -468,7 +468,7 @@ export default {
           color: #222;
         }
       }
-      :before{
+      :before {
         background-color: #fff;
       }
     }
