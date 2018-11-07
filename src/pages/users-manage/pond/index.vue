@@ -941,7 +941,7 @@ export default {
     .users-list {
       .el-table {
         .users-info {
-          width: 160px;
+          width: 170px;
           img {
             width: 32px;
             height: 32px;

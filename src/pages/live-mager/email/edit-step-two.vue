@@ -384,8 +384,7 @@
       // 查询群组
       async queryGroupList (keyword) {
         await this.$get(userManage.GET_GROUP_LIST, {
-          keyword: this.searchVal,
-          type: '2'
+          keyword: this.searchVal
         }).then((res) => {
           let temArray = []
           res.data.list.forEach((item) => {
@@ -496,118 +495,118 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
-  .edit-step-box {
-    background-color: #f5f5f5;
-    .send-span {
-      display: inline-block;
-      height: 40px;
-      line-height: 40px;
-      margin: 0 15px;
-      color: #888;
+.edit-step-box {
+  background-color: #f5f5f5;
+  .send-span {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 15px;
+    color: #888;
+  }
+  .email-header {
+    height: 60px;
+    line-height: 60px;
+    background-color: #ffd021;
+    .icon-jiantou {
+      font-size: 22px;
+      vertical-align: -2px;
     }
-    .email-header {
-      height: 60px;
-      line-height: 60px;
-      background-color: #ffd021;
-      .icon-jiantou {
-        font-size: 22px;
-        vertical-align: -2px;
+    .back-btn {
+      display: inline-block;
+      padding: 0 15px;
+      background-color: #ffda51;
+      line-height: 40px;
+      border-radius: 4px;
+      font-size: 18px;
+      text-align: center;
+      margin-left: 20px;
+      margin-right: 10px;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+        color: #4b5afe;
       }
-      .back-btn {
-        display: inline-block;
-        padding: 0 15px;
-        background-color: #ffda51;
-        line-height: 40px;
-        border-radius: 4px;
-        font-size: 18px;
-        text-align: center;
-        margin-left: 20px;
-        margin-right: 10px;
+    }
+  }
+  .live-mager {
+    padding-bottom: 0;
+    height: calc(100vh - 120px);
+    overflow: hidden;
+    .border-box {
+      margin-top: 50px;
+      height: 2000px;
+    }
+  }
+  .email-bottom {
+    height: 60px;
+    width: 100%;
+    line-height: 60px;
+    border-top: 1px solid #e2e2e2;
+    box-sizing: border-box;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    background-color: #fff;
+    button {
+      margin-top: 10px;
+    }
+    .margin-fl {
+      margin-right: 10px;
+    }
+  }
+  .send-type-box {
+    height: 30px;
+    margin-top: 13px;
+  }
+  .msg-box {
+    z-index: 1000;
+  }
+  .step-btns {
+    margin: 30px 30px 100px 30px;
+    .margin-fl {
+      margin: 0 20px;
+    }
+  }
+  .input-email {
+    width: 400px;
+  }
+  .msg-box-bottom {
+    height: 40px;
+    .email-timer {
+      display: inline-block;
+      margin-right: 23px;
+    }
+    .error-msg {
+      display: block;
+      position: absolute;
+      color: #fc5659;
+      font-size: 14px;
+    }
+  }
+  .from-title {
+    line-height: 40px;
+  }
+  .edit-groups {
+    margin-top: 15px;
+    width: 500px;
+    &.sec {
+      margin-top: 0px;
+    }
+    span {
+      display: inline-block;
+      background-color: #f0f1fe;
+      border-radius: 17px;
+      padding: 8px 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      i {
+        color: #4b5afe;
         &:hover {
           cursor: pointer;
-          opacity: 0.9;
-          color: #4b5afe;
-        }
-      }
-    }
-    .live-mager {
-      padding-bottom: 0;
-      height: calc(100vh - 120px);
-      overflow: hidden;
-      .border-box {
-        margin-top: 50px;
-        height: 2000px;
-      }
-    }
-    .email-bottom {
-      height: 60px;
-      width: 100%;
-      line-height: 60px;
-      border-top: 1px solid #e2e2e2;
-      box-sizing: border-box;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-      padding: 0 20px;
-      background-color: #fff;
-      button {
-        margin-top: 10px;
-      }
-      .margin-fl {
-        margin-right: 10px;
-      }
-    }
-    .send-type-box {
-      height: 30px;
-      margin-top: 13px;
-    }
-    .msg-box {
-      z-index: 1000;
-    }
-    .step-btns {
-      margin: 30px 30px 100px 30px;
-      .margin-fl {
-        margin: 0 20px;
-      }
-    }
-    .input-email {
-      width: 400px;
-    }
-    .msg-box-bottom {
-      height: 40px;
-      .email-timer {
-        display: inline-block;
-        margin-right: 23px;
-      }
-      .error-msg {
-        display: block;
-        position: absolute;
-        color: #fc5659;
-        font-size: 14px;
-      }
-    }
-    .from-title {
-      line-height: 40px;
-    }
-    .edit-groups {
-      margin-top: 15px;
-      width: 500px;
-      &.sec {
-        margin-top: 0px;
-      }
-      span {
-        display: inline-block;
-        background-color: #f0f1fe;
-        border-radius: 17px;
-        padding: 8px 10px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        i {
-          color: #4b5afe;
-          &:hover {
-            cursor: pointer;
-            opacity: 0.8;
-          }
+          opacity: 0.8;
         }
       }
     }
   }
+}
 </style>
