@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-      <span class="title" >用户详情</span>
+      <span class="title">用户详情</span>
     </div>
     <div class="content from-box">
       <div class="v-user-info">
@@ -77,10 +77,13 @@
                 </div>
               </div>
               <div class="box3">
-                <date-select title="生日" :content="user.birthday" @saveInfo="saveInfo($event,'birthday')"> </date-select>
-                <industry-select title="行业" :content="user.industry" selectType="comIndustry" @saveInfo="saveInfo($event,'industry')"></industry-select>
-                <single-input title="职位" :content="user.position" @saveInfo="saveInfo($event,'position')" :maxLength='10'></single-input>
-                <industry-select title="教育" :content="user.education_level" selectType="comEducation" type="single" @saveInfo="saveInfo($event,'education_level')"></industry-select>
+                <date-select title="生日" :content="user.birthday" @saveInfo="saveInfo($event,'birthday')"></date-select>
+                <industry-select title="行业" :content="user.industry" selectType="comIndustry"
+                                 @saveInfo="saveInfo($event,'industry')"></industry-select>
+                <single-input title="职位" :content="user.position" @saveInfo="saveInfo($event,'position')"
+                              :maxLength='10'></single-input>
+                <industry-select title="教育" :content="user.education_level" selectType="comEducation" type="single"
+                                 @saveInfo="saveInfo($event,'education_level')"></industry-select>
                 <div class="v-from">
                   <span class="v-title">
                     来源：
@@ -98,7 +101,8 @@
                   </span>
                 </div>
                 <single-input title="地址" :content="user.address" @saveInfo="saveInfo($event,'address')"></single-input>
-                <single-input title="备注" :content="user.remark" @saveInfo="saveInfo($event,'remark')" :maxLength='40'></single-input>
+                <single-input title="备注" :content="user.remark" @saveInfo="saveInfo($event,'remark')"
+                              :maxLength='40'></single-input>
               </div>
               <div class="box4">
                 <p class="v-title">
@@ -194,9 +198,7 @@
         </div>
       </div>
     </div>
-    <transition name='fade' mode='out-in' v-if="showAddgroup">
-      <com-addgroup  @handleClick="handleClick" @groupData="groupData"></com-addgroup>
-    </transition>
+    <com-addgroup v-if="showAddgroup" @handleClick="handleClick" @groupData="groupData"></com-addgroup>
   </div>
 </template>
 
@@ -213,6 +215,7 @@
   import comAddgroup from '../components/com-addGroup'
   import userManage from 'src/api/userManage-service'
   import groupService from 'src/api/user_group'
+
   export default {
     data () {
       return {
