@@ -59,11 +59,11 @@ export default {
       this.errorTip = ''
     },
     check () {
-      if (this.value.required && !this.value.valu) {
+      if (this.value.required && !this.value.value) {
         this.errorTip = '此项为必填项'
         return false
       }
-      return true
+      return { id: this.value.id, value: this.value.value }
     }
   }
 }

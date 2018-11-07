@@ -308,8 +308,7 @@ export default {
     // 查询群组
     queryGroupList (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
-        keyword: this.searchVal,
-        type: '2'
+        keyword: this.searchVal
       }).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {

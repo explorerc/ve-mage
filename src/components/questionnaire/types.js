@@ -4,8 +4,7 @@ const types = {
   RADIO: 'radio',
   CHECKBOX: 'checkbox',
   SELECT: 'select',
-  AREA: 'area',
-  INDUSTRY: 'industry'
+  AREA: 'area'
 }
 
 const coms = {
@@ -14,8 +13,7 @@ const coms = {
   radio: 'q-radio',
   checkbox: 'q-checkbox',
   select: 'q-select',
-  area: 'q-area',
-  industry: 'q-industry'
+  area: 'q-area'
 }
 
 export { types, coms }

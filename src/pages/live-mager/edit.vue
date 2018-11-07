@@ -68,7 +68,7 @@
         <div class="from-row" v-if="status === 'PREPARE' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
-            <button @click='comfirm' class='create-btn' :disabled="outRange">
+            <button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">
               <template v-if="activityId">保存</template>
               <template v-else>创建</template>
             </button>
@@ -107,6 +107,7 @@
         title: '',
         editorContent: '',
         outRange: false,
+        saveStatus: false,
         titleEmpty: false,
         tagEmpty: false,
         dateEmpty: false,
@@ -229,6 +230,7 @@
         this.tagArray = tmpArr
       },
       comfirm () {
+        this.saveStatus = true
         // 提交数据
         let data = {
           id: this.activityId,
@@ -255,6 +257,7 @@
             this.canPaas = true
             this.successTxt = '创建成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+            this.saveStatus = false
           }).catch(res => {
             if (res.code === 2001) {
               this.$messageBox({
@@ -264,6 +267,7 @@
                 confirmText: '知道了'
               })
             }
+            this.saveStatus = false
           })
         } else {
           this.$config({ 'handlers': [2001] }).$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
@@ -271,6 +275,7 @@
             this.canPaas = true
             this.successTxt = '更新成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+            this.saveStatus = false
           }).catch(res => {
             if (res.code === 2001) {
               this.$messageBox({
@@ -280,6 +285,7 @@
                 confirmText: '知道了'
               })
             }
+            this.saveStatus = false
           })
         }
       },
@@ -364,10 +370,16 @@
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
+    // .html-editer {
+    //   max-width: 722px;
+    // }
   }
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
+    .content .html-editer {
+      max-width: 722px !important;
+    }
   }
   .edit-title {
     // border-bottom: 1px solid $color-bd;
@@ -473,6 +485,9 @@
         color: $color-blue;
       }
     }
+    .html-editer {
+      max-width: 1072px;
+    }
     .html-editer .content {
       width: 100%;
     }
@@ -488,7 +503,7 @@
       }
     }
     .from-content .vue-html5-editor .content img {
-      width: 100%;
+      max-width: 100%;
     }
   }
 }

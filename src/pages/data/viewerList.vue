@@ -71,10 +71,10 @@
         </el-select>
       </div>
       <div class="search-item flm">
-        <span class="search-title">所属行业</span>
+        <span class="search-title">渠道来源</span>
         <el-select v-model="searchParams.industry"
-                   placeholder="所属行业">
-          <el-option v-for="item in tradeList"
+                   placeholder="渠道来源">
+          <el-option v-for="item in sourceList"
                      :key="item.value"
                      :label="item.label"
                      :value="item.value">
@@ -95,7 +95,7 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-select style="width: 100px;"
-                   v-model="searchParams.province">
+                   v-model="searchParams.provinceId">
           <el-option v-for="item in provinceList"
                      :key="item.value"
                      :label="item.label"
@@ -103,7 +103,7 @@
           </el-option>
         </el-select>
         <el-select style="width: 112px;"
-                   v-model="searchParams.city">
+                   v-model="searchParams.cityId">
           <el-option v-for="item in cityList"
                      :key="item.value"
                      :label="item.label"
@@ -184,6 +184,8 @@
   import dataService from 'src/api/data-service'
   import {mapMutations} from 'vuex'
   import * as types from '../../store/mutation-types'
+  import province from '../../components/province'
+  import city from '../../components/city'
 
   export default {
     name: 'viewerList',
@@ -200,7 +202,9 @@
           sex: '',
           user_level: '',
           is_new: '',
+          provinceId: '',
           province: '',
+          cityId: '',
           city: '',
           industry: '',
           first_join_at: '',
@@ -225,22 +229,15 @@
         ],
         provinceList: [
           {value: '', label: '省'},
-          {value: 1, label: '北京'},
-          {value: 2, label: '河南省'},
-          {value: 3, label: '河北省'},
-          {value: 4, label: '黑龙江'},
-          {value: 5, label: '湖北'}
+          ...province
         ],
         cityList: [
-          {value: '', label: '市'},
-          {value: 1, label: '北京市'},
-          {value: 2, label: '郑州市'},
-          {value: 3, label: '天津市'}
+          {value: '', label: '市'}
         ],
-        tradeList: [
+        sourceList: [
           {value: '', label: '全部'},
           {value: 1, label: '导入'},
-          {value: 2, label: '微信注册'},
+          {value: 2, label: '手机注册'},
           {value: 3, label: 'PC注册'}
         ],
         deviceList: [
@@ -290,6 +287,27 @@
         }
         this.searchParams.first_join_at = vals[0]
         this.searchParams.last_leave_at = vals[1]
+      },
+      'searchParams.provinceId' (newVal) {
+        if (newVal) {
+          for (let i = 0; i < province.length; i++) {
+            if (province[i].value === newVal) {
+              this.searchParams.province = province[i].label
+              break
+            }
+          }
+          this.cityList = [...this.cityList, ...city[newVal]]
+        }
+        this.searchParams.cityId = ''
+        this.searchParams.city = ''
+      },
+      'searchParams.cityId' (newVal) {
+        for (let i = 0; i < this.cityList.length; i++) {
+          if (this.cityList[i].value === newVal) {
+            this.searchParams.city = this.cityList[i].label
+            break
+          }
+        }
       }
     },
     created () {

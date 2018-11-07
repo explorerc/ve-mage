@@ -97,9 +97,6 @@ export default {
     this.$get(questionService.GET_AREA_JSON).then((res) => {
       this.area = res
       this.provinces = this.area.provinces
-      // console.log(res)
-      // eval(res)
-      // console.log(window.provinces)
     })
   },
   methods: {
@@ -160,19 +157,24 @@ export default {
       }
     },
     check () {
+      let value = []
       if (this.value.required && (!this.value.province || !this.value.city)) {
         this.errorTip = '此项为必填项'
         return false
       }
+      value.push(this.value.province)
+      value.push(this.value.city)
       if (this.value.required && (this.value.detail.level === 'county' || this.value.detail.level === 'address') && !this.value.county) {
         this.errorTip = '此项为必填项'
         return false
       }
+      this.value.county && value.push(this.value.county)
       if (this.value.required && this.value.detail.level === 'address' && !this.value.address) {
         this.errorTip = '此项为必填项'
         return false
       }
-      return true
+      this.value.address && value.push(this.value.address)
+      return { id: this.value.id, value: value.join('|') }
     }
   },
   computed: {
