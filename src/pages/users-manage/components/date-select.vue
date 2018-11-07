@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{content === '' ? '无' : format(content)}}
+        {{(this.content === null || !this.content) ? '-' : format(content)}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
@@ -33,14 +33,20 @@ export default {
     title: String,
     content: String
   },
+  mounted () {
+    this.inputValue = (this.content === null || !this.content) ? '-' : this.content
+  },
   methods: {
     modify (val) {
       this.inputValue = val
       this.isEdit = true
     },
     inputBlur () {
-      this.$emit('saveInfo', this.format(this.inputValue))
-      this.isEdit = false
+      if (this.content === null || !this.content) {
+        this.isEdit = false
+      } else {
+        this.$emit('saveInfo', this.format(this.inputValue))
+      }
     },
     format (date) {
       date = new Date(date)

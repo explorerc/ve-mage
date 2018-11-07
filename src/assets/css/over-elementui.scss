@@ -138,3 +138,8 @@ $color-ui-components:#4B5AFE;
   color: $color-blue;
   font-weight: normal;
 }
+.el-table .cell {
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}

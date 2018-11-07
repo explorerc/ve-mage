@@ -11,7 +11,7 @@
           </p>
           <p class="v-content">
             {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_name?itemData.data.activity_name:''}}
-            <button @click="showRecord(itemData.behavior_id,itemData.data.activity_name,itemData.generated_at)">
+            <button @click="showRecord(itemData.activity_id,itemData.data.activity_name,itemData.generated_at)" v-if="itemData.event!='FIRST_VISIT'">
               查看详情
             </button>
           </p>
@@ -89,8 +89,8 @@ export default {
   data () {
     return {
       scrollEvent: null,
-      dataList: {},
-      dataInfoList: {},
+      dataList: [],
+      dataInfoList: [],
       searchParams: {
         business_consumer_uid: 0,
         type: 1,
@@ -143,7 +143,9 @@ export default {
       this.recordBoxShow = true
       this.showActivity.name = name
       this.showActivity.time = time
-      this.getDataInfoList(activityId)
+      this.searchInfoParams.page = 1
+      this.searchInfoParams.activity_id = activityId
+      this.getDataInfoList(false)
       this.initInfoScroll()
     },
     recordBoxClick (e) {
@@ -159,7 +161,7 @@ export default {
             this.dataList.push(element)
           })
           this.total = res.data.total
-          this.searchParams.page = parseInt(res.data.currPage) + 1
+          this.searchParams.page = parseInt(res.data.page) + 1
           this.searchParams.total = res.data.total
         }
       }).catch(err => {
@@ -199,15 +201,17 @@ export default {
     //     })
     //   })
     // },
-    getDataInfoList (activityId) {
+    getDataInfoList (isAdd) {
       this.searchInfoParams.business_consumer_uid = this.$route.params.id
-      this.searchInfoParams.activity_id = activityId
+      if (!isAdd) {
+        this.dataInfoList = []
+      }
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
         res.data.list.forEach(element => {
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total
-        this.searchInfoParams.page = parseInt(res.data.currPage) + 1
+        this.searchInfoParams.page = parseInt(res.data.page) + 1
         this.searchInfoParams.total = res.data.total
       }).catch(err => {
         if (err.code !== 201) {
@@ -238,9 +242,10 @@ export default {
         })
         this.infoscroll.on('scrollEnd', () => {
           // 滚动到底部
-          if (this.infoscroll.y <= (this.infoscroll.maxScrollY)) {
+          console.log(this.infoscroll.y + ',' + this.infoscroll.maxScrollY)
+          if (this.infoscroll.y === (this.infoscroll.maxScrollY)) {
             if (_this.searchInfoParams.page <= _this.searchInfoParams.total) {
-              _this.getDataInfoList()
+              _this.getDataInfoList(true)
             }
           }
         })

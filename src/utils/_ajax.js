@@ -74,7 +74,6 @@ class $Http {
         return res.data
       })
       .catch(err => {
-        debugger
         Loading(false)
         if (this.config.handlers === true) {
           return Promise.reject(err)

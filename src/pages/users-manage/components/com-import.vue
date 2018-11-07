@@ -45,7 +45,7 @@
         </div>
         <div class="item">
           <label class='label'>导入规则:</label>
-          <el-radio v-model="radio" label="1">新建固定群组</el-radio>
+          <el-radio v-model="radio" label="1" :disabled="isDis">新建固定群组</el-radio>
           <el-radio v-model="radio" label="0">导入固定群组</el-radio>
         </div>
         <div class="tab-box">
@@ -131,6 +131,14 @@ export default {
     groupId: {
       type: Number,
       default: 0
+    },
+    isFixed: {
+      type: String,
+      default: '1'
+    },
+    isDis: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -138,12 +146,18 @@ export default {
     if (this.groupId) {
       this.selval = this.groupId
     }
+    if (this.isFixed) {
+      this.radio = this.isFixed
+    }
   },
   methods: {
     close () {
       this.$emit('handleClick', {
         action: 'cancel'
       })
+      if (this.importSuccess) {
+        window.location.reload()
+      }
     },
     overUpload () {
       this.$refs.uploadFile.click()

@@ -635,7 +635,8 @@ export default {
       if (data === 'search') {
         data = {
           'keyword': this.filterCondition.keyword,
-          'page': 1 // 分页页码 默认不传为第一页
+          'page': 1, // 分页页码 默认不传为第一页
+          'page_size': 100
         }
       }
       console.log(data)
@@ -940,7 +941,7 @@ export default {
     .users-list {
       .el-table {
         .users-info {
-          width: 140px;
+          width: 160px;
           img {
             width: 32px;
             height: 32px;

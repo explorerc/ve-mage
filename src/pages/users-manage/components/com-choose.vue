@@ -58,7 +58,7 @@ export default {
     }
   },
   created () {
-    this.restoreData = this.checkedData
+    this.restoreData = JSON.parse(JSON.stringify(this.checkedData))
   },
   mounted () {
     if (this.list.length) {

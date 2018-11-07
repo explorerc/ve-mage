@@ -85,10 +85,9 @@ const ViewerList = () => import('src/pages/data/viewerList')
 /* 营销工具 */
 const redpack = () => import('src/pages/sales-tools/redpack')
 const recommendCards = () => import('src/pages/sales-tools/recommend-cards')
-const recommendGoodsList = () =>
-  import('src/pages/sales-tools/recommend-goods/index')
-const recommendGoodsInfo = () =>
-  import('src/pages/sales-tools/recommend-goods/info')
+const cardItem = () => import('src/pages/sales-tools/recommend-cards/detail')
+const recommendGoodsList = () => import('src/pages/sales-tools/recommend-goods/index')
+const recommendGoodsInfo = () => import('src/pages/sales-tools/recommend-goods/info')
 
 /* 营销工具-问卷开始 */
 const questionnaire = () => import('src/pages/sales-tools/questionnaire')
@@ -422,5 +421,145 @@ export default [
     meta: {
       noAuth: true
     }
+  },
+  {
+    path: '/liveMager/promote/wechat/overview/:id',
+    name: 'wechatOverview',
+    component: wechatOverview
+  },
+  {
+    path: '/liveMager/promote/msg/overview/:id',
+    name: 'msgOverview',
+    component: msgOverview
+  },
+  {
+    path: '/liveMager/promote/wechat/edit/:id',
+    name: 'wechatEdit',
+    component: wechatCreate
+  },
+  {
+    path: '/liveMager/promote/msg/list/:id',
+    name: 'promoteMsg',
+    component: promoteMsg
+  },
+  {
+    path: '/liveMager/promote/msg/create/:id',
+    name: 'msgCreate',
+    component: msgCreate
+  },
+  {
+    path: '/liveMager/promote/msg/edit/:id',
+    name: 'msgEdit',
+    component: msgCreate
+  },
+  {
+    path: '/liveMager/promote/auto/preview/:id',
+    name: 'auto',
+    component: promoteAuto
+  },
+  {
+    path: '/liveMager/promote/auto/editWx/:id',
+    name: 'autoEditwx',
+    component: autoEditwx
+  },
+  {
+    path: '/liveMager/promote/auto/editMsg/:id',
+    name: 'autoEditmsg',
+    component: autoEditmsg
+  },
+  {
+    path: '/liveMager/playBack/:id',
+    name: 'playBack',
+    component: PlayBack
+  },
+  {
+    path: '/userManage/overview',
+    name: 'userOverview',
+    component: userOverview
+  },
+  {
+    path: '/userManage/pond',
+    name: 'userPond',
+    component: userPond
+  },
+  {
+    path: '/userManage/group',
+    name: 'userGroup',
+    component: userGroup
+  },
+  {
+    path: '/userManage/userGroupsIndex',
+    name: 'userGroupsIndex',
+    component: userGroupsIndex
+  },
+  {
+    path: '/userManage/userGroupsDetails/:id/:type',
+    name: 'userGroupsDetails',
+    component: userGroupsDetails
+  },
+  {
+    path: '/userManage/info/:id',
+    name: 'userInfo',
+    component: userInfo
+  },
+  {
+    path: '/salesTools/questionnaire/:id',
+    name: 'questionnaire',
+    component: questionnaire
+  },
+  {
+    path: '/salesTools/recommendGoodsList',
+    name: 'recommendGoodsList',
+    component: recommendGoodsList
+  },
+  {
+    path: '/salesTools/recommendGoodsInfo',
+    name: 'recommendGoodsInfo',
+    component: recommendGoodsInfo
+  },
+  {
+    path: '/salesTools/recommendCards/:id',
+    name: 'recommendCards',
+    component: recommendCards
+  },
+  {
+    path: '/salesTools/recommendCardsDetails/:cardId',
+    name: 'cardItem',
+    component: cardItem
+  },
+  {
+    path: '/salesTools/redpack/:id',
+    name: 'redpack',
+    component: redpack
+  },
+  {
+    path: '/data',
+    component: Data,
+    children: [{
+      path: 'preview/:id',
+      name: 'preview',
+      component: Preview
+    },
+    {
+      path: 'live/:id',
+      name: 'live',
+      component: DataLive
+    },
+    {
+      path: 'spread/:id',
+      name: 'spread',
+      component: Spread
+    },
+    {
+      path: 'viewer/:id',
+      name: 'viewer',
+      component: Viewer
+    },
+    {
+      path: 'viewerList/:id',
+      name: 'viewerList',
+      component: ViewerList
+    }
+    ]
   }
 ]
