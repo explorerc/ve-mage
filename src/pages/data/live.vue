@@ -8,7 +8,7 @@
             <div class="item-title">
               <ve-title title="观看直播人数"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('/data/viewer')">{{basicCountData.live.nums}}</div>
+            <div class="item-mid data-link" @click="goPage('/data/viewerList')">{{basicCountData.live.nums}}</div>
           </div>
           <div class="box fl" style="width: 33.33333%;">
             <div class="item-title">
@@ -28,7 +28,7 @@
             <div class="item-title">
               <ve-title title="观看回放人数"></ve-title>
             </div>
-            <div class="item-mid">{{basicCountData.playBack.nums}}</div>
+            <div class="item-mid data-link" @click="goPage('/data/viewerList')">{{basicCountData.playBack.nums}}</div>
           </div>
           <div class="box fl" style="width: 33.33333%;">
             <div class="item-title">
