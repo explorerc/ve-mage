@@ -95,7 +95,7 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-select style="width: 100px;"
-                   v-model="searchParams.province">
+                   v-model="searchParams.provinceId">
           <el-option v-for="item in provinceList"
                      :key="item.value"
                      :label="item.label"
@@ -103,7 +103,7 @@
           </el-option>
         </el-select>
         <el-select style="width: 112px;"
-                   v-model="searchParams.city">
+                   v-model="searchParams.cityId">
           <el-option v-for="item in cityList"
                      :key="item.value"
                      :label="item.label"
@@ -202,7 +202,9 @@
           sex: '',
           user_level: '',
           is_new: '',
+          provinceId: '',
           province: '',
+          cityId: '',
           city: '',
           industry: '',
           first_join_at: '',
@@ -286,11 +288,26 @@
         this.searchParams.first_join_at = vals[0]
         this.searchParams.last_leave_at = vals[1]
       },
-      'searchParams.province' (newVal) {
+      'searchParams.provinceId' (newVal) {
         if (newVal) {
+          for (let i = 0; i < province.length; i++) {
+            if (province[i].value === newVal) {
+              this.searchParams.province = province[i].label
+              break
+            }
+          }
           this.cityList = [...this.cityList, ...city[newVal]]
         }
+        this.searchParams.cityId = ''
         this.searchParams.city = ''
+      },
+      'searchParams.cityId' (newVal) {
+        for (let i = 0; i < this.cityList.length; i++) {
+          if (this.cityList[i].value === newVal) {
+            this.searchParams.city = this.cityList[i].label
+            break
+          }
+        }
       }
     },
     created () {
