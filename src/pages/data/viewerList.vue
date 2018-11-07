@@ -166,7 +166,7 @@
         <el-table-column prop="source" label="渠道来源"></el-table-column>
         <el-table-column label="详情">
           <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.consumer_uid)">详情</span>
+            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
           </template>
         </el-table-column>
       </el-table>
