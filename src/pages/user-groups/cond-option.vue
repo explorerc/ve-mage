@@ -7,15 +7,13 @@
           <div v-for="(m ,mind) in outli">
             <el-cascader v-model="m.keys" :options="options" :props="props" :show-all-levels="false"
                          @change="handleItemChange(m,ind,mind)"></el-cascader>
-
-            <el-select v-if="show_cons" v-model="m.condition" value-key="name" placeholder="请选择"
+            <el-select v-if="m.keys" v-model="m.condition" value-key="name" placeholder="请选择"
                        @change="optionItemChange(m,ind,mind)">
               <el-option v-for="(itemr,indexr) in m.conds" :key="indexr.name" :label="itemr.name"
                          :value="itemr.key"></el-option>
             </el-select>
 
-
-            <div class="option-value" v-if="show_val">
+            <div class="option-value" v-if="m.condition">
               <el-select v-model="m.value" v-if="m.type == 'select'" filterable placeholder="请选择">
                 <el-option v-for="(itemr,indexr) in m.optionValue" :key="indexr.key" :label="itemr.name"
                            :value="itemr.key">
@@ -54,8 +52,6 @@
     props: ['type', 'rule'],
     data () {
       return {
-        show_cons: false,
-        show_val: false,
         disDel: false,
         saveData: [],
         props: {
@@ -1005,15 +1001,10 @@
       },
       handleItemChange (item, outInd, inInd) {
         item.conds = this.condOption[item.keys[1]].cons
-        if (item.conds) {
-          this.show_cons = true
-          this.show_val = false
-        }
         this.shadowOutD[outInd][inInd].condition = ''
         this.shadowOutD[outInd][inInd].value = ''
       },
       optionItemChange (item, outInd, inInd) {
-        if (item.condition) this.show_val = true
         this.shadowOutD[outInd][inInd].value = ''
         item.conds.find((itemr) => {
           if (itemr.key === item.condition) {
@@ -1083,12 +1074,13 @@
                   content: '输入框不能为空',
                   position: 'center'
                 })
+                return false
               } else {
-                delete inItem.conds
-                delete inItem.keys
-                delete inItem.type
-                delete inItem.unit
-                delete inItem.optionValue
+                // delete inItem.conds
+                // delete inItem.keys
+                // delete inItem.type
+                // delete inItem.unit
+                // delete inItem.optionValue
                 return inItem
               }
             }
@@ -1101,8 +1093,8 @@
         if (fulfil) this.$emit('optionData', this.saveData)
       },
       analysisData () {
-        this.outD.map((item) => {
-          item.map((item1) => {
+        this.outD.map((item, ind) => {
+          item.map((item1, ind1) => {
             item1.keys = this.condOption[item1.key].keys
             item1.optionValue = this.valueOption[item1.keys[1]]
             this.$set(item1, 'conds', this.condOption[item1.key].cons)
@@ -1110,8 +1102,7 @@
             item1.unit = this.condOption[item1.key].cons.find((item) => item.key === item1.condition).unit
           })
         })
-        this.show_cons = true
-        this.show_val = true
+
         this.shadowOutD = this.outD
       },
       getTags () {
@@ -1126,6 +1117,7 @@
               }
               this.valueOption.tags.push(obj)
             })
+            console.log(this.valueOption.tags)
           })
       },
       getGroup () {
@@ -1165,12 +1157,6 @@
         })
       }
     },
-    created () {
-      this.getTags()
-      this.getGroup()
-      this.getProvince()
-      this.getCity()
-    },
     mounted () {
       if (this.type === 'edit') {
         this.outD = this.rule
@@ -1182,6 +1168,10 @@
         }
         this.analysisData()
       }
+      this.getTags()
+      this.getGroup()
+      this.getProvince()
+      this.getCity()
     }
   }
 </script>

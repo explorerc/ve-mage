@@ -216,7 +216,7 @@
           this.dialogTitle = '编辑智能群组'
         }
         this.isShow = true
-        console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
+        // console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
       },
       handleDelete (id, type, index) { // 删除群组
         this.$messageBox({
