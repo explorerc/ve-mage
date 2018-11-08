@@ -69,8 +69,8 @@
         </div>
         <div slot="bottom" class="select-bottom">
           <span class="select-all fl">已选择{{selectedCount}}人：</span>
-          <div style="text-align: justify;" class="select-list fl" :title="selectedGroupListStr + selectedTagListStr" v-show="selectedGroupListStr.length">
-            <span >{{selectedGroupListStr}}、</span><span>{{selectedTagListStr}}</span>
+          <div style="text-align: justify;" class="select-list fl" :title="selectedGroupListStr + selectedTagListStr" v-show="selectedGroupListStr.length || selectedTagListStr.length">
+            <span >{{selectedGroupListStr}} </span><span>{{selectedTagListStr}}</span>
           </div>
           <!-- <div class="select-list fl" >
           </div> -->

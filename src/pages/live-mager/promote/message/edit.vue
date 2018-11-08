@@ -125,7 +125,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'phone'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
+      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
     </div>
     <!-- 测试发送弹窗 -->
     <com-test v-if='testModal'
@@ -251,10 +251,11 @@ export default {
         signature: this.msgTag
       }
       if (!this.formValid()) {
+        this.saveDisabled = false
         return false
       }
       // 更新
-      this.$post(noticeService.POST_SAVE_MSG, data).then((res) => {
+      this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
           content: '保存成功',
@@ -263,6 +264,14 @@ export default {
         // 跳转到列表页面
         this.canPass = true
         this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
+      }).catch((res) => {
+        this.saveDisabled = false
+        this.$messageBox({
+          header: '提示',
+          content: res.msg,
+          autoClose: 10,
+          confirmText: '知道了'
+        })
       })
     },
     test () {

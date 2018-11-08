@@ -39,7 +39,7 @@
                 </button>
                 <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/{{countBalance}}</span>
                 <ve-msg-tips tip-type="html"
-                             tip="1.每天最多可发送10000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
+                             tip="1.每天最多可发送5000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
                 <span class="error-msg"
                       v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
               </div>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'email'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList'
+      <choose-group :webinarType="'EMAIL'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList'
                     :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter"
                     @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"
                     @totalCount="totalCount"></choose-group>
