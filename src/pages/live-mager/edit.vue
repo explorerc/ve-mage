@@ -241,11 +241,12 @@
           tags: this.tagGroup
         }
         // console.log(data)
-        this.title.length ? this.titleEmpty = false : this.titleEmpty = true
-        this.tagArray.length ? this.tagEmpty = false : this.tagEmpty = true
-        this.date.length ? this.dateEmpty = false : this.dateEmpty = true
+        this.title.length ? this.titleEmpty = false : this.titleEmpty = true; this.saveStatus = false
+        this.tagArray.length ? this.tagEmpty = false : this.tagEmpty = true; this.saveStatus = false
+        this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true; this.saveStatus = false
+        this.date.length ? this.dateEmpty = false : this.dateEmpty = true; this.saveStatus = false
         this.$nextTick(() => {
-          if (this.title.length && this.tagArray.length && this.date.length) {
+          if (this.title.length && (this.tagArray.length || this.tagGroup.length) && this.date.length) {
             this.updateWebinfo(this.isNew, data)
           }
         })

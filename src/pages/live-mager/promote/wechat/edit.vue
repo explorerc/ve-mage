@@ -87,6 +87,7 @@
 
 <script>
 import userManage from 'src/api/userManage-service'
+import userService from 'src/api/user-service'
 import chooseGroup from '../com-chooseGroup'
 import ChatService from 'components/chat/ChatService.js'
 import playbackService from 'src/api/playback-service'
@@ -161,7 +162,6 @@ export default {
     }
   },
   created () {
-    this.initSdk()
     if (this.inviteId) {
       this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.inviteId
@@ -177,6 +177,15 @@ export default {
     }
     this.queryGroupList()
     this.queryTaglist()
+  },
+  mounted () {
+    if (!this.accountInfo.businessUserId) {
+      this.storeJoininfo().then(() => {
+        this.initSdk()
+      })
+    } else {
+      this.initSdk()
+    }
   },
   computed: {
     ...mapState('login', {
@@ -242,7 +251,7 @@ export default {
       })
     },
     closeTest () {
-      // debugger
+      //
       this.testModal = false
     },
     /* enter搜索 */
@@ -400,6 +409,11 @@ export default {
       ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
         console.log(msg)
         this.deliverd = true
+      })
+    },
+    async storeJoininfo () {
+      await this.$get(userService.GET_ACCOUNT).then((res) => {
+        this.setAccountInfo(res.data)
       })
     }
   },
