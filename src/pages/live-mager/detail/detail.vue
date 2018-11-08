@@ -605,7 +605,7 @@
       <div class="item statics">
         <p class='block-separte'>数据</p>
         <div class="card-list clearfix">
-          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+          <div class='item record' @click="linkTo($event,'/data/preview/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
             <div class="card">
               <div class='pic'>
               </div>
@@ -626,7 +626,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+          <div class='item record' @click="linkTo($event,'/data/viewer/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
             <div class="card">
               <div class='pic'>
               </div>
