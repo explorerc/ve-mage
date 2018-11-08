@@ -62,7 +62,7 @@
             </div>
             <div class="condition">
               <span class="label">参与场次</span>
-              <com-input :value.sync="filterCondition.join_count" placeholder="请输入参与活动次数" :type="'number'"></com-input>
+              <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数" :type="'number'"></com-input>
             </div>
           </div>
           <div class='filter-item'>

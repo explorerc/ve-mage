@@ -78,7 +78,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'WECHAT'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
+      <choose-group :webinarType="'wx_open_id'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
       <!-- 测试发送弹窗 -->
       <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'" :deliverd.sync='deliverd'></com-test>
     </div>
@@ -87,7 +87,7 @@
 
 <script>
 import userManage from 'src/api/userManage-service'
-import chooseGroup from 'src/components/com-chooseGroup'
+import chooseGroup from '../com-chooseGroup'
 import ChatService from 'components/chat/ChatService.js'
 import playbackService from 'src/api/playback-service'
 import noticeService from 'src/api/notice-service'
@@ -278,7 +278,8 @@ export default {
     // 查询群组
     queryGroupList (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
-        keyword: keyword
+        keyword: keyword,
+        not_empty_field: 'wx_open_id'
       }).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {

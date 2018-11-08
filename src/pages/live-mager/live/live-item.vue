@@ -28,9 +28,8 @@
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
-            <span class="disabled" @click.stop="handleClick(action.viewer)">观众</span>
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING')}"
-                  @click.stop="handleClick(action.data)">数据</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING')}" @click.stop="handleClick(action.viewer)">观众</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING')}" @click.stop="handleClick(action.data)">数据</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -115,125 +114,125 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '~assets/css/mixin';
+@import '~assets/css/mixin';
 
-  .live-item {
-    position: relative;
-    min-width: 228px;
-    border-radius: 4px;
-    font-size: 14px;
-    color: $color-font;
-    background-color: $color-bg;
-    @include border;
-    .live-state {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 0 10px;
-      height: 20px;
+.live-item {
+  position: relative;
+  min-width: 228px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: $color-font;
+  background-color: $color-bg;
+  @include border;
+  .live-state {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 0 10px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #ccc;
+    background-color: rgba(0, 0, 0, 0.6);
+    .live-point {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background-color: #fc5659;
+    }
+  }
+  .live-img {
+    height: calc(100% - 94px);
+    background-size: 100% 100%;
+    border-bottom: 1px solid $color-bd;
+    background-position: center center;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  .live-md {
+    height: 60px;
+    padding: 5px 0;
+    span {
+      display: inline-block;
+      min-width: 60%;
       line-height: 20px;
-      border-radius: 10px;
-      font-size: 10px;
-      color: #ccc;
-      background-color: rgba(0, 0, 0, 0.6);
-      .live-point {
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        margin-right: 6px;
-        border-radius: 50%;
-        background-color: #fc5659;
+      padding-left: 20px;
+      max-width: 310px;
+      &:nth-child(1) {
+        margin-top: 5px;
+        color: $color-font;
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      &.time {
+        font-size: 14px;
+        color: $color-font-time;
       }
     }
-    .live-img {
-      height: calc(100% - 94px);
-      background-size: 100% 100%;
-      border-bottom: 1px solid $color-bd;
-      background-position: center center;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
-    .live-md {
-      height: 60px;
-      padding: 5px 0;
-      span {
-        display: inline-block;
-        min-width: 60%;
-        line-height: 20px;
-        padding-left: 20px;
-        max-width: 310px;
-        &:nth-child(1) {
-          margin-top: 5px;
-          color: $color-font;
-          font-size: 16px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        &.time {
-          font-size: 14px;
-          color: $color-font-time;
+  }
+  .live-bottom {
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    span.item {
+      display: inline-block;
+      float: left;
+      margin: 0 20px;
+      text-align: center;
+      cursor: pointer;
+      .iconfont {
+        color: $color-font-icon;
+        &:hover {
+          color: $color-font-hover;
+          span {
+            color: $color-font;
+          }
         }
       }
-    }
-    .live-bottom {
-      position: relative;
-      height: 30px;
-      line-height: 30px;
-      span.item {
-        display: inline-block;
-        float: left;
-        margin: 0 20px;
-        text-align: center;
-        cursor: pointer;
-        .iconfont {
-          color: $color-font-icon;
+      .icon-shipin {
+        font-size: 24px;
+      }
+      &:last-child {
+        float: right;
+      }
+      .live-more {
+        position: absolute;
+        top: 33px;
+        right: -1px;
+        width: 25%;
+        background-color: #fff;
+        border: solid 1px #e5e5e5;
+        box-sizing: content-box;
+        z-index: 2;
+        line-height: 30px;
+        span {
+          display: block;
+          text-align: center;
           &:hover {
             color: $color-font-hover;
-            span {
-              color: $color-font;
-            }
-          }
-        }
-        .icon-shipin {
-          font-size: 24px;
-        }
-        &:last-child {
-          float: right;
-        }
-        .live-more {
-          position: absolute;
-          top: 33px;
-          right: -1px;
-          width: 25%;
-          background-color: #fff;
-          border: solid 1px #e5e5e5;
-          box-sizing: content-box;
-          z-index: 2;
-          line-height: 30px;
-          span {
-            display: block;
-            text-align: center;
-            &:hover {
-              color: $color-font-hover;
-            }
           }
         }
       }
     }
   }
+}
 
-  .slide-fade-enter-active {
-    transition: all 0.3s ease;
-  }
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
 
-  .slide-fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-  }
+.slide-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
 
-  .slide-fade-enter,
-  .slide-fade-leave-to {
-    transform: translateX(10px);
-    opacity: 0;
-  }
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>

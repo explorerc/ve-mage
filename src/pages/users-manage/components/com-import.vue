@@ -275,7 +275,7 @@ export default {
       array.forEach(item => {
         arr.push({
           id: item.group_id,
-          name: item.title + `(${item.user_count})`
+          name: item.title
         })
       })
       return arr
