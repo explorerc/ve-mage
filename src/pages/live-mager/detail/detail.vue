@@ -179,7 +179,7 @@
           <template v-else>
             <ol>
               <li @click="linkTo($event,'/data/preview/')">数据</li>
-              <li>观众</li>
+              <li @click="linkTo($event,'/data/viewer/')">观众</li>
             </ol>
           </template>
         </div>
@@ -593,6 +593,53 @@
                   <!-- 未设置 -->
                     <template v-else>
                       设置活动后的回放视频
+                    </template>
+                  </span>
+              </div>
+            </div>
+            <div class="btm">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item statics">
+        <p class='block-separte'>数据</p>
+        <div class="card-list clearfix">
+          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+            <div class="card">
+              <div class='pic'>
+              </div>
+              <div class='desc'>
+                <span>数据</span>
+                <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+                     展示单次活动数据洞察
+                    </template>
+                  <!-- 未设置 -->
+                    <template v-else>
+                     2018-10-23 16:45:21更新
+                    </template>
+                  </span>
+              </div>
+            </div>
+            <div class="btm">
+            </div>
+          </div>
+          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+            <div class="card">
+              <div class='pic'>
+              </div>
+              <div class='desc'>
+                <span>观众</span>
+                <span class='des'>
+                    <!-- 已设置 -->
+                    <template v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+                      记录单次活动观众数据
+                    </template>
+                  <!-- 未设置 -->
+                    <template v-else>
+                      2345位观众数据
                     </template>
                   </span>
               </div>
@@ -1523,6 +1570,7 @@
 }
 
 .card-list .item {
+  position: relative;
   cursor: pointer;
   float: left;
   width: 442px;
@@ -1535,6 +1583,16 @@
   margin-right: 20px;
   &:nth-child(3n + 3) {
     margin-right: 0px;
+  }
+  &.disabled:before {
+    cursor: not-allowed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
   }
 }
 

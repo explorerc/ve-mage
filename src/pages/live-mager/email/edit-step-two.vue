@@ -95,7 +95,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'EMAIL'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList'
+      <choose-group :webinarType="'email'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList'
                     :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter"
                     @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"
                     @totalCount="totalCount"></choose-group>
@@ -115,7 +115,7 @@
   import userManage from 'src/api/userManage-service'
   // import noticeService from 'src/api/notice-service'
   import VeMsgTips from 'src/components/ve-msg-tips'
-  import chooseGroup from 'src/components/com-chooseGroup'
+  import chooseGroup from '../promote/com-chooseGroup'
   import activityService from 'src/api/activity-service'
   import { mapState, mapMutations } from 'vuex'
   import * as types from '../../../store/mutation-types'
@@ -384,7 +384,8 @@
       // 查询群组
       async queryGroupList (keyword) {
         await this.$get(userManage.GET_GROUP_LIST, {
-          keyword: this.searchVal
+          keyword: keyword,
+          not_empty_field: 'email'
         }).then((res) => {
           let temArray = []
           res.data.list.forEach((item) => {

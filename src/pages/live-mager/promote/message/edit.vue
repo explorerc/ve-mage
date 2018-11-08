@@ -125,7 +125,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
+      <choose-group :webinarType="'phone'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
     </div>
     <!-- 测试发送弹窗 -->
     <com-test v-if='testModal'
@@ -140,7 +140,7 @@
 <script>
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
-import chooseGroup from 'src/components/com-chooseGroup'
+import chooseGroup from '../com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
 export default {
@@ -308,7 +308,8 @@ export default {
     // 查询群组
     queryGroupList (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
-        keyword: this.searchVal
+        keyword: keyword,
+        not_empty_field: 'phone'
       }).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
