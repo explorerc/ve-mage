@@ -147,6 +147,8 @@
           this.$router.push(`/liveMager/detail/${event.id}`)
         } else if (event.type === 'data') {
           this.$router.push(`/data/preview/${event.id}`)
+        } else if (event.type === 'viewer') {
+          this.$router.push(`/data/viewer/${event.id}`)
         }
       },
       inCountdownClick (e) {

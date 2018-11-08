@@ -67,7 +67,8 @@ export default {
       })
     },
     currentChange (res) {
-      this.getList(res, this.$route.query.id, this._type)
+      // this.getList(res, this.$route.query.id, this._type)
+      this.currPage = res
     },
     getList (page, id, _type) {
       this.$get(activityService.GET_SEND_LIST, {
@@ -78,7 +79,7 @@ export default {
       }).then((res) => {
         this.dataList = res.data.list
         this.total = res.data.total
-        this.currPage = res.data.currPage * 1
+        // this.currPage = res.data.currPage * 1
       })
     }
   },
