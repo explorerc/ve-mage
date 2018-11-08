@@ -760,6 +760,7 @@ export default {
         }
         this.cityList = [{value: '', label: '全部'}, ...city[newVal]]
         this.filterCondition.city = ''
+        this.cityId = ''
       }
     },
     'cityId' (newVal) {
