@@ -10,10 +10,8 @@
         <el-table :data="dataList">
           <el-table-column
             type="index"
-            width="100">
-            <!-- <template slot-scope="scope">
-              序号
-            </template> -->
+            width="100"
+            label="序号">
           </el-table-column>
           <el-table-column
             prop="nickname"
@@ -61,9 +59,6 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-      document.getElementsByClassName('cell')[0].innerHTML = '序号'
-    })
     this.getList(1, this.$route.query.email ? this.$route.query.email : this.$route.query.id, this._type)
   },
   methods: {
