@@ -312,6 +312,11 @@ export default {
       height: 400px;
       background-color: #dadada;
     }
+    .media-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
     .btn {
       display: block;
       margin-top: 24px;
