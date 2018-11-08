@@ -21,10 +21,10 @@
           <div class="from-content receiver" >
             <template v-if="selectedGroupList.length || selectedTagList.length">
               <div >
-                <span v-for='item in selectedGroupList'>{{item.name}}（{{item.count}}）、</span>
+                <span v-for='item in selectedGroupList'>{{item.name}}({{item.count}})</span>
               </div>
               <div>
-                <span v-for='item in selectedTagList'>{{item.name}}、</span>（合计{{email.sendCount}}人）
+                <span v-for='item in selectedTagList'>{{item.name}}</span>（合计{{email.sendCount}}人）
               </div>
               <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </template>
@@ -334,7 +334,7 @@ export default {
 
       span {
         display: inline-block;
-        padding: 0 0 10px 0;
+        padding: 0 5px 10px 5px;
         padding-bottom: 0px;
       }
     }
