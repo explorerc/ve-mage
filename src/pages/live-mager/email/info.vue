@@ -140,8 +140,8 @@ export default {
   created () {
     // 如果vuex可以取到值就return
     if (this.email.emailInviteId) {
-      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : []
-      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : []
+      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : ''
+      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : ''
       this.queryTagList().then(this.queryGroupList()).then(() => {
         setTimeout(() => {
           this.reArrangeList(listStr.split(','), tagStr.split(','))
