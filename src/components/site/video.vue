@@ -21,7 +21,7 @@
           <div class="upload-field">
             <div class='upload-video-box' @click="doUpload">
               <i class="upload-video-icon"></i>
-              <span class='desc' >{{uploadErrorMsg}}</span>
+              <span class='desc' :class='{"error":msgError}'>{{uploadErrorMsg}}</span>
               <span v-if="percentVideo" class="progress"><i  :style="{ 'width':`${percentVideo}%` }"></i></span>
             </div>
             <div class="hide">
@@ -36,7 +36,7 @@
             <el-radio v-model="value.videoType" label="url">引用视频</el-radio>
           </div>
           <div>
-            <com-input class="link-input" :rows="6" type="textarea" placeholder="请输入嵌入视频url: <iframe src='' frameborder=0 'allowfullscreen'></iframe>" v-model="value.url"></com-input>
+            <com-input class="link-input" :rows="6" type="textarea" placeholder="请输入嵌入视频url: <iframe src='https://cnstatic01.e.vhall.com/static/bg.mp4' frameborder=0 'allowfullscreen'></iframe>" v-model="value.url"></com-input>
           </div>
         </com-tab>
       </com-tabs>
@@ -61,7 +61,8 @@ export default {
       nameId: `vid_name_${Math.floor(Math.random() * 10000)}`,
       vhallParams: {},
       percentVideo: 0,
-      uploadErrorMsg: '视频仅支持mp4格式，文件大小不超过200M'
+      uploadErrorMsg: '视频仅支持mp4格式，文件大小不超过200M',
+      msgError: false
     }
   },
   methods: {
@@ -78,12 +79,15 @@ export default {
           app_id: this.vhallParams.appId
         },
         beforeUpload: (file) => {
+          this.msgError = false
           this.uploadErrorMsg = '准备上传...'
           if (file.type !== 'video/mp4') {
             this.uploadErrorMsg = '不支持该视频格式，请上传mp4格式视频'
+            this.msgError = true
             return false
           } else if (file.size / 1024 / 1024 > this.videoSize) {
             this.uploadErrorMsg = '视频太大，请不要大于200M'
+            this.msgError = true
             return false
           }
           this.percentVideo = 0
@@ -105,6 +109,7 @@ export default {
         },
         error: (msg, file, e) => {
           this.uploadErrorMsg = msg
+          this.msgError = true
         }
       })
     },

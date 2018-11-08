@@ -58,7 +58,7 @@ export default {
     }
   },
   mounted () {
-    this.getList(1, this.$route.query.id, this._type)
+    this.getList(1, this.$route.query.email ? this.$route.query.email : this.$route.query.id, this._type)
   },
   methods: {
     close () {

@@ -17,8 +17,8 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="item in selectedGroupList">{{item.name}}({{item.count}})、</template>
-              <template v-for="item in selectedTagList">{{item.name}}、</template>
+              <template v-for="item in selectedGroupList"> {{item.name}}({{item.count}}) </template>
+              <template v-for="item in selectedTagList"> {{item.name}} </template>
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
