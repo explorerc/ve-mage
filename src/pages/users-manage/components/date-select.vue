@@ -54,7 +54,6 @@ export default {
         return false
       }
       date = new Date(date)
-      debugger
       return date.getFullYear() + '-' + this.appendZero(date.getMonth() + 1) + '-' + this.appendZero(date.getDate())
     },
     appendZero (obj) {
