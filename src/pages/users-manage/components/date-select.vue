@@ -42,15 +42,19 @@ export default {
       this.isEdit = true
     },
     inputBlur () {
-      if (this.content === null || !this.content || this.content === '0') {
+      if (this.inputValue === null || !this.inputValue || this.inputValue === '0') {
         this.isEdit = false
       } else {
         this.$emit('saveInfo', this.format(this.inputValue))
+        this.isEdit = false
       }
     },
     format (date) {
+      if (date === null || !date || date === '0') {
+        return false
+      }
       date = new Date(date)
-      return date.getFullYear() + '-' + this.appendZero(date.getMonth()) + '-' + this.appendZero(date.getDate())
+      return date.getFullYear() + '-' + this.appendZero(date.getMonth() + 1) + '-' + this.appendZero(date.getDate())
     },
     appendZero (obj) {
       if (obj < 10) return '0' + '' + obj
