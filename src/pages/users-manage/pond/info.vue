@@ -97,7 +97,7 @@
                     {{user.province}}-{{user.city}}
                   </span>
                 </div>
-                <single-input title="地址" :content="user.address" @saveInfo="saveInfo($event,'address')"></single-input>
+                <single-input title="地址" :content="user.address" @saveInfo="saveInfo($event,'address')" :maxLength='40'></single-input>
                 <single-input title="备注" :content="user.remark" @saveInfo="saveInfo($event,'remark')" :maxLength='40'></single-input>
               </div>
               <div class="box4">
