@@ -54,7 +54,8 @@ export default {
         return false
       }
       date = new Date(date)
-      return date.getFullYear() + '-' + this.appendZero(date.getMonth()) + '-' + this.appendZero(date.getDate())
+      debugger
+      return date.getFullYear() + '-' + this.appendZero(date.getMonth() + 1) + '-' + this.appendZero(date.getDate())
     },
     appendZero (obj) {
       if (obj < 10) return '0' + '' + obj
