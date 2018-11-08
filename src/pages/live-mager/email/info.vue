@@ -143,7 +143,9 @@ export default {
       const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : []
       const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : []
       this.queryTagList().then(this.queryGroupList()).then(() => {
-        this.reArrangeList(listStr.split(','), tagStr.split(','))
+        setTimeout(() => {
+          this.reArrangeList(listStr.split(','), tagStr.split(','))
+        }, 500)
       })
       return false
     }
