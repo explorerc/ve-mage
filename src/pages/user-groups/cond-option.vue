@@ -598,12 +598,12 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: 'gt',
+                key: 'lt',
                 name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
-                key: 'lt',
+                key: 'gt',
                 name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
