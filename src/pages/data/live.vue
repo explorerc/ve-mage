@@ -741,7 +741,7 @@
       changeMenu (val) {
         if (this.watchType === val) return
         this.watchType = val
-        const typeAttr = this.watchType ? 'live' : 'playback'
+        const typeAttr = this.watchType ? 'playback' : 'live'
         if (!this.watcherLineData[typeAttr]) return
         this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
