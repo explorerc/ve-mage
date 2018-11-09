@@ -95,24 +95,25 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-cascader
+          v-model="citySelect"
           :options="options"
           @change="handleAreaChange">
         </el-cascader>
         <!--<el-select style="width: 100px;"-->
-                   <!--v-model="searchParams.provinceId">-->
-          <!--<el-option v-for="item in provinceList"-->
-                     <!--:key="item.value"-->
-                     <!--:label="item.label"-->
-                     <!--:value="item.value">-->
-          <!--</el-option>-->
+        <!--v-model="searchParams.provinceId">-->
+        <!--<el-option v-for="item in provinceList"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
         <!--</el-select>-->
         <!--<el-select style="width: 112px;"-->
-                   <!--v-model="searchParams.cityId">-->
-          <!--<el-option v-for="item in cityList"-->
-                     <!--:key="item.value"-->
-                     <!--:label="item.label"-->
-                     <!--:value="item.value">-->
-          <!--</el-option>-->
+        <!--v-model="searchParams.cityId">-->
+        <!--<el-option v-for="item in cityList"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
         <!--</el-select>-->
       </div>
       <div class="search-item flm">
@@ -177,9 +178,9 @@
             {{scope.row.source|fmtSource}}
           </template>
         </el-table-column>
-        <el-table-column label="详情">
+        <el-table-column label="详情" width="90">
           <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
+            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情1</span>
           </template>
         </el-table-column>
       </el-table>
@@ -227,6 +228,7 @@
           page: 1,
           pageSize: 10
         },
+        citySelect: [],
         genderList: [
           {value: '', label: '全部'},
           {value: 'M', label: '男'},
@@ -398,11 +400,10 @@
           ...this.searchParams
         }).then((res) => {
           if (res.code === 200) {
-            this.viewerList = res.data.list
-            // this.viewerList[0].end_user_level = 1
-            // this.viewerList[0].avatar = 'mp-test/50/f2/50f274c3025fc9acd0fe1eb86484ce5f.jpg'
-            // this.viewerList[0].sex = 'W'
-            this.total = res.data.total
+            if (res.data) {
+              this.viewerList = res.data.list
+              this.total = res.data.total
+            }
           }
         })
       },
@@ -410,8 +411,9 @@
         this.queryList()
       },
       cancelClick () {
+        this.citySelect = []
         this.searchParams = {
-          activityId: '',
+          activityId: this.searchParams.activityId,
           keyword: '',
           sex: '',
           user_level: '',
