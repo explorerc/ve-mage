@@ -309,7 +309,7 @@ export default {
           strType = `关注微信公众号，关注了${data.wx_name}`
           break
         case 'EMAIL_SUBSCRIBE':
-          strType = `邮件订阅，关注了${data.wx_name}`
+          strType = `邮件订阅，关注了${data.business_name}`
           break
       }
       return strType

@@ -101,7 +101,7 @@
         </div>
       </div>
     </div>
-    <div class="v-control">
+    <div class="v-control clearfix">
       <button class="v-view" @click="view">
         预览
       </button>
@@ -476,14 +476,24 @@ export default {
       }
     },
     save () {
-      // let data = []
+      let data = []
       for (let i = 0; i < this.dragData.length; i++) {
-        const element = this.dragData[i]
-        console.log(element)
+        if (!this.$refs['com' + i][0].$children[1].validate()) {
+          return false
+        }
+        data.push(this.dragData[i])
+      }
+      if (this.phoneData.length > 0) {
+        if (!this.$refs['comPhone'].$children[1].validate()) {
+          return false
+        }
+        data.push(this.phoneData[0])
+      }
+      if (data.length > 0) {
+        console.log(data)
       }
     },
     view () {
-
     }
   }
 }
@@ -513,6 +523,9 @@ export default {
     height: 60px;
     line-height: 60px;
     background-color: #fff;
+    button {
+      float: right;
+    }
   }
   .v-questionaire-title {
     // border-bottom: 1px solid $color-bd;
@@ -614,6 +627,7 @@ export default {
       .rb /deep/ {
         margin-top: 20px;
         .v-question-info {
+          min-height: 85px;
           &.hasPhone {
             .single-select-wrap {
               border-radius: 0;
