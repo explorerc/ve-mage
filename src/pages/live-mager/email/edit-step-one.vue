@@ -98,7 +98,6 @@
           senderName: ''
         },
         isDisabled: false,
-        accountInfo: {},
         canPass: true,
         PC_HOST: location.protocol + process.env.PC_HOST
       }
@@ -107,10 +106,6 @@
       VeHtml5Editer
     },
     computed: {
-      ...mapState('login', {
-        isLogin: state => state.isLogin,
-        accountInfo: state => state.accountInfo
-      }),
       ...mapState('liveMager', {
         emailInfo: state => state.emailInfo
       })
@@ -164,9 +159,6 @@
     created () {
     },
     methods: {
-      ...mapMutations('login', {
-        setAccountInfo: types.ACCOUNT_INFO
-      }),
       ...mapMutations('liveMager', {
         storeEmailInfo: types.EMAIL_INFO
       }),
@@ -233,8 +225,7 @@
           if (!res.data.list) return
           this.emailList = res.data.list
           if (!this.email.emailInviteId) { // 如果不是编辑
-            let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-            this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
+            this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
           }
         })
       },
@@ -259,8 +250,7 @@
           return
         }
         this.testEmailShow = false
-        let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-        this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
+        this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
         this.$post(activityService.POST_SEND_TEST_EMAIL_INFO, {
           content: this.email.content,
           receiverEmail: this.testEmailAddress
@@ -289,8 +279,7 @@
       saveEmail () {
         this.isDisabled = true
         this.canPass = true
-        let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-        this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
+        this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
         this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
           // 回写邮件id
           if (!this.email.emailInviteId) {
@@ -346,8 +335,7 @@
           handleClick: (e) => {
             if (e.action === 'confirm') {
               this.email.emailTemplateId = this.emailList[idx].emailTemplateId
-              let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-              this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
+              this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
             }
           }
         })
@@ -365,8 +353,7 @@
               for (let i = 0; i < this.emailList.length; i++) {
                 const emailObj = this.emailList[i]
                 if (emailObj.emailTemplateId === this.email.emailTemplateId) {
-                  let shareId = this.accountInfo ? this.accountInfo.businessUserId : ''
-                  this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0&shareId=${shareId}`)
+                  this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
                   break
                 }
               }
