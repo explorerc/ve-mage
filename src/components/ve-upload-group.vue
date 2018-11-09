@@ -16,6 +16,10 @@
           <i class="iconfont icon-yulanxuanzhuan"></i>
           重置
         </span>
+        <span @click.stop="overPlus">
+          <i class="iconfont icon-yulanxuanzhuan"></i>
+          重置
+        </span>
       </div>
     </div>
     <com-upload
@@ -111,11 +115,36 @@
         this.$emit('success', {
           name: '',
           host: '',
-          nowIndex: this.nowIndex
+          nowIndex: this.nowIndex,
+          isDelete: true
         })
       },
       overUpload () {
         this.$refs.uploadFile.click()
+      },
+      overPlus () {
+        this.$messageBox({
+          width: '450px',
+          content: ' <img style="width: 100px;height: 100px" :src="assets/image/avatar@2x.png" alt="">',
+          handleClick: (e) => {
+            /* if (e.action === 'cancel') {
+              this.$toast({
+                content: '已取消删除',
+                position: 'center'
+              })
+            } else if (e.action === 'confirm') {
+              this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
+                .then(res => {
+                  this.tableData.splice(index, 1)
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
+                  })
+                })
+            } */
+          }
+        })
+        // window.open(this.imgHost + '/' + this.fileSrc)
       },
       selected () {
         console.log('selected')
@@ -129,6 +158,7 @@
         }
       },
       uploadImgSuccess (data) {
+        console.log(data)
         const fildObj = JSON.parse(data.data).data
         if (fildObj.host) this.imgHost = fildObj.host
         if (fildObj.name) this.fileSrc = fildObj.name
@@ -185,16 +215,16 @@
       display: block;
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 40px;
       background-color: rgba(0, 0, 0, 0.6);
       z-index: 3;
       top: 0;
       span {
         display: inline-block;
-        width: 34%;
+        width: 25%;
         text-align: center;
         color: #fff;
-        margin-top: 50px;
+        /*margin-top: 50px;*/
         .iconfont {
           display: block;
         }
@@ -217,7 +247,7 @@
       }
       &:hover .over-upload {
         transition: top 0.3s;
-        top: -100%;
+        top: -30%;
       }
     }
     .upload-file-box {

@@ -54,8 +54,8 @@
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-image'
-  // import VeUpload from 'src/components/ve-upload-group'
+  // import VeUpload from 'src/components/ve-upload-image'
+  import VeUpload from 'src/components/ve-upload-group'
 
   export default {
     name: 'info',
@@ -276,6 +276,9 @@
           .upload-img-box {
             width: 140px;
             height: 140px;
+          }
+          .over-upload{
+            width: 140px;
           }
           .com-upload {
             width: 100%;
