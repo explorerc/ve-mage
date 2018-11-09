@@ -52,7 +52,7 @@
               <com-input type="textarea"
                          :value.sync="description"
                          :disabled="showType==='COUNTDOWN'"
-                         placeholder="请输入简介111"
+                         placeholder="请输入简介"
                          :max-length="50"></com-input>
             </p>
           </div>
