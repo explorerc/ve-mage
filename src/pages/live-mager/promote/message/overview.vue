@@ -43,7 +43,7 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='title' :date='date' :wxContent='msgContent' :msgTag='msgTag'></com-phone>
+          <com-phone :titleValue='title' :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx="false"></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->

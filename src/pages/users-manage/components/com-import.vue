@@ -155,9 +155,9 @@ export default {
       this.$emit('handleClick', {
         action: 'cancel'
       })
-      if (this.importSuccess) {
-        window.location.reload()
-      }
+      // if (this.importSuccess) {
+      //   window.location.reload()
+      // }
     },
     overUpload () {
       this.$refs.uploadFile.click()
