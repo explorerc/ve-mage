@@ -470,7 +470,7 @@ export default {
               type: '',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -515,7 +515,7 @@ export default {
               type: '',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -560,7 +560,7 @@ export default {
               type: '',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -605,7 +605,7 @@ export default {
               type: '',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -640,7 +640,7 @@ export default {
               type: 'date',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -680,7 +680,7 @@ export default {
             type: '',
             unit: ''
           }, {
-            key: '',
+            key: null,
             name: '为空',
             type: '',
             unit: ''
@@ -704,7 +704,7 @@ export default {
             type: '',
             unit: ''
           }, {
-            key: '',
+            key: null,
             name: '为空',
             type: '',
             unit: ''
@@ -739,7 +739,7 @@ export default {
               type: 'date',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -769,7 +769,7 @@ export default {
               type: 'date',
               unit: ''
             }, {
-              key: '',
+              key: null,
               name: '为空',
               type: '',
               unit: ''
@@ -893,7 +893,7 @@ export default {
           type: 'select',
           unit: ''
         }, {
-          key: '',
+          key: null,
           name: '为空',
           type: 'select',
           unit: ''
@@ -926,7 +926,7 @@ export default {
             type: 'select',
             unit: ''
           }, {
-            key: '',
+            key: null,
             name: '为空',
             type: 'select',
             unit: ''
