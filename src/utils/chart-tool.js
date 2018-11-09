@@ -83,7 +83,7 @@ const AxisCategory = {
  * 堆叠图
  * @returns {Promise<Response>}
  */
-export function barPile (id, data, gridData, legendGrid) {
+export function barPile (id, data, gridData, legendGrid, xName) {
   let yAxisData = []
   let serveData = []
   data.list.forEach(item => {
@@ -129,7 +129,9 @@ export function barPile (id, data, gridData, legendGrid) {
       ...grid,
       ...gridData
     },
-    xAxis: AxisValue,
+    xAxis: { ...AxisValue,
+      name: xName
+    },
     yAxis: {
       ...AxisCategory,
       axisTick: {
