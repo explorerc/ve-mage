@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
-    <div class="index">{{index}}</div>
     <div class="question-content">
+      <div class="index">{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -104,7 +104,7 @@ export default {
       }
     },
     remove () {
-      this.$emit('remove', this.index)
+      this.$emit('remove', this.value.ext.key)
     }
   },
   watch: {
@@ -133,7 +133,9 @@ export default {
   width: 100%;
   font-size: 12px;
   position: relative;
-  padding-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #d2d2d2;
+  overflow: hidden;
   /deep/ {
     .el-radio + .el-radio {
       margin-left: 0;
@@ -155,10 +157,9 @@ export default {
       margin-top: 2px;
     }
     .question-content {
-      border-radius: 2px;
-      border: 1px solid #d2d2d2;
-      margin-left: 20px;
-      padding: 10px;
+      padding: 30px;
+      width: 100%;
+      background-color: #fff;
       .q-des {
         margin-bottom: 15px;
       }
