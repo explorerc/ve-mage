@@ -243,13 +243,6 @@
           {value: 5, label: '流失用户'}
         ],
         options: [],
-        provinceList: [
-          {value: '', label: '省'},
-          ...province
-        ],
-        cityList: [
-          {value: '', label: '市'}
-        ],
         sourceList: [
           {value: '', label: '全部'},
           {value: 'IMPORT', label: '导入'},
@@ -312,25 +305,6 @@
         }
         this.searchParams.first_join_at = vals[0]
         this.searchParams.last_leave_at = vals[1]
-      },
-      'searchParams.provinceId' (newVal) {
-        if (newVal) {
-          for (let i = 0; i < province.length; i++) {
-            if (province[i].value === newVal) {
-              this.searchParams.province = province[i].label
-              break
-            }
-          }
-          this.cityList = [{value: '', label: '市'}, ...city[newVal]]
-        }
-      },
-      'searchParams.cityId' (newVal) {
-        for (let i = 0; i < this.cityList.length; i++) {
-          if (this.cityList[i].value === newVal) {
-            this.searchParams.city = this.cityList[i].label
-            break
-          }
-        }
       }
     },
     created () {
@@ -359,6 +333,21 @@
       handleAreaChange (v) {
         this.searchParams.provinceId = v[0]
         this.searchParams.cityId = v[1]
+        if (this.searchParams.provinceId) {
+          for (let i = 0; i < province.length; i++) {
+            if (province[i].value === this.searchParams.provinceId) {
+              this.searchParams.province = province[i].label
+              break
+            }
+          }
+          let cityList = city[this.searchParams.provinceId]
+          for (let i = 0; i < cityList.length; i++) {
+            if (cityList[i].value === this.searchParams.cityId) {
+              this.searchParams.city = cityList[i].label
+              break
+            }
+          }
+        }
       },
       dealSearchParam () {
         let type = this.$route.query.type
