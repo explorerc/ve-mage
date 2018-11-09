@@ -9,6 +9,8 @@
         <!-- 问题描述区 -->
         <com-input v-if="edit"
                    class="q-subject"
+                   @focus="focusTitle"
+                   :class="{error:value.error}"
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
@@ -41,7 +43,7 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort">排序</div>
+        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -96,6 +98,12 @@ export default {
     }
   },
   methods: {
+    focusTitle () {
+      if (this.value.error) {
+        this.value.error = false
+        this.value.title = ''
+      }
+    },
     addItem () {
       if (this.value.detail.list.length < 20) {
         this.value.detail.list.push({
@@ -104,7 +112,11 @@ export default {
       }
     },
     remove () {
-      this.$emit('remove', this.value.ext.key)
+      let option = {
+        type: this.value.ext.key,
+        index: this.index
+      }
+      this.$emit('remove', option)
     }
   },
   watch: {
@@ -171,6 +183,15 @@ export default {
         }
         .q-subject {
           margin-bottom: 14px;
+          &.error {
+            input {
+              border-color: #fc5659;
+              color: #fc5659;
+            }
+            .limit {
+              display: none;
+            }
+          }
         }
       }
       .q-operate {
