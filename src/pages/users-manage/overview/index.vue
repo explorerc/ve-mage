@@ -225,11 +225,11 @@ export default {
           left: 130,
           bottom: 70,
           top: 30,
-          right: 20
+          right: 50
         }, {
           left: 'center',
           top: '350px'
-        })
+        }, '人')
         this.datas.list.forEach((element, index) => {
           let template = {}
           template.title = this.datas.names[index]
