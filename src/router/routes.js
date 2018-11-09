@@ -338,7 +338,7 @@ export default [{
     component: recommendGoodsList
   },
   {
-    path: '/salesTools/recommendGoodsInfo',
+    path: '/salesTools/recommendGoodsInfo/:id',
     name: 'recommendGoodsInfo',
     component: recommendGoodsInfo
   },
