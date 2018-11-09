@@ -4,6 +4,7 @@ export default function () {
     tplName: '模板名称3',
     section1Data: {
       panel: {
+        hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         img: '',
@@ -52,6 +53,7 @@ export default function () {
     section2Data: {
       panel: {
         enable: true,
+        hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(30,101,231,1)',
@@ -80,6 +82,7 @@ export default function () {
     section3Data: {
       panel: {
         enable: true,
+        hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(239,239,239,1)',
@@ -158,6 +161,7 @@ export default function () {
     section5Data: {
       panel: {
         enable: true,
+        hideVideo: true,
         bgType: 'color',
         videoType: 'upload',
         color: 'RGBA(0, 157, 181, 1)',
@@ -180,6 +184,7 @@ export default function () {
     section6Data: {
       panel: {
         enable: true,
+        hideVideo: true,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
@@ -258,6 +263,7 @@ export default function () {
     section7Data: {
       panel: {
         enable: true,
+        hideVideo: true,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(19,16,49,1)',
@@ -280,6 +286,7 @@ export default function () {
     section8Data: {
       panel: {
         enable: true,
+        hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',

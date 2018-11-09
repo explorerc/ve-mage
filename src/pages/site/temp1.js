@@ -9,6 +9,7 @@ export default function () {
         img: '',
         link: '',
         color: 'rgba(255, 255, 255, 1)',
+        hideVideo: false,
         enable: true
       },
       logo: {
@@ -51,6 +52,7 @@ export default function () {
         img: require('assets/image/tp_section2.jpg'),
         color: 'rgba(0, 0, 0, 1)',
         link: '',
+        hideVideo: false,
         enable: true
       },
       font: {
@@ -73,6 +75,7 @@ export default function () {
     },
     section3Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -107,6 +110,7 @@ export default function () {
     },
     section4Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -152,6 +156,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         link: '',
@@ -201,6 +206,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        hideVideo: true,
         enable: true,
         bgType: 'color',
         link: '',
@@ -219,6 +225,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        hideVideo: true,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
