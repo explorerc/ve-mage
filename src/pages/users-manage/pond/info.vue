@@ -416,6 +416,9 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
+  .com-addGroup-box {
+    position: fixed;
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
