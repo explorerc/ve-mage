@@ -136,8 +136,13 @@
               <span class="user-avatar" v-if="!scope.row.avatar"></span>
               <span class="user-avatar" v-else :style="{backgroundImage:`url(${$imgHost}/${scope.row.avatar})`}"></span>
               <div>
-                <span :title="scope.row.nickname">{{scope.row.nickname?scope.row.nickname:'无'}}</span>
-                <span :class="{level4:scope.row.end_user_level==4}">{{scope.row.end_user_level|fmtUserLevel}}</span>
+                <span :title="scope.row.nickname">{{scope.row.nickname?scope.row.nickname:'无'}}　{{scope.row.sex?(scope.row.sex=='M'?'男':'女'):''}}</span>
+                <span :class="{
+                level4:scope.row.end_user_level==4,
+                level3:scope.row.end_user_level==3,
+                level2:scope.row.end_user_level==2,
+                level1:scope.row.end_user_level==1
+                }">{{scope.row.end_user_level|fmtUserLevel}}</span>
               </div>
             </div>
           </template>
@@ -309,7 +314,11 @@
               break
             }
           }
-          this.cityList = [...this.cityList, ...city[newVal]]
+          this.cityList = [{value: '', label: '市'}, ...city[newVal]]
+        } else {
+          this.cityList = [
+            {value: '', label: '市'}
+          ]
         }
         this.searchParams.cityId = ''
         this.searchParams.city = ''
@@ -374,6 +383,9 @@
         }).then((res) => {
           if (res.code === 200) {
             this.viewerList = res.data.list
+            // this.viewerList[0].end_user_level = 1
+            // this.viewerList[0].avatar = 'mp-test/50/f2/50f274c3025fc9acd0fe1eb86484ce5f.jpg'
+            // this.viewerList[0].sex = 'W'
             this.total = res.data.total
           }
         })
@@ -503,8 +515,17 @@
           }
         }
       }
+      .level1 {
+        color: #0FBDAA !important;
+      }
+      .level2 {
+        color: #714CEA !important;
+      }
+      .level3 {
+        color: #FFAA00 !important;
+      }
       .level4 {
-        color: #FC5659;
+        color: #FC5659 !important;
       }
     }
   }
