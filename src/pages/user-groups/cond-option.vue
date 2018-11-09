@@ -2,33 +2,33 @@
   <div id="cond-option">
     <ul>
       <li v-for="(outli,ind) in shadowOutD ">
-
         <div class="option-box">
           <p class="option_title">筛选条件</p>
           <div v-for="(m ,mind) in outli">
             <el-cascader v-model="m.keys" :options="options" :props="props" :show-all-levels="false"
                          @change="handleItemChange(m,ind,mind)"></el-cascader>
-
-            <el-select v-model="m.condition" value-key="name" placeholder="请选择" @change="optionItemChange(m,ind,mind)">
+            <el-select v-if="m.keys" v-model="m.condition" value-key="name" placeholder="请选择"
+                       @change="optionItemChange(m,ind,mind)">
               <el-option v-for="(itemr,indexr) in m.conds" :key="indexr.name" :label="itemr.name"
                          :value="itemr.key"></el-option>
             </el-select>
 
-
-            <div class="option-value">
+            <div class="option-value" v-if="m.condition">
               <el-select v-model="m.value" v-if="m.type == 'select'" filterable placeholder="请选择">
                 <el-option v-for="(itemr,indexr) in m.optionValue" :key="indexr.key" :label="itemr.name"
                            :value="itemr.key">
                 </el-option>
               </el-select>
 
-              <el-input v-if="m.type === 'text' " v-model="m.value" :type="m.type" placeholder="请输入内容"></el-input>
+              <el-input v-else-if="m.type === 'text' " v-model="m.value" :type="m.type" placeholder="请输入内容"></el-input>
 
-              <el-input-number v-if="m.type === 'number'" v-model="m.value" placeholder="请输入" :controls=false
+              <el-input-number v-else-if="m.type === 'number'" v-model="m.value" placeholder="请输入" :controls=false
                                :min="1" :max="100000000000"></el-input-number>
 
-              <el-date-picker v-if="m.type === 'date' " v-model="m.value" type="date"
+              <el-date-picker v-else-if="m.type === 'date' " v-model="m.value" type="date"
                               placeholder="选择日期"></el-date-picker>
+              <el-input v-show="false" v-else-if="m.type === '' " v-model="m.value =null"
+                        placeholder="请输入内容"></el-input>
               {{m.unit}}
             </div>
             <i class="el-icon-delete" @click="del(ind,mind)" v-show="disDel"></i>
@@ -92,135 +92,136 @@
             }
           ]
         }, */
-        options: [{
-          name: '观看直播相关',
-          key: 'watch_live_dep',
-          children: [
-            {
-              name: '预约/报名活动',
-              key: 'sign_up_count'
-            },
-            {
-              name: '观看直播时长',
-              key: 'watch_live_time'
-            },
-            {
-              name: '参与活动次数',
-              key: 'join_count'
-            },
-            {
-              name: '观看回放',
-              key: 'watch_replay_time'
-            },
-            {
-              name: '观看回放次数',
-              key: 'watch_replay_count'
-            },
-            {
-              name: '聊天数量',
-              key: 'chat_count'
-            }
-          ]
-        }, {
-          name: '传播行为',
-          key: 'propagation',
-          children: [
-            {
-              name: '分享次数',
-              key: 'share_count',
-              value: ''
-            },
-            {
-              name: '邀请好友',
-              key: 'invite_friends_count',
-              value: ''
-            }
-          ]
-        }, {
-          name: '用户属性',
-          key: 'user_attr',
-          children: [
-            {
-              name: '姓名',
-              key: 'real_name',
-              value: ''
-            },
-            {
-              name: '职位',
-              key: 'position',
-              value: ''
-            },
-            {
-              name: '邮箱',
-              key: 'email',
-              value: ''
-            },
-            {
-              name: '手机号',
-              key: 'phone',
-              value: ''
-            },
-            {
-              name: '性别',
-              key: 'sex',
-              value: ''
-            },
-            {
-              name: '生日',
-              key: 'birthday',
-              value: ''
-            },
-            {
-              name: '行业',
-              key: 'industry',
-              value: ''
-            },
-            {
-              name: '省份',
-              key: 'province',
-              value: ''
-            },
-            {
-              name: '城市',
-              key: 'city',
-              value: ''
-            },
-            {
-              name: '用户等级',
-              key: 'user_level',
-              value: ''
-            },
-            {
-              name: '首次访问时间',
-              key: 'first_visited_at',
-              value: ''
-            },
-            {
-              name: '最近访问时间',
-              key: 'last_visited_at',
-              value: ''
-            }
-          ]
-        }, {
-          name: '其他维度',
-          key: 'other',
-          children: [
-            {
-              name: '时间',
-              key: 'created_at',
-              value: ''
-            },
-            {
-              name: '标签',
-              key: 'tags',
-              value: ''
-            },
-            {
-              name: '群组',
-              key: 'groups',
-              value: ''
-            }]
-        }
+        options: [
+          {
+            name: '观看直播相关',
+            key: 'watch_live_dep',
+            children: [
+              {
+                name: '预约/报名活动',
+                key: 'sign_up_count'
+              },
+              {
+                name: '观看直播时长',
+                key: 'watch_live_time'
+              },
+              {
+                name: '参与活动次数',
+                key: 'join_count'
+              },
+              {
+                name: '观看回放',
+                key: 'watch_replay_time'
+              },
+              {
+                name: '观看回放次数',
+                key: 'watch_replay_count'
+              },
+              {
+                name: '聊天数量',
+                key: 'chat_count'
+              }
+            ]
+          }, {
+            name: '传播行为',
+            key: 'propagation',
+            children: [
+              {
+                name: '分享次数',
+                key: 'share_count',
+                value: ''
+              },
+              {
+                name: '邀请好友',
+                key: 'invite_friends_count',
+                value: ''
+              }
+            ]
+          }, {
+            name: '用户属性',
+            key: 'user_attr',
+            children: [
+              {
+                name: '姓名',
+                key: 'real_name',
+                value: ''
+              },
+              {
+                name: '职位',
+                key: 'position',
+                value: ''
+              },
+              {
+                name: '邮箱',
+                key: 'email',
+                value: ''
+              },
+              {
+                name: '手机号',
+                key: 'phone',
+                value: ''
+              },
+              {
+                name: '性别',
+                key: 'sex',
+                value: ''
+              },
+              {
+                name: '生日',
+                key: 'birthday',
+                value: ''
+              },
+              {
+                name: '行业',
+                key: 'industry',
+                value: ''
+              },
+              {
+                name: '省份',
+                key: 'province',
+                value: ''
+              },
+              {
+                name: '城市',
+                key: 'city',
+                value: ''
+              },
+              {
+                name: '用户等级',
+                key: 'user_level',
+                value: ''
+              },
+              {
+                name: '首次访问时间',
+                key: 'first_visited_at',
+                value: ''
+              },
+              {
+                name: '最近访问时间',
+                key: 'last_visited_at',
+                value: ''
+              }
+            ]
+          }, {
+            name: '其他维度',
+            key: 'other',
+            children: [
+              {
+                name: '时间',
+                key: 'created_at',
+                value: ''
+              },
+              {
+                name: '标签',
+                key: 'tags',
+                value: ''
+              },
+              {
+                name: '群组',
+                key: 'groups',
+                value: ''
+              }]
+          }
         ],
 
         condOption: {
@@ -339,7 +340,6 @@
               unit: '条'
             }]
           },
-
           share_count: {
             keys: ['propagation', 'share_count'],
             cons: [
@@ -380,13 +380,12 @@
                 unit: '人'
               }]
           },
-
           common_device: {
             keys: ['browsing', 'common_device'],
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -396,57 +395,56 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
           },
-          real_name:
-            {
-              keys: ['user_attr', 'real_name'],
-              cons:
-                [{
-                  key: 'contain',
-                  name: '包含',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'not_contain',
-                  name: '不包含',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'eq',
-                  name: '是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'neq',
-                  name: '不是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'head_eq',
-                  name: '开头是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'tail_eq',
-                  name: '结尾是',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'not_null',
-                  name: '不为空',
-                  type: 'text',
-                  unit: ''
-                }, {
-                  key: 'is_null',
-                  name: '为空',
-                  type: 'text',
-                  unit: ''
-                }]
-            },
+          real_name: {
+            keys: ['user_attr', 'real_name'],
+            cons: [
+              {
+                key: 'contain',
+                name: '包含',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'not_contain',
+                name: '不包含',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'eq',
+                name: '是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'neq',
+                name: '不是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'head_eq',
+                name: '开头是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'tail_eq',
+                name: '结尾是',
+                type: 'text',
+                unit: ''
+              }, {
+                key: 'not_null',
+                name: '不为空',
+                type: '',
+                unit: ''
+              }, {
+                key: 'is_null',
+                name: '为空',
+                type: '',
+                unit: ''
+              }]
+          },
           position: {
             keys: ['user_attr', 'position'],
             cons: [
@@ -483,12 +481,12 @@
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -528,12 +526,12 @@
               }, {
                 key: 'not_null',
                 name: '不为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }, {
                 key: 'is_null',
                 name: '为空',
-                type: 'text',
+                type: '',
                 unit: ''
               }]
           },
@@ -587,7 +585,7 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -601,12 +599,12 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: 'gt',
+                key: 'lt',
                 name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
-                key: 'lt',
+                key: 'gt',
                 name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
@@ -626,46 +624,12 @@
             keys: ['user_attr', 'industry'],
             cons: [
               {
-                key: 'contain',
-                name: '包含',
-                type: 'select ',
-                unit: ''
-              }, {
-                key: 'not_contain',
-                name: '不包含',
-                type: 'select',
-                unit: ''
-              }, {
                 key: 'eq',
                 name: '是',
                 type: 'select',
                 unit: ''
-              }, {
-                key: 'neq',
-                name: '不是',
-                type: 'select',
-                unit: ''
-              }, {
-                key: 'head_eq',
-                name: '开头是',
-                type: 'select',
-                unit: ''
-              }, {
-                key: 'tail_eq',
-                name: '结尾是',
-                type: 'select',
-                unit: ''
-              }, {
-                key: 'not_null',
-                name: '不为空',
-                type: '',
-                unit: ''
-              }, {
-                key: 'is_null',
-                name: '为空',
-                type: '',
-                unit: ''
-              }]
+              }
+            ]
           },
           province: {
             keys: ['user_attr', 'province'],
@@ -682,12 +646,12 @@
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'select',
+              type: '',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'select',
+              type: '',
               unit: ''
             }]
           },
@@ -706,12 +670,12 @@
             }, {
               key: 'not_null',
               name: '不为空',
-              type: 'select',
+              type: '',
               unit: ''
             }, {
               key: 'is_null',
               name: '为空',
-              type: 'select',
+              type: '',
               unit: ''
             }]
           },
@@ -720,7 +684,7 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -734,12 +698,12 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: 'gt',
+                key: 'lt',
                 name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
-                key: 'lt',
+                key: 'gt',
                 name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
@@ -764,12 +728,12 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: 'gt',
+                key: 'lt',
                 name: '早于（哪一天）',
                 type: 'date',
                 unit: ''
               }, {
-                key: 'lt',
+                key: 'gt',
                 name: '晚于（哪一天）',
                 type: 'date',
                 unit: ''
@@ -805,7 +769,7 @@
             cons: [
               {
                 key: 'eq',
-                name: '等于',
+                name: '是',
                 type: 'select',
                 unit: ''
               }]
@@ -814,7 +778,7 @@
             keys: ['other', 'groups'],
             cons: [{
               key: 'eq',
-              name: '等于',
+              name: '是',
               type: 'select',
               unit: ''
             }]
@@ -883,22 +847,22 @@
             }
           ],
           sex: [{
-            key: '男',
+            key: 'M',
             name: '男',
             type: 'select',
             unit: ''
           }, {
-            key: '女',
+            key: 'W',
             name: '女',
             type: 'select',
             unit: ''
           }, {
-            key: '全部',
+            key: '*',
             name: '全部',
             type: 'select',
             unit: ''
           }, {
-            key: '为空',
+            key: 'is_null',
             name: '为空',
             type: 'select',
             unit: ''
@@ -906,37 +870,37 @@
           ],
           user_level: [
             {
-              key: '优质用户',
+              key: 1,
               name: '优质用户',
               type: 'select',
               unit: ''
             }, {
-              key: '高价值用户',
+              key: 2,
               name: '高价值用户',
               type: 'select',
               unit: ''
             }, {
-              key: '潜力用户',
+              key: 4,
               name: '潜力用户',
               type: 'select',
               unit: ''
             }, {
-              key: '一般用户',
+              key: 3,
               name: '一般用户',
               type: 'select',
               unit: ''
             }, {
-              key: '流失用户',
+              key: 5,
               name: '流失用户',
               type: 'select',
               unit: ''
             }, {
-              key: '为空',
+              key: 'is_null',
               name: '为空',
               type: 'select',
               unit: ''
             }, {
-              key: '全部',
+              key: '*',
               name: '全部',
               type: 'select',
               unit: ''
@@ -1093,6 +1057,7 @@
       },
       save () {
         console.log(this.shadowOutD, 'before_save_data')
+        let fulfil = true
         this.saveData = this.shadowOutD.filter((item) => {
           let _item = item.filter((inItem) => {
             if (inItem.condition !== '' || inItem.key !== '') {
@@ -1102,12 +1067,22 @@
                 let d = new Date(inItem.value)
                 inItem.value = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
               }
-              delete inItem.conds
-              delete inItem.keys
-              delete inItem.type
-              delete inItem.unit
-              delete inItem.optionValue
-              return inItem
+              // 此处是为了让三级输入框不为空  但是可以为null
+              if (inItem.value === '') {
+                fulfil = false
+                this.$toast({
+                  content: '输入框不能为空',
+                  position: 'center'
+                })
+                return false
+              } else {
+                // delete inItem.conds
+                // delete inItem.keys
+                // delete inItem.type
+                // delete inItem.unit
+                // delete inItem.optionValue
+                return inItem
+              }
             }
           })
           if (_item.length > 0) {
@@ -1115,11 +1090,11 @@
           }
         })
         // console.log(this.saveData, '_save_data')
-        this.$emit('optionData', this.saveData)
+        if (fulfil) this.$emit('optionData', this.saveData)
       },
       analysisData () {
-        this.outD.map((item) => {
-          item.map((item1) => {
+        this.outD.map((item, ind) => {
+          item.map((item1, ind1) => {
             item1.keys = this.condOption[item1.key].keys
             item1.optionValue = this.valueOption[item1.keys[1]]
             this.$set(item1, 'conds', this.condOption[item1.key].cons)
@@ -1127,6 +1102,7 @@
             item1.unit = this.condOption[item1.key].cons.find((item) => item.key === item1.condition).unit
           })
         })
+
         this.shadowOutD = this.outD
       },
       getTags () {
@@ -1160,7 +1136,7 @@
       getProvince () {
         province.forEach((item) => {
           let obj = {
-            key: item.id,
+            key: item.name,
             name: item.name,
             type: 'select',
             unit: ''
@@ -1171,7 +1147,7 @@
       getCity () {
         city.forEach((item) => {
           let obj = {
-            key: item.id,
+            key: item.name,
             name: item.name,
             type: 'select',
             unit: ''
@@ -1179,12 +1155,6 @@
           this.valueOption.city.push(obj)
         })
       }
-    },
-    created () {
-      this.getTags()
-      this.getGroup()
-      this.getProvince()
-      this.getCity()
     },
     mounted () {
       if (this.type === 'edit') {
@@ -1197,6 +1167,10 @@
         }
         this.analysisData()
       }
+      this.getTags()
+      this.getGroup()
+      this.getProvince()
+      this.getCity()
     }
   }
 </script>

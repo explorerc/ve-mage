@@ -8,6 +8,7 @@ export default function () {
         videoType: 'upload',
         img: '',
         color: 'rgba(4,4,4,1)',
+        hideVideo: false,
         enable: true
       },
       logo: {
@@ -56,6 +57,7 @@ export default function () {
           btn: {
             enable: true,
             text: '活动报名',
+            link: '',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -69,6 +71,7 @@ export default function () {
           btn: {
             enable: true,
             text: '活动报名',
+            link: '',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -82,6 +85,7 @@ export default function () {
           btn: {
             enable: true,
             text: '活动报名',
+            link: '',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -92,6 +96,7 @@ export default function () {
     },
     section3Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -111,6 +116,7 @@ export default function () {
     },
     section4Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -129,6 +135,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -182,6 +189,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        hideVideo: true,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -241,6 +249,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        hideVideo: true,
         enable: true,
         bgType: 'color',
         videoType: 'upload',

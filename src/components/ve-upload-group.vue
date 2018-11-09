@@ -16,7 +16,15 @@
           <i class="iconfont icon-yulanxuanzhuan"></i>
           重置
         </span>
+        <span @click.stop="overPlus">
+          <i class="iconfont icon-yulanxuanzhuan"></i>
+          重置
+        </span>
       </div>
+    </div>
+    <div class="big-img" v-if="isShowBigImg">
+      <span @click="isShowBigImg = false" class="el-icon-circle-close"></span>
+      <div :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
     </div>
     <com-upload
       :accept="accept"
@@ -44,6 +52,7 @@
     components: { ComUpload },
     data () {
       return {
+        isShowBigImg: false,
         imgHost: '',
         fileSrc: '',
         coverImg: '',
@@ -111,11 +120,17 @@
         this.$emit('success', {
           name: '',
           host: '',
-          nowIndex: this.nowIndex
+          nowIndex: this.nowIndex,
+          isDelete: true
         })
       },
       overUpload () {
         this.$refs.uploadFile.click()
+      },
+      overPlus () {
+        this.isShowBigImg = true
+        console.log(this.isShowBigImg, 1111)
+        // window.open(this.imgHost + '/' + this.fileSrc)
       },
       selected () {
         console.log('selected')
@@ -129,6 +144,7 @@
         }
       },
       uploadImgSuccess (data) {
+        console.log(data)
         const fildObj = JSON.parse(data.data).data
         if (fildObj.host) this.imgHost = fildObj.host
         if (fildObj.name) this.fileSrc = fildObj.name
@@ -185,16 +201,16 @@
       display: block;
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 40px;
       background-color: rgba(0, 0, 0, 0.6);
       z-index: 3;
       top: 0;
       span {
         display: inline-block;
-        width: 34%;
+        width: 25%;
         text-align: center;
         color: #fff;
-        margin-top: 50px;
+        /*margin-top: 50px;*/
         .iconfont {
           display: block;
         }
@@ -217,7 +233,7 @@
       }
       &:hover .over-upload {
         transition: top 0.3s;
-        top: -100%;
+        top: -30%;
       }
     }
     .upload-file-box {
@@ -239,6 +255,32 @@
         margin: 20px auto 10px auto;
         background-image: url('../assets/image/upload-image-icon@2x.png');
         background-size: cover;
+      }
+    }
+    .big-img {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      span {
+        color: white;
+        font-size: 50px;
+        position: absolute;
+        top: 100px;
+        right: 100px;
+        cursor: pointer;
+      }
+      div {
+        width: 500px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-size: cover
       }
     }
   }
