@@ -60,6 +60,7 @@ export default {
     validate () {
       let result = true
       if (!this.value.title) {
+        result = false
         this.value.error = true
         this.value.title = '请设置问卷内容'
       }
@@ -72,7 +73,6 @@ export default {
           item.error = false
         }
       })
-
       return result
     },
     check () {

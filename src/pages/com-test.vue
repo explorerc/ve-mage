@@ -8,7 +8,7 @@
                :value.sync="item"
                :edit="true"
                :index="index+1"
-               :key="index">></com-q>
+               :key="index"></com-q>
       </draggable>
     </div>
     <div class="test-wrap1">
@@ -61,7 +61,7 @@ export default {
           }
         },
         {
-          title: '多选题',
+          title: '',
           errorTip: '',
           type: QTypes.CHECKBOX,
           value: [],
@@ -69,7 +69,9 @@ export default {
           detail: {
             list: [
               {
-                value: '选项'
+                value: ''
+              }, {
+                value: ''
               }
             ]
           },
@@ -94,7 +96,7 @@ export default {
           }
         },
         {
-          title: '问答题',
+          title: '',
           errorTip: '',
           type: QTypes.TEXT,
           style: '',
@@ -148,7 +150,7 @@ export default {
           }
         },
         {
-          title: '性别',
+          title: '',
           errorTip: '',
           type: QTypes.SELECT,
           required: true,
@@ -168,7 +170,7 @@ export default {
           }
         },
         {
-          title: '生日',
+          title: '',
           errorTip: '',
           type: QTypes.DATE,
           required: true,
@@ -180,7 +182,7 @@ export default {
           }
         },
         {
-          title: '地域',
+          title: '',
           errorTip: '',
           type: QTypes.AREA,
           required: true,
@@ -307,7 +309,8 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.$refs['comEdit0'][0].$children[1].validate()
+      console.log(this.$refs['comEdit1'][0])
+      this.$refs['comEdit1'][0].$children[1].validate()
     }, 2000)
   },
   methods: {
