@@ -22,6 +22,10 @@
         </span>
       </div>
     </div>
+    <div class="big-img" v-if="isShowBigImg">
+      <span @click="isShowBigImg = false" class="el-icon-circle-close"></span>
+      <div :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
+    </div>
     <com-upload
       :accept="accept"
       actionUrl="/api/upload/image"
@@ -48,6 +52,7 @@
     components: { ComUpload },
     data () {
       return {
+        isShowBigImg: false,
         imgHost: '',
         fileSrc: '',
         coverImg: '',
@@ -123,27 +128,8 @@
         this.$refs.uploadFile.click()
       },
       overPlus () {
-        this.$messageBox({
-          width: '450px',
-          content: ' <img style="width: 100px;height: 100px" :src="assets/image/avatar@2x.png" alt="">',
-          handleClick: (e) => {
-            /* if (e.action === 'cancel') {
-              this.$toast({
-                content: '已取消删除',
-                position: 'center'
-              })
-            } else if (e.action === 'confirm') {
-              this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
-                .then(res => {
-                  this.tableData.splice(index, 1)
-                  this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
-                  })
-                })
-            } */
-          }
-        })
+        this.isShowBigImg = true
+        console.log(this.isShowBigImg, 1111)
         // window.open(this.imgHost + '/' + this.fileSrc)
       },
       selected () {
@@ -269,6 +255,32 @@
         margin: 20px auto 10px auto;
         background-image: url('../assets/image/upload-image-icon@2x.png');
         background-size: cover;
+      }
+    }
+    .big-img {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      span {
+        color: white;
+        font-size: 50px;
+        position: absolute;
+        top: 100px;
+        right: 100px;
+        cursor: pointer;
+      }
+      div {
+        width: 500px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-size: cover
       }
     }
   }
