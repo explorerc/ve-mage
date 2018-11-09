@@ -4,6 +4,7 @@ export default function () {
     tplName: '模板名称2',
     section1Data: {
       panel: {
+        hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         img: '',
@@ -49,6 +50,7 @@ export default function () {
     },
     section2Data: {
       panel1: {
+        hideVideo: false,
         bgType: 'img',
         videoType: 'upload',
         img: require('assets/image/tp_bg_2.jpg'),
@@ -56,6 +58,7 @@ export default function () {
         enable: true
       },
       panel2: {
+        hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         img: '',
@@ -63,6 +66,7 @@ export default function () {
         enable: true
       },
       panel3: {
+        hideVideo: true,
         bgType: 'color',
         videoType: 'upload',
         img: '',
@@ -84,6 +88,7 @@ export default function () {
     },
     section3Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -109,6 +114,7 @@ export default function () {
     },
     section4Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -160,6 +166,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -233,6 +240,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -286,6 +294,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -324,6 +333,7 @@ export default function () {
     },
     section8Data: {
       panel: {
+        hideVideo: false,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
@@ -410,6 +420,7 @@ export default function () {
     },
     section9Data: {
       panel: {
+        hideVideo: true,
         enable: true,
         bgType: 'color',
         videoType: 'upload',
