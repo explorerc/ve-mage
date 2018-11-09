@@ -3,7 +3,8 @@
     <div class="test-wrap">
       <draggable v-model="dragData"
                  :options="{handle:'.sort'}">
-        <com-q v-for="(item,index) in dragData"
+        <com-q :ref="`comEdit${index}`"
+              v-for="(item,index) in dragData"
                :value.sync="item"
                :edit="true"
                :index="index+1"
@@ -41,14 +42,17 @@ export default {
       tIndex: 0,
       dragData: [
         {
-          title: '单选题',
+          title: '',
           errorTip: '',
           type: QTypes.RADIO,
           required: true,
           detail: {
             list: [
               {
-                value: '选项'
+                value: ''
+              },
+              {
+                value: ''
               }
             ]
           },
@@ -300,6 +304,11 @@ export default {
       },
       fileSize: 200000
     }
+  },
+  mounted () {
+    setTimeout(() => {
+      this.$refs['comEdit0'][0].$children[1].validate()
+    }, 2000)
   },
   methods: {
     uploadSelected (data) {

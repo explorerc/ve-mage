@@ -74,7 +74,7 @@
             </div>
           </div>
           <div class="rb">
-            <div class="v-question-info">
+            <div class="v-question-info" :class="{hasPhone:hasPhone}">
               <draggable v-model="dragData"
                          :options="{handle:'.sort'}">
                 <com-question v-for="(item,index) in dragData"
@@ -82,14 +82,19 @@
                               :edit="true"
                               :index="index+1"
                               :key="index"
+                              :class="{isSingle:isSingle}"
+                              :ref="`com${index}`"
                               @remove="removeQuestion($event)">
                 </com-question>
               </draggable>
               <com-question v-if="phoneData.length"
+                            :class="{isBorder:isBorder}"
+                            class="v-phone"
                             :value.sync="phoneData[0]"
                             :edit="true"
+                            :ref="`comPhone`"
                             :index="dragData.length+1"
-                            :key="dragData.length+1">
+                            :key="dragData.length+1" @remove="removeQuestion($event)">
               </com-question>
             </div>
           </div>
@@ -97,7 +102,12 @@
       </div>
     </div>
     <div class="v-control">
-      123
+      <button class="v-view" @click="view">
+        预览
+      </button>
+      <button class="v-save" @click="save">
+        保存
+      </button>
     </div>
   </div>
 </template>
@@ -135,9 +145,25 @@ export default {
   },
   created () {
   },
+  computed: {
+    isBorder () {
+      return !(this.dragData.length > 0)
+    },
+    isSingle () {
+      return (this.dragData.length === 1) && (this.phoneData.length === 0)
+    },
+    hasPhone () {
+      return !(this.phoneData.length === 0)
+    }
+  },
   methods: {
-    removeQuestion (index) {
-      this.dragData.splice(index - 1, 1)
+    removeQuestion (options) {
+      if (options.type === 'phone') {
+        this.phoneData.splice(0, 1)
+      } else {
+        this.dragData.splice(options.index - 1, 1)
+      }
+      this.base[options.type] = true
     },
     addQuestion (type) {
       let obj = {}
@@ -448,6 +474,16 @@ export default {
           this.dragData.push(obj)
           break
       }
+    },
+    save () {
+      // let data = []
+      for (let i = 0; i < this.dragData.length; i++) {
+        const element = this.dragData[i]
+        console.log(element)
+      }
+    },
+    view () {
+
     }
   }
 }
@@ -489,6 +525,7 @@ export default {
   .content {
     widows: 800px;
     min-height: 500px;
+    margin-bottom: 80px;
     // overflow: hidden;
     position: relative;
     .tt {
@@ -577,11 +614,35 @@ export default {
       .rb /deep/ {
         margin-top: 20px;
         .v-question-info {
+          &.hasPhone {
+            .single-select-wrap {
+              border-radius: 0;
+              &:first-child {
+                border-radius: 4px 4px 0 0;
+              }
+              &:last-child {
+                border-radius: 0;
+              }
+            }
+          }
           .single-select-wrap {
-            border-bottom: none;
-            border-radius: 0;
+            border-top: none;
+            &:first-child {
+              border-top: 1px solid #e2e2e2;
+              border-radius: 4px 4px 0 0;
+            }
             &:last-child {
-              border-bottom: 1px solid #e2e2e2;
+              border-radius: 0 0 4px 4px;
+            }
+            &.isSingle {
+              border-radius: 4px;
+            }
+            &.v-phone {
+              border-top: none;
+              &.isBorder {
+                border-radius: 4px;
+                border-top: 1px solid #e2e2e2;
+              }
             }
           }
         }
