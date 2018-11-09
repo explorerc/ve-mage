@@ -191,7 +191,6 @@ export default {
         this.value.video = `${data.name}`
       }
       if (data.isDelete) {
-        debugger
         // 删除
         this.value.delete = true
       }
