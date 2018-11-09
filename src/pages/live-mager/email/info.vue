@@ -227,7 +227,7 @@ export default {
           if (ele * 1 === item.id) {
             // this.groupList[idx].isChecked = true
             this.selectedGroupList.push({
-              count: 0,
+              count: item.user_count,
               id: item.id,
               isChecked: true,
               name: item.name
@@ -240,7 +240,6 @@ export default {
           if (ele * 1 === item.id) {
             // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
-              count: 0,
               id: item.id,
               isChecked: true,
               name: item.name
