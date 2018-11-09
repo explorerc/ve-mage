@@ -94,22 +94,27 @@
       </div>
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
-        <el-select style="width: 100px;"
-                   v-model="searchParams.provinceId">
-          <el-option v-for="item in provinceList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select style="width: 112px;"
-                   v-model="searchParams.cityId">
-          <el-option v-for="item in cityList"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
+        <el-cascader
+          v-model="citySelect"
+          :options="options"
+          @change="handleAreaChange">
+        </el-cascader>
+        <!--<el-select style="width: 100px;"-->
+        <!--v-model="searchParams.provinceId">-->
+        <!--<el-option v-for="item in provinceList"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
+        <!--</el-select>-->
+        <!--<el-select style="width: 112px;"-->
+        <!--v-model="searchParams.cityId">-->
+        <!--<el-option v-for="item in cityList"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
+        <!--</el-select>-->
       </div>
       <div class="search-item flm">
         <span class="search-title">观众出入时段</span>
@@ -173,9 +178,9 @@
             {{scope.row.source|fmtSource}}
           </template>
         </el-table-column>
-        <el-table-column label="详情">
+        <el-table-column label="详情" width="90">
           <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
+            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情1</span>
           </template>
         </el-table-column>
       </el-table>
@@ -223,6 +228,7 @@
           page: 1,
           pageSize: 10
         },
+        citySelect: [],
         genderList: [
           {value: '', label: '全部'},
           {value: 'M', label: '男'},
@@ -236,6 +242,7 @@
           {value: 4, label: '潜在用户'},
           {value: 5, label: '流失用户'}
         ],
+        options: [],
         provinceList: [
           {value: '', label: '省'},
           ...province
@@ -315,13 +322,7 @@
             }
           }
           this.cityList = [{value: '', label: '市'}, ...city[newVal]]
-        } else {
-          this.cityList = [
-            {value: '', label: '市'}
-          ]
         }
-        this.searchParams.cityId = ''
-        this.searchParams.city = ''
       },
       'searchParams.cityId' (newVal) {
         for (let i = 0; i < this.cityList.length; i++) {
@@ -337,11 +338,28 @@
       this.searchParams.activityId = this.$route.params.id
       this.dealSearchParam()
       this.queryList()
+      this.dealWithCity()
     },
     methods: {
       ...mapMutations('dataCenter', {
         storeSelectMenu: types.DATA_SELECT_MENU
       }),
+      dealWithCity () {
+        let areaList = []
+        for (let i = 0; i < province.length; i++) {
+          let pObj = province[i]
+          areaList.push({
+            value: pObj.value,
+            label: pObj.label,
+            children: city[pObj.value]
+          })
+        }
+        this.options = areaList
+      },
+      handleAreaChange (v) {
+        this.searchParams.provinceId = v[0]
+        this.searchParams.cityId = v[1]
+      },
       dealSearchParam () {
         let type = this.$route.query.type
         console.log(type)
@@ -382,11 +400,10 @@
           ...this.searchParams
         }).then((res) => {
           if (res.code === 200) {
-            this.viewerList = res.data.list
-            // this.viewerList[0].end_user_level = 1
-            // this.viewerList[0].avatar = 'mp-test/50/f2/50f274c3025fc9acd0fe1eb86484ce5f.jpg'
-            // this.viewerList[0].sex = 'W'
-            this.total = res.data.total
+            if (res.data) {
+              this.viewerList = res.data.list
+              this.total = res.data.total
+            }
           }
         })
       },
@@ -394,8 +411,9 @@
         this.queryList()
       },
       cancelClick () {
+        this.citySelect = []
         this.searchParams = {
-          activityId: '',
+          activityId: this.searchParams.activityId,
           keyword: '',
           sex: '',
           user_level: '',

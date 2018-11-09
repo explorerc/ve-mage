@@ -224,10 +224,10 @@ export default {
     reArrangeList (group, tag) {
       this.groupList.forEach((item, idx) => {
         group.forEach((ele, i) => {
-          if (ele * 1 === item.id) {
+          if (ele * 1 === item.id * 1) {
             // this.groupList[idx].isChecked = true
             this.selectedGroupList.push({
-              count: 0,
+              count: item.count,
               id: item.id,
               isChecked: true,
               name: item.name
@@ -237,10 +237,9 @@ export default {
       })
       this.tagList.forEach((item, idx) => {
         tag.forEach((ele, i) => {
-          if (ele * 1 === item.id) {
+          if (ele * 1 === item.id * 1) {
             // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
-              count: 0,
               id: item.id,
               isChecked: true,
               name: item.name
@@ -248,6 +247,8 @@ export default {
           }
         })
       })
+      console.log(this.selectedGroupList)
+      console.log(this.selectedTagList)
     },
     /* 点击取消 */
     handleClick (e) {
