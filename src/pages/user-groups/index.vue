@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="user_count" label="群组人数"></el-table-column>
-        <el-table-column label="更新时间">
+        <el-table-column label="更新时间" show-overflow-tooltip>
           <template slot-scope="scope">
             <span>{{scope.row.updated_at?scope.row.updated_at:scope.row.created_at}}</span>
           </template>
@@ -263,7 +263,7 @@
         } else {
           this.dialogTitle = '创建智能群组'
         }
-        console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
+        // console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
       inpTitle (a) {
         let timer
