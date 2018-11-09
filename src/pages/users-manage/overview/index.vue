@@ -95,7 +95,7 @@
           <div class="v-activity-content v-operation">
             优质用户
           </div>
-          <div class="v-activity-content v-operation">
+          <div class="v-activity-content v-high">
             高价值用户
           </div>
           <div class="v-activity-content v-operation">
@@ -115,7 +115,7 @@
             {{itemData.title}}
           </div>
           <div class="v-activity-content v-time">
-            {{times[index]}}
+            {{times[index] ? times[index].toString().substring(0,10) : '-'}}
           </div>
           <div class="v-activity-content">
             {{itemData.val5}}
@@ -428,13 +428,16 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-          width: 10%;
+          width: 11%;
         }
         .v-name {
-          width: 26%;
+          width: 18%;
         }
         .v-time {
           width: 14%;
+        }
+        .v-high {
+          width: 13%;
         }
       }
     }

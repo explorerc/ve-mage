@@ -183,7 +183,8 @@ export default function () {
             target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
           },
-          target: '_self'
+          target: '_self',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -196,7 +197,8 @@ export default function () {
             target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
           },
-          target: '_self'
+          target: '_self',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -209,7 +211,8 @@ export default function () {
             target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
           },
-          target: '_self'
+          target: '_self',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -222,7 +225,8 @@ export default function () {
             target: '_blank',
             fontColor: 'rgba(255,255,255,1)'
           },
-          target: '_self'
+          target: '_self',
+          uploadImgErrorMsg: ''
         }
         ]
       }

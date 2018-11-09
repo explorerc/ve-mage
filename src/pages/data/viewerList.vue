@@ -95,24 +95,25 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-cascader
+          v-model="citySelect"
           :options="options"
           @change="handleAreaChange">
         </el-cascader>
         <!--<el-select style="width: 100px;"-->
-                   <!--v-model="searchParams.provinceId">-->
-          <!--<el-option v-for="item in provinceList"-->
-                     <!--:key="item.value"-->
-                     <!--:label="item.label"-->
-                     <!--:value="item.value">-->
-          <!--</el-option>-->
+        <!--v-model="searchParams.provinceId">-->
+        <!--<el-option v-for="item in provinceList"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
         <!--</el-select>-->
         <!--<el-select style="width: 112px;"-->
-                   <!--v-model="searchParams.cityId">-->
-          <!--<el-option v-for="item in cityList"-->
-                     <!--:key="item.value"-->
-                     <!--:label="item.label"-->
-                     <!--:value="item.value">-->
-          <!--</el-option>-->
+        <!--v-model="searchParams.cityId">-->
+        <!--<el-option v-for="item in cityList"-->
+        <!--:key="item.value"-->
+        <!--:label="item.label"-->
+        <!--:value="item.value">-->
+        <!--</el-option>-->
         <!--</el-select>-->
       </div>
       <div class="search-item flm">
@@ -177,9 +178,9 @@
             {{scope.row.source|fmtSource}}
           </template>
         </el-table-column>
-        <el-table-column label="详情">
+        <el-table-column label="详情" width="90">
           <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
+            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情1</span>
           </template>
         </el-table-column>
       </el-table>
@@ -227,6 +228,7 @@
           page: 1,
           pageSize: 10
         },
+        citySelect: [],
         genderList: [
           {value: '', label: '全部'},
           {value: 'M', label: '男'},
@@ -241,13 +243,6 @@
           {value: 5, label: '流失用户'}
         ],
         options: [],
-        provinceList: [
-          {value: '', label: '省'},
-          ...province
-        ],
-        cityList: [
-          {value: '', label: '市'}
-        ],
         sourceList: [
           {value: '', label: '全部'},
           {value: 'IMPORT', label: '导入'},
@@ -310,25 +305,6 @@
         }
         this.searchParams.first_join_at = vals[0]
         this.searchParams.last_leave_at = vals[1]
-      },
-      'searchParams.provinceId' (newVal) {
-        if (newVal) {
-          for (let i = 0; i < province.length; i++) {
-            if (province[i].value === newVal) {
-              this.searchParams.province = province[i].label
-              break
-            }
-          }
-          this.cityList = [{value: '', label: '市'}, ...city[newVal]]
-        }
-      },
-      'searchParams.cityId' (newVal) {
-        for (let i = 0; i < this.cityList.length; i++) {
-          if (this.cityList[i].value === newVal) {
-            this.searchParams.city = this.cityList[i].label
-            break
-          }
-        }
       }
     },
     created () {
@@ -357,6 +333,21 @@
       handleAreaChange (v) {
         this.searchParams.provinceId = v[0]
         this.searchParams.cityId = v[1]
+        if (this.searchParams.provinceId) {
+          for (let i = 0; i < province.length; i++) {
+            if (province[i].value === this.searchParams.provinceId) {
+              this.searchParams.province = province[i].label
+              break
+            }
+          }
+          let cityList = city[this.searchParams.provinceId]
+          for (let i = 0; i < cityList.length; i++) {
+            if (cityList[i].value === this.searchParams.cityId) {
+              this.searchParams.city = cityList[i].label
+              break
+            }
+          }
+        }
       },
       dealSearchParam () {
         let type = this.$route.query.type
@@ -398,11 +389,10 @@
           ...this.searchParams
         }).then((res) => {
           if (res.code === 200) {
-            this.viewerList = res.data.list
-            // this.viewerList[0].end_user_level = 1
-            // this.viewerList[0].avatar = 'mp-test/50/f2/50f274c3025fc9acd0fe1eb86484ce5f.jpg'
-            // this.viewerList[0].sex = 'W'
-            this.total = res.data.total
+            if (res.data) {
+              this.viewerList = res.data.list
+              this.total = res.data.total
+            }
           }
         })
       },
@@ -410,8 +400,9 @@
         this.queryList()
       },
       cancelClick () {
+        this.citySelect = []
         this.searchParams = {
-          activityId: '',
+          activityId: this.searchParams.activityId,
           keyword: '',
           sex: '',
           user_level: '',

@@ -13,7 +13,7 @@
                  @change="changeType">
         <el-option v-for="item in options"
                    :key="item.value"
-                   :label="item.label"
+                   :label="item.label + item.status"
                    :value="item.value">
         </el-option>
       </el-select>
@@ -182,11 +182,13 @@ export default {
       uploadErrorMsg: '',
       options: [
         {
-          label: '步骤1 内容主题',
+          label: '步骤1 内容主题 ',
+          status: '(编辑中)',
           value: 'tp'
         },
         {
-          label: '步骤2 推广信息',
+          label: '步骤2 推广信息 ',
+          status: '(未设置)',
           value: 'tdk'
         }
       ],
@@ -212,7 +214,9 @@ export default {
       pcHOST: process.env.PC_HOST,
       published: 'N',
       platform: 'PC',
-      changed: undefined
+      changed: undefined,
+      hasData: false,
+      isFirst: false
     }
   },
   mounted () {
@@ -261,6 +265,12 @@ export default {
           this.com = `t${data.tid}`
           data.editAble = true
           this.data = data
+          if (res.data.title) {
+            this.hasData = true
+            this.options[1].status = '(已设置)'
+          } else {
+            this.hasData = false
+          }
           this.siteTitle = res.data.title || ''
           this.keyWords = res.data.keyword || ''
           this.siteDes = res.data.description || ''
@@ -276,6 +286,12 @@ export default {
       }
     },
     goBack () {
+      this.isFirst = false
+      if (this.cType === 'tp') {
+        this.isFirst = true
+      } else {
+        this.isFirst = false
+      }
       if (this.data && this.changed) {
         this.$messageBox({
           header: '提示',
@@ -285,16 +301,29 @@ export default {
           confirmText: '保存',
           handleClick: (e) => {
             if (e.action === 'cancel') {
-              this.$router.replace(`/liveMager/site/${this.tid}`)
+              if (this.isFirst) {
+                this.$router.replace(`/liveMager/site/${this.tid}`)
+              } else {
+                this.cType = 'tdk'
+              }
             } else if (e.action === 'confirm') {
               this.doSave(() => {
-                this.$router.replace(`/liveMager/site/${this.tid}`)
+                if (this.isFirst) {
+                  this.$router.replace(`/liveMager/site/${this.tid}`)
+                } else {
+                  this.cType = 'tdk'
+                }
               })
             }
           }
         })
       } else {
-        this.$router.replace(`/liveMager/site/${this.tid}`)
+        if (this.isFirst) {
+          this.$router.replace(`/liveMager/site/${this.tid}`)
+        } else {
+          this.cType = 'tp'
+          this.options[0].status = '(编辑中)'
+        }
       }
     },
     showShare () {
@@ -312,28 +341,28 @@ export default {
           description: this.siteDes,
           icon: this.icon
         }).then(res => {
+          this.options[1].status = '(已设置)'
+          this.hasData = true
           this.$toast({
             content: '保存成功',
-            autoClose: 500,
+            autoClose: 3000,
             position: 'center'
           })
         })
       }
     },
     doSave (callback) {
+      this.options[0].status = '(已设置)'
+      this.options[1].status = '(编辑中)'
       this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE, {
         activityId: this.tid,
         template: JSON.stringify(this.data)
       }).then(res => {
-        this.$toast({
-          content: '保存成功',
-          autoClose: 500,
-          position: 'center'
-        })
-
-        // // 添加 下拉选项标记
-        // this.options[0]['label'] = '内容主题(已完成)'
-        // this.options[1]['label'] = '推广信息(编辑中)'
+        // this.$toast({
+        //   content: '保存成功',
+        //   autoClose: 2000,
+        //   position: 'center'
+        // })
         setTimeout(() => {
           this.changed = false
         }, 500)
@@ -372,7 +401,8 @@ export default {
               }, 500)
               this.$toast({
                 content: '重置成功',
-                autoClose: 2000
+                autoClose: 2000,
+                position: 'center'
               })
             })
           }
@@ -381,9 +411,14 @@ export default {
     },
     changeType (value) {
       if (value === 'tdk') {
+        this.options[0].status = '(已设置)'
+        this.options[1].status = '(编辑中)'
         this.$nextTick(() => {
           this.$refs.siteRef.$el.querySelector('input').focus()
         })
+      } else {
+        this.options[0].status = '(编辑中)'
+        this.options[1].status = this.hasData ? '(已设置)' : '(未设置)'
       }
     },
     doSina () {
@@ -415,6 +450,13 @@ export default {
       },
       deep: true
     }
+    // keyWords: {
+    //   handler (newVal) {
+    //     if (this.changed !== undefined) {
+    //       this.changed = true
+    //     }
+    //   }
+    // }
   },
   computed: {
     publishState () {
@@ -522,7 +564,7 @@ export default {
       top: 0;
       left: 80px;
       height: 100%;
-      width: 154px;
+      width: 220px;
       text-align: center;
       cursor: pointer;
     }

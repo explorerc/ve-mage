@@ -3,55 +3,59 @@
     <header>新建/编辑商品信息</header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="80px" class="demo-ruleForm">
       <el-form-item label="商品名称" prop="title">
-        <el-input v-model="goodsData.title" class="slot_inp_b">
-          <template slot="append" class="slot"><span v-text="goodsData.title.gbLength()" style="color: #2878FF"></span> / 20</template>
+        <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
+          <template slot="append" class="slot"><span v-text="goodsData.title.gbLength()" style="color: #2878FF"></span>
+            / 20
+          </template>
         </el-input>
       </el-form-item>
       <el-form-item label="原始价格" prop="ysjg">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.ysjg" min="0" max="999999"></el-input>
+          <el-input v-model.number="goodsData.ysjg" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
 
       </el-form-item>
-      <el-form-item label="促销价格" prop="cxjg">
+      <el-form-item label="优惠价格" prop="cxjg">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.cxjg" :disabled="!!!goodsData.ysjg"></el-input>
+          <el-input v-model.number="goodsData.cxjg" :disabled="!!!goodsData.ysjg" placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
-
       </el-form-item>
       <el-form-item label="商品图片" prop="upload_list">
         <div class="upload_box">
-          <ve-upload v-for="(ite,ind) in goodsData.upload_list" title="图片小于2MB 支持jpg、png、bmp格式 最佳尺寸：600 x 600"
+          <i></i>
+          <ve-upload v-for="(ite,ind) in goodsData.upload_list" :key="ind"
+                     title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
                      accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :nowIndex="ind || 0"
                      :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError"
                      @success="uploadImgSuccess"></ve-upload>
           <span class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.upload_list.length<4"></span>
         </div>
       </el-form-item>
+      <el-form-item label="商品链接" prop="url">
+        <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
+      </el-form-item>
       <el-form-item label="商品描述">
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.name"
-                   placeholder="请输入群组名称"></com-input>
+                   placeholder="请输入商品描述"></com-input>
       </el-form-item>
-      <el-form-item label="商品链接" prop="url">
-        <el-input class="inupt_text" v-model="goodsData.url" type="url"></el-input>
-      </el-form-item>
+
       <el-form-item label="淘口令">
-        <com-input class="inupt_text" :max-length=100 type="text" v-model.trim="goodsData.name"
-                   placeholder="请输入群组名称"></com-input>
+        <el-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.name"
+                  placeholder="请输入淘口令"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button size="small" type="primary" @click="onSubmit('goodsData')">保存</el-button>
-        <el-button size="small" @click="resetForm('goodsData')">取消</el-button>
+        <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
+        <el-button @click="resetForm('goodsData')" round>取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-image'
-  // import VeUpload from 'src/components/ve-upload-group'
+  // import VeUpload from 'src/components/ve-upload-image'
+  import VeUpload from 'src/components/ve-upload-group'
 
   export default {
     name: 'info',
@@ -79,7 +83,7 @@
             } else if (value.gbLength() >= rule.max) {
               for (let attr in this[rule.obj]) {
                 if (attr === rule.field) {
-                  this[rule.obj][attr] = this[rule.obj][attr].slice(0, rule.max)
+                  this[rule.obj][attr] = this[rule.obj][attr].slice(0, rule.max * 2)
                   return callback()
                 }
               }
@@ -183,38 +187,51 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '~assets/css/mixin.scss';
+
   #goods-info {
-    padding: 40px 100px;
+    padding: 50px 100px;
+    font-family: PingFangSC-Regular;
     /deep/ {
-      header{
-        padding: 30px 0;
-        line-height: 30px;
+      header {
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 26px;
+        margin-bottom: 25px;
       }
       .el-form {
+        padding: 40px 80px;
+        border: 1px solid #eee;
+        background-color: white;
         .el-form-item:nth-of-type(1) {
           .el-form-item__content {
-            width: 560px;
+            width: 460px;
           }
         }
         .el-form-item:nth-of-type(2), .el-form-item:nth-of-type(3) {
           width: 400px;
         }
+        /*.el-form-item:last-of-type {*/
+        /*text-align: center;*/
+        /*}*/
         .inupt_textarea {
-          width: 500px;
-          height: 100px;
+          width: 760px;
+          height: 120px;
           .limit.area {
             right: 12px;
             bottom: 10px;
           }
         }
         .inupt_text {
-          width: 500px;
+          width: 440px;
         }
         .a_unit {
           overflow: hidden;
-          width: 200px;
+          width: 250px;
           .el-input {
-            width: 150px;
+            width: 200px;
             float: left;
           }
           span {
@@ -239,18 +256,42 @@
         }
       }
       .upload_box {
+        position: relative;
+        > i {
+          width: 32px;
+          height: 35px;
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 100;
+          background-image: url("~assets/image/index-img.png");
+          background-size: cover;
+        }
         .ve-upload-box {
-          width: 21%;
+          width: 140px;
+          height: 140px;
           margin: auto 20px auto 0;
           display: inline-block;
+          .upload-img-box {
+            width: 140px;
+            height: 140px;
+          }
+          .over-upload{
+            width: 140px;
+          }
           .com-upload {
             width: 100%;
             .upload-file-box {
               width: 100%;
+              .upload-icon {
+                margin: 10px auto 5px auto;
+              }
               span {
                 display: inline-block;
-                margin: auto 20px;
+                /*margin: auto 5px;*/
                 color: #cccccc;
+                font-size: 12px;
               }
             }
           }
