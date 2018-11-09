@@ -9,7 +9,7 @@
                    active-color="#FFD021"
                    @change="confirmState">
         </el-switch>
-        <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span>
+        <!-- <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span> -->
       </div>
     </div>
     <div class="group">
