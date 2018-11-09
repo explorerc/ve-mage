@@ -2,10 +2,15 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
-      <el-button size="mini" @click="createGoods" :disabled="tableData.length>20" round>新建商品（{{tableData.length}} / 20）</el-button>
-      <el-button size="mini" @click="check" round>查看活动数据</el-button>
+      <div v-if="tableData.length>1">
+        <el-button @click="check" round>查看活动数据</el-button>
+        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>20" round>
+          新建商品（{{tableData.length}} / 20）
+        </el-button>
+      </div>
+
     </header>
-    <div class="table-box">
+    <div class="table-box" v-if="tableData.length>1">
       <table border="1">
         <thead>
         <tr>
@@ -18,25 +23,35 @@
         </tr>
         </thead>
         <draggable element="tbody" v-model="tableData" :options="{handle:'.item'}">
-          <tr v-for="(item,ind) in tableData" :key="ind">
-            <td>{{ind+1}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.name}}</td>
-            <td> <del>{{item.address}}</del></td>
-            <td>{{item.address}}</td>
+          <tr v-for="(row,ind) in tableData" :key="ind">
+            <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
+            <td>
+              <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')"
+                   alt="">
+            </td>
+            <td>{{row.name}}</td>
+            <td>
+              <del>{{row.address}}</del>
+            </td>
+            <td class="dis-prices">{{row.address}}</td>
             <td>
               <div>
-                <el-button size="mini" type="text" @click="handleEdit(ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(ind)">上下架</el-button>
-                <el-button size="mini" type="text" @click="handleDelete(ind)">删除</el-button>
-                <el-button class="item" size="mini" type="text" @click="handleDelete(ind)">排序</el-button>
+                <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
+                <el-button size="mini" type="text" @click="handleShelf(row,ind)">上下架</el-button>
+                <el-button class="item" size="mini" type="text" @click="handleDelete(ind)">移动</el-button>
+                <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
               </div>
             </td>
           </tr>
         </draggable>
       </table>
     </div>
-
+    <div class="no-goods" v-else>
+      <img :src="require('assets/image/avatar@2x.png')" alt="">
+      <p>暂时没有商品哦~</p>
+      <p>全新直播购物模式，通过实时直播带动粉丝经济，<br>你甚至可以联合品牌商一起策划品牌内容，提升观众信任感</p>
+      <el-button class="add-goods primary-button" @click="createGoods" round>添加商品</el-button>
+    </div>
   </div>
 </template>
 
@@ -97,28 +112,56 @@
       }
     },
     methods: {
-      goSet () {
-      },
+      // 创建
       createGoods () {
         this.$router.push('/salesTools/recommendGoodsInfo')
       },
       check () {
       },
+      // 上下架
       handleShelf () {
       },
-      handleEdit (index, row) {
-        this.$router.push('/salesTools/recommendGoodsInfo')
+      // 编辑
+      handleEdit (row, index) {
+        this.$router.push('/salesTools/recommendGoodsInfo/45')
         console.log(this.tableData)
-        console.log(index, row)
+        console.log(row, index)
       },
-      handleDelete (index, row) {
-        console.log(index, row)
+      handleDelete (row, index) {
+        this.$messageBox({
+          header: '删除该商品',
+          type: 'error',
+          width: '450px',
+          content: '删除后观看页将不再显示该商品',
+          cancelText: '取消', // 不传递cancelText将只有一个确定按钮
+          confirmText: '删除',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+              this.$toast({
+                content: '已取消删除',
+                position: 'center'
+              })
+            } else if (e.action === 'confirm') {
+              /*  this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
+                  .then(res => {
+                    this.tableData.splice(index, 1)
+                    this.$toast({
+                      content: '删除成功!',
+                      position: 'center'
+                    })
+                  }) */
+            }
+          }
+        })
       }
     }
   }
 </script>
 <style lang="scss" scoped>
+  @import '~assets/css/mixin.scss';
+
   #goods-list {
+    font-family: PingFangSC-Regular;
     padding: 40px 100px;
     /deep/ {
       header {
@@ -126,12 +169,18 @@
         text-align: right;
         p {
           float: left;
+          height: 26px;
+          font-size: 24px;
+          font-weight: 400;
+          color: rgba(34, 34, 34, 1);
+          line-height: 26px;
         }
       }
       .table-box {
         margin-top: 22px;
         padding: 30px;
         border: 1px dashed #cccccc;
+        background-color: white;
         table thead tr th, table tbody tr td {
           border-color: #ebeef5;
           font-size: 14px
@@ -150,23 +199,56 @@
               &:nth-of-type(1) {
                 width: 5%;
               }
-              &:nth-of-type(2), &:nth-of-type(3) {
-                width: 15%;
+              &:nth-of-type(2) {
+                width: 10%;
+              }
+              &:nth-of-type(3) {
+                width: 20%;
               }
               &:nth-of-type(4), &:nth-of-type(5) {
-                width: 20%;
+                width: 15%;
               }
               &:nth-of-type(6) {
                 width: 25%;
-                span{
+                span {
                   color: #2878FF;
                 }
               }
+              img {
+                width: 60px;
+                height: 60px;
+                margin: 10px auto 10px 0;
+                vertical-align: middle;
+              }
+            }
+            td.dis-prices {
+              color: #FC5659;
             }
             tr:hover {
               background-color: #f5f7fa;
             }
           }
+        }
+      }
+
+      .no-goods {
+        text-align: center;
+        img {
+          width: 180px;
+          height: 180px;
+          margin: 84px auto 40px auto;
+        }
+        p:nth-of-type(1) {
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(34, 34, 34, 1);
+          line-height: 22px;
+        }
+        p:nth-of-type(2) {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(85, 85, 85, 1);
+          margin: 10px auto 30px auto;
         }
       }
     }

@@ -857,7 +857,7 @@
             type: 'select',
             unit: ''
           }, {
-            key: 'all',
+            key: '*',
             name: '全部',
             type: 'select',
             unit: ''
@@ -900,7 +900,7 @@
               type: 'select',
               unit: ''
             }, {
-              key: 'all',
+              key: '*',
               name: '全部',
               type: 'select',
               unit: ''
@@ -1117,7 +1117,6 @@
               }
               this.valueOption.tags.push(obj)
             })
-            console.log(this.valueOption.tags)
           })
       },
       getGroup () {
