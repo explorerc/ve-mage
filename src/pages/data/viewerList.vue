@@ -72,7 +72,7 @@
       </div>
       <div class="search-item flm">
         <span class="search-title">渠道来源</span>
-        <el-select v-model="searchParams.industry"
+        <el-select v-model="searchParams.source"
                    placeholder="渠道来源">
           <el-option v-for="item in sourceList"
                      :key="item.value"
@@ -220,7 +220,7 @@
           province: '',
           cityId: '',
           city: '',
-          industry: '',
+          source: '',
           first_join_at: '',
           last_leave_at: '',
           device: '',
@@ -409,7 +409,7 @@
           is_new: '',
           province: '',
           city: '',
-          industry: '',
+          source: '',
           first_join_at: '',
           last_leave_at: '',
           device: '',
