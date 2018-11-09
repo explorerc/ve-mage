@@ -215,7 +215,6 @@ export default {
   },
   methods: {
     saveHandleClick (data) {
-      debugger
       if (data.action === 'cancel') {
         this.Group.type = ''
         this.errTitle = ''
@@ -345,7 +344,6 @@ export default {
       }
     },
     optionData (a) { // 新建或者编辑 返回的规则
-      debugger
       this.Group.rules = JSON.stringify(a)
       this.sendData()
     },
@@ -356,7 +354,7 @@ export default {
       } else {
         _url = groupService.UPDATE_GROUP
       }
-      debugger
+      delete this.Group['rule']
       this.$post(_url, this.Group)
         .then((res) => {
           if (res.code === 200) {

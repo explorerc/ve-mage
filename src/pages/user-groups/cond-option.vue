@@ -1111,7 +1111,7 @@ export default {
               // delete inItem.keys
               // delete inItem.type
               // delete inItem.unit
-              // delete inItem.optionValue
+              delete inItem.optionValue
               return inItem
             }
           }
