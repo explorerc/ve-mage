@@ -220,7 +220,8 @@
           </el-table-column>
           <el-table-column
             prop="phone"
-            label="手机号">
+            label="手机号"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="mail"
@@ -246,7 +247,8 @@
           <el-table-column
             prop="lastActive"
             label="最后活跃"
-            width="150">
+            width="150"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="comment"
