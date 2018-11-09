@@ -132,7 +132,11 @@ export default [{
 {
   path: '/exitEmail',
   name: 'exitEmail',
-  component: ExitEmail
+  component: ExitEmail,
+  meta: {
+    noAuth: true,
+    noLogin: true
+  }
 },
 {
   path: '/',
