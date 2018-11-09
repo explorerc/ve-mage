@@ -14,7 +14,7 @@
              class="item-text"
              v-text="item.value"></div>
         <span class="remove"
-              v-if="edit&&value.detail.list.length>1"
+              v-if="edit&&value.detail.list.length>2"
               @click="delItem(index)">删</span>
       </el-checkbox>
     </el-checkbox-group>
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     delItem (index) {
-      this.value.list.detail.splice(index, 1)
+      this.value.detail.list.splice(index, 1)
     },
     change () {
       this.errorTip = ''
