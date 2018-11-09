@@ -148,7 +148,7 @@
         } else if (event.type === 'data') {
           this.$router.push(`/data/preview/${event.id}`)
         } else if (event.type === 'viewer') {
-          this.$router.push(`/data/viewer/${event.id}`)
+          this.$router.push(`/data/viewerList/${event.id}?type=all`)
         }
       },
       inCountdownClick (e) {
@@ -296,15 +296,15 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .in-countdown {
-    p {
-      text-align: center;
-      margin: 20px 0;
-      &:nth-of-type(3) {
-        color: #fc5659;
-        font-size: 20px;
-      }
+.in-countdown {
+  p {
+    text-align: center;
+    margin: 20px 0;
+    &:nth-of-type(3) {
+      color: #fc5659;
+      font-size: 20px;
     }
   }
+}
 </style>
 
