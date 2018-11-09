@@ -295,7 +295,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" ></com-import>
+        <com-import @handleClick="handleClickImport" ></com-import>
       </transition>
   </div>
 </template>
@@ -545,7 +545,15 @@ export default {
         this.showChooseActive = false
         this.showChooseTag = false
         this.showChooseGroup = false
-        this.showImport = false
+      }
+    },
+    handleClickImport (e) {
+      this.showImport = false
+      if (e.action === 'cancel') {
+        this.filterCondition.keyword = ''
+        setTimeout(() => {
+          this.queryUserPool('search')
+        }, 500)
       }
     },
     selectActiveConfirm (res) {
