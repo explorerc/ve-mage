@@ -156,6 +156,16 @@ export default {
         this.errorTip = '此项为必填项'
       }
     },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+
+      return result
+    },
     check () {
       let value = []
       if (this.value.required && (!this.value.province || !this.value.city)) {

@@ -10,7 +10,7 @@
             {{itemData.generated_at}}
           </p>
           <p class="v-content">
-            {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_title?itemData.data.activity_title:''}}
+            {{itemData.event==='JOIN_ACTIVITY'?'参加':'首次访问'}}活动 {{itemData.data.activity_title?itemData.data.activity_title:''}}
             <button @click="showRecord(itemData.activity_id,itemData.data.activity_title,itemData.generated_at)" v-if="itemData.event!='FIRST_VISIT'">
               查看详情
             </button>
@@ -95,13 +95,15 @@ export default {
         business_consumer_uid: 0,
         type: 1,
         page: 1,
-        page_size: 20
+        page_size: 20,
+        totalPage: 0
       },
       searchInfoParams: {
         business_consumer_uid: 0,
         type: 2,
         page: 1,
-        page_size: 20
+        page_size: 20,
+        totalPage: 0
       },
       showActivity: {
         name: '',
@@ -119,7 +121,10 @@ export default {
   created () {
     this.scrollEvent = this.debounce(e => {
       if (this.$refs.bscroll.offsetHeight + this.$refs.bscroll.scrollTop > this.$refs.bscroll.scrollHeight - 100) {
-        this.getDataList()
+        if (this.searchParams.page < this.searchParams.totalPage) {
+          this.searchParams.page = parseInt(this.searchParams.page) + 1
+          this.getDataList()
+        }
       }
     }, 50)
   },
@@ -162,7 +167,7 @@ export default {
           })
           this.total = res.data.total
           this.searchParams.page = parseInt(res.data.page) + 1
-          this.searchParams.total = res.data.total
+          this.searchParams.totalPage = Math.ceil(res.data.total / res.data.page_size)
         }
       }).catch(err => {
         if (err.code !== 201) {
@@ -211,8 +216,8 @@ export default {
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total
-        this.searchInfoParams.page = parseInt(res.data.page) + 1
         this.searchInfoParams.total = res.data.total
+        this.searchInfoParams.totalPage = Math.ceil(res.data.total / res.data.page_size)
       }).catch(err => {
         if (err.code !== 201) {
           this.$messageBox({
@@ -242,9 +247,10 @@ export default {
         })
         this.infoscroll.on('scrollEnd', () => {
           // 滚动到底部
-          console.log(this.infoscroll.y + ',' + this.infoscroll.maxScrollY)
+          // console.log(this.infoscroll.y + ',' + this.infoscroll.maxScrollY)
           if (this.infoscroll.y === (this.infoscroll.maxScrollY)) {
-            if (_this.searchInfoParams.page <= _this.searchInfoParams.total) {
+            if (_this.searchInfoParams.page < _this.searchInfoParams.totalPage) {
+              _this.searchInfoParams.page = parseInt(_this.searchInfoParams.page) + 1
               _this.getDataInfoList(true)
             }
           }
@@ -303,7 +309,7 @@ export default {
           strType = `关注微信公众号，关注了${data.wx_name}`
           break
         case 'EMAIL_SUBSCRIBE':
-          strType = `邮件订阅，关注了${data.wx_name}`
+          strType = `邮件订阅，关注了${data.business_name}`
           break
       }
       return strType

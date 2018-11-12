@@ -41,7 +41,7 @@
              </ve-upload>
           </div>
        </com-tab>
-       <com-tab index="video" >
+       <com-tab index="video" v-if="!value.hideVideo">
           <label class='label-spe  label-spe-inner' >视频类型</label>
           <div slot="label"><el-radio v-model="value.bgType" label="video">视频背景</el-radio></div>
           <div>
@@ -191,7 +191,6 @@ export default {
         this.value.video = `${data.name}`
       }
       if (data.isDelete) {
-        debugger
         // 删除
         this.value.delete = true
       }

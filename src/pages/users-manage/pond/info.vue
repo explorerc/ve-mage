@@ -10,7 +10,8 @@
           <div class="left">
             <div class="lc">
               <div class="box1">
-                <img src="../../../assets/image/avatar@2x.png" alt="" class="v-avatar">
+                <img :src="avatarImg" alt="" class="v-avatar" v-if="avatarImg">
+                <img src="../../../assets/image/avatar@2x.png" alt="" class="v-avatar" v-else>
                 <p class="v-name">
                   {{user.real_name?user.real_name:'-'}}
                 </p>
@@ -245,7 +246,8 @@ export default {
         group_list: [] // 标签
       }, // 用户信息
       tabValue: 1,
-      showAddgroup: false
+      showAddgroup: false,
+      imgHost: process.env.IMGHOST + '/'
     }
   },
   components: {
@@ -268,6 +270,9 @@ export default {
         time += parseInt(this.user.watch_replay_time)
       }
       return time || '-'
+    },
+    avatarImg () {
+      return this.user.avatar ? this.imgHost + '/' + this.user.avatar : ''
     }
   },
   created () {
@@ -302,6 +307,7 @@ export default {
         business_consumer_uid: this.$route.params.id
       }).then((res) => {
         this.user = res.data
+        console.log(this.user)
       }).catch(err => {
         this.$messageBox({
           header: '提示',
@@ -408,6 +414,9 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
+  .com-addGroup-box {
+    position: fixed;
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;

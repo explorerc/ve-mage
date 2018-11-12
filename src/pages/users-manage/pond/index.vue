@@ -206,7 +206,8 @@
             width="250">
             <template slot-scope="scope">
               <dl class="users-info clearfix">
-                <dt><img :src="scope.row.avatar"></dt>
+                <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
+                <dt v-else class='avatar-empty'><span class='img'></span></dt>
                 <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span></dd>
                 <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
                 <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
@@ -220,7 +221,8 @@
           </el-table-column>
           <el-table-column
             prop="phone"
-            label="手机号">
+            label="手机号"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="mail"
@@ -246,7 +248,8 @@
           <el-table-column
             prop="lastActive"
             label="最后活跃"
-            width="150">
+            width="150"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="comment"
@@ -295,7 +298,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" ></com-import>
+        <com-import @handleClick="handleClickImport" ></com-import>
       </transition>
   </div>
 </template>
@@ -545,7 +548,15 @@ export default {
         this.showChooseActive = false
         this.showChooseTag = false
         this.showChooseGroup = false
-        this.showImport = false
+      }
+    },
+    handleClickImport (e) {
+      this.showImport = false
+      if (e.action === 'cancel') {
+        this.filterCondition.keyword = ''
+        setTimeout(() => {
+          this.queryUserPool('search')
+        }, 500)
       }
     },
     selectActiveConfirm (res) {
@@ -643,7 +654,7 @@ export default {
         res.data.list.forEach(item => {
           arr.push({
             'business_consumer_uid': item.business_consumer_uid,
-            'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
+            'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '',
             'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nickname.length <= 5 ? item.nickname : item.nickname.substr(0, 5) + '...'),
             'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
             'phone': item.phone,
@@ -958,15 +969,20 @@ export default {
       .el-table {
         .users-info {
           width: 170px;
-          img {
+          .img {
+            display: inline-block;
             width: 32px;
             height: 32px;
             border-radius: 500px;
           }
           dt {
             float: left;
-            padding-right: 10px;
-            padding-top: 7px;
+            margin-right: 10px;
+            margin-top: 7px;
+            &.avatar-empty .img {
+              background: url('~assets/image/avatar@2x.png') no-repeat;
+              background-size: contain;
+            }
           }
           dd {
             float: left;

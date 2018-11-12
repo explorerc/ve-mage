@@ -49,6 +49,16 @@ export default {
     focus () {
       this.errorTip = ''
     },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+
+      return result
+    },
     check () {
       if (this.value.required && !this.value.value && this.value.detail.format !== 'mobile') {
         this.errorTip = '此项为必填项'

@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
-    <div class="index">{{index}}</div>
     <div class="question-content">
+      <div class="index">{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -9,6 +9,8 @@
         <!-- 问题描述区 -->
         <com-input v-if="edit"
                    class="q-subject"
+                   @focus="focusTitle"
+                   :class="{error:value.error}"
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
@@ -41,7 +43,7 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort">排序</div>
+        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -96,6 +98,12 @@ export default {
     }
   },
   methods: {
+    focusTitle () {
+      if (this.value.error) {
+        this.value.error = false
+        this.value.title = ''
+      }
+    },
     addItem () {
       if (this.value.detail.list.length < 20) {
         this.value.detail.list.push({
@@ -104,7 +112,11 @@ export default {
       }
     },
     remove () {
-      this.$emit('remove', this.index)
+      let option = {
+        type: this.value.ext.key,
+        index: this.index
+      }
+      this.$emit('remove', option)
     }
   },
   watch: {
@@ -133,7 +145,9 @@ export default {
   width: 100%;
   font-size: 12px;
   position: relative;
-  padding-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #d2d2d2;
+  overflow: hidden;
   /deep/ {
     .el-radio + .el-radio {
       margin-left: 0;
@@ -155,10 +169,9 @@ export default {
       margin-top: 2px;
     }
     .question-content {
-      border-radius: 2px;
-      border: 1px solid #d2d2d2;
-      margin-left: 20px;
-      padding: 10px;
+      padding: 30px;
+      width: 100%;
+      background-color: #fff;
       .q-des {
         margin-bottom: 15px;
       }
@@ -170,6 +183,15 @@ export default {
         }
         .q-subject {
           margin-bottom: 14px;
+          &.error {
+            input {
+              border-color: #fc5659;
+              color: #fc5659;
+            }
+            .limit {
+              display: none;
+            }
+          }
         }
       }
       .q-operate {

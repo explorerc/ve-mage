@@ -6,11 +6,11 @@
           <div class="item-title fzc">
             <ve-title width="200px" title="微吼指数" tip="本场活动的综合效果，最高分100"></ve-title>
           </div>
-          <div class="item-mid fzc" style="height: 140px;">
-            <!--{{vhallRateData.value}}-->
-            <!--<span v-if="vhallRateData.value>80">优秀</span>-->
-            <!--<span v-else-if="vhallRateData.value>60">良好</span>-->
-            <!--<span v-else>一般</span>-->
+          <div class="item-mid fzc" style="height: 140px;position: relative;">
+            <span class="vhall-status" v-if="vhallRateData.value>=90">出色</span>
+            <span class="vhall-status" v-else-if="vhallRateData.value>=80">不错</span>
+            <span class="vhall-status" v-else-if="vhallRateData.value>=60">很好</span>
+            <span class="vhall-status" v-else>加油</span>
             <div style="height: 140px;margin-top: -8px;" id="chartVallId"></div>
           </div>
           <div class="item-bottom fzc">
@@ -430,8 +430,15 @@
         height: 180px;
         width: 300px;
         .item-mid {
+          position: relative;
           height: 90px;
           line-height: 80px;
+          .vhall-status{
+            position: absolute;
+            top: 62%;
+            left: 50%;
+            transform: translateX(-50%);
+          }
         }
         .ve-title {
           padding: 10px 0;

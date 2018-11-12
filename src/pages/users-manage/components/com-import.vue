@@ -8,7 +8,7 @@
       </div>
       <div class="content" v-if='!importSuccess'>
         <div class="item clearfix">
-          <p class='tips-box'><router-link to="" target="_blank">下载模板</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
+          <p class='tips-box'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
         </div>
         <div class="item upload-box-item clearfix">
           <label class="label">选择模板:</label>
@@ -155,9 +155,9 @@ export default {
       this.$emit('handleClick', {
         action: 'cancel'
       })
-      if (this.importSuccess) {
-        window.location.reload()
-      }
+      // if (this.importSuccess) {
+      //   window.location.reload()
+      // }
     },
     overUpload () {
       this.$refs.uploadFile.click()

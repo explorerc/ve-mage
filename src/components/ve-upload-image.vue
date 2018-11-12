@@ -121,6 +121,7 @@
       selected () {
         console.log('selected')
         this.loading = true
+        this.$emit('select')
       },
       uploadProgress (data) {
         this.loading = false

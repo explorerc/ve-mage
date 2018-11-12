@@ -221,6 +221,14 @@ export default {
 
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
+.com-addChoose-wrap {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+}
 .com-modal {
   position: fixed;
   left: 0;
@@ -233,7 +241,7 @@ export default {
 }
 .com-addChoose-box /deep/ {
   z-index: 2002;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   margin-top: -222.5px;

@@ -70,7 +70,7 @@
             </div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' ></com-phone>
+          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' :isWx="true"></com-phone>
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
@@ -139,10 +139,10 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      groupList: [],
       tagList: [],
-      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedTagList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupList: [],
+      selectedTagList: [],
       selectedGroupListStr: '',
       selectedTagListStr: '',
       selectPersonShow: false,

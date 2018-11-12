@@ -47,7 +47,7 @@
             title="图片支持jpg、png、bmp格式 大小不超过2M"
             accept="png|jpg|bmp"
             :fileSize="2048"
-            :errorMsg="uploadImgErrorMsg"
+            :errorMsg="item.uploadImgErrorMsg"
              @error="uploadError($event,index)"
              @success="uploadImgSuccess($event,index)">
              </ve-upload>
@@ -186,7 +186,8 @@ export default {
     },
     uploadError (data, index) {
       console.log('上传失败:', data)
-      this.uploadImgErrorMsg = data.msg
+      // this.uploadImgErrorMsg = data.msg
+      this.value.list[index].uploadImgErrorMsg = data.msg
     }
   },
   computed: {

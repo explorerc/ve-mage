@@ -618,7 +618,7 @@
                     </template>
                   <!-- 未设置 -->
                     <template v-else>
-                     2018-10-23 16:45:21更新
+                     {{staticTime}}
                     </template>
                   </span>
               </div>
@@ -639,7 +639,7 @@
                     </template>
                   <!-- 未设置 -->
                     <template v-else>
-                      2345位观众数据
+                     {{staticViewer}} 位观众数据
                     </template>
                   </span>
               </div>
@@ -718,12 +718,20 @@
           }
           // 如果开着状态则不跳转
           if (!status && e.target.className.search('input') > -1) {
-            setTimeout(() => {
-              this.$router.push(link + this.activityId)
-            }, 500)
+            if (link === '/data/viewer/') {
+              this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+            } else {
+              setTimeout(() => {
+                this.$router.push(link + this.activityId)
+              }, 500)
+            }
           }
         } else {
-          this.$router.push(link + this.activityId)
+          if (link === '/data/viewer/') {
+            this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+          } else {
+            this.$router.push(link + this.activityId)
+          }
         }
       },
       turnOn () {
@@ -877,6 +885,8 @@
           this.dataRecord = res.data.record
           this.isPublished = res.data.activity.published === 'Y'
           this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
+          this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
+          this.staticViewer = res.data.data.viewer
           this.overdue = this.isOverdue(res.data.activity.endTime)
           switch (res.data.activity.status) {
             case ('LIVING'):
