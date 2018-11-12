@@ -21,8 +21,7 @@
        @click="toggleShow"></i>
     <span class="limit"
           v-if="maxLength&&(type==='input'||type==='mobile')">
-      <i class="length" :style="{color:limitColor}">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/
-      <i>{{maxLength}}</i>
+      <i class="length" :style="{color:limitColor}">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/<i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
           v-if="errorMsg">{{errorMsg}}</span>

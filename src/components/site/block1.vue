@@ -56,12 +56,12 @@
             <div>
                <com-editer class="font-editer" v-model="item.content" ></com-editer>
             </div>
-            <div>
-               <label class='normal'>跳转链接</label>
-               <com-input placeholder="跳转链接" :value.sync="item.link"></com-input>
-               <label class='tips'>链接需要附带http头协议</label>
+            <div :class="{'hide':item.hideLink}">
+              <label class='normal'>跳转链接</label>
+              <com-input placeholder="跳转链接" :value.sync="item.link"></com-input>
+              <label class='tips'>链接需要附带http头协议</label>
             </div>
-            <div class='open-way clearfix'>
+            <div class='open-way clearfix' :class="{'hide':item.hideLink}">
               <label class='normal'>打开方式</label>
               <el-radio v-model="item.target" label="_self">当前窗口</el-radio>
               <el-radio v-model="item.target" label="_blank">新窗口</el-radio>

@@ -494,7 +494,7 @@ export default [{
   component: userGroupsIndex
 },
 {
-  path: '/userManage/userGroupsDetails/:id/:type',
+  path: '/userManage/userGroupsDetails/:id',
   name: 'userGroupsDetails',
   component: userGroupsDetails
 },
@@ -524,7 +524,7 @@ export default [{
   component: recommendCards
 },
 {
-  path: '/salesTools/recommendCardsDetails/:cardId',
+  path: '/salesTools/recommendCardsDetails/:id',
   name: 'cardItem',
   component: cardItem
 },
