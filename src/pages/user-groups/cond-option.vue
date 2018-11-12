@@ -1087,7 +1087,7 @@ export default {
       })
     },
     save () {
-      console.log(this.shadowOutD, 'before_save_data')
+      // console.log(this.shadowOutD, 'before_save_data')
       let fulfil = true
       this.saveData = this.shadowOutD.filter((item) => {
         let _item = item.filter((inItem) => {
@@ -1121,7 +1121,6 @@ export default {
         }
       })
       // console.log(this.saveData, '_save_data')
-      debugger
       if (fulfil) this.$emit('optionData', this.saveData)
     },
     analysisData () {

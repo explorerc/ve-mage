@@ -55,7 +55,7 @@
 
 <script>
   // import VeUpload from 'src/components/ve-upload-image'
-  import VeUpload from 'src/components/ve-upload-group'
+  import VeUpload from 'src/components/ve-upload-goods'
 
   export default {
     name: 'info',
@@ -80,10 +80,10 @@
           if (value) {
             if (value.gbLength() < rule.min) {
               return callback(new Error('商品名称过短'))
-            } else if (value.gbLength() >= rule.max) {
+            } else if (value.gbLength() > rule.max) {
               for (let attr in this[rule.obj]) {
                 if (attr === rule.field) {
-                  this[rule.obj][attr] = this[rule.obj][attr].slice(0, rule.max * 2)
+                  this[rule.obj][attr] = value.slice(0, value.gbIndex(rule.max) + 1)
                   return callback()
                 }
               }
@@ -277,7 +277,7 @@
             width: 140px;
             height: 140px;
           }
-          .over-upload{
+          .over-upload {
             width: 140px;
           }
           .com-upload {
