@@ -113,6 +113,7 @@ export default {
       width: 100%;
       position: relative;
       margin-bottom: 15px;
+      height: 40px;
       .select-icon {
         display: inline-block;
         margin-top: 8px;
