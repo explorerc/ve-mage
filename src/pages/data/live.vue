@@ -373,7 +373,7 @@
             <el-table-column prop="click" label="点击卡片次数"></el-table-column>
             <el-table-column label="详情数据">
               <template slot-scope="scope">
-                <span class="data-link">下载</span>
+                <span class="data-link"><router-link :to="`/manage/recommend-card/visit-list?recommend_card_id=${scope.row.id}`">下载</router-link></span>
               </template>
             </el-table-column>
           </el-table>
@@ -448,6 +448,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
+  import cardService from 'src/api/salesCards-service.js'
   import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
   import {mapMutations} from 'vuex'
@@ -458,6 +459,7 @@
     components: {VeTitle, VeCircle, NavMenu, VePagination},
     data () {
       return {
+        activityId: this.$route.params.id,
         loading: false,
         basicCountData: {
           live: {
@@ -701,6 +703,12 @@
           {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
           {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
+        // 请求卡片接口
+        this.$get(cardService.GET_CARDS_LIST, {
+          activity_id: this.activityId
+        }).then((res) => {
+          console.log(res)
+        })
       },
       goRedBagDataDetail () {
         this.redBagDataDetail = true
@@ -886,20 +894,20 @@
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-  .spread {
-    .page-pagination {
-      position: relative;
-      top: 10px;
-    }
-    .item-container {
-      border: none;
-      margin-bottom: 20px;
-      .item-box {
-        height: 110px;
-        .hd-title {
-          margin-top: 20px;
-        }
+.spread {
+  .page-pagination {
+    position: relative;
+    top: 10px;
+  }
+  .item-container {
+    border: none;
+    margin-bottom: 20px;
+    .item-box {
+      height: 110px;
+      .hd-title {
+        margin-top: 20px;
       }
     }
   }
+}
 </style>

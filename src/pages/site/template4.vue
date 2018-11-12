@@ -194,6 +194,8 @@ export default {
             position: absolute;
           }
           img {
+            width: 100%;
+            height: auto;
           }
         }
       }
