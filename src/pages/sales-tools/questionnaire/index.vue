@@ -102,11 +102,11 @@
       </div>
     </div>
     <div class="v-control clearfix">
-      <button class="v-view" @click="view">
-        预览
-      </button>
       <button class="v-save" @click="save">
         保存
+      </button>
+      <button class="v-view" @click="view">
+        预览
       </button>
     </div>
   </div>
@@ -515,7 +515,6 @@ export default {
     width: 1019px;
   }
   .v-control {
-    width: 100%;
     position: fixed;
     bottom: 0;
     left: 220px;
@@ -525,6 +524,32 @@ export default {
     background-color: #fff;
     button {
       float: right;
+      width: 120px;
+      height: 40px;
+      border: 1px solid #4b5afe;
+      line-height: 38px;
+      border-radius: 20px;
+      background-color: #fff;
+      font-size: 14px;
+      color: #4b5afe;
+      text-align: center;
+      margin-top: 10px;
+      &.v-save {
+        border-color: #ffd021;
+        background-color: #ffd021;
+        color: #222;
+        margin: 10px 30px 0 10px;
+      }
+      &:hover {
+        background-color: #fdd43f;
+        border-color: #fdd43f;
+        color: #222;
+      }
+      &:active {
+        background-color: #eec11a;
+        border-color: #eec11a;
+        color: #222;
+      }
     }
   }
   .v-questionaire-title {
