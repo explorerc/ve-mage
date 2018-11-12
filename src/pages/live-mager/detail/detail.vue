@@ -718,12 +718,20 @@
           }
           // 如果开着状态则不跳转
           if (!status && e.target.className.search('input') > -1) {
-            setTimeout(() => {
-              this.$router.push(link + this.activityId)
-            }, 500)
+            if (link === '/data/viewer/') {
+              this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+            } else {
+              setTimeout(() => {
+                this.$router.push(link + this.activityId)
+              }, 500)
+            }
           }
         } else {
-          this.$router.push(link + this.activityId)
+          if (link === '/data/viewer/') {
+            this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+          } else {
+            this.$router.push(link + this.activityId)
+          }
         }
       },
       turnOn () {
