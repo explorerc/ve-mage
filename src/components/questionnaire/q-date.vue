@@ -3,7 +3,6 @@
     <el-date-picker v-if="!edit"
                     v-model="value.value"
                     type="date"
-                    @blur="check"
                     @focus="focus"
                     placeholder="选择日期">
     </el-date-picker>

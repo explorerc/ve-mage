@@ -100,6 +100,7 @@ export default {
       width: 100%;
       position: relative;
       margin-bottom: 15px;
+      height: 40px;
       &.display {
         margin-bottom: 5px;
       }
