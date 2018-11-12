@@ -20,7 +20,7 @@
               {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
-            优质用户 ({{uersInfo[1].centage}}%)
+            优质用户 ({{(uersInfo[1].val/info.total) ===0 ? 0 :(uersInfo[1].val/info.total).toFixed(2)}}%)
           </p>
         </li>
         <li>
@@ -29,7 +29,7 @@
               {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
-            高价值用户 ({{uersInfo[2].centage}}%)
+            高价值用户 ({{(uersInfo[2].val/info.total) ===0 ? 0 :(uersInfo[2].val/info.total).toFixed(2)}}%)
           </p>
         </li>
         <li>
@@ -38,7 +38,7 @@
               {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
-            一般用户 ({{uersInfo[3].centage}}%)
+            一般用户 ({{(uersInfo[3].val/info.total) ===0 ? 0 :(uersInfo[3].val/info.total).toFixed(2)}}%)
           </p>
         </li>
         <li>
@@ -47,7 +47,7 @@
               {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜力用户 ({{uersInfo[4].centage}}%)
+            潜力用户 ({{(uersInfo[4].val/info.total) ===0 ? 0 :(uersInfo[4].val/info.total).toFixed(2)}}%)
           </p>
         </li>
         <li>
@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}}%)
+            流失用户 ({{(uersInfo[5].val/info.total) ===0 ? 0 :(uersInfo[5].val/info.total).toFixed(2)}}%)
           </p>
         </li>
       </ol>

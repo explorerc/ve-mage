@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index">{{index}}</div>
+      <div class="index"><span v-if="value.required" class="v-red">*</span>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -20,7 +20,8 @@
         <component ref="content"
                    :is="QComs[value.type]"
                    v-model="value"
-                   :edit="edit"></component>
+                   :edit="edit"
+                   :isView="isView"></component>
       </div>
       <div class="q-operate"
            v-if="edit">
@@ -83,6 +84,10 @@ export default {
       }
     },
     edit: {
+      type: Boolean,
+      default: false
+    },
+    isView: {
       type: Boolean,
       default: false
     }
@@ -158,15 +163,21 @@ export default {
     .com-input {
       width: 100%;
       input {
-        height: 30px;
-        line-height: 30px;
-        font-size: 12px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
       }
     }
     .index {
       float: left;
       width: 20px;
       margin-top: 2px;
+      .v-red {
+        display: inline-block;
+        color: #fc5659;
+        margin-right: 5px;
+        vertical-align: middle;
+      }
     }
     .question-content {
       padding: 30px;
