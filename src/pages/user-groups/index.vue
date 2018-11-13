@@ -12,10 +12,12 @@
                   clearable></el-input>
         <el-button size="small"
                    @click="showDialog(2)"
-                   round>新建固定群组</el-button>
+                   round>新建固定群组
+        </el-button>
         <el-button size="small"
                    @click="showDialog(3)"
-                   round>新建智能群组</el-button>
+                   round>新建智能群组
+        </el-button>
       </div>
     </div>
     <div class="table-box">
@@ -72,7 +74,7 @@
       <VePagination class="VePagination"
                     :pageSize="search.pageSize"
                     @changePage="changePage"
-                    :total="total" />
+                    :total="total"/>
     </div>
     <!--dialog-->
     <message-box v-if="isShow"
@@ -120,367 +122,370 @@
 </template>
 
 <script>
-import groupService from 'src/api/user_group'
-import VePagination from 'src/components/ve-pagination'
-import condOption from 'src/pages/user-groups/cond-option'
+  import groupService from 'src/api/user_group'
+  import VePagination from 'src/components/ve-pagination'
+  import condOption from 'src/pages/user-groups/cond-option'
 
-export default {
-  name: 'index',
-  components: { VePagination, condOption },
-  created () {
-    this.onSearch()
-  },
-  filters: {
-    getType (val) {
-      let _type = ''
-      switch (val) {
-        case 1:
-          _type = '系统分组'
-          break
-        case 2:
-          _type = '固定分组'
-          break
-        case 3:
-          _type = '智能分组'
-          break
-        default:
-          break
-      }
-      return _type
-    }
-  },
-  data () {
-    let valiRepeatName = (rule, value, callback) => {
-      if (value && value != null) {
-        let par = {
-          title: value
-        }
-        if (this.isAddOrEdit === 'edit') { // 编辑不用检查自身是否重复
-          this.$set(par, 'group_id', this.Group.group_id)
-        }
-        this.repeatTitle(par).then((res) => {
-          if (res.code !== 200) {
-            return callback(new Error('该群组名称已存在'))
-          } else {
-            callback()
-          }
-        }).catch((err) => {
-          if (err.code !== 200) {
-            return callback(new Error('该群组名称已存在'))
-          } else {
-            callback()
-          }
-        })
-      } else {
-        return callback(new Error('群组名称不能为空'))
-      }
-    }
-    return {
-      errTitle: '',
-      errDes: '',
-      isShow: false,
-      dialogTitle: '',
-      isAddOrEdit: '', // 当前点击的是新建还是编辑
-      inpNameLen: 0,
-      inpDesLen: 0,
-      search: {
-        pageSize: 10,
-        keyword: '',
-        page: 1
-      },
-      total: 0,
-      Group: {
-        title: '',
-        describe: '',
-        type: '',
-        rule: []
-      },
-      dialogFixedOrIntel: false,
-
-      tableData: [],
-      rules: {
-        title: [
-          { validator: valiRepeatName, trigger: 'blur' }
-        ],
-        describe: [
-          { required: true, message: '群组描述不能为空', trigger: 'blur' }
-        ]
-      }
-    }
-  },
-  watch: {
-    dialogFixedOrIntel (nval, oval) {
-      if (this.$refs['Group']) this.$refs['Group'].resetFields()
-    }
-  },
-  methods: {
-    saveHandleClick (data) {
-      if (data.action === 'cancel') {
-        this.Group.type = ''
-        this.errTitle = ''
-        this.errDes = ''
-        this.isShow = false
-      } else {
-        this.save(this.Group)
-      }
-    },
-    onSearch () { // 搜索
-      this.$post(groupService.GROUPS_LIST, this.search)
-        .then(res => {
-          this.tableData = res.data.list
-          this.total = Number.parseInt(res.data.count)
-          this.errTitle = ''
-          this.errDes = ''
-        })
-    },
-    repeatTitle (par) {
-      return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
-    },
-    handleDetails (id, type) { // 详情
-      this.$router.push(`/userManage/userGroupsDetails/${id}/${type}`)
-    },
-    handleEdit (groupId, title, describe, type, rule) { // 编辑
-      this.isAddOrEdit = 'edit' // 当前点击是编辑
-      this.Group.group_id = groupId
-      this.Group.title = title
-      this.Group.describe = describe
-      this.inpNameLen = title.length
-      this.inpDesLen = describe.length
-      this.Group.type = type
-      if (type === 2) {
-        this.dialogTitle = '编辑固定群组'
-      } else {
-        this.$set(this.Group, 'rule', JSON.parse(rule))
-        this.dialogTitle = '编辑智能群组'
-      }
-      this.isShow = true
-      // console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
-    },
-    handleDelete (id, type, index) { // 删除群组
-      this.$messageBox({
-        header: '删除群组',
-        type: 'error',
-        width: '450px',
-        content: '<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ',
-        cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
-        confirmText: '删除',
-        handleClick: (e) => {
-          if (e.action === 'cancel') {
-            this.$toast({
-              content: '已取消删除',
-              position: 'center'
-            })
-          } else if (e.action === 'confirm') {
-            this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
-              .then(res => {
-                this.tableData.splice(index, 1)
-                this.$toast({
-                  content: '删除成功!',
-                  position: 'center'
-                })
-              })
-          }
-        }
-      })
-    },
-    changePage (curPage) { // 分页
-      this.search.page = curPage
+  export default {
+    name: 'index',
+    components: { VePagination, condOption },
+    created () {
       this.onSearch()
     },
-    showDialog (type) { // 新建群组弹框
-      this.isShow = true
-      this.isAddOrEdit = 'add' // 点击的是新建
-      this.Group.type = type // 智能群组还是固定群组
-      this.Group.title = ''
-      this.Group.describe = ''
-      this.Group.rule = ''
-      this.errTitle = ''
-      this.errDes = ''
-      if (type === 2) {
-        this.dialogTitle = '创建固定群组'
-      } else {
-        this.dialogTitle = '创建智能群组'
+    filters: {
+      getType (val) {
+        let _type = ''
+        switch (val) {
+          case 1:
+            _type = '系统分组'
+            break
+          case 2:
+            _type = '固定分组'
+            break
+          case 3:
+            _type = '智能分组'
+            break
+          default:
+            break
+        }
+        return _type
       }
-      // console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
     },
-    inpTitle (a) {
-      let timer
-      if (timer) return
-      timer = setTimeout(() => {
-        clearTimeout(timer)
-        timer = null
-        a = a.target.value
-        if (a) {
+    data () {
+      let valiRepeatName = (rule, value, callback) => {
+        if (value && value != null) {
           let par = {
-            title: a
+            title: value
           }
           if (this.isAddOrEdit === 'edit') { // 编辑不用检查自身是否重复
             this.$set(par, 'group_id', this.Group.group_id)
           }
-          this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
-            .then((res) => {
-              if (res.code === 200) {
-                this.errTitle = ''
-              }
-            })
-            .catch((err) => {
-              if (err.code === 20002) {
-                this.errTitle = '分组名称不能重名'
-              } else if (err.code === 201) {
-                this.errTitle = '分组名称不能为空'
-              }
-            })
+          this.repeatTitle(par).then((res) => {
+            if (res.code !== 200) {
+              return callback(new Error('该群组名称已存在'))
+            } else {
+              callback()
+            }
+          }).catch((err) => {
+            if (err.code !== 200) {
+              return callback(new Error('该群组名称已存在'))
+            } else {
+              callback()
+            }
+          })
         } else {
-          this.errTitle = '分组名称不能为空'
+          return callback(new Error('群组名称不能为空'))
         }
-      }, 500)
-    },
-    inpDes (a) {
-      a = a.target.value
-      if (!a) {
-        this.errDes = '分组描述不能为空'
-      } else {
-        this.errDes = ''
+      }
+      return {
+        errTitle: '',
+        errDes: '',
+        isShow: false,
+        dialogTitle: '',
+        isAddOrEdit: '', // 当前点击的是新建还是编辑
+        inpNameLen: 0,
+        inpDesLen: 0,
+        search: {
+          pageSize: 10,
+          keyword: '',
+          page: 1
+        },
+        total: 0,
+        Group: {
+          title: '',
+          describe: '',
+          type: '',
+          rule: []
+        },
+        dialogFixedOrIntel: false,
+
+        tableData: [],
+        rules: {
+          title: [
+            { validator: valiRepeatName, trigger: 'blur' }
+          ],
+          describe: [
+            { required: true, message: '群组描述不能为空', trigger: 'blur' }
+          ]
+        }
       }
     },
-    optionData (a) { // 新建或者编辑 返回的规则
-      this.Group.rules = JSON.stringify(a)
-      this.sendData()
-    },
-    sendData () { // 发送数据
-      let _url = ''
-      if (this.isAddOrEdit === 'add') { // 判断是新建还是编辑
-        _url = groupService.CREATE_GROUP
-      } else {
-        _url = groupService.UPDATE_GROUP
+    watch: {
+      dialogFixedOrIntel (nval, oval) {
+        if (this.$refs['Group']) this.$refs['Group'].resetFields()
       }
-      delete this.Group['rule']
-      this.$post(_url, this.Group)
-        .then((res) => {
-          if (res.code === 200) {
-            this.Group.type = -1
-            this.isAddOrEdit = '' // 重置
-            this.inpNameLen = 0
-            this.inpDesLen = 0
-            this.isShow = false
+    },
+    methods: {
+      saveHandleClick (data) {
+        if (data.action === 'cancel') {
+          this.Group.type = ''
+          this.errTitle = ''
+          this.errDes = ''
+          this.isShow = false
+        } else {
+          this.save(this.Group)
+        }
+      },
+      onSearch () { // 搜索
+        this.$post(groupService.GROUPS_LIST, this.search)
+          .then(res => {
+            this.tableData = res.data.list
+            this.total = Number.parseInt(res.data.count)
             this.errTitle = ''
             this.errDes = ''
-          }
-          setTimeout(() => {
-            this.onSearch()
-          }, 1000)
-        })
-    },
-    save (group) { // 保存按钮点击
-      if (this.Group.title !== '' && this.Group.describe !== '' && this.errTitle === '' && this.errDes === '') {
-        if (this.Group.type === 2) { // 固定群组 直接发送数据
-          this.sendData()
-          // this.isShow = false
-        } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
-          this.$refs.cond_option.save()
+          })
+      },
+      repeatTitle (par) {
+        return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
+      },
+      handleDetails (id, type) { // 详情
+        this.$router.push(`/userManage/userGroupsDetails/${id}/${type}`)
+      },
+      handleEdit (groupId, title, describe, type, rule) { // 编辑
+        this.isAddOrEdit = 'edit' // 当前点击是编辑
+        this.Group.group_id = groupId
+        this.Group.title = title
+        this.Group.describe = describe
+        this.inpNameLen = title.length
+        this.inpDesLen = describe.length
+        this.Group.type = type
+        if (type === 2) {
+          this.dialogTitle = '编辑固定群组'
+        } else {
+          this.$set(this.Group, 'rule', JSON.parse(rule))
+          this.dialogTitle = '编辑智能群组'
         }
+        this.isShow = true
+        // console.log('此刻点击编辑，数据是：' + JSON.stringify(this.Group))
+      },
+      handleDelete (id, type, index) { // 删除群组
+        this.$messageBox({
+          header: '删除群组',
+          type: 'error',
+          width: '450px',
+          content: '<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ',
+          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+          confirmText: '删除',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+              this.$toast({
+                content: '已取消删除',
+                position: 'center'
+              })
+            } else if (e.action === 'confirm') {
+              this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
+                .then(res => {
+                  this.tableData.splice(index, 1)
+                  setTimeout(() => {
+                    this.onSearch()
+                  }, 1000)
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
+                  })
+                })
+            }
+          }
+        })
+      },
+      changePage (curPage) { // 分页
+        this.search.page = curPage
+        this.onSearch()
+      },
+      showDialog (type) { // 新建群组弹框
+        this.isShow = true
+        this.isAddOrEdit = 'add' // 点击的是新建
+        this.Group.type = type // 智能群组还是固定群组
+        this.Group.title = ''
+        this.Group.describe = ''
+        this.Group.rule = ''
         this.errTitle = ''
         this.errDes = ''
-      }
-      if (!this.Group.title) {
-        this.errTitle = '分组名称不能为空'
-      }
-      if (!this.Group.describe) {
-        this.errDes = '分组描述不能为空'
+        if (type === 2) {
+          this.dialogTitle = '创建固定群组'
+        } else {
+          this.dialogTitle = '创建智能群组'
+        }
+        // console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
+      },
+      inpTitle (a) {
+        let timer
+        if (timer) return
+        timer = setTimeout(() => {
+          clearTimeout(timer)
+          timer = null
+          a = a.target.value
+          if (a) {
+            let par = {
+              title: a
+            }
+            if (this.isAddOrEdit === 'edit') { // 编辑不用检查自身是否重复
+              this.$set(par, 'group_id', this.Group.group_id)
+            }
+            this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
+              .then((res) => {
+                if (res.code === 200) {
+                  this.errTitle = ''
+                }
+              })
+              .catch((err) => {
+                if (err.code === 20002) {
+                  this.errTitle = '分组名称不能重名'
+                } else if (err.code === 201) {
+                  this.errTitle = '分组名称不能为空'
+                }
+              })
+          } else {
+            this.errTitle = '分组名称不能为空'
+          }
+        }, 500)
+      },
+      inpDes (a) {
+        a = a.target.value
+        if (!a) {
+          this.errDes = '分组描述不能为空'
+        } else {
+          this.errDes = ''
+        }
+      },
+      optionData (a) { // 新建或者编辑 返回的规则
+        this.Group.rules = JSON.stringify(a)
+        this.sendData()
+      },
+      sendData () { // 发送数据
+        let _url = ''
+        if (this.isAddOrEdit === 'add') { // 判断是新建还是编辑
+          _url = groupService.CREATE_GROUP
+        } else {
+          _url = groupService.UPDATE_GROUP
+        }
+        delete this.Group['rule']
+        this.$post(_url, this.Group)
+          .then((res) => {
+            if (res.code === 200) {
+              this.Group.type = -1
+              this.isAddOrEdit = '' // 重置
+              this.inpNameLen = 0
+              this.inpDesLen = 0
+              this.isShow = false
+              this.errTitle = ''
+              this.errDes = ''
+            }
+            setTimeout(() => {
+              this.onSearch()
+            }, 1000)
+          })
+      },
+      save (group) { // 保存按钮点击
+        if (this.Group.title !== '' && this.Group.describe !== '' && this.errTitle === '' && this.errDes === '') {
+          if (this.Group.type === 2) { // 固定群组 直接发送数据
+            this.sendData()
+            // this.isShow = false
+          } else if (this.Group.type === 3) { // 智能群组 调规则页面返回数据
+            this.$refs.cond_option.save()
+          }
+          this.errTitle = ''
+          this.errDes = ''
+        }
+        if (!this.Group.title) {
+          this.errTitle = '分组名称不能为空'
+        }
+        if (!this.Group.describe) {
+          this.errDes = '分组描述不能为空'
+        }
       }
     }
   }
-}
 </script>
 
 <style lang="scss" scoped>
-#userGroups {
-  font-family: PingFangSC-Regular;
-  padding: 40px 100px;
-  /deep/ {
-    header {
-      height: 40px;
-      width: 100%;
-      line-height: 40px;
-      padding-left: 20px;
-      display: inline-block;
-      background: #cccccc;
-    }
-    .operation {
-      overflow: hidden;
-      h4 {
+  #userGroups {
+    font-family: PingFangSC-Regular;
+    padding: 40px 100px;
+    /deep/ {
+      header {
+        height: 40px;
+        width: 100%;
+        line-height: 40px;
+        padding-left: 20px;
         display: inline-block;
-        height: 26px;
-        color: rgba(34, 34, 34, 1);
-        line-height: 26px;
-        font-size: 24px;
-        float: left;
-        font-weight: 400;
+        background: #cccccc;
       }
-      div {
-        float: right;
-        .el-input {
+      .operation {
+        overflow: hidden;
+        h4 {
+          display: inline-block;
+          height: 26px;
+          color: rgba(34, 34, 34, 1);
+          line-height: 26px;
+          font-size: 24px;
           float: left;
-          width: 220px;
-          height: 34px;
-          margin-right: 20px;
-          .el-input__inner {
-            border-radius: 20px;
-            border-color: rgba(136, 136, 136, 1);
-            &:hover {
-              border-color: #5d6afe;
+          font-weight: 400;
+        }
+        div {
+          float: right;
+          .el-input {
+            float: left;
+            width: 220px;
+            height: 34px;
+            margin-right: 20px;
+            .el-input__inner {
+              border-radius: 20px;
+              border-color: rgba(136, 136, 136, 1);
+              &:hover {
+                border-color: #5d6afe;
+              }
             }
           }
-        }
-        .el-button {
-          color: rgba(85, 85, 85, 1);
-          width: 120px;
-          height: 34px;
-          border-radius: 16px;
-          border: 1px solid rgba(136, 136, 136, 1);
-        }
-      }
-    }
-    .table-box {
-      margin-top: 22px;
-      padding: 30px;
-      border: 1px dashed #cccccc;
-      .el-table {
-        .btns {
-          color: rgba(34, 34, 34, 1);
-          &:hover {
-            color: rgba(75, 90, 254, 1);
+          .el-button {
+            color: rgba(85, 85, 85, 1);
+            width: 120px;
+            height: 34px;
+            border-radius: 16px;
+            border: 1px solid rgba(136, 136, 136, 1);
           }
         }
-        .default:after {
-          content: '默认';
-          color: #4b5afe;
-          height: 17px;
-          font-size: 10px;
-          padding: 0 3px;
-          border: 1px solid #4b5afe;
+      }
+      .table-box {
+        margin-top: 22px;
+        padding: 30px;
+        border: 1px dashed #cccccc;
+        .el-table {
+          .btns {
+            color: rgba(34, 34, 34, 1);
+            &:hover {
+              color: rgba(75, 90, 254, 1);
+            }
+          }
+          .default:after {
+            content: '默认';
+            color: #4b5afe;
+            height: 17px;
+            font-size: 10px;
+            padding: 0 3px;
+            border: 1px solid #4b5afe;
+          }
+        }
+        .VePagination {
+          text-align: center;
+          margin-top: 20px;
         }
       }
-      .VePagination {
-        text-align: center;
-        margin-top: 20px;
+      .input_s {
+        width: 100%;
       }
     }
-    .input_s {
-      width: 100%;
+  }
+
+  .userGroupDelConfirm {
+    border: none;
+    .el-message-box__header {
+      border-top: 6px solid #fc5659;
+    }
+    .userGroupDelConfirmBtn {
+      width: 120px;
+      background-color: #fc5659;
+      color: #222;
     }
   }
-}
-
-.userGroupDelConfirm {
-  border: none;
-  .el-message-box__header {
-    border-top: 6px solid #fc5659;
-  }
-  .userGroupDelConfirmBtn {
-    width: 120px;
-    background-color: #fc5659;
-    color: #222;
-  }
-}
 </style>
