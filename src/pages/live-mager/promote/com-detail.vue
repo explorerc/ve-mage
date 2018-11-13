@@ -20,8 +20,23 @@
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
+            v-if="_type === 'SMS'"
             prop="content"
-            :label="_type === 'SMS'? '手机号' : '邮箱'"
+            :label="'手机号'"
+            width="220"
+            show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+            v-if="_type === 'WECHAT'"
+            prop="content"
+            :label="'OpenID'"
+            width="220"
+            show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+            v-if="_type === 'MAIL'"
+            prop="content"
+            :label="'邮箱'"
             width="220"
             show-overflow-tooltip>
           </el-table-column>
