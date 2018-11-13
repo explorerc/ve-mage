@@ -91,7 +91,8 @@ const recommendGoodsInfo = () => import('src/pages/sales-tools/recommend-goods/i
 
 /* 营销工具-问卷开始 */
 const questionnaire = () => import('src/pages/sales-tools/questionnaire')
-const editQuestion = () => import('src/pages/sales-tools/questionnaire/edit')
+// const editQuestion = () => import('src/pages/sales-tools/questionnaire/edit')
+const questionList = () => import('src/pages/sales-tools/questionnaire/list')
 /* 营销工具-问卷结束 */
 
 export default [{
@@ -331,10 +332,15 @@ export default [{
     name: 'questionnaire',
     component: questionnaire
   },
+  // {
+  //   path: '/salesTools/questionnaire/:id',
+  //   name: 'editQuestion',
+  //   component: editQuestion
+  // },
   {
-    path: '/salesTools/questionnaire/:id',
-    name: 'editQuestion',
-    component: editQuestion
+    path: '/salesTools/questionnaire/list',
+    name: 'questionList',
+    component: questionList
   },
   {
     path: '/salesTools/recommendGoodsList',
