@@ -51,7 +51,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
+      <VePagination class="VePagination" v-show="total>10" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
   </div>
 </template>

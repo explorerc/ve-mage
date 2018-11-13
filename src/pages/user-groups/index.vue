@@ -72,6 +72,7 @@
         </el-table-column>
       </el-table>
       <VePagination class="VePagination"
+                    v-show="total>10"
                     :pageSize="search.pageSize"
                     @changePage="changePage"
                     :total="total"/>
