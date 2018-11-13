@@ -34,7 +34,7 @@
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
-            v-if="_type === 'MAIL'"
+            v-if="_type === 'EMAIL'"
             prop="content"
             :label="'邮箱'"
             width="220"

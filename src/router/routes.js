@@ -348,6 +348,11 @@ export default [{
     component: recommendCards
   },
   {
+    path: '/salesTools/recommendCardsDetails/:id',
+    name: 'cardItem',
+    component: cardItem
+  },
+  {
     path: '/salesTools/redpack/:id',
     name: 'redpack',
     component: redpack

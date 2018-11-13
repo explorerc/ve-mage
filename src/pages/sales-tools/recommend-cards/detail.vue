@@ -140,7 +140,9 @@
             content: '更新成功',
             position: 'center'
           })
-          this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
+          setTimeout(() => {
+            this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
+          }, 500)
         })
       },
       verify () {
@@ -167,14 +169,14 @@
         }
       },
       getDetail (id) {
-        this.$get(cardService.GET_CARDS_DETAIL, {
+        this.$config({loading: true}).$get(cardService.GET_CARDS_DETAIL, {
           recommend_card_id: id
         }).then((res) => {
           this.title = res.data.title
-          this.poster = res.data.poster
-          this.btnSwitch = res.data.btnSwitch
-          this.btnTxt = res.data.btnTxt
-          this.btnLink = res.data.btnLink
+          this.poster = res.data.pic
+          this.btnSwitch = res.data.btn_display === 'Y'
+          this.btnTxt = res.data.btn_text
+          this.btnLink = res.data.btn_link
           this.desc = res.data.desc
         })
       }
