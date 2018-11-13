@@ -30,52 +30,75 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="itemData in tableData" :key="itemData.id">
             <td>
-              123
+              {{itemData.name}}
             </td>
             <td>
-              123
+              {{itemData.count}}
             </td>
             <td>
-              123
+              {{itemData.date}}
             </td>
             <td>
-              123
+              <a href="">编辑</a><span>|</span>
+              <a href="">预览</a><span>|</span>
+              <a href="" class="v-del">删除</a>
             </td>
           </tr>
         </tbody>
       </table>
+      <div class="pagination-box">
+        <div class="page-pagination"
+             v-if="total>pageSize">
+          <ve-pagination :total="total"
+                         :pageSize="pageSize"
+                         :currentPage="searchParams.page"
+                         @changePage="changePage" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import VePagination from 'src/components/ve-pagination'
 export default {
-  components: {
-  },
+  components: { VePagination },
   data () {
     return {
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄',
-        qq: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄',
-        qq: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄',
-        qq: '上海市普陀区金沙江路 1518 弄'
+        count: 2,
+        id: 1
       }, {
         date: '2016-05-03',
         name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄',
-        qq: '上海市普陀区金沙江路 1518 弄'
-      }]
+        count: 2,
+        id: 2
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        count: 2,
+        id: 3
+      }, {
+        date: '2016-05-05',
+        name: '王小虎',
+        count: 2,
+        id: 4
+      }, {
+        date: '2016-05-06',
+        name: '王小虎',
+        count: 2,
+        id: 5
+      }],
+      searchParams: {
+        business_consumer_uid: 0,
+        page: 1,
+        page_size: 9
+      },
+      total: 2,
+      pageSize: 6
     }
   },
   beforeDestroy () {
@@ -83,11 +106,15 @@ export default {
   created () {
   },
   computed: {
-    isBorder () {
-      return !(this.dragData.length > 0)
-    }
   },
   methods: {
+    getDataList () {
+
+    },
+    changePage (currentPage) {
+      this.searchParams.page = currentPage
+      this.getDataList()
+    }
   }
 }
 </script>
@@ -127,11 +154,39 @@ export default {
     overflow: hidden;
     table {
       width: 100%;
+      border-radius: 4px 4px 0 0;
+      overflow: hidden;
       thead {
         background-color: #f5f5f5;
         td {
           height: 60px;
           line-height: 61px;
+          padding: 0 30px;
+        }
+      }
+      tbody {
+        tr {
+          height: 50px;
+          line-height: 50px;
+          border-bottom: 1px solid #e2e2e2;
+          td {
+            padding: 0 30px;
+            a {
+              &:hover {
+                color: #4b5afe;
+                &.v-del {
+                  color: #fc5659;
+                }
+              }
+            }
+            span {
+              display: inline-block;
+              padding: 0 2px;
+            }
+          }
+          &:hover {
+            background-color: #e9ebff;
+          }
         }
       }
     }

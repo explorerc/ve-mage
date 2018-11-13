@@ -248,11 +248,6 @@ export default [{
     }
   },
   {
-    path: '/liveMager/promote/wechat/overview/:id',
-    name: 'wechatOverview',
-    component: wechatOverview
-  },
-  {
     path: '/liveMager/promote/msg/overview/:id',
     name: 'msgOverview',
     component: msgOverview
@@ -266,11 +261,6 @@ export default [{
     path: '/liveMager/promote/msg/list/:id',
     name: 'promoteMsg',
     component: promoteMsg
-  },
-  {
-    path: '/liveMager/promote/msg/create/:id',
-    name: 'msgCreate',
-    component: msgCreate
   },
   {
     path: '/liveMager/promote/msg/edit/:id',
@@ -332,11 +322,6 @@ export default [{
     name: 'questionnaire',
     component: questionnaire
   },
-  // {
-  //   path: '/salesTools/questionnaire/:id',
-  //   name: 'editQuestion',
-  //   component: editQuestion
-  // },
   {
     path: '/salesTools/questionnaire/list',
     name: 'questionList',
@@ -352,11 +337,11 @@ export default [{
     name: 'recommendGoodsInfo',
     component: recommendGoodsInfo
   },
-  {
-    path: '/salesTools/recommendGoodsInfo',
-    name: 'recommendGoodsInfo',
-    component: recommendGoodsInfo
-  },
+  // {
+  //   path: '/salesTools/recommendGoodsInfo',
+  //   name: 'recommendGoodsInfo',
+  //   component: recommendGoodsInfo
+  // },
   {
     path: '/salesTools/recommendCards/:id',
     name: 'recommendCards',
@@ -438,5 +423,55 @@ export default [{
   meta: {
     noAuth: true
   }
+},
+{
+  path: '/liveMager/promote/wechat/overview/:id',
+  name: 'wechatOverview',
+  component: wechatOverview
+},
+{
+  path: '/liveMager/promote/msg/create/:id',
+  name: 'msgCreate',
+  component: msgCreate
+},
+{
+  path: '/salesTools/questionnaire/:id',
+  name: 'questionnaire',
+  component: questionnaire
+},
+{
+  path: '/salesTools/recommendCardsDetails/:id',
+  name: 'cardItem',
+  component: cardItem
+},
+{
+  path: '/data',
+  component: Data,
+  children: [{
+    path: 'preview/:id',
+    name: 'preview',
+    component: Preview
+  },
+  {
+    path: 'live/:id',
+    name: 'live',
+    component: DataLive
+  },
+  {
+    path: 'spread/:id',
+    name: 'spread',
+    component: Spread
+  },
+  {
+    path: 'viewer/:id',
+    name: 'viewer',
+    component: Viewer
+  },
+  {
+    path: 'viewerList/:id',
+    name: 'viewerList',
+    component: ViewerList
+  }
+  ]
 }
 ]
