@@ -90,7 +90,7 @@ const recommendGoodsList = () => import('src/pages/sales-tools/recommend-goods/i
 const recommendGoodsInfo = () => import('src/pages/sales-tools/recommend-goods/info')
 
 /* 营销工具-问卷开始 */
-const questionnaire = () => import('src/pages/sales-tools/questionnaire')
+const questionnaire = () => import('src/pages/sales-tools/questionnaire/edit')
 // const editQuestion = () => import('src/pages/sales-tools/questionnaire/edit')
 const questionList = () => import('src/pages/sales-tools/questionnaire/list')
 /* 营销工具-问卷结束 */
@@ -318,7 +318,7 @@ export default [{
     component: userInfo
   },
   {
-    path: '/salesTools/questionnaire',
+    path: '/salesTools/questionnaire/edit/:id',
     name: 'questionnaire',
     component: questionnaire
   },
@@ -433,11 +433,6 @@ export default [{
   path: '/liveMager/promote/msg/create/:id',
   name: 'msgCreate',
   component: msgCreate
-},
-{
-  path: '/salesTools/questionnaire/:id',
-  name: 'questionnaire',
-  component: questionnaire
 },
 {
   path: '/salesTools/recommendCardsDetails/:id',

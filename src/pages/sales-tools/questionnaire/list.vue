@@ -3,12 +3,12 @@
     <div class="v-list-title">
       <span class="title">问卷列表</span>
     </div>
-    <div class="v-tbns">
-      <button>
-        查看数据
-      </button>
-      <button>
+    <div class="v-tbns clearfix">
+      <button class="v-add">
         新建问卷
+      </button>
+      <button class="v-view">
+        查看数据
       </button>
     </div>
     <div class="v-table">
@@ -41,7 +41,7 @@
               {{itemData.date}}
             </td>
             <td>
-              <a href="">编辑</a><span>|</span>
+              <a :href="'/salesTools/questionnaire/edit/'+itemData.id">编辑</a><span>|</span>
               <a href="">预览</a><span>|</span>
               <a href="" class="v-del">删除</a>
             </td>
@@ -143,7 +143,36 @@ export default {
   }
   .v-tbns {
     width: 100%;
-    text-align: right;
+    margin-bottom: 30px;
+    button {
+      float: right;
+      width: 120px;
+      height: 40px;
+      border: 1px solid #4b5afe;
+      line-height: 38px;
+      border-radius: 20px;
+      background-color: rgba(0, 0, 0, 0);
+      font-size: 14px;
+      color: #4b5afe;
+      text-align: center;
+      margin-top: 10px;
+      &.v-add {
+        border-color: #ffd021;
+        background-color: #ffd021;
+        color: #222;
+        margin-left: 10px;
+      }
+      &:hover {
+        background-color: #fdd43f;
+        border-color: #fdd43f;
+        color: #222;
+      }
+      &:active {
+        background-color: #eec11a;
+        border-color: #eec11a;
+        color: #222;
+      }
+    }
   }
   .v-table {
     width: 100%;
