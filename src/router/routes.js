@@ -347,6 +347,11 @@ export default [{
     component: recommendGoodsInfo
   },
   {
+    path: '/salesTools/recommendGoodsInfo',
+    name: 'recommendGoodsInfo',
+    component: recommendGoodsInfo
+  },
+  {
     path: '/salesTools/recommendCards/:id',
     name: 'recommendCards',
     component: recommendCards
