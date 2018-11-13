@@ -215,12 +215,20 @@ export default {
           this.times[i] = this.datas.list[i].name
           this.datas.list[i].name = this.datas.names[i].length > 10 ? this.datas.names[i].substring(0, 10) : this.datas.names[i]
         }
+        var echartsData = []
+        let index = 0
+        for (let i = this.datas.list.length - 1; i >= 0; i--) {
+          echartsData[index] = this.datas.list[i]
+          index++
+        }
+        console.log(echartsData)
+        console.log(this.datas.list)
         this.tableList.splice(0, this.tableList.length)
         // this.datas = res.data
         /* 绘制堆叠图 */
         this.effectChart = barPile('chart01', {
           legendData: this.datas.types,
-          list: this.datas.list
+          list: echartsData
         }, {
           left: 130,
           bottom: 70,
