@@ -130,11 +130,11 @@
                <el-date-picker
                 :clearable="true"
                 v-model="firstVal"
-                type="datetimerange"
+                type="daterange"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                format="yyyy-MM-dd hh:mm"
+                format="yyyy-MM-dd"
                 :editable="false"
                 align="left">
               </el-date-picker>
@@ -144,11 +144,11 @@
                <el-date-picker
                 :clearable="true"
                 v-model="lastVal"
-                type="datetimerange"
+                type="daterange"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                format="yyyy-MM-dd hh:mm"
+                format="yyyy-MM-dd"
                 :editable="false"
                 align="left">
               </el-date-picker>
@@ -736,8 +736,9 @@ export default {
           this.filterCondition.first_visited_at_start = ''
           this.filterCondition.first_visited_at_end = ''
         } else {
-          this.filterCondition.first_visited_at_start = val[0]
-          this.filterCondition.first_visited_at_end = val[1]
+          debugger
+          this.filterCondition.first_visited_at_start = val[0].format('yyyy-MM-dd')
+          this.filterCondition.first_visited_at_end = val[1].format('yyyy-MM-dd')
         }
       }
     },
@@ -747,8 +748,8 @@ export default {
           this.filterCondition.last_visited_at_start = ''
           this.filterCondition.last_visited_at_end = ''
         } else {
-          this.filterCondition.last_visited_at_start = val[0]
-          this.filterCondition.last_visited_at_end = val[1]
+          this.filterCondition.last_visited_at_start = val[0].format('yyyy-MM-dd')
+          this.filterCondition.last_visited_at_end = val[1].format('yyyy-MM-dd')
         }
       }
     },

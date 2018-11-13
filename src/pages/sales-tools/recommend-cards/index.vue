@@ -7,26 +7,26 @@
       <template v-if="tableData.length>0">
           <div class="top-bar">
             <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
-            <el-button>查看活动数据</el-button>
+            <router-link :to="`/data/live/${activityId}`"><el-button>查看活动数据</el-button></router-link>
           </div>
           <el-table :data="tableData" stripe style="width: 100%" :class="'table-box'">
             <el-table-column  label="卡片图片" width="150">
               <template slot-scope="scope">
-                <img :src="scope.row.pic" :class="'img'">
+                <img :src="`${imgHost}/${scope.row.pic}`" :class="'img'">
               </template>
           </el-table-column>
-          <el-table-column prop="name" label="卡片名称" width="250" show-overflow-tooltip>
+          <el-table-column prop="title" label="卡片名称" width="250" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="desc" label="卡片描述" width="350" show-overflow-tooltip>
           </el-table-column>
-          <el-table-column prop="link" label="按钮链接" width="350" show-overflow-tooltip>
+          <el-table-column prop="btn_link" label="按钮链接" width="350" show-overflow-tooltip>
           </el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-              <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.id}`">
+              <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.recommend_card_id}`">
                 <el-button round>编辑</el-button>
               </router-link>
-              <el-button round @click='del(scope.row.id,scope.row.name)'>删除</el-button>
+              <el-button round @click='del(scope.row.recommend_card_id,scope.row.title,scope.row.index)'>删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -49,42 +49,8 @@
     data () {
       return {
         activityId: this.$route.params.id,
-        tableData: [{
-          id: 0,
-          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '安监局安静安静啊',
-          desc: '阿克苏角度看拉萨的',
-          link: 'www.baidu.com'
-        },
-        {
-          id: 1,
-          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '安监局安静安静啊',
-          desc: '阿克苏角度看拉萨的',
-          link: 'www.baidu.com'
-        },
-        {
-          id: 2,
-          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '安监局安静安静啊',
-          desc: '阿克苏角度看拉萨的',
-          link: 'www.baidu.com'
-        },
-        {
-          id: 3,
-          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '安监局安静安静啊',
-          desc: '阿克苏角度看拉萨的',
-          link: 'www.baidu.com'
-        },
-        {
-          id: 4,
-          pic: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-          name: '安监局安静安静啊',
-          desc: '阿克苏角度看拉萨的',
-          link: 'www.baidu.com'
-        }
-        ]
+        imgHost: process.env.IMGHOST + '/',
+        tableData: []
       }
     },
     mounted () {
@@ -101,7 +67,7 @@
           this.tableData = res.data.list
         })
       },
-      del (id, name) {
+      del (id, name, idx) {
         this.$messageBox({
           header: '提示',
           width: '400px',
@@ -110,20 +76,20 @@
           confirmText: '是',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              this.delItem(id)
+              this.delItem(id, idx)
             }
           }
         })
       },
-      delItem (id) {
-        this.$post(cardService.POST_DELETE_CARD, {
+      delItem (id, idx) {
+        this.$get(cardService.POST_DELETE_CARD, {
           recommend_card_id: id
         }).then((res) => {
           this.$toast({
             content: '删除成功',
             position: 'center'
           })
-          this.tableData.splice(id, 1)
+          this.tableData.splice(idx, 1)
         })
       }
     }
