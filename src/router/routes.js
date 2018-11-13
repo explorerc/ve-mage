@@ -248,11 +248,6 @@ export default [{
     }
   },
   {
-    path: '/liveMager/promote/wechat/overview/:id',
-    name: 'wechatOverview',
-    component: wechatOverview
-  },
-  {
     path: '/liveMager/promote/msg/overview/:id',
     name: 'msgOverview',
     component: msgOverview
@@ -266,11 +261,6 @@ export default [{
     path: '/liveMager/promote/msg/list/:id',
     name: 'promoteMsg',
     component: promoteMsg
-  },
-  {
-    path: '/liveMager/promote/msg/create/:id',
-    name: 'msgCreate',
-    component: msgCreate
   },
   {
     path: '/liveMager/promote/msg/edit/:id',
@@ -332,11 +322,6 @@ export default [{
     name: 'questionnaire',
     component: questionnaire
   },
-  // {
-  //   path: '/salesTools/questionnaire/:id',
-  //   name: 'editQuestion',
-  //   component: editQuestion
-  // },
   {
     path: '/salesTools/questionnaire/list',
     name: 'questionList',
@@ -352,11 +337,11 @@ export default [{
     name: 'recommendGoodsInfo',
     component: recommendGoodsInfo
   },
-  {
-    path: '/salesTools/recommendGoodsInfo',
-    name: 'recommendGoodsInfo',
-    component: recommendGoodsInfo
-  },
+  // {
+  //   path: '/salesTools/recommendGoodsInfo',
+  //   name: 'recommendGoodsInfo',
+  //   component: recommendGoodsInfo
+  // },
   {
     path: '/salesTools/recommendCards/:id',
     name: 'recommendCards',
@@ -440,79 +425,9 @@ export default [{
   component: wechatOverview
 },
 {
-  path: '/liveMager/promote/msg/overview/:id',
-  name: 'msgOverview',
-  component: msgOverview
-},
-{
-  path: '/liveMager/promote/wechat/edit/:id',
-  name: 'wechatEdit',
-  component: wechatCreate
-},
-{
-  path: '/liveMager/promote/msg/list/:id',
-  name: 'promoteMsg',
-  component: promoteMsg
-},
-{
   path: '/liveMager/promote/msg/create/:id',
   name: 'msgCreate',
   component: msgCreate
-},
-{
-  path: '/liveMager/promote/msg/edit/:id',
-  name: 'msgEdit',
-  component: msgCreate
-},
-{
-  path: '/liveMager/promote/auto/preview/:id',
-  name: 'auto',
-  component: promoteAuto
-},
-{
-  path: '/liveMager/promote/auto/editWx/:id',
-  name: 'autoEditwx',
-  component: autoEditwx
-},
-{
-  path: '/liveMager/promote/auto/editMsg/:id',
-  name: 'autoEditmsg',
-  component: autoEditmsg
-},
-{
-  path: '/liveMager/playBack/:id',
-  name: 'playBack',
-  component: PlayBack
-},
-{
-  path: '/userManage/overview',
-  name: 'userOverview',
-  component: userOverview
-},
-{
-  path: '/userManage/pond',
-  name: 'userPond',
-  component: userPond
-},
-{
-  path: '/userManage/group',
-  name: 'userGroup',
-  component: userGroup
-},
-{
-  path: '/userManage/userGroupsIndex',
-  name: 'userGroupsIndex',
-  component: userGroupsIndex
-},
-{
-  path: '/userManage/userGroupsDetails/:id',
-  name: 'userGroupsDetails',
-  component: userGroupsDetails
-},
-{
-  path: '/userManage/info/:id',
-  name: 'userInfo',
-  component: userInfo
 },
 {
   path: '/salesTools/questionnaire/:id',
@@ -520,29 +435,9 @@ export default [{
   component: questionnaire
 },
 {
-  path: '/salesTools/recommendGoodsList',
-  name: 'recommendGoodsList',
-  component: recommendGoodsList
-},
-{
-  path: '/salesTools/recommendGoodsInfo',
-  name: 'recommendGoodsInfo',
-  component: recommendGoodsInfo
-},
-{
-  path: '/salesTools/recommendCards/:id',
-  name: 'recommendCards',
-  component: recommendCards
-},
-{
   path: '/salesTools/recommendCardsDetails/:id',
   name: 'cardItem',
   component: cardItem
-},
-{
-  path: '/salesTools/redpack/:id',
-  name: 'redpack',
-  component: redpack
 },
 {
   path: '/data',
