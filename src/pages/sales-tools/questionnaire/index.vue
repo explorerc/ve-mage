@@ -129,25 +129,7 @@
                   </p>
                 </div>
                 <div class="v-questions">
-                  <com-question v-for="(item,index) in dragData"
-                              :value.sync="item"
-                              :edit="false"
-                              :index="index+1"
-                              :key="index"
-                              :class="{isSingle:isSingle}"
-                              :ref="`com${index}`"
-                              @remove="removeQuestion($event)">
-                  </com-question>
-                  <com-question v-if="phoneData.length"
-                                :class="{isBorder:isBorder}"
-                                class="v-phone"
-                                :value.sync="phoneData[0]"
-                                :edit="false"
-                                :ref="`comPhone`"
-                                :index="dragData.length+1"
-                                :isView="true"
-                                :key="dragData.length+1" @remove="removeQuestion($event)">
-                  </com-question>
+                  <questions :dragData="dragData" :phoneData="phoneData"></questions>
                 </div>
     </message-box>
   </div>
@@ -156,13 +138,15 @@
 <script>
 import draggable from 'vuedraggable'
 import question from 'components/questionnaire/wrap'
+import questions from '../questionnaire/components/questions'
 import VeUpload from 'src/components/ve-upload-image'
 import { types as QTypes } from 'components/questionnaire/types'
 export default {
   components: {
     draggable,
     VeUpload,
-    comQuestion: question
+    comQuestion: question,
+    questions
   },
   data () {
     return {

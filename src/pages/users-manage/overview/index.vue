@@ -177,10 +177,10 @@ export default {
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
-      arr.forEach(element => {
-        this.uersInfo[arr.indexOf(element)].val = element
-        this.uersInfo[arr.indexOf(element)].centage = Math.round(element / this.info.total)
-      })
+      for (let i = 0; i < arr.length; i++) {
+        this.uersInfo[i].val = arr[i]
+        this.uersInfo[i].centage = Math.round(arr[i] / this.info.total)
+      }
     }).catch(err => {
       this.$messageBox({
         header: '提示',
@@ -215,12 +215,20 @@ export default {
           this.times[i] = this.datas.list[i].name
           this.datas.list[i].name = this.datas.names[i].length > 10 ? this.datas.names[i].substring(0, 10) : this.datas.names[i]
         }
+        var echartsData = []
+        let index = 0
+        for (let i = this.datas.list.length - 1; i >= 0; i--) {
+          echartsData[index] = this.datas.list[i]
+          index++
+        }
+        console.log(echartsData)
+        console.log(this.datas.list)
         this.tableList.splice(0, this.tableList.length)
         // this.datas = res.data
         /* 绘制堆叠图 */
         this.effectChart = barPile('chart01', {
           legendData: this.datas.types,
-          list: this.datas.list
+          list: echartsData
         }, {
           left: 130,
           bottom: 70,
