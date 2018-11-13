@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="v-questions">
     <com-question v-for="(item,index) in dragData"
                 :value.sync="item"
                 :edit="false"
@@ -9,13 +9,12 @@
                 :ref="`com${index}`">
     </com-question>
     <com-question v-if="phoneData.length"
-                  :class="{isBorder:isBorder}"
                   class="v-phone"
                   :value.sync="phoneData[0]"
                   :edit="false"
                   :ref="`comPhone`"
                   :index="dragData.length+1"
-                  :isView="true"
+                  :isView="isView"
                   :key="dragData.length+1">
     </com-question>
   </div>
@@ -35,6 +34,10 @@ export default {
     phoneData: {
       type: Array,
       default: null
+    },
+    isView: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -44,3 +47,29 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.v-questions /deep/ {
+  max-height: 360px;
+  overflow: auto;
+  .single-select-wrap {
+    border: none;
+    .question-content {
+      padding: 15px 25px;
+      .q-edit-content {
+        width: 100%;
+        .el-select {
+          width: 100%;
+        }
+        .com-input {
+          width: 100%;
+        }
+        .el-date-editor.el-input,
+        .el-date-editor.el-input__inner {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+</style>
+

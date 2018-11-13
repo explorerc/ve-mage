@@ -128,9 +128,7 @@
                    欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
                   </p>
                 </div>
-                <div class="v-questions">
-                  <questions :dragData="dragData" :phoneData="phoneData"></questions>
-                </div>
+                <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
     </message-box>
   </div>
 </template>
