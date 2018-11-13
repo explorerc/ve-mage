@@ -177,10 +177,10 @@ export default {
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
-      arr.forEach(element => {
-        this.uersInfo[arr.indexOf(element)].val = element
-        this.uersInfo[arr.indexOf(element)].centage = Math.round(element / this.info.total)
-      })
+      for (let i = 0; i < arr.length; i++) {
+        this.uersInfo[i].val = arr[i]
+        this.uersInfo[i].centage = Math.round(arr[i] / this.info.total)
+      }
     }).catch(err => {
       this.$messageBox({
         header: '提示',
