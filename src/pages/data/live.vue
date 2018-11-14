@@ -657,7 +657,7 @@
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
                   {name: '浏览次数', data: this.watcherLineData.live.pv},
-                  {name: '独立访问', data: this.watcherLineData.live.uv},
+                  {name: '独立访客', data: this.watcherLineData.live.uv},
                   {name: 'IP', data: this.watcherLineData.live.ip}
                 ]
               })

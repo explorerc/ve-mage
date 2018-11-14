@@ -73,6 +73,7 @@
         storeSelectMenu: types.DATA_SELECT_MENU
       }),
       changeMenu (idx) {
+        this.currentMenu = idx
         if (idx === 0) {
           this.$router.push(`/data/preview/${this.activeId}`)
         } else if (idx === 1) {

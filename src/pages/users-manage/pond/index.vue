@@ -212,7 +212,7 @@
                 <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
                 <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
                 <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
-                <dd class='protential' v-if="scope.row.level === 4">潜在用户</dd>
+                <dd class='protential' v-if="scope.row.level === 4">潜力用户</dd>
                 <dd class='' v-if="scope.row.level === 5">流失用户</dd>
                 <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
                 <dd class="name"  :class="scope.row.level | filterLevelclass" >{{scope.row.level | filterLevel}}</dd>
@@ -332,7 +332,7 @@ export default {
           label: '一般用户'
         }, {
           value: 4,
-          label: '潜在用户'
+          label: '潜力用户'
         }, {
           value: 5,
           label: '流失用户'
@@ -505,7 +505,7 @@ export default {
         case 3:
           return '一般用户'
         case 4:
-          return '潜在用户'
+          return '潜力用户'
         case 5:
           return '流失用户'
         case 0:

@@ -178,11 +178,11 @@
             {{scope.row.source|fmtSource}}
           </template>
         </el-table-column>
-        <el-table-column label="详情" width="90">
-          <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="详情" width="90">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
       <div class="page-pagination" v-if="total>searchParams.pageSize">
         <ve-pagination :total="total"
@@ -239,7 +239,7 @@
           {value: 1, label: '优质用户'},
           {value: 2, label: '高价值用户'},
           {value: 3, label: '一般用户'},
-          {value: 4, label: '潜在用户'},
+          {value: 4, label: '潜力用户'},
           {value: 5, label: '流失用户'}
         ],
         options: [],
@@ -281,7 +281,7 @@
           1: '优质用户',
           2: '高价值用户',
           3: '一般用户',
-          4: '一般用户',
+          4: '潜力用户',
           5: '流失用户'
         }
         return obj[value]
@@ -362,7 +362,7 @@
           this.searchParams.user_level = 4
         } else if (type === 'ord') { // 一般用户
           this.searchParams.user_level = 3
-        } else if (type === 'potent') { // 潜在用户
+        } else if (type === 'potent') { // 潜力用户
           this.searchParams.user_level = 2
         } else if (type === 'loss') { // 流失用户
           this.searchParams.user_level = 5
