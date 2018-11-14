@@ -178,11 +178,11 @@
             {{scope.row.source|fmtSource}}
           </template>
         </el-table-column>
-        <el-table-column label="详情" width="90">
-          <template slot-scope="scope">
-            <span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>
-          </template>
-        </el-table-column>
+        <!--<el-table-column label="详情" width="90">-->
+          <!--<template slot-scope="scope">-->
+            <!--<span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>-->
+          <!--</template>-->
+        <!--</el-table-column>-->
       </el-table>
       <div class="page-pagination" v-if="total>searchParams.pageSize">
         <ve-pagination :total="total"
