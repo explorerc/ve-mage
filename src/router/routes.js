@@ -95,6 +95,9 @@ const questionnaire = () => import('src/pages/sales-tools/questionnaire/edit')
 const questionList = () => import('src/pages/sales-tools/questionnaire/list')
 /* 营销工具-问卷结束 */
 
+/* 资产管理 */
+const AssetList = () => import('src/pages/asset-mager/asset-list')
+
 export default [{
   path: '/test',
   name: 'Test',
@@ -356,6 +359,11 @@ export default [{
     path: '/salesTools/redpack/:id',
     name: 'redpack',
     component: redpack
+  },
+  {
+    path: '/assetMager/assetList',
+    name: 'assetList',
+    component: AssetList
   },
   {
     path: '/data',
