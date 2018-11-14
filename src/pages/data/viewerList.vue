@@ -251,8 +251,8 @@
         ],
         deviceList: [
           {value: '', label: '全部'},
-          {value: 'pc', label: '电脑'},
-          {value: 'phone', label: '手机'}
+          {value: 'PC', label: '电脑'},
+          {value: 'MOBILE', label: '手机'}
         ],
         scoreTypeList: [
           {value: '', label: '全部'},
