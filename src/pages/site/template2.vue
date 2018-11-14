@@ -318,6 +318,7 @@ export default {
         margin-right: 80px;
         img {
           width: 130px;
+          height:130px;
         }
       }
     }
@@ -339,9 +340,10 @@ export default {
       .block1-item {
         border: 1px solid rgba(226, 226, 226, 1);
         width: 250px;
-        height: auto;
+        height: 340px;
         img {
           width: 100%;
+          height: 160px;
         }
       }
     }

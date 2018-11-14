@@ -261,16 +261,16 @@ export default {
       let strType = ''
       switch (type) {
         case 'JOIN_ACTIVITY_WEBSITE':
-          strType = '进入活动官网'
+          strType = '进入了活动官网'
           break
         case 'LEAVE_ACTIVITY_WEBSITE':
-          strType = '离开活动官网'
+          strType = '离开了活动官网'
           break
         case 'JOIN_ACTIVITY_GUIDE':
-          strType = '进入活动引导页'
+          strType = '进入了活动引导页'
           break
         case 'LEAVE_ACTIVITY_GUIDE':
-          strType = '离开活动引导页'
+          strType = '离开了活动引导页'
           break
         case 'ORDER_ACTIVITY':
           strType = '预约活动'
@@ -279,37 +279,37 @@ export default {
           strType = '报名活动'
           break
         case 'JOIN_ACTIVITY':
-          strType = '进入活动'
+          strType = '进入了活动'
           break
         case 'FIRST_CHAT':
-          strType = '开始聊天'
+          strType = '开始了聊天'
           break
         case 'FIRST_SHARE':
-          strType = '第一次分享'
+          strType = '进行第一次分享'
           break
         case 'COMMIT_SURVEY':
           strType = '提交调查问卷'
           break
         case 'SHARE_COUNT':
-          strType = `分享次数，共进行了${data.count}次分享`
+          strType = `共进行了${data.count}次分享`
           break
         case 'STAY_ACTIVITY_WEBSITE_TIME':
-          strType = `活动官网停留时间，在活动官网浏览了${data.time}分钟`
+          strType = `在活动官网浏览了${data.time > 60 ? Math.round(data.time / 60) : 1}分钟`
           break
         case 'STAY_ACTIVITY_TIME':
-          strType = `活动停留时间，观看了${data.time}分钟`
+          strType = `观看了${data.time > 60 ? Math.round(data.time / 60) : 1}分钟`
           break
         case 'SEND_CHAT_COUNT':
-          strType = `聊天条数，共发送了${data.count}条聊天内容`
+          strType = `共发送了${data.count}条聊天内容`
           break
         case 'INVITE_COUNT':
-          strType = `邀请好友数，共邀请了${data.count}个好友`
+          strType = `共邀请了${data.count}个好友`
           break
         case 'CONCERN_WX':
-          strType = `关注微信公众号，关注了${data.wx_name}`
+          strType = `关注了${data.wx_name}`
           break
         case 'EMAIL_SUBSCRIBE':
-          strType = `邮件订阅，关注了${data.wx_name}`
+          strType = `关注了${data.business_name}`
           break
       }
       return strType

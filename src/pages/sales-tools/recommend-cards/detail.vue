@@ -17,14 +17,13 @@
         </div>
       </div>
       <div class="from-row">
-        <div class="from-title"><i class="star">*</i>卡片描述：</div>
+        <div class="from-title">卡片描述：</div>
         <div class="from-content">
               <com-input type="textarea"
                          class="msg-content"
                          :value.sync="desc"
                          placeholder="请输入卡片描述"
-                         :max-length="100"
-                         :error-tips='descError'></com-input>
+                         :max-length="100"></com-input>
         </div>
       </div>
       <div class="from-row">
@@ -36,19 +35,19 @@
       <div class="from-row" v-if="btnSwitch">
         <div class="from-title"><i class="star">*</i>按钮文案：</div>
         <div class="from-content">
-          <com-input :value.sync="btnTxt" placeholder="请输入按钮文案" :max-length="6"></com-input>
+          <com-input :value.sync="btnTxt" placeholder="请输入按钮文案" :max-length="6" :error-tips="btnTxtError" @focus="btnTxtError = ''"></com-input>
         </div>
       </div>
       <div class="from-row" v-if="btnSwitch">
         <div class="from-title"><i class="star">*</i>按钮链接：</div>
         <div class="from-content">
-          <com-input :value.sync="btnLink" placeholder="请输入按钮链接"></com-input>
+          <com-input :value.sync="btnLink" placeholder="请输入按钮链接" :error-tips="btnLinkError" @focus="btnLinkError = ''"></com-input>
         </div>
       </div>
       <div class="from-row">
         <div class="from-title"></div>
         <div class="from-content btn-box">
-          <el-button class='primary-button'>保存</el-button>
+          <el-button class='primary-button' @click='save'>保存</el-button>
         </div>
       </div>
       <div class="overview">
@@ -67,24 +66,55 @@
 
 <script>
   import VeUpload from 'src/components/ve-upload-image'
+  import cardService from 'src/api/salesCards-service.js'
   export default {
     data () {
       return {
+        activityId: this.$route.params.id,
         title: '',
         titleError: '',
         img: '',
         desc: '',
-        descError: '',
         btnSwitch: false,
         btnTxt: '',
+        btnTxtError: '',
         btnLink: '',
+        btnLinkError: '',
         poster: '',
         imgHost: process.env.IMGHOST + '/',
         uploadImgErrorMsg: '',
-        cardId: this.$route.query.cardId
+        cardId: this.$route.query.cardId,
+        saveData: '',
+        canSave: false
+      }
+    },
+    mounted () {
+      if (this.cardId !== 'new') {
+        this.getDetail(this.cardId)
       }
     },
     methods: {
+      save () {
+        this.verify()
+        if (!this.canSave) {
+          return false
+        }
+        this.saveData = {
+          activity_id: this.activityId,
+          recommend_card_id: this.cardId === 'new' ? '' : this.cardId,
+          title: this.title,
+          pic: this.poster,
+          desc: this.desc,
+          btn_display: this.btnSwitch ? 'Y' : 'N',
+          btn_text: this.btnTxt,
+          btn_link: this.btnLink
+        }
+        if (this.cardId === 'new') { // 新建
+          this.saveCard()
+        } else { // 编辑
+          this.updateCard()
+        }
+      },
       uploadImgSuccess (data) {
         this.poster = data.name
       },
@@ -94,6 +124,61 @@
       },
       switchChange (res) {
 
+      },
+      saveCard () {
+        this.$post(cardService.POST_CREATE_CARD, this.saveData).then((res) => {
+          this.$toast({
+            content: '保存成功',
+            position: 'center'
+          })
+          this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
+        })
+      },
+      updateCard () {
+        this.$post(cardService.POST_UPDATE_CARD, this.saveData).then((res) => {
+          this.$toast({
+            content: '更新成功',
+            position: 'center'
+          })
+          setTimeout(() => {
+            this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
+          }, 500)
+        })
+      },
+      verify () {
+        this.title.length ? this.titleError = '' : this.titleError = '请输入卡片标题'
+        this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
+        if (this.btnSwitch) {
+          this.btnTxt.length ? this.btnTxtError = '' : this.btnTxtError = '请输入按钮文案'
+          this.btnLink.length ? this.btnLinkError = '' : this.btnLinkError = '请输入按钮文案'
+        } else {
+          this.canSave = false
+        }
+        if (this.title.length && this.poster.length) {
+          if (this.btnSwitch) {
+            if (this.btnTxt.length && this.btnLink.length) {
+              this.canSave = true
+            } else {
+              this.canSave = false
+            }
+          } else {
+            this.canSave = true
+          }
+        } else {
+          this.canSave = false
+        }
+      },
+      getDetail (id) {
+        this.$config({loading: true}).$get(cardService.GET_CARDS_DETAIL, {
+          recommend_card_id: id
+        }).then((res) => {
+          this.title = res.data.title
+          this.poster = res.data.pic
+          this.btnSwitch = res.data.btn_display === 'Y'
+          this.btnTxt = res.data.btn_text
+          this.btnLink = res.data.btn_link
+          this.desc = res.data.desc
+        })
       }
     },
     computed: {

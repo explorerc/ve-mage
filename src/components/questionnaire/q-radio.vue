@@ -8,6 +8,8 @@
               :label="index"
               :key="index">
       <com-input v-if="edit"
+                 :class="{error:item.error}"
+                 @focus="itemFocus(item)"
                  v-model="item.value"
                  :max-length="30"></com-input>
       <div v-if="!edit"
@@ -49,6 +51,30 @@ export default {
     change () {
       this.errorTip = ''
     },
+    itemFocus (item) {
+      if (item.error) {
+        item.error = false
+        item.value = ''
+      }
+    },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+      this.value.detail.list.forEach(item => {
+        if (!item.value) {
+          result = false
+          item.value = '请设置选项内容'
+          item.error = true
+        } else {
+          item.error = false
+        }
+      })
+      return result
+    },
     check () {
       if (this.value.required && !this.value.value) {
         this.errorTip = '此项为必填项'
@@ -74,6 +100,7 @@ export default {
       width: 100%;
       position: relative;
       margin-bottom: 15px;
+      height: 40px;
       &.display {
         margin-bottom: 5px;
       }
@@ -90,6 +117,15 @@ export default {
       margin-right: 10px;
       .com-input {
         margin-right: 8px;
+        &.error {
+          input {
+            border-color: #fc5659;
+            color: #fc5659;
+          }
+          .limit {
+            display: none;
+          }
+        }
       }
     }
     .remove {

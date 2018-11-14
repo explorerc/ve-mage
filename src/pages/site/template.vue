@@ -204,7 +204,7 @@ export default {
         des: '',
         title: '',
         imgUrl: '',
-        link: `${location.protocol + process.env.PC_HOST}site/${this.$route.params.id}`
+        link: `${location.protocol + process.env.PC_HOST}subscribe/${this.$route.params.id}`
       },
       data: {},
       ptid: this.$route.query.tid,
@@ -334,7 +334,7 @@ export default {
         this.keyWords = this.keyWords.trim().replace(/(\s)(\1)+/g, ($0, $1) => {
           return $1
         })
-        this.$config({ loading: true }).$post(brandService.POST_UPDATE_SITE_TDK, {
+        this.$post(brandService.POST_UPDATE_SITE_TDK, {
           activityId: this.tid,
           title: this.siteTitle,
           keyword: this.keyWords,

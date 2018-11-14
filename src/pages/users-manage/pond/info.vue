@@ -359,7 +359,7 @@ export default {
           strLevel = '一般用户'
           break
         case '4':
-          strLevel = '潜在用户'
+          strLevel = '潜力用户'
           break
         case '5':
           strLevel = '流失用户'

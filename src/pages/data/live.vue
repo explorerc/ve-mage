@@ -361,19 +361,20 @@
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
           <el-table :data="cardDataList" style="width: 100%">
-            <el-table-column label="序号">
+            <el-table-column label="序号" type="index">
+            </el-table-column>
+            <el-table-column prop="title" label="卡片名称"></el-table-column>
+            <el-table-column label="是否设置链接">
               <template slot-scope="scope">
-                {{scope.$index}}
+                {{scope.row.btn_display === 'Y' ? '是' :'否'}}
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="卡片名称"></el-table-column>
-            <el-table-column prop="isLink" label="是否设置链接"></el-table-column>
-            <el-table-column prop="pushCount" label="推送次数"></el-table-column>
-            <el-table-column prop="browse" label="卡片浏览数"></el-table-column>
-            <el-table-column prop="click" label="点击卡片次数"></el-table-column>
+            <el-table-column prop="push_num" label="推送次数"></el-table-column>
+            <el-table-column prop="view_num" label="卡片浏览数"></el-table-column>
+            <el-table-column prop="visit_person_num" label="点击卡片次数"></el-table-column>
             <el-table-column label="详情数据">
               <template slot-scope="scope">
-                <span class="data-link">下载</span>
+                <span class="data-link"><router-link :to="`/api/manage/recommend-card/visit-list?recommend_card_id=${scope.row.recommend_card_id}`" target="_blank">下载</router-link></span>
               </template>
             </el-table-column>
           </el-table>
@@ -448,6 +449,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
+  import cardService from 'src/api/salesCards-service.js'
   import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
   import {mapMutations} from 'vuex'
@@ -458,6 +460,7 @@
     components: {VeTitle, VeCircle, NavMenu, VePagination},
     data () {
       return {
+        activityId: this.$route.params.id,
         loading: false,
         basicCountData: {
           live: {
@@ -698,9 +701,16 @@
       goCardDataDetail () {
         this.cardDataDetail = true
         this.cardDataList = [
-          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
-          {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
+          // {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          // {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
+        // 请求卡片接口
+        this.$get(cardService.GET_CARDS_LIST, {
+          activity_id: this.activityId
+        }).then((res) => {
+          console.log(res)
+          this.cardDataList = res.data.list
+        })
       },
       goRedBagDataDetail () {
         this.redBagDataDetail = true
@@ -886,20 +896,20 @@
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-  .spread {
-    .page-pagination {
-      position: relative;
-      top: 10px;
-    }
-    .item-container {
-      border: none;
-      margin-bottom: 20px;
-      .item-box {
-        height: 110px;
-        .hd-title {
-          margin-top: 20px;
-        }
+.spread {
+  .page-pagination {
+    position: relative;
+    top: 10px;
+  }
+  .item-container {
+    border: none;
+    margin-bottom: 20px;
+    .item-box {
+      height: 110px;
+      .hd-title {
+        margin-top: 20px;
       }
     }
   }
+}
 </style>

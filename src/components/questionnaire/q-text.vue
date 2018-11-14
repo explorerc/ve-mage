@@ -2,21 +2,25 @@
   <div class="q-edit-content">
     <com-input v-if="!edit"
                @focus="focus"
-               @blur="check"
                :type="value.detail.format"
                :max-length="value.detail.max?value.detail.max:0"
                :value.sync="value.value"></com-input>
     <com-input v-if="!edit&&value.verification==='Y'"
                class="code"
                @focus="focus"
-               @blur="check"
                :local="true"
                :max-length="6"
                placeholder="请输入验证码"
                v-model="value.code"></com-input>
-    <com-button class="code"
+               <template v-if="isView">
+                <com-button class="code"
+                v-if="!edit&&value.verification==='Y'">获取验证码</com-button>
+               </template>
+               <template v-else>
+                <com-button class="code"
                 @click="getCode"
                 v-if="!edit&&value.verification==='Y'">获取验证码</com-button>
+               </template>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
     </div>
@@ -35,6 +39,10 @@ export default {
     edit: {
       type: Boolean,
       default: false
+    },
+    isView: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -48,6 +56,16 @@ export default {
     },
     focus () {
       this.errorTip = ''
+    },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+
+      return result
     },
     check () {
       if (this.value.required && !this.value.value && this.value.detail.format !== 'mobile') {
@@ -80,16 +98,25 @@ export default {
     .com-input {
       &.code {
         margin-top: 5px;
-        width: 60%;
+        width: 140px;
       }
     }
     .com-button {
       font-size: 12px;
       padding: 6px 20px;
       &.code {
+        text-align: center;
         margin-top: 5px;
-        width: 39%;
+        width: 140px;
         margin-left: 1px;
+        position: absolute;
+        bottom: 30px;
+        right: 35px;
+        height: 40px;
+        line-height: 39px;
+        border-color: #ffd021;
+        background-color: #ffd021;
+        padding: 0;
       }
     }
     .error-msg {

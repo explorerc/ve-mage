@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index">{{index}}</div>
+      <div class="index"><span v-if="value.required" class="v-red">*</span>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -9,6 +9,8 @@
         <!-- 问题描述区 -->
         <com-input v-if="edit"
                    class="q-subject"
+                   @focus="focusTitle"
+                   :class="{error:value.error}"
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
@@ -18,7 +20,8 @@
         <component ref="content"
                    :is="QComs[value.type]"
                    v-model="value"
-                   :edit="edit"></component>
+                   :edit="edit"
+                   :isView="isView"></component>
       </div>
       <div class="q-operate"
            v-if="edit">
@@ -41,7 +44,7 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort">排序</div>
+        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -83,6 +86,10 @@ export default {
     edit: {
       type: Boolean,
       default: false
+    },
+    isView: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -96,6 +103,12 @@ export default {
     }
   },
   methods: {
+    focusTitle () {
+      if (this.value.error) {
+        this.value.error = false
+        this.value.title = ''
+      }
+    },
     addItem () {
       if (this.value.detail.list.length < 20) {
         this.value.detail.list.push({
@@ -104,7 +117,11 @@ export default {
       }
     },
     remove () {
-      this.$emit('remove', this.value.ext.key)
+      let option = {
+        type: this.value.ext.key,
+        index: this.index
+      }
+      this.$emit('remove', option)
     }
   },
   watch: {
@@ -146,15 +163,21 @@ export default {
     .com-input {
       width: 100%;
       input {
-        height: 30px;
-        line-height: 30px;
-        font-size: 12px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
       }
     }
     .index {
       float: left;
       width: 20px;
       margin-top: 2px;
+      .v-red {
+        display: inline-block;
+        color: #fc5659;
+        margin-right: 5px;
+        vertical-align: middle;
+      }
     }
     .question-content {
       padding: 30px;
@@ -171,6 +194,15 @@ export default {
         }
         .q-subject {
           margin-bottom: 14px;
+          &.error {
+            input {
+              border-color: #fc5659;
+              color: #fc5659;
+            }
+            .limit {
+              display: none;
+            }
+          }
         }
       }
       .q-operate {

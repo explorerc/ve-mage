@@ -3,7 +3,6 @@
     <el-date-picker v-if="!edit"
                     v-model="value.value"
                     type="date"
-                    @blur="check"
                     @focus="focus"
                     placeholder="选择日期">
     </el-date-picker>
@@ -35,6 +34,15 @@ export default {
   methods: {
     focus () {
       this.errorTip = ''
+    },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+      return result
     },
     check () {
       if (this.value.required && !this.value.value) {

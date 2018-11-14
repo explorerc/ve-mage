@@ -74,7 +74,7 @@
             </div>
           </div>
           <div class="rb">
-            <div class="v-question-info">
+            <div class="v-question-info" :class="{hasPhone:hasPhone}">
               <draggable v-model="dragData"
                          :options="{handle:'.sort'}">
                 <com-question v-for="(item,index) in dragData"
@@ -82,36 +82,71 @@
                               :edit="true"
                               :index="index+1"
                               :key="index"
+                              :class="{isSingle:isSingle}"
+                              :ref="`com${index}`"
                               @remove="removeQuestion($event)">
                 </com-question>
               </draggable>
               <com-question v-if="phoneData.length"
+                            :class="{isBorder:isBorder}"
+                            class="v-phone"
                             :value.sync="phoneData[0]"
                             :edit="true"
+                            :ref="`comPhone`"
                             :index="dragData.length+1"
-                            :key="dragData.length+1">
+                            :key="dragData.length+1" @remove="removeQuestion($event)">
               </com-question>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="v-control">
-      123
+    <div class="v-control clearfix">
+      <button class="v-save" @click="save">
+        保存
+      </button>
+      <button class="v-view" @click="view">
+        预览
+      </button>
     </div>
+    <message-box v-show="messageBoxViewShow"
+                 @handleClick="messageBoxClick"
+                 width="700px"
+                 class="message-box v-view"
+                 confirmText="确定"
+                 type='prompt'
+                 header='预览'>
+                <div class="box">
+                  <div class="text">预览</div>
+                </div>
+                <div class="v-hearder">
+                  <img src="../../../assets/image/avatar@2x.png" alt="">
+                  <p class="v-title">
+                    产品调研
+                  </p>
+                  <p class="v-summary">
+                   欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
+                  </p>
+                </div>
+                <div class="v-questions">
+                  <questions :dragData="dragData" :phoneData="phoneData"></questions>
+                </div>
+    </message-box>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import question from 'components/questionnaire/wrap'
+import questions from '../questionnaire/components/questions'
 import VeUpload from 'src/components/ve-upload-image'
 import { types as QTypes } from 'components/questionnaire/types'
 export default {
   components: {
     draggable,
     VeUpload,
-    comQuestion: question
+    comQuestion: question,
+    questions
   },
   data () {
     return {
@@ -128,16 +163,33 @@ export default {
       },
       dragData: [
       ],
-      phoneData: []
+      phoneData: [],
+      messageBoxViewShow: false // 预览框显示隐藏
     }
   },
   beforeDestroy () {
   },
   created () {
   },
+  computed: {
+    isBorder () {
+      return !(this.dragData.length > 0)
+    },
+    isSingle () {
+      return (this.dragData.length === 1) && (this.phoneData.length === 0)
+    },
+    hasPhone () {
+      return !(this.phoneData.length === 0)
+    }
+  },
   methods: {
-    removeQuestion (index) {
-      this.dragData.splice(index - 1, 1)
+    removeQuestion (options) {
+      if (options.type === 'phone') {
+        this.phoneData.splice(0, 1)
+      } else {
+        this.dragData.splice(options.index - 1, 1)
+      }
+      this.base[options.type] = true
     },
     addQuestion (type) {
       let obj = {}
@@ -448,6 +500,32 @@ export default {
           this.dragData.push(obj)
           break
       }
+    },
+    save () {
+      let data = []
+      for (let i = 0; i < this.dragData.length; i++) {
+        if (!this.$refs['com' + i][0].$children[1].validate()) {
+          return false
+        }
+        data.push(this.dragData[i])
+      }
+      if (this.phoneData.length > 0) {
+        if (!this.$refs['comPhone'].$children[1].validate()) {
+          return false
+        }
+        data.push(this.phoneData[0])
+      }
+      if (data.length > 0) {
+        console.log(data)
+      }
+    },
+    view () {
+      this.messageBoxViewShow = true
+    },
+    messageBoxClick (e) {
+      if (e.action === 'cancel') {
+        this.messageBoxViewShow = false
+      }
     }
   }
 }
@@ -469,7 +547,6 @@ export default {
     width: 1019px;
   }
   .v-control {
-    width: 100%;
     position: fixed;
     bottom: 0;
     left: 220px;
@@ -477,6 +554,35 @@ export default {
     height: 60px;
     line-height: 60px;
     background-color: #fff;
+    button {
+      float: right;
+      width: 120px;
+      height: 40px;
+      border: 1px solid #4b5afe;
+      line-height: 38px;
+      border-radius: 20px;
+      background-color: #fff;
+      font-size: 14px;
+      color: #4b5afe;
+      text-align: center;
+      margin-top: 10px;
+      &.v-save {
+        border-color: #ffd021;
+        background-color: #ffd021;
+        color: #222;
+        margin: 10px 30px 0 10px;
+      }
+      &:hover {
+        background-color: #fdd43f;
+        border-color: #fdd43f;
+        color: #222;
+      }
+      &:active {
+        background-color: #eec11a;
+        border-color: #eec11a;
+        color: #222;
+      }
+    }
   }
   .v-questionaire-title {
     // border-bottom: 1px solid $color-bd;
@@ -489,6 +595,7 @@ export default {
   .content {
     widows: 800px;
     min-height: 500px;
+    margin-bottom: 80px;
     // overflow: hidden;
     position: relative;
     .tt {
@@ -577,11 +684,36 @@ export default {
       .rb /deep/ {
         margin-top: 20px;
         .v-question-info {
+          min-height: 85px;
+          &.hasPhone {
+            .single-select-wrap {
+              border-radius: 0;
+              &:first-child {
+                border-radius: 4px 4px 0 0;
+              }
+              &:last-child {
+                border-radius: 0;
+              }
+            }
+          }
           .single-select-wrap {
-            border-bottom: none;
-            border-radius: 0;
+            border-top: none;
+            &:first-child {
+              border-top: 1px solid #e2e2e2;
+              border-radius: 4px 4px 0 0;
+            }
             &:last-child {
-              border-bottom: 1px solid #e2e2e2;
+              border-radius: 0 0 4px 4px;
+            }
+            &.isSingle {
+              border-radius: 4px;
+            }
+            &.v-phone {
+              border-top: none;
+              &.isBorder {
+                border-radius: 4px;
+                border-top: 1px solid #e2e2e2;
+              }
             }
           }
         }

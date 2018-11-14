@@ -248,6 +248,7 @@ export default {
       padding: 0 28px 10px 28px;
       height: auto;
       background: rgba(245, 245, 245, 1);
+      overflow-y: scroll !important;
     }
     label {
       display: inline-block;

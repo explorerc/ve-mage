@@ -9,6 +9,8 @@
       <span class="select-icon">√</span>
       <div class="select-input">
         <com-input v-model="item.value"
+                   :class="{error:item.error}"
+                   @focus="itemFocus(item)"
                    :disabled="value.ext.fixedness?true:false"
                    :max-length="value.ext.fixedness?0:30"></com-input>
         <span class="remove"
@@ -58,6 +60,30 @@ export default {
     change () {
       this.errorTip = ''
     },
+    itemFocus (item) {
+      if (item.error) {
+        item.error = false
+        item.value = ''
+      }
+    },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+      this.value.detail.list.forEach(item => {
+        if (!item.value) {
+          result = false
+          item.value = '请设置选项内容'
+          item.error = true
+        } else {
+          item.error = false
+        }
+      })
+      return result
+    },
     check () {
       if (this.value.required && !this.value.value) {
         this.errorTip = '此项为必填项'
@@ -87,6 +113,7 @@ export default {
       width: 100%;
       position: relative;
       margin-bottom: 15px;
+      height: 40px;
       .select-icon {
         display: inline-block;
         margin-top: 8px;
@@ -100,6 +127,15 @@ export default {
         white-space: nowrap;
         .com-input {
           margin-right: 8px;
+          &.error {
+            input {
+              border-color: #fc5659;
+              color: #fc5659;
+            }
+            .limit {
+              display: none;
+            }
+          }
         }
       }
       .remove {

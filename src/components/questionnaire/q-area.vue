@@ -4,7 +4,6 @@
       <el-select v-model="value.province"
                  @change="changeProvince"
                  @focus="focusProvince"
-                 @blur="blurProvince"
                  placeholder="省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
                    :label="item.label"
@@ -17,7 +16,6 @@
       <el-select v-model="value.city"
                  @change="changeCity"
                  @focus="focusCity"
-                 @blur="blurCity"
                  placeholder="市">
         <el-option v-for="(item,index) in cities"
                    :label="item.label"
@@ -32,7 +30,6 @@
       <el-select v-model="value.county"
                  @change="changeCounty"
                  @focus="focusCounty"
-                 @blur="blurCounty"
                  placeholder="区/县">
         <el-option v-for="(item,index) in counties"
                    :label="item.label"
@@ -50,7 +47,6 @@
                  :disabled="edit"
                  v-model="value.address"
                  @focus="focusAddress"
-                 @blur="blurAddress"
                  :max-length="50"></com-input>
       <span v-if="edit"
             @click="setLevel('address')"
@@ -156,6 +152,16 @@ export default {
         this.errorTip = '此项为必填项'
       }
     },
+    validate () {
+      let result = true
+      if (!this.value.title) {
+        result = false
+        this.value.error = true
+        this.value.title = '请设置问卷内容'
+      }
+
+      return result
+    },
     check () {
       let value = []
       if (this.value.required && (!this.value.province || !this.value.city)) {
@@ -228,6 +234,7 @@ export default {
       font-size: 12px;
     }
     .q-select-item {
+      height: 40px;
     }
   }
 }

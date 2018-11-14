@@ -3,19 +3,33 @@
     <div class="operation">
       <h4>用户群组</h4>
       <div>
-        <el-input size="small" placeholder="输入群组名称" suffix-icon="el-icon-search"
-                  v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
-        <el-button size="small" @click="showDialog(2)" round>新建固定群组</el-button>
-        <el-button size="small" @click="showDialog(3)" round>新建智能群组</el-button>
+        <el-input size="small"
+                  placeholder="输入群组名称"
+                  suffix-icon="el-icon-search"
+                  v-model="search.keyword"
+                  @keyup.enter.native="onSearch"
+                  @blur="onSearch"
+                  clearable></el-input>
+        <el-button size="small"
+                   @click="showDialog(2)"
+                   round>新建固定群组
+        </el-button>
+        <el-button size="small"
+                   @click="showDialog(3)"
+                   round>新建智能群组
+        </el-button>
       </div>
     </div>
     <div class="table-box">
-      <el-table :data="tableData" border class="el-table">
+      <el-table :data="tableData"
+                border
+                class="el-table">
         <el-table-column label="群组名称">
           <template slot-scope="scope">
             <div>
               <span>{{scope.row.title}}</span>
-              <span class="default" v-if="scope.row.type=== 1"></span>
+              <span class="default"
+                    v-if="scope.row.type=== 1"></span>
             </div>
           </template>
         </el-table-column>
@@ -24,28 +38,44 @@
             <div>{{scope.row.type| getType}}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="user_count" label="群组人数"></el-table-column>
-        <el-table-column label="更新时间" show-overflow-tooltip>
+        <el-table-column prop="user_count"
+                         label="群组人数"></el-table-column>
+        <el-table-column label="更新时间"
+                         show-overflow-tooltip>
           <template slot-scope="scope">
             <span>{{scope.row.updated_at?scope.row.updated_at:scope.row.created_at}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="describe" label="群组描述"></el-table-column>
+        <el-table-column prop="describe"
+                         label="群组描述"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.group_id,scope.row.type)">详情
+            <el-button class="btns"
+                       type="text"
+                       size="mini"
+                       @click="handleDetails(scope.row.group_id,scope.row.type)">详情
             </el-button>
-            <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
+            <el-button class="btns"
+                       v-if="scope.row.type !== 1"
+                       type="text"
+                       size="mini"
                        @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">
               编辑
             </el-button>
-            <el-button class="btns" v-if="scope.row.type !== 1" type="text" size="mini"
+            <el-button class="btns"
+                       v-if="scope.row.type !== 1"
+                       type="text"
+                       size="mini"
                        @click="handleDelete(scope.row.group_id, scope.row.type,scope.$index)">删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
+      <VePagination class="VePagination"
+                    v-show="total>10"
+                    :pageSize="search.pageSize"
+                    @changePage="changePage"
+                    :total="total"/>
     </div>
     <!--dialog-->
     <message-box v-if="isShow"
@@ -56,22 +86,33 @@
                  @handleClick="saveHandleClick">
       <div class="prop-input">
         <div>
-          <el-form :model="Group" :rules="rules" ref="Group">
+          <el-form :model="Group"
+                   :rules="rules"
+                   ref="Group">
             <el-form-item prop="title">
-              <com-input class="input_s" @keyup.native="inpTitle($event)" :max-length=10 :errorTips="errTitle"
+              <com-input class="input_s"
+                         @keyup.native="inpTitle($event)"
+                         :max-length=10
+                         :errorTips="errTitle"
                          v-model.trim="Group.title"
                          placeholder="请输入群组名称">
               </com-input>
             </el-form-item>
             <el-form-item prop="describe">
-              <com-input class="input_s" @keyup.native="inpDes($event)" :max-length=30 :errorTips="errDes"
+              <com-input class="input_s"
+                         @keyup.native="inpDes($event)"
+                         :max-length=30
+                         :errorTips="errDes"
                          v-model.trim="Group.describe"
                          placeholder="请输入群组描述">
               </com-input>
             </el-form-item>
           </el-form>
           <div class="screen">
-            <condOption v-if="Group.type===3" ref="cond_option" @optionData="optionData" :rule="Group.rule"
+            <condOption v-if="Group.type===3"
+                        ref="cond_option"
+                        @optionData="optionData"
+                        :rule="Group.rule"
                         :type="isAddOrEdit"></condOption>
           </div>
         </div>
@@ -183,7 +224,7 @@
           this.errDes = ''
           this.isShow = false
         } else {
-          this.save()
+          this.save(this.Group)
         }
       },
       onSearch () { // 搜索
@@ -236,6 +277,9 @@
               this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
                 .then(res => {
                   this.tableData.splice(index, 1)
+                  setTimeout(() => {
+                    this.onSearch()
+                  }, 1000)
                   this.$toast({
                     content: '删除成功!',
                     position: 'center'
@@ -316,7 +360,7 @@
         } else {
           _url = groupService.UPDATE_GROUP
         }
-
+        delete this.Group['rule']
         this.$post(_url, this.Group)
           .then((res) => {
             if (res.code === 200) {
@@ -343,6 +387,12 @@
           }
           this.errTitle = ''
           this.errDes = ''
+        }
+        if (!this.Group.title) {
+          this.errTitle = '分组名称不能为空'
+        }
+        if (!this.Group.describe) {
+          this.errDes = '分组描述不能为空'
         }
       }
     }
@@ -384,7 +434,7 @@
               border-radius: 20px;
               border-color: rgba(136, 136, 136, 1);
               &:hover {
-                border-color: #5D6AFE;
+                border-color: #5d6afe;
               }
             }
           }
@@ -402,7 +452,6 @@
         padding: 30px;
         border: 1px dashed #cccccc;
         .el-table {
-
           .btns {
             color: rgba(34, 34, 34, 1);
             &:hover {
@@ -411,11 +460,11 @@
           }
           .default:after {
             content: '默认';
-            color: #4B5AFE;
+            color: #4b5afe;
             height: 17px;
             font-size: 10px;
             padding: 0 3px;
-            border: 1px solid #4B5AFE;
+            border: 1px solid #4b5afe;
           }
         }
         .VePagination {
@@ -432,14 +481,12 @@
   .userGroupDelConfirm {
     border: none;
     .el-message-box__header {
-      border-top: 6px solid #FC5659;
+      border-top: 6px solid #fc5659;
     }
     .userGroupDelConfirmBtn {
       width: 120px;
-      background-color: #FC5659;
+      background-color: #fc5659;
       color: #222;
     }
-
   }
-
 </style>
