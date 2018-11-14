@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}}
+            流失用户 ({{uersInfo[5].centage}})
           </p>
         </li>
       </ol>
