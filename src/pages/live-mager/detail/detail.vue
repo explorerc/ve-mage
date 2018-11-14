@@ -530,7 +530,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item goods' @click="linkTo($event,'/salesTools/recommendGoods/')">
+          <div class='item goods' @click="linkTo($event,'/salesTools/recommendGoodsList/')">
             <div class="card">
               <div class='pic'>
               </div>

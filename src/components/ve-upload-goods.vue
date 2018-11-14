@@ -86,6 +86,10 @@
       nowIndex: {
         type: Number,
         default: 0
+      },
+      initImg: {
+        type: Object,
+        default: {}
       }
     },
     watch: {
@@ -110,6 +114,14 @@
           this.tipTxt = val
         },
         immediate: true
+      },
+      initImg: {
+        handler (val) {
+          console.log(val)
+          this.imgHost = val.host
+          this.fileSrc = val.name
+        },
+        deep: true
       }
     },
     methods: {

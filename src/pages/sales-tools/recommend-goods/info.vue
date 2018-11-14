@@ -9,40 +9,41 @@
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item label="原始价格" prop="ysjg">
+      <el-form-item label="原始价格" prop="price">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.ysjg" min="0" max="999999" placeholder="请输入价格"></el-input>
+          <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
 
       </el-form-item>
-      <el-form-item label="优惠价格" prop="cxjg">
+      <el-form-item label="优惠价格" prop="preferential">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.cxjg" :disabled="!!!goodsData.ysjg" placeholder="请输入价格"></el-input>
+          <el-input v-model.number="goodsData.preferential" :disabled="!!!goodsData.price"
+                    placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
       </el-form-item>
       <el-form-item label="商品图片" prop="upload_list">
         <div class="upload_box">
           <i></i>
-          <ve-upload v-for="(ite,ind) in goodsData.upload_list" :key="ind"
+          <ve-upload v-for="(ite,ind) in goodsData.imageList" :key="ind"
                      title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
                      accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :nowIndex="ind || 0"
-                     :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError"
+                     :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" :initImg="ite"
                      @success="uploadImgSuccess"></ve-upload>
-          <span class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.upload_list.length<4"></span>
+          <span class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
       <el-form-item label="商品链接" prop="url">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
       </el-form-item>
       <el-form-item label="商品描述">
-        <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.name"
+        <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
                    placeholder="请输入商品描述"></com-input>
       </el-form-item>
 
       <el-form-item label="淘口令">
-        <el-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.name"
+        <el-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.tao"
                   placeholder="请输入淘口令"></el-input>
       </el-form-item>
       <el-form-item>
@@ -54,13 +55,15 @@
 </template>
 
 <script>
-  // import VeUpload from 'src/components/ve-upload-image'
   import VeUpload from 'src/components/ve-upload-goods'
+  import goodsServer from 'src/api/salesGoods-service'
 
   export default {
     name: 'info',
     created () {
-
+      if (this.$route.params.type === 'update') {
+        this.getGoodsDetail()
+      }
     },
     components: {
       VeUpload
@@ -96,7 +99,7 @@
         }, 500)
       }
       let valicxjg = (rule, value, callback) => {
-        let maxV = this[rule.obj].ysjg
+        let maxV = this[rule.obj].price
         if (value && value < 0) {
           return callback(new Error('商品促销价格不能小于0'))
         } else if (value && maxV && value > maxV) {
@@ -122,32 +125,32 @@
       }
       return {
         errTitle: '',
-        upload_list: [{}],
         goodsData: {
-          name: '',
-          title: '',
-          ysjg: '',
-          cxjg: '',
-          url: '',
-          upload_list: [{}]
+          title: '', // 标题
+          price: '', // 价格
+          preferential: '', // 优惠价格
+          url: '', // 商品链接
+          imageList: [{}],
+          describe: '', // 商品描述
+          tao: ''
         },
         uploadImgErrorMsg: '',
         rules: {
           title: [
             { required: true, validator: valiName, min: 3, max: 20, trigger: 'change,blur', obj: 'goodsData' }
           ],
-          ysjg: [
+          price: [
             { required: true, type: 'number', message: '请输入原始价格', trigger: 'blur' },
             { type: 'number', min: 0, max: 999999, message: '原始价格应大于0小于999999', trigger: 'blur' }
           ],
-          cxjg: [
+          preferential: [
             { validator: valicxjg, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           url: [
             { required: true, type: 'url', message: '请输入商品链接', trigger: 'blur' },
             { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
           ],
-          upload_list: [
+          imageList: [
             { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
           ]
         }
@@ -155,16 +158,54 @@
     },
     methods: {
       add_upload () {
-        this.goodsData.upload_list.push({})
+        this.goodsData.imageList.push({})
+      },
+      getGoodsDetail () {
+        this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
+          .then(res => {
+            // this.goodsData.imageList = JSON.parse(res.data.image);
+            res.data.image = JSON.parse(res.data.image);
+            ({
+              title: this.goodsData.title,
+              price: this.goodsData.price,
+              preferential: this.goodsData.preferential,
+              image: this.goodsData.imageList,
+              describe: this.goodsData.describe,
+              url: this.goodsData.url,
+              tao: this.goodsData.tao
+            } = res.data)
+          })
+        console.log(this.goodsData)
       },
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            let _url
+            if (this.$route.params.type === 'create') {
+              this.goodsData.activity_id = this.$route.params.id // 活动id
+              _url = goodsServer.CREATE_GOODS
+            } else {
+              this.goodsData.goods_id = this.$route.params.id
+              _url = goodsServer.UPDATE_GOODS
+            }
+            this.goodsData.image = JSON.stringify(this.goodsData.imageList)
             console.log(this.goodsData)
-            alert('submit!')
+            this.$post(_url, this.goodsData)
+              .then(res => {
+                console.log(this.goodsData, 12345678)
+                this.$toast({
+                  content: '操作成功!',
+                  position: 'center'
+                })
+                setTimeout(() => {
+                  this.$router.go(-1)
+                }, 2000)
+              })
+              .catch(err => {
+                console.log(err)
+              })
           } else {
             console.log('error submit!!')
-            return false
           }
         })
       },
@@ -173,7 +214,7 @@
       },
       uploadImgSuccess (data) {
         console.log(data)
-        this.goodsData.upload_list[data.nowIndex] = {
+        this.goodsData.imageList[data.nowIndex] = {
           name: data.name,
           host: data.host
         }
