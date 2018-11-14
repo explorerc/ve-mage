@@ -499,10 +499,10 @@ export function bars (id, data, gridData) {
       },
       textStyle: {
         fontSize: 12
+      },
+      formatter: (item) => {
+        return `${item[1].name} : ${item[1].value}`
       }
-      // formatter: (item) => {
-      //   return `${item[1].name} : ${item[1].value}`
-      // }
     },
     label: {
       normal: {
