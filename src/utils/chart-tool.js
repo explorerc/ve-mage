@@ -386,6 +386,11 @@ export function barRadius (id, data) {
       },
       textStyle: {
         fontSize: 12
+      },
+      formatter: (item) => {
+        console.log('-------')
+        console.log(item)
+        return `${item[1].name}：${item[1].value}`
       }
     },
     label: {
@@ -436,6 +441,7 @@ export function barRadius (id, data) {
     }],
     series: [{
       type: 'bar',
+      name: '',
       itemStyle: {
         normal: {
           barBorderRadius: [10, 10, 10, 10],
