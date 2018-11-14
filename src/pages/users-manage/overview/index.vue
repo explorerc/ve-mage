@@ -20,7 +20,7 @@
               {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
-            优质用户 ({{uersInfo[1].centage}}%)
+            优质用户 ({{uersInfo[1].centage}})
           </p>
         </li>
         <li>
@@ -29,7 +29,7 @@
               {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
-            高价值用户 ({{uersInfo[2].centage}}%)
+            高价值用户 ({{uersInfo[2].centage}})
           </p>
         </li>
         <li>
@@ -38,7 +38,7 @@
               {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
-            一般用户 ({{uersInfo[3].centage}}%)
+            一般用户 ({{uersInfo[3].centage}})
           </p>
         </li>
         <li>
@@ -47,7 +47,7 @@
               {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜力用户 ({{uersInfo[4].centage}}%)
+            潜力用户 ({{uersInfo[4].centage}})
           </p>
         </li>
         <li>
@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}}%)
+            流失用户 ({{uersInfo[5].centage}}
           </p>
         </li>
       </ol>
@@ -151,7 +151,7 @@ export default {
       info: {
       },
       datas: {}, // 各级别用户趋势图数据
-      uersInfo: [{ val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }],
+      uersInfo: [{ val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }],
       tableList: [], // 数据详情
       isActive3: true,
       isActive7: false,
@@ -179,7 +179,7 @@ export default {
       let arr = this.info.userLevel
       for (let i = 0; i < arr.length; i++) {
         this.uersInfo[i].val = arr[i]
-        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2)
+        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
       }
     }).catch(err => {
       this.$messageBox({
