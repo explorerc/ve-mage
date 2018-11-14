@@ -239,7 +239,7 @@
           {value: 1, label: '优质用户'},
           {value: 2, label: '高价值用户'},
           {value: 3, label: '一般用户'},
-          {value: 4, label: '潜在用户'},
+          {value: 4, label: '潜力用户'},
           {value: 5, label: '流失用户'}
         ],
         options: [],
@@ -362,7 +362,7 @@
           this.searchParams.user_level = 4
         } else if (type === 'ord') { // 一般用户
           this.searchParams.user_level = 3
-        } else if (type === 'potent') { // 潜在用户
+        } else if (type === 'potent') { // 潜力用户
           this.searchParams.user_level = 2
         } else if (type === 'loss') { // 流失用户
           this.searchParams.user_level = 5

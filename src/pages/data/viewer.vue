@@ -64,7 +64,7 @@
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="180px" title="潜在用户"></ve-title>
+              <ve-title width="180px" title="潜力用户"></ve-title>
             </div>
             <div class="item-mid data-link" @click="goPage('potent',basicUserData.potentialUser)">
               {{basicUserData.potentialUser}}
@@ -255,7 +255,7 @@
             {name: '优质用户', value: 0},
             {name: '高价值用户', value: 0},
             {name: '一般用户', value: 0},
-            {name: '潜在用户', value: 0},
+            {name: '潜力用户', value: 0},
             {name: '流失用户', value: 0}
           ]
           if (res.code === 200 && res.data.length !== 0) {
@@ -267,7 +267,7 @@
               {name: '优质用户', value: this.basicUserData.highUser},
               {name: '高价值用户', value: this.basicUserData.vipUser},
               {name: '一般用户', value: this.basicUserData.ordinaryUser},
-              {name: '潜在用户', value: this.basicUserData.potentialUser},
+              {name: '潜力用户', value: this.basicUserData.potentialUser},
               {name: '流失用户', value: this.basicUserData.lossUser}
             ]
           }
