@@ -170,8 +170,9 @@ export default {
     }
     .index {
       float: left;
-      width: 20px;
+      width: 32px;
       margin-top: 2px;
+      text-align: right;
       .v-red {
         display: inline-block;
         color: #fc5659;
