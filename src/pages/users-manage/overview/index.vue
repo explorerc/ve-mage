@@ -20,7 +20,7 @@
               {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
-            优质用户 ({{(uersInfo[1].val/info.total) ===0 ? 0 :((uersInfo[1].val/info.total)*100).toFixed(2)}}%)
+            优质用户 ({{uersInfo[1].centage}}%)
           </p>
         </li>
         <li>
@@ -29,7 +29,7 @@
               {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
-            高价值用户 ({{(uersInfo[2].val/info.total) ===0 ? 0 :((uersInfo[2].val/info.total)*100).toFixed(2)}}%)
+            高价值用户 ({{uersInfo[2].centage}}%)
           </p>
         </li>
         <li>
@@ -38,7 +38,7 @@
               {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
-            一般用户 ({{(uersInfo[3].val/info.total) ===0 ? 0 :((uersInfo[3].val/info.total)*100).toFixed(2)}}%)
+            一般用户 ({{uersInfo[3].centage}}%)
           </p>
         </li>
         <li>
@@ -47,7 +47,7 @@
               {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜力用户 ({{(uersInfo[4].val/info.total) ===0 ? 0 :((uersInfo[4].val/info.total)*100).toFixed(2)}}%)
+            潜力用户 ({{uersInfo[4].centage}}%)
           </p>
         </li>
         <li>
@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{(uersInfo[5].val/info.total) ===0 ? 0 :((uersInfo[5].val/info.total)*100).toFixed(2)}}%)
+            流失用户 ({{uersInfo[5].centage}}%)
           </p>
         </li>
       </ol>
@@ -179,7 +179,7 @@ export default {
       let arr = this.info.userLevel
       for (let i = 0; i < arr.length; i++) {
         this.uersInfo[i].val = arr[i]
-        this.uersInfo[i].centage = Math.round(arr[i] / this.info.total)
+        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2)
       }
     }).catch(err => {
       this.$messageBox({
@@ -221,8 +221,6 @@ export default {
           echartsData[index] = this.datas.list[i]
           index++
         }
-        console.log(echartsData)
-        console.log(this.datas.list)
         this.tableList.splice(0, this.tableList.length)
         // this.datas = res.data
         /* 绘制堆叠图 */
