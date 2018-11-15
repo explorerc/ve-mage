@@ -20,7 +20,7 @@
       <div class="search-asset">
         <div class="search-item">
           <span class="search-title">渠道来源</span>
-          <el-select v-model="searchParams.liuType"
+          <el-select v-model="searchParams.type"
                      @change="queryList"
                      placeholder="渠道来源">
             <el-option v-for="item in liuTypeList"
@@ -33,9 +33,10 @@
         <div class="search-item flm">
           <span class="search-title">时间</span>
           <el-date-picker
-            v-model="searchParams.time"
+            v-model="searchParams.date"
             @change="queryList"
             type="date"
+            value-format="yyyy-MM-dd"
             placeholder="选择日期">
           </el-date-picker>
         </div>
@@ -44,14 +45,14 @@
     </div>
     <div class="asset-list-table">
       <el-table :data="viewerList" style="width: 100%">
-        <el-table-column prop="id" label="流水ID"></el-table-column>
+        <el-table-column prop="billNumber" label="流水ID"></el-table-column>
         <el-table-column label="流水类型">
           <template slot-scope="scope">
             {{scope.row.type|fmtType}}
           </template>
         </el-table-column>
-        <el-table-column prop="money" label="金额"></el-table-column>
-        <el-table-column prop="time" label="时间"></el-table-column>
+        <el-table-column prop="amount" label="金额"></el-table-column>
+        <el-table-column prop="createdAt" label="时间"></el-table-column>
         <el-table-column label="状态" width="160">
           <template slot-scope="scope">
             {{scope.row.status|fmtStatus}}
@@ -68,6 +69,7 @@
 </template>
 
 <script>
+  import assetService from 'src/api/asset-service'
   import VePagination from 'src/components/ve-pagination'
 
   export default {
@@ -78,14 +80,14 @@
         total: 0,
         liuTypeList: [
           {value: '', label: '全部'},
-          {value: 1, label: '账户充值'},
-          {value: 2, label: '红包消费'},
-          {value: 3, label: '红包返回'}
+          {value: 'RECHARGE', label: '账户充值'},
+          {value: 'RED_PACK', label: '红包消费'},
+          {value: 'RE_RED_PACK', label: '红包返回'}
         ],
         viewerList: [],
         searchParams: {
-          liuType: '',
-          time: '',
+          type: '',
+          date: '',
           page: 1,
           pageSize: 10
         }
@@ -97,9 +99,9 @@
       },
       fmtType (value) {
         const obj = {
-          1: '账户充值',
-          2: '红包消费',
-          3: '红包返回'
+          'RECHARGE': '账户充值',
+          'RED_PACK': '红包消费',
+          'RE_RED_PACK': '红包返回'
         }
         return obj[value]
       }
@@ -113,11 +115,14 @@
       },
       queryList () {
         this.$nextTick(() => {
-          this.viewerList = [
-            {id: '2018103111072300001', type: 1, money: '10000', time: '2018-10-22 10:22', status: 'SUCCESS'},
-            {id: '2018103111072300001', type: 2, money: '10000', time: '2018-10-22 10:22', status: 'FAIL'},
-            {id: '2018103111072300001', type: 3, money: '10000', time: '2018-10-22 10:22', status: 'SUCCESS'}
-          ]
+          this.$get(assetService.GET_ASSET_LIST, {
+            ...this.searchParams
+          }).then((res) => {
+            if (res.code === 200) {
+              this.total = res.data.total
+              this.viewerList = res.data.list
+            }
+          })
         })
       }
     }
@@ -168,7 +173,7 @@
       margin-top: 20px;
       padding: 20px;
       background-color: #fff;
-      .asset-title{
+      .asset-title {
         font-size: 20px;
       }
       .search-asset {
@@ -192,7 +197,7 @@
     .asset-list-table {
       padding: 20px;
       background-color: #fff;
-      .page-pagination{
+      .page-pagination {
         margin-top: 30px;
         text-align: right;
       }
