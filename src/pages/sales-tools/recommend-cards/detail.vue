@@ -270,6 +270,7 @@
           width: 100%;
           .temp-img {
             background-size: 100%;
+            background-repeat: no-repeat;
           }
         }
         .upload-file-box {
