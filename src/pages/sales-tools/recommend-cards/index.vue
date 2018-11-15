@@ -1,42 +1,49 @@
 <template>
-  <div class='wrap-page'>
+  <div class='wrap-page card-list-page'>
     <div class="page-title">
       <span class="title">推荐卡片</span>
+      <div class="top-bar clearfix">
+        <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='add-new primary-button' round :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
+        <router-link :to="`/data/live/${activityId}`"><el-button class='more' round>查看活动数据</el-button></router-link>
+      </div>
     </div>
     <div class="content from-box">
       <template v-if="tableData.length>0">
-          <div class="top-bar">
-            <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
-            <router-link :to="`/data/live/${activityId}`"><el-button>查看活动数据</el-button></router-link>
-          </div>
           <el-table :data="tableData" stripe style="width: 100%" :class="'table-box'">
             <el-table-column  label="卡片图片" width="150">
               <template slot-scope="scope">
                 <img :src="`${imgHost}/${scope.row.pic}`" :class="'img'">
               </template>
           </el-table-column>
-          <el-table-column prop="title" label="卡片名称" width="250" show-overflow-tooltip>
+          <el-table-column label="卡片名称" width="250" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div class="cell-txt">{{scope.row.title}}</div>
+            </template>
           </el-table-column>
-          <el-table-column prop="desc" label="卡片描述" width="350" show-overflow-tooltip>
+          <el-table-column label="卡片描述" width="350" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div class="cell-txt">{{scope.row.desc}}</div>
+            </template>
           </el-table-column>
-          <el-table-column prop="btn_link" label="按钮链接" width="350" show-overflow-tooltip>
+          <el-table-column label="按钮链接" width="350" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <div class="cell-txt">{{scope.row.btn_link}}</div>
+            </template>
           </el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-              <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.recommend_card_id}`">
-                <el-button round>编辑</el-button>
-              </router-link>
-              <el-button round @click='del(scope.row.recommend_card_id,scope.row.title,scope.row.index)'>删除</el-button>
+              <span class='edit'><router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.recommend_card_id}`">编辑</router-link></span><em class='blank'>|</em>
+              <span class='delete' @click='del(scope.row.recommend_card_id,scope.row.title,scope.row.index)'>删除</span>
             </template>
           </el-table-column>
         </el-table>
       </template>
       <template v-else>
         <div class="empty-box">
-          <p>创建一张推荐卡片</p>
-          <p>在直播中为观众推送卡片</p>
-          <p>制作一张精美的自定义卡片，在直播中推送给观众，企业可以根据自己的需求定义卡片的内容。可以推送二维码、店铺链接、自媒体链接、图片等各种各样的内容</p>
-          <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button>新建卡片</el-button></router-link>
+          <p class="img"></p>
+          <p class='title'>推荐卡片</p>
+          <p class='desc'>自定卡片内容进行引流，<br>推送二维码、店铺链接、微信公众号、图片海报等内容</p>
+          <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='primary-button'>创建卡片</el-button></router-link>
         </div>
       </template>
     </div>
@@ -99,48 +106,62 @@
 <style lang='scss' scope>
 @import '~assets/css/mixin.scss';
 @import './common.scss';
-// .wrap-page {
-//   border-radius: 5px;
-//   overflow: hidden;
-//   padding-bottom: 30px;
-//   margin: 0 auto;
-//   color: #222;
-//   /* 设备宽度大于 1600 */
-//   @media all and (min-width: 1600px) {
-//     width: 1366px;
-//   }
-//   /* 设备宽度小于 1600px */
-//   @media all and (max-width: 1600px) {
-//     width: 1019px;
-//     .content .handle-filter .selected {
-//       max-width: 880px !important;
-//     }
-//   }
-//   .page-title {
-//     // border-bottom: 1px solid $color-bd;
-//     line-height: 60px;
-//     span.title {
-//       display: inline-block;
-//       font-size: 24px;
-//     }
-//   }
-//   .content {
-//     font-size: 14px;
-//     width: 100%;
-//     padding: 30px;
-//     background: rgba(255, 255, 255, 1);
-//     border-radius: 4px;
-//     border: 1px solid rgba(226, 226, 226, 1);
-//     .table-box {
-//       margin-top: 20px;
-//       .img {
-//         width: 32px;
-//         height: 32px;
-//         border-radius: 500px;
-//       }
-//     }
-//     .empty-box {
-//     }
-//   }
-// }
+.card-list-page {
+  .el-table thead {
+    height: 36px;
+    line-height: 36px;
+  }
+  .top-bar {
+    .el-button {
+      padding: 0;
+      width: 120px;
+      height: 34px;
+      line-height: 34px;
+      &.add-new:hover span {
+        color: $color-font;
+      }
+      &.more {
+        margin-right: 10px;
+        border-color: $color-blue;
+        color: $color-blue;
+        background-color: transparent;
+        &:hover {
+          color: #fff;
+          border-color: #fff;
+          background: $color-blue;
+        }
+      }
+    }
+    a {
+      float: right;
+    }
+  }
+  .from-box {
+    .edit:hover a {
+      color: $color-blue;
+    }
+    .delete:hover {
+      cursor: pointer;
+      color: $color-error;
+    }
+    .blank {
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+      position: relative;
+      bottom: 1px;
+    }
+    .cell-txt {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      padding-right: 20px;
+    }
+    .el-table .cell {
+      white-space: normal;
+    }
+  }
+}
 </style>
