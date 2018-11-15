@@ -3,16 +3,16 @@
     <div class="asset-header">
       <div class="asset-header-item">
         <span>所购服务</span>
-        <span>微吼知客旗舰版</span>
-        <span>有效期 2018.10.31~2019.10.30</span>
+        <span>{{billInfo.serviceName}}</span>
+        <span>有效期 {{billInfo.serviceStartTime}} ~ {{billInfo.serviceExpireTime}}</span>
       </div>
       <div class="asset-header-item">
         <span>可用金额（元）</span>
-        <span class="mid">888.5</span>
+        <span class="mid">{{billInfo.balance}}</span>
       </div>
       <div class="asset-header-item">
         <span>今日支出（元）</span>
-        <span class="mid">253.5</span>
+        <span class="mid">{{billInfo.payToday}}</span>
       </div>
     </div>
     <div class="asset-list">
@@ -40,7 +40,7 @@
             placeholder="选择日期">
           </el-date-picker>
         </div>
-        <button class="default-button export-btn fr">导出</button>
+        <button class="default-button export-btn fr" @click="exportTable">导出</button>
       </div>
     </div>
     <div class="asset-list-table">
@@ -85,6 +85,13 @@
           {value: 'RE_RED_PACK', label: '红包返回'}
         ],
         viewerList: [],
+        billInfo: {
+          balance: 0, // 余额
+          serviceStartTime: '', // 服务开始时间
+          serviceExpireTime: '', // 服务结束时间
+          serviceName: '', // 服务名称
+          payToday: '' // 今日支出
+        },
         searchParams: {
           type: '',
           date: '',
@@ -107,11 +114,20 @@
       }
     },
     created () {
+      this.queryAccountInfo()
       this.queryList()
     },
     methods: {
       changePage (page) {
         this.searchParams.page = page
+        this.queryList()
+      },
+      queryAccountInfo () {
+        this.$get(assetService.GET_ASSET_INFO, {}).then((res) => {
+          if (res.code === 200) {
+            this.billInfo = res.data
+          }
+        })
       },
       queryList () {
         this.$nextTick(() => {
@@ -124,6 +140,11 @@
             }
           })
         })
+      },
+      exportTable () {
+        let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
+        const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
+        window.open(encodeURI(encodeURI(url)))
       }
     }
   }
