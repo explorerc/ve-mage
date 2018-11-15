@@ -17,8 +17,8 @@
           重置
         </span>
         <span @click.stop="overPlus">
-          <i class="iconfont icon-yulanxuanzhuan"></i>
-          重置
+          <i class="iconfont icon-fangda"></i>
+          放大
         </span>
       </div>
     </div>
@@ -86,6 +86,10 @@
       nowIndex: {
         type: Number,
         default: 0
+      },
+      initImg: {
+        type: String,
+        default: ''
       }
     },
     watch: {
@@ -110,6 +114,13 @@
           this.tipTxt = val
         },
         immediate: true
+      },
+      initImg: {
+        handler (val) {
+          this.imgHost = this.$imgHost
+          this.fileSrc = val
+        },
+        immediate: true
       }
     },
     methods: {
@@ -129,11 +140,8 @@
       },
       overPlus () {
         this.isShowBigImg = true
-        console.log(this.isShowBigImg, 1111)
-        // window.open(this.imgHost + '/' + this.fileSrc)
       },
       selected () {
-        console.log('selected')
         this.loading = true
       },
       uploadProgress (data) {
@@ -144,7 +152,6 @@
         }
       },
       uploadImgSuccess (data) {
-        console.log(data)
         const fildObj = JSON.parse(data.data).data
         if (fildObj.host) this.imgHost = fildObj.host
         if (fildObj.name) this.fileSrc = fildObj.name

@@ -294,10 +294,10 @@ export default {
           strType = `共进行了${data.count}次分享`
           break
         case 'STAY_ACTIVITY_WEBSITE_TIME':
-          strType = `在活动官网浏览了${data.time > 60 ? Math.round(data.time / 60) : 1}分钟`
+          strType = `在活动官网浏览了${data.time}分钟`
           break
         case 'STAY_ACTIVITY_TIME':
-          strType = `观看了${data.time > 60 ? Math.round(data.time / 60) : 1}分钟`
+          strType = `观看了${data.time}分钟`
           break
         case 'SEND_CHAT_COUNT':
           strType = `共发送了${data.count}条聊天内容`
