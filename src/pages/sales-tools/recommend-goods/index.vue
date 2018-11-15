@@ -2,15 +2,15 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
-      <div v-if="tableData.length>1">
+      <div v-if="tableData.length>=1">
         <el-button @click="check" round>查看活动数据</el-button>
-        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>20" round>
+        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </el-button>
       </div>
 
     </header>
-    <div class="table-box" v-if="tableData.length>1">
+    <div class="table-box" v-if="tableData.length>=1">
       <table border="1">
         <thead>
         <tr>
@@ -26,19 +26,19 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
-              <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')"
-                   alt="">
+              <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')" alt="">
             </td>
-            <td>{{row.name}}</td>
+            <td>{{row.title}}</td>
             <td>
-              <del>{{row.address}}</del>
+              <del>{{row.price}}</del>
             </td>
-            <td class="dis-prices">{{row.address}}</td>
+            <td class="dis-prices">{{row.preferential}}</td>
             <td>
               <div>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(row,ind)">上下架</el-button>
-                <el-button class="item" size="mini" type="text" @click="handleDelete(ind)">移动</el-button>
+                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'下架':'上架'}}
+                </el-button>
+                <el-button class="item" size="mini" type="text">移动</el-button>
                 <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
               </div>
             </td>
@@ -57,77 +57,80 @@
 
 <script>
   import draggable from 'vuedraggable'
+  import goodsServer from 'src/api/salesGoods-service'
 
   export default {
-    components: {
-      draggable
+    components: { draggable },
+    created () {
+      this.getList()
     },
     data () {
       return {
-        tableData: [
-          {
-            id: '1',
-            date: '2016-05-02',
-            name: '王小虎1',
-            address: '上海市普陀区金沙江路 100 弄'
-          },
-          {
-            id: '2',
-            date: '2016-05-04',
-            name: '王小虎2',
-            address: '上海市普陀区金沙江路 200 弄'
-          },
-          {
-            id: '3',
-            date: '2016-05-01',
-            name: '王小虎3',
-            address: '上海市普陀区金沙江路 300 弄'
-          },
-          {
-            id: '4',
-            date: '2016-05-03',
-            name: '王小虎4',
-            address: '上海市普陀区金沙江路 400 弄'
+        activity_id: this.$route.params.activity_id,
+        tableData: []
+      }
+    },
+    watch: {
+      tableData: {
+        handler (val, oldVal) {
+          if (val.length >= 1) {
+            this.sortGoods()
           }
-        ],
-        arr: [1, 2, 3, 4, 5, 6, 7],
-        myArray: [
-          {
-            id: 1,
-            name: 1
-          },
-          {
-            id: 2,
-            name: 2
-          },
-          {
-            id: 3,
-            name: 3
-          },
-          {
-            id: 4,
-            name: 5
-          }
-        ]
+        },
+        deep: true
       }
     },
     methods: {
+      getList () {
+        this.$post(goodsServer.GOODS_LISTS, { activity_id: this.activity_id })
+          .then(res => {
+            console.log(res)
+            this.tableData = res.data
+          })
+          .catch(() => {
+            this.tableData = []
+          })
+      },
       // 创建
       createGoods () {
-        this.$router.push('/salesTools/recommendGoodsInfo')
+        this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
+      },
+      sortGoods () {
+        /*  let timer
+          if (timer) return
+          timer = setTimeout(() => {
+            clearTimeout(timer)
+            timer = null
+            console.log(this.tableData, 'tableDatatableDatatableData') */
+        let goods = this.tableData.map((ite, ind) => {
+          // return ite.goods_ids
+          return ite.goods_id
+        })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+        // }, 500)
       },
       check () {
+        this.$router.push(`/liveMager/detail/${this.activity_id}`)
       },
       // 上下架
-      handleShelf () {
+      handleShelf (row) {
+        this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
+          .then(res => {
+            setTimeout(() => {
+              this.getList()
+            }, 500)
+            this.$toast({
+              content: '操作成功!',
+              position: 'center'
+            })
+          })
       },
       // 编辑
       handleEdit (row, index) {
-        this.$router.push('/salesTools/recommendGoodsInfo/45')
-        console.log(this.tableData)
-        console.log(row, index)
+        this.$router.push(`/salesTools/recommendGoodsInfo/${row.goods_id}/update`)
       },
       handleDelete (row, index) {
+        console.log(row)
         this.$messageBox({
           header: '删除该商品',
           type: 'error',
@@ -142,14 +145,17 @@
                 position: 'center'
               })
             } else if (e.action === 'confirm') {
-              /*  this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
-                  .then(res => {
-                    this.tableData.splice(index, 1)
-                    this.$toast({
-                      content: '删除成功!',
-                      position: 'center'
-                    })
-                  }) */
+              this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
+                .then(res => {
+                  this.tableData.splice(index, 1)
+                  setTimeout(() => {
+                    this.getList()
+                  }, 1000)
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
+                  })
+                })
             }
           }
         })

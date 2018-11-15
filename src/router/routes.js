@@ -331,20 +331,15 @@ export default [{
     component: questionList
   },
   {
-    path: '/salesTools/recommendGoodsList',
+    path: '/salesTools/recommendGoodsList/:activity_id',
     name: 'recommendGoodsList',
     component: recommendGoodsList
   },
   {
-    path: '/salesTools/recommendGoodsInfo/:id',
+    path: '/salesTools/recommendGoodsInfo/:id/:type',
     name: 'recommendGoodsInfo',
     component: recommendGoodsInfo
   },
-  // {
-  //   path: '/salesTools/recommendGoodsInfo',
-  //   name: 'recommendGoodsInfo',
-  //   component: recommendGoodsInfo
-  // },
   {
     path: '/salesTools/recommendCards/:id',
     name: 'recommendCards',
