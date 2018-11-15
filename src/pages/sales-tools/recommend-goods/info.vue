@@ -25,12 +25,13 @@
       </el-form-item>
       <el-form-item label="商品图片" prop="upload_list">
         <div class="upload_box">
-          <i></i>
-          <ve-upload v-for="(ite,ind) in goodsData.imageList" :key="ind"
-                     title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
-                     accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :nowIndex="ind || 0"
-                     :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" :initImg="ite"
-                     @success="uploadImgSuccess"></ve-upload>
+          <template v-for="(ite,ind) in goodsData.imageList">
+            <ve-upload :key="ind"
+                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
+                       accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :nowIndex="ind|| 0"
+                       :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" :initImg="ite.name"
+                       @success="uploadImgSuccess"></ve-upload>
+          </template>
           <span class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
@@ -163,8 +164,10 @@
       getGoodsDetail () {
         this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
           .then(res => {
-            // this.goodsData.imageList = JSON.parse(res.data.image);
-            res.data.image = JSON.parse(res.data.image);
+            res.data.image = JSON.parse(res.data.image)
+            res.data.price = Number.parseInt(res.data.price)
+            res.data.preferential = Number.parseInt(res.data.preferential);
+
             ({
               title: this.goodsData.title,
               price: this.goodsData.price,
@@ -189,17 +192,16 @@
               _url = goodsServer.UPDATE_GOODS
             }
             this.goodsData.image = JSON.stringify(this.goodsData.imageList)
-            console.log(this.goodsData)
+            delete this.goodsData.imageList
             this.$post(_url, this.goodsData)
               .then(res => {
-                console.log(this.goodsData, 12345678)
                 this.$toast({
                   content: '操作成功!',
                   position: 'center'
                 })
                 setTimeout(() => {
                   this.$router.go(-1)
-                }, 2000)
+                }, 500)
               })
               .catch(err => {
                 console.log(err)
@@ -213,12 +215,7 @@
         this.$refs[formName].resetFields()
       },
       uploadImgSuccess (data) {
-        console.log(data)
-        this.goodsData.imageList[data.nowIndex] = {
-          name: data.name,
-          host: data.host
-        }
-        console.log(this.goodsData)
+        this.goodsData.imageList[data.nowIndex].name = data.name
       },
       uploadError (data) {
         console.log(data)
@@ -298,7 +295,8 @@
       }
       .upload_box {
         position: relative;
-        > i {
+        &::before {
+          content: '';
           width: 32px;
           height: 35px;
           display: inline-block;
@@ -309,6 +307,17 @@
           background-image: url("~assets/image/index-img.png");
           background-size: cover;
         }
+        /* > i {
+           width: 32px;
+           height: 35px;
+           display: inline-block;
+           position: absolute;
+           top: 0;
+           left: 0;
+           z-index: 100;
+           background-image: url("~assets/image/index-img.png");
+           background-size: cover;
+         }*/
         .ve-upload-box {
           width: 140px;
           height: 140px;

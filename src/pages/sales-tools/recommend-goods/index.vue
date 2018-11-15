@@ -2,15 +2,15 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
-      <div v-if="tableData.length>1">
+      <div v-if="tableData.length>=1">
         <el-button @click="check" round>查看活动数据</el-button>
-        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>20" round>
+        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </el-button>
       </div>
 
     </header>
-    <div class="table-box" v-if="tableData.length>1">
+    <div class="table-box" v-if="tableData.length>=1">
       <table border="1">
         <thead>
         <tr>
@@ -26,8 +26,7 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
-              <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')"
-                   alt="">
+              <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')" alt="">
             </td>
             <td>{{row.title}}</td>
             <td>
@@ -37,7 +36,7 @@
             <td>
               <div>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.type === 0 ?'下架':'上架'}}
+                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'下架':'上架'}}
                 </el-button>
                 <el-button class="item" size="mini" type="text">移动</el-button>
                 <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
@@ -74,7 +73,9 @@
     watch: {
       tableData: {
         handler (val, oldVal) {
-          this.sortGoods()
+          if (val.length >= 1) {
+            this.sortGoods()
+          }
         },
         deep: true
       }
@@ -95,23 +96,29 @@
         this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
       },
       sortGoods () {
-        let timer
-        if (timer) return
-        timer = setTimeout(() => {
-          clearTimeout(timer)
-          timer = null
-          let goods = this.tableData.map((ite, ind) => {
-            return ite.goods_ids
-          })
-          this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
-        }, 500)
+        /*  let timer
+          if (timer) return
+          timer = setTimeout(() => {
+            clearTimeout(timer)
+            timer = null
+            console.log(this.tableData, 'tableDatatableDatatableData') */
+        let goods = this.tableData.map((ite, ind) => {
+          // return ite.goods_ids
+          return ite.goods_id
+        })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+        // }, 500)
       },
       check () {
+        this.$router.push(`/liveMager/detail/${this.activity_id}`)
       },
       // 上下架
       handleShelf (row) {
-        this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.type === 0 ? 1 : 0 })
+        this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
           .then(res => {
+            setTimeout(() => {
+              this.getList()
+            }, 500)
             this.$toast({
               content: '操作成功!',
               position: 'center'
