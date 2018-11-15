@@ -51,7 +51,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
+      <VePagination class="VePagination" v-show="total>10" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
   </div>
 </template>
@@ -116,13 +116,13 @@
                   level = '<span style="color:#714CEA;">高价值用户</span>'
                   break
                 case 3:
-                  level = '<span style="color:#FFAA00;">一般客户</span>'
+                  level = '<span style="color:#FFAA00;">一般用户</span>'
                   break
                 case 4:
                   level = '<span style="color:#FB5757;">潜力用户</span>'
                   break
                 case 5:
-                  level = '<span style="color:#333333;">流失客户</span>'
+                  level = '<span style="color:#333333;">流失用户</span>'
                   break
                 case 0:
                   level = '<span style="color:#4B5AFE;">没有评级</span>'
