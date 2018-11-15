@@ -68,17 +68,19 @@
       <div class="box">
         <div class="text">预览</div>
       </div>
-      <div class="v-hearder">
-        <img src="../../../assets/image/avatar@2x.png" alt="">
-        <p class="v-title">
-          产品调研
-        </p>
-        <p class="v-summary">
-         欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
-        </p>
-      </div>
-      <div class="v-questions">
-        <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
+      <div class="v-content">
+        <div class="v-hearder">
+          <img src="../../../assets/image/avatar@2x.png" alt="">
+          <p class="v-title">
+            产品调研
+          </p>
+          <p class="v-summary">
+           欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
+          </p>
+        </div>
+        <div class="v-questions">
+          <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
+        </div>
       </div>
     </message-box>
   </div>
@@ -546,12 +548,17 @@ export default {
     position: absolute;
     left: -50px;
     top: -50px;
+    z-index: 1;
   }
   .text {
     position: absolute;
     bottom: 9px;
     left: 33px;
     font-size: 16px;
+  }
+  .v-content {
+    overflow: auto;
+    max-height: 520px;
   }
   .v-hearder {
     width: 620px;

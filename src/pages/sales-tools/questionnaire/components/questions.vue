@@ -49,8 +49,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .v-questions /deep/ {
-  max-height: 360px;
-  overflow: auto;
   .single-select-wrap {
     border: none;
     .question-content {
