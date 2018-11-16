@@ -14,6 +14,9 @@
     .content .handle-filter .selected {
       max-width: 880px !important;
     }
+    .from-row .from-content .com-input {
+      width:320px !important;;
+    }
   }
   .page-title {
     // border-bottom: 1px solid $color-bd;
@@ -33,12 +36,52 @@
     .table-box {
       margin-top: 20px;
       .img {
-        width: 32px;
-        height: 32px;
-        border-radius: 500px;
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
       }
     }
     .empty-box {
+      text-align: center;
+      color:$color-font-sub;
+      min-height:400px;
+      padding:100px 0;
+      .img {
+        width:180px;
+        height:180px;
+        margin:0 auto;
+        border-radius: 500px;
+        // background:rgba(245,245,245,1);
+        box-shadow:0px 1px 5px 0px rgba(0,0,0,0.02);
+        background:url('~assets/image/cards-empty.jpg') no-repeat;
+        background-size:contain;
+      }
+      .title {
+        font-size: 18px;
+        color:$color-font;
+        padding-top:13px;
+      }
+      .desc{
+        display: block;
+        width:340px;
+        margin:0 auto;
+        padding:20px 0;
+      }
+      a {
+        display: block;
+        &:hover .el-button{
+          color:$color-font;
+        }
+      }
+      .el-button {
+        padding:0;
+        width:220px;
+        height:40px;
+        text-align: center;
+        line-height: 40px;
+        margin-top:20px;
+
+      }
     }
   }
 }

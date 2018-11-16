@@ -143,3 +143,8 @@ $color-ui-components:#4B5AFE;
   text-overflow:ellipsis;
   white-space: nowrap;
 }
+
+textarea::-webkit-input-placeholder {
+  color: #888888;
+  font-size: 14px;
+}
