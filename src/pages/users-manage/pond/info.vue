@@ -535,6 +535,18 @@ export default {
               left: 0;
               bottom: -17px;
             }
+            .iconfont {
+              position: relative;
+              top: -13px;
+            }
+            .v-content {
+              height: 40px;
+              max-width: 195px;
+              word-break: break-all;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
           }
           .iconfont {
             &:hover {
