@@ -61,7 +61,7 @@
                         <span class="v-email-content">
                           {{item.email}}
                         </span>
-                        <span class="v-label">
+                        <span class="v-email-label">
                           {{typeEmail(item.type)}}
                         </span>
                       </div>
@@ -553,7 +553,7 @@ export default {
             font-size: 14px;
             color: #fff;
             top: 35px;
-            right: -95px;
+            right: -20px;
             display: none;
             &::after {
               display: block;
@@ -573,13 +573,13 @@ export default {
             }
             .v-email-content {
               display: inline-block;
-              max-width: 180px;
+              max-width: 165px;
               margin-right: 12px;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            .v-label {
+            .v-email-label {
               color: #fff;
               white-space: nowrap;
               overflow: hidden;
@@ -687,6 +687,7 @@ export default {
           width: 100%;
           .v-item {
             position: relative;
+            height: 50px;
             &:hover {
               .v-description {
                 display: block;
