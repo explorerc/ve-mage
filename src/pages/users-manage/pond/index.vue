@@ -130,12 +130,12 @@
                <el-date-picker
                 :clearable="true"
                 v-model="firstVal"
-                type="daterange"
+                type="datetimerange"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                format="yyyy-MM-dd"
                 :editable="false"
+                :default-time="['00:00:00','23:59:59']"
                 align="left">
               </el-date-picker>
             </div>
@@ -144,12 +144,12 @@
                <el-date-picker
                 :clearable="true"
                 v-model="lastVal"
-                type="daterange"
+                type="datetimerange"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                format="yyyy-MM-dd"
                 :editable="false"
+                :default-time="['00:00:00','23:59:59']"
                 align="left">
               </el-date-picker>
             </div>
@@ -430,8 +430,8 @@ export default {
         {value: '', label: '全部'}
       ],
       // districtsVal: [''],
-      firstVal: [],
-      lastVal: [],
+      firstVal: '',
+      lastVal: '',
       activityArray: {
         'id': [],
         'name': []
@@ -736,9 +736,8 @@ export default {
           this.filterCondition.first_visited_at_start = ''
           this.filterCondition.first_visited_at_end = ''
         } else {
-          debugger
-          this.filterCondition.first_visited_at_start = val[0].format('yyyy-MM-dd')
-          this.filterCondition.first_visited_at_end = val[1].format('yyyy-MM-dd')
+          this.filterCondition.first_visited_at_start = val[0]
+          this.filterCondition.first_visited_at_end = val[1]
         }
       }
     },
@@ -748,8 +747,8 @@ export default {
           this.filterCondition.last_visited_at_start = ''
           this.filterCondition.last_visited_at_end = ''
         } else {
-          this.filterCondition.last_visited_at_start = val[0].format('yyyy-MM-dd')
-          this.filterCondition.last_visited_at_end = val[1].format('yyyy-MM-dd')
+          this.filterCondition.last_visited_at_start = val[0]
+          this.filterCondition.last_visited_at_end = val[1]
         }
       }
     },
@@ -1073,7 +1072,7 @@ export default {
         height: 34px;
         line-height: 34px;
         padding: 0 8px;
-        width: 270px;
+        width: 310px;
       }
       .el-range__icon {
         display: none;
