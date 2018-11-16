@@ -124,6 +124,7 @@
           value-format="yyyy-MM-dd HH:mm"
           type="datetimerange"
           range-separator="至"
+          :default-time="['00:00:00', '23:59:59']"
           start-placeholder="输入进入时间"
           end-placeholder="输入离开时间">
         </el-date-picker>
@@ -179,9 +180,9 @@
           </template>
         </el-table-column>
         <!--<el-table-column label="详情" width="90">-->
-          <!--<template slot-scope="scope">-->
-            <!--<span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>-->
-          <!--</template>-->
+        <!--<template slot-scope="scope">-->
+        <!--<span class="data-link" @click="goPageDetail(scope.row.business_consumer_uid)">详情</span>-->
+        <!--</template>-->
         <!--</el-table-column>-->
       </el-table>
       <div class="page-pagination" v-if="total>searchParams.pageSize">
