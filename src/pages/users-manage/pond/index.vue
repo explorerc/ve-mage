@@ -323,7 +323,7 @@ export default {
         },
         {
           value: 1,
-          label: '优质客户'
+          label: '优质用户'
         }, {
           value: 2,
           label: '高价值用户'
