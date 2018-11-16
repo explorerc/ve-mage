@@ -61,7 +61,7 @@
                         <span class="v-email-content">
                           {{item.email}}
                         </span>
-                        <span class="v-label">
+                        <span class="v-email-label">
                           {{typeEmail(item.type)}}
                         </span>
                       </div>
@@ -579,7 +579,7 @@ export default {
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            .v-label {
+            .v-email-label {
               color: #fff;
               white-space: nowrap;
               overflow: hidden;
