@@ -687,6 +687,7 @@ export default {
           width: 100%;
           .v-item {
             position: relative;
+            height: 50px;
             &:hover {
               .v-description {
                 display: block;
