@@ -15,22 +15,22 @@
                 <img :src="`${imgHost}/${scope.row.pic}`" :class="'img'">
               </template>
           </el-table-column>
-          <el-table-column label="卡片名称" width="250" show-overflow-tooltip>
+          <el-table-column label="卡片名称"  show-overflow-tooltip>
             <template slot-scope="scope">
               <div class="cell-txt">{{scope.row.title}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="卡片描述" width="350" show-overflow-tooltip>
+          <el-table-column label="卡片描述"  show-overflow-tooltip>
             <template slot-scope="scope">
               <div class="cell-txt">{{scope.row.desc}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="按钮链接" width="350" show-overflow-tooltip>
+          <el-table-column label="按钮链接"  show-overflow-tooltip>
             <template slot-scope="scope">
               <div class="cell-txt">{{scope.row.btn_link}}</div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200">
+          <el-table-column label="操作">
             <template slot-scope="scope">
               <span class='edit'><router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.recommend_card_id}`">编辑</router-link></span><em class='blank'>|</em>
               <span class='delete' @click='del(scope.row.recommend_card_id,scope.row.title,scope.row.index)'>删除</span>
@@ -38,7 +38,7 @@
           </el-table-column>
         </el-table>
       </template>
-      <template v-else>
+      <template v-if="tableData.length<=0 && notFirst">
         <div class="empty-box">
           <p class="img"></p>
           <p class='title'>推荐卡片</p>
@@ -57,20 +57,22 @@
       return {
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
-        tableData: []
+        tableData: [],
+        notFirst: false
       }
     },
     mounted () {
       this.getList()
     },
     created () {
-
+      this.tableData = []
     },
     methods: {
       getList () {
-        this.$get(cardService.GET_CARDS_LIST, {
+        this.$config({loading: true}).$get(cardService.GET_CARDS_LIST, {
           activity_id: this.activityId
         }).then((res) => {
+          this.notFirst = true
           this.tableData = res.data.list
         })
       },
