@@ -4,12 +4,12 @@
       <span class="title">问卷列表</span>
     </div>
     <div class="v-tbns clearfix">
-      <button class="v-add">
+      <a class="v-add" href="/salesTools/questionnaire/edit">
         新建问卷
-      </button>
-      <button class="v-view">
+      </a>
+      <a class="v-view">
         查看数据
-      </button>
+      </a>
     </div>
     <div class="v-table">
       <table>
@@ -447,7 +447,7 @@ export default {
   .v-tbns {
     width: 100%;
     margin-bottom: 30px;
-    button {
+    a {
       float: right;
       width: 120px;
       height: 40px;

@@ -321,6 +321,11 @@ export default [{
     component: userInfo
   },
   {
+    path: '/salesTools/questionnaire/edit',
+    name: 'questionnaire',
+    component: questionnaire
+  },
+  {
     path: '/salesTools/questionnaire/edit/:id',
     name: 'questionnaire',
     component: questionnaire
