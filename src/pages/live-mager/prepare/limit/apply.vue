@@ -41,7 +41,7 @@
         </ul>
         <ol class='table-content'>
           <li class='clearfix' v-for="(item,idx) in quesData" :key="idx">
-            <div v-if="item.dataType === 'phone'" class='spe moblie'>
+            <div v-if="item.ext === 'phone'" class='spe moblie'>
               <i class='star'>*</i>
               <el-select v-model="phone" disabled placeholder="请选择">
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
@@ -49,7 +49,7 @@
               </el-select>
             </div>
             <div v-else  class='spe'>
-              <el-select v-model="item.dataType" placeholder="请选择" @change='selectChange(idx,item.dataType)'>
+              <el-select v-model="item.ext" placeholder="请选择" @change='selectChange(idx,item.ext)'>
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value" :disabled="opt.disabled">
                 </el-option>
               </el-select>
@@ -60,13 +60,13 @@
             <div>
               <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
             </div>
-            <div v-if="item.dataType === 'phone'" class='del-box tips'>
+            <div v-if="item.ext === 'phone'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
               <span @click='removeItem(idx)' class='del'>删除</span>
             </div>
-            <section class='select-item clearfix' v-if="item.dataType === 'select'">
+            <section class='select-item clearfix' v-if="item.ext === 'select'">
               <ol>
                 <span class='add-item' @click='addItem(idx)' v-if="item.detail.list.length < 10 ? true : false"><i>＋</i>添加选项</span>
                 <li v-for="(option,count) in item.detail.list" :key='count'>
@@ -205,7 +205,7 @@
           place: '请输入描述信息',
           label: '文本',
           type: 'text',
-          dataType: 'text',
+          ext: 'text',
           detail: {
             format: '',
             list: []
@@ -218,7 +218,7 @@
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
-          if (res.data.detail) { // 是否有报名表单数据
+          if (res.data.detail !== null) { // 是否有报名表单数据
             this.isOpen = true
             this.queryData = res.data.detail
             this.quesData = res.data.detail.questionList
@@ -244,14 +244,14 @@
           }
         }
         this.saveData.detail.questionList.forEach(item => {
-          if (item.dataType === 'phone') {
+          if (item.ext === 'phone') {
             item.required = 'Y'
             item.verification = 'Y'
           }
-          if (item.dataType === 'email') {
+          if (item.ext === 'email') {
             item.verification = 'Y'
           }
-          if (item.dataType === 'select') {
+          if (item.ext === 'select') {
             if (!item.detail['list'].length) {
               this.$messageBox({
                 header: '提示',
@@ -338,7 +338,7 @@
                 place: '请输入手机号码',
                 label: '手机号码',
                 type: 'text',
-                dataType: 'phone',
+                ext: 'phone',
                 detail: {
                   format: 'phone'
                 }
@@ -394,7 +394,7 @@
           this.hasEmail = false
           this.hasName = false
           newValue.forEach((item) => {
-            switch (item.dataType) {
+            switch (item.ext) {
               case 'email':
                 this.hasEmail = true
                 break
