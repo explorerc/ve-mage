@@ -527,6 +527,9 @@ export default {
               list: [
                 {
                   value: '选项'
+                },
+                {
+                  value: '选项'
                 }
               ]
             },
