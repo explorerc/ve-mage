@@ -24,7 +24,7 @@
         </thead>
         <draggable element="tbody" v-model="tableData" :options="{handle:'.item'}">
           <tr v-for="(row,ind) in tableData" :key="ind">
-            <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
+            <td>{{row.number<10?`0${row.number}`:row.number}}</td>
             <td>
               <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')" alt="">
             </td>

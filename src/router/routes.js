@@ -321,12 +321,17 @@ export default [{
     component: userInfo
   },
   {
-    path: '/salesTools/questionnaire/edit/:id',
+    path: '/salesTools/questionnaire/edit/:activityId',
     name: 'questionnaire',
     component: questionnaire
   },
   {
-    path: '/salesTools/questionnaire/list',
+    path: '/salesTools/questionnaire/edit/:activityId/:id',
+    name: 'questionnaire',
+    component: questionnaire
+  },
+  {
+    path: '/salesTools/questionnaire/list/:activityId',
     name: 'questionList',
     component: questionList
   },
