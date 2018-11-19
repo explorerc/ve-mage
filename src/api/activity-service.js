@@ -124,6 +124,8 @@ const ActivityManger = {
   // 获取标签列表
   GET_TAG_LIST: '/manage/tags/list-tags',
   /* 查询发送详情 */
-  GET_SEND_LIST: '/expand/sms-invite/invite-list'
+  GET_SEND_LIST: '/expand/invite-record/list',
+  /* 发送限额已占用数量 */
+  GET_SEND_LIMIT: '/expand/invite-record/num'
 }
 export default ActivityManger

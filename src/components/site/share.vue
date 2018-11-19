@@ -159,7 +159,7 @@ export default {
       window.open(`
       http://v.t.sina.com.cn/share/share.php?
       url=${encodeURIComponent(this.share.link)}
-      &title=${encodeURIComponent(this.share.des)}
+      &title=${encodeURIComponent(this.share.title)}
       &pic=${encodeURIComponent(this.share.imgUrl)}
       &appkey=&searchPic=false
       `)

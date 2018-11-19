@@ -71,7 +71,8 @@ const userPond = () => import('src/pages/users-manage/pond')
 const userGroup = () => import('src/pages/users-manage/group')
 /* 用户群组 */
 const userGroupsIndex = () => import('src/pages/user-groups/index.vue')
-const userGroupsDetails = () => import('src/pages/user-groups/group-details.vue')
+const userGroupsDetails = () =>
+  import('src/pages/user-groups/group-details.vue')
 const userInfo = () => import('src/pages/users-manage/pond/info')
 
 /* 数据中心 */
@@ -82,11 +83,20 @@ const Spread = () => import('src/pages/data/spread')
 const Viewer = () => import('src/pages/data/viewer')
 const ViewerList = () => import('src/pages/data/viewerList')
 /* 营销工具 */
-const questionnaire = () => import('src/pages/sales-tools/questionnaire')
 const redpack = () => import('src/pages/sales-tools/redpack')
 const recommendCards = () => import('src/pages/sales-tools/recommend-cards')
+const cardItem = () => import('src/pages/sales-tools/recommend-cards/detail')
 const recommendGoodsList = () => import('src/pages/sales-tools/recommend-goods/index')
 const recommendGoodsInfo = () => import('src/pages/sales-tools/recommend-goods/info')
+
+/* 营销工具-问卷开始 */
+const questionnaire = () => import('src/pages/sales-tools/questionnaire/edit')
+// const editQuestion = () => import('src/pages/sales-tools/questionnaire/edit')
+const questionList = () => import('src/pages/sales-tools/questionnaire/list')
+/* 营销工具-问卷结束 */
+
+/* 资产管理 */
+const AssetList = () => import('src/pages/asset-mager/asset-list')
 
 export default [{
   path: '/test',
@@ -126,7 +136,11 @@ export default [{
 {
   path: '/exitEmail',
   name: 'exitEmail',
-  component: ExitEmail
+  component: ExitEmail,
+  meta: {
+    noAuth: true,
+    noLogin: true
+  }
 },
 {
   path: '/',
@@ -237,11 +251,6 @@ export default [{
     }
   },
   {
-    path: '/liveMager/promote/wechat/overview/:id',
-    name: 'wechatOverview',
-    component: wechatOverview
-  },
-  {
     path: '/liveMager/promote/msg/overview/:id',
     name: 'msgOverview',
     component: msgOverview
@@ -255,11 +264,6 @@ export default [{
     path: '/liveMager/promote/msg/list/:id',
     name: 'promoteMsg',
     component: promoteMsg
-  },
-  {
-    path: '/liveMager/promote/msg/create/:id',
-    name: 'msgCreate',
-    component: msgCreate
   },
   {
     path: '/liveMager/promote/msg/edit/:id',
@@ -317,17 +321,27 @@ export default [{
     component: userInfo
   },
   {
-    path: '/salesTools/questionnaire/:id',
+    path: '/salesTools/questionnaire/edit/:activityId',
     name: 'questionnaire',
     component: questionnaire
   },
   {
-    path: '/salesTools/recommendGoodsList',
+    path: '/salesTools/questionnaire/edit/:activityId/:id',
+    name: 'questionnaire',
+    component: questionnaire
+  },
+  {
+    path: '/salesTools/questionnaire/list/:activityId',
+    name: 'questionList',
+    component: questionList
+  },
+  {
+    path: '/salesTools/recommendGoodsList/:activity_id',
     name: 'recommendGoodsList',
     component: recommendGoodsList
   },
   {
-    path: '/salesTools/recommendGoodsInfo',
+    path: '/salesTools/recommendGoodsInfo/:id/:type',
     name: 'recommendGoodsInfo',
     component: recommendGoodsInfo
   },
@@ -337,9 +351,19 @@ export default [{
     component: recommendCards
   },
   {
+    path: '/salesTools/recommendCardsDetails/:id',
+    name: 'cardItem',
+    component: cardItem
+  },
+  {
     path: '/salesTools/redpack/:id',
     name: 'redpack',
     component: redpack
+  },
+  {
+    path: '/assetMager/assetList',
+    name: 'assetList',
+    component: AssetList
   },
   {
     path: '/data',
@@ -407,5 +431,50 @@ export default [{
   meta: {
     noAuth: true
   }
+},
+{
+  path: '/liveMager/promote/wechat/overview/:id',
+  name: 'wechatOverview',
+  component: wechatOverview
+},
+{
+  path: '/liveMager/promote/msg/create/:id',
+  name: 'msgCreate',
+  component: msgCreate
+},
+{
+  path: '/salesTools/recommendCardsDetails/:id',
+  name: 'cardItem',
+  component: cardItem
+},
+{
+  path: '/data',
+  component: Data,
+  children: [{
+    path: 'preview/:id',
+    name: 'preview',
+    component: Preview
+  },
+  {
+    path: 'live/:id',
+    name: 'live',
+    component: DataLive
+  },
+  {
+    path: 'spread/:id',
+    name: 'spread',
+    component: Spread
+  },
+  {
+    path: 'viewer/:id',
+    name: 'viewer',
+    component: Viewer
+  },
+  {
+    path: 'viewerList/:id',
+    name: 'viewerList',
+    component: ViewerList
+  }
+  ]
 }
 ]

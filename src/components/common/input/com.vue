@@ -8,7 +8,7 @@
            :class="{error:errorMsg}"
            :placeholder="placeholder"
            :disabled="disabled"
-           v-model="innerValue"
+           v-model.trim="innerValue"
            @focus="focusHandle"
            @blur="blurHandle">
     <i v-if="type==='search'"
@@ -21,8 +21,7 @@
        @click="toggleShow"></i>
     <span class="limit"
           v-if="maxLength&&(type==='input'||type==='mobile')">
-      <i class="length">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/
-      <i>{{maxLength}}</i>
+      <i class="length" :style="{color:limitColor}">{{isMobile||local?innerValue.length:innerValue.gbLength()}}</i>/<i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
           v-if="errorMsg">{{errorMsg}}</span>
@@ -31,6 +30,7 @@
        v-else>
     <textarea ref="tarea"
               v-model="innerValue"
+              :disabled="disabled"
               :class="{error:errorMsg}"
               :placeholder="placeholder ? placeholder: '请输入内容'"
               :rows="rows"
@@ -39,6 +39,7 @@
     <span class="limit area"
           v-if="maxLength&&type==='textarea'">
       <i class="length"
+      :style="{color:limitColor}"
          v-text="innerValue.gbLength()">0</i>/
       <i>{{maxLength}}</i>
     </span>
@@ -77,7 +78,8 @@ export default {
       showDelete: false,
       inputType: '',
       offsetHeight: 0,
-      errorMsg: ''
+      errorMsg: '',
+      limitColor: '#4b5afe'
     }
   },
   created () {
@@ -88,6 +90,9 @@ export default {
       this.offsetHeight = this.$refs.tarea.offsetHeight - this.$refs.tarea.clientHeight
     }
     this.innerValue = this.value
+    if (!this.value) {
+      this.limitColor = '#999999'
+    }
     this.inputType = this.getType()
   },
   methods: {
@@ -138,8 +143,10 @@ export default {
   },
   watch: {
     innerValue (value) {
-      if (!value) {
+      if (value === undefined) {
         this.innerValue = ''
+        this.$emit('update:value', this.innerValue)
+        this.$emit('input', this.innerValue)
         return
       }
       if (this.local) {
@@ -158,8 +165,8 @@ export default {
         this.$refs.tarea.style.height = 'auto'
         this.$refs.tarea.style.height = `${this.$refs.tarea.scrollHeight + this.offsetHeight}px`
       }
-      if (value && value.gbLength() === 0) {
-        this.limitColor = '#555'
+      if (value.gbLength() === 0) {
+        this.limitColor = '#999999'
       } else {
         this.limitColor = '#4b5afe'
       }

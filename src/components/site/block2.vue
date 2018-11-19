@@ -8,7 +8,7 @@
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="content"  >
               <div v-html="item.content"></div>
-              <com-btn v-if="value.showBtn" :edit="value.enable" v-model="item.btn"></com-btn>
+              <com-btn v-if="value.showBtn" :edit="editAble" v-model="item.btn"></com-btn>
             </div>
           </a>
         </el-carousel-item>
@@ -95,6 +95,10 @@ export default {
     ComEdit, ComEditer, ComFont, ComBtn, VeUpload
   },
   props: {
+    editAble: {
+      type: Boolean,
+      default: false
+    },
     min: {
       type: Number,
       default: 2
@@ -244,6 +248,7 @@ export default {
       padding: 0 28px 10px 28px;
       height: auto;
       background: rgba(245, 245, 245, 1);
+      overflow-y: scroll !important;
     }
     label {
       display: inline-block;

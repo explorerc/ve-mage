@@ -9,11 +9,12 @@
                  class="v-input"
                  type="input"
                  @blur="inputBlur()"
-                 :error-tips="errorTips"></com-input>
+                 :error-tips="errorTips"
+                 :max-length="maxLength"></com-input>
     </template>
     <template v-else>
       <span class="v-content">
-        {{content === '' ? '无' : content}}
+        {{(this.content === null || !this.content) ? '-' : content}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
@@ -30,7 +31,8 @@ export default {
   },
   props: {
     title: String,
-    content: String
+    content: String,
+    maxLength: Number
   },
   methods: {
     modify (val) {
@@ -38,6 +40,7 @@ export default {
       this.isEdit = true
     },
     inputBlur () {
+      this.$emit('saveInfo', this.inputValue)
       this.isEdit = false
     }
   }

@@ -21,10 +21,10 @@
           <div class="from-content receiver" >
             <template v-if="selectedGroupList.length || selectedTagList.length">
               <div >
-                <span v-for='item in selectedGroupList'>{{item.name}}（{{item.count}}）、</span>
+                <span v-for='(item,idx) in selectedGroupList'>{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></span>
               </div>
               <div>
-                <span v-for='item in selectedTagList'>{{item.name}}、</span>（合计{{email.sendCount}}人）
+                <span v-for='(item,idx) in selectedTagList'>{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></span>（合计{{email.sendCount}}人）
               </div>
               <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </template>
@@ -140,10 +140,12 @@ export default {
   created () {
     // 如果vuex可以取到值就return
     if (this.email.emailInviteId) {
-      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : []
-      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : []
+      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : ''
+      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : ''
       this.queryTagList().then(this.queryGroupList()).then(() => {
-        this.reArrangeList(listStr.split(','), tagStr.split(','))
+        setTimeout(() => {
+          this.reArrangeList(listStr.split(','), tagStr.split(','))
+        }, 500)
       })
       return false
     }
@@ -222,10 +224,10 @@ export default {
     reArrangeList (group, tag) {
       this.groupList.forEach((item, idx) => {
         group.forEach((ele, i) => {
-          if (ele * 1 === item.id) {
+          if (ele * 1 === item.id * 1) {
             // this.groupList[idx].isChecked = true
             this.selectedGroupList.push({
-              count: 0,
+              count: item.count,
               id: item.id,
               isChecked: true,
               name: item.name
@@ -235,10 +237,9 @@ export default {
       })
       this.tagList.forEach((item, idx) => {
         tag.forEach((ele, i) => {
-          if (ele * 1 === item.id) {
+          if (ele * 1 === item.id * 1) {
             // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
-              count: 0,
               id: item.id,
               isChecked: true,
               name: item.name
@@ -246,6 +247,8 @@ export default {
           }
         })
       })
+      console.log(this.selectedGroupList)
+      console.log(this.selectedTagList)
     },
     /* 点击取消 */
     handleClick (e) {
@@ -334,7 +337,7 @@ export default {
 
       span {
         display: inline-block;
-        padding: 0 0 10px 0;
+        padding: 0 5px 10px 5px;
         padding-bottom: 0px;
       }
     }

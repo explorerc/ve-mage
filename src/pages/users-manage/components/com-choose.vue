@@ -11,7 +11,7 @@
           <input class='inp' v-model="searchVal" @keyup.enter='search' :placeholder="`输入${name}名称`" />
         </div>
         <el-checkbox-group v-model="restoreData.id" :max="max" :class='"data-list"'>
-          <span class='loading' v-if="dataList.length <=0 ">加载中...</span>
+          <span class='loading' v-if="dataList.length <=0 ">暂无数据</span>
           <el-checkbox v-for="(item,idx) in dataList" :label="item.id" :key="idx" :checked="item.checked" @change='selectCheck($event,item.id)'>{{item.name}}</el-checkbox>
         </el-checkbox-group>
         <div class="foot-box">
@@ -58,34 +58,13 @@ export default {
     }
   },
   created () {
-    this.restoreData = this.checkedData
+    this.restoreData = JSON.parse(JSON.stringify(this.checkedData))
   },
   mounted () {
-    switch (this.name) {
-      case '活动':
-        if (this.list.length) {
-          this.activelistData = this.list
-        } else {
-          this.queryActList()
-        }
-        this.dataList = this.activelistData
-        break
-      case '标签':
-        if (this.list.length) {
-          this.tagListData = this.list
-        } else {
-          this.queryTaglist()
-        }
-        this.dataList = this.tagListData
-        break
-      case '固定群组':
-        if (this.list.length) {
-          this.groupListData = this.list
-        } else {
-          this.queryGrouplist()
-        }
-        this.dataList = this.groupListData
-        break
+    if (this.list.length) {
+      this.dataList = this.list
+    } else {
+      this.init()
     }
   },
   computed: {
@@ -116,6 +95,19 @@ export default {
     }
   },
   methods: {
+    init () {
+      switch (this.name) {
+        case '活动':
+          this.queryActList()
+          break
+        case '标签':
+          this.queryTaglist()
+          break
+        case '固定群组':
+          this.queryGrouplist()
+          break
+      }
+    },
     close () {
       this.$emit('handleClick', {
         action: 'cancel'
@@ -127,8 +119,19 @@ export default {
       this.close()
     },
     search () {
-      this.$emit('searchHandler', this.searchVal)
+      this.$emit('searchHandler', { 'val': this.searchVal, 'name': this.name })
       // this.checkedData = []
+      switch (this.name) {
+        case '标签':
+          this.queryTaglist()
+          break
+        case '活动':
+          this.queryActList()
+          break
+        case '固定群组':
+          this.queryGrouplist()
+          break
+      }
     },
     selectCheck (res, id) {
       const data = {
@@ -160,14 +163,17 @@ export default {
       this.$get(userManage.GET_TAG_LIST, {
         keyword: this.searchVal
       }).then((res) => {
+        const tempArr = []
         console.log(res.data.list)
         res.data.list.forEach(item => {
-          this.tagListData.push({
+          tempArr.push({
             name: item.tag_name,
             id: item.tag_id,
             checked: false
           })
         })
+        this.tagListData = tempArr
+        this.dataList = this.tagListData
       })
     },
     // 查询群组
@@ -176,13 +182,16 @@ export default {
         keyword: this.searchVal,
         type: '2'
       }).then((res) => {
+        const tempArr = []
         res.data.list.forEach(item => {
-          this.groupListData.push({
+          tempArr.push({
             name: item.title + `(${item.user_count})`,
             id: item.group_id,
             checked: false
           })
         })
+        this.groupListData = tempArr
+        this.dataList = this.groupListData
       })
     },
     // 查询活动
@@ -194,13 +203,16 @@ export default {
       }
       this.$get(userManage.GET_ACTIVE_LIST, data).then((res) => {
         console.log(res.data.list)
+        const tempArr = []
         res.data.list.forEach(item => {
-          this.activelistData.push({
+          tempArr.push({
             name: item.title,
             id: item.id,
             checked: false
           })
         })
+        this.activelistData = tempArr
+        this.dataList = this.activelistData
       })
     }
   }
@@ -209,6 +221,14 @@ export default {
 
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
+.com-addChoose-wrap {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+}
 .com-modal {
   position: fixed;
   left: 0;
@@ -221,7 +241,7 @@ export default {
 }
 .com-addChoose-box /deep/ {
   z-index: 2002;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   margin-top: -222.5px;

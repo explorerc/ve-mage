@@ -17,8 +17,8 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="item in selectedGroupList">{{item.name}}({{item.count}})、</template>
-              <template v-for="item in selectedTagList">{{item.name}}、</template>
+              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template>
+              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template>
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
@@ -43,7 +43,7 @@
             <div class="from-title"></div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='title' :date='date' :wxContent='msgContent' :msgTag='msgTag'></com-phone>
+          <com-phone :titleValue='title' :date='date' :wxContent='msgContent' :msgTag='msgTag' :isWx="false"></com-phone>
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->

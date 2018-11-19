@@ -319,6 +319,16 @@ export default {
         }
       }
     }
+    .share-container {
+      width: 100%;
+      position: absolute;
+      top: 70px;
+    }
+    .media-container {
+      video {
+        height: 100%;
+      }
+    }
   }
   .section7 {
     width: 100%;

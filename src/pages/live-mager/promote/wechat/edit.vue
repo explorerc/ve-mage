@@ -70,7 +70,7 @@
             </div>
           </div>
           <!-- 模拟手机预览 -->
-          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' ></com-phone>
+          <com-phone :titleValue='titleValue' :date='date' :wxContent='wxContent' :isWx="true"></com-phone>
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
@@ -87,7 +87,8 @@
 
 <script>
 import userManage from 'src/api/userManage-service'
-import chooseGroup from 'src/components/com-chooseGroup'
+import userService from 'src/api/user-service'
+import chooseGroup from '../com-chooseGroup'
 import ChatService from 'components/chat/ChatService.js'
 import playbackService from 'src/api/playback-service'
 import noticeService from 'src/api/notice-service'
@@ -138,10 +139,10 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      groupList: [],
       tagList: [],
-      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
-      selectedTagList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupList: [],
+      selectedTagList: [],
       selectedGroupListStr: '',
       selectedTagListStr: '',
       selectPersonShow: false,
@@ -161,7 +162,6 @@ export default {
     }
   },
   created () {
-    this.initSdk()
     if (this.inviteId) {
       this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.inviteId
@@ -177,6 +177,15 @@ export default {
     }
     this.queryGroupList()
     this.queryTaglist()
+  },
+  mounted () {
+    if (!this.accountInfo.businessUserId) {
+      this.storeJoininfo().then(() => {
+        this.initSdk()
+      })
+    } else {
+      this.initSdk()
+    }
   },
   computed: {
     ...mapState('login', {
@@ -242,7 +251,7 @@ export default {
       })
     },
     closeTest () {
-      // debugger
+      //
       this.testModal = false
     },
     /* enter搜索 */
@@ -279,7 +288,7 @@ export default {
     queryGroupList (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
         keyword: keyword,
-        type: '2'
+        not_empty_field: 'wx_open_id'
       }).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
@@ -400,6 +409,11 @@ export default {
       ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
         console.log(msg)
         this.deliverd = true
+      })
+    },
+    async storeJoininfo () {
+      await this.$get(userService.GET_ACCOUNT).then((res) => {
+        this.setAccountInfo(res.data)
       })
     }
   },

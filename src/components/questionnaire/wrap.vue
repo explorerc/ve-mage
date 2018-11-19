@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
-    <div class="index">{{index}}</div>
     <div class="question-content">
+      <div class="index"><span v-if="value._required" class="v-red">*</span>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -9,6 +9,8 @@
         <!-- 问题描述区 -->
         <com-input v-if="edit"
                    class="q-subject"
+                   @focus="focusTitle"
+                   :class="{error:value.error}"
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
@@ -18,7 +20,8 @@
         <component ref="content"
                    :is="QComs[value.type]"
                    v-model="value"
-                   :edit="edit"></component>
+                   :edit="edit"
+                   :isView="isView"></component>
       </div>
       <div class="q-operate"
            v-if="edit">
@@ -29,7 +32,7 @@
               class="required-des">必填</span>
         <el-switch class='switch'
                    v-if="!(value.detail&&value.detail.format==='mobile')"
-                   v-model="value.required"
+                   v-model="value._required"
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
@@ -41,7 +44,7 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort fuck">排序</div>
+        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -83,6 +86,10 @@ export default {
     edit: {
       type: Boolean,
       default: false
+    },
+    isView: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -96,6 +103,18 @@ export default {
     }
   },
   methods: {
+    validate () {
+      return this.$refs.content.validate()
+    },
+    check () {
+      return this.$refs.content.check()
+    },
+    focusTitle () {
+      if (this.value.error) {
+        this.value.error = false
+        this.value.title = ''
+      }
+    },
     addItem () {
       if (this.value.detail.list.length < 20) {
         this.value.detail.list.push({
@@ -104,10 +123,24 @@ export default {
       }
     },
     remove () {
-      this.$emit('remove', this.index)
+      let option = {
+        type: this.value.ext.key,
+        index: this.index
+      }
+      this.$emit('remove', option)
     }
   },
   watch: {
+    'value._required': {
+      handler (val) {
+        if (val) {
+          this.value.required = 'Y'
+        } else {
+          this.value.required = 'N'
+        }
+      },
+      deep: true
+    },
     'value.verifiy': {
       handler (val) {
         if (val) {
@@ -133,7 +166,9 @@ export default {
   width: 100%;
   font-size: 12px;
   position: relative;
-  padding-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #d2d2d2;
+  overflow: hidden;
   /deep/ {
     .el-radio + .el-radio {
       margin-left: 0;
@@ -144,21 +179,27 @@ export default {
     .com-input {
       width: 100%;
       input {
-        height: 30px;
-        line-height: 30px;
-        font-size: 12px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
       }
     }
     .index {
       float: left;
-      width: 20px;
+      width: 32px;
       margin-top: 2px;
+      text-align: right;
+      .v-red {
+        display: inline-block;
+        color: #fc5659;
+        margin-right: 5px;
+        vertical-align: middle;
+      }
     }
     .question-content {
-      border-radius: 2px;
-      border: 1px solid #d2d2d2;
-      margin-left: 20px;
-      padding: 10px;
+      padding: 30px;
+      width: 100%;
+      background-color: #fff;
       .q-des {
         margin-bottom: 15px;
       }
@@ -170,6 +211,15 @@ export default {
         }
         .q-subject {
           margin-bottom: 14px;
+          &.error {
+            input {
+              border-color: #fc5659;
+              color: #fc5659;
+            }
+            .limit {
+              display: none;
+            }
+          }
         }
       }
       .q-operate {

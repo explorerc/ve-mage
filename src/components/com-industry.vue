@@ -2,6 +2,7 @@
   <div class="industry-wrap">
     <el-select v-model="value"
                @change="change"
+               @blur="blur"
                placeholder="请选择">
       <el-option v-for="item in industries"
                  :key="item.value"
@@ -14,14 +15,9 @@
 
 <script>
 export default {
-  props: {
-    value: {
-      type: String,
-      default: ''
-    }
-  },
   data () {
     return {
+      value: '',
       industries: [
         {
           value: 'IT/互联网',
@@ -71,7 +67,11 @@ export default {
   },
   methods: {
     change (e) {
+      this.$emit('input', e)
       this.$emit('change', e)
+    },
+    blur () {
+      this.$emit('saveInfo', this.value)
     }
   }
 }

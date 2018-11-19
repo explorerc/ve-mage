@@ -6,7 +6,6 @@
       <span class="title">活动列表</span>
       <div class="search-box fr">
         <el-select v-model="searchParams.status"
-                   @change="changeSearch"
                    placeholder="直播状态">
           <el-option v-for="item in optionsStates"
                      :key="item.value"
@@ -15,7 +14,6 @@
           </el-option>
         </el-select>
         <el-select v-model="searchParams.sortBy"
-                   @change="changeSearch"
                    placeholder="请选择">
           <el-option v-for="item in optionsOrder"
                      :key="item.value"
@@ -149,6 +147,8 @@
           this.$router.push(`/liveMager/detail/${event.id}`)
         } else if (event.type === 'data') {
           this.$router.push(`/data/preview/${event.id}`)
+        } else if (event.type === 'viewer') {
+          this.$router.push(`/data/viewerList/${event.id}?type=all`)
         }
       },
       inCountdownClick (e) {
@@ -232,11 +232,7 @@
       },
       changePage (currentPage) {
         this.searchParams.page = currentPage
-        this.queryList()
-      },
-      changeSearch () {
-        this.searchParams.page = 1
-        this.queryList()
+        // this.queryList()
       },
       searchEnter () {
         this.queryList()
@@ -300,15 +296,15 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .in-countdown {
-    p {
-      text-align: center;
-      margin: 20px 0;
-      &:nth-of-type(3) {
-        color: #fc5659;
-        font-size: 20px;
-      }
+.in-countdown {
+  p {
+    text-align: center;
+    margin: 20px 0;
+    &:nth-of-type(3) {
+      color: #fc5659;
+      font-size: 20px;
     }
   }
+}
 </style>
 

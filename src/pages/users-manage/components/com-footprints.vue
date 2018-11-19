@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100%;">
-    <div class="v-footprints bscroll" ref="bscroll">
+    <div class="v-footprints bscroll" ref="bscroll" @scroll="scrollEvent($event)">
       <ol class="bscroll-container">
         <li class="v-footprint" v-for="itemData in dataList" :key="itemData.behavior_id">
           <i class="iconfont icon-dian">
@@ -10,13 +10,13 @@
             {{itemData.generated_at}}
           </p>
           <p class="v-content">
-            {{itemData.event==='JOIN_ACTIVITY'?'参加活动':'首次访问'}}活动 {{itemData.data.activity_name?itemData.data.activity_name:''}}
-            <button @click="showRecord(itemData.behavior_id)">
+            {{itemData.event==='JOIN_ACTIVITY'?'参加':'首次访问'}}活动 {{itemData.data.activity_title?itemData.data.activity_title:''}}
+            <button @click="showRecord(itemData.activity_id,itemData.data.activity_title,itemData.generated_at)" v-if="itemData.event!='FIRST_VISIT'">
               查看详情
             </button>
           </p>
         </li>
-        <!-- <li class="v-footprint">
+         <!-- <li class="v-footprint">
           <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
@@ -41,10 +41,10 @@
                  header='行为记录'>
       <div>
         <p class="v-explain">
-          百度人工智能大会发布芯片
+          {{showActivity.name}}
         </p>
         <p class="v-time">
-          2018-07-07 09:30:00
+          {{showActivity.time}}
         </p>
         <div class="v-steps-content">
           <div class="v-steps bscroll" ref="infoscroll">
@@ -88,33 +88,69 @@ import BScroll from 'better-scroll'
 export default {
   data () {
     return {
-      dataList: {},
-      dataInfoList: {},
+      scrollEvent: null,
+      dataList: [],
+      dataInfoList: [],
       searchParams: {
         business_consumer_uid: 0,
         type: 1,
         page: 1,
-        page_size: 20
+        page_size: 20,
+        totalPage: 0
       },
       searchInfoParams: {
         business_consumer_uid: 0,
         type: 2,
         page: 1,
-        page_size: 20
+        page_size: 20,
+        totalPage: 0
+      },
+      showActivity: {
+        name: '',
+        time: ''
       },
       total: 0,
       infoTotal: 0,
       recordBoxShow: false // 行为记录框显示隐藏
     }
   },
-  created () {
+  mounted () {
     this.getDataList()
-    this.initScroll()
+    // this.initScroll()
+  },
+  created () {
+    this.scrollEvent = this.debounce(e => {
+      if (this.$refs.bscroll.offsetHeight + this.$refs.bscroll.scrollTop > this.$refs.bscroll.scrollHeight - 100) {
+        if (this.searchParams.page < this.searchParams.totalPage) {
+          this.searchParams.page = parseInt(this.searchParams.page) + 1
+          this.getDataList()
+        }
+      }
+    }, 50)
   },
   methods: {
-    showRecord (activityId) {
+    debounce (func, wait, immediate) {
+      var timeout
+      return function () {
+        var context = this
+        var args = arguments
+        var later = function () {
+          timeout = null
+          if (!immediate) func.apply(context, args)
+        }
+        var callNow = immediate && !timeout
+        clearTimeout(timeout)
+        timeout = setTimeout(later, wait)
+        if (callNow) func.apply(context, args)
+      }
+    },
+    showRecord (activityId, name, time) {
       this.recordBoxShow = true
-      this.getDataInfoList(activityId)
+      this.showActivity.name = name
+      this.showActivity.time = time
+      this.searchInfoParams.page = 1
+      this.searchInfoParams.activity_id = activityId
+      this.getDataInfoList(false)
       this.initInfoScroll()
     },
     recordBoxClick (e) {
@@ -125,68 +161,76 @@ export default {
     getDataList () {
       this.searchParams.business_consumer_uid = this.$route.params.id
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchParams).then((res) => {
-        res.data.list.forEach(element => {
-          this.dataList.push(element)
-        })
-        this.total = res.data.total
-        this.searchParams.page = parseInt(res.data.currPage) + 1
-        this.searchParams.total = res.data.total
+        if (res.data && res.data.list) {
+          res.data.list.forEach(element => {
+            this.dataList.push(element)
+          })
+          this.total = res.data.total
+          this.searchParams.page = parseInt(res.data.page) + 1
+          this.searchParams.totalPage = Math.ceil(res.data.total / res.data.page_size)
+        }
       }).catch(err => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+        if (err.code !== 201) {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
             }
-          }
-        })
+          })
+        }
       })
     },
-    initScroll () {
-      let _this = this
-      this.$nextTick(() => {
-        let bscrollDom = this.$refs.bscroll
-        this.aBScroll = new BScroll(bscrollDom, {
-          'scrollbar': true,
-          'click': true,
-          'mouseWheel': true,
-          'probeType ': 3,
-          'pullup': true
-          // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
-        })
-        this.aBScroll.on('scrollEnd', () => {
-          // 滚动到底部
-          if (this.aBScroll.y <= (this.aBScroll.maxScrollY)) {
-            if (_this.searchParams.page <= _this.searchParams.total) {
-              _this.getDataList()
-            }
-          }
-        })
-      })
-    },
-    getDataInfoList (activityId) {
+    // initScroll () {
+    //   let _this = this
+    //   this.$nextTick(() => {
+    //     let bscrollDom = this.$refs.bscroll
+    //     this.aBScroll = new BScroll(bscrollDom, {
+    //       'scrollbar': true,
+    //       'click': true,
+    //       'mouseWheel': true,
+    //       'probeType ': 3,
+    //       'pullup': true
+    //       // 当 probeType 为 1 的时候，会非实时（屏幕滑动超过一定时间后）派发scroll 事件；当 probeType 为 2 的时候，会在屏幕滑动的过程中实时的派发 scroll 事件；当 probeType 为 3 的时候，不仅在屏幕滑动的过程中，而且在 momentum 滚动动画运行过程中实时派发 scroll 事件。
+    //     })
+    //     this.aBScroll.on('scrollEnd', () => {
+    //       // 滚动到底部
+    //       if (this.aBScroll.y <= (this.aBScroll.maxScrollY)) {
+    //         if (_this.searchParams.page <= _this.searchParams.total) {
+    //           this.getDataList()
+    //         }
+    //       }
+    //     })
+    //   })
+    // },
+    getDataInfoList (isAdd) {
       this.searchInfoParams.business_consumer_uid = this.$route.params.id
-      this.searchInfoParams.activity_id = activityId
+      if (!isAdd) {
+        this.dataInfoList = []
+      }
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
         res.data.list.forEach(element => {
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total
-        this.searchInfoParams.page = parseInt(res.data.currPage) + 1
         this.searchInfoParams.total = res.data.total
+        this.searchInfoParams.totalPage = Math.ceil(res.data.total / res.data.page_size)
       }).catch(err => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
+        if (err.code !== 201) {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
             }
-          }
-        })
+          })
+        }
       })
     },
     initInfoScroll () {
@@ -203,9 +247,11 @@ export default {
         })
         this.infoscroll.on('scrollEnd', () => {
           // 滚动到底部
-          if (this.infoscroll.y <= (this.infoscroll.maxScrollY)) {
-            if (_this.searchInfoParams.page <= _this.searchInfoParams.total) {
-              _this.getDataInfoList()
+          // console.log(this.infoscroll.y + ',' + this.infoscroll.maxScrollY)
+          if (this.infoscroll.y === (this.infoscroll.maxScrollY)) {
+            if (_this.searchInfoParams.page < _this.searchInfoParams.totalPage) {
+              _this.searchInfoParams.page = parseInt(_this.searchInfoParams.page) + 1
+              _this.getDataInfoList(true)
             }
           }
         })
@@ -215,16 +261,16 @@ export default {
       let strType = ''
       switch (type) {
         case 'JOIN_ACTIVITY_WEBSITE':
-          strType = '进入活动官网'
+          strType = '进入了活动官网'
           break
         case 'LEAVE_ACTIVITY_WEBSITE':
-          strType = '离开活动官网'
+          strType = '离开了活动官网'
           break
         case 'JOIN_ACTIVITY_GUIDE':
-          strType = '进入活动引导页'
+          strType = '进入了活动引导页'
           break
         case 'LEAVE_ACTIVITY_GUIDE':
-          strType = '离开活动引导页'
+          strType = '离开了活动引导页'
           break
         case 'ORDER_ACTIVITY':
           strType = '预约活动'
@@ -233,37 +279,37 @@ export default {
           strType = '报名活动'
           break
         case 'JOIN_ACTIVITY':
-          strType = '进入活动'
+          strType = '进入了活动'
           break
         case 'FIRST_CHAT':
-          strType = '开始聊天'
+          strType = '开始了聊天'
           break
         case 'FIRST_SHARE':
-          strType = '第一次分享'
+          strType = '进行第一次分享'
           break
         case 'COMMIT_SURVEY':
           strType = '提交调查问卷'
           break
         case 'SHARE_COUNT':
-          strType = `分享次数，共进行了${data.count}次分享`
+          strType = `共进行了${data.count}次分享`
           break
         case 'STAY_ACTIVITY_WEBSITE_TIME':
-          strType = `活动官网停留时间，在活动官网浏览了${data.time}分钟`
+          strType = `在活动官网浏览了${data.time}分钟`
           break
         case 'STAY_ACTIVITY_TIME':
-          strType = `活动停留时间，观看了${data.time}分钟`
+          strType = `观看了${data.time}分钟`
           break
         case 'SEND_CHAT_COUNT':
-          strType = `聊天条数，共发送了${data.count}条聊天内容`
+          strType = `共发送了${data.count}条聊天内容`
           break
         case 'INVITE_COUNT':
-          strType = `邀请好友数，共邀请了${data.count}个好友`
+          strType = `共邀请了${data.count}个好友`
           break
         case 'CONCERN_WX':
-          strType = `关注微信公众号，关注了${data.wx_name}`
+          strType = `关注了${data.wx_name}`
           break
         case 'EMAIL_SUBSCRIBE':
-          strType = `邮件订阅，关注了${data.wx_name}`
+          strType = `关注了${data.business_name}`
           break
       }
       return strType

@@ -73,6 +73,10 @@
       errorMsg: {
         type: String,
         default: ''
+      },
+      nowIndex: {
+        type: Number,
+        default: 0
       }
     },
     watch: {
@@ -106,7 +110,9 @@
         this.errorTxt = ''
         this.$emit('success', {
           name: '',
-          host: ''
+          host: '',
+          nowIndex: this.nowIndex,
+          isDelete: true
         })
       },
       overUpload () {
@@ -115,6 +121,7 @@
       selected () {
         console.log('selected')
         this.loading = true
+        this.$emit('select')
       },
       uploadProgress (data) {
         this.loading = false
@@ -127,6 +134,7 @@
         const fildObj = JSON.parse(data.data).data
         if (fildObj.host) this.imgHost = fildObj.host
         if (fildObj.name) this.fileSrc = fildObj.name
+        fildObj.nowIndex = this.nowIndex
         this.$emit('success', fildObj)
       },
       uploadError (data) {
@@ -144,7 +152,8 @@
         this.coverImg = ''
         this.$emit('error', {
           type: state,
-          msg: msg
+          msg: msg,
+          nowIndex: this.nowIndex
         })
       }
     }

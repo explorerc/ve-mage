@@ -41,7 +41,7 @@
         </ul>
         <ol class='table-content'>
           <li class='clearfix' v-for="(item,idx) in quesData" :key="idx">
-            <div v-if="item.type === 'mobile'" class='spe moblie'>
+            <div v-if="item.dataType === 'phone'" class='spe moblie'>
               <i class='star'>*</i>
               <el-select v-model="phone" disabled placeholder="请选择">
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
@@ -49,8 +49,8 @@
               </el-select>
             </div>
             <div v-else  class='spe'>
-              <el-select v-model="item.type" placeholder="请选择" @change='selectChange(idx,item.type)'>
-                <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
+              <el-select v-model="item.dataType" placeholder="请选择" @change='selectChange(idx,item.dataType)'>
+                <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value" :disabled="opt.disabled">
                 </el-option>
               </el-select>
             </div>
@@ -58,19 +58,18 @@
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div> -->
             <div>
-              <!-- <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" placeholder="请输入信息描述"></com-input> -->
-              <com-input class='inp' value=""  :max-length="8" :placeholder="item.placeholder"></com-input>
+              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
             </div>
-            <div v-if="item.type === 'mobile'" class='del-box'>
+            <div v-if="item.dataType === 'phone'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
               <span @click='removeItem(idx)' class='del'>删除</span>
             </div>
-            <section class='select-item clearfix' v-if="item.type === 'select'">
+            <section class='select-item clearfix' v-if="item.dataType === 'select'">
               <ol>
-                <span class='add-item' @click='addItem(idx)' v-if="item.detail.length < 10 ? true : false"><i>＋</i>添加选项</span>
-                <li v-for="(option,count) in item.detail" :key='count'>
+                <span class='add-item' @click='addItem(idx)' v-if="item.detail.list.length < 10 ? true : false"><i>＋</i>添加选项</span>
+                <li v-for="(option,count) in item.detail.list" :key='count'>
                   <com-input :value.sync="option.value" :max-length="8" placeholder="请输入选项"></com-input>
                   <span @click='delItem(idx,count)' class='del'>删除</span>
                 </li>
@@ -115,7 +114,9 @@
         questionId: '',
         canPaas: true,
         canSave: true,
-        saveData: {}
+        saveData: {},
+        hasEmail: false,
+        hasName: false
       }
     },
     created () {
@@ -126,10 +127,10 @@
         value: 'text',
         txt: '文本'
       },
-      // {
-      //   value: 'mobile',
-      //   txt: '手机'
-      // },
+      {
+        value: 'name',
+        txt: '姓名'
+      },
       {
         value: 'integer',
         txt: '数字'
@@ -152,34 +153,6 @@
         // }
       ]
       this.quesData = [
-        // {
-        //   info: '标题',
-        //   desc: '描述描述',
-        //   label: '文本',
-        //   detail: []
-        // },
-        // {
-        //   info: '标题a',
-        //   desc: '描述描述a',
-        //   label: '姓名',
-        //   detail: []
-        // },
-        // {
-        //   info: '标题b',
-        //   desc: '描述描述b',
-        //   label: '数字',
-        //   detail: []
-        // },
-        // {
-        //   info: '下拉',
-        //   desc: '描述下拉',
-        //   label: '下拉选择',
-        //   detail: [
-        //     '男',
-        //     '女',
-        //     '奥克兰圣'
-        //   ]
-        // }
       ]
     },
     methods: {
@@ -187,34 +160,56 @@
         this.canPaas = false
         this.quesData.splice([idx], 1)
       },
-      selectChange (idx, res) {
+      selectChange (idx, res, txt) {
+        console.log(res)
         this.canPaas = false
-        if (res === '下拉选择') {
-          // debugger// eslint-disable-line
-          this.quesData[idx]['detail'].push('')
+        switch (res) {
+          case 'select':
+            this.quesData[idx]['detail']['list'].push({value: ''})
+            this.quesData[idx]['title'] = '下拉选择'
+            this.quesData[idx]['type'] = 'select'
+            break
+          case 'integer':
+            this.quesData[idx]['detail']['format'] = 'integer'
+            this.quesData[idx]['title'] = '数字'
+            break
+          case 'email':
+            this.quesData[idx]['detail']['format'] = 'email'
+            this.quesData[idx]['title'] = '邮箱'
+            break
+          case 'text':
+            this.quesData[idx]['title'] = '文本'
+            break
+          case 'name':
+            this.quesData[idx]['title'] = '姓名'
+            break
         }
       },
       addItem (idx) {
         this.canPaas = false
         console.log(idx)
-        this.quesData[idx]['detail'].push({
-          value: '',
-          key: this.quesData[idx]['detail'].length === 0 ? 0 : this.quesData[idx]['detail'].length
+        this.quesData[idx]['detail']['list'].push({
+          value: ''
+          // key: this.quesData[idx]['list'].length === 0 ? 0 : this.quesData[idx]['list'].length
         })
       },
       delItem (idx, count) {
         this.canPaas = false
-        // debugger // eslint-disable-line
-        this.quesData[idx]['detail'].splice(count, 1)
+        this.quesData[idx]['detail']['list'].splice(count, 1)
       },
       addNew () {
         this.canPaas = false
         let obj = {
           title: '标题',
-          placeholder: '请输入描述信息',
+          placeholder: '',
+          place: '请输入描述信息',
           label: '文本',
           type: 'text',
-          detail: []
+          dataType: 'text',
+          detail: {
+            format: '',
+            list: []
+          }
         }
         this.quesData.push(obj)
       },
@@ -223,7 +218,7 @@
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
-          if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
+          if (res.data.detail) { // 是否有报名表单数据
             this.isOpen = true
             this.queryData = res.data.detail
             this.quesData = res.data.detail.questionList
@@ -249,15 +244,15 @@
           }
         }
         this.saveData.detail.questionList.forEach(item => {
-          if (item.type === 'mobile') {
+          if (item.dataType === 'phone') {
             item.required = 'Y'
             item.verification = 'Y'
           }
-          if (item.type === 'email') {
+          if (item.dataType === 'email') {
             item.verification = 'Y'
           }
-          if (item.type === 'select') {
-            if (!item.detail.length) {
+          if (item.dataType === 'select') {
+            if (!item.detail['list'].length) {
               this.$messageBox({
                 header: '提示',
                 content: '请添加下拉选项',
@@ -266,7 +261,7 @@
               })
               this.canSave = false
             } else {
-              item.detail.forEach(ele => {
+              item.detail['list'].forEach(ele => {
                 if (!ele.value.length) {
                   this.canSave = false
                 } else {
@@ -284,6 +279,7 @@
             }
           }
         })
+        console.log(this.saveData.detail.questionList = JSON.stringify(this.saveData.detail.questionList))
         this.$nextTick(() => {
           if (this.canSave) {
             this.saveLimitfn(this.saveData)
@@ -333,15 +329,19 @@
           'submodule': 'APPOINT',
           'enabled': ref ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({ handlers: [60706] }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           if (res.code === 200) {
             if (ref) {
               let obj = {
                 title: '手机号码',
-                placeholder: '请输入手机号码',
+                placeholder: '',
+                place: '请输入手机号码',
                 label: '手机号码',
-                type: 'mobile',
-                detail: []
+                type: 'text',
+                dataType: 'phone',
+                detail: {
+                  format: 'phone'
+                }
               }
               this.quesData.push(obj)
             } else {
@@ -391,7 +391,34 @@
     watch: {
       quesData: {
         handler (newValue) {
-          console.log('change')
+          this.hasEmail = false
+          this.hasName = false
+          newValue.forEach((item) => {
+            switch (item.dataType) {
+              case 'email':
+                this.hasEmail = true
+                break
+              case 'name':
+                this.hasName = true
+                break
+            }
+          })
+          this.options.forEach((item) => {
+            if (item.value === 'email') {
+              if (this.hasEmail === true) {
+                item.disabled = true
+              } else {
+                item.disabled = false
+              }
+            }
+            if (item.value === 'name') {
+              if (this.hasName === true) {
+                item.disabled = true
+              } else {
+                item.disabled = false
+              }
+            }
+          })
         },
         deep: true
       },
@@ -486,7 +513,6 @@
   }
   .table-content {
     & > li {
-      line-height: 40px;
       margin: 20px 0;
       & > div {
         float: left;
@@ -499,17 +525,19 @@
           .star {
             color: #fc5659;
             position: absolute;
-            top: 3px;
+            top: 15px;
             z-index: 9;
             left: 14px;
           }
         }
         &.del-box /deep/ {
+          line-height: 40px;
           width: 100px;
           .msg-tip-box span {
+            position: absolute;
             max-width: 500px;
             width: 270px;
-            top: -30px;
+            top: 10px;
             left: 30px;
           }
         }

@@ -195,7 +195,8 @@ export default {
       }
     }
     .btn-container {
-      width: 200px;
+      // width: 200px;
+      display: inline-block;
       height: 40px;
       border-radius: 4px;
       margin-top: 50px;
@@ -301,6 +302,8 @@ export default {
     .panel {
       text-align: center;
       background: RGBA(0, 157, 181, 1);
+      background-repeat: no-repeat;
+      background-position: center;
     }
     .font-content {
       margin-top: 70px;
@@ -311,6 +314,11 @@ export default {
     .font-editer {
       height: 400px;
       background-color: #dadada;
+    }
+    .media-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
     .btn {
       display: block;
@@ -402,15 +410,15 @@ export default {
       width: 1124px;
       .block1-item {
         width: 200px;
-        height: 200px;
+        // height: 200px;
         margin-right: 90px;
-        margin-bottom: 100px;
+        margin-bottom: 30px;
         &:nth-of-type(4) {
           margin-right: 0;
         }
         img {
-          width: 100%;
-          height: 100%;
+          width: 200px;
+          height: 200px;
           display: block;
           margin: auto;
           border-radius: 500px;

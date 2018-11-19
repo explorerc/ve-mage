@@ -41,7 +41,7 @@
              </ve-upload>
           </div>
        </com-tab>
-       <com-tab index="video" >
+       <com-tab index="video" v-if="!value.hideVideo">
           <label class='label-spe  label-spe-inner' >视频类型</label>
           <div slot="label"><el-radio v-model="value.bgType" label="video">视频背景</el-radio></div>
           <div>
@@ -143,7 +143,7 @@ export default {
       if (!this.$refs.target) return
       if (data.bgType === 'color') {
         this.$refs.target.style.cssText = `background-color:${data.color}`
-      } else if (data.bgType === 'img' && data.img) {
+      } else if ((data.bgType === 'img' && data.img) || data.delete) {
         this.$refs.target.style.cssText = `background-image:url(${data.img.indexOf('mp') === 0 ? this.host + data.img : data.img})`
       } else if (data.bgType === 'video' && data.video) {
         if (data.videoType === 'upload') {
@@ -189,6 +189,10 @@ export default {
         this.value.img = `${data.name}`
       } else {
         this.value.video = `${data.name}`
+      }
+      if (data.isDelete) {
+        // 删除
+        this.value.delete = true
       }
       this.analysisData(this.value)
       // }

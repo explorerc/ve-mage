@@ -3,11 +3,12 @@
     <div class="test-wrap">
       <draggable v-model="dragData"
                  :options="{handle:'.sort'}">
-        <com-q v-for="(item,index) in dragData"
+        <com-q :ref="`comEdit${index}`"
+              v-for="(item,index) in dragData"
                :value.sync="item"
                :edit="true"
                :index="index+1"
-               :key="index">></com-q>
+               :key="index"></com-q>
       </draggable>
     </div>
     <div class="test-wrap1">
@@ -41,14 +42,17 @@ export default {
       tIndex: 0,
       dragData: [
         {
-          title: '单选题',
+          title: '',
           errorTip: '',
           type: QTypes.RADIO,
           required: true,
           detail: {
             list: [
               {
-                value: '选项'
+                value: ''
+              },
+              {
+                value: ''
               }
             ]
           },
@@ -57,7 +61,7 @@ export default {
           }
         },
         {
-          title: '多选题',
+          title: '',
           errorTip: '',
           type: QTypes.CHECKBOX,
           value: [],
@@ -65,7 +69,9 @@ export default {
           detail: {
             list: [
               {
-                value: '选项'
+                value: ''
+              }, {
+                value: ''
               }
             ]
           },
@@ -81,7 +87,6 @@ export default {
           detail: {
             list: [
               {
-                id: 1,
                 value: '选项'
               }
             ]
@@ -91,7 +96,7 @@ export default {
           }
         },
         {
-          title: '问答题',
+          title: '',
           errorTip: '',
           type: QTypes.TEXT,
           style: '',
@@ -145,7 +150,7 @@ export default {
           }
         },
         {
-          title: '性别',
+          title: '',
           errorTip: '',
           type: QTypes.SELECT,
           required: true,
@@ -165,7 +170,7 @@ export default {
           }
         },
         {
-          title: '生日',
+          title: '',
           errorTip: '',
           type: QTypes.DATE,
           required: true,
@@ -177,10 +182,13 @@ export default {
           }
         },
         {
-          title: '地域',
+          title: '',
           errorTip: '',
           type: QTypes.AREA,
           required: true,
+          detail: {
+            level: 'address'
+          },
           ext: {
             name: '地域'
           }
@@ -188,10 +196,57 @@ export default {
         {
           title: '行业',
           errorTip: '',
-          type: QTypes.INDUSTRY,
+          type: QTypes.SELECT,
           required: true,
+          detail: {
+            list: [
+              {
+                value: 'IT/互联网'
+              },
+              {
+                value: '电子/通信/硬件'
+              },
+              {
+                value: '金融'
+              },
+              {
+                value: '交通/贸易/物流'
+              },
+              {
+                value: '消费品'
+              },
+              {
+                value: '机械/制造'
+              },
+              {
+                value: '能源/矿产环保'
+              },
+              {
+                value: '制药/医疗'
+              },
+              {
+                value: '专业服务'
+              },
+              {
+                value: '教育/培训'
+              },
+              {
+                value: '广告/媒体/娱乐/出版'
+              },
+              {
+                value: '房地产/建筑'
+              },
+              {
+                value: '服务业'
+              },
+              {
+                value: '政府/非盈利机构/其它'
+              }
+            ]
+          },
           ext: {
-            name: '行业'
+            fixedness: true,
+            name: '教育水平'
           }
         },
         {
@@ -251,6 +306,12 @@ export default {
       },
       fileSize: 200000
     }
+  },
+  mounted () {
+    setTimeout(() => {
+      console.log(this.$refs['comEdit1'][0])
+      this.$refs['comEdit1'][0].$children[1].validate()
+    }, 2000)
   },
   methods: {
     uploadSelected (data) {

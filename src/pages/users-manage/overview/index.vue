@@ -16,42 +16,47 @@
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[1].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.highQuality+'/1'">
+              {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
-            优质用户 ({{uersInfo[1].centage}}%)
+            优质用户 ({{uersInfo[1].centage}})
           </p>
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[2].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.highValue+'/1'">
+              {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
-            高价值用户 ({{uersInfo[2].centage}}%)
+            高价值用户 ({{uersInfo[2].centage}})
           </p>
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[3].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.general+'/1'">
+              {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
-            一般用户 ({{uersInfo[3].centage}}%)
+            一般用户 ({{uersInfo[3].centage}})
           </p>
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[4].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.potential+'/1'">
+              {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜在用户 ({{uersInfo[4].centage}}%)
+            潜力用户 ({{uersInfo[4].centage}})
           </p>
         </li>
         <li>
           <p class="v-data">
-            {{uersInfo[5].val}}
+            <a :href="'/userManage/userGroupsDetails/'+url.loss+'/1'">
+              {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}}%)
+            流失用户 ({{uersInfo[5].centage}})
           </p>
         </li>
       </ol>
@@ -85,44 +90,50 @@
             时间
           </div>
           <div class="v-activity-content v-type">
-            流失用户
+            观众总数
           </div>
           <div class="v-activity-content v-operation">
-            一般用户
+            优质用户
+          </div>
+          <div class="v-activity-content v-high">
+            高价值用户
           </div>
           <div class="v-activity-content v-operation">
             潜力用户
           </div>
           <div class="v-activity-content v-operation">
-            高价值用户
+            一般用户
           </div>
-          <div class="v-activity-content v-operation">
-            优质用户
+          <div class="v-activity-content v-type">
+            流失用户
           </div>
         </li>
         <li class="clearfix"
-            v-for="itemData in tableList"
+            v-for="(itemData,index) in tableList"
             :key="itemData.id">
           <div class="v-activity-content v-name">
             {{itemData.title}}
           </div>
           <div class="v-activity-content v-time">
-            {{itemData.startTime}}
+            {{times[index] ? times[index].toString().substring(0,10) : '-'}}
           </div>
           <div class="v-activity-content">
-            {{itemData.val0}}
+            {{itemData.val5}}
           </div>
           <div class="v-activity-content">
-            {{itemData.val1}}
-          </div>
-          <div class="v-activity-content">
-            {{itemData.val2}}
+            {{itemData.val4}}
           </div>
           <div class="v-activity-content">
             {{itemData.val3}}
           </div>
           <div class="v-activity-content">
-            {{itemData.val4}}
+            {{itemData.val2}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val1}}
+          </div>
+          <div class="v-activity-content">
+            {{itemData.val0}}
           </div>
         </li>
       </ol>
@@ -133,17 +144,27 @@
 import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
+import groupService from 'src/api/user_group'
 export default {
   data () {
     return {
       info: {
       },
       datas: {}, // 各级别用户趋势图数据
-      uersInfo: [{ val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }, { val: 0, centage: 0 }],
+      uersInfo: [{ val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }, { val: 0, centage: '' }],
       tableList: [], // 数据详情
       isActive3: true,
       isActive7: false,
-      isActive10: false
+      isActive10: false,
+      url: {
+        total: '',
+        highQuality: '',
+        highValue: '',
+        general: '',
+        potential: '',
+        loss: ''
+      },
+      times: []
     }
   },
   beforeDestroy () {
@@ -156,10 +177,10 @@ export default {
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
-      arr.forEach(element => {
-        this.uersInfo[arr.indexOf(element)].val = element
-        this.uersInfo[arr.indexOf(element)].centage = Math.round(element / this.info.total)
-      })
+      for (let i = 0; i < arr.length; i++) {
+        this.uersInfo[i].val = arr[i]
+        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+      }
     }).catch(err => {
       this.$messageBox({
         header: '提示',
@@ -177,6 +198,7 @@ export default {
       this.resizeRenderChart()
     }
     this.getData(3)
+    this.getGroudList()
   },
   methods: {
     resizeRenderChart () {
@@ -189,20 +211,31 @@ export default {
         count: count
       }).then((res) => {
         this.datas = res.data
+        for (let i = 0; i < this.datas.list.length; i++) {
+          this.times[i] = this.datas.list[i].name
+          this.datas.list[i].name = this.datas.names[i].length > 10 ? this.datas.names[i].substring(0, 10) : this.datas.names[i]
+        }
+        var echartsData = []
+        let index = 0
+        for (let i = this.datas.list.length - 1; i >= 0; i--) {
+          echartsData[index] = this.datas.list[i]
+          index++
+        }
+        this.tableList.splice(0, this.tableList.length)
         // this.datas = res.data
         /* 绘制堆叠图 */
         this.effectChart = barPile('chart01', {
           legendData: this.datas.types,
-          list: this.datas.list
+          list: echartsData
         }, {
           left: 130,
           bottom: 70,
           top: 30,
-          right: 20
+          right: 50
         }, {
           left: 'center',
           top: '350px'
-        })
+        }, '人')
         this.datas.list.forEach((element, index) => {
           let template = {}
           template.title = this.datas.names[index]
@@ -212,8 +245,29 @@ export default {
           template.val2 = element.data[2]
           template.val3 = element.data[3]
           template.val4 = element.data[4]
+          template.val5 = element.data[5]
           this.tableList.push(template)
         })
+      })
+    },
+    getGroudList () {
+      this.$post(groupService.GROUPS_LIST, {
+        page: 1
+      }).then(res => {
+        let dataList = res.data.list
+        for (let i = 0; i < dataList.length; i++) {
+          if (dataList[i].title === '优质用户') {
+            this.url.highQuality = dataList[i].group_id
+          } else if (dataList[i].title === '流失用户') {
+            this.url.loss = dataList[i].group_id
+          } else if (dataList[i].title === '一般用户') {
+            this.url.general = dataList[i].group_id
+          } else if (dataList[i].title === '高价值用户') {
+            this.url.highValue = dataList[i].group_id
+          } else if (dataList[i].title === '潜力用户') {
+            this.url.potential = dataList[i].group_id
+          }
+        }
       })
     },
     selectCount (ele, btn) {
@@ -282,6 +336,11 @@ export default {
         float: left;
         .v-data {
           font-size: 24px;
+          a {
+            &:hover {
+              color: #4b5afe;
+            }
+          }
         }
         .v-title {
           color: #888;
@@ -375,13 +434,16 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-          width: 12%;
+          width: 11%;
         }
         .v-name {
-          width: 26%;
+          width: 18%;
         }
         .v-time {
           width: 14%;
+        }
+        .v-high {
+          width: 13%;
         }
       }
     }

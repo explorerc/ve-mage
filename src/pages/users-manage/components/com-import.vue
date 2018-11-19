@@ -8,10 +8,10 @@
       </div>
       <div class="content" v-if='!importSuccess'>
         <div class="item clearfix">
-          <p class='tips-box'>下载模版 <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
+          <p class='tips-box'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
         </div>
         <div class="item upload-box-item clearfix">
-          <label class="label">上传封面:</label>
+          <label class="label">选择模板:</label>
           <div class="upload-box" :class="{ 'error':fileEmpty }" @click='fileEmpty = false' >
 
             <com-upload
@@ -25,7 +25,7 @@
               @load="uploadSuccess">
               <dl class='dl'  ref="uploadFile" title="点击上传" v-if='uploadStatus === "beforeUpload"'>
                 <dt></dt>
-                <dd v-if="!errorTxt" >请使用csv模版上传</dd>
+                <dd v-if="!errorTxt" >请使用csv模板上传</dd>
                 <dd class="error-msg" v-else>{{errorTxt}}</dd>
               </dl>
               <dl class='uploading' v-if='uploadStatus === "uploading"'>
@@ -45,7 +45,7 @@
         </div>
         <div class="item">
           <label class='label'>导入规则:</label>
-          <el-radio v-model="radio" label="1">新建固定群组</el-radio>
+          <el-radio v-model="radio" label="1" :disabled="isDis">新建固定群组</el-radio>
           <el-radio v-model="radio" label="0">导入固定群组</el-radio>
         </div>
         <div class="tab-box">
@@ -81,9 +81,9 @@
           <dd>恭喜您，批量导入成功!</dd>
         </dl>
         <div class='tips'>
-          <span>成功导入<i>{{importSuccessData.success}}</i>位</span>
-          <span>错误用户<i>{{importSuccessData.error}}</i>位</span>
-          <span>重复数据<i>{{importSuccessData.repeat.length}}</i><em>位</em></span>
+          <span>成功导入<i> {{importSuccessData.success}} </i>位 </span>
+          <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
+          <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
         </div>
         <ul>
           <li v-for="item in importSuccessData.repeat" :key="item">{{item}}、</li>
@@ -131,6 +131,14 @@ export default {
     groupId: {
       type: Number,
       default: 0
+    },
+    isFixed: {
+      type: String,
+      default: '1'
+    },
+    isDis: {
+      type: Boolean,
+      default: false
     }
   },
   mounted () {
@@ -138,12 +146,18 @@ export default {
     if (this.groupId) {
       this.selval = this.groupId
     }
+    if (this.isFixed) {
+      this.radio = this.isFixed
+    }
   },
   methods: {
     close () {
       this.$emit('handleClick', {
         action: 'cancel'
       })
+      // if (this.importSuccess) {
+      //   window.location.reload()
+      // }
     },
     overUpload () {
       this.$refs.uploadFile.click()
@@ -204,7 +218,7 @@ export default {
     verifyEmpty () {
       if (this.fileKey === '') {
         this.fileEmpty = true
-        this.errorTxt = '请上传模版文件'
+        this.errorTxt = '请上传模板文件'
         return false
       }
       if (this.radio === '1') {
@@ -230,7 +244,7 @@ export default {
       }
     },
     groupImportData (res) {
-      this.$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
+      this.$config({ handlers: true }).$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
         console.log(res)
         this.importSuccess = true
         this.importSuccessData = {
@@ -238,6 +252,10 @@ export default {
           error: res.data.invalid,
           repeat: res.data.repeat
         }
+      }).catch((res) => {
+        this.uploadStatus = 'beforeUpload'
+        this.loading = false
+        this.errorTxt = res.msg
       })
     },
     reUpload () {
@@ -257,7 +275,7 @@ export default {
       array.forEach(item => {
         arr.push({
           id: item.group_id,
-          name: item.title + `(${item.user_count})`
+          name: item.title
         })
       })
       return arr
@@ -415,6 +433,18 @@ export default {
     .tips-box {
       float: right;
       padding-right: 16px;
+      a {
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+      .msg-tip-box span {
+        display: none;
+      }
+      .msg-tip-box i:hover + span {
+        display: block;
+      }
     }
     .upload-box {
       float: left;

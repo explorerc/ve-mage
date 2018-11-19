@@ -35,14 +35,14 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标签：</div>
           <div class="from-content">
-            <el-button round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
+            <el-button  round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
               <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
-              <li class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
+              <li v-if="tagArray.length<3" class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
             </ol>
             <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
             <div class="tag-modal" v-show='showChooseTag'>
-              <div class='title'>选择标签,最多可选择 3 个</div>
+              <div class='title'>选择标签，最多可选择 3 个</div>
               <i class='el-submenu__icon-arrow el-icon-arrow-down arrow' @click="showChooseTag = false"></i>
               <el-checkbox-group v-model="tagGroup" size="mini" :max='3' @change='selectTag'>
                 <div class='group-title'>行业标签</div>
@@ -68,7 +68,7 @@
         <div class="from-row" v-if="status === 'PREPARE' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
-            <button @click='comfirm' class='create-btn' :disabled="outRange">
+            <button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">
               <template v-if="activityId">保存</template>
               <template v-else>创建</template>
             </button>
@@ -107,6 +107,7 @@
         title: '',
         editorContent: '',
         outRange: false,
+        saveStatus: false,
         titleEmpty: false,
         tagEmpty: false,
         dateEmpty: false,
@@ -229,6 +230,7 @@
         this.tagArray = tmpArr
       },
       comfirm () {
+        this.saveStatus = true
         // 提交数据
         let data = {
           id: this.activityId,
@@ -239,11 +241,12 @@
           tags: this.tagGroup
         }
         // console.log(data)
-        this.title.length ? this.titleEmpty = false : this.titleEmpty = true
-        this.tagArray.length ? this.tagEmpty = false : this.tagEmpty = true
-        this.date.length ? this.dateEmpty = false : this.dateEmpty = true
+        this.title.length ? this.titleEmpty = false : this.titleEmpty = true; this.saveStatus = false
+        this.tagArray.length ? this.tagEmpty = false : this.tagEmpty = true; this.saveStatus = false
+        this.tagGroup.length ? this.tagEmpty = false : this.tagEmpty = true; this.saveStatus = false
+        this.date.length ? this.dateEmpty = false : this.dateEmpty = true; this.saveStatus = false
         this.$nextTick(() => {
-          if (this.title.length && this.tagArray.length && this.date.length) {
+          if (this.title.length && (this.tagArray.length || this.tagGroup.length) && this.date.length) {
             this.updateWebinfo(this.isNew, data)
           }
         })
@@ -255,6 +258,7 @@
             this.canPaas = true
             this.successTxt = '创建成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+            this.saveStatus = false
           }).catch(res => {
             if (res.code === 2001) {
               this.$messageBox({
@@ -264,6 +268,7 @@
                 confirmText: '知道了'
               })
             }
+            this.saveStatus = false
           })
         } else {
           this.$config({ 'handlers': [2001] }).$post(activityService.POST_UPDATE_WEBINAR, data).then((res) => {
@@ -271,6 +276,7 @@
             this.canPaas = true
             this.successTxt = '更新成功'
             res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
+            this.saveStatus = false
           }).catch(res => {
             if (res.code === 2001) {
               this.$messageBox({
@@ -280,6 +286,7 @@
                 confirmText: '知道了'
               })
             }
+            this.saveStatus = false
           })
         }
       },
@@ -364,10 +371,16 @@
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
+    // .html-editer {
+    //   max-width: 722px;
+    // }
   }
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
     width: 1019px;
+    .content .html-editer {
+      max-width: 722px !important;
+    }
   }
   .edit-title {
     // border-bottom: 1px solid $color-bd;
@@ -473,6 +486,9 @@
         color: $color-blue;
       }
     }
+    .html-editer {
+      max-width: 1072px;
+    }
     .html-editer .content {
       width: 100%;
     }
@@ -488,7 +504,7 @@
       }
     }
     .from-content .vue-html5-editor .content img {
-      width: 100%;
+      max-width: 100%;
     }
   }
 }

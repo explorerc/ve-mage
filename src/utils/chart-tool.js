@@ -83,7 +83,7 @@ const AxisCategory = {
  * 堆叠图
  * @returns {Promise<Response>}
  */
-export function barPile (id, data, gridData, legendGrid) {
+export function barPile (id, data, gridData, legendGrid, xName) {
   let yAxisData = []
   let serveData = []
   data.list.forEach(item => {
@@ -129,7 +129,9 @@ export function barPile (id, data, gridData, legendGrid) {
       ...grid,
       ...gridData
     },
-    xAxis: AxisValue,
+    xAxis: { ...AxisValue,
+      name: xName
+    },
     yAxis: {
       ...AxisCategory,
       axisTick: {
@@ -384,6 +386,11 @@ export function barRadius (id, data) {
       },
       textStyle: {
         fontSize: 12
+      },
+      formatter: (item) => {
+        console.log('-------')
+        console.log(item)
+        return `${item[1].name}：${item[1].value}`
       }
     },
     label: {
@@ -399,7 +406,7 @@ export function barRadius (id, data) {
       }
     },
     grid: {
-      left: '3%',
+      left: '4%',
       right: '1%',
       bottom: '8%',
       top: 20
@@ -434,6 +441,7 @@ export function barRadius (id, data) {
     }],
     series: [{
       type: 'bar',
+      name: '',
       itemStyle: {
         normal: {
           barBorderRadius: [10, 10, 10, 10],
@@ -491,10 +499,10 @@ export function bars (id, data, gridData) {
       },
       textStyle: {
         fontSize: 12
+      },
+      formatter: (item) => {
+        return `${item[1].name} : ${item[1].value}`
       }
-      // formatter: (item) => {
-      //   return `${item[1].name} : ${item[1].value}`
-      // }
     },
     label: {
       normal: {

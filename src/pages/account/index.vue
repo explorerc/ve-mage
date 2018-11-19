@@ -1265,10 +1265,10 @@ export default {
       top: 226px;
       right: 43px;
       &.prohibit {
-        background-color: #ffd021;
+        background-color: #e2e2e2;
         opacity: 0.8;
         &:hover {
-          background-color: #ffd021;
+          background-color: #e2e2e2;
           opacity: 0.8;
         }
       }

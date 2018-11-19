@@ -140,7 +140,7 @@
 <script>
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
-import chooseGroup from 'src/components/com-chooseGroup'
+import chooseGroup from '../com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
 export default {
@@ -185,10 +185,10 @@ export default {
       },
       loading: false,
       searchPerson: '',
-      groupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      groupList: [],
       tagList: [],
       selectedTagList: [],
-      selectedGroupList: [{ id: '', name: '', count: 0, isChecked: false }],
+      selectedGroupList: [],
       selectedGroupListStr: '',
       selectedTagListStr: '',
       selectPersonShow: false,
@@ -251,10 +251,11 @@ export default {
         signature: this.msgTag
       }
       if (!this.formValid()) {
+        this.saveDisabled = false
         return false
       }
       // 更新
-      this.$post(noticeService.POST_SAVE_MSG, data).then((res) => {
+      this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
           content: '保存成功',
@@ -263,6 +264,14 @@ export default {
         // 跳转到列表页面
         this.canPass = true
         this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
+      }).catch((res) => {
+        this.saveDisabled = false
+        this.$messageBox({
+          header: '提示',
+          content: res.msg,
+          autoClose: 10,
+          confirmText: '知道了'
+        })
       })
     },
     test () {
@@ -308,8 +317,8 @@ export default {
     // 查询群组
     queryGroupList (keyword) {
       this.$get(userManage.GET_GROUP_LIST, {
-        keyword: this.searchVal,
-        type: '2'
+        keyword: keyword,
+        not_empty_field: 'phone'
       }).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {

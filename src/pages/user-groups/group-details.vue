@@ -12,9 +12,8 @@
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
         <el-button size="small" round @click="exportFile" :disabled="!tableData.length>0">全部导出</el-button>
-        <transition name='fade' mode='out-in' v-if="dialogImport">
-          <com-import @handleClick="handleClick" :groupId="Number.parseInt(search.group_id)"></com-import>
-        </transition>
+        <com-import v-if="dialogImport" @handleClick="handleClick" :isFixed="'0'" :isDis=true
+                    :groupId="Number.parseInt(search.group_id)"></com-import>
       </div>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
@@ -30,16 +29,17 @@
                 :src="scope.row.avatar ? `${$imgHost}/${scope.row.avatar}` :require('assets/image/avatar@2x.png')"
                 alt="">
               <div>
-                <span class="table_info">{{scope.row.real_name}}</span> &nbsp;&nbsp;<span class="table_info">{{scope.row.sex| getSex}} </span>
+                <span class="table_info">{{scope.row.real_name?scope.row.real_name:scope.row.nickname}}</span> &nbsp;&nbsp;
+                <span class="table_info">{{scope.row.sex| getSex}} </span>
                 <div v-html="scope.row.user_level "></div>
               </div>
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="phone" label="手机号"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="attention_goods_count" label="参与（次）"></el-table-column>
-        <el-table-column prop="updated_at" label="最后活跃"></el-table-column>
+        <el-table-column prop="email" label="邮箱" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="join_count" label="参与（次）"></el-table-column>
+        <el-table-column prop="updated_at" label="最后活跃" show-overflow-tooltip></el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -51,9 +51,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <VePagination class="VePagination" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
+      <VePagination class="VePagination" v-show="total>10" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
-
   </div>
 </template>
 
@@ -72,7 +71,7 @@
     },
     filters: {
       getSex (a) {
-        return a === 'M' ? '男' : '女'
+        return a ? (a === 'M' ? '男' : '女') : '未知'
       }
     },
     data () {
@@ -117,13 +116,13 @@
                   level = '<span style="color:#714CEA;">高价值用户</span>'
                   break
                 case 3:
-                  level = '<span style="color:#FFAA00;">一般客户</span>'
+                  level = '<span style="color:#FFAA00;">一般用户</span>'
                   break
                 case 4:
-                  level = '<span style="color:#FB5757;">潜在用户</span>'
+                  level = '<span style="color:#FB5757;">潜力用户</span>'
                   break
                 case 5:
-                  level = '<span style="color:#333333;">流失客户</span>'
+                  level = '<span style="color:#333333;">流失用户</span>'
                   break
                 case 0:
                   level = '<span style="color:#4B5AFE;">没有评级</span>'
@@ -180,11 +179,10 @@
           cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
           confirmText: '删除',
           handleClick: (e) => {
-            console.log(e)
             if (e.action === 'cancel') {
-              this.$message({
-                type: 'info',
-                message: '已取消删除'
+              this.$toast({
+                content: '已取消删除!',
+                position: 'center'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP_USER, {
@@ -196,9 +194,9 @@
                   setTimeout(() => {
                     this.onSearch()
                   }, 0)
-                  this.$message({
-                    type: 'success',
-                    message: '删除成功!'
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
                   })
                 })
             }

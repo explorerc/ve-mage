@@ -10,7 +10,8 @@
         <el-table :data="dataList">
           <el-table-column
             type="index"
-            width="100">
+            width="100"
+            label="序号">
           </el-table-column>
           <el-table-column
             prop="nickname"
@@ -19,8 +20,23 @@
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
+            v-if="_type === 'SMS'"
             prop="content"
-            label="邮箱地址"
+            :label="'手机号'"
+            width="220"
+            show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+            v-if="_type === 'WECHAT'"
+            prop="content"
+            :label="'OpenID'"
+            width="220"
+            show-overflow-tooltip>
+          </el-table-column>
+          <el-table-column
+            v-if="_type === 'EMAIL'"
+            prop="content"
+            :label="'邮箱'"
             width="220"
             show-overflow-tooltip>
           </el-table-column>
@@ -58,7 +74,7 @@ export default {
     }
   },
   mounted () {
-    this.getList(1, this.$route.query.id, this._type)
+    this.getList(1, this.$route.query.email ? this.$route.query.email : this.$route.query.id, this._type)
   },
   methods: {
     close () {
@@ -67,7 +83,8 @@ export default {
       })
     },
     currentChange (res) {
-      this.getList(res, this.$route.query.id, this._type)
+      // this.getList(res, this.$route.query.id, this._type)
+      this.currPage = res
     },
     getList (page, id, _type) {
       this.$get(activityService.GET_SEND_LIST, {
@@ -78,7 +95,7 @@ export default {
       }).then((res) => {
         this.dataList = res.data.list
         this.total = res.data.total
-        this.currPage = res.data.currPage * 1
+        // this.currPage = res.data.currPage * 1
       })
     }
   },
@@ -102,10 +119,10 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -240px;
+  margin-top: -340px;
   margin-left: -300px;
   width: 600px;
-  height: 480px;
+  height: 680px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
   border-radius: 4px;

@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-        <span class="title" >用户池</span>
+      <span class="title" >用户详情</span>
     </div>
     <div class="content from-box">
       <div class="v-user-info">
@@ -10,16 +10,17 @@
           <div class="left">
             <div class="lc">
               <div class="box1">
-                <img src="../../../assets/image/avatar@2x.png" alt="" class="v-avatar">
+                <img :src="avatarImg" alt="" class="v-avatar" v-if="avatarImg">
+                <img src="../../../assets/image/avatar@2x.png" alt="" class="v-avatar" v-else>
                 <p class="v-name">
-                  {{user.real_name}}
+                  {{user.real_name?user.real_name:'-'}}
                 </p>
                 <p class="v-account-info">
                   <span v-if="user.sex!=''">
-                    {{user.sex}}
+                    {{user.sex?user.sex:'-'}}
                   </span>
                   <span>
-                    ID: v{{user.business_consumer_uid}}
+                    ID： {{user.account_id}}
                   </span>
                   <span>
                     |
@@ -35,7 +36,7 @@
                     昵称：
                   </span>
                   <span class="v-content">
-                    {{user.nickname}}
+                    {{user.nickname?user.nickname:'-'}}
                   </span>
                 </div>
                 <div class="v-info">
@@ -43,7 +44,7 @@
                     手机：
                   </span>
                   <span class="v-content">
-                    {{user.phone}}
+                    {{user.phone?user.phone:'-'}}
                   </span>
                 </div>
                 <div class="v-info">
@@ -52,7 +53,7 @@
                   </span>
                   <span class="v-email-info v-fist">
                     <span class="v-content">
-                    {{user.email}}
+                    {{user.email?user.email:'-'}}
                     </span>
                     <i class="iconfont icon-gengduo2" v-if="user.email_list.length > 0"></i>
                     <div class="v-emails" v-if="user.email_list.length > 0">
@@ -60,7 +61,7 @@
                         <span class="v-email-content">
                           {{item.email}}
                         </span>
-                        <span class="v-label">
+                        <span class="v-email-label">
                           {{typeEmail(item.type)}}
                         </span>
                       </div>
@@ -72,21 +73,21 @@
                     微信：
                   </span>
                   <span class="v-content">
-                    {{user.wx_open_id}}
+                    {{user.wx_open_id?user.wx_open_id:'-'}}
                   </span>
                 </div>
               </div>
               <div class="box3">
                 <date-select title="生日" :content="user.birthday" @saveInfo="saveInfo($event,'birthday')"> </date-select>
-                <com-select title="行业" :content="user.industry" :selectValue="selectValue" type="single" @saveInfo="saveInfo($event,'industry')"></com-select>
-                <com-select title="职位" :content="user.position" :selectValue="selectValue" type="single" @saveInfo="saveInfo($event,'position')"></com-select>
-                <com-select title="教育" :content="user.education_level" :selectValue="selectValue" type="single" @saveInfo="saveInfo($event,'education')"></com-select>
+                <industry-select title="行业" :content="user.industry" selectType="comIndustry" @saveInfo="saveInfo($event,'industry')"></industry-select>
+                <single-input title="职位" :content="user.position" @saveInfo="saveInfo($event,'position')" :maxLength='10'></single-input>
+                <industry-select title="教育" :content="user.education_level" selectType="comEducation" type="single" @saveInfo="saveInfo($event,'education_level')"></industry-select>
                 <div class="v-from">
                   <span class="v-title">
                     来源：
                   </span>
                   <span class="v-content">
-                    {{user.source666 === '' ? '无' : user.source666}}
+                    {{user.source === '' ? '-' : user.source}}
                   </span>
                 </div>
                 <div class="v-from">
@@ -97,16 +98,16 @@
                     {{user.province}}-{{user.city}}
                   </span>
                 </div>
-                <single-input title="地址" :content="user.area"></single-input>
-                <single-input title="备注" :content="user.remark"></single-input>
+                <single-input title="地址" :content="user.address" @saveInfo="saveInfo($event,'address')" :maxLength='40'></single-input>
+                <single-input title="备注" :content="user.remark" @saveInfo="saveInfo($event,'remark')" :maxLength='40'></single-input>
               </div>
               <div class="box4">
                 <p class="v-title">
                   所属群组
-                  <i class="iconfont icon-tianjia fr"></i>
+                  <i class="iconfont icon-tianjia fr" @click="addGroups"></i>
                 </p>
                 <div class="v-groups clearfix">
-                  <div class="v-item fl" v-for="item in user.group_list" :key="item.group_id">
+                  <div class="v-item fl" v-for="item in user.group_list" :key="item.title">
                     <span>
                       {{item.title}}
                     </span>
@@ -138,7 +139,7 @@
               <ol class="clearfix">
                 <li>
                   <p class="v-data">
-                    {{user.join_count}}
+                    {{user.join_count?user.join_count:0}}
                   </p>
                   <p class="v-title">
                     参会次数
@@ -146,7 +147,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at}}6
+                    {{user.first_visited_at?user.first_visited_at.substring(0,11):'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -154,7 +155,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at}}6
+                    {{user.last_visited_at?user.last_visited_at.substring(0,11):'-'}}
                   </p>
                   <p class="v-title">
                     最近参会
@@ -170,7 +171,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.invite_friends_count}}
+                    {{user.invite_friends_count?user.invite_friends_count:0}}
                   </p>
                   <p class="v-title">
                     邀请好友 (个)
@@ -181,20 +182,20 @@
             <div class="rb">
               <com-tabs :value.sync="tabValue">
                 <com-tab label="用户足迹"
-                        :index="1">
+                         :index="1">
                   <com-footprints></com-footprints>
                 </com-tab>
                 <com-tab label="报名/问卷信息"
-                        :index="2">
+                         :index="2">
                   <info-list></info-list>
                 </com-tab>
               </com-tabs>
-
             </div>
           </div>
         </div>
       </div>
     </div>
+    <com-addgroup v-if="showAddgroup" @handleClick="handleClick" @groupData="groupData"></com-addgroup>
   </div>
 </template>
 
@@ -202,97 +203,51 @@
 import comSelect from '../components/com-select'
 import comFootprints from '../components/com-footprints'
 import singleInput from '../components/single-input'
+import industrySelect from '../components/industry-select'
 import dateSelect from '../components/date-select'
 import citySelect from '../components/city-select'
 import infoList from '../components/info-list'
 import userService from 'src/api/user-service'
+import comAddgroup from '../components/com-addGroup'
+import userManage from 'src/api/userManage-service'
+import groupService from 'src/api/user_group'
 export default {
   data () {
     return {
       user: {
-        real_name: '姓名', // 姓名
-        sex: '男', // 性别
-        business_consumer_uid: 'V123141', // id
+        consumer_uid: '',
+        account_id: '',
+        real_name: '', // 姓名
+        sex: '', // 性别
+        business_consumer_uid: '', // id
         user_level: '', // 用户等级
         nickname: '', // 昵称
         phone: '', // 手机
         email: '', // 邮箱
-        email_list: [{
-          consumer_email_id: 1,
-          email: '123@123.com',
-          type: 'APPLY'
-        }], // 邮箱
+        email_list: [], // 邮箱
         wx_open_id: '', // 微信
-        birthday: '2018-12-08', // 生日
-        industry: '黄金糕', // 行业
-        position: '黄金糕', // 职位
-        education_level: '黄金糕', // 教育
-        source666: '666', // 来源
+        birthday: '', // 生日
+        industry: '', // 行业
+        position: '', // 职位
+        education_level: '', // 教育
+        source: '', // 来源
         city: '', // 地区 需要写计算属性，根据id赋值
         province: '',
-        area: '地址地址地址地址地址地址', // 地址
+        area: '', // 地域
+        address: '', // 地址
         avatar: '', // 头像
-        remark: '6666', // 备注
+        remark: '', // 备注
         invite_friends_count: '', // 邀请好友个数
         first_visited_at: '', // 首次参会
         join_count: '', // 参会次数
         last_visited_at: '', // 最近参会
         watch_live_time: '', // 观看直播时间
         watch_replay_time: '', // 观看回放时间
-        group_list: [{
-          group_id: '1',
-          business_uid: '1',
-          title: 'adfdas',
-          describe: 'fdafasfdasf'
-        }, {
-          group_id: '2',
-          business_uid: '1',
-          title: '666',
-          describe: '我是十个字我试试各自我是十个字我试试各自我是十个字我试试各自'
-        }], // 所属群组
-        tag_list: [{
-          tag_id: '1',
-          tag_name: 'adfdas',
-          describe: '我是十个字我试试各自我是十个字我试试各自我是十个字我试试各自'
-        }, {
-          tag_id: '2',
-          tag_name: 'sadfadsfdasf',
-          describe: 'jadsk'
-        }] // 标签
+        group_list: [] // 标签
       }, // 用户信息
-      selectValue: [{
-        value: '黄金糕'
-      }, {
-        value: '双皮奶'
-      }, {
-        value: '蚵仔煎'
-      }, {
-        value: '龙须面'
-      }, {
-        value: '北京烤鸭'
-      }],
-      options: [{
-        value: 'zhinan',
-        label: '指南',
-        children: [{
-          value: 'shejiyuanze',
-          label: '设计原则',
-          children: [{
-            value: 'yizhi',
-            label: '一致'
-          }, {
-            value: 'fankui',
-            label: '反馈'
-          }, {
-            value: 'xiaolv',
-            label: '效率'
-          }, {
-            value: 'kekong',
-            label: '可控'
-          }]
-        }]
-      }],
-      tabValue: 1
+      tabValue: 1,
+      showAddgroup: false,
+      imgHost: process.env.IMGHOST + '/'
     }
   },
   components: {
@@ -301,11 +256,23 @@ export default {
     'date-select': dateSelect,
     'single-input': singleInput,
     'city-select': citySelect,
-    'info-list': infoList
+    'info-list': infoList,
+    'industry-select': industrySelect,
+    'com-addgroup': comAddgroup
   },
   computed: {
     watchTime () {
-      return parseInt(this.user.watch_live_time) + parseInt(this.user.watch_replay_time)
+      let time = 0
+      if (this.user.watch_live_time) {
+        time += parseInt(this.user.watch_live_time)
+      }
+      if (this.user.watch_replay_time) {
+        time += parseInt(this.user.watch_replay_time)
+      }
+      return time || '-'
+    },
+    avatarImg () {
+      return this.user.avatar ? this.imgHost + '/' + this.user.avatar : ''
     }
   },
   created () {
@@ -314,23 +281,11 @@ export default {
   },
   methods: {
     saveInfo (val, type) {
-      switch (type) {
-        case 'birthday':
-          this.user.birthday = val
-          break
-        case 'industry':
-          this.user.industry = val
-          break
-      }
-    },
-    showRecord () {
-      this.recordBoxShow = true
-    },
-    getCustomerDetail () {
-      this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_DETAIL, {
-        business_consumer_uid: this.$route.params.id
-      }).then((res) => {
-        this.user = res.data
+      this.user[type] = val
+      let data = {}
+      data.business_consumer_uid = this.$route.params.id
+      data[type] = val
+      this.$config({ handlers: true }).$post(userService.POST_CUSTOMER_UPDATE, data).then((res) => {
       }).catch(err => {
         this.$messageBox({
           header: '提示',
@@ -342,6 +297,35 @@ export default {
             }
           }
         })
+      })
+    },
+    showRecord () {
+      this.recordBoxShow = true
+    },
+    getCustomerDetail () {
+      this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_DETAIL, {
+        business_consumer_uid: this.$route.params.id
+      }).then((res) => {
+        this.user = res.data
+        console.log(this.user)
+      }).catch(err => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
+    },
+    getGroupList () {
+      this.$post(groupService.GROUPS_LIST, {
+        page: 1
+      }).then(res => {
+
       })
     },
     typeEmail (type) {
@@ -375,7 +359,7 @@ export default {
           strLevel = '一般用户'
           break
         case '4':
-          strLevel = '潜在用户'
+          strLevel = '潜力用户'
           break
         case '5':
           strLevel = '流失用户'
@@ -385,6 +369,40 @@ export default {
           break
       }
       return strLevel
+    },
+    addGroups () {
+      this.showAddgroup = true
+    },
+    /* 点击取消 */
+    handleClick (e) {
+      if (e.action === 'cancel') {
+        this.showAddgroup = false
+      }
+    },
+    groupData (res) {
+      const data = res
+      Object.assign(data, {
+        'business_consumer_uids': this.user.business_consumer_uid
+      })
+      this.addGroup(data)
+    },
+    addGroup (data) {
+      this.$config({ handlers: true }).$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
+        let addData = {}
+        addData.title = data.type === '1' ? data.title : data.name
+        addData.describe = data.describe
+        this.user.group_list.push(addData)
+        this.showAddgroup = false
+        this.$toast({
+          'content': '导入成功',
+          'position': 'center'
+        })
+      }).catch(err => {
+        this.$toast({
+          'content': err.msg,
+          'position': 'center'
+        })
+      })
     }
   }
 }
@@ -396,6 +414,9 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
+  .com-addGroup-box {
+    position: fixed;
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -487,18 +508,24 @@ export default {
           .v-label {
             color: #888;
             width: 42px;
+            position: absolute;
+            top: 0;
+            left: 0;
           }
           .v-content {
             color: #222;
+            word-break: break-all;
+            max-width: 225px;
+            padding-left: 55px;
           }
           .v-email-info {
             position: relative;
             margin-left: 46px;
+            width: 100%;
             &.v-fist {
               margin-left: 0px;
               .v-content {
                 display: inline-block;
-                width: 142px;
               }
             }
             .v-type {
@@ -507,6 +534,18 @@ export default {
               position: absolute;
               left: 0;
               bottom: -17px;
+            }
+            .iconfont {
+              position: relative;
+              top: -13px;
+            }
+            .v-content {
+              height: 40px;
+              max-width: 195px;
+              word-break: break-all;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
           .iconfont {
@@ -526,7 +565,7 @@ export default {
             font-size: 14px;
             color: #fff;
             top: 35px;
-            right: -95px;
+            right: -20px;
             display: none;
             &::after {
               display: block;
@@ -546,13 +585,13 @@ export default {
             }
             .v-email-content {
               display: inline-block;
-              max-width: 180px;
+              max-width: 165px;
               margin-right: 12px;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            .v-label {
+            .v-email-label {
               color: #fff;
               white-space: nowrap;
               overflow: hidden;
@@ -660,6 +699,7 @@ export default {
           width: 100%;
           .v-item {
             position: relative;
+            height: 50px;
             &:hover {
               .v-description {
                 display: block;
@@ -772,7 +812,7 @@ export default {
             .v-footprints {
               position: relative;
               width: 100%;
-              overflow: hidden;
+              overflow: auto;
               height: calc(100%);
               .v-footprint {
                 height: 100px;

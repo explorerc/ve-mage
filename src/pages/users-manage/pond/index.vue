@@ -40,7 +40,7 @@
           <div class='filter-item'>
             <div class="condition">
               <span class="label">用户级别</span>
-               <el-select v-model="filterCondition.user_level" placeholder="请选择">
+               <el-select v-model="filterCondition.user_level" placeholder="请选择" style="width:216px;">
                 <el-option
                   v-for="item in grands"
                   :key="item.value"
@@ -62,33 +62,44 @@
             </div>
             <div class="condition">
               <span class="label">参与场次</span>
-              <com-input :value.sync="filterCondition.join_count" placeholder="请输入参与活动次数" :type="'number'"></com-input>
+              <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数" :type="'number'"></com-input>
             </div>
           </div>
           <div class='filter-item'>
             <div class="condition area">
               <span class="label">所属地域</span>
-              <el-select v-model="filterCondition.province" filterable placeholder="省份">
+              <!-- <el-select v-model="filterCondition.province" filterable placeholder="省份">
                 <el-option
-                  v-for="item in districts"
+                  v-for="item in provinceList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name">
                 </el-option>
+              </el-select> -->
+
+              <el-select style="width: 100px;" v-model="provinceId" placeholder="省份">
+                <el-option v-for="item in provinceList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                </el-option>
               </el-select>
-              <el-select v-model="filterCondition.city" filterable placeholder="城市">
+              <!-- <el-select v-model="filterCondition.city" filterable placeholder="城市">
                 <el-option
-                  v-for="item in districtsCity"
+                  v-for="item in cityList"
                   :key="item.id"
                   :label="item.name"
                   :value="item.name">
                 </el-option>
+              </el-select> -->
+
+              <el-select style="width: 112px;" v-model="cityId" placeholder="城市">
+                <el-option v-for="item in cityList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                </el-option>
               </el-select>
-              <!-- <el-cascader
-                :options="districts"
-                v-model="districtsVal"
-                @change="handleDistrictChange">
-              </el-cascader> -->
             </div>
             <div class="condition">
               <span class="label">性别</span>
@@ -123,7 +134,8 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                format="yyyy-MM-dd hh:mm"
+                :editable="false"
+                :default-time="['00:00:00','23:59:59']"
                 align="left">
               </el-date-picker>
             </div>
@@ -136,7 +148,8 @@
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
-                format="yyyy-MM-dd hh:mm"
+                :editable="false"
+                :default-time="['00:00:00','23:59:59']"
                 align="left">
               </el-date-picker>
             </div>
@@ -177,7 +190,7 @@
           </div>
         </div>
       </transition>
-      <div class="users-list page-bg table_box">
+      <div class="users-list page-bg table_box " :class='{"has-page":total>filterCondition.page_size}'>
         <el-table
           ref="multipleTable"
           :data="usersListData"
@@ -193,12 +206,13 @@
             width="250">
             <template slot-scope="scope">
               <dl class="users-info clearfix">
-                <dt><img :src="scope.row.avatar"></dt>
+                <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
+                <dt v-else class='avatar-empty'><span class='img'></span></dt>
                 <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span></dd>
                 <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
                 <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
                 <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
-                <dd class='protential' v-if="scope.row.level === 4">潜在用户</dd>
+                <dd class='protential' v-if="scope.row.level === 4">潜力用户</dd>
                 <dd class='' v-if="scope.row.level === 5">流失用户</dd>
                 <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
                 <dd class="name"  :class="scope.row.level | filterLevelclass" >{{scope.row.level | filterLevel}}</dd>
@@ -207,7 +221,8 @@
           </el-table-column>
           <el-table-column
             prop="phone"
-            label="手机号">
+            label="手机号"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="mail"
@@ -233,7 +248,8 @@
           <el-table-column
             prop="lastActive"
             label="最后活跃"
-            width="150">
+            width="150"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="comment"
@@ -256,6 +272,7 @@
             </template>
           </el-table-column>
         </el-table>
+          <div class="total">共 <span>{{total}}</span> 条数据</div>
           <div class="pagination-box" v-if="total>filterCondition.page_size">
             <div class="page-pagination">
                 <ve-pagination
@@ -281,7 +298,7 @@
         <com-choose  @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray'  :max='10' @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
       </transition>
       <transition name='fade' mode='out-in' v-if="showImport">
-        <com-import @handleClick="handleClick" ></com-import>
+        <com-import @handleClick="handleClickImport" ></com-import>
       </transition>
   </div>
 </template>
@@ -292,8 +309,8 @@ import comAddgroup from '../components/com-addGroup'
 import VePagination from 'src/components/ve-pagination'
 import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
-import districtDataPro from 'src/assets/js/district-provience.js'
-import districtDataCity from 'src/assets/js/district-city.js'
+import province from 'src/components/province'
+import city from 'src/components/city'
 export default {
   data () {
     return {
@@ -306,7 +323,7 @@ export default {
         },
         {
           value: 1,
-          label: '优质客户'
+          label: '优质用户'
         }, {
           value: 2,
           label: '高价值用户'
@@ -315,7 +332,7 @@ export default {
           label: '一般用户'
         }, {
           value: 4,
-          label: '潜在用户'
+          label: '潜力用户'
         }, {
           value: 5,
           label: '流失用户'
@@ -330,13 +347,13 @@ export default {
           label: '全部'
         },
         {
-          value: '导入',
+          value: 'IMPORT',
           label: '导入'
         }, {
-          value: '微信注册',
-          label: '微信注册'
+          value: 'WAP',
+          label: '手机注册'
         }, {
-          value: 'PC注册',
+          value: 'PC',
           label: 'PC注册'
         }
       ],
@@ -405,11 +422,16 @@ export default {
         }
       ],
       industrysVal: '',
-      districts: [],
-      districtsCity: [],
+      provinceList: [
+        {value: '', label: '全部'},
+        ...province
+      ],
+      cityList: [
+        {value: '', label: '全部'}
+      ],
       // districtsVal: [''],
-      firstVal: [],
-      lastVal: [],
+      firstVal: '',
+      lastVal: '',
       activityArray: {
         'id': [],
         'name': []
@@ -445,6 +467,8 @@ export default {
       showChooseGroup: false,
       showImport: false,
       chooseType: '活动',
+      provinceId: '',
+      cityId: '',
       filterCondition: { // 精准搜索条件对象
         keyword: '', // 关键字查询 模糊匹配 姓名 昵称 手机号 邮箱
         user_level: '', // 用户级别
@@ -464,25 +488,12 @@ export default {
         page: 1, // 分页页码 默认不传为第一页
         page_size: 100 // 每页显示条数 默认不传为每页显示10条
       },
-      exportStr: '' // 导出数据的拼接str
+      exportStr: '', // 导出数据的拼接str
+      imgHost: process.env.IMGHOST + '/'
     }
   },
   mounted () {
     this.queryUserPool(this.filterCondition)
-    this.districts = districtDataPro
-    this.districtsCity = districtDataCity
-    // let arr = []
-    // districtData.forEach(item => {
-    //   item['children'].forEach(ele => {
-    //     if (item['children']) {
-    //       ele['children'] = []
-    //       arr.push(item)
-    //     }
-    //   })
-
-    // item['children']['children'] ? item['children']['children'] = []
-    // })
-    // console.log(JSON.parse(arr))
   },
   filters: {
     filterLevel (val) {
@@ -494,7 +505,7 @@ export default {
         case 3:
           return '一般用户'
         case 4:
-          return '潜在用户'
+          return '潜力用户'
         case 5:
           return '流失用户'
         case 0:
@@ -521,9 +532,6 @@ export default {
   methods: {
     handleSelectionChange (val) {
       this.multipleSelection = val
-      // val.forEach(item => {
-      //   this.multipleSelection.push(item.business_consumer_uid)
-      // })
     },
     currentChange (e) {
       Object.assign(this.filterCondition, { 'page': e })
@@ -540,7 +548,15 @@ export default {
         this.showChooseActive = false
         this.showChooseTag = false
         this.showChooseGroup = false
-        this.showImport = false
+      }
+    },
+    handleClickImport (e) {
+      this.showImport = false
+      if (e.action === 'cancel') {
+        this.filterCondition.keyword = ''
+        setTimeout(() => {
+          this.queryUserPool('search')
+        }, 500)
       }
     },
     selectActiveConfirm (res) {
@@ -561,12 +577,6 @@ export default {
       this.groupArray.id = res.id
       // this.filterCondition.groups = res.id.toString()
     },
-    // handleDistrictChange (res) {
-    //   console.log(res)
-    //   this.filterCondition.province = res[0]
-    //   this.filterCondition.city = res[1] ? res[1] : ''
-    //   this.filterCondition.area = res[2] ? res[2] : ''
-    // },
     searchHandler (res) {
       console.log(res)
     },
@@ -599,16 +609,16 @@ export default {
     // },
     delUsers () {
       const data = {}
+      const tempArr = []
       Object.assign(data, {
         'business_consumer_uids': this.checkedArr.toString()
       })
       this.usersListData.forEach((item, idx) => {
-        this.checkedArr.forEach((ele, i) => {
-          if (item.business_consumer_uid === this.checkedArr[i]) {
-            this.usersListData.splice(idx, 1)
-          }
-        })
+        if (this.checkedArr.indexOf(item.business_consumer_uid) === -1) {
+          tempArr.push(item)
+        }
       })
+      this.usersListData = tempArr
       this.$post(userManage.POST_DEL_USERS, data).then((res) => {
         this.$toast({
           'content': '删除成功',
@@ -631,7 +641,8 @@ export default {
       if (data === 'search') {
         data = {
           'keyword': this.filterCondition.keyword,
-          'page': 1 // 分页页码 默认不传为第一页
+          'page': 1, // 分页页码 默认不传为第一页
+          'page_size': 100
         }
       }
       console.log(data)
@@ -643,9 +654,9 @@ export default {
         res.data.list.forEach(item => {
           arr.push({
             'business_consumer_uid': item.business_consumer_uid,
-            'avatar': item.avatar ? item.avatar : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
-            'name': item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...',
-            'gender': item.sex === 'M' ? '男' : '女',
+            'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '',
+            'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nickname.length <= 5 ? item.nickname : item.nickname.substr(0, 5) + '...'),
+            'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
             'phone': item.phone,
             'mail': item.email,
             'lastActive': item.last_visited_at,
@@ -716,7 +727,6 @@ export default {
         }
       }
       window.location.href = `/api/user/customer/export${this.exportStr}`
-      debugger
     }
   },
   watch: {
@@ -744,9 +754,32 @@ export default {
     },
     multipleSelection: {
       handler (val) {
+        const arr = []
         val.forEach(item => {
-          this.checkedArr.push(item.business_consumer_uid)
+          arr.push(item.business_consumer_uid)
         })
+        this.checkedArr = arr
+      }
+    },
+    'provinceId' (newVal) {
+      if (newVal) {
+        for (let i = 0; i < province.length; i++) {
+          if (province[i].value === newVal) {
+            this.filterCondition.province = province[i].label
+            break
+          }
+        }
+        this.cityList = [{value: '', label: '全部'}, ...city[newVal]]
+        this.filterCondition.city = ''
+        this.cityId = ''
+      }
+    },
+    'cityId' (newVal) {
+      for (let i = 0; i < this.cityList.length; i++) {
+        if (this.cityList[i].value === newVal) {
+          this.filterCondition.city = this.cityList[i].label
+          break
+        }
       }
     }
   },
@@ -767,6 +800,16 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
+  .total {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+    padding-left: 15px;
+    span {
+      color: $color-error;
+    }
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -841,6 +884,10 @@ export default {
       border-radius: 4px;
       border: 1px solid rgba(226, 226, 226, 1);
       margin-top: 20px;
+      padding-bottom: 70px;
+      &.has-page {
+        padding-bottom: 30px;
+      }
     }
     .handle-filter {
       .label {
@@ -921,16 +968,21 @@ export default {
     .users-list {
       .el-table {
         .users-info {
-          width: 140px;
-          img {
+          width: 170px;
+          .img {
+            display: inline-block;
             width: 32px;
             height: 32px;
             border-radius: 500px;
           }
           dt {
             float: left;
-            padding-right: 10px;
-            padding-top: 7px;
+            margin-right: 10px;
+            margin-top: 7px;
+            &.avatar-empty .img {
+              background: url('~assets/image/avatar@2x.png') no-repeat;
+              background-size: contain;
+            }
           }
           dd {
             float: left;
@@ -981,6 +1033,7 @@ export default {
         padding: 0 15px;
         height: 34px;
         line-height: 34px;
+        text-overflow: ellipsis;
       }
       .el-input.is-focus .el-input__inner {
         border-color: $color-blue;
@@ -1019,7 +1072,7 @@ export default {
         height: 34px;
         line-height: 34px;
         padding: 0 8px;
-        width: 270px;
+        width: 310px;
       }
       .el-range__icon {
         display: none;
