@@ -386,25 +386,25 @@
       v-show="redBagDataDetail"
       width="60%"
       type="none"
-      header="问卷数据详情"
+      header="红包-数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
           <el-table :data="redBagDataList" style="width: 100%">
-            <el-table-column label="序号">
+            <el-table-column width="50" label="序号">
               <template slot-scope="scope">
                 {{scope.$index}}
               </template>
             </el-table-column>
-            <el-table-column prop="pushDate" label="推送时间"></el-table-column>
-            <el-table-column prop="joinType" label="参与条件"></el-table-column>
+            <el-table-column prop="pushDate" label="推送时间" width="140"></el-table-column>
+            <el-table-column prop="joinTypeName" label="参与条件"></el-table-column>
             <el-table-column prop="totalMoney" label="红包总金额"></el-table-column>
             <el-table-column prop="totalCount" label="红包数量"></el-table-column>
             <el-table-column prop="online" label="在线人数"></el-table-column>
             <el-table-column prop="joinCount" label="参与人数"></el-table-column>
             <el-table-column prop="receiveCount" label="领取人数"></el-table-column>
             <el-table-column prop="receiveMoney" label="领取金额"></el-table-column>
-            <el-table-column label="领取明细">
+            <el-table-column label="领取明细" width="80">
               <template slot-scope="scope">
                 <span class="data-link">下载</span>
               </template>
