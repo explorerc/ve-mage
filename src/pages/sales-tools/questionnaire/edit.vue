@@ -898,6 +898,8 @@ export default {
       img {
         margin: 0 auto;
         display: block;
+        max-width: 700px;
+        max-height: 140px;
       }
       .v-title {
         max-width: 500px;
