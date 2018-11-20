@@ -131,7 +131,7 @@
       </div>
       <div class="search-btns">
         <button class="primary-button" @click="searchEnter">查询</button>
-        <button class="default-button" @click="cancelClick">取消</button>
+        <button class="default-button" @click="cancelClick">重置</button>
       </div>
     </div>
     <div class="table-list-box data-pad">
