@@ -78,13 +78,6 @@
     <div class="data-pad">
       <p class="title">互动数据</p>
       <div class="item-container clearfix">
-        <!--<div class="item-box hd-data-item fl live-item live-item01">-->
-        <!--<span class="hd-title">预约</span>-->
-        <!--<div class="hd-data">-->
-        <!--<span class="data-link" @click="goPreDataDetail">{{interactCountData.subscribe}}</span>-->
-        <!--<span>预约人数</span>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="item-box hd-data-item fl live-item live-item01">
           <span class="hd-title">聊天</span>
           <div class="hd-data" style="width: 50%;">
@@ -107,17 +100,6 @@
             <span>邀请人数</span>
           </div>
         </div>
-        <!--<div class="item-box hd-data-item fr live-item live-item04">-->
-        <!--<span class="hd-title">抽奖</span>-->
-        <!--<div class="hd-data">-->
-        <!--<span class="data-link" @click="goPrizeDataDetail">{{interactCountData.prize.win}}</span>-->
-        <!--<span>中奖人数</span>-->
-        <!--</div>-->
-        <!--<div class="hd-data">-->
-        <!--<span class="data-link" @click="goPrizeDataDetail">{{interactCountData.prize.join}}</span>-->
-        <!--<span>参与人数</span>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="item-box hd-data-item fl live-item live-item03">
           <span class="hd-title">调查问卷</span>
           <div class="hd-data" style="width: 50%;">
@@ -144,21 +126,6 @@
             <span>领取金额</span>
           </div>
         </div>
-        <!--<div class="item-box hd-data-item fr">-->
-        <!--<span class="hd-title">答题</span>-->
-        <!--<div class="hd-data">-->
-        <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.push}}</span>-->
-        <!--<span>推送次数</span>-->
-        <!--</div>-->
-        <!--<div class="hd-data">-->
-        <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.join}}</span>-->
-        <!--<span>参与答题人数</span>-->
-        <!--</div>-->
-        <!--<div class="hd-data">-->
-        <!--<span class="data-link" @click="goAnswerDataDetail">{{interactCountData.answer.win}}</span>-->
-        <!--<span>获得奖励人数</span>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="item-box hd-data-item fl live-item live-item05" style="width: 100%;">
           <span class="hd-title">商品推荐</span>
           <div class="hd-data" style="width: 25%;">
@@ -319,38 +286,6 @@
         </div>
       </div>
     </message-box>
-    <!--&lt;!&ndash; 答题 &ndash;&gt;-->
-    <!--<message-box-->
-    <!--v-show="answerDataDetail"-->
-    <!--width="60%"-->
-    <!--type="none"-->
-    <!--header="问卷数据详情"-->
-    <!--@handleClick="closeMesssageBox">-->
-    <!--<div class="msg-table-box" style="padding-top: 20px;">-->
-    <!--<div class="table-box">-->
-    <!--<el-table :data="answerDataList" style="width: 100%">-->
-    <!--<el-table-column label="序号">-->
-    <!--<template slot-scope="scope">-->
-    <!--{{scope.$index}}-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--<el-table-column prop="title" label="题目"></el-table-column>-->
-    <!--<el-table-column prop="preMoney" label="预设奖金总额"></el-table-column>-->
-    <!--<el-table-column prop="preCount" label="预设获奖人数"></el-table-column>-->
-    <!--<el-table-column prop="joinCount" label="参与人数"></el-table-column>-->
-    <!--<el-table-column prop="correntCount" label="答对人数"></el-table-column>-->
-    <!--<el-table-column prop="costMoney" label="实际消耗金额"></el-table-column>-->
-    <!--<el-table-column prop="winCount" label="实际获奖人数"></el-table-column>-->
-    <!--<el-table-column prop="successRate" label="正确率"></el-table-column>-->
-    <!--<el-table-column label="详情数据">-->
-    <!--<template slot-scope="scope">-->
-    <!--<span class="data-link">下载</span>-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--</el-table>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</message-box>-->
     <!-- 推荐卡片 -->
     <message-box
       v-show="cardDataDetail"
@@ -374,7 +309,9 @@
             <el-table-column prop="visit_person_num" label="点击卡片次数"></el-table-column>
             <el-table-column label="详情数据">
               <template slot-scope="scope">
-                <span class="data-link"><router-link :to="`/api/manage/recommend-card/visit-list?recommend_card_id=${scope.row.recommend_card_id}`" target="_blank">下载</router-link></span>
+                <span class="data-link"><router-link
+                  :to="`/api/manage/recommend-card/visit-list?recommend_card_id=${scope.row.recommend_card_id}`"
+                  target="_blank">下载</router-link></span>
               </template>
             </el-table-column>
           </el-table>
@@ -393,23 +330,35 @@
           <el-table :data="redBagDataList" style="width: 100%">
             <el-table-column width="50" label="序号">
               <template slot-scope="scope">
-                {{scope.$index}}
+                {{ (page-1)*pageSize + scope.$index + 1}}
               </template>
             </el-table-column>
-            <el-table-column prop="pushDate" label="推送时间" width="140"></el-table-column>
-            <el-table-column prop="joinTypeName" label="参与条件"></el-table-column>
-            <el-table-column prop="totalMoney" label="红包总金额"></el-table-column>
-            <el-table-column prop="totalCount" label="红包数量"></el-table-column>
-            <el-table-column prop="online" label="在线人数"></el-table-column>
-            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
-            <el-table-column prop="receiveCount" label="领取人数"></el-table-column>
-            <el-table-column prop="receiveMoney" label="领取金额"></el-table-column>
+            <el-table-column prop="start_time" label="推送时间" width="140"></el-table-column>
+            <el-table-column label="参与条件">
+              <template slot-scope="scope">
+                <span v-if="scope.row.condition==0">无限制参与</span>
+                <span v-else-if="scope.row.condition==1">分享参与</span>
+                <span v-else-if="scope.row.condition==2">口令参与</span>
+                <span v-else-if="scope.row.condition==3">填写问卷参与</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" label="红包总金额"></el-table-column>
+            <el-table-column prop="number" label="红包数量"></el-table-column>
+            <el-table-column prop="online_user_count" label="在线人数"></el-table-column>
+            <el-table-column prop="joined_user_count" label="参与人数"></el-table-column>
+            <el-table-column prop="get_user_count" label="领取人数"></el-table-column>
+            <el-table-column prop="get_amount" label="领取金额"></el-table-column>
             <el-table-column label="领取明细" width="80">
               <template slot-scope="scope">
-                <span class="data-link">下载</span>
+                <span class="data-link" @click="downLoadExport(scope.row.red_packet_id)">下载</span>
               </template>
             </el-table-column>
           </el-table>
+        </div>
+        <div class="page-pagination" v-if="total>pageSize">
+          <ve-pagination :total="total"
+                         :pageSize="pageSize"
+                         @changePage="changePage"/>
         </div>
       </div>
     </message-box>
@@ -423,18 +372,14 @@
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
           <el-table :data="goodsDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="name" label="商品名称"></el-table-column>
+            <el-table-column type="index" label="序号" width="50"></el-table-column>
+            <el-table-column prop="title" label="商品名称"></el-table-column>
             <el-table-column prop="push" label="推送次数"></el-table-column>
-            <el-table-column prop="browse" label="商品详情浏览次数"></el-table-column>
-            <el-table-column prop="click" label="点击购买次数"></el-table-column>
+            <el-table-column prop="uv" label="商品详情浏览次数"></el-table-column>
+            <el-table-column prop="buy" label="点击购买次数"></el-table-column>
             <el-table-column label="详情数据">
               <template slot-scope="scope">
-                <span class="data-link">下载</span>
+                <span class="data-link" @click="download('goods', scope.row.goods_id)">下载</span>
               </template>
             </el-table-column>
           </el-table>
@@ -450,14 +395,14 @@
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
   import cardService from 'src/api/salesCards-service.js'
-  import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
+  import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import {mapMutations} from 'vuex'
+  import { mapMutations } from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: {VeTitle, VeCircle, NavMenu, VePagination},
+    components: { VeTitle, VeCircle, NavMenu, VePagination },
     data () {
       return {
         activityId: this.$route.params.id,
@@ -548,7 +493,7 @@
         goodsDataList: [],
         redBagDataList: [],
         page: 1,
-        pageSize: 10,
+        pageSize: 20,
         total: 0
       }
     },
@@ -634,6 +579,8 @@
         //   redBagDataDetail: false, // 红包
         if (this.chatDataDetail) { // 聊天分页
           this.goChatDataDetail()
+        } else if (this.redBagDataDetail) { // 红包分页
+          this.goRedBagDataList()
         }
       },
       interactCount () {
@@ -642,6 +589,7 @@
         }).then((res) => {
           if (res.code === 200 && res.data.length !== 0) {
             this.interactCountData = res.data
+            console.log(this.interactCountData, '999999999999')
           }
         })
       },
@@ -656,9 +604,9 @@
               this.watcherChart = lines('chart01', {
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
-                  {name: '浏览次数', data: this.watcherLineData.live.pv},
-                  {name: '独立访客', data: this.watcherLineData.live.uv},
-                  {name: 'IP', data: this.watcherLineData.live.ip}
+                  { name: '浏览次数', data: this.watcherLineData.live.pv },
+                  { name: '独立访客', data: this.watcherLineData.live.uv },
+                  { name: 'IP', data: this.watcherLineData.live.ip }
                 ]
               })
             })
@@ -694,8 +642,8 @@
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
-          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
+          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
+          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
         ]
       },
       goCardDataDetail () {
@@ -712,41 +660,39 @@
           this.cardDataList = res.data.list
         })
       },
+      downLoadExport (id) {
+        let url = process.env.API_PATH + dataService.GET_LIVE_RED_BAG_LIST_EXOPORT + '?red_packet_id=' + id
+        window.open(encodeURI(encodeURI(url)))
+      },
       goRedBagDataDetail () {
         this.redBagDataDetail = true
-        this.redBagDataList = [
-          {
-            'redBagId': 10000,
-            'pushDate': '2018-10-17 10:10',
-            'joinType': 1,
-            'joinTypeName': '分享',
-            'totalMoney': 56975,
-            'totalCount': 56975,
-            'online': 56975,
-            'joinCount': 56975,
-            'receiveCount': 46859,
-            'receiveMoney': 10000
-          },
-          {
-            'redBagId': 10001,
-            'pushDate': '2018-10-17 10:10',
-            'joinType': 2,
-            'joinTypeName': '无限制',
-            'totalMoney': 56975,
-            'totalCount': 56975,
-            'online': 56975,
-            'joinCount': 56975,
-            'receiveCount': 46859,
-            'receiveMoney': 16000
+        this.page = 0
+        this.pageSize = 20
+        this.total = 0
+        this.goRedBagDataList()
+      },
+      goRedBagDataList () {
+        this.$get(dataService.GET_LIVE_RED_BAG_LIST, {
+          activity_id: this.activityId,
+          page: this.page,
+          page_size: this.pageSize
+        }).then((res) => {
+          this.loading = false
+          if (res.code === 200) {
+            this.total = res.data.count
+            this.redBagDataList = res.data.list
           }
-        ]
+        })
       },
       goGoodsDataDetail () {
         this.goodsDataDetail = true
-        this.goodsDataList = [
-          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
-          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
-        ]
+        this.$get(dataService.GET_GOODS_LISTS, { activity_id: this.activityId })
+          .then((res) => {
+            if (res && res.code === 200) {
+              this.goodsDataList = res.data
+            }
+            console.log(this.goodsDataList)
+          })
       },
       changeMenu (val) {
         if (this.watchType === val) return
@@ -756,9 +702,9 @@
         this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
-            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
-            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
+            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
+            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
+            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
           ]
         })
       },
@@ -890,26 +836,38 @@
           this.pageSize = 10
           this.total = 0
         })
+      },
+      download (type, id) {
+        console.log(type, id)
+        switch (type) {
+          case 'goods':
+            this.downloadGoods(id)
+            break
+        }
+      },
+      downloadGoods (id) {
+        let _url = `/api${dataService.GET_GOODS_EXPORT}?goods_id=${id}`
+        window.location.href = _url
       }
     }
   }
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-.spread {
-  .page-pagination {
-    position: relative;
-    top: 10px;
-  }
-  .item-container {
-    border: none;
-    margin-bottom: 20px;
-    .item-box {
-      height: 110px;
-      .hd-title {
-        margin-top: 20px;
+  .spread {
+    .page-pagination {
+      position: relative;
+      top: 10px;
+    }
+    .item-container {
+      border: none;
+      margin-bottom: 20px;
+      .item-box {
+        height: 110px;
+        .hd-title {
+          margin-top: 20px;
+        }
       }
     }
   }
-}
 </style>
