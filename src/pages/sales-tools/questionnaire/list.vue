@@ -56,7 +56,7 @@
           </template>
           <template v-else>
             <tr class="v-nodata">
-              <td colspan="4">
+              <td colspan="5">
                 暂无数据
               </td>
             </tr>
