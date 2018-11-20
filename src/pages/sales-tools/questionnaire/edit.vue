@@ -197,6 +197,25 @@ export default {
   mounted () {
     if (this.questionId && this.activityId) {
       this.getQuestions()
+    } else {
+      let obj = {
+        title: '手机号',
+        errorTip: '',
+        style: 'text',
+        type: QTypes.TEXT,
+        required: 'Y',
+        detail: {
+          format: 'phone',
+          max: 11
+        },
+        verification: 'Y',
+        ext: {
+          name: '手机号',
+          key: 'phone'
+        }
+      }
+      this.phoneData.push(obj)
+      this.base.phone = false
     }
   },
   computed: {
