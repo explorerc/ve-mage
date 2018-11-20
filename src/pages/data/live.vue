@@ -372,18 +372,14 @@
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
           <el-table :data="goodsDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="name" label="商品名称"></el-table-column>
+            <el-table-column type="index" label="序号" width="50"></el-table-column>
+            <el-table-column prop="title" label="商品名称"></el-table-column>
             <el-table-column prop="push" label="推送次数"></el-table-column>
-            <el-table-column prop="browse" label="商品详情浏览次数"></el-table-column>
-            <el-table-column prop="click" label="点击购买次数"></el-table-column>
+            <el-table-column prop="uv" label="商品详情浏览次数"></el-table-column>
+            <el-table-column prop="buy" label="点击购买次数"></el-table-column>
             <el-table-column label="详情数据">
               <template slot-scope="scope">
-                <span class="data-link">下载</span>
+                <span class="data-link" @click="download('goods', scope.row.goods_id)">下载</span>
               </template>
             </el-table-column>
           </el-table>
@@ -399,14 +395,14 @@
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
   import cardService from 'src/api/salesCards-service.js'
-  import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
+  import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
-  import {mapMutations} from 'vuex'
+  import { mapMutations } from 'vuex'
   import * as types from '../../store/mutation-types'
 
   export default {
     name: 'live-data',
-    components: {VeTitle, VeCircle, NavMenu, VePagination},
+    components: { VeTitle, VeCircle, NavMenu, VePagination },
     data () {
       return {
         activityId: this.$route.params.id,
@@ -593,6 +589,7 @@
         }).then((res) => {
           if (res.code === 200 && res.data.length !== 0) {
             this.interactCountData = res.data
+            console.log(this.interactCountData, '999999999999')
           }
         })
       },
@@ -607,9 +604,9 @@
               this.watcherChart = lines('chart01', {
                 xAxisData: this.watcherLineData.live.xAxis,
                 datas: [
-                  {name: '浏览次数', data: this.watcherLineData.live.pv},
-                  {name: '独立访客', data: this.watcherLineData.live.uv},
-                  {name: 'IP', data: this.watcherLineData.live.ip}
+                  { name: '浏览次数', data: this.watcherLineData.live.pv },
+                  { name: '独立访客', data: this.watcherLineData.live.uv },
+                  { name: 'IP', data: this.watcherLineData.live.ip }
                 ]
               })
             })
@@ -645,8 +642,8 @@
       goPagerDataDetail () {
         this.pagerDataDetail = true
         this.pagerDataList = [
-          {'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10'},
-          {'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10'}
+          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
+          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
         ]
       },
       goCardDataDetail () {
@@ -689,10 +686,13 @@
       },
       goGoodsDataDetail () {
         this.goodsDataDetail = true
-        this.goodsDataList = [
-          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋', 'push': 50, 'browse': 56975, 'click': 46859},
-          {'goodsId': 10000, 'name': 'Kyrie4 运动篮球鞋2', 'push': 50, 'browse': 56975, 'click': 46859}
-        ]
+        this.$get(dataService.GET_GOODS_LISTS, { activity_id: this.activityId })
+          .then((res) => {
+            if (res && res.code === 200) {
+              this.goodsDataList = res.data
+            }
+            console.log(this.goodsDataList)
+          })
       },
       changeMenu (val) {
         if (this.watchType === val) return
@@ -702,9 +702,9 @@
         this.watcherChart = lines('chart01', {
           xAxisData: this.watcherLineData[typeAttr].xAxis,
           datas: [
-            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
-            {name: '独立访问', data: this.watcherLineData[typeAttr].uv},
-            {name: 'IP', data: this.watcherLineData[typeAttr].ip}
+            { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
+            { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
+            { name: 'IP', data: this.watcherLineData[typeAttr].ip }
           ]
         })
       },
@@ -836,6 +836,18 @@
           this.pageSize = 10
           this.total = 0
         })
+      },
+      download (type, id) {
+        console.log(type, id)
+        switch (type) {
+          case 'goods':
+            this.downloadGoods(id)
+            break
+        }
+      },
+      downloadGoods (id) {
+        let _url = `/api${dataService.GET_GOODS_EXPORT}?goods_id=${id}`
+        window.location.href = _url
       }
     }
   }

@@ -22,6 +22,9 @@
               问卷数量
             </td>
             <td>
+              是否推送
+            </td>
+            <td>
               修改时间
             </td>
             <td>
@@ -39,10 +42,13 @@
                 {{itemData.questionNum}}
               </td>
               <td>
+                {{itemData.publish === 'Y' ? '是':'否'}}
+              </td>
+              <td>
                 {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
               </td>
               <td>
-                <a :href="'/salesTools/questionnaire/edit/' + activityId + '/'+itemData.naireId">编辑</a><span>|</span>
+                <a href="javascript:;" @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
                 <a href="javascript:;" @click="view(itemData.naireId)">预览</a><span>|</span>
                 <a href="javascript:;" class="v-del" @click="confirmDel(itemData)">删除</a>
               </td>
@@ -146,6 +152,16 @@ export default {
     changePage (currentPage) {
       this.searchParams.page = currentPage
       this.getDataList()
+    },
+    jumpEdit (isPublish, naireId) {
+      if (isPublish === 'Y') {
+        this.$toast({
+          content: '已推送问卷无法再次编辑',
+          position: 'center'
+        })
+      } else {
+        this.$router.replace('/salesTools/questionnaire/edit/' + this.activityId + '/' + naireId)
+      }
     },
     view (naireId) {
       this.$post(questionService.GET_QUESTION, {
