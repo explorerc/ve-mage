@@ -60,5 +60,9 @@ export default {
   /* 直播数据-商品列表 */
   GET_GOODS_LISTS: '/manage/goods/lists',
   /* 直播数据-商品数据下载 */
-  GET_GOODS_EXPORT: '/manage/goods/export'
+  GET_GOODS_EXPORT: '/manage/goods/export',
+  /* 直播数据-调查问卷列表 */
+  GET_NAIRE_LISTS: '/manage/naire/list',
+  /* 直播数据-商品数据下载 */
+  GET_NAIRE_DOWNLOAD: '/manage/naire/download'
 }
