@@ -280,7 +280,7 @@
             <el-table-column label="问卷结果">
               <template slot-scope="scope">
                 <span class="data-link"
-                      @click="download({type:'pager',activityId: this.activityId,naireId:scope.row.naireId })">下载</span>
+                      @click="download({type:'pager',naireId:scope.row.naireId })">下载</span>
               </template>
             </el-table-column>
           </el-table>
@@ -856,7 +856,7 @@
         window.location.href = _url
       },
       downloadPager (par) {
-        let _url = `/api${dataService.GET_NAIRE_DOWNLOAD}?activityId=${par.activityId}&&naireId=${par.naireId}`
+        let _url = `/api${dataService.GET_NAIRE_DOWNLOAD}?activityId=${this.activityId}&&naireId=${par.naireId}`
         window.location.href = _url
       }
     }
