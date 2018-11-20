@@ -56,5 +56,9 @@ export default {
   /* 推广渠道-预约/报名--数据详情 */
   GET_SPREAD_USER_LIST: '/manage/data-center/sign-list',
   /* 推广渠道-预约/报名--导出 */
-  GET_SPREAD_USER_LIST_EXPORT: '/manage/data-center/download-sign-list'
+  GET_SPREAD_USER_LIST_EXPORT: '/manage/data-center/download-sign-list',
+  /* 直播数据-商品列表 */
+  GET_GOODS_LISTS: '/manage/goods/lists',
+  /* 直播数据-商品数据下载 */
+  GET_GOODS_EXPORT: '/manage/goods/export'
 }
