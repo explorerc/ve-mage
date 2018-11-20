@@ -113,7 +113,7 @@
         // }, 500)
       },
       check () {
-        this.$router.push(`/liveMager/detail/${this.activity_id}`)
+        this.$router.push(`/data/preview/${this.activity_id}`)
       },
       // 上下架
       handleShelf (row) {
