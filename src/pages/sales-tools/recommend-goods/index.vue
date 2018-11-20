@@ -26,7 +26,7 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{row.number<10?`0${row.number}`:row.number}}</td>
             <td>
-              <img :src="row.avatar ? `${$imgHost}/${row.avatar}` :require('assets/image/avatar@2x.png')" alt="">
+              <img :src="row.image ? `${$imgHost}/${row.image[0].name}` :require('assets/image/avatar@2x.png')" alt="">
             </td>
             <td>{{row.title}}</td>
             <td>
@@ -47,7 +47,7 @@
       </table>
     </div>
     <div class="no-goods" v-else>
-      <img :src="require('assets/image/avatar@2x.png')" alt="">
+      <img :src="require('assets/image/not-goodlist.png')" alt="">
       <p>暂时没有商品哦~</p>
       <p>全新直播购物模式，通过实时直播带动粉丝经济，<br>你甚至可以联合品牌商一起策划品牌内容，提升观众信任感</p>
       <el-button class="add-goods primary-button" @click="createGoods" round>添加商品</el-button>
@@ -84,8 +84,11 @@
       getList () {
         this.$post(goodsServer.GOODS_LISTS, { activity_id: this.activity_id })
           .then(res => {
-            console.log(res)
+            res.data.forEach((ite, ind) => {
+              ite.image = JSON.parse(ite.image)
+            })
             this.tableData = res.data
+            console.log(this.tableData)
           })
           .catch(() => {
             this.tableData = []
