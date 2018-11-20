@@ -131,7 +131,7 @@
       </div>
       <div class="search-btns">
         <button class="primary-button" @click="searchEnter">查询</button>
-        <button class="default-button" @click="cancelClick">取消</button>
+        <button class="default-button" @click="cancelClick">重置</button>
       </div>
     </div>
     <div class="table-list-box data-pad">
@@ -171,7 +171,7 @@
         </el-table-column>
         <el-table-column label="观看时长">
           <template slot-scope="scope">
-            {{scope.row.watch_time|fmtTime}}
+            {{scope.row.watch_time}}
           </template>
         </el-table-column>
         <el-table-column label="渠道来源">
