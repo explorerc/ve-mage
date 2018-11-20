@@ -273,13 +273,14 @@
                 {{scope.$index}}
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="问卷名称"></el-table-column>
-            <el-table-column prop="pushDate" label="推送时间"></el-table-column>
-            <el-table-column prop="count" label="题目数量"></el-table-column>
-            <el-table-column prop="receive" label="收到数据"></el-table-column>
+            <el-table-column prop="title" label="问卷名称"></el-table-column>
+            <el-table-column prop="send_at" label="推送时间"></el-table-column>
+            <el-table-column prop="questionNum" label="题目数量"></el-table-column>
+            <el-table-column prop="answerNum" label="收到数据"></el-table-column>
             <el-table-column label="问卷结果">
               <template slot-scope="scope">
-                <span class="data-link">下载</span>
+                <span class="data-link"
+                      @click="download({type:'pager',activityId: this.activityId,naireId:scope.row.naireId })">下载</span>
               </template>
             </el-table-column>
           </el-table>
@@ -367,7 +368,7 @@
       v-show="goodsDataDetail"
       width="60%"
       type="none"
-      header="问卷数据详情"
+      header="商品数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
@@ -375,11 +376,11 @@
             <el-table-column type="index" label="序号" width="50"></el-table-column>
             <el-table-column prop="title" label="商品名称"></el-table-column>
             <el-table-column prop="push" label="推送次数"></el-table-column>
-            <el-table-column prop="uv" label="商品详情浏览次数"></el-table-column>
-            <el-table-column prop="buy" label="点击购买次数"></el-table-column>
+            <el-table-column prop="pv" label="商品详情浏览次数"></el-table-column>
+            <el-table-column prop="buy_nums" label="点击购买次数"></el-table-column>
             <el-table-column label="详情数据">
               <template slot-scope="scope">
-                <span class="data-link" @click="download('goods', scope.row.goods_id)">下载</span>
+                <span class="data-link" @click="download({type:'goods', id:scope.row.goods_id})">下载</span>
               </template>
             </el-table-column>
           </el-table>
@@ -641,10 +642,13 @@
       },
       goPagerDataDetail () {
         this.pagerDataDetail = true
-        this.pagerDataList = [
-          { 'pageId': 10000, 'name': '张三', 'count': 50, 'receive': 10, 'pushDate': '2018-10-17 10:10' },
-          { 'pageId': 10001, 'name': '李四', 'count': 60, 'receive': 20, 'pushDate': '2018-10-17 10:10' }
-        ]
+        this.$get(dataService.GET_NAIRE_LISTS, { activityId: this.activityId })
+          .then((res) => {
+            if (res && res.code === 200) {
+              this.pagerDataList = res.data
+            }
+            console.log(this.pagerDataList)
+          })
       },
       goCardDataDetail () {
         this.cardDataDetail = true
@@ -837,16 +841,22 @@
           this.total = 0
         })
       },
-      download (type, id) {
-        console.log(type, id)
-        switch (type) {
+      download (par) {
+        switch (par.type) {
           case 'goods':
-            this.downloadGoods(id)
+            this.downloadGoods(par.id)
+            break
+          case 'pager':
+            this.downloadPager(par)
             break
         }
       },
       downloadGoods (id) {
         let _url = `/api${dataService.GET_GOODS_EXPORT}?goods_id=${id}`
+        window.location.href = _url
+      },
+      downloadPager (par) {
+        let _url = `/api${dataService.GET_NAIRE_DOWNLOAD}?activityId=${par.activityId}&&naireId=${par.naireId}`
         window.location.href = _url
       }
     }
