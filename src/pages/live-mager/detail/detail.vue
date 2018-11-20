@@ -488,7 +488,7 @@
       <div class="item living">
         <p class='block-separte'>直播</p>
         <div class="card-list clearfix">
-          <div class='item ques' @click="linkTo($event,'/salesTools/questionnaire/')">
+          <div class='item ques' @click="linkTo($event,'/salesTools/questionnaire/list/')">
             <div class="card">
               <div class='pic'>
               </div>
