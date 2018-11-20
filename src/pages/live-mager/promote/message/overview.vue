@@ -17,7 +17,7 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template>
+              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
               <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template>
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
@@ -79,6 +79,7 @@ export default {
       webinarName: '',
       title: '',
       group: '',
+      tag: '',
       status: '',
       time: '',
       date: '',
@@ -95,17 +96,20 @@ export default {
   },
   created () {
     this.queryInfo()
-    this.queryGroupList().then(this.queryTagList()).then(() => {
+    this.queryTagList().then(this.queryGroupList()).then(() => {
       this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.id
       }).then((res) => {
         this.group = res.data.groupId
+        this.tag = res.data.tagId
         this.title = res.data.title
         this.status = res.data.status
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgTag = res.data.signature
         this.msgContent = res.data.desc
-        this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        // this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        this.reArrangeList(res.data.groupId.split(','), 'group')
+        this.reArrangeList(res.data.tagId.split(','), 'tag')
       })
     })
   },
@@ -130,9 +134,7 @@ export default {
     },
     // 查询群组
     async queryGroupList (keyword) {
-      await this.$get(userManage.GET_GROUP_LIST, {
-        type: '2'
-      }).then((res) => {
+      await this.$get(userManage.GET_GROUP_LIST).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
@@ -161,27 +163,55 @@ export default {
         this.tagList = temArray
       })
     },
-    reArrangeList (group, tag) {
-      this.groupList.forEach((item, idx) => {
-        group.forEach((ele, i) => {
-          if (ele * 1 === item.id) {
-            this.selectedGroupList.push({
-              name: item.name,
-              count: item.count
-            })
-          }
+    reArrangeList (arr, type) {
+      if (type === 'group') {
+        this.groupList.forEach((item, idx) => {
+          arr.forEach((ele, i) => {
+            if (ele * 1 === item.id) {
+              this.selectedGroupList.push({
+                name: item.name,
+                count: item.count
+              })
+            }
+          })
         })
-      })
-      this.tagList.forEach((item, idx) => {
-        tag.forEach((ele, i) => {
-          if (ele * 1 === item.id) {
-            this.selectedTagList.push({
-              name: item.name
-            })
-          }
+      } else {
+        console.log(arr)
+        console.log(this.tagList)
+        this.tagList.forEach((item, idx) => {
+          console.log(item)
+          arr.forEach((ele, i) => {
+            console.log(ele + ' ' + i)
+            if (ele * 1 === item.id) {
+              this.selectedTagList.push({
+                name: item.name
+              })
+            }
+          })
         })
-      })
+      }
     },
+    // reArrangeList (arr, tag) {
+    //   this.groupList.forEach((item, idx) => {
+    //     group.forEach((ele, i) => {
+    //       if (ele * 1 === item.id) {
+    //         this.selectedGroupList.push({
+    //           name: item.name,
+    //           count: item.count
+    //         })
+    //       }
+    //     })
+    //   })
+    //   this.tagList.forEach((item, idx) => {
+    //     tag.forEach((ele, i) => {
+    //       if (ele * 1 === item.id) {
+    //         this.selectedTagList.push({
+    //           name: item.name
+    //         })
+    //       }
+    //     })
+    //   })
+    // },
     /* 点击取消 */
     handleClick (e) {
       if (e.action === 'cancel') {
