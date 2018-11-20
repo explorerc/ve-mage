@@ -4,12 +4,11 @@
       <span class="title">问卷列表</span>
     </div>
     <div class="v-tbns clearfix">
-      <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
-        新建问卷
-      </a>
-      <a class="v-view">
-        查看数据
-      </a>
+      <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
+      <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
+
+      </a> -->
+      <router-link class="v-view" :to="`/data/live/${this.activityId}`">查看数据</router-link>
     </div>
     <div class="v-table">
       <table>
