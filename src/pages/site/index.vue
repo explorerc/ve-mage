@@ -12,74 +12,76 @@
         <!-- <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span> -->
       </div>
     </div>
-    <div class="group">
-      <div class="fwn">我的模板</div>
-      <div class="group-content">
-        <div class="template-block"
-             style=""
-             v-if="this.data.tid">
-          <img :src="this[`t${data.tid}`]">
-          <div class="option-wrap">
-            <div class="option-group">
-              <a @click="goEdit">编辑</a>
-              <a @click="goPreview">预览</a>
+    <div class="switch-cover " :class='{"close":!enable}'>
+      <div class="group">
+        <div class="fwn">我的模板</div>
+        <div class="group-content">
+          <div class="template-block clearfix"
+              style=""
+              v-if="this.data.tid">
+            <img :src="this[`t${data.tid}`]">
+            <div class="option-wrap">
+              <div class="option-group">
+                <a @click="goEdit">编辑</a>
+                <a @click="goPreview">预览</a>
+              </div>
             </div>
+            <span class='tpl-name'
+                  v-html="this.data.tplName"></span>
           </div>
-          <span class='tpl-name'
-                v-html="this.data.tplName"></span>
-        </div>
-        <div v-else>
-          没有模板
+          <div v-else class='empty'>
+            暂未选择
+          </div>
         </div>
       </div>
-    </div>
-    <div class="group">
-      <div class="fwn fwn2">模板库</div>
-      <div class="group-content fs0">
-        <div class="template-block">
-          <img :src="t0478320"
-               alt="">
-          <div class="option-wrap">
-            <div class="option-group">
-              <a @click="useTemplate('template1')">使用模板</a>
-              <a @click="showPreview('0478320')">预览</a>
+      <div class="group">
+        <div class="fwn fwn2">模板库</div>
+        <div class="group-content fs0">
+          <div class="template-block clearfix">
+            <img :src="t0478320"
+                alt="">
+            <div class="option-wrap">
+              <div class="option-group">
+                <a @click="useTemplate('template1')">使用模板</a>
+                <a @click="showPreview('0478320')">预览</a>
+              </div>
             </div>
+            <span class='tpl-name'
+                  v-html="tplData['template1']()['tplName']"></span>
           </div>
-          <span class='tpl-name'
-                v-html="tplData['template1']()['tplName']"></span>
-        </div>
-        <div class="template-block">
-          <img :src="t0478321">
-          <div class="option-wrap">
-            <div class="option-group">
-              <a @click="useTemplate('template2')">使用模板</a>
-              <a @click="showPreview('0478321')">预览</a>
+          <div class="template-block clearfix">
+            <img :src="t0478321">
+            <div class="option-wrap">
+              <div class="option-group">
+                <a @click="useTemplate('template2')">使用模板</a>
+                <a @click="showPreview('0478321')">预览</a>
+              </div>
             </div>
+            <span class='tpl-name'
+                  v-html="tplData['template2']()['tplName']"></span>
           </div>
-          <span class='tpl-name'
-                v-html="tplData['template2']()['tplName']"></span>
-        </div>
-        <div class="template-block">
-          <img :src="t0478322" >
-          <div class="option-wrap">
-            <div class="option-group">
-              <a @click="useTemplate('template3')">使用模板</a>
-              <a @click="showPreview('0478322')">预览</a>
+          <div class="template-block clearfix">
+            <img :src="t0478322" >
+            <div class="option-wrap">
+              <div class="option-group">
+                <a @click="useTemplate('template3')">使用模板</a>
+                <a @click="showPreview('0478322')">预览</a>
+              </div>
             </div>
+            <span class='tpl-name'
+                  v-html="tplData['template3']()['tplName']"></span>
           </div>
-          <span class='tpl-name'
-                v-html="tplData['template3']()['tplName']"></span>
-        </div>
-        <div class="template-block">
-          <img :src="t0478323">
-          <div class="option-wrap">
-            <div class="option-group">
-              <a @click="useTemplate('template4')">使用模板</a>
-              <a @click="showPreview('0478323')">预览</a>
+          <div class="template-block clearfix">
+            <img :src="t0478323">
+            <div class="option-wrap">
+              <div class="option-group">
+                <a @click="useTemplate('template4')">使用模板</a>
+                <a @click="showPreview('0478323')">预览</a>
+              </div>
             </div>
+            <span class='tpl-name'
+                  v-html="tplData['template4']()['tplName']"></span>
           </div>
-          <span class='tpl-name'
-                v-html="tplData['template4']()['tplName']"></span>
         </div>
       </div>
     </div>
@@ -224,6 +226,22 @@ export default {
 .site-container {
   padding-top: 56px;
   padding-left: 100px;
+  .switch-cover {
+    position: relative;
+    &.close::before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba($color: #000000, $alpha: 0.5);
+      z-index: 9999;
+      cursor: not-allowed;
+    }
+  }
   .group {
     .title {
       font-size: 24px;
@@ -259,7 +277,7 @@ export default {
       }
     }
     .fwn2 {
-      margin-top: 45px;
+      margin-top: 10px;
     }
   }
   .group-content {
@@ -324,12 +342,21 @@ export default {
         }
       }
       .tpl-name {
+        display: inline-block;
         padding-top: 10px;
         width: 100%;
         text-align: center;
         color: #888;
-        position: absolute;
       }
+    }
+    .empty {
+      display: inline-block;
+      width: 225px;
+      height: 280px;
+      line-height:280px;
+      text-align:center;
+      border: 1px dashed #dadada;
+      color:#555;
     }
   }
 }
