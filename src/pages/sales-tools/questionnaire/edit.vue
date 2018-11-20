@@ -197,6 +197,25 @@ export default {
   mounted () {
     if (this.questionId && this.activityId) {
       this.getQuestions()
+    } else {
+      let obj = {
+        title: '手机号',
+        errorTip: '',
+        style: 'text',
+        type: QTypes.TEXT,
+        required: 'Y',
+        detail: {
+          format: 'phone',
+          max: 11
+        },
+        verification: 'Y',
+        ext: {
+          name: '手机号',
+          key: 'phone'
+        }
+      }
+      this.phoneData.push(obj)
+      this.base.phone = false
     }
   },
   computed: {
@@ -525,6 +544,9 @@ export default {
             required: 'N',
             detail: {
               list: [
+                {
+                  value: '选项'
+                },
                 {
                   value: '选项'
                 }
@@ -895,6 +917,8 @@ export default {
       img {
         margin: 0 auto;
         display: block;
+        max-width: 700px;
+        max-height: 140px;
       }
       .v-title {
         max-width: 500px;

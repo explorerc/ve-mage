@@ -499,7 +499,7 @@ export default {
     filterLevel (val) {
       switch (val) {
         case 1:
-          return '优质客户'
+          return '优质用户'
         case 2:
           return '高价值用户'
         case 3:

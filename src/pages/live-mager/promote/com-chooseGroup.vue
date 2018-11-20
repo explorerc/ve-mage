@@ -181,6 +181,11 @@ export default {
         this.selectedGroupList = temArray
         this.groupArr = temArr
         this.$emit('selectedGroupListfn', this.selectedGroupList, this.selectedGroupListStr, this.groupArr.toString())
+        console.log(this.groupArr)
+        if (this.groupArr.length === 0) {
+          this.$emit('totalCount', 0)
+          return false
+        }
         if (!this.isInit) {
           this.getMemberCount()
         }
@@ -202,6 +207,11 @@ export default {
         this.selectedTagList = temArray
         this.tagArr = temArr
         this.$emit('selectedTagListfn', this.selectedTagList, this.selectedTagListStr, this.tagArr.toString())
+        console.log(this.tagArr)
+        if (this.tagArr.length === 0) {
+          this.$emit('totalCount', 0)
+          return false
+        }
         if (!this.isInit) {
           this.getMemberCount()
         }
