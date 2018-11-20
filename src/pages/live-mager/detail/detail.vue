@@ -159,7 +159,7 @@
           <ol>
             <li @click="linkTo($event,'/salesTools/questionnaire/list/')">问卷</li>
             <li @click="linkTo($event,'/salesTools/redpack/')">红包雨</li>
-            <li @click="linkTo($event,'/salesTools/recommendGoods/')">商品推荐</li>
+            <li @click="linkTo($event,'/salesTools/recommendGoodsList/')">商品推荐</li>
             <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
         </div>
