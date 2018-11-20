@@ -41,7 +41,7 @@
         </ul>
         <ol class='table-content'>
           <li class='clearfix' v-for="(item,idx) in quesData" :key="idx">
-            <div v-if="item.type === 'mobile'" class='spe moblie'>
+            <div v-if="item.ext === 'phone'" class='spe moblie'>
               <i class='star'>*</i>
               <el-select v-model="phone" disabled placeholder="请选择">
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value">
@@ -49,7 +49,7 @@
               </el-select>
             </div>
             <div v-else  class='spe'>
-              <el-select v-model="item.type" placeholder="请选择" @change='selectChange(idx,item.type)'>
+              <el-select v-model="item.ext" placeholder="请选择" @change='selectChange(idx,item.ext)'>
                 <el-option v-for="opt in options" :key="opt.value" :label="opt.txt" :value="opt.value" :disabled="opt.disabled">
                 </el-option>
               </el-select>
@@ -59,18 +59,17 @@
             </div> -->
             <div>
               <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
-              <!-- <com-input class='inp' value=""  :max-length="8" :placeholder.sync="item.placeholder"></com-input> -->
             </div>
-            <div v-if="item.type === 'mobile'" class='del-box tips'>
+            <div v-if="item.ext === 'phone'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
               <span @click='removeItem(idx)' class='del'>删除</span>
             </div>
-            <section class='select-item clearfix' v-if="item.type === 'select'">
+            <section class='select-item clearfix' v-if="item.ext === 'select'">
               <ol>
-                <span class='add-item' @click='addItem(idx)' v-if="item.detail.length < 10 ? true : false"><i>＋</i>添加选项</span>
-                <li v-for="(option,count) in item.detail" :key='count'>
+                <span class='add-item' @click='addItem(idx)' v-if="item.detail.list.length < 10 ? true : false"><i>＋</i>添加选项</span>
+                <li v-for="(option,count) in item.detail.list" :key='count'>
                   <com-input :value.sync="option.value" :max-length="8" placeholder="请输入选项"></com-input>
                   <span @click='delItem(idx,count)' class='del'>删除</span>
                 </li>
@@ -161,25 +160,42 @@
         this.canPaas = false
         this.quesData.splice([idx], 1)
       },
-      selectChange (idx, res) {
+      selectChange (idx, res, txt) {
+        console.log(res)
         this.canPaas = false
-        if (res === '下拉选择') {
-          // debugger// eslint-disable-line
-          this.quesData[idx]['detail'].push('')
+        switch (res) {
+          case 'select':
+            this.quesData[idx]['detail']['list'].push({value: ''})
+            this.quesData[idx]['title'] = '下拉选择'
+            this.quesData[idx]['type'] = 'select'
+            break
+          case 'integer':
+            this.quesData[idx]['detail']['format'] = 'integer'
+            this.quesData[idx]['title'] = '数字'
+            break
+          case 'email':
+            this.quesData[idx]['detail']['format'] = 'email'
+            this.quesData[idx]['title'] = '邮箱'
+            break
+          case 'text':
+            this.quesData[idx]['title'] = '文本'
+            break
+          case 'name':
+            this.quesData[idx]['title'] = '姓名'
+            break
         }
       },
       addItem (idx) {
         this.canPaas = false
         console.log(idx)
-        this.quesData[idx]['detail'].push({
-          value: '',
-          key: this.quesData[idx]['detail'].length === 0 ? 0 : this.quesData[idx]['detail'].length
+        this.quesData[idx]['detail']['list'].push({
+          value: ''
+          // key: this.quesData[idx]['list'].length === 0 ? 0 : this.quesData[idx]['list'].length
         })
       },
       delItem (idx, count) {
         this.canPaas = false
-        // debugger // eslint-disable-line
-        this.quesData[idx]['detail'].splice(count, 1)
+        this.quesData[idx]['detail']['list'].splice(count, 1)
       },
       addNew () {
         this.canPaas = false
@@ -189,7 +205,11 @@
           place: '请输入描述信息',
           label: '文本',
           type: 'text',
-          detail: []
+          ext: 'text',
+          detail: {
+            format: '',
+            list: []
+          }
         }
         this.quesData.push(obj)
       },
@@ -198,7 +218,7 @@
           activityId: this.activityId
         }).then((res) => {
           console.log(res)
-          if (res.data.viewCondition === 'APPOINT') { // 是否有报名表单数据
+          if (res.data.detail !== null) { // 是否有报名表单数据
             this.isOpen = true
             this.queryData = res.data.detail
             this.quesData = res.data.detail.questionList
@@ -223,17 +243,16 @@
             'questionList': this.quesData
           }
         }
-        console.log(JSON.stringify(this.saveData.detail))
         this.saveData.detail.questionList.forEach(item => {
-          if (item.type === 'mobile') {
+          if (item.ext === 'phone') {
             item.required = 'Y'
             item.verification = 'Y'
           }
-          if (item.type === 'email') {
+          if (item.ext === 'email') {
             item.verification = 'Y'
           }
-          if (item.type === 'select') {
-            if (!item.detail.length) {
+          if (item.ext === 'select') {
+            if (!item.detail['list'].length) {
               this.$messageBox({
                 header: '提示',
                 content: '请添加下拉选项',
@@ -242,7 +261,7 @@
               })
               this.canSave = false
             } else {
-              item.detail.forEach(ele => {
+              item.detail['list'].forEach(ele => {
                 if (!ele.value.length) {
                   this.canSave = false
                 } else {
@@ -260,6 +279,7 @@
             }
           }
         })
+        console.log(this.saveData.detail.questionList = JSON.stringify(this.saveData.detail.questionList))
         this.$nextTick(() => {
           if (this.canSave) {
             this.saveLimitfn(this.saveData)
@@ -317,8 +337,11 @@
                 placeholder: '',
                 place: '请输入手机号码',
                 label: '手机号码',
-                type: 'mobile',
-                detail: []
+                type: 'text',
+                ext: 'phone',
+                detail: {
+                  format: 'phone'
+                }
               }
               this.quesData.push(obj)
             } else {
@@ -371,7 +394,7 @@
           this.hasEmail = false
           this.hasName = false
           newValue.forEach((item) => {
-            switch (item.type) {
+            switch (item.ext) {
               case 'email':
                 this.hasEmail = true
                 break

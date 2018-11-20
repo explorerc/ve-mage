@@ -1,7 +1,7 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index"><span v-if="value.required" class="v-red">*</span>{{index}}</div>
+      <div class="index"><span v-if="value._required" class="v-red">*</span>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -32,7 +32,7 @@
               class="required-des">必填</span>
         <el-switch class='switch'
                    v-if="!(value.detail&&value.detail.format==='mobile')"
-                   v-model="value.required"
+                   v-model="value._required"
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
@@ -103,6 +103,12 @@ export default {
     }
   },
   methods: {
+    validate () {
+      return this.$refs.content.validate()
+    },
+    check () {
+      return this.$refs.content.check()
+    },
     focusTitle () {
       if (this.value.error) {
         this.value.error = false
@@ -125,6 +131,16 @@ export default {
     }
   },
   watch: {
+    'value._required': {
+      handler (val) {
+        if (val) {
+          this.value.required = 'Y'
+        } else {
+          this.value.required = 'N'
+        }
+      },
+      deep: true
+    },
     'value.verifiy': {
       handler (val) {
         if (val) {

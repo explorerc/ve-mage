@@ -4,12 +4,12 @@
       <span class="title">问卷列表</span>
     </div>
     <div class="v-tbns clearfix">
-      <button class="v-add">
+      <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
         新建问卷
-      </button>
-      <button class="v-view">
+      </a>
+      <a class="v-view">
         查看数据
-      </button>
+      </a>
     </div>
     <div class="v-table">
       <table>
@@ -30,22 +30,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="itemData in tableData" :key="itemData.id">
-            <td>
-              {{itemData.name}}
-            </td>
-            <td>
-              {{itemData.count}}
-            </td>
-            <td>
-              {{itemData.date}}
-            </td>
-            <td>
-              <a :href="'/salesTools/questionnaire/edit/'+itemData.id">编辑</a><span>|</span>
-              <a href="javascript:;" @click="view(itemData.id)">预览</a><span>|</span>
-              <a href="javascript:;" class="v-del" @click="confirmDel(itemData.id)">删除</a>
-            </td>
-          </tr>
+          <template v-if="tableData.length>0">
+            <tr v-for="itemData in tableData" :key="itemData.naireId">
+              <td>
+                {{itemData.title}}
+              </td>
+              <td>
+                {{itemData.questionNum}}
+              </td>
+              <td>
+                {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
+              </td>
+              <td>
+                <a :href="'/salesTools/questionnaire/edit/' + activityId + '/'+itemData.naireId">编辑</a><span>|</span>
+                <a href="javascript:;" @click="view(itemData.naireId)">预览</a><span>|</span>
+                <a href="javascript:;" class="v-del" @click="confirmDel(itemData)">删除</a>
+              </td>
+            </tr>
+          </template>
+          <template v-else>
+            <tr class="v-nodata">
+              <td colspan="4">
+                暂无数据
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
       <div class="pagination-box">
@@ -58,7 +67,7 @@
         </div>
       </div>
     </div>
-    <message-box v-show="messageBoxViewShow"
+    <message-box v-if="messageBoxViewShow"
        @handleClick="messageBoxClick"
        width="700px"
        class="message-box v-view"
@@ -70,12 +79,12 @@
       </div>
       <div class="v-content">
         <div class="v-hearder">
-          <img src="../../../assets/image/avatar@2x.png" alt="">
+          <img v-if="defaultImg" :src="defaultImg" alt="">
           <p class="v-title">
-            产品调研
+            {{this.title}}
           </p>
           <p class="v-summary">
-           欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
+            {{this.description}}
           </p>
         </div>
         <div class="v-questions">
@@ -88,313 +97,82 @@
 <script>
 import VePagination from 'src/components/ve-pagination'
 import questions from '../questionnaire/components/questions'
-import { types as QTypes } from 'components/questionnaire/types'
+import questionService from 'src/api/questionnaire-service'
+// import { types as QTypes } from 'components/questionnaire/types'
 export default {
   components: { VePagination,
     questions },
   data () {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        count: 2,
-        id: 1
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        count: 2,
-        id: 2
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        count: 2,
-        id: 3
-      }, {
-        date: '2016-05-05',
-        name: '王小虎',
-        count: 2,
-        id: 4
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        count: 2,
-        id: 5
-      }],
+      activityId: '',
+      title: '',
+      description: '',
+      imgUrl: '',
+      tableData: [],
       searchParams: {
         business_consumer_uid: 0,
         page: 1,
-        page_size: 9
+        page_size: 10
       },
-      total: 20,
-      pageSize: 6,
-      dragData: [
-        {
-          title: '单选题',
-          errorTip: '',
-          type: QTypes.RADIO,
-          required: true,
-          detail: {
-            list: [
-              {
-                value: '选项'
-              }
-            ]
-          },
-          ext: {
-            name: '单选题'
-          }
-        },
-        {
-          title: '多选题',
-          errorTip: '',
-          type: QTypes.CHECKBOX,
-          value: [],
-          required: true,
-          detail: {
-            list: [
-              {
-                value: '选项'
-              }
-            ]
-          },
-          ext: {
-            name: '多选题'
-          }
-        },
-        {
-          title: '下拉题',
-          errorTip: '',
-          type: QTypes.SELECT,
-          required: true,
-          detail: {
-            list: [
-              {
-                value: '选项'
-              }
-            ]
-          },
-          ext: {
-            name: '下拉题'
-          }
-        },
-        {
-          title: '问答题',
-          errorTip: '',
-          type: QTypes.TEXT,
-          style: '',
-          required: false,
-          detail: {
-            format: 'textarea',
-            max: 300
-          },
-          ext: {
-            name: '问答题'
-          }
-        },
-        {
-          title: '姓名',
-          errorTip: '',
-          type: QTypes.TEXT,
-          required: false,
-          detail: {
-            format: 'input',
-            max: 10
-          },
-          ext: {
-            name: '姓名'
-          }
-        },
-        {
-          title: '手机号',
-          errorTip: '',
-          type: QTypes.TEXT,
-          required: true,
-          detail: {
-            format: 'mobile',
-            max: 11
-          },
-          verification: 'Y',
-          ext: {
-            name: '手机号'
-          }
-        },
-        {
-          title: '邮箱',
-          errorTip: '',
-          type: QTypes.TEXT,
-          required: false,
-          detail: {
-            format: 'email',
-            max: 30
-          },
-          ext: {
-            name: '邮箱'
-          }
-        },
-        {
-          title: '性别',
-          errorTip: '',
-          type: QTypes.SELECT,
-          required: true,
-          detail: {
-            list: [
-              {
-                value: '男'
-              },
-              {
-                value: '女'
-              }
-            ]
-          },
-          ext: {
-            fixedness: true,
-            name: '性别'
-          }
-        },
-        {
-          title: '生日',
-          errorTip: '',
-          type: QTypes.DATE,
-          required: true,
-          detail: {
-            format: 'yyyy-MM-dd'
-          },
-          ext: {
-            name: '生日'
-          }
-        },
-        {
-          title: '地域',
-          errorTip: '',
-          type: QTypes.AREA,
-          required: true,
-          detail: {
-            level: 'address'
-          },
-          ext: {
-            name: '地域'
-          }
-        },
-        {
-          title: '行业',
-          errorTip: '',
-          type: QTypes.SELECT,
-          required: true,
-          detail: {
-            list: [
-              {
-                value: 'IT/互联网'
-              },
-              {
-                value: '电子/通信/硬件'
-              },
-              {
-                value: '金融'
-              },
-              {
-                value: '交通/贸易/物流'
-              },
-              {
-                value: '消费品'
-              },
-              {
-                value: '机械/制造'
-              },
-              {
-                value: '能源/矿产环保'
-              },
-              {
-                value: '制药/医疗'
-              },
-              {
-                value: '专业服务'
-              },
-              {
-                value: '教育/培训'
-              },
-              {
-                value: '广告/媒体/娱乐/出版'
-              },
-              {
-                value: '房地产/建筑'
-              },
-              {
-                value: '服务业'
-              },
-              {
-                value: '政府/非盈利机构/其它'
-              }
-            ]
-          },
-          ext: {
-            fixedness: true,
-            name: '教育水平'
-          }
-        },
-        {
-          title: '职位',
-          type: QTypes.TEXT,
-          required: true,
-          detail: {
-            format: 'input',
-            max: 10
-          },
-          ext: {
-            name: '职位'
-          }
-        },
-        {
-          title: '教育水平',
-          errorTip: '',
-          type: QTypes.SELECT,
-          required: true,
-          detail: {
-            list: [
-              {
-                value: '博士'
-              },
-              {
-                value: '硕士'
-              },
-              {
-                value: '本科'
-              },
-              {
-                value: '大专'
-              },
-              {
-                value: '高中'
-              }
-            ]
-          },
-          ext: {
-            fixedness: true,
-            name: '教育水平'
-          }
-        }
-      ],
+      total: 0,
+      pageSize: 10,
+      dragData: [],
       phoneData: [],
       messageBoxViewShow: false
     }
   },
   beforeDestroy () {
   },
-  created () {
+  mounted () {
+    this.activityId = this.$route.params.activityId
+    this.getDataList()
   },
   computed: {
+    isAdd () {
+      return this.tableData.length > 9
+    },
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+    }
   },
   methods: {
     getDataList () {
-
+      this.$post(questionService.GET_QUESTION_LIST, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.tableData = res.data
+      })
     },
     changePage (currentPage) {
       this.searchParams.page = currentPage
       this.getDataList()
     },
-    view () {
-      this.messageBoxViewShow = true
+    view (naireId) {
+      this.$post(questionService.GET_QUESTION, {
+        activityId: this.activityId,
+        naireId: naireId
+      }).then((res) => {
+        this.title = res.data.title
+        this.description = res.data.description
+        this.imgUrl = res.data.imgUrl
+        let data = res.data
+        data.detail.forEach(item => {
+          item.ext = JSON.parse(item.ext)
+          item._required = item.required === 'Y'
+          ; ((item) => {
+            setTimeout(() => {
+              if (item.ext.key === 'phone') {
+                this.phoneData.push(item)
+              } else {
+                this.dragData.push(item)
+              }
+            }, 0)
+          })(item)
+        })
+        this.messageBoxViewShow = true
+      })
     },
-    confirmDel (id) {
+    confirmDel (itemData) {
       this.$messageBox({
         header: '提示',
         width: '450px',
@@ -405,13 +183,19 @@ export default {
         handleClick: (e) => {
           if (e.action === 'cancel') {
           } else if (e.action === 'confirm') {
-            this.del(id)
+            this.del(itemData)
           }
         }
       })
     },
-    del (id) {
-      alert(id)
+    del (itemData) {
+      this.$post(questionService.POST_QUESTION_DELETE, {
+        activityId: this.activityId,
+        naireId: itemData.naireId
+      }).then((res) => {
+        let index = this.tableData.indexOf(itemData)
+        this.tableData.splice(index, 1)
+      })
     },
     messageBoxClick (e) {
       if (e.action === 'cancel') {
@@ -447,7 +231,7 @@ export default {
   .v-tbns {
     width: 100%;
     margin-bottom: 30px;
-    button {
+    a {
       float: right;
       width: 120px;
       height: 40px;
@@ -518,6 +302,12 @@ export default {
           }
           &:hover {
             background-color: #e9ebff;
+          }
+          &.v-nodata {
+            text-align: center;
+            &:hover {
+              background-color: #fff;
+            }
           }
         }
       }

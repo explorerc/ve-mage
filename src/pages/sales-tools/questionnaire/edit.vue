@@ -1,7 +1,7 @@
 <template>
   <div class="v-questionaire">
     <div class="v-questionaire-title">
-      <span class="title">新建问卷</span>
+      <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
     </div>
     <div class="content from-box">
       <div class="tt">
@@ -45,9 +45,15 @@
                 </span>
                 问卷头图
               </span>
-              <ve-upload title="上传头图，推荐尺寸为800x180px，大小不超过2M"
-                     accept="png|jpg|jpeg|bmp"
-                     :fileSize="2048"></ve-upload>
+              <ve-upload
+                    title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140"
+                    accept="png|jpg|jpeg|bmp"
+                    :fileSize="2048"
+                    :defaultImg="defaultImg"
+                    :errorMsg="error.uploadErrorMsg"
+                    @error="uploadError($event)"
+                    @success="uploadImgSuccess($event)">
+              </ve-upload>
             </div>
             <div class="v-form">
               <span class="v-title">
@@ -58,7 +64,10 @@
               </span>
               <com-input placeholder="问卷标题"
                      :max-length="30"
-                     class="q-title"></com-input>
+                     class="q-title"
+                     :value.sync="title"
+                     :errorTips="error.titleError"
+                     @focus="focus('titleError')"></com-input>
             </div>
             <div class="v-form">
               <span class="v-title">
@@ -70,7 +79,10 @@
               <com-input placeholder="问卷简介"
                      :max-length="300"
                      class="q-title"
-                     type="textarea"></com-input>
+                     type="textarea"
+                     :value.sync="description"
+                     :errorTips="error.descriptionError"
+                     @focus="focus('descriptionError')"></com-input>
             </div>
           </div>
           <div class="rb">
@@ -94,7 +106,7 @@
                             :edit="true"
                             :ref="`comPhone`"
                             :index="dragData.length+1"
-                            :key="dragData.length+1" @remove="removeQuestion($event)">
+                            :key="dragData.length+1" @remove="removePhone($event)">
               </com-question>
             </div>
           </div>
@@ -121,12 +133,12 @@
                 </div>
                 <div class="v-content">
                   <div class="v-hearder">
-                    <img src="../../../assets/image/avatar@2x.png" alt="">
+                    <img v-if="defaultImg" :src="defaultImg" alt="">
                     <p class="v-title">
-                      产品调研
+                      {{this.title}}
                     </p>
                     <p class="v-summary">
-                     欢迎参加调查！答卷数据仅用于统计分析，请放心填写。题目选项无对错之分，按照实际情况选择即可。感谢您的帮助！
+                      {{this.description}}
                     </p>
                   </div>
                   <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
@@ -141,6 +153,8 @@ import question from 'components/questionnaire/wrap'
 import questions from '../questionnaire/components/questions'
 import VeUpload from 'src/components/ve-upload-image'
 import { types as QTypes } from 'components/questionnaire/types'
+import questionService from 'src/api/questionnaire-service'
+// import func from './vue-temp/vue-editor-bridge'
 export default {
   components: {
     draggable,
@@ -161,15 +175,29 @@ export default {
         position: true,
         edu: true
       },
+      questionId: this.$route.params.id,
+      activityId: this.$route.params.activityId,
+      title: '',
+      description: '',
+      imgUrl: '',
+      error: {
+        titleError: '',
+        descriptionError: '',
+        uploadErrorMsg: ''
+      },
       dragData: [
       ],
       phoneData: [],
+      saveResult: true,
       messageBoxViewShow: false // 预览框显示隐藏
     }
   },
   beforeDestroy () {
   },
-  created () {
+  mounted () {
+    if (this.questionId && this.activityId) {
+      this.getQuestions()
+    }
   },
   computed: {
     isBorder () {
@@ -180,9 +208,37 @@ export default {
     },
     hasPhone () {
       return !(this.phoneData.length === 0)
+    },
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
     }
   },
   methods: {
+    getQuestions () {
+      this.$get(questionService.GET_QUESTION, {
+        activityId: this.activityId,
+        naireId: this.questionId
+      }).then((res) => {
+        this.title = res.data.title
+        this.description = res.data.description
+        this.imgUrl = res.data.imgUrl
+        let data = res.data
+        data.detail.forEach(item => {
+          item.ext = JSON.parse(item.ext)
+          item._required = item.required === 'Y'
+          ; ((item) => {
+            setTimeout(() => {
+              if (item.ext.key === 'phone') {
+                this.phoneData.push(item)
+              } else {
+                this.dragData.push(item)
+              }
+              this.base[item.ext.key] = false
+            }, 0)
+          })(item)
+        })
+      })
+    },
     removeQuestion (options) {
       if (options.type === 'phone') {
         this.phoneData.splice(0, 1)
@@ -191,6 +247,24 @@ export default {
       }
       this.base[options.type] = true
     },
+    removePhone (options) {
+      this.$messageBox({
+        header: '删除活动',
+        content: '删除此模块将会导致无法验证用户手机号码，确认是否删除？',
+        cancelText: '暂不删除', // 不传递cancelText将只有一个确定按钮
+        confirmText: '仍要删除',
+        type: 'error', // 错误类型
+        width: '500px', // 消息框宽度
+        handleClick: (e) => {
+          console.log(e)
+          if (e.action === 'cancel') {
+            // console.log('取消或者关闭按钮')
+          } else if (e.action === 'confirm') {
+            this.removeQuestion(options)
+          }
+        }
+      })
+    },
     addQuestion (type) {
       let obj = {}
       switch (type) {
@@ -198,10 +272,10 @@ export default {
           obj = {
             title: '姓名',
             errorTip: '',
+            style: 'text',
             type: QTypes.TEXT,
-            required: false,
+            required: 'N',
             detail: {
-              format: 'input',
               max: 10
             },
             ext: {
@@ -216,10 +290,11 @@ export default {
           obj = {
             title: '手机号',
             errorTip: '',
+            style: 'text',
             type: QTypes.TEXT,
-            required: true,
+            required: 'Y',
             detail: {
-              format: 'mobile',
+              format: 'phone',
               max: 11
             },
             verification: 'Y',
@@ -235,8 +310,9 @@ export default {
           obj = {
             title: '邮箱',
             errorTip: '',
+            style: 'text',
             type: QTypes.TEXT,
-            required: false,
+            required: 'N',
             detail: {
               format: 'email',
               max: 30
@@ -254,7 +330,7 @@ export default {
             title: '性别',
             errorTip: '',
             type: QTypes.SELECT,
-            required: true,
+            required: 'N',
             detail: {
               list: [
                 {
@@ -279,9 +355,9 @@ export default {
             title: '生日',
             errorTip: '',
             type: QTypes.DATE,
-            required: true,
+            required: 'N',
             detail: {
-              format: 'yyyy-MM-dd'
+              format: 'Y-m-d'
             },
             ext: {
               name: '生日',
@@ -296,7 +372,7 @@ export default {
             title: '地域',
             errorTip: '',
             type: QTypes.AREA,
-            required: true,
+            required: 'N',
             detail: {
               level: 'address'
             },
@@ -313,7 +389,7 @@ export default {
             title: '行业',
             errorTip: '',
             type: QTypes.SELECT,
-            required: true,
+            required: 'N',
             detail: {
               list: [
                 {
@@ -372,10 +448,10 @@ export default {
         case 'position':
           obj = {
             title: '职位',
+            style: 'text',
             type: QTypes.TEXT,
-            required: true,
+            required: 'N',
             detail: {
-              format: 'input',
               max: 10
             },
             ext: {
@@ -391,7 +467,7 @@ export default {
             title: '教育水平',
             errorTip: '',
             type: QTypes.SELECT,
-            required: true,
+            required: 'N',
             detail: {
               list: [
                 {
@@ -425,7 +501,7 @@ export default {
             title: '单选题',
             errorTip: '',
             type: QTypes.RADIO,
-            required: true,
+            required: 'N',
             detail: {
               list: [
                 {
@@ -446,7 +522,7 @@ export default {
             errorTip: '',
             type: QTypes.CHECKBOX,
             value: [],
-            required: true,
+            required: 'N',
             detail: {
               list: [
                 {
@@ -466,7 +542,7 @@ export default {
             title: '下拉题',
             errorTip: '',
             type: QTypes.SELECT,
-            required: true,
+            required: 'N',
             detail: {
               list: [
                 {
@@ -485,11 +561,10 @@ export default {
           obj = {
             title: '问答题',
             errorTip: '',
+            style: 'textarea',
             type: QTypes.TEXT,
-            style: '',
-            required: false,
+            required: 'N',
             detail: {
-              format: 'textarea',
               max: 300
             },
             ext: {
@@ -503,21 +578,72 @@ export default {
     },
     save () {
       let data = []
+      let result = true
+      if (!this.imgUrl) {
+        result = false
+        this.error.uploadErrorMsg = '请上传图片'
+      } else if (!this.title) {
+        result = false
+        this.error.titleError = '请填写问卷标题'
+      } else if (!this.description) {
+        result = false
+        this.error.descriptionError = '请填写问卷简介'
+      }
       for (let i = 0; i < this.dragData.length; i++) {
-        if (!this.$refs['com' + i][0].$children[1].validate()) {
-          return false
+        if (!this.$refs['com' + i][0].validate()) {
+          result = false
         }
         data.push(this.dragData[i])
       }
       if (this.phoneData.length > 0) {
         if (!this.$refs['comPhone'].$children[1].validate()) {
-          return false
+          result = false
         }
         data.push(this.phoneData[0])
       }
-      if (data.length > 0) {
-        console.log(data)
+      if (result && this.saveResult) {
+        let _data = {
+          activityId: this.activityId,
+          title: this.title,
+          description: this.description,
+          imgUrl: this.imgUrl,
+          detail: data
+        }
+        _data.detail.forEach(item => {
+          item.ext = JSON.stringify(item.ext)
+        })
+        _data.detail = JSON.stringify(_data.detail)
+        this.saveResult = false
+        if (this.questionId) {
+          _data.naireId = this.questionId
+          this.$config({ handlers: true }).$post(questionService.POST_QUESTION_UPDATE, _data).then((res) => {
+            this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
+          }).catch((res) => {
+            this.saveResult = true
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+          })
+        } else {
+          this.$config({ handlers: true }).$post(questionService.POST_QUESTION_CREAT, _data).then((res) => {
+            this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
+          }).catch((res) => {
+            this.saveResult = true
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+          })
+        }
       }
+    },
+    focus (type) {
+      this.error[type] = ''
     },
     view () {
       this.messageBoxViewShow = true
@@ -526,6 +652,12 @@ export default {
       if (e.action === 'cancel') {
         this.messageBoxViewShow = false
       }
+    },
+    uploadImgSuccess (data) {
+      this.imgUrl = data.name
+    },
+    uploadError (data) {
+      this.error.uploadErrorMsg = data.msg
     }
   }
 }
