@@ -171,7 +171,7 @@
         </el-table-column>
         <el-table-column label="观看时长">
           <template slot-scope="scope">
-            {{scope.row.watch_time|fmtTime}}
+            {{scope.row.watch_time}}
           </template>
         </el-table-column>
         <el-table-column label="渠道来源">
