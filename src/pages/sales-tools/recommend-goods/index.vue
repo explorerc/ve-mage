@@ -3,7 +3,7 @@
     <header>
       <p>商品推荐</p>
       <div v-if="tableData.length>=1">
-        <el-button @click="check" round>查看活动数据</el-button>
+        <el-button @click="check" round :disabled="!isShowlive">查看活动数据</el-button>
         <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </el-button>
@@ -30,13 +30,14 @@
             </td>
             <td>{{row.title}}</td>
             <td>
-              <del>{{row.price === '0.00'?'免费':row.price}}</del>
+              <del v-show="row.preferential !== '0.00'">￥{{row.price === '0.00'?'免费':row.price}}</del>
+              <span v-show="row.preferential === '0.00'">￥{{row.price === '0.00'?'免费':row.price}}</span>
             </td>
-            <td class="dis-prices">{{row.price === '0.00'?'免费':row.preferential}}</td>
+            <td class="dis-prices">￥{{row.price === '0.00'?'免费':row.preferential}}</td>
             <td>
               <div>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'下架':'上架'}}
+                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
                 <el-button class="item" size="mini" type="text">移动</el-button>
                 <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
@@ -63,12 +64,14 @@
     components: { draggable },
     created () {
       this.getList()
+      this.isShowLiveData()
     },
     data () {
       return {
         activity_id: this.$route.params.activity_id,
         tableData: [],
-        timerShelf: null
+        timerShelf: null,
+        isShowlive: null
       }
     },
     watch: {
@@ -106,7 +109,15 @@
         this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
       },
       check () {
-        this.$router.push(`/data/preview/${this.activity_id}`)
+        if (this.isShowlive) {
+          this.$router.push(`/data/live/${this.activity_id}`)
+        }
+      },
+      isShowLiveData () {
+        this.$get(goodsServer.GET_DETAILS, { activityId: this.activity_id })
+          .then(res => {
+            this.isShowlive = res.data.data.time
+          })
       },
       // 上下架
       handleShelf (row) {

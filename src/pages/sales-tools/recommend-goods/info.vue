@@ -1,34 +1,34 @@
 <template>
   <div id="goods-info">
     <header>新建/编辑商品信息</header>
-    <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="80px" class="demo-ruleForm">
-      <el-form-item label="商品名称" prop="title">
+    <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
+      <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
           <template slot="append" class="slot"><span v-text="goodsData.title.gbLength()" style="color: #2878FF"></span>
             / 20
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item label="原始价格" prop="price">
+      <el-form-item label="原始价格：" prop="price">
         <div class="a_unit">
           <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
 
       </el-form-item>
-      <el-form-item label="优惠价格" prop="preferential">
+      <el-form-item label="优惠价格：" prop="preferential">
         <div class="a_unit">
           <el-input v-model.number="goodsData.preferential" :disabled="!!!goodsData.price"
                     placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
       </el-form-item>
-      <el-form-item label="商品图片" prop="imageList">
+      <el-form-item label="商品图片：" prop="imageList">
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
                        title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
-                       accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :nowIndex="ind|| 0"
+                       accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
                        :fileSize="2048"
                        :errorMsg="ite.errMsg"
                        @error="uploadError($event, ite)" :initImg="ite.name"
@@ -39,15 +39,15 @@
                 v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
-      <el-form-item label="商品链接" prop="url">
+      <el-form-item label="商品链接：" prop="url">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
       </el-form-item>
-      <el-form-item label="商品描述">
+      <el-form-item label="商品描述：">
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
                    placeholder="请输入商品描述"></com-input>
       </el-form-item>
 
-      <el-form-item label="淘口令">
+      <el-form-item label="淘口令：">
         <com-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.tao"
                    placeholder="请输入淘口令"></com-input>
       </el-form-item>
@@ -229,6 +229,7 @@
       },
       resetForm (formName) {
         this.$refs[formName].resetFields()
+        this.$router.go(-1)
       },
       uploadImgSuccess (data) {
         this.goodsData.imageList[data.nowIndex].name = data.name
