@@ -2,7 +2,7 @@
   <div class="q-edit-content">
     <com-input v-if="!edit"
                @focus="focus"
-               :type="value.style"
+               :type="value.detail.format==='phone'?'mobile':value.style"
                :max-length="value.detail.max?value.detail.max:0"
                :value.sync="value.value"></com-input>
     <com-input v-if="!edit&&value.verification==='Y'"
