@@ -32,7 +32,7 @@
                        :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" :initImg="ite.name"
                        @success="uploadImgSuccess"></ve-upload>
           </template>
-          <span class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.imageList.length<4"></span>
+          <span style="color: #cccccc;font-size: 40px" class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
       <el-form-item label="商品链接" prop="url">
@@ -76,6 +76,8 @@
     },
     data () {
       let valiName = (rule, value, callback) => {
+        console.log(rule)
+        console.log(value)
         let timer
         if (timer) return
         timer = setTimeout(() => {
@@ -138,7 +140,7 @@
         uploadImgErrorMsg: '',
         rules: {
           title: [
-            { required: true, validator: valiName, min: 3, max: 20, trigger: 'change,blur', obj: 'goodsData' }
+            { required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData' }
           ],
           price: [
             { required: true, type: 'number', message: '请输入原始价格', trigger: 'blur' },

@@ -402,6 +402,7 @@
       },
       cancelClick () {
         this.citySelect = []
+        this.enterOutTime = []
         this.searchParams = {
           activityId: this.searchParams.activityId,
           keyword: '',

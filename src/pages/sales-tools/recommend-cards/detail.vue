@@ -3,6 +3,9 @@
     <div class="page-title">
       <span class="title">{{cardId === 'new' ? '创建' :'编辑'}}卡片</span>
     </div>
+    <div class="tips-title">
+      <i></i>注意：在推荐卡片中嵌入链接可能会导致观众跳转分流，请合理使用
+    </div>
     <div class="content from-box">
       <div class="from-row">
         <div class="from-title"><i class="star">*</i>卡片名称：</div>
@@ -62,7 +65,7 @@
         </dl>
         <div class="tips">
           <p class="title">卡片预览</p>
-          <p class="txt">功能说明：<br>设置好的推荐卡片可以由主播在直播中推送 给观众，推送时机主播可以自行控制。 在推荐卡片中嵌入链接可能会导致推送时观 众跳入链接进行浏览，从侧面造成直播观看 人数下降，请合理使用。</p>
+          <!-- <p class="txt">功能说明：<br></p> -->
         </div>
       </div>
     </div>
@@ -358,6 +361,25 @@
       &:hover span {
         color: $color-font;
       }
+    }
+  }
+  .tips-title {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background: rgba(233, 235, 255, 1);
+    border-radius: 4px;
+    border: 1px solid rgba(129, 140, 254, 1);
+    margin-bottom: 20px;
+    i {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      background: url('~assets/image/excal.svg') no-repeat;
+      position: relative;
+      top: 4px;
+      right: 4px;
     }
   }
 }

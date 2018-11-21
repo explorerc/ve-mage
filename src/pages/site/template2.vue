@@ -96,6 +96,14 @@ export default {
 
 <style scoped lang="scss">
 .template1-container /deep/ {
+  .panel-container {
+    i {
+      font-style: italic;
+      &.iconfont {
+        font-style: normal;
+      }
+    }
+  }
   min-width: 1366px;
   .edit {
     position: absolute;
@@ -318,7 +326,7 @@ export default {
         margin-right: 80px;
         img {
           width: 130px;
-          height:130px;
+          height: 130px;
         }
       }
     }
