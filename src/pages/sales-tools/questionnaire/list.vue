@@ -8,7 +8,7 @@
       <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
 
       </a> -->
-      <router-link class="v-view" :to="`/data/live/${this.activityId}`">查看数据</router-link>
+      <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}`">查看数据</router-link>
     </div>
     <div class="v-table">
       <table>
@@ -103,6 +103,7 @@
 import VePagination from 'src/components/ve-pagination'
 import questions from '../questionnaire/components/questions'
 import questionService from 'src/api/questionnaire-service'
+import activityService from 'src/api/activity-service'
 // import { types as QTypes } from 'components/questionnaire/types'
 export default {
   components: { VePagination,
@@ -110,6 +111,7 @@ export default {
   data () {
     return {
       activityId: '',
+      hasData: false,
       title: '',
       description: '',
       imgUrl: '',
@@ -131,6 +133,13 @@ export default {
   mounted () {
     this.activityId = this.$route.params.activityId
     this.getDataList()
+    this.$get(activityService.GET_DETAILS, {
+      activityId: this.activityId
+    }).then((res) => {
+      if (res.data.data.time) {
+        this.hasData = true
+      }
+    })
   },
   computed: {
     isAdd () {
