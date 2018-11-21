@@ -237,7 +237,7 @@ export default {
       left: 0;
       bottom: 0;
       right: 0;
-      background: rgba($color: #000000, $alpha: 0.5);
+      background: rgba($color: #fff, $alpha: 0.7);
       z-index: 9999;
       cursor: not-allowed;
     }
@@ -353,10 +353,10 @@ export default {
       display: inline-block;
       width: 225px;
       height: 280px;
-      line-height:280px;
-      text-align:center;
+      line-height: 280px;
+      text-align: center;
       border: 1px dashed #dadada;
-      color:#555;
+      color: #555;
     }
   }
 }
