@@ -48,8 +48,8 @@
       </el-form-item>
 
       <el-form-item label="淘口令">
-        <el-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.tao"
-                  placeholder="请输入淘口令"></el-input>
+        <com-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.tao"
+                  placeholder="请输入淘口令"></com-input>
       </el-form-item>
       <el-form-item>
         <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
