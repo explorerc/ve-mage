@@ -2,7 +2,7 @@
   <div class='wrap-page card-list-page'>
     <div class="page-title">
       <span class="title">推荐卡片</span>
-      <div class="top-bar clearfix">
+      <div class="top-bar clearfix" v-if="tableData.length>0">
         <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='add-new primary-button' round :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
         <router-link :to="`/data/live/${activityId}`"><el-button class='more' round>查看活动数据</el-button></router-link>
       </div>
