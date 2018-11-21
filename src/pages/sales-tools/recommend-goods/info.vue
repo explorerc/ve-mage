@@ -23,7 +23,7 @@
           <span>元</span>
         </div>
       </el-form-item>
-      <el-form-item label="商品图片" prop="upload_list">
+      <el-form-item label="商品图片" prop="imageList">
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
@@ -109,7 +109,7 @@
         let maxV = this[rule.obj].price
         if (value && value < 0) {
           return callback(new Error('商品促销价格不能小于0'))
-        } else if (value && maxV && value > maxV) {
+        } else if (value && maxV && value >= maxV) {
           return callback(new Error('商品促销价格不能大于原始价格'))
         } else if (value && !maxV) {
           return callback(new Error('请先填写原始价格'))
@@ -118,14 +118,20 @@
         }
       }
       let valiUpload = (rule, value, callback) => {
+        console.log(rule)
+        console.log(value)
         let num = 0
-        this[rule.obj].upload_list.map((item) => {
-          if (item.name && item.host) {
+        this[rule.obj].imageList.map((item) => {
+          if (item.name) {
             num += 1
           }
         })
         if (num > 0) {
-          return callback()
+          if (value[0].name) {
+            return callback()
+          } else {
+            return callback(new Error('请上传封面图'))
+          }
         } else {
           return callback(new Error('请上传图片'))
         }
@@ -192,29 +198,35 @@
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let _url
-            if (this.$route.params.type === 'create') {
-              this.goodsData.activity_id = this.$route.params.id // 活动id
-              _url = goodsServer.CREATE_GOODS
-            } else {
-              this.goodsData.goods_id = this.$route.params.id
-              _url = goodsServer.UPDATE_GOODS
-            }
-            this.goodsData.image = JSON.stringify(this.goodsData.imageList)
-            delete this.goodsData.imageList
-            this.$post(_url, this.goodsData)
-              .then(res => {
-                this.$toast({
-                  content: '操作成功!',
-                  position: 'center'
+            let timer
+            if (timer) return
+            timer = setTimeout(() => {
+              clearTimeout(timer)
+              timer = null
+              let _url
+              if (this.$route.params.type === 'create') {
+                this.goodsData.activity_id = this.$route.params.id // 活动id
+                _url = goodsServer.CREATE_GOODS
+              } else {
+                this.goodsData.goods_id = this.$route.params.id
+                _url = goodsServer.UPDATE_GOODS
+              }
+              this.goodsData.image = JSON.stringify(this.goodsData.imageList)
+              delete this.goodsData.imageList
+              this.$post(_url, this.goodsData)
+                .then(res => {
+                  this.$toast({
+                    content: '操作成功!',
+                    position: 'center'
+                  })
+                  setTimeout(() => {
+                    this.$router.go(-1)
+                  }, 500)
                 })
-                setTimeout(() => {
-                  this.$router.go(-1)
-                }, 500)
-              })
-              .catch(err => {
-                console.log(err)
-              })
+                .catch(err => {
+                  console.log(err)
+                })
+            }, 1000)
           } else {
             console.log('error submit!!')
           }

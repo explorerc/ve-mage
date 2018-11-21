@@ -30,9 +30,9 @@
             </td>
             <td>{{row.title}}</td>
             <td>
-              <del>{{row.price}}</del>
+              <del>{{row.price === '0.00'?'免费':row.price}}</del>
             </td>
-            <td class="dis-prices">{{row.preferential}}</td>
+            <td class="dis-prices">{{row.price === '0.00'?'免费':row.preferential}}</td>
             <td>
               <div>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
@@ -117,16 +117,22 @@
       },
       // 上下架
       handleShelf (row) {
-        this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
-          .then(res => {
-            setTimeout(() => {
-              this.getList()
-            }, 500)
-            this.$toast({
-              content: '操作成功!',
-              position: 'center'
+        let timer
+        if (timer) return
+        timer = setTimeout(() => {
+          clearTimeout(timer)
+          timer = null
+          this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
+            .then(res => {
+              setTimeout(() => {
+                this.getList()
+              }, 500)
+              this.$toast({
+                content: '操作成功!',
+                position: 'center'
+              })
             })
-          })
+        }, 1000)
       },
       // 编辑
       handleEdit (row, index) {
@@ -148,17 +154,23 @@
                 position: 'center'
               })
             } else if (e.action === 'confirm') {
-              this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
-                .then(res => {
-                  this.tableData.splice(index, 1)
-                  setTimeout(() => {
-                    this.getList()
-                  }, 1000)
-                  this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+              let timer
+              if (timer) return
+              timer = setTimeout(() => {
+                clearTimeout(timer)
+                timer = null
+                this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
+                  .then(res => {
+                    this.tableData.splice(index, 1)
+                    setTimeout(() => {
+                      this.getList()
+                    }, 1000)
+                    this.$toast({
+                      content: '删除成功!',
+                      position: 'center'
+                    })
                   })
-                })
+              }, 500)
             }
           }
         })
