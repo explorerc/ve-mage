@@ -158,7 +158,7 @@
           <!-- <span>直播</span> -->
           <ol>
             <li @click="linkTo($event,'/salesTools/questionnaire/list/')">问卷</li>
-            <li @click="linkTo($event,'/salesTools/redpack/')">红包雨</li>
+            <li >红包雨</li>
             <li @click="linkTo($event,'/salesTools/recommendGoods/')">商品推荐</li>
             <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
@@ -509,7 +509,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item redpack' @click="linkTo($event,'/salesTools/redpack/')">
+          <div class='item redpack'>
             <div class="card">
               <div class='pic'>
               </div>
