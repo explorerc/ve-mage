@@ -67,7 +67,8 @@
     data () {
       return {
         activity_id: this.$route.params.activity_id,
-        tableData: []
+        tableData: [],
+        timerShelf: null
       }
     },
     watch: {
@@ -99,29 +100,20 @@
         this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
       },
       sortGoods () {
-        /*  let timer
-          if (timer) return
-          timer = setTimeout(() => {
-            clearTimeout(timer)
-            timer = null
-            console.log(this.tableData, 'tableDatatableDatatableData') */
         let goods = this.tableData.map((ite, ind) => {
-          // return ite.goods_ids
           return ite.goods_id
         })
         this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
-        // }, 500)
       },
       check () {
         this.$router.push(`/data/preview/${this.activity_id}`)
       },
       // 上下架
       handleShelf (row) {
-        let timer
-        if (timer) return
-        timer = setTimeout(() => {
-          clearTimeout(timer)
-          timer = null
+        if (this.timerShelf) return
+        this.timerShelf = setTimeout(() => {
+          clearTimeout(this.timerShelf)
+          this.timerShelf = null
           this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
             .then(res => {
               setTimeout(() => {
@@ -154,23 +146,17 @@
                 position: 'center'
               })
             } else if (e.action === 'confirm') {
-              let timer
-              if (timer) return
-              timer = setTimeout(() => {
-                clearTimeout(timer)
-                timer = null
-                this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
-                  .then(res => {
-                    this.tableData.splice(index, 1)
-                    setTimeout(() => {
-                      this.getList()
-                    }, 1000)
-                    this.$toast({
-                      content: '删除成功!',
-                      position: 'center'
-                    })
+              this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
+                .then(res => {
+                  this.tableData.splice(index, 1)
+                  setTimeout(() => {
+                    this.getList()
+                  }, 1000)
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
                   })
-              }, 500)
+                })
             }
           }
         })

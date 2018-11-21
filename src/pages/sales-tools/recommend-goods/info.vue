@@ -49,7 +49,7 @@
 
       <el-form-item label="淘口令">
         <com-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.tao"
-                  placeholder="请输入淘口令"></com-input>
+                   placeholder="请输入淘口令"></com-input>
       </el-form-item>
       <el-form-item>
         <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
@@ -82,11 +82,11 @@
       let valiName = (rule, value, callback) => {
         // console.log(rule)
         // console.log(value)
-        let timer
-        if (timer) return
-        timer = setTimeout(() => {
-          clearTimeout(timer)
-          timer = null
+
+        if (this.timerVail) return
+        this.timerVail = setTimeout(() => {
+          clearTimeout(this.timerVail)
+          this.timerVail = null
           if (value) {
             if (value.gbLength() < rule.min) {
               return callback(new Error('商品名称过短'))
@@ -118,8 +118,6 @@
         }
       }
       let valiUpload = (rule, value, callback) => {
-        console.log(rule)
-        console.log(value)
         let num = 0
         this[rule.obj].imageList.map((item) => {
           if (item.name) {
@@ -147,10 +145,8 @@
           describe: '', // 商品描述
           tao: ''
         },
-        uploadImgErrorMsg0: '',
-        uploadImgErrorMsg1: '',
-        uploadImgErrorMsg2: '',
-        uploadImgErrorMsg3: '',
+        timerVail: null,
+        timer: null,
         rules: {
           title: [
             { required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData' }
@@ -196,13 +192,12 @@
         console.log(this.goodsData)
       },
       onSubmit (formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let timer
-            if (timer) return
-            timer = setTimeout(() => {
-              clearTimeout(timer)
-              timer = null
+        if (this.timer) return
+        this.timer = setTimeout(() => {
+          clearTimeout(this.timer)
+          this.timer = null
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
               let _url
               if (this.$route.params.type === 'create') {
                 this.goodsData.activity_id = this.$route.params.id // 活动id
@@ -213,24 +208,24 @@
               }
               this.goodsData.image = JSON.stringify(this.goodsData.imageList)
               delete this.goodsData.imageList
+              console.log(_url)
               this.$post(_url, this.goodsData)
                 .then(res => {
                   this.$toast({
                     content: '操作成功!',
                     position: 'center'
                   })
-                  setTimeout(() => {
-                    this.$router.go(-1)
-                  }, 500)
+                  this.$router.go(-1)
                 })
                 .catch(err => {
                   console.log(err)
                 })
-            }, 1000)
-          } else {
-            console.log('error submit!!')
-          }
-        })
+            } else {
+              console.log('error submit!!')
+              return false
+            }
+          })
+        }, 2000)
       },
       resetForm (formName) {
         this.$refs[formName].resetFields()
