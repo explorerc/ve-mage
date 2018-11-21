@@ -16,7 +16,7 @@
       <div class="from-row">
         <div class="from-title"><i class="star">*</i>卡片图片：</div>
         <div class="from-content">
-          <ve-upload title="jpg、png、bmp<br>大小不超过2M" accept="png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          <ve-upload title="jpg、png、bmp<br>大小不超过2M" accept="gif|png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
         </div>
       </div>
       <div class="from-row">
@@ -154,7 +154,7 @@
         })
       },
       verify () {
-        this.title.length ? this.titleError = '' : this.titleError = '请输入卡片标题'
+        this.title.length ? this.titleError = '' : this.titleError = '请输入卡片名称'
         this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
         if (this.btnSwitch) {
           this.btnTxt.length ? this.btnTxtError = '' : this.btnTxtError = '请输入按钮文案'
