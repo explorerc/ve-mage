@@ -289,7 +289,8 @@
           <span class="v-label">营业执照照片：</span>
           <img :src="licensePicUrl"
                alt="成功"
-               class="v-state-img" v-if="licensePicUrl!=''">
+               class="v-state-img"
+               v-if="licensePicUrl!=''">
         </p>
       </div>
     </message-box>
@@ -729,7 +730,6 @@ export default {
           window.initNECaptcha({
             captchaId: _self.key,
             element: '#captcha',
-            mode: 'float',
             width: 390,
             onReady: function (instance) {
             },
