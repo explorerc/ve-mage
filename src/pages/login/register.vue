@@ -127,7 +127,6 @@ export default {
       window.initNECaptcha({
         captchaId: _self.key,
         element: '#captcha',
-        mode: 'float',
         width: 260,
         onReady: function (instance) {
         },

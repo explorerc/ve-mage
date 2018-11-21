@@ -29,10 +29,14 @@
             <ve-upload :key="ind"
                        title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
                        accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :nowIndex="ind|| 0"
-                       :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" :initImg="ite.name"
+                       :fileSize="2048"
+                       :errorMsg="ite.errMsg"
+                       @error="uploadError($event, ite)" :initImg="ite.name"
                        @success="uploadImgSuccess"></ve-upload>
           </template>
-          <span style="color: #cccccc;font-size: 40px" class="el-icon-circle-plus-outline" @click="add_upload" v-if="goodsData.imageList.length<4"></span>
+          <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
+          <span style="color: #cccccc;font-size: 40px" class="el-icon-circle-plus-outline" @click="add_upload"
+                v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
       <el-form-item label="商品链接" prop="url">
@@ -76,8 +80,8 @@
     },
     data () {
       let valiName = (rule, value, callback) => {
-        console.log(rule)
-        console.log(value)
+        // console.log(rule)
+        // console.log(value)
         let timer
         if (timer) return
         timer = setTimeout(() => {
@@ -133,11 +137,14 @@
           price: '', // 价格
           preferential: '', // 优惠价格
           url: '', // 商品链接
-          imageList: [{}],
+          imageList: [{ errMsg: '' }],
           describe: '', // 商品描述
           tao: ''
         },
-        uploadImgErrorMsg: '',
+        uploadImgErrorMsg0: '',
+        uploadImgErrorMsg1: '',
+        uploadImgErrorMsg2: '',
+        uploadImgErrorMsg3: '',
         rules: {
           title: [
             { required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData' }
@@ -161,7 +168,7 @@
     },
     methods: {
       add_upload () {
-        this.goodsData.imageList.push({})
+        this.goodsData.imageList.push({ errMsg: '' })
       },
       getGoodsDetail () {
         this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
@@ -219,8 +226,9 @@
       uploadImgSuccess (data) {
         this.goodsData.imageList[data.nowIndex].name = data.name
       },
-      uploadError (data) {
-        console.log(data)
+      uploadError (data, item) {
+        item.errMsg = data.msg
+        // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
       }
     }
   }
