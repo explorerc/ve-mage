@@ -1,7 +1,7 @@
 <template>
   <div class="btn-container">
     <div ref="target" class="btn-content">
-      <a :target="value.target" :href="value.link | voidLink"><com-button :styles="styles">{{value.text}}</com-button></a>
+      <a :target="value.target" :href="value.link | voidLink"><com-button v-if="value.enable" :styles="styles">{{value.text}}</com-button></a>
     </div>
     <com-edit ref="editTarget">
       <div class="nav-blank-title">按钮</div>
