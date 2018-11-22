@@ -35,8 +35,6 @@
                        @success="uploadImgSuccess"></ve-upload>
           </template>
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
-          <span style="color: #cccccc;font-size: 40px" class="el-icon-circle-plus-outline" @click="add_upload"
-                v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
       <el-form-item label="商品链接：" prop="url">
@@ -141,7 +139,7 @@
           price: '', // 价格
           preferential: '', // 优惠价格
           url: '', // 商品链接
-          imageList: [{ errMsg: '' }],
+          imageList: [{ errMsg: '' }, { errMsg: '' }, { errMsg: '' }, { errMsg: '' }],
           describe: '', // 商品描述
           tao: ''
         },
@@ -206,9 +204,13 @@
                 this.goodsData.goods_id = this.$route.params.id
                 _url = goodsServer.UPDATE_GOODS
               }
-              this.goodsData.image = JSON.stringify(this.goodsData.imageList)
+              let imgList = this.goodsData.imageList.filter((ite, ind) => {
+                if (ite.name) {
+                  return ite
+                }
+              })
+              this.goodsData.image = JSON.stringify(imgList)
               delete this.goodsData.imageList
-              console.log(_url)
               this.$post(_url, this.goodsData)
                 .then(res => {
                   this.$toast({
@@ -228,8 +230,19 @@
         }, 400)
       },
       resetForm (formName) {
-        this.$refs[formName].resetFields()
-        this.$router.go(-1)
+        this.$messageBox({
+          header: '',
+          content: '是否放弃当前编辑内容',
+          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+              this.$refs[formName].resetFields()
+              this.$router.go(-1)
+            }
+          }
+        })
       },
       uploadImgSuccess (data) {
         this.goodsData.imageList[data.nowIndex].name = data.name

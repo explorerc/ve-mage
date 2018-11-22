@@ -30,10 +30,10 @@
             </td>
             <td>{{row.title}}</td>
             <td>
-              <del v-show="row.preferential !== '0.00'">￥{{row.price === '0.00'?'免费':row.price}}</del>
-              <span v-show="row.preferential === '0.00'">￥{{row.price === '0.00'?'免费':row.price}}</span>
+              <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
+              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
             </td>
-            <td class="dis-prices">￥{{row.price === '0.00'?'免费':row.preferential}}</td>
+            <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td>
               <div>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
