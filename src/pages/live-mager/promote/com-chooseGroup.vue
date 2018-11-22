@@ -183,6 +183,7 @@ export default {
         this.$emit('selectedGroupListfn', this.selectedGroupList, this.selectedGroupListStr, this.groupArr.toString())
         console.log(this.groupArr)
         if (this.groupArr.length === 0) {
+          this.selectedCount = 0
           this.$emit('totalCount', 0)
           return false
         }
@@ -209,6 +210,7 @@ export default {
         this.$emit('selectedTagListfn', this.selectedTagList, this.selectedTagListStr, this.tagArr.toString())
         console.log(this.tagArr)
         if (this.tagArr.length === 0) {
+          this.selectedCount = 0
           this.$emit('totalCount', 0)
           return false
         }
