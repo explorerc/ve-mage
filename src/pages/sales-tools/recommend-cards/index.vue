@@ -122,8 +122,6 @@
       height: 34px;
       line-height: 34px;
       float: right;
-      a {
-      }
       &.add-new:hover span {
         color: $color-font;
       }

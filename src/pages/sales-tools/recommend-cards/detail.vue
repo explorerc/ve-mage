@@ -16,7 +16,7 @@
       <div class="from-row">
         <div class="from-title"><i class="star">*</i>卡片图片：</div>
         <div class="from-content">
-          <ve-upload title="jpg、png、bmp<br>大小不超过2M" accept="gif|png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          <ve-upload title="gif、jpg、png、bmp<br>大小不超过2M" accept="gif|png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
         </div>
       </div>
       <div class="from-row">
@@ -158,7 +158,7 @@
         })
       },
       verify () {
-        const reg = new RegExp('^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$') // eslint-disable-line
+        const reg = new RegExp('^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$') // eslint-disable-line
         this.title.length ? this.titleError = '' : this.titleError = '请输入卡片名称'
         this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
         if (this.btnSwitch) {
@@ -169,7 +169,7 @@
         }
         if (this.title.length && this.poster.length) {
           if (this.btnSwitch) {
-            if (this.btnTxt.length && this.btnLink.length) {
+            if (this.btnTxt.length && !this.btnLinkError.length) {
               this.canSave = true
             } else {
               this.canSave = false
