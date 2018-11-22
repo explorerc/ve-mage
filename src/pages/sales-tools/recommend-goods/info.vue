@@ -225,7 +225,7 @@
               return false
             }
           })
-        }, 2000)
+        }, 400)
       },
       resetForm (formName) {
         this.$refs[formName].resetFields()
