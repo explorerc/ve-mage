@@ -42,7 +42,7 @@
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}}
+                      :key="tag.id">{{tag.name}} ({{tag.count}}人
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -313,6 +313,7 @@ export default {
           temArray.push({
             id: item.tag_id,
             name: item.tag_name,
+            count: item.user_count,
             isChecked: false
           })
         })

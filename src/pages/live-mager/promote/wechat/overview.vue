@@ -18,7 +18,7 @@
             <div class="from-title">收件人：</div>
             <div class="from-content">
               <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
-              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template>
+              <template v-for="(item,idx) in selectedTagList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedTagList.length">、</template></template>
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
@@ -183,7 +183,8 @@ export default {
         tag.forEach((ele, i) => {
           if (ele * 1 === item.id) {
             this.selectedTagList.push({
-              name: item.name
+              name: item.name,
+              count: item.count
             })
           }
         })

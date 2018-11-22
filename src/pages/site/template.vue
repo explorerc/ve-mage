@@ -148,6 +148,7 @@
 </template>
 
 <script>
+import eventBus from 'src/utils/eventBus.js'
 import activityService from 'src/api/activity-service'
 import brandService from 'src/api/brand-service'
 import temp1 from './template1.vue'
@@ -404,6 +405,7 @@ export default {
                 autoClose: 2000,
                 position: 'center'
               })
+              eventBus.$emit('reset')
             })
           }
         }
