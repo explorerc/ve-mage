@@ -10,7 +10,7 @@ import Tabs from './tabs'
 import PlayVideo from './play-video'
 import Checkbox from './checkbox'
 import Drag from './drag'
-
+import comBack from './back'
 const components = [
   Notification,
   Input,
@@ -23,7 +23,8 @@ const components = [
   Tabs,
   PlayVideo,
   Checkbox,
-  Drag
+  Drag,
+  comBack
 ]
 
 const installUse = function (Vue = {}) {
