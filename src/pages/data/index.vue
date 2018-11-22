@@ -100,7 +100,6 @@
   .data-container {
     margin: 40px auto;
     max-width: 1366px;
-    min-width: 1109px;
     color: #222;
     /* 设备宽度大于 1600 */
     @media all and (min-width: 1600px) {

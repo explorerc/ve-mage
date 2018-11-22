@@ -78,7 +78,7 @@ export default {
 }
 .container {
   height: 100%;
-  min-width: 1340px;
+  min-width: 1220px;
 }
 .left-container {
   width: 220px !important;
@@ -104,14 +104,14 @@ export default {
   }
 }
 .main-container /deep/ {
-  padding: 0;
   position: absolute;
   left: 220px;
   right: 0;
   top: 60px;
   bottom: 0;
   overflow-y: auto;
-  min-width: 1160px;
+  min-width: 1000px;
+  padding: 0 20px;
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.5s;
