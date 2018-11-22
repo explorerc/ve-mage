@@ -222,6 +222,7 @@ export default {
         }
         .q-subject {
           margin-bottom: 14px;
+          word-break: break-all;
           &.error {
             input {
               border-color: #fc5659;
