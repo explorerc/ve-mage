@@ -158,7 +158,7 @@
           <!-- <span>直播</span> -->
           <ol>
             <li @click="linkTo($event,'/salesTools/questionnaire/list/')">问卷</li>
-            <li>红包雨</li>
+            <li @click="clickRedpack">红包雨</li>
             <li @click="linkTo($event,'/salesTools/recommendGoodsList/')">商品推荐</li>
             <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
@@ -509,7 +509,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item redpack'>
+          <div class='item redpack' @click="clickRedpack">
             <div class="card">
               <div class='pic'>
               </div>
@@ -736,6 +736,12 @@ export default {
           this.$router.push(link + this.activityId)
         }
       }
+    },
+    clickRedpack () {
+      this.$toast({
+        content: `该功能需在直播中由主持人发起,红包金额将从账户余额中扣除`,
+        position: 'center'
+      })
     },
     turnOn () {
       let xmlHttp = new XMLHttpRequest()

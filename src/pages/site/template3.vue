@@ -15,7 +15,7 @@
     <div class="section4" :edit="editAble" >
       <com-font :edit="editAble" v-model="data.section4Data.font"></com-font>
       <div class="video-list clearfix">
-        <div class="video-item" v-for="(item, idx) in data.section4Data.list" :key='idx'>
+        <div class="video-item" v-for="(item, idx) in data.section4Data.list" :key='idx' v-if="item.video.enable || item.video.font.enable">
           <com-video :edit="editAble" v-model="item.video"></com-video>
           <com-font :edit="editAble" v-model="item.video.font"></com-font>
         </div>
@@ -275,9 +275,11 @@ export default {
     .video-list {
       width: 1280px;
       margin: 0 auto;
+      display: flex;
       .video-item {
-        width: 400px;
-        height: 254px;
+        // width: 400px;
+        flex: 1;
+        min-height: 254px;
         float: left;
         margin-right: 40px;
         &:last-child {

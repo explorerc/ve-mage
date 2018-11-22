@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import eventBus from 'src/utils/eventBus.js'
 import editMixin from './mixin'
 import ComEdit from './edit'
 import activityService from 'src/api/activity-service'
@@ -68,6 +69,18 @@ export default {
   methods: {
     doUpload () {
       this.$refs.upload.click()
+    },
+    init () {
+      /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+      this.$nextTick(() => {
+      // 初始化pass上传插件
+        this.initVhallUpload()
+        if (this.value.videoType === 'upload' && this.value.recordId) {
+          this.$nextTick(() => {
+            this.initVideo()
+          })
+        }
+      })
     },
     initVhallUpload () {
       window.vhallCloudDemandSDK(`#${this.uploadId}`, {
@@ -143,16 +156,10 @@ export default {
   mounted () {
     this.$get(activityService.GET_PAAS_SDK_INFO).then((res) => {
       this.vhallParams = res.data
-      /* $nextTick保证dom被渲染之后进行paas插件初始化 */
-      this.$nextTick(() => {
-        // 初始化pass上传插件
-        this.initVhallUpload()
-        if (this.value.videoType === 'upload' && this.value.recordId) {
-          this.$nextTick(() => {
-            this.initVideo()
-          })
-        }
-      })
+      this.init()
+    })
+    eventBus.$on('reset', () => {
+      this.init()
     })
   }
 }
