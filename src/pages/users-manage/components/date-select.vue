@@ -34,7 +34,7 @@ export default {
     content: String
   },
   mounted () {
-    this.inputValue = (this.content === null || !this.content || this.content === '0') ? '-' : this.content
+    this.inputValue = (this.content === null || !this.content || this.content === '0' || '0000-00-00 00:00:00') ? '-' : this.content
   },
   methods: {
     modify (val) {
