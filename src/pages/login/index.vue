@@ -43,7 +43,8 @@
                      @changePassword="change($event)"
                      placeholder="密码"
                      :maxLength="30"
-                     @inputFocus="inputFocus()"></com-input>
+                     @inputFocus="inputFocus()"
+                     @enterClick="accountSubmit"></com-input>
           <div class="input-form v-label"
                style="margin-top:-28px;"
                :style="{opacity:accountOpacity}">
@@ -60,6 +61,7 @@
           <button class="primary-button"
                   @click="accountSubmit">提交
           </button>
+          <router-link class="v-register" to="/register">申请免费试用</router-link>
         </div>
         <div class="v-mobile"
              v-show="!isAccount">
@@ -78,7 +80,8 @@
                      :inputValue.sync="code"
                      placeholder="验证码"
                      :maxLength="6"
-                     @inputFocus="inputFocus()">
+                     @inputFocus="inputFocus()"
+                     @enterClick="phoneSubmit">
             <a href="javascript:;"
                class="v-getcode"
                :class="{prohibit:isProhibit}"
@@ -93,6 +96,7 @@
           <button class="primary-button"
                   @click="phoneSubmit">提交
           </button>
+          <router-link class="v-register" to="/register">申请免费试用</router-link>
         </div>
       </div>
       <div class="v-info">
@@ -478,6 +482,12 @@ export default {
       width: 100%;
       height: 44px;
       border-radius: 4px;
+    }
+    .v-register{
+      font-size: 16px;
+      color: #666;
+      margin-top: 15px;
+      display: block;
     }
     .v-content {
       width: 340px;

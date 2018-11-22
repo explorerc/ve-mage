@@ -1,5 +1,8 @@
 <template>
   <div class="asset-box">
+    <p class="v-asset-title">
+      资产管理
+    </p>
     <div class="asset-header">
       <div class="asset-header-item">
         <span>所购服务</span>
@@ -73,185 +76,181 @@
 </template>
 
 <script>
-  import assetService from 'src/api/asset-service'
-  import VePagination from 'src/components/ve-pagination'
+import assetService from 'src/api/asset-service'
+import VePagination from 'src/components/ve-pagination'
 
-  export default {
-    name: 'asset-list',
-    components: {VePagination},
-    data () {
-      return {
-        total: 0,
-        liuTypeList: [
-          {value: '', label: '全部'},
-          {value: 'RECHARGE', label: '账户充值'},
-          {value: 'RED_PACK', label: '红包消费'},
-          {value: 'RE_RED_PACK', label: '红包返回'}
-        ],
-        viewerList: [],
-        billInfo: {
-          balance: 0, // 余额
-          serviceStartTime: '', // 服务开始时间
-          serviceExpireTime: '', // 服务结束时间
-          serviceName: '', // 服务名称
-          payToday: '' // 今日支出
-        },
-        searchParams: {
-          type: '',
-          date: '',
-          page: 1,
-          pageSize: 10
-        }
-      }
-    },
-    filters: {
-      fmtStatus (value) {
-        return value === 'SUCCESS' ? '成功' : '失败'
+export default {
+  name: 'asset-list',
+  components: { VePagination },
+  data () {
+    return {
+      total: 0,
+      liuTypeList: [
+        { value: '', label: '全部' },
+        { value: 'RECHARGE', label: '账户充值' },
+        { value: 'RED_PACK', label: '红包消费' },
+        { value: 'RE_RED_PACK', label: '红包返回' }
+      ],
+      viewerList: [],
+      billInfo: {
+        balance: 0, // 余额
+        serviceStartTime: '', // 服务开始时间
+        serviceExpireTime: '', // 服务结束时间
+        serviceName: '', // 服务名称
+        payToday: '' // 今日支出
       },
-      fmtType (value) {
-        const obj = {
-          'RECHARGE': '账户充值',
-          'RED_PACK': '红包消费',
-          'RE_RED_PACK': '红包返回'
-        }
-        return obj[value]
-      }
-    },
-    created () {
-      this.queryAccountInfo()
-      this.queryList()
-    },
-    methods: {
-      changePage (page) {
-        this.searchParams.page = page
-        this.queryList()
-      },
-      queryAccountInfo () {
-        this.$get(assetService.GET_ASSET_INFO, {}).then((res) => {
-          if (res.code === 200) {
-            this.billInfo = res.data
-          }
-        })
-      },
-      queryList () {
-        this.$nextTick(() => {
-          this.$get(assetService.GET_ASSET_LIST, {
-            ...this.searchParams
-          }).then((res) => {
-            if (res.code === 200) {
-              this.total = res.data.total
-              this.viewerList = res.data.list
-            }
-          })
-        })
-      },
-      exportTable () {
-        let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date || ''}`
-        const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
-        window.open(encodeURI(encodeURI(url)))
+      searchParams: {
+        type: '',
+        date: '',
+        page: 1,
+        pageSize: 10
       }
     }
+  },
+  filters: {
+    fmtStatus (value) {
+      return value === 'SUCCESS' ? '成功' : '失败'
+    },
+    fmtType (value) {
+      const obj = {
+        'RECHARGE': '账户充值',
+        'RED_PACK': '红包消费',
+        'RE_RED_PACK': '红包返回'
+      }
+      return obj[value]
+    }
+  },
+  created () {
+    this.queryAccountInfo()
+    this.queryList()
+  },
+  methods: {
+    changePage (page) {
+      this.searchParams.page = page
+      this.queryList()
+    },
+    queryAccountInfo () {
+      this.$get(assetService.GET_ASSET_INFO, {}).then((res) => {
+        if (res.code === 200) {
+          this.billInfo = res.data
+        }
+      })
+    },
+    queryList () {
+      this.$nextTick(() => {
+        this.$get(assetService.GET_ASSET_LIST, {
+          ...this.searchParams
+        }).then((res) => {
+          if (res.code === 200) {
+            this.total = res.data.total
+            this.viewerList = res.data.list
+          }
+        })
+      })
+    },
+    exportTable () {
+      let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date || ''}`
+      const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
+      window.open(encodeURI(encodeURI(url)))
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  @import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 
-  .asset-box {
-    margin: 30px;
-    .asset-header {
-      font-size: 0;
-      height: 170px;
-      margin-top: 20px;
-      img {
-        display: block;
-        margin: 10px auto;
-      }
-      .asset-header-item {
-        display: inline-block;
-        width: calc((100% - 40px) / 3);
-        height: 100%;
-        border-radius: 3px;
-        background-color: #fff;
-        vertical-align: middle;
-        border: solid 1px $color-bd;
-        &:nth-child(2) {
-          margin: 0 20px;
-        }
-        span {
-          display: block;
-          width: 100%;
-          font-size: 16px;
-          text-align: center;
-          vertical-align: middle;
-          &:nth-child(1) {
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: left;
-            margin-left: 20px;
-            color: #888;
-          }
-          &:nth-child(2), &:nth-child(3) {
-            margin-top: 20px;
-          }
-          &:nth-child(3) {
-            font-size: 14px;
-            color: #888;
-          }
-          &.mid {
-            font-size: 24px;
-            margin-top: 0;
-            font-weight: bold;
-            color: $color-red;
-          }
-          &.mid-zhichu {
-            font-size: 24px;
-            margin-top: 3px;
-            font-weight: bold;
-          }
-          .zhichu-img {
-            margin: 16px auto;
-          }
-        }
-      }
+.asset-box {
+  margin: 0 30px 30px;
+  .v-asset-title {
+    font-size: 24px;
+    line-height: 60px;
+  }
+  .asset-header {
+    font-size: 0;
+    height: 170px;
+    margin-top: 20px;
+    img {
+      display: block;
+      margin: 10px auto;
     }
-    .asset-list-box {
-      margin-top: 20px;
-      border: solid 1px $color-bd;
+    .asset-header-item {
+      display: inline-block;
+      width: calc((100% - 40px) / 3);
+      height: 100%;
       border-radius: 3px;
-      overflow: hidden;
-    }
-    .asset-list {
-      padding: 20px;
       background-color: #fff;
-      .search-asset {
-        margin-top: 30px;
-        .asset-title {
-          font-size: 20px;
-        }
-        .search-item {
-          display: inline-block;
+      vertical-align: middle;
+      border: solid 1px $color-bd;
+      &:nth-child(2) {
+        margin: 0 20px;
+      }
+      span {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+        text-align: center;
+        vertical-align: middle;
+        &:nth-child(1) {
+          margin-top: 20px;
           font-size: 14px;
-          .search-title {
-            margin-right: 10px;
-          }
+          text-align: left;
+          margin-left: 20px;
+          color: #888;
         }
-        .flm {
-          margin: 0 20px;
+        &:nth-child(2),
+        &:nth-child(3) {
+          margin-top: 20px;
         }
-        .export-btn {
-          margin-top: 2px;
-          height: 36px;
-          line-height: 36px;
+        &:nth-child(3) {
+          font-size: 14px;
+          color: #888;
+        }
+        &.mid {
+          font-size: 24px;
+          margin-top: 0;
+          font-weight: bold;
+          color: $color-red;
+        }
+        &.mid-zhichu {
+          font-size: 24px;
+          margin-top: 3px;
+          font-weight: bold;
+        }
+        .zhichu-img {
+          margin: 16px auto;
         }
       }
     }
-    .asset-list-table {
-      padding: 20px;
-      background-color: #fff;
-      .page-pagination {
-        margin-top: 30px;
-        text-align: right;
+  }
+  .asset-list-box {
+    margin-top: 20px;
+    border: solid 1px $color-bd;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .asset-list {
+    padding: 20px;
+    background-color: #fff;
+    .search-asset {
+      margin-top: 30px;
+      .asset-title {
+        font-size: 20px;
+      }
+      .search-item {
+        display: inline-block;
+        font-size: 14px;
+        .search-title {
+          margin-right: 10px;
+        }
+      }
+      .flm {
+        margin: 0 20px;
+      }
+      .export-btn {
+        margin-top: 2px;
+        height: 36px;
+        line-height: 36px;
       }
       .status {
         color: #FC5659;
@@ -261,4 +260,19 @@
       }
     }
   }
+  .asset-list-table {
+    padding: 20px;
+    background-color: #fff;
+    .page-pagination {
+      margin-top: 30px;
+      text-align: right;
+    }
+    .status {
+      color: #fc5659;
+    }
+    .success {
+      color: #43d2c2;
+    }
+  }
+}
 </style>
