@@ -142,7 +142,7 @@ export default {
       }
     },
     confirmState (res) {
-      this.switchDisabled = true
+      // this.switchDisabled = true
       if (this.isPublish && !res) {
         this.$messageBox({
           header: '提示',
@@ -228,6 +228,7 @@ export default {
   padding-left: 100px;
   .switch-cover {
     position: relative;
+    z-index: 199;
     &.close::before {
       content: '';
       width: 100%;
@@ -238,7 +239,7 @@ export default {
       bottom: 0;
       right: 0;
       background: rgba($color: #fff, $alpha: 0.7);
-      z-index: 9999;
+      z-index: 199;
       cursor: not-allowed;
     }
   }

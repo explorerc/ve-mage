@@ -62,7 +62,7 @@
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}}
+                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -410,6 +410,7 @@
             temArray.push({
               name: item.tag_name,
               id: item.tag_id,
+              count: item.user_count,
               isChecked: false
             })
           })
@@ -436,7 +437,7 @@
             if (ele * 1 === item.id) {
               this.groupList[idx].isChecked = true
               this.selectedGroupList.push({
-                count: 0,
+                count: item.count,
                 id: item.id,
                 isChecked: true,
                 name: item.name
@@ -450,7 +451,7 @@
             if (ele * 1 === item.id) {
               this.tagList[idx].isChecked = true
               this.selectedTagList.push({
-                count: 0,
+                count: item.count,
                 id: item.id,
                 isChecked: true,
                 name: item.name

@@ -1,10 +1,13 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index">{{index}}</div>
+      <div class="index"><span v-if="value._required"
+              class="v-red">*</span>{{index}}</div>
       <div v-if="edit"
-           class="q-des">{{value.ext.name}}<span v-if="value._required" class="v-red">*</span>
-        <div class="v-tips" v-if="value.detail.format==='phone'">
+           class="q-des">{{value.ext.name}}<span v-if="value._required"
+              class="v-red">*</span>
+        <div class="v-tips"
+             v-if="value.detail.format==='phone'">
           <i class="iconfont icon-wenhao"></i><span>手机号默认为必填项，不可修改</span>
         </div>
       </div>
@@ -18,7 +21,8 @@
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
-             class="q-subject">{{value.title}}<span v-if="value._required" class="v-red">*</span></div>
+             class="q-subject">{{value.title}}<span v-if="value._required"
+                class="v-red">*</span></div>
         <!-- 问题描述区 -->
         <component ref="content"
                    :is="QComs[value.type]"
@@ -39,7 +43,16 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort" v-if="value.detail.format!='phone'">排序</div>
+        <span v-if="value.detail&&value.detail.format==='mobile'"
+              class="required-des">短信验证</span>
+        <el-switch class='switch'
+                   v-if="value.detail&&value.detail.format==='mobile'"
+                   v-model="value.verifiy"
+                   inactive-color="#DEE1FF"
+                   :width="32"
+                   active-color="#FFD021"></el-switch>
+        <div class="sort"
+             v-if="value.detail.format!='phone'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>

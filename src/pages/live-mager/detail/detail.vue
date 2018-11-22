@@ -150,15 +150,15 @@
                 @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知
             </li>
             <li v-show="dataPromote[1].switch" @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
-            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信推广</li>
-            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信推广</li>
+            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知</li>
+            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知</li>
           </ol>
         </div>
         <div>
           <!-- <span>直播</span> -->
           <ol>
             <li @click="linkTo($event,'/salesTools/questionnaire/list/')">问卷</li>
-            <li>红包雨</li>
+            <li @click="clickRedpack">红包雨</li>
             <li @click="linkTo($event,'/salesTools/recommendGoodsList/')">商品推荐</li>
             <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
@@ -166,7 +166,7 @@
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">设置回放</li>
+            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">活动回放</li>
           </ol>
         </div>
         <div>
@@ -418,7 +418,7 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>邮箱</span>
+                <span>邮件邀约</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataPromote[1].isSet">
@@ -442,7 +442,7 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>短信</span>
+                <span>短信通知</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataPromote[2].isSet">
@@ -466,7 +466,7 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>微信</span>
+                <span>微信通知</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataPromote[3].isSet">
@@ -509,7 +509,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item redpack'>
+          <div class='item redpack' @click="clickRedpack">
             <div class="card">
               <div class='pic'>
               </div>
@@ -575,7 +575,7 @@
         </div>
       </div>
       <div class="item setting">
-        <p class='block-separte'>回放</p>
+        <p class='block-separte'>活动回放</p>
         <div class="card-list clearfix">
           <div class='item record' @click="linkTo($event,'/liveMager/playBack/')">
             <!-- 观看页 -->
@@ -584,11 +584,11 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>设置回放</span>
+                <span>活动回放</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataRecord[0].isSet">
-                      已设置默认回放
+                      已设置默认活动回放
                     </template>
                   <!-- 未设置 -->
                     <template v-else>
@@ -736,6 +736,12 @@ export default {
           this.$router.push(link + this.activityId)
         }
       }
+    },
+    clickRedpack () {
+      this.$toast({
+        content: `该功能需在直播中由主持人发起,红包金额将从账户余额中扣除`,
+        position: 'center'
+      })
     },
     turnOn () {
       let xmlHttp = new XMLHttpRequest()
