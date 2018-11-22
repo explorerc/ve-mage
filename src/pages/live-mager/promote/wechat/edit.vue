@@ -642,6 +642,6 @@ export default {
 }
 .live-mager .mager-box .from-box {
   margin: 40px 0 0 0;
-  height: 600px;
+  min-height: 600px;
 }
 </style>
