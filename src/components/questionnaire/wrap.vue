@@ -1,7 +1,8 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index"><span v-if="value._required" class="v-red">*</span>{{index}}</div>
+      <div class="index"><span v-if="value._required"
+              class="v-red">*</span>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}</div>
       <div class="q-edit"
@@ -44,7 +45,8 @@
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
+        <div class="sort"
+             v-if="value.detail.format!='phone'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
