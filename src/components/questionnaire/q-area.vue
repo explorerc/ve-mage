@@ -1,7 +1,7 @@
 <template>
   <div class="q-edit-content">
     <div class="q-edit-select">
-      <el-select v-model="value.province"
+      <el-select v-model="provinceValue"
                  @change="changeProvince"
                  @focus="focusProvince"
                  placeholder="省/自治区/直辖市">
@@ -13,7 +13,7 @@
       </el-select>
     </div>
     <div class="q-edit-select">
-      <el-select v-model="value.city"
+      <el-select v-model="cityValue"
                  @change="changeCity"
                  @focus="focusCity"
                  placeholder="市">
@@ -27,8 +27,7 @@
     </div>
     <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
          class="q-edit-select">
-      <el-select v-model="value.county"
-                 @change="changeCounty"
+      <el-select v-model="countyValue"
                  @focus="focusCounty"
                  placeholder="区/县">
         <el-option v-for="(item,index) in counties"
@@ -86,7 +85,10 @@ export default {
       provinces: [],
       cities: [],
       counties: [],
-      errorTip: ''
+      errorTip: '',
+      provinceValue: '',
+      cityValue: '',
+      countyValue: ''
     }
   },
   mounted () {
@@ -107,6 +109,8 @@ export default {
     },
     changeProvince (value) {
       this.cities = this.area.cities[value]
+      this.cityValue = ''
+      this.countyValue = ''
     },
     focusProvince () {
       this.errorTip = ''
@@ -120,6 +124,7 @@ export default {
     },
     changeCity (value) {
       this.counties = this.area.counties[value]
+      this.countyValue = ''
     },
     focusCity () {
       this.errorTip = ''
@@ -130,9 +135,6 @@ export default {
           this.errorTip = '此项为必填项'
         }
       }, 300)
-    },
-    changeCounty () {
-
     },
     focusCounty () {
       this.errorTip = ''
