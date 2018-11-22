@@ -68,6 +68,7 @@
         </div>
         <button class="primary-button"
                 @click="submit">提交</button>
+        <router-link class="v-login" to="/login">企业登录</router-link>
       </div>
       <div class="v-info">
         <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
@@ -433,6 +434,12 @@ export default {
       width: 100%;
       height: 44px;
       border-radius: 4px;
+    }
+    .v-login{
+      font-size: 16px;
+      color: #666;
+      margin-top: 15px;
+      display: block;
     }
     .v-info {
       width: 100%;

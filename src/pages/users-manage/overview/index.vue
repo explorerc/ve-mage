@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-      <span class="title">总览</span>
+      <span class="title">用户总览</span>
     </div>
     <div class="content from-box">
       <ol class="clearfix">
