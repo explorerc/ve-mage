@@ -1,5 +1,5 @@
 <template>
-  <div class="v-questionaire">
+  <div class="v-questionaire" @mousedown="canPaas = false">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
     </div>
@@ -189,10 +189,32 @@ export default {
       ],
       phoneData: [],
       saveResult: true,
+      canPaas: true,
       messageBoxViewShow: false // 预览框显示隐藏
     }
   },
   beforeDestroy () {
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPaas) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   },
   mounted () {
     if (this.questionId && this.activityId) {
@@ -647,6 +669,7 @@ export default {
         if (this.questionId) {
           _data.naireId = this.questionId
           this.$config({ handlers: true }).$post(questionService.POST_QUESTION_UPDATE, _data).then((res) => {
+            this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
             this.saveResult = true
@@ -667,6 +690,7 @@ export default {
           })
         } else {
           this.$config({ handlers: true }).$post(questionService.POST_QUESTION_CREAT, _data).then((res) => {
+            this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
             this.saveResult = true
