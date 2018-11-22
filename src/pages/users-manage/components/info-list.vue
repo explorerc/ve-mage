@@ -18,13 +18,13 @@
       <template v-if="tableList.length > 0">
         <li class="clearfix" v-for="itemData in tableList" :key="itemData.behavior_id">
           <div class="v-activity-content v-name">
-            {{itemData.activity_name}}
+            {{itemData.activity_title}}
           </div>
           <div class="v-activity-content v-time">
             {{itemData.generated_at}}
           </div>
           <div class="v-activity-content v-type">
-            {{itemData.type}}
+            {{itemData.event === 'APPLY_ACTIVITY' ? '报名':'问卷'}}
           </div>
           <div class="v-activity-content v-operation">
             <a :href="PUBLIC_PATH+'subscribe/'+itemData.behavior_id">查看</a>
