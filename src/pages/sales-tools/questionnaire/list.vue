@@ -1,7 +1,7 @@
 <template>
   <div class="v-list">
     <div class="v-list-title">
-      <span class="title">问卷列表</span>
+      <span class="title">问卷</span>
     </div>
     <div class="v-tbns clearfix">
       <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
