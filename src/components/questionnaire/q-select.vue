@@ -24,7 +24,7 @@
                placeholder="请选择">
       <el-option v-for="(item,index) in value.detail.list"
                  :label="item.value"
-                 :value="item.id"
+                 :value="index"
                  :key="index">
       </el-option>
     </el-select>

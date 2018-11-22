@@ -1,7 +1,7 @@
 <template>
   <div class="clearfix set-live-watch-container">
     <p class="v-title">
-      直播观看页
+      观看页
     </p>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
