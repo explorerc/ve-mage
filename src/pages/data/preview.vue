@@ -6,12 +6,12 @@
           <div class="item-title fzc">
             <ve-title width="200px" title="微吼指数" tip="本场活动的综合效果，最高分100"></ve-title>
           </div>
-          <div class="item-mid fzc" style="height: 140px;position: relative;">
+          <div class="item-mid fzc" style="height: 130px;position: relative;">
             <span class="vhall-status" v-if="vhallRateData.value>=90">出色</span>
             <span class="vhall-status" v-else-if="vhallRateData.value>=80">不错</span>
             <span class="vhall-status" v-else-if="vhallRateData.value>=60">很好</span>
             <span class="vhall-status" v-else>加油</span>
-            <div style="height: 140px;margin-top: -8px;" id="chartVallId"></div>
+            <div style="height: 130px;margin-top: -8px;" id="chartVallId"></div>
           </div>
           <div class="item-bottom fzc">
             <span>环比
@@ -31,7 +31,7 @@
             <div class="item-title fzc">
               <ve-title width="300px" title="观众" tip="观众总数，用来衡量一场直播内容和吸引力的重要指标"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'观众得分='+activityScoreData.viewer+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'观众得分='+activityScoreData.viewer+'分（满分100分）'"
                        :value="activityScoreData.viewer"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
@@ -39,7 +39,7 @@
               <ve-title width="300px" title="观看时长"
                         tip="统计该场直播中所有观众的平均观看时长，反应观众在直播间内的平均停留时长。平均观看时长=所有观众观看时长之和/观众总数；注：观看时长包含直播和回放两部分。为了计算简便，系统假定回放"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'观看得分='+activityScoreData.watchDuration+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'观看得分='+activityScoreData.watchDuration+'分（满分100分）'"
                        :value="activityScoreData.watchDuration"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
@@ -47,21 +47,21 @@
               <ve-title width="300px" title="推广"
                         tip="衡量一场直播在前期宣传推广的触达效果。推广方式包括推广中心中的邮件、短信、微信三种方式。推广效果=最终成为观众人数/推广渠道触达人数"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'推广得分='+activityScoreData.extension+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'推广得分='+activityScoreData.extension+'分（满分100分）'"
                        :value="activityScoreData.extension"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
               <ve-title width="300px" title="传播" tip="衡量一场直播中，观众的自传播效果。展现观众在直播中分享拉新的效果"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'传播得分='+activityScoreData.spread+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'传播得分='+activityScoreData.spread+'分（满分100分）'"
                        :value="activityScoreData.spread"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
               <ve-title width="180px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'互动得分='+activityScoreData.interact+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'互动得分='+activityScoreData.interact+'分（满分100分）'"
                        :value="activityScoreData.interact"></ve-circle>
           </div>
         </div>
