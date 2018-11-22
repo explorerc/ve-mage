@@ -15,8 +15,8 @@
       </div>
       <div class="middle">
         <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i @click='copy("copyId")'></i></span></p>
-              <input type="text" :value="`${this.activityId}`" id="copyId"
-                     style="position:absolute;opacity:0;">
+        <input type="text" :value="`${this.activityId}`" id="copyId"
+               style="position:absolute;opacity:0;">
         <p class='desc-label'>活动标签: <span class="tag"
                                           v-for="item in tagList">{{item.name}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
@@ -158,7 +158,7 @@
           <!-- <span>直播</span> -->
           <ol>
             <li @click="linkTo($event,'/salesTools/questionnaire/list/')">问卷</li>
-            <li>红包雨</li>
+            <li @click="redBagTips=true">红包雨</li>
             <li @click="linkTo($event,'/salesTools/recommendGoodsList/')">商品推荐</li>
             <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
@@ -170,7 +170,7 @@
           </ol>
         </div>
         <div>
-          <template  v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+          <template v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
             <ol title='预告、直播中状态不能进入数据中心'>
               <li @click="linkTo($event,'/data/preview/')" :class="'disabled'">数据</li>
               <li :class="'disabled'">观众</li>
@@ -514,7 +514,7 @@
               <div class='pic'>
               </div>
               <div class='desc'>
-                <span>红包雨</span>
+                <span @click="redBagTips=true">红包雨</span>
                 <span class='des'>
                   <!-- 已设置 -->
                   <template v-if="dataBrand[2].isSet">
@@ -605,7 +605,8 @@
       <div class="item statics">
         <p class='block-separte'>数据</p>
         <div class="card-list clearfix">
-          <div class='item record' @click="linkTo($event,'/data/preview/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+          <div class='item record' @click="linkTo($event,'/data/preview/')"
+               :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
             <div class="card">
               <div class='pic'>
               </div>
@@ -626,7 +627,8 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item record' @click="linkTo($event,'/data/viewer/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+          <div class='item record' @click="linkTo($event,'/data/viewer/')"
+               :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
             <div class="card">
               <div class='pic'>
               </div>
@@ -657,1060 +659,1088 @@
       <p>您设置的时间为:</p>
       <p>{{startTime}}</p>
     </message-box>
+    <!-- 红包雨tip提示 -->
+    <message-box v-if="redBagTips" @handleClick="handleRedBagClick">
+      <div slot="msgBox" class="red-bag-tip">
+        <div class="red-bag-header"></div>
+        <div class="red-bag-content">红包雨为活动发起者在直播中推送的功能，无需在控制台设置。通过红包雨功能，活动主办方可以通过设置红包数量和金额，并设置参与条件，向达成参与条件的观众发放红包。</div>
+        <button type="button" class="primary-button" style="padding: 0 60px;margin: 10px 0 30px 0;" @click="redBagTips=false">知道了</button>
+      </div>
+    </message-box>
   </div>
 </template>
 
 <script>
-// import http from 'src/api/activity-manger'
-import activityService from 'src/api/activity-service'
-import processCard from 'components/process-card'
-import comCountdown from 'components/com-countDown'
+  // import http from 'src/api/activity-manger'
+  import activityService from 'src/api/activity-service'
+  import processCard from 'components/process-card'
+  import comCountdown from 'components/com-countDown'
 
-export default {
-  data () {
-    return {
-      title: '',
-      id: '',
-      poster: '',
-      tagList: [],
-      startTime: '',
-      statusClass: '',
-      status: '',
-      currStep: '',
-      cardData: {},
-      msgShow: false,
-      isPublished: false,
-      hostOnline: false,
-      showLinkBox: false,
-      activityId: this.$route.params.id,
-      imgHost: process.env.IMGHOST + '/',
-      PC_HOST: process.env.PC_HOST,
-      // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
-      countdownTime: '', // 倒计时 秒
-      countDownstatus: false,
-      inCountdown: false,
-      isAppoint: false,
-      overdue: false,
-      dataPrepare: [],
-      dataBrand: [],
-      dataPromote: [],
-      dataRecord: []
-    }
-  },
-  created () {
-  },
-  mounted () {
-    this.getDetails()
-    setTimeout(() => {
-      // 滚动到推广
-      if (window.location.href.search('tg') > -1) {
-        document.querySelector('.main-container').scrollTop = document.querySelector('#tg').offsetTop - 50
+  export default {
+    data () {
+      return {
+        title: '',
+        id: '',
+        poster: '',
+        tagList: [],
+        startTime: '',
+        statusClass: '',
+        status: '',
+        currStep: '',
+        cardData: {},
+        msgShow: false,
+        isPublished: false,
+        hostOnline: false,
+        showLinkBox: false,
+        activityId: this.$route.params.id,
+        imgHost: process.env.IMGHOST + '/',
+        PC_HOST: process.env.PC_HOST,
+        // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+        countdownTime: '', // 倒计时 秒
+        countDownstatus: false,
+        inCountdown: false,
+        isAppoint: false,
+        overdue: false,
+        redBagTips: false,
+        dataPrepare: [],
+        dataBrand: [],
+        dataPromote: [],
+        dataRecord: []
       }
-    }, 500)
-  },
-  methods: {
-    linkTo (e, link, status) {
-      console.log(e.target.className)
-      if (e.target.className.search('switch') > -1) {
-        // 直播状态直接 不跳转
-        if (this.status === '直播') {
-          return false
+    },
+    created () {
+    },
+    mounted () {
+      this.getDetails()
+      setTimeout(() => {
+        // 滚动到推广
+        if (window.location.href.search('tg') > -1) {
+          document.querySelector('.main-container').scrollTop = document.querySelector('#tg').offsetTop - 50
         }
-        // 如果开着状态则不跳转
-        if (!status && e.target.className.search('input') > -1) {
+      }, 500)
+    },
+    methods: {
+      linkTo (e, link, status) {
+        console.log(e.target.className)
+        if (e.target.className.search('switch') > -1) {
+          // 直播状态直接 不跳转
+          if (this.status === '直播') {
+            return false
+          }
+          // 如果开着状态则不跳转
+          if (!status && e.target.className.search('input') > -1) {
+            if (link === '/data/viewer/') {
+              this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+            } else {
+              setTimeout(() => {
+                this.$router.push(link + this.activityId)
+              }, 500)
+            }
+          }
+        } else {
           if (link === '/data/viewer/') {
             this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
           } else {
-            setTimeout(() => {
-              this.$router.push(link + this.activityId)
-            }, 500)
+            this.$router.push(link + this.activityId)
           }
         }
-      } else {
-        if (link === '/data/viewer/') {
-          this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+      },
+      turnOn () {
+        let xmlHttp = new XMLHttpRequest()
+        const serverUrl = process.env.API_PATH
+        let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
+        xmlHttp.onreadystatechange = () => {
+          if (xmlHttp.readyState === 4) {
+            let responseText = xmlHttp.responseText
+            let data = JSON.parse(responseText)
+            if (data.code === 200) {
+              this.hostOnline = data.data.hostOnline
+              if (this.hostOnline) {
+                this.$toast({
+                  content: '主持人已进入直播前台，无法再次进入',
+                  position: 'center'
+                })
+                return false
+              }
+              if (this.isToday(this.startTime)) { // 在24小时之外
+                this.inCountdown = true
+                return false
+              }
+              this.judgePublish()
+            }
+          }
+        }
+        xmlHttp.open('GET', url, false) // 同步方式请求
+        xmlHttp.withCredentials = true
+        xmlHttp.send(null)
+      },
+      isToday (str) {
+        if (new Date(str).toDateString() === new Date().toDateString()) {
+          // 今天
+          console.log('当天')
+          return false
         } else {
-          this.$router.push(link + this.activityId)
+          // 之前
+          console.log('非当天')
+          return true
         }
-      }
-    },
-    turnOn () {
-      let xmlHttp = new XMLHttpRequest()
-      const serverUrl = process.env.API_PATH
-      let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
-      xmlHttp.onreadystatechange = () => {
-        if (xmlHttp.readyState === 4) {
-          let responseText = xmlHttp.responseText
-          let data = JSON.parse(responseText)
-          if (data.code === 200) {
-            this.hostOnline = data.data.hostOnline
-            if (this.hostOnline) {
-              this.$toast({
-                content: '主持人已进入直播前台，无法再次进入',
-                position: 'center'
-              })
-              return false
+      },
+      isOverdue (str) { // 是否超过48小时
+        if (str === null) {
+          return false
+        }
+        if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
+          return true
+        } else {
+          return false
+        }
+      },
+      judgePublish () {
+        if (this.isPublished) {
+          this.inCountdown = false
+          window.open(`${this.PC_HOST}master/${this.activityId}`)
+        } else {
+          this.inCountdown = false
+          this.$messageBox({
+            header: '提示',
+            width: '200',
+            content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
+            cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
+            confirmText: '确认开播',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+                this.publish()
+                window.open(`${this.PC_HOST}master/${this.activityId}`)
+                // this.status = 0
+              }
             }
-            if (this.isToday(this.startTime)) { // 在24小时之外
-              this.inCountdown = true
-              return false
-            }
-            this.judgePublish()
+          })
+        }
+      },
+      inCountdownClick (e) {
+        console.log(e)
+        if (e.action === 'cancel') {
+          this.inCountdown = false
+        } else if (e.action === 'confirm') {
+          this.inCountdown = true
+          this.judgePublish()
+        }
+      },
+      isHosting () {
+        return new Promise((resolve, reject) => {
+
+        })
+      },
+      switchChange (type, status, dataType) {
+        const data = {
+          activityId: this.activityId,
+          submodule: type,
+          enabled: status ? 'Y' : 'N'
+        }
+        this.$config({
+          handlers: true
+        }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+          console.log(res)
+          if (res.code === 200) {
+            this.$toast({
+              'content': '设置成功'
+            })
           }
-        }
-      }
-      xmlHttp.open('GET', url, false) // 同步方式请求
-      xmlHttp.withCredentials = true
-      xmlHttp.send(null)
-    },
-    isToday (str) {
-      if (new Date(str).toDateString() === new Date().toDateString()) {
-        // 今天
-        console.log('当天')
-        return false
-      } else {
-        // 之前
-        console.log('非当天')
-        return true
-      }
-    },
-    isOverdue (str) { // 是否超过48小时
-      if (str === null) {
-        return false
-      }
-      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
-        return true
-      } else {
-        return false
-      }
-    },
-    judgePublish () {
-      if (this.isPublished) {
-        this.inCountdown = false
-        window.open(`${this.PC_HOST}master/${this.activityId}`)
-      } else {
-        this.inCountdown = false
+        }).catch((res) => {
+          if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+            console.log(type + ' ' + status)
+            this.$messageBox({
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
+            this[dataType].forEach(item => {
+              if (item.submodule === type) {
+                item.switch = !status
+              }
+            })
+          }
+        })
+        // http.detailSwitch(data).then((res) => {
+        //   console.log(res)
+        //   if (res.code === 200) {
+        //     this.$toast({
+        //       'content': '设置成功'
+        //     })
+        //   } else {
+        //     console.log('设置失败')
+        //   }
+        // })
+      },
+      getDetails () {
+        this.$get(activityService.GET_DETAILS, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.data.activity.countDown.toString() > 0) {
+            this.countDownstatus = false
+            this.countdownTime = res.data.activity.countDown.toString()
+          } else {
+            this.countDownstatus = true
+            this.countdownTime = '0'
+          }
+          this.title = res.data.activity.title
+          this.tagList = res.data.activity.tags
+          this.startTime = res.data.activity.startTime
+          this.poster = res.data.activity.imgUrl
+          this.dataPrepare = res.data.prepare
+          this.dataBrand = res.data.brand
+          this.dataPromote = res.data.promote
+          this.dataRecord = res.data.record
+          this.isPublished = res.data.activity.published === 'Y'
+          this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
+          this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
+          this.staticViewer = res.data.data.viewer
+          this.overdue = this.isOverdue(res.data.activity.endTime)
+          switch (res.data.activity.status) {
+            case ('LIVING'):
+              this.status = '直播'
+              this.statusClass = 'live'
+              break
+            case ('PLAYBACK'):
+              this.status = '回放'
+              this.statusClass = 'record'
+              break
+            case ('FINISH'):
+              this.status = '结束'
+              this.statusClass = 'ended'
+              break
+            case ('PREPARE'):
+              this.status = '预约'
+              this.statusClass = 'preview'
+              break
+          }
+          this.getStep() // 获取当前阶段
+        })
+      },
+      publishActive () { // 发布活动
         this.$messageBox({
           header: '提示',
           width: '200',
-          content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
-          cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
-          confirmText: '确认开播',
+          content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
+          cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认发布',
           handleClick: (e) => {
             console.log(e)
             if (e.action === 'cancel') {
+              this.isPublished = false
             } else if (e.action === 'confirm') {
-              this.publish()
-              window.open(`${this.PC_HOST}master/${this.activityId}`)
               // this.status = 0
+              this.publish()
             }
           }
         })
-      }
-    },
-    inCountdownClick (e) {
-      console.log(e)
-      if (e.action === 'cancel') {
-        this.inCountdown = false
-      } else if (e.action === 'confirm') {
-        this.inCountdown = true
-        this.judgePublish()
-      }
-    },
-    isHosting () {
-      return new Promise((resolve, reject) => {
-
-      })
-    },
-    switchChange (type, status, dataType) {
-      const data = {
-        activityId: this.activityId,
-        submodule: type,
-        enabled: status ? 'Y' : 'N'
-      }
-      this.$config({
-        handlers: true
-      }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
-        console.log(res)
-        if (res.code === 200) {
+      },
+      offlineActive () { // 下线活动
+        if (this.status === '直播') {
           this.$toast({
-            'content': '设置成功'
+            content: '直播中无法下线活动',
+            position: 'center'
           })
+          this.isPublished = true
+          return false
         }
-      }).catch((res) => {
-        if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
-          console.log(type + ' ' + status)
-          this.$messageBox({
-            header: '提示',
-            content: res.msg,
-            autoClose: 10,
-            confirmText: '知道了'
-          })
-          this[dataType].forEach(item => {
-            if (item.submodule === type) {
-              item.switch = !status
+        this.$messageBox({
+          header: '提示',
+          width: '200',
+          content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
+          cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认下线',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
+              this.isPublished = true
+            } else if (e.action === 'confirm') {
+              this.offline()
             }
-          })
-        }
-      })
-      // http.detailSwitch(data).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       'content': '设置成功'
-      //     })
-      //   } else {
-      //     console.log('设置失败')
-      //   }
-      // })
-    },
-    getDetails () {
-      this.$get(activityService.GET_DETAILS, {
-        activityId: this.activityId
-      }).then((res) => {
-        if (res.data.activity.countDown.toString() > 0) {
-          this.countDownstatus = false
-          this.countdownTime = res.data.activity.countDown.toString()
+          }
+        })
+      },
+      switchActive (res) {
+        if (res) {
+          this.publishActive()
         } else {
-          this.countDownstatus = true
-          this.countdownTime = '0'
+          this.offlineActive()
         }
-        this.title = res.data.activity.title
-        this.tagList = res.data.activity.tags
-        this.startTime = res.data.activity.startTime
-        this.poster = res.data.activity.imgUrl
-        this.dataPrepare = res.data.prepare
-        this.dataBrand = res.data.brand
-        this.dataPromote = res.data.promote
-        this.dataRecord = res.data.record
-        this.isPublished = res.data.activity.published === 'Y'
-        this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
-        this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
-        this.staticViewer = res.data.data.viewer
-        this.overdue = this.isOverdue(res.data.activity.endTime)
-        switch (res.data.activity.status) {
-          case ('LIVING'):
-            this.status = '直播'
-            this.statusClass = 'live'
-            break
-          case ('PLAYBACK'):
-            this.status = '回放'
-            this.statusClass = 'record'
-            break
-          case ('FINISH'):
-            this.status = '结束'
-            this.statusClass = 'ended'
-            break
-          case ('PREPARE'):
-            this.status = '预约'
-            this.statusClass = 'preview'
-            break
-        }
-        this.getStep() // 获取当前阶段
-      })
-    },
-    publishActive () { // 发布活动
-      this.$messageBox({
-        header: '提示',
-        width: '200',
-        content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
-        cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
-        confirmText: '确认发布',
-        handleClick: (e) => {
-          console.log(e)
-          if (e.action === 'cancel') {
-            this.isPublished = false
-          } else if (e.action === 'confirm') {
-            // this.status = 0
-            this.publish()
-          }
-        }
-      })
-    },
-    offlineActive () { // 下线活动
-      if (this.status === '直播') {
-        this.$toast({
-          content: '直播中无法下线活动',
-          position: 'center'
+      },
+      publish () {
+        this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.$toast({
+            content: '活动发布成功',
+            position: 'center'
+          })
+          this.isPublished = true
+          this.dataPromote[0].desc = 'PREPARE'
+          this.currStep = 'isPublish'
         })
-        this.isPublished = true
-        return false
-      }
-      this.$messageBox({
-        header: '提示',
-        width: '200',
-        content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
-        cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
-        confirmText: '确认下线',
-        handleClick: (e) => {
-          console.log(e)
-          if (e.action === 'cancel') {
-            this.isPublished = true
-          } else if (e.action === 'confirm') {
-            this.offline()
-          }
-        }
-      })
-    },
-    switchActive (res) {
-      if (res) {
-        this.publishActive()
-      } else {
-        this.offlineActive()
-      }
-    },
-    publish () {
-      this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.$toast({
-          content: '活动发布成功',
-          position: 'center'
-        })
-        this.isPublished = true
-        this.dataPromote[0].desc = 'PREPARE'
-        this.currStep = 'isPublish'
-      })
-    },
-    offline () {
-      this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.$toast({
-          content: '活动下线成功',
-          position: 'center'
-        })
-        this.isPublished = false
-        if (this.currStep.search('live') === -1) {
-          this.currStep = 'notPublish'
-        }
-      })
-    },
-    getStep () { // 获取当前活动阶段
-      switch (this.status) {
-        case '预约':
-          if (this.isPublished) {
-            this.currStep = 'isPublish'
-            console.log('发布页面后，直播未开始')
-          } else {
+      },
+      offline () {
+        this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.$toast({
+            content: '活动下线成功',
+            position: 'center'
+          })
+          this.isPublished = false
+          if (this.currStep.search('live') === -1) {
             this.currStep = 'notPublish'
-            console.log('活动未发布')
           }
-          break
-        case '直播':
-          this.currStep = 'isPublish live'
-          console.log('直播中')
-          break
-        case '结束':
-          this.currStep = 'isPublish live end'
-          console.log('直播结束，但未设置回放')
-          break
-        case '回放':
-          this.currStep = 'isPublish live end playback'
-          console.log('直播结束，已设置回放')
-          break
+        })
+      },
+      getStep () { // 获取当前活动阶段
+        switch (this.status) {
+          case '预约':
+            if (this.isPublished) {
+              this.currStep = 'isPublish'
+              console.log('发布页面后，直播未开始')
+            } else {
+              this.currStep = 'notPublish'
+              console.log('活动未发布')
+            }
+            break
+          case '直播':
+            this.currStep = 'isPublish live'
+            console.log('直播中')
+            break
+          case '结束':
+            this.currStep = 'isPublish live end'
+            console.log('直播结束，但未设置回放')
+            break
+          case '回放':
+            this.currStep = 'isPublish live end playback'
+            console.log('直播结束，已设置回放')
+            break
+        }
+      },
+      copy (dom) { // 复制功能
+        let inp = document.getElementById(dom)
+        inp.select()
+        document.execCommand('Copy')
+        this.$toast({
+          content: '复制成功',
+          position: 'center'
+        })
+      },
+      timeOut () {
+        console.log('倒计时结束')
+        this.countDownstatus = true
+      },
+      handleRedBagClick (e) {
+        console.log(e)
       }
     },
-    copy (dom) { // 复制功能
-      let inp = document.getElementById(dom)
-      inp.select()
-      document.execCommand('Copy')
-      this.$toast({
-        content: '复制成功',
-        position: 'center'
-      })
-    },
-    timeOut () {
-      console.log('倒计时结束')
-      this.countDownstatus = true
+    components: {
+      processCard,
+      comCountdown
     }
-  },
-  components: {
-    processCard,
-    comCountdown
-  }
 
-}
+  }
 </script>
 
 <style lang='scss' scoped>
-@import 'assets/css/variable.scss';
-@import '~assets/css/mixin.scss';
+  @import 'assets/css/variable.scss';
+  @import '~assets/css/mixin.scss';
 
-.detail-wrap {
-  border-radius: 5px;
-  overflow: hidden;
-  padding-bottom: 30px;
-  margin: 0 auto;
-  width: 1366px;
-  min-width: 1019px;
-  color: #222;
-  transition: width 0.2s;
-  /* 设备宽度大于 1600 */
-  @media all and (min-width: 1600px) {
+  .detail-wrap {
+    border-radius: 5px;
+    overflow: hidden;
+    padding-bottom: 30px;
+    margin: 0 auto;
     width: 1366px;
-  }
-  /* 设备宽度小于 1600px */
-  @media all and (max-width: 1600px) {
-    width: 1019px;
-    .right:before {
-      left: -26px;
+    min-width: 1019px;
+    color: #222;
+    transition: width 0.2s;
+    /* 设备宽度大于 1600 */
+    @media all and (min-width: 1600px) {
+      width: 1366px;
     }
-    .process .top li {
-      width: 140px;
-      margin: 0 14px;
-      // margin: 0 31px;
-    }
-    .process .top dt {
-      width: 80px;
-      height: 80px;
-    }
-    .process .top li.active dt:after {
-      content: '';
-      width: 90px;
-      height: 90px;
-      margin-top: -46px;
-      margin-left: -46px;
-    }
-    .process .top dt:before {
-      width: 100px;
-      right: -110px;
-    }
-    .process .bottom > div ol {
-      width: 140px;
-      margin: 0 auto;
-    }
-    .process .bottom > div {
-      margin: 10px 14px;
-      // margin: 10px 31px;
-      width: 140px;
-    }
-    .middle {
-      width: 375px;
-      ol {
-        margin-top: 20px;
+    /* 设备宽度小于 1600px */
+    @media all and (max-width: 1600px) {
+      width: 1019px;
+      .right:before {
+        left: -26px;
       }
-    }
-  }
-  .in-countdown {
-    p {
-      text-align: center;
-      margin: 20px 0;
-      &:nth-of-type(3) {
-        color: $color-error;
-        font-size: 20px;
+      .process .top li {
+        width: 140px;
+        margin: 0 14px;
+        // margin: 0 31px;
       }
-    }
-  }
-}
-
-.block {
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  border: 1px solid rgba(226, 226, 226, 1);
-  margin-top: 50px;
-}
-
-.process {
-  padding: 30px 0;
-  .top {
-    li {
-      text-align: center;
-      float: left;
-      width: 160px;
-      margin: 0 33px;
-      // margin: 0 55px;
-    }
-    dt {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto;
-      border-radius: 500px;
-      background-color: rgba(211, 215, 255, 1);
-      position: relative;
-      i {
-        position: absolute;
-        width: 44px;
-        height: 44px;
-        top: 50%;
-        left: 50%;
-        margin-top: -22px;
-        margin-left: -22px;
-        background-image: url('~assets/image/auto_wechat.png');
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
+      .process .top dt {
+        width: 80px;
+        height: 80px;
       }
-      &:before {
+      .process .top li.active dt:after {
         content: '';
-        width: 95px;
-        // width: 130px;
-        height: 2px;
-        position: absolute;
-        background: rgba(211, 215, 255, 1);
-        top: 50%;
-        margin-top: -1px;
-        right: -116px;
-        // right: -152px;
+        width: 90px;
+        height: 90px;
+        margin-top: -46px;
+        margin-left: -46px;
+      }
+      .process .top dt:before {
+        width: 100px;
+        right: -110px;
+      }
+      .process .bottom > div ol {
+        width: 140px;
+        margin: 0 auto;
+      }
+      .process .bottom > div {
+        margin: 10px 14px;
+        // margin: 10px 31px;
+        width: 140px;
+      }
+      .middle {
+        width: 375px;
+        ol {
+          margin-top: 20px;
+        }
       }
     }
-    dd {
-      padding-top: 10px;
-      font-size: 22px;
-      color: $color-font;
+    .in-countdown {
+      p {
+        text-align: center;
+        margin: 20px 0;
+        &:nth-of-type(3) {
+          color: $color-error;
+          font-size: 20px;
+        }
+      }
     }
-    li {
-      &.highlight {
-        dt {
-          background-color: $color-default;
-          &:before {
+    .red-bag-tip{
+      width: 450px;
+      background-color: #fff;
+      .red-bag-header{
+        height: 160px;
+        background-image: url("../../../assets/image/red-bag-header.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .red-bag-content{
+        padding: 20px;
+        text-align: left;
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+  }
+
+  .block {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 4px;
+    border: 1px solid rgba(226, 226, 226, 1);
+    margin-top: 50px;
+  }
+
+  .process {
+    padding: 30px 0;
+    .top {
+      li {
+        text-align: center;
+        float: left;
+        width: 160px;
+        margin: 0 33px;
+        // margin: 0 55px;
+      }
+      dt {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto;
+        border-radius: 500px;
+        background-color: rgba(211, 215, 255, 1);
+        position: relative;
+        i {
+          position: absolute;
+          width: 44px;
+          height: 44px;
+          top: 50%;
+          left: 50%;
+          margin-top: -22px;
+          margin-left: -22px;
+          background-image: url('~assets/image/auto_wechat.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+        }
+        &:before {
+          content: '';
+          width: 95px;
+          // width: 130px;
+          height: 2px;
+          position: absolute;
+          background: rgba(211, 215, 255, 1);
+          top: 50%;
+          margin-top: -1px;
+          right: -116px;
+          // right: -152px;
+        }
+      }
+      dd {
+        padding-top: 10px;
+        font-size: 22px;
+        color: $color-font;
+      }
+      li {
+        &.highlight {
+          dt {
+            background-color: $color-default;
+            &:before {
+              content: '';
+              background: $color-default;
+            }
+          }
+        }
+        &.active dt:after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-top: -53px;
+          margin-left: -53px;
+          width: 104px;
+          height: 104px;
+          border: 1px solid $color-default;
+          border-radius: 500px;
+        }
+        &:last-child {
+          dt:before {
             content: '';
-            background: $color-default;
+            display: none;
+          }
+        }
+        &.step {
+          dt i {
+            background-image: url('~assets/image/detail/detail_prepare_hover.png');
+          }
+          &.highlight dt i {
+            background-image: url('~assets/image/detail/detail_prepare.png');
+          }
+        }
+        &.prompt {
+          dt i {
+            background-image: url('~assets/image/detail/detail_promote_hover.png');
+          }
+          &.highlight dt i {
+            background-image: url('~assets/image/detail/detail_promote.png');
+          }
+        }
+        &.brand {
+          dt i {
+            background-image: url('~assets/image/detail/detail_brand_hover.png');
+          }
+          &.highlight dt i {
+            background-image: url('~assets/image/detail/detail_brand.png');
+          }
+        }
+        &.live {
+          dt i {
+            background-image: url('~assets/image/detail/detail_live_hover.png');
+          }
+          &.highlight dt i {
+            background-image: url('~assets/image/detail/detail_live.png');
+          }
+        }
+        &.record {
+          dt i {
+            background-image: url('~assets/image/detail/detail_record_hover.png');
+          }
+          &.highlight dt i {
+            background-image: url('~assets/image/detail/detail_record.png');
+          }
+        }
+        &.statics {
+          dt i {
+            background-image: url('~assets/image/detail/detail_static_hover.png');
+          }
+          &.highlight dt i {
+            background-image: url('~assets/image/detail/detail_static.png');
           }
         }
       }
-      &.active dt:after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-top: -53px;
-        margin-left: -53px;
-        width: 104px;
-        height: 104px;
-        border: 1px solid $color-default;
-        border-radius: 500px;
-      }
-      &:last-child {
-        dt:before {
-          content: '';
-          display: none;
-        }
-      }
-      &.step {
-        dt i {
-          background-image: url('~assets/image/detail/detail_prepare_hover.png');
-        }
-        &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_prepare.png');
-        }
-      }
-      &.prompt {
-        dt i {
-          background-image: url('~assets/image/detail/detail_promote_hover.png');
-        }
-        &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_promote.png');
-        }
-      }
-      &.brand {
-        dt i {
-          background-image: url('~assets/image/detail/detail_brand_hover.png');
-        }
-        &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_brand.png');
-        }
-      }
-      &.live {
-        dt i {
-          background-image: url('~assets/image/detail/detail_live_hover.png');
-        }
-        &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_live.png');
-        }
-      }
-      &.record {
-        dt i {
-          background-image: url('~assets/image/detail/detail_record_hover.png');
-        }
-        &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_record.png');
-        }
-      }
-      &.statics {
-        dt i {
-          background-image: url('~assets/image/detail/detail_static_hover.png');
-        }
-        &.highlight dt i {
-          background-image: url('~assets/image/detail/detail_static.png');
+    }
+    .bottom > div {
+      margin: 10px 33px;
+      // margin: 10px 55px;
+      width: 160px;
+      float: left;
+      ol > li {
+        width: 100%;
+        height: 36px;
+        text-align: center;
+        line-height: 36px;
+        margin-top: 14px;
+        background: rgba(239, 239, 239, 0.7);
+        border-radius: 18px;
+        border: 1px solid rgba(177, 177, 177, 1);
+        cursor: pointer;
+        &:hover {
+          background: rgba(255, 208, 33, 0.7);
         }
       }
     }
   }
-  .bottom > div {
-    margin: 10px 33px;
-    // margin: 10px 55px;
-    width: 160px;
+
+  .desc {
+    padding-top: 20px;
+  }
+
+  .left {
     float: left;
-    ol > li {
-      width: 100%;
-      height: 36px;
+    margin-right: 20px;
+    position: relative;
+    .poster {
+      display: inline-block;
+      width: 300px;
+      height: 169px;
+      border-radius: 5px;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+    .status {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 40px;
       text-align: center;
-      line-height: 36px;
-      margin-top: 14px;
-      background: rgba(239, 239, 239, 0.7);
-      border-radius: 18px;
-      border: 1px solid rgba(177, 177, 177, 1);
-      cursor: pointer;
-      &:hover {
-        background: rgba(255, 208, 33, 0.7);
+      line-height: 20px;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      font-size: 12px;
+      color: #fff;
+    }
+    // .live {
+    //   color: red;
+    //   border-color: red;
+    // }
+    // .preview {
+    //   color: blue;
+    //   border-color: blue;
+    // }
+    // .record {
+    //   color: green;
+    //   border-color: green;
+    // }
+  }
+
+  .middle {
+    float: left;
+    width: 640px;
+    p {
+      padding-bottom: 20px;
+    }
+    .title {
+      font-size: 22px;
+      color: $color-font;
+      margin-right: 8px;
+      .id-tag {
+        padding: 2px 12px;
+        color: $color-font-sub;
+        font-size: 14px;
+        background: rgba(239, 239, 239, 1);
+        border-radius: 10px;
+        position: relative;
+        padding-right: 28px;
+        i {
+          cursor: pointer;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: url('~assets/image/detail/roomid.png') no-repeat center;
+          background-size: contain;
+          position: absolute;
+          top: 0px;
+          &:hover {
+            background-image: url('~assets/image/detail/roomid_hover.png');
+          }
+        }
       }
     }
-  }
-}
-
-.desc {
-  padding-top: 20px;
-}
-
-.left {
-  float: left;
-  margin-right: 20px;
-  position: relative;
-  .poster {
-    display: inline-block;
-    width: 300px;
-    height: 169px;
-    border-radius: 5px;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-  }
-  .status {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 40px;
-    text-align: center;
-    line-height: 20px;
-    height: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-    font-size: 12px;
-    color: #fff;
-  }
-  // .live {
-  //   color: red;
-  //   border-color: red;
-  // }
-  // .preview {
-  //   color: blue;
-  //   border-color: blue;
-  // }
-  // .record {
-  //   color: green;
-  //   border-color: green;
-  // }
-}
-
-.middle {
-  float: left;
-  width: 640px;
-  p {
-    padding-bottom: 20px;
-  }
-  .title {
-    font-size: 22px;
-    color: $color-font;
-    margin-right: 8px;
-    .id-tag {
-      padding: 2px 12px;
+    .desc-label {
       color: $color-font-sub;
       font-size: 14px;
-      background: rgba(239, 239, 239, 1);
-      border-radius: 10px;
-      position: relative;
-      padding-right: 28px;
-      i {
-        cursor: pointer;
+      .tag {
+        font-size: 12px;
+        padding: 2px 10px;
+        background: rgba(240, 241, 254, 1);
+        border-radius: 12px;
+        border: 1px solid rgba(219, 222, 253, 1);
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        background: url('~assets/image/detail/roomid.png') no-repeat center;
-        background-size: contain;
-        position: absolute;
-        top: 0px;
-        &:hover {
-          background-image: url('~assets/image/detail/roomid_hover.png');
+        margin: 0 3px;
+      }
+      &.tool {
+        position: relative;
+        .link-box {
+          padding: 20px 0px;
+          position: relative;
+          top: 1px;
+          padding-left: 10px;
+          cursor: pointer;
+          i {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            background: url('~assets/image/detail/link.png') no-repeat center;
+            background-size: contain;
+            position: relative;
+            top: 5px;
+            margin-right: 5px;
+          }
+          &:hover {
+            color: $color-blue;
+            i {
+              background-image: url('~assets/image/detail/link_hover.png');
+            }
+            ul {
+              color: #555;
+              li {
+                i {
+                  width: 24px;
+                  height: 24px;
+                  left: 0;
+                  top: 7px;
+                }
+                &:hover {
+                  color: $color-blue;
+                }
+                i.icon-site {
+                  background-image: url('~assets/image/detail/icon-site.png');
+                }
+                i.icon-guide {
+                  background-image: url('~assets/image/detail/icon-guide.png');
+                }
+                &:hover i.icon-site {
+                  background-image: url('~assets/image/detail/icon-site-hover.png');
+                }
+                &:hover i.icon-guide {
+                  background-image: url('~assets/image/detail/icon-guide-hover.png');
+                }
+              }
+            }
+          }
         }
       }
     }
-  }
-  .desc-label {
-    color: $color-font-sub;
-    font-size: 14px;
-    .tag {
-      font-size: 12px;
-      padding: 2px 10px;
-      background: rgba(240, 241, 254, 1);
-      border-radius: 12px;
-      border: 1px solid rgba(219, 222, 253, 1);
-      display: inline-block;
-      margin: 0 3px;
-    }
-    &.tool {
-      position: relative;
-      .link-box {
-        padding: 20px 0px;
+    // ol {
+    //   margin-top: 30px;
+    //   li {
+    //     cursor: pointer;
+    //     color: $color-font-sub;
+    //     font-size: 14px;
+    //     position: relative;
+    //     float: left;
+    //     margin-right: 40px;
+    //     height: 20px;
+    //     line-height: 20px;
+    //     padding-left: 29px;
+    //     &::before {
+    //       content: '';
+    //       width: 1px;
+    //       height: 16px;
+    //       background: rgba(216, 216, 216, 1);
+    //       position: absolute;
+    //       top: 0;
+    //       right: -16px;
+    //     }
+    //     i {
+    //       width: 20px;
+    //       height: 20px;
+    //       display: inline-block;
+    //       background: url('~assets/image/detail/page.png') no-repeat center;
+    //       background-size: contain;
+    //       position: absolute;
+    //       left: 0;
+    //     }
+    //     &.copy i {
+    //       background-image: url('~assets/image/detail/link.png');
+    //     }
+    //     &.offline {
+    //       &::before {
+    //         content: '';
+    //         display: none;
+    //       }
+    //       i {
+    //         bottom: 3px;
+    //         background-image: url('~assets/image/detail/offline.png');
+    //       }
+    //     }
+    //     &:hover {
+    //       color: $color-blue;
+    //       i {
+    //         background-image: url('~assets/image/detail/page_hover.png');
+    //       }
+    //       &.copy i {
+    //         background-image: url('~assets/image/detail/link_hover.png');
+    //       }
+    //       &.offline i {
+    //         background-image: url('~assets/image/detail/offline_hover.png');
+    //       }
+    //     }
+    //   }
+    // }
+    ul {
+      position: absolute;
+      width: 240px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      top: 40px;
+      left: -60px;
+      z-index: 20;
+      li {
+        height: 50px;
+        line-height: 50px;
         position: relative;
-        top: 1px;
-        padding-left: 10px;
         cursor: pointer;
+        margin: 3px 0;
+        padding: 0 17px;
+        a {
+          position: absolute;
+          left: 125px;
+          top: 50%;
+          margin-top: -26px;
+          .el-button {
+            position: static;
+            padding: 7px 10px;
+          }
+        }
         i {
           width: 20px;
           height: 20px;
           display: inline-block;
-          background: url('~assets/image/detail/link.png') no-repeat center;
+          background: url('~assets/image/detail/page.png') no-repeat center;
           background-size: contain;
-          position: relative;
-          top: 5px;
-          margin-right: 5px;
+          position: absolute;
+          left: 17px;
+          top: 50%;
+          margin-top: -10px;
+        }
+        .el-button {
+          padding: 7px 10px;
+          position: absolute;
+          top: 50%;
+          margin-top: -14px;
+          right: 17px;
         }
         &:hover {
-          color: $color-blue;
-          i {
-            background-image: url('~assets/image/detail/link_hover.png');
-          }
-          ul {
-            color: #555;
-            li {
-              i {
-                width: 24px;
-                height: 24px;
-                left: 0;
-                top: 7px;
-              }
-              &:hover {
-                color: $color-blue;
-              }
-              i.icon-site {
-                background-image: url('~assets/image/detail/icon-site.png');
-              }
-              i.icon-guide {
-                background-image: url('~assets/image/detail/icon-guide.png');
-              }
-              &:hover i.icon-site {
-                background-image: url('~assets/image/detail/icon-site-hover.png');
-              }
-              &:hover i.icon-guide {
-                background-image: url('~assets/image/detail/icon-guide-hover.png');
-              }
-            }
-          }
+          background: rgba(233, 235, 255, 1);
+        }
+        &.isSwitch a .el-button {
+          padding: 7px 35px;
         }
       }
     }
   }
-  // ol {
-  //   margin-top: 30px;
-  //   li {
-  //     cursor: pointer;
-  //     color: $color-font-sub;
-  //     font-size: 14px;
-  //     position: relative;
-  //     float: left;
-  //     margin-right: 40px;
-  //     height: 20px;
-  //     line-height: 20px;
-  //     padding-left: 29px;
-  //     &::before {
-  //       content: '';
-  //       width: 1px;
-  //       height: 16px;
-  //       background: rgba(216, 216, 216, 1);
-  //       position: absolute;
-  //       top: 0;
-  //       right: -16px;
-  //     }
-  //     i {
-  //       width: 20px;
-  //       height: 20px;
-  //       display: inline-block;
-  //       background: url('~assets/image/detail/page.png') no-repeat center;
-  //       background-size: contain;
-  //       position: absolute;
-  //       left: 0;
-  //     }
-  //     &.copy i {
-  //       background-image: url('~assets/image/detail/link.png');
-  //     }
-  //     &.offline {
-  //       &::before {
-  //         content: '';
-  //         display: none;
-  //       }
-  //       i {
-  //         bottom: 3px;
-  //         background-image: url('~assets/image/detail/offline.png');
-  //       }
-  //     }
-  //     &:hover {
-  //       color: $color-blue;
-  //       i {
-  //         background-image: url('~assets/image/detail/page_hover.png');
-  //       }
-  //       &.copy i {
-  //         background-image: url('~assets/image/detail/link_hover.png');
-  //       }
-  //       &.offline i {
-  //         background-image: url('~assets/image/detail/offline_hover.png');
-  //       }
-  //     }
-  //   }
-  // }
-  ul {
-    position: absolute;
-    width: 240px;
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    top: 40px;
-    left: -60px;
-    z-index: 20;
-    li {
-      height: 50px;
-      line-height: 50px;
-      position: relative;
-      cursor: pointer;
-      margin: 3px 0;
-      padding: 0 17px;
-      a {
-        position: absolute;
-        left: 125px;
-        top: 50%;
-        margin-top: -26px;
-        .el-button {
-          position: static;
-          padding: 7px 10px;
-        }
-      }
-      i {
-        width: 20px;
-        height: 20px;
-        display: inline-block;
-        background: url('~assets/image/detail/page.png') no-repeat center;
-        background-size: contain;
-        position: absolute;
-        left: 17px;
-        top: 50%;
-        margin-top: -10px;
-      }
-      .el-button {
-        padding: 7px 10px;
-        position: absolute;
-        top: 50%;
-        margin-top: -14px;
-        right: 17px;
-      }
-      &:hover {
-        background: rgba(233, 235, 255, 1);
-      }
-      &.isSwitch a .el-button {
-        padding: 7px 35px;
-      }
-    }
-  }
-}
 
-.left {
-  float: left;
-}
+  .left {
+    float: left;
+  }
 
-.right {
-  float: right;
-  text-align: center;
-  position: relative;
-  &:before {
-    content: '';
-    width: 1px;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    left: -107px;
-    background: rgba(226, 226, 226, 1);
-    border-radius: 1px;
-  }
-  .count-box {
-    overflow: hidden;
-    margin: 13px 0 36px 0;
-    li {
-      float: left;
-      width: 56px;
-      height: 46px;
-      line-height: 46px;
-      text-align: center;
-      background: rgba(38, 38, 38, 1);
-      border-radius: 4px;
-      color: #fff;
-      font-size: 34px;
-      font-family: unset;
-      margin: 0px 6px;
-      span {
-        font-size: 12px;
-      }
-    }
-  }
-  .el-button {
-    padding: 0px;
-    width: 200px;
-    height: 40px;
-    line-height: 40px;
+  .right {
+    float: right;
     text-align: center;
+    position: relative;
+    &:before {
+      content: '';
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      top: 0px;
+      left: -107px;
+      background: rgba(226, 226, 226, 1);
+      border-radius: 1px;
+    }
+    .count-box {
+      overflow: hidden;
+      margin: 13px 0 36px 0;
+      li {
+        float: left;
+        width: 56px;
+        height: 46px;
+        line-height: 46px;
+        text-align: center;
+        background: rgba(38, 38, 38, 1);
+        border-radius: 4px;
+        color: #fff;
+        font-size: 34px;
+        font-family: unset;
+        margin: 0px 6px;
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+    .el-button {
+      padding: 0px;
+      width: 200px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+    }
   }
-}
 
-.fun-card {
-}
-
-.block-separte {
-  margin-top: 40px;
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: $color-font;
-  padding-left: 20px;
-  position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    top: 2px;
-    left: 0px;
-    width: 4px;
-    height: 20px;
-    background: rgba(255, 208, 33, 1);
+  .fun-card {
   }
-}
 
-.card-list .item {
-  position: relative;
-  cursor: pointer;
-  float: left;
-  width: 442px;
-  height: 140px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
-  border: 1px solid rgba(226, 226, 226, 1);
-  padding: 14px 12px;
-  margin: 10px 0;
-  margin-right: 20px;
-  &:nth-child(3n + 3) {
-    margin-right: 0px;
-  }
-  &.disabled:before {
-    cursor: not-allowed;
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: '';
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.3);
-  }
-}
-
-/* 设备宽度大于 1600 */
-
-@media all and (min-width: 1600px) {
-}
-
-/* 设备宽度小于 1600px */
-
-@media all and (max-width: 1600px) {
-  .card-list .item {
-    width: 326px;
-  }
-}
-
-.card {
-  width: 100%;
-  height: 80px;
-  padding: 18px 5px;
-  padding-bottom: 0px;
-  .pic {
-    float: left;
-    width: 70px;
-    height: 70px;
-    margin: 4px;
-    background: url('~assets/image/auto_wechat.png') no-repeat center;
-    background-size: contain;
-    margin-right: 20px;
-  }
-  .desc {
-    float: left;
+  .block-separte {
+    margin-top: 40px;
+    margin-bottom: 10px;
     font-size: 18px;
     color: $color-font;
-    padding: 15px 0;
-    span {
-      display: block;
-      font-size: 16px;
-    }
-    span.des {
-      padding-top: 5px;
-      font-size: 12px;
-      color: $color-font-sub;
-    }
-  }
-}
-
-.item.base .card .pic {
-  width: 80px;
-  background-image: url('~assets/image/detail/base.png');
-}
-
-.item.apply .card .pic {
-  background-image: url('~assets/image/detail/apply.png');
-}
-
-.item.wram .card .pic {
-  background-image: url('~assets/image/detail/wramup.png');
-}
-
-.item.automaze .card .pic {
-  background-image: url('~assets/image/detail/base.png');
-}
-
-.item.mail .card .pic {
-  background-image: url('~assets/image/detail/mail_invite.png');
-}
-
-.item.message .card .pic {
-  background-image: url('~assets/image/detail/msg.png');
-}
-
-.item.wechat .card .pic {
-  background-image: url('~assets/image/detail/wechat.png');
-}
-
-.item.site .card .pic {
-  background-image: url('~assets/image/detail/site.png');
-}
-
-.item.guide .card .pic {
-  background-image: url('~assets/image/detail/guide.png');
-}
-
-.item.watch .card .pic {
-  width: 80px;
-  background-image: url('~assets/image/detail/watch.png');
-}
-
-.item.record .card .pic {
-  width: 80px;
-  background-image: url('~assets/image/detail/record.png');
-}
-
-.btm {
-  width: 100%;
-  height: 40px;
-  .switch {
-    float: right;
-    margin: 10px 0px;
-  }
-  .more {
+    padding-left: 20px;
     position: relative;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 0px;
+      width: 4px;
+      height: 20px;
+      background: rgba(255, 208, 33, 1);
+    }
   }
-  .show-more {
-    position: absolute;
-    top: 100%;
-    right: 0;
+
+  .card-list .item {
+    position: relative;
+    cursor: pointer;
+    float: left;
+    width: 442px;
+    height: 140px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 4px;
+    border: 1px solid rgba(226, 226, 226, 1);
+    padding: 14px 12px;
+    margin: 10px 0;
+    margin-right: 20px;
+    &:nth-child(3n + 3) {
+      margin-right: 0px;
+    }
+    &.disabled:before {
+      cursor: not-allowed;
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: '';
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+    }
   }
-}
+
+  /* 设备宽度大于 1600 */
+
+  @media all and (min-width: 1600px) {
+  }
+
+  /* 设备宽度小于 1600px */
+
+  @media all and (max-width: 1600px) {
+    .card-list .item {
+      width: 326px;
+    }
+  }
+
+  .card {
+    width: 100%;
+    height: 80px;
+    padding: 18px 5px;
+    padding-bottom: 0px;
+    .pic {
+      float: left;
+      width: 70px;
+      height: 70px;
+      margin: 4px;
+      background: url('~assets/image/auto_wechat.png') no-repeat center;
+      background-size: contain;
+      margin-right: 20px;
+    }
+    .desc {
+      float: left;
+      font-size: 18px;
+      color: $color-font;
+      padding: 15px 0;
+      span {
+        display: block;
+        font-size: 16px;
+      }
+      span.des {
+        padding-top: 5px;
+        font-size: 12px;
+        color: $color-font-sub;
+      }
+    }
+  }
+
+  .item.base .card .pic {
+    width: 80px;
+    background-image: url('~assets/image/detail/base.png');
+  }
+
+  .item.apply .card .pic {
+    background-image: url('~assets/image/detail/apply.png');
+  }
+
+  .item.wram .card .pic {
+    background-image: url('~assets/image/detail/wramup.png');
+  }
+
+  .item.automaze .card .pic {
+    background-image: url('~assets/image/detail/base.png');
+  }
+
+  .item.mail .card .pic {
+    background-image: url('~assets/image/detail/mail_invite.png');
+  }
+
+  .item.message .card .pic {
+    background-image: url('~assets/image/detail/msg.png');
+  }
+
+  .item.wechat .card .pic {
+    background-image: url('~assets/image/detail/wechat.png');
+  }
+
+  .item.site .card .pic {
+    background-image: url('~assets/image/detail/site.png');
+  }
+
+  .item.guide .card .pic {
+    background-image: url('~assets/image/detail/guide.png');
+  }
+
+  .item.watch .card .pic {
+    width: 80px;
+    background-image: url('~assets/image/detail/watch.png');
+  }
+
+  .item.record .card .pic {
+    width: 80px;
+    background-image: url('~assets/image/detail/record.png');
+  }
+
+  .btm {
+    width: 100%;
+    height: 40px;
+    .switch {
+      float: right;
+      margin: 10px 0px;
+    }
+    .more {
+      position: relative;
+    }
+    .show-more {
+      position: absolute;
+      top: 100%;
+      right: 0;
+    }
+  }
 </style>
