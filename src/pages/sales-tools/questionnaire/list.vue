@@ -4,6 +4,7 @@
       <span class="title">问卷</span>
     </div>
     <div class="v-tbns clearfix">
+      <com-back></com-back>
       <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
       <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
 
@@ -230,6 +231,10 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+@import '~assets/css/mixin.scss';
+.back-btn-all {
+  margin: 10px 0px 10px 10px;
+}
 .v-list /deep/ {
   overflow: hidden;
   padding-bottom: 30px;

@@ -2,6 +2,7 @@
   <div class="data-container">
     <div class="data-header">
       <p class="title">{{activityInfo.title}}</p>
+      <com-back></com-back>
       <p class="detail">
         <span>开播时间：{{activityInfo.realStartTime||'0000-00-00'}}</span>
         <span>直播时长：{{activityInfo.liveTime|fmtTime}}</span>
@@ -97,34 +98,36 @@
 </script>
 
 <style lang="scss" scoped>
-  .data-container {
-    margin: 40px auto;
-    max-width: 1366px;
-    color: #222;
-    /* 设备宽度大于 1600 */
-    @media all and (min-width: 1600px) {
-      width: 1366px;
-    }
-    .data-header {
-      .nav-menu-box {
-        float: right;
-        margin-top: -16px;
+@import '~assets/css/mixin.scss';
+.back-btn-all {
+  height: 30px;
+  line-height: 30px;
+  position: relative;
+  bottom: 13px;
+  margin: 0px 0px 0px 10px;
+}
+.data-container {
+  margin: 40px auto;
+  max-width: 1366px;
+  color: #222;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  .title {
+    font-size: 24px;
+    line-height: 40px;
+  }
+  .detail {
+    font-size: 14px;
+    span {
+      &:last-child {
+        margin-left: 10px;
       }
-      .title {
-        font-size: 24px;
-        line-height: 40px;
-      }
-      .detail {
-        font-size: 14px;
-        span {
-          &:last-child {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-    .data-content {
-      margin-top: 20px;
     }
   }
+}
+.data-content {
+  margin-top: 20px;
+}
 </style>

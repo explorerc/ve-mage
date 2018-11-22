@@ -1,10 +1,11 @@
 <!--新建/编辑活动-->
 <template>
-  <div @mousedown="canPaas = false">
+  <div @keydown="canPaas = false">
     <div class='edit-page live-mager' v-if='!createdSuccess'>
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
+        <com-back></com-back>
       </div>
       <div class="tips">
         <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
@@ -324,6 +325,9 @@
       handleDel (idx, type) {
         this.tagArray.splice(idx, 1)
         this.tagGroup.splice(idx, 1)
+      },
+      back () {
+        window.history.go(-1)
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */

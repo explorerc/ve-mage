@@ -9,6 +9,7 @@
                  @change='openSwitch'>
       </el-switch>
       <span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>
+      <com-back></com-back>
     </div>
     <div class='preview mager-box border-box clearfix switch-cover'  :class='{"close":!isOpen}'>
       <div class="time-line fl"></div>

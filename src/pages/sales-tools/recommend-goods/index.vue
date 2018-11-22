@@ -2,6 +2,7 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
+      <com-back></com-back>
       <div v-if="tableData.length>=1">
         <el-button @click="check" round :disabled="!isShowlive">查看活动数据</el-button>
         <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
@@ -176,99 +177,103 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  #goods-list {
-    font-family: PingFangSC-Regular;
-    padding: 40px 100px;
-    /deep/ {
-      header {
-        overflow: hidden;
-        text-align: right;
-        p {
-          float: left;
-          height: 26px;
-          font-size: 24px;
-          font-weight: 400;
-          color: rgba(34, 34, 34, 1);
-          line-height: 26px;
-        }
+#goods-list {
+  font-family: PingFangSC-Regular;
+  padding: 40px 100px;
+  /deep/ {
+    header {
+      overflow: hidden;
+      text-align: right;
+      p {
+        float: left;
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 26px;
       }
-      .table-box {
-        margin-top: 22px;
-        padding: 30px;
-        border: 1px dashed #cccccc;
-        background-color: white;
-        table thead tr th, table tbody tr td {
-          border-color: #ebeef5;
-          font-size: 14px
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          border: none;
-          thead, tbody {
-            height: 47px;
-            line-height: 47px;
-            th, td {
-              color: #222222;
-              padding-left: 10px;
-              font-weight: 400;
-              &:nth-of-type(1) {
-                width: 5%;
-              }
-              &:nth-of-type(2) {
-                width: 10%;
-              }
-              &:nth-of-type(3) {
-                width: 20%;
-              }
-              &:nth-of-type(4), &:nth-of-type(5) {
-                width: 15%;
-              }
-              &:nth-of-type(6) {
-                width: 25%;
-                span {
-                  color: #2878FF;
-                }
-              }
-              img {
-                width: 60px;
-                height: 60px;
-                margin: 10px auto 10px 0;
-                vertical-align: middle;
+    }
+    .table-box {
+      margin-top: 22px;
+      padding: 30px;
+      border: 1px dashed #cccccc;
+      background-color: white;
+      table thead tr th,
+      table tbody tr td {
+        border-color: #ebeef5;
+        font-size: 14px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+        thead,
+        tbody {
+          height: 47px;
+          line-height: 47px;
+          th,
+          td {
+            color: #222222;
+            padding-left: 10px;
+            font-weight: 400;
+            &:nth-of-type(1) {
+              width: 5%;
+            }
+            &:nth-of-type(2) {
+              width: 10%;
+            }
+            &:nth-of-type(3) {
+              width: 20%;
+            }
+            &:nth-of-type(4),
+            &:nth-of-type(5) {
+              width: 15%;
+            }
+            &:nth-of-type(6) {
+              width: 25%;
+              span {
+                color: #2878ff;
               }
             }
-            td.dis-prices {
-              color: #FC5659;
+            img {
+              width: 60px;
+              height: 60px;
+              margin: 10px auto 10px 0;
+              vertical-align: middle;
             }
-            tr:hover {
-              background-color: #f5f7fa;
-            }
+          }
+          td.dis-prices {
+            color: #fc5659;
+          }
+          tr:hover {
+            background-color: #f5f7fa;
           }
         }
       }
+    }
 
-      .no-goods {
-        text-align: center;
-        img {
-          width: 180px;
-          height: 180px;
-          margin: 84px auto 40px auto;
-        }
-        p:nth-of-type(1) {
-          font-size: 16px;
-          font-weight: 400;
-          color: rgba(34, 34, 34, 1);
-          line-height: 22px;
-        }
-        p:nth-of-type(2) {
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(85, 85, 85, 1);
-          margin: 10px auto 30px auto;
-        }
+    .no-goods {
+      text-align: center;
+      img {
+        width: 180px;
+        height: 180px;
+        margin: 84px auto 40px auto;
+      }
+      p:nth-of-type(1) {
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 22px;
+      }
+      p:nth-of-type(2) {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(85, 85, 85, 1);
+        margin: 10px auto 30px auto;
       }
     }
   }
+}
 </style>
