@@ -58,7 +58,7 @@
                     @click.stop="clickRowTag(idx)"
                     :class="{active:tag.isChecked}"
                     :key="tag.id">
-                  {{tag.name}}
+                  {{tag.name}} ({{tag.count}}人）
                   <el-checkbox v-model="tag.isChecked"
                                 class="fr"
                                 small></el-checkbox>
@@ -200,7 +200,7 @@ export default {
         newArray.forEach((item, idx) => {
           if (!item.isChecked) return
           temArray.push(item)
-          listStr += `${item.name}、`
+          listStr += `${item.name} (${item.count}人）、`
           temArr.push(item.id)
         })
         this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
