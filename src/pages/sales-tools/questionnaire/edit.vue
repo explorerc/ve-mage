@@ -324,7 +324,7 @@ export default {
             type: QTypes.TEXT,
             required: 'N',
             detail: {
-              max: 10
+              max: ''
             },
             ext: {
               name: '姓名',
@@ -363,7 +363,7 @@ export default {
             required: 'N',
             detail: {
               format: 'email',
-              max: 30
+              max: ''
             },
             ext: {
               name: '邮箱',
@@ -500,7 +500,7 @@ export default {
             type: QTypes.TEXT,
             required: 'N',
             detail: {
-              max: 10
+              max: ''
             },
             ext: {
               name: '职位',
@@ -616,7 +616,7 @@ export default {
             type: QTypes.TEXT,
             required: 'N',
             detail: {
-              max: 300
+              max: ''
             },
             ext: {
               name: '问答题',
