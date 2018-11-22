@@ -149,7 +149,7 @@ export default {
       })
     },
     exportTable () {
-      let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
+      let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date || ''}`
       const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
       window.open(encodeURI(encodeURI(url)))
     }
@@ -251,6 +251,12 @@ export default {
         margin-top: 2px;
         height: 36px;
         line-height: 36px;
+      }
+      .status {
+        color: #FC5659;
+      }
+      .success {
+        color: #43D2C2;
       }
     }
   }
