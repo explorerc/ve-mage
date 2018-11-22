@@ -161,6 +161,7 @@ export default {
         res.data.list.forEach((item) => {
           temArray.push({
             name: item.tag_name,
+            count: item.user_count,
             id: item.tag_id,
             isChecked: false
           })
