@@ -252,7 +252,7 @@
         line-height: 20px;
         color: #888;
         &.error-msg {
-          color: #fc5659;
+          color: #fc5659!important;
         }
       }
       .upload-icon {

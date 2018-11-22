@@ -285,6 +285,13 @@ export default {
       })
     },
     addQuestion (type) {
+      if ((this.dragData.length + this.phoneData.length) >= 100) {
+        this.$toast({
+          content: '场问卷最多能设置100个题目',
+          position: 'center'
+        })
+        return false
+      }
       let obj = {}
       switch (type) {
         case 'name':
@@ -610,18 +617,19 @@ export default {
       } else if (!this.description) {
         result = false
         this.error.descriptionError = '请填写问卷简介'
-      }
-      for (let i = 0; i < this.dragData.length; i++) {
-        if (!this.$refs['com' + i][0].validate()) {
-          result = false
+      } else {
+        for (let i = 0; i < this.dragData.length; i++) {
+          if (result && !this.$refs['com' + i][0].validate()) {
+            result = false
+          }
+          data.push(this.dragData[i])
         }
-        data.push(this.dragData[i])
-      }
-      if (this.phoneData.length > 0) {
-        if (!this.$refs['comPhone'].$children[1].validate()) {
-          result = false
+        if (this.phoneData.length > 0) {
+          if (result && !this.$refs['comPhone'].$children[1].validate()) {
+            result = false
+          }
+          data.push(this.phoneData[0])
         }
-        data.push(this.phoneData[0])
       }
       if (result && this.saveResult) {
         let _data = {
@@ -646,7 +654,15 @@ export default {
               header: '提示',
               content: res.msg,
               autoClose: 10,
-              confirmText: '知道了'
+              confirmText: '知道了',
+              handleClick: (e) => {
+                console.log(e)
+                if (e.action === 'cancel') {
+                  this.$router.go(0)
+                } else if (e.action === 'confirm') {
+                  this.$router.go(0)
+                }
+              }
             })
           })
         } else {
@@ -658,10 +674,23 @@ export default {
               header: '提示',
               content: res.msg,
               autoClose: 10,
-              confirmText: '知道了'
+              confirmText: '知道了',
+              handleClick: (e) => {
+                console.log(e)
+                if (e.action === 'cancel') {
+                  this.$router.go(0)
+                } else if (e.action === 'confirm') {
+                  this.$router.go(0)
+                }
+              }
             })
           })
         }
+      } else if (!result) {
+        this.$toast({
+          content: '保存失败，存在未填写的信息',
+          position: 'center'
+        })
       }
     },
     focus (type) {

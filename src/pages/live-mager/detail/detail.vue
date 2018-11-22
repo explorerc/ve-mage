@@ -33,7 +33,7 @@
               <router-link v-else :to="`/liveMager/site/${activityId}`"><el-button size="mini"
                                                                                    round>开启</el-button></router-link>
               <el-button v-if="dataBrand[0].switch" size="mini" round @click="copy('copyContent2')">复制</el-button>
-              <input type="text" :value="`https:${this.PC_HOST}site/${activityId}`" id="copyContent2"
+              <input type="text" :value='`https:${this.PC_HOST}site/${activityId}`' id="copyContent2"
                      style="position:absolute;opacity:0;">
             </li>
             <li>
@@ -41,7 +41,7 @@
                                                            target="_blank"><el-button size="mini"
                                                                                       round>查看</el-button></router-link> <el-button
               size="mini" round @click="copy('copyContent')">复制</el-button>
-              <input type="text" :value="`https:${this.PC_HOST}subscribe/${this.activityId}`" id="copyContent"
+              <input type="text" :value='`https:${this.PC_HOST}subscribe/${this.activityId}`' id="copyContent"
                      style="position:absolute;opacity:0;">
             </li>
           </ul>
@@ -150,8 +150,8 @@
                 @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知
             </li>
             <li v-show="dataPromote[1].switch" @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
-            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信推广</li>
-            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信推广</li>
+            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知</li>
+            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知</li>
           </ol>
         </div>
         <div>
@@ -166,11 +166,11 @@
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">设置回放</li>
+            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">活动回放</li>
           </ol>
         </div>
         <div>
-          <template  v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+          <template  v-if="staticTime == '统计中...'">
             <ol title='预告、直播中状态不能进入数据中心'>
               <li @click="linkTo($event,'/data/preview/')" :class="'disabled'">数据</li>
               <li :class="'disabled'">观众</li>
@@ -418,7 +418,7 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>邮箱</span>
+                <span>邮件邀约</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataPromote[1].isSet">
@@ -442,7 +442,7 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>短信</span>
+                <span>短信通知</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataPromote[2].isSet">
@@ -466,7 +466,7 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>微信</span>
+                <span>微信通知</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataPromote[3].isSet">
@@ -575,7 +575,7 @@
         </div>
       </div>
       <div class="item setting">
-        <p class='block-separte'>回放</p>
+        <p class='block-separte'>活动回放</p>
         <div class="card-list clearfix">
           <div class='item record' @click="linkTo($event,'/liveMager/playBack/')">
             <!-- 观看页 -->
@@ -584,11 +584,11 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>设置回放</span>
+                <span>活动回放</span>
                 <span class='des'>
                     <!-- 已设置 -->
                     <template v-if="dataRecord[0].isSet">
-                      已设置默认回放
+                      已设置默认活动回放
                     </template>
                   <!-- 未设置 -->
                     <template v-else>
@@ -605,7 +605,7 @@
       <div class="item statics">
         <p class='block-separte'>数据</p>
         <div class="card-list clearfix">
-          <div class='item record' @click="linkTo($event,'/data/preview/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+          <div class='item record' @click="linkTo($event,'/data/preview/')" :class="{'disabled':staticTime == '统计中...'}">
             <div class="card">
               <div class='pic'>
               </div>
@@ -613,7 +613,7 @@
                 <span>数据</span>
                 <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+                    <template v-if="staticTime == '统计中...'">
                      展示单次活动数据洞察
                     </template>
                   <!-- 未设置 -->
@@ -626,7 +626,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item record' @click="linkTo($event,'/data/viewer/')" :class="{'disabled':this.statusClass === 'live' || this.statusClass === 'preview'}">
+          <div class='item record' @click="linkTo($event,'/data/viewer/')" :class="{'disabled':staticTime == '统计中...'}">
             <div class="card">
               <div class='pic'>
               </div>
@@ -634,7 +634,7 @@
                 <span>观众</span>
                 <span class='des'>
                     <!-- 已设置 -->
-                    <template v-if="this.statusClass === 'live' || this.statusClass === 'preview'">
+                    <template v-if="staticTime == '统计中...'">
                       记录单次活动观众数据
                     </template>
                   <!-- 未设置 -->
@@ -701,12 +701,15 @@ export default {
   },
   mounted () {
     this.getDetails()
-    setTimeout(() => {
-      // 滚动到推广
-      if (window.location.href.search('tg') > -1) {
-        document.querySelector('.main-container').scrollTop = document.querySelector('#tg').offsetTop - 50
-      }
-    }, 500)
+    // 滚动到推广
+    if (window.location.href.search('tg') > -1) {
+      let timer = setInterval(() => {
+        document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
+        if (document.querySelector('.main-container').scrollTop >= 1150) {
+          clearInterval(timer)
+        }
+      }, 10)
+    }
   },
   methods: {
     linkTo (e, link, status) {
@@ -1692,9 +1695,21 @@ export default {
   background-image: url('~assets/image/detail/watch.png');
 }
 
-.item.record .card .pic {
+.item.ques .card .pic {
   width: 80px;
-  background-image: url('~assets/image/detail/record.png');
+  background-image: url('~assets/image/detail/tools-survey.png');
+}
+.item.redpack .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/tools_redpack.png');
+}
+.item.goods .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/tools_good.png');
+}
+.item.cards .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/tools_good.png');
 }
 
 .btm {
