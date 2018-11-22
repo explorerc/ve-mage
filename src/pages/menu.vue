@@ -120,7 +120,7 @@
           <span>账户管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/setAccount">账户信息</el-menu-item>
+          <el-menu-item index="/setAccount">账号设置</el-menu-item>
           <el-menu-item index="/assetMager/assetList">资产管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
