@@ -157,6 +157,7 @@ export default {
           temArray.push({
             name: item.tag_name,
             id: item.tag_id,
+            count: item.user_count,
             isChecked: false
           })
         })
