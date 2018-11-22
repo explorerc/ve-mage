@@ -2,9 +2,9 @@
   <div class='wrap-page card-list-page'>
     <div class="page-title">
       <span class="title">推荐卡片</span>
-      <div class="top-bar clearfix">
-        <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='add-new primary-button' round :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
-        <router-link :to="`/data/live/${activityId}`"><el-button class='more' round>查看活动数据</el-button></router-link>
+      <div class="top-bar clearfix" v-if="tableData.length>0">
+        <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
+        <el-button class='btn more' round><router-link :to="`/data/live/${activityId}`">查看活动数据</router-link></el-button>
       </div>
     </div>
     <div class="content from-box">
@@ -114,11 +114,14 @@
     line-height: 36px;
   }
   .top-bar {
-    .el-button {
+    padding: 15px 0;
+    float: right;
+    .btn {
       padding: 0;
       width: 120px;
       height: 34px;
       line-height: 34px;
+      float: right;
       &.add-new:hover span {
         color: $color-font;
       }
@@ -133,9 +136,6 @@
           background: $color-blue;
         }
       }
-    }
-    a {
-      float: right;
     }
   }
   .from-box {

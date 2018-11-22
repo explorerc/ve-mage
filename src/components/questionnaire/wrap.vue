@@ -1,9 +1,13 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index"><span v-if="value._required" class="v-red">*</span>{{index}}</div>
+      <div class="index">{{index}}</div>
       <div v-if="edit"
-           class="q-des">{{value.ext.name}}</div>
+           class="q-des">{{value.ext.name}}<span v-if="value._required" class="v-red">*</span>
+        <div class="v-tips" v-if="value.detail.format==='phone'">
+          <i class="iconfont icon-wenhao"></i><span>手机号默认为必填项，不可修改</span>
+        </div>
+      </div>
       <div class="q-edit"
            :class="{display:!edit}">
         <!-- 问题描述区 -->
@@ -14,8 +18,7 @@
                    v-model="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
-             class="q-subject"
-             v-text="value.title"></div>
+             class="q-subject">{{value.title}}<span v-if="value._required" class="v-red">*</span></div>
         <!-- 问题描述区 -->
         <component ref="content"
                    :is="QComs[value.type]"
@@ -28,23 +31,15 @@
         <a v-if="showAddItem"
            class="add-select-item"
            @click="addItem">添加选项</a>
-        <span v-if="!(value.detail&&value.detail.format==='mobile')"
+        <span v-if="!(value.detail&&value.detail.format==='phone')"
               class="required-des">必填</span>
         <el-switch class='switch'
-                   v-if="!(value.detail&&value.detail.format==='mobile')"
+                   v-if="!(value.detail&&value.detail.format==='phone')"
                    v-model="value._required"
                    inactive-color="#DEE1FF"
                    :width="32"
                    active-color="#FFD021"></el-switch>
-        <span v-if="value.detail&&value.detail.format==='mobile'"
-              class="required-des">短信验证</span>
-        <el-switch class='switch'
-                   v-if="value.detail&&value.detail.format==='mobile'"
-                   v-model="value.verifiy"
-                   inactive-color="#DEE1FF"
-                   :width="32"
-                   active-color="#FFD021"></el-switch>
-        <div class="sort" v-if="value.detail.format!='mobile'">排序</div>
+        <div class="sort" v-if="value.detail.format!='phone'">排序</div>
         <div class="del"
              @click="remove">删除</div>
       </div>
@@ -98,6 +93,9 @@ export default {
     }
   },
   mounted () {
+    if (this.value.detail.format === 'phone') {
+      this.value._required = true
+    }
     if (this.value.verification === 'Y') {
       this.value.verifiy = true
     }
@@ -186,15 +184,15 @@ export default {
     }
     .index {
       float: left;
-      width: 32px;
       margin-top: 2px;
-      text-align: right;
-      .v-red {
-        display: inline-block;
-        color: #fc5659;
-        margin-right: 5px;
-        vertical-align: middle;
-      }
+      margin-right: 15px;
+      padding-left: 10px;
+    }
+    .v-red {
+      display: inline-block;
+      color: #fc5659;
+      margin-left: 5px;
+      vertical-align: middle;
     }
     .question-content {
       padding: 30px;
@@ -220,6 +218,23 @@ export default {
               display: none;
             }
           }
+        }
+      }
+      .v-tips {
+        display: inline-block;
+        margin-left: 8px;
+        i {
+          vertical-align: middle;
+          margin-right: 3px;
+          &:hover {
+            & + span {
+              display: inline-block;
+            }
+          }
+        }
+        span {
+          display: none;
+          color: #555;
         }
       }
       .q-operate {
