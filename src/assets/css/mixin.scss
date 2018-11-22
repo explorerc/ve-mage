@@ -128,5 +128,7 @@ button[disabled] {
     color:$color-font-sub;
     border-color:$color-font-sub;
   }
-
+ * {
+  cursor:not-allowed !important;
+ }
 }
