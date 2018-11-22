@@ -208,7 +208,8 @@
           describe: [
             { required: true, message: '群组描述不能为空', trigger: 'blur' }
           ]
-        }
+        },
+        timer: null
       }
     },
     watch: {
@@ -310,11 +311,10 @@
         // console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
       inpTitle (a) {
-        let timer
-        if (timer) return
-        timer = setTimeout(() => {
-          clearTimeout(timer)
-          timer = null
+        if (this.timer) return
+        this.timer = setTimeout(() => {
+          clearTimeout(this.timer)
+          this.timer = null
           a = a.target.value
           if (a) {
             let par = {
