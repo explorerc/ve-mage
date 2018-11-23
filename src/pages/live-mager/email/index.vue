@@ -2,7 +2,7 @@
   <div class="live-mager email-box">
     <div class="live-title">
       <span class="title">邮件邀约</span>
-      <com-back></com-back>
+      <com-back :class='"back-btn"'></com-back>
       <button class="primary-button fr"
               @click="addEmail">新建邮件</button>
       <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
@@ -287,7 +287,7 @@ export default {
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
-.back-btn-all {
+.back-btn {
   margin: 0 0 0 10px;
 }
 .email-table-box {
