@@ -50,6 +50,7 @@
           <!--</el-table-column>-->
           <el-table-column prop="title"
                            label="片段名"
+                          width="250"
                            show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="duration"

@@ -594,18 +594,26 @@ export function bars (id, data, gridData) {
  * @returns {Promise<Response>}
  */
 export function barAndLine (id, data, gridData) {
-  console.log(data)
   let legendData = []
   let seriesData = []
+  let colorsBar = {
+    'red_packet': '#FFD021',
+    'answer': '#63C8F5',
+    'recommend_card': '#FD9130',
+    'goods_recommend': '#AFADAE'
+  }
   data.list.forEach(item => {
     legendData.push(item.name)
     if (item.type === 'bar') {
       item.itemStyle = {
-        barBorderRadius: [5, 5, 0, 0]
+        barBorderRadius: [5, 5, 0, 0],
+        color: (params) => {
+          return colorsBar[params.data.type]
+        }
       }
     } else {
       item.lineStyle = {
-        color: 'red'
+        color: '#3C81FF'
       }
     }
     seriesData.push(item)
@@ -639,7 +647,7 @@ export function barAndLine (id, data, gridData) {
       }
     },
     legend: {
-      top: -5,
+      top: -16,
       right: 10,
       data: legendData
     },
