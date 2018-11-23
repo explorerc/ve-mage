@@ -174,6 +174,10 @@
         this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
           .then(res => {
             res.data.image = JSON.parse(res.data.image)
+            for (let i = 0; i <= 4 - res.data.image.length; i++) {
+              res.data.image.push({ errMsg: '' })
+            }
+            console.log(res.data.image)
             res.data.price = Number.parseInt(res.data.price)
             res.data.preferential = Number.parseInt(res.data.preferential);
 
