@@ -18,7 +18,7 @@
             {{content}}
           </div>
           <slot></slot>
-          <div class="ve-message-box__btns">
+          <div class="ve-message-box__btns" v-if="type!=='none'">
             <div v-if="!this.$slots.bottom">
               <button type="button" class="button--primary" :type="type" @click.prevent="handleClick(action.confirm)">
                 <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
@@ -76,7 +76,7 @@
         type: String,
         default: '300px'
       },
-      type: { // prompt , error
+      type: { // prompt , error， none
         type: String,
         default: ''
       }

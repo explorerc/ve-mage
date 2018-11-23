@@ -2,7 +2,6 @@
   <div class="data-container">
     <div class="data-header">
       <p class="title">{{activityInfo.title}}</p>
-      <com-back></com-back>
       <p class="detail">
         <span>开播时间：{{activityInfo.realStartTime||'0000-00-00'}}</span>
         <span>直播时长：{{activityInfo.liveTime|fmtTime}}</span>
@@ -98,14 +97,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
-.back-btn-all {
-  height: 30px;
-  line-height: 30px;
-  position: relative;
-  bottom: 13px;
-  margin: 0px 0px 0px 10px;
-}
 .data-container {
   margin: 40px auto;
   max-width: 1366px;
@@ -125,6 +116,9 @@
         margin-left: 10px;
       }
     }
+  }
+  .nav-menu-box{
+    text-align: right;
   }
 }
 .data-content {

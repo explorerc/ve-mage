@@ -1,6 +1,6 @@
 <template>
   <div class="q-edit-content">
-    <el-checkbox-group v-model="value.value"
+    <el-checkbox-group v-model="valArr"
                        @change="change">
       <el-checkbox v-for="(item,index) in value.detail.list"
                    class="q-select-item"
@@ -42,6 +42,7 @@ export default {
   },
   data () {
     return {
+      valArr: [],
       errorTip: ''
     }
   },
