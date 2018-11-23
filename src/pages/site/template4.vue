@@ -229,9 +229,19 @@ export default {
       position: relative;
       .block1-item {
         max-width: 1280px;
+        margin: 0;
+        margin-bottom: 10px;
         &.left {
           .content {
             padding-right: 510px;
+          }
+        }
+        &.right {
+          .img {
+            float: left;
+          }
+          .content {
+            padding-left: 510px;
           }
         }
         img {
