@@ -226,7 +226,7 @@ export default {
     }
   },
   mounted () {
-    this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`${this.mobileHost}site/${this.tid}`)}`
+    this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
     if (this.$route.path.indexOf('edit') === -1) {
       this.isPreview = true
     }
