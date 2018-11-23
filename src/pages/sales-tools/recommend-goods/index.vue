@@ -2,14 +2,13 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
-      <com-back></com-back>
+      <com-back class="back-btn"></com-back>
       <div v-if="tableData.length>=1">
-        <el-button @click="check" round :disabled="!isShowlive">查看活动数据</el-button>
-        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
+        <com-button @click="check" class="default-button" round :disabled="!isShowlive">查看活动数据</com-button>
+        <com-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
-        </el-button>
+        </com-button>
       </div>
-
     </header>
     <div class="table-box" v-if="tableData.length>=1">
       <table border="1">
@@ -193,6 +192,9 @@
         font-weight: 400;
         color: rgba(34, 34, 34, 1);
         line-height: 26px;
+      }
+      .back-btn{
+        margin-top: 0;
       }
     }
     .table-box {
