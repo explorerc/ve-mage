@@ -169,20 +169,25 @@
             this.quesData[idx]['detail']['list'].push({value: ''})
             this.quesData[idx]['title'] = '下拉选择'
             this.quesData[idx]['type'] = 'select'
+            this.quesData[idx]['placeholder'] = '请选择下拉选项'
             break
           case 'integer':
             this.quesData[idx]['detail']['format'] = 'integer'
             this.quesData[idx]['title'] = '数字'
+            this.quesData[idx]['placeholder'] = '请输入数字'
             break
           case 'email':
             this.quesData[idx]['detail']['format'] = 'email'
             this.quesData[idx]['title'] = '邮箱'
+            this.quesData[idx]['placeholder'] = '请输入邮箱'
             break
           case 'text':
             this.quesData[idx]['title'] = '文本'
+            this.quesData[idx]['placeholder'] = '请输入文本'
             break
           case 'name':
             this.quesData[idx]['title'] = '姓名'
+            this.quesData[idx]['placeholder'] = '请输入姓名'
             break
         }
       },

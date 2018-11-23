@@ -24,12 +24,12 @@
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
           <div class="block1-title" :class="{active:active===index}" @click="titleClick(index)">图组{{index+1}}<i @click.stop="removeClick(index)" class="del"></i><i class='el-submenu__icon-arrow el-icon-arrow-down arrow' ></i></div>
           <div class="block1-content" :class="{active:active===index}" >
-            <label class='normal' style="padding-top:0;" v-show='false'>对齐方式</label>
-            <div class='radio-box' v-show='false'>
-              <el-radio v-model="item.type" label="top">图片上</el-radio>
-              <el-radio v-model="item.type" label="bottom">图片下</el-radio>
+            <label class='normal' style="padding-top:0;" v-show='value.showDir'>对齐方式</label>
+            <div class='radio-box' v-show='value.showDir'>
+              <!-- <el-radio v-model="item.type" label="top">图片上</el-radio> -->
+              <!-- <el-radio v-model="item.type" label="bottom">图片下</el-radio> -->
               <el-radio v-model="item.type" label="right">图片右</el-radio>
-              <el-radio v-model="item.type" label="bottom">图片左</el-radio>
+              <el-radio v-model="item.type" label="left">图片左</el-radio>
             </div>
             <div class='img-upload-box'>
               <!-- <com-upload
@@ -140,6 +140,7 @@ export default {
         this.value.list.push({
           content: '',
           img: '',
+          type: 'right',
           btn: {
             enable: true,
             text: '',
@@ -313,6 +314,10 @@ export default {
         &:hover {
           background-image: url('~assets/image/site/del_hover.png');
         }
+      }
+      .radio-box {
+        text-align: left;
+        padding-top: 10px;
       }
     }
     .block1-title {
