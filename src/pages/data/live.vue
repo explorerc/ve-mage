@@ -624,19 +624,15 @@ export default {
     },
     goChatDataDetail () {
       this.chatDataDetail = true
-      this.loading = true
       this.$get(dataService.GET_LIVE_CHAT_LIST, {
         activityId: this.activityId,
         page: this.page,
         pageSize: this.pageSize
       }).then((res) => {
-        this.loading = false
         if (res.code === 200 && res.data.length !== 0) {
           this.chatDataList = res.data.list
           this.total = res.data.total
         }
-      }).catch(() => {
-        this.loading = false
       })
     },
     goPagerDataDetail () {
