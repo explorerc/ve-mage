@@ -292,7 +292,7 @@
       v-show="cardDataDetail"
       width="60%"
       type="none"
-      header="问卷数据详情"
+      header="卡片数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
