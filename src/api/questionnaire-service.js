@@ -10,5 +10,7 @@ export default {
   // 创建问卷
   POST_QUESTION_UPDATE: '/manage/naire/update',
   // 删除问卷
-  POST_QUESTION_DELETE: '/manage/naire/delete'
+  POST_QUESTION_DELETE: '/manage/naire/delete',
+  // 获取问卷详情
+  GET_ANSWER: '/manage/naire/get-answer'
 }
