@@ -762,26 +762,13 @@ export default {
         let chartDatas = null
         if (res.code === 200 && res.data.length !== 0) {
           res.data.xAxis = res.data.xAxis || ['']
-          res.data.interact = res.data.interact || [
-            {
-              'name': '红包',
-              'dataList': [0]
-            }, {
-              'name': '问卷',
-              'dataList': [0]
-            }, {
-              'name': '卡片',
-              'dataList': [0]
-            }, {
-              'name': '商品推荐',
-              'dataList': [0]
-            }
-          ]
-          let serveDatas = res.data.interact.map(item => {
-            item['type'] = 'bar'
-            item.data = item.dataList
-            delete item.dataList
-            return item
+          res.data.interact = res.data.interact || []
+          let serveDatas = []
+          serveDatas.push({
+            name: '',
+            type: 'bar',
+            barWidth: '40',
+            data: res.data.interact
           })
           serveDatas.push({
             name: res.data.viewer.name,
