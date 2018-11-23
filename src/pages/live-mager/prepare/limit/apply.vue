@@ -182,10 +182,12 @@
             this.quesData[idx]['placeholder'] = '请输入邮箱'
             break
           case 'text':
+            this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '文本'
             this.quesData[idx]['placeholder'] = '请输入文本'
             break
           case 'name':
+            this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '姓名'
             this.quesData[idx]['placeholder'] = '请输入姓名'
             break
@@ -340,7 +342,7 @@
             if (ref) {
               let obj = {
                 title: '手机号码',
-                placeholder: '',
+                placeholder: '请输入手机号码',
                 place: '请输入手机号码',
                 label: '手机号码',
                 type: 'text',
