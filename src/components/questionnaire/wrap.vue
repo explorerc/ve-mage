@@ -1,8 +1,7 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index"><span v-if="value._required"
-              class="v-red">*</span>{{index}}</div>
+      <div class="index">{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}<span v-if="value._required"
               class="v-red">*</span>
