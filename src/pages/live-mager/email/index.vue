@@ -3,7 +3,7 @@
     <div class="live-title">
       <span class="title">邮件邀约</span>
       <com-back :class='"back-btn"'></com-back>
-      <button class="primary-button fr"
+      <button class="default-button fr"
               @click="addEmail">新建邮件</button>
       <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
     </div>
