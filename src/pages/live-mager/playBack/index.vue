@@ -49,7 +49,8 @@
           <!--</div>-->
           <!--</el-table-column>-->
           <el-table-column prop="title"
-                           label="片段名">
+                           label="片段名"
+                           show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="duration"
                            label="时长">

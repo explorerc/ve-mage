@@ -328,12 +328,30 @@
       },
       back () {
         window.history.go(-1)
+      },
+      resetData () {
+        this.dateEmpty = false
+        this.outRange = false
+        this.showChooseTag = false
+        this.tagEmpty = false
+        this.activityId = ''
+        this.date = ''
+        this.successTxt = ''
+        this.titleEmpty = ''
+        this.uploadImgErrorMsg = ''
+        this.title = ''
+        this.editorContent = ''
+        this.poster = ''
+        this.tagArray = []
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
     beforeRouteLeave (to, from, next) {
       if (this.canPaas) {
         next(true)
+        if (!this.isNew) {
+          this.resetData()
+        }
         return false
       }
       this.$messageBox({
@@ -345,6 +363,9 @@
         handleClick: (e) => {
           if (e.action === 'confirm') {
             next(true)
+            if (!this.isNew) {
+              this.resetData()
+            }
           } else {
             next(false)
           }
