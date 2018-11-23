@@ -39,6 +39,8 @@ export default {
   GET_LIVE_TOOL: '/manage/data-center/s/tool',
   /* 直播数据--聊天--数据列表 */
   GET_LIVE_CHAT_LIST: '/manage/data-center/chat-list',
+  /* 直播数据--聊天--数据列表--导出 */
+  GET_LIVE_CHAT_LIST_EXPORT: '/manage/data-center/download-chat-list',
   /* 直播数据--红包--数据列表 */
   GET_LIVE_RED_BAG_LIST: '/initiator/tool/red-packet-list',
   /* 直播数据--红包--数据列表--下载 */
