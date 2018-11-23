@@ -170,7 +170,9 @@ export default {
         this.description = res.data.description
         this.dragData.forEach(item => {
           if (item.type === 'checkbox') {
-            item.answer = item.answer.join('、')
+            item.answer = item.answer.length > 0 ? item.answer.join('、') : '-'
+          } else {
+            item.answer = item.answer ? item.answer : '-'
           }
         })
         this.messageBoxViewShow = true
