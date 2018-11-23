@@ -669,7 +669,7 @@ export default {
     },
     goRedBagDataDetail () {
       this.redBagDataDetail = true
-      this.page = 0
+      this.page = 1
       this.pageSize = 20
       this.total = 0
       this.goRedBagDataList()
