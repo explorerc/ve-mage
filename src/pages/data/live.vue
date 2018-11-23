@@ -292,7 +292,7 @@
       v-show="cardDataDetail"
       width="60%"
       type="none"
-      header="问卷数据详情"
+      header="卡片数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
@@ -351,7 +351,7 @@
             <el-table-column prop="get_amount" label="领取金额"></el-table-column>
             <el-table-column label="领取明细" width="80">
               <template slot-scope="scope">
-                <span class="data-link" @click="downLoadExport(scope.row.red_packet_id)">下载</span>
+                <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
               </template>
             </el-table-column>
           </el-table>
