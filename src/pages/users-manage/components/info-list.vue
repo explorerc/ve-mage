@@ -108,7 +108,7 @@ export default {
       title: '',
       description: '',
       dragData: [],
-      messageBoxViewShow: true
+      messageBoxViewShow: false
     }
   },
   created () {
