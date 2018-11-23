@@ -12,15 +12,24 @@
                 个人信息
               </p>
               <ul>
-                <li :class="{disabled:!base.name}" @click="addQuestion('name')">姓名</li>
-                <li :class="{disabled:!base.phone}" @click="addQuestion('phone')">手机号</li>
-                <li :class="{disabled:!base.email}" @click="addQuestion('email')">邮箱</li>
-                <li :class="{disabled:!base.sex}" @click="addQuestion('sex')">性别</li>
-                <li :class="{disabled:!base.birth}" @click="addQuestion('birth')">生日</li>
-                <li :class="{disabled:!base.area}" @click="addQuestion('area')">地域</li>
-                <li :class="{disabled:!base.industry}" @click="addQuestion('industry')">行业</li>
-                <li :class="{disabled:!base.position}" @click="addQuestion('position')">职位</li>
-                <li :class="{disabled:!base.edu}" @click="addQuestion('edu')">教育水平</li>
+                <li :class="{disabled:!base.name}"
+                    @click="addQuestion('name')">姓名</li>
+                <li :class="{disabled:!base.phone}"
+                    @click="addQuestion('phone')">手机号</li>
+                <li :class="{disabled:!base.email}"
+                    @click="addQuestion('email')">邮箱</li>
+                <li :class="{disabled:!base.sex}"
+                    @click="addQuestion('sex')">性别</li>
+                <li :class="{disabled:!base.birth}"
+                    @click="addQuestion('birth')">生日</li>
+                <li :class="{disabled:!base.area}"
+                    @click="addQuestion('area')">地域</li>
+                <li :class="{disabled:!base.industry}"
+                    @click="addQuestion('industry')">行业</li>
+                <li :class="{disabled:!base.position}"
+                    @click="addQuestion('position')">职位</li>
+                <li :class="{disabled:!base.edu}"
+                    @click="addQuestion('edu')">教育水平</li>
               </ul>
             </div>
             <div class="v-selects">
@@ -45,14 +54,13 @@
                 </span>
                 问卷头图
               </span>
-              <ve-upload
-                    title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140"
-                    accept="png|jpg|jpeg|bmp"
-                    :fileSize="2048"
-                    :defaultImg="defaultImg"
-                    :errorMsg="error.uploadErrorMsg"
-                    @error="uploadError($event)"
-                    @success="uploadImgSuccess($event)">
+              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140"
+                         accept="png|jpg|jpeg|bmp"
+                         :fileSize="2048"
+                         :defaultImg="defaultImg"
+                         :errorMsg="error.uploadErrorMsg"
+                         @error="uploadError($event)"
+                         @success="uploadImgSuccess($event)">
               </ve-upload>
             </div>
             <div class="v-form">
@@ -63,11 +71,11 @@
                 问卷标题
               </span>
               <com-input placeholder="问卷标题"
-                     :max-length="30"
-                     class="q-title"
-                     :value.sync="title"
-                     :errorTips="error.titleError"
-                     @focus="focus('titleError')"></com-input>
+                         :max-length="30"
+                         class="q-title"
+                         :value.sync="title"
+                         :errorTips="error.titleError"
+                         @focus="focus('titleError')"></com-input>
             </div>
             <div class="v-form">
               <span class="v-title">
@@ -77,16 +85,17 @@
                 问卷简介
               </span>
               <com-input placeholder="问卷简介"
-                     :max-length="300"
-                     class="q-title"
-                     type="textarea"
-                     :value.sync="description"
-                     :errorTips="error.descriptionError"
-                     @focus="focus('descriptionError')"></com-input>
+                         :max-length="300"
+                         class="q-title"
+                         type="textarea"
+                         :value.sync="description"
+                         :errorTips="error.descriptionError"
+                         @focus="focus('descriptionError')"></com-input>
             </div>
           </div>
           <div class="rb">
-            <div class="v-question-info" :class="{hasPhone:hasPhone}">
+            <div class="v-question-info"
+                 :class="{hasPhone:hasPhone}">
               <draggable v-model="dragData"
                          :options="{handle:'.sort'}">
                 <com-question v-for="(item,index) in dragData"
@@ -106,7 +115,8 @@
                             :edit="true"
                             :ref="`comPhone`"
                             :index="dragData.length+1"
-                            :key="dragData.length+1" @remove="removePhone($event)">
+                            :key="dragData.length+1"
+                            @remove="removePhone($event)">
               </com-question>
             </div>
           </div>
@@ -114,10 +124,12 @@
       </div>
     </div>
     <div class="v-control clearfix">
-      <button class="v-save" @click="save">
+      <button class="v-save"
+              @click="save">
         保存
       </button>
-      <button class="v-view" @click="view">
+      <button class="v-view"
+              @click="view">
         预览
       </button>
     </div>
@@ -128,21 +140,25 @@
                  confirmText="确定"
                  type='prompt'
                  header='预览'>
-                <div class="box">
-                  <div class="text">预览</div>
-                </div>
-                <div class="v-content">
-                  <div class="v-hearder">
-                    <img v-if="defaultImg" :src="defaultImg" alt="">
-                    <p class="v-title">
-                      {{this.title}}
-                    </p>
-                    <p class="v-summary">
-                      {{this.description}}
-                    </p>
-                  </div>
-                  <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
-                </div>
+      <div class="box">
+        <div class="text">预览</div>
+      </div>
+      <div class="v-content">
+        <div class="v-hearder">
+          <img v-if="defaultImg"
+               :src="defaultImg"
+               alt="">
+          <p class="v-title">
+            {{this.title}}
+          </p>
+          <p class="v-summary">
+            {{this.description}}
+          </p>
+        </div>
+        <questions :dragData="dragData"
+                   :phoneData="phoneData"
+                   :isView="true"></questions>
+      </div>
     </message-box>
   </div>
 </template>
@@ -721,6 +737,7 @@ export default {
   margin: 0 auto;
   color: #222;
   position: relative;
+  height: 100%;
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -776,14 +793,14 @@ export default {
     }
   }
   .content {
-    widows: 800px;
-    min-height: 500px;
-    margin-bottom: 80px;
-    // overflow: hidden;
-    position: relative;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+    overflow: hidden;
     .tt {
-      overflow-y: hidden;
-      position: relative;
+      height: 100%;
     }
     .left {
       position: absolute;
@@ -826,11 +843,17 @@ export default {
       }
     }
     .right {
-      float: left;
-      padding-bottom: 2333px;
-      margin-bottom: -2333px;
-      width: 100%;
-      padding-left: 320px;
+      // float: left;
+      // padding-bottom: 2333px;
+      // margin-bottom: -2333px;
+      // width: 100%;
+      // padding-left: 320px;
+      position: absolute;
+      left: 320px;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      overflow: auto;
       .ru {
         border: 1px solid #e2e2e2;
         background-color: #fff;
