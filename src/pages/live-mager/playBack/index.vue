@@ -788,11 +788,6 @@
 </script>
 <style lang="scss" scoped src="../css/live.scss">
 </style>
-<style lang="scss">
-.list-box .el-table .cell {
-  overflow: visible;
-}
-</style>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .back-btn-all {
