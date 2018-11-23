@@ -24,7 +24,7 @@
         </thead>
         <draggable element="tbody" v-model="tableData" :options="{handle:'.item'}">
           <tr v-for="(row,ind) in tableData" :key="ind">
-            <td>{{row.number<10?`0${row.number}`:row.number}}</td>
+            <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
               <img :src="row.image ? `${$imgHost}/${row.image[0].name}` :require('assets/image/avatar@2x.png')" alt="">
             </td>
@@ -176,106 +176,106 @@
   }
 </script>
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
+  @import '~assets/css/mixin.scss';
 
-#goods-list {
-  font-family: PingFangSC-Regular;
-  padding: 40px 100px;
-  /deep/ {
-    header {
-      overflow: hidden;
-      text-align: right;
-      p {
-        float: left;
-        height: 26px;
-        font-size: 24px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 26px;
+  #goods-list {
+    font-family: PingFangSC-Regular;
+    padding: 40px 100px;
+    /deep/ {
+      header {
+        overflow: hidden;
+        text-align: right;
+        p {
+          float: left;
+          height: 26px;
+          font-size: 24px;
+          font-weight: 400;
+          color: rgba(34, 34, 34, 1);
+          line-height: 26px;
+        }
+        .back-btn {
+          margin-top: 0;
+        }
       }
-      .back-btn{
-        margin-top: 0;
-      }
-    }
-    .table-box {
-      margin-top: 22px;
-      padding: 30px;
-      border: 1px dashed #cccccc;
-      background-color: white;
-      table thead tr th,
-      table tbody tr td {
-        border-color: #ebeef5;
-        font-size: 14px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        border: none;
-        thead,
-        tbody {
-          height: 47px;
-          line-height: 47px;
-          th,
-          td {
-            color: #222222;
-            padding-left: 10px;
-            font-weight: 400;
-            &:nth-of-type(1) {
-              width: 5%;
-            }
-            &:nth-of-type(2) {
-              width: 10%;
-            }
-            &:nth-of-type(3) {
-              width: 20%;
-            }
-            &:nth-of-type(4),
-            &:nth-of-type(5) {
-              width: 15%;
-            }
-            &:nth-of-type(6) {
-              width: 25%;
-              span {
-                color: #2878ff;
+      .table-box {
+        margin-top: 22px;
+        padding: 30px;
+        border: 1px dashed #cccccc;
+        background-color: white;
+        table thead tr th,
+        table tbody tr td {
+          border-color: #ebeef5;
+          font-size: 14px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: none;
+          thead,
+          tbody {
+            height: 47px;
+            line-height: 47px;
+            th,
+            td {
+              color: #222222;
+              padding-left: 10px;
+              font-weight: 400;
+              &:nth-of-type(1) {
+                width: 5%;
+              }
+              &:nth-of-type(2) {
+                width: 10%;
+              }
+              &:nth-of-type(3) {
+                width: 20%;
+              }
+              &:nth-of-type(4),
+              &:nth-of-type(5) {
+                width: 15%;
+              }
+              &:nth-of-type(6) {
+                width: 25%;
+                span {
+                  color: #2878ff;
+                }
+              }
+              img {
+                width: 60px;
+                height: 60px;
+                margin: 10px auto 10px 0;
+                vertical-align: middle;
               }
             }
-            img {
-              width: 60px;
-              height: 60px;
-              margin: 10px auto 10px 0;
-              vertical-align: middle;
+            td.dis-prices {
+              color: #fc5659;
             }
-          }
-          td.dis-prices {
-            color: #fc5659;
-          }
-          tr:hover {
-            background-color: #f5f7fa;
+            tr:hover {
+              background-color: #f5f7fa;
+            }
           }
         }
       }
-    }
 
-    .no-goods {
-      text-align: center;
-      img {
-        width: 180px;
-        height: 180px;
-        margin: 84px auto 40px auto;
-      }
-      p:nth-of-type(1) {
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 22px;
-      }
-      p:nth-of-type(2) {
-        font-size: 14px;
-        font-weight: 400;
-        color: rgba(85, 85, 85, 1);
-        margin: 10px auto 30px auto;
+      .no-goods {
+        text-align: center;
+        img {
+          width: 180px;
+          height: 180px;
+          margin: 84px auto 40px auto;
+        }
+        p:nth-of-type(1) {
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(34, 34, 34, 1);
+          line-height: 22px;
+        }
+        p:nth-of-type(2) {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(85, 85, 85, 1);
+          margin: 10px auto 30px auto;
+        }
       }
     }
   }
-}
 </style>
