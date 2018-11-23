@@ -351,7 +351,7 @@
             <el-table-column prop="get_amount" label="领取金额"></el-table-column>
             <el-table-column label="领取明细" width="80">
               <template slot-scope="scope">
-                <span class="data-link" @click="downLoadExport(scope.row.red_packet_id)">下载</span>
+                <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
               </template>
             </el-table-column>
           </el-table>
