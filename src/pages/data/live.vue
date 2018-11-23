@@ -606,7 +606,7 @@ export default {
               xAxisData: this.watcherLineData.live.xAxis,
               datas: [
                 { name: '浏览次数', data: this.watcherLineData.live.pv },
-                { name: '独立访客', data: this.watcherLineData.live.uv }
+                { name: '浏览人数', data: this.watcherLineData.live.uv }
               ]
             })
           })
@@ -706,8 +706,7 @@ export default {
         xAxisData: this.watcherLineData[typeAttr].xAxis,
         datas: [
           { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-          { name: '独立访问', data: this.watcherLineData[typeAttr].uv },
-          { name: 'IP', data: this.watcherLineData[typeAttr].ip }
+          { name: '浏览人数', data: this.watcherLineData[typeAttr].uv }
         ]
       })
     },
