@@ -73,9 +73,13 @@
                    :shareData='share'></component>
         <div v-if="platform==='H5'"
              class="h5-wrap">
-          <iframe :src="`${this.mobileHost}site/${this.tid}`"
+             <div class="qrcode-box">
+              <img :src="qrcodeImg" class='qrcode' >
+              <p>请扫码预览</p>
+             </div>
+          <!-- <iframe :src="`${this.mobileHost}site/${this.tid}`"
                   frameborder="0"
-                  class="h5-preview"></iframe>
+                  class="h5-preview"></iframe> -->
         </div>
       </div>
       <div class="template-content"
@@ -217,10 +221,12 @@ export default {
       platform: 'PC',
       changed: undefined,
       hasData: false,
-      isFirst: false
+      isFirst: false,
+      qrcodeImg: ''
     }
   },
   mounted () {
+    this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`${this.mobileHost}site/${this.tid}`)}`
     if (this.$route.path.indexOf('edit') === -1) {
       this.isPreview = true
     }
@@ -699,6 +705,14 @@ export default {
       margin-top: 64px;
       padding-top: 76px;
       padding-left: 3px;
+      .qrcode-box {
+        width: 200px;
+        margin: 210px auto;
+        text-align: center;
+        p {
+          color: #888;
+        }
+      }
     }
     .h5-preview {
       width: 375px;
