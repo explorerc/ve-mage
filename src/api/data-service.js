@@ -42,7 +42,7 @@ export default {
   /* 直播数据--红包--数据列表 */
   GET_LIVE_RED_BAG_LIST: '/initiator/tool/red-packet-list',
   /* 直播数据--红包--数据列表--下载 */
-  GET_LIVE_RED_BAG_LIST_EXOPORT: '/initiator/tool/red-packet-stat',
+  GET_LIVE_RED_BAG_LIST_EXOPORT: '/initiator/tool/red-packet-down-records',
   /* 观众画像--地域占比 */
   GET_VIEWER_REGION: '/manage/data-center/s/viewer-region',
   /* 观众画像--基础数据 */
