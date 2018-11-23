@@ -43,7 +43,7 @@
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}}
+                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -340,6 +340,7 @@ export default {
           temArray.push({
             name: item.tag_name,
             id: item.tag_id,
+            count: item.user_count,
             isChecked: false
           })
         })
@@ -693,7 +694,7 @@ export default {
 }
 .live-mager .mager-box .from-box {
   margin: 40px 0 0 0;
-  height: 600px;
+  min-height: 600px;
 }
 </style>
 

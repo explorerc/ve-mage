@@ -1,6 +1,6 @@
 <template>
   <div id="goods-info">
-    <header>新建/编辑商品信息</header>
+    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息</header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
@@ -14,7 +14,6 @@
           <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
-
       </el-form-item>
       <el-form-item label="优惠价格：" prop="preferential">
         <div class="a_unit">
@@ -35,8 +34,6 @@
                        @success="uploadImgSuccess"></ve-upload>
           </template>
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
-          <span style="color: #cccccc;font-size: 40px" class="el-icon-circle-plus-outline" @click="add_upload"
-                v-if="goodsData.imageList.length<4"></span>
         </div>
       </el-form-item>
       <el-form-item label="商品链接：" prop="url">
@@ -141,7 +138,7 @@
           price: '', // 价格
           preferential: '', // 优惠价格
           url: '', // 商品链接
-          imageList: [{ errMsg: '' }],
+          imageList: [{ errMsg: '' }, { errMsg: '' }, { errMsg: '' }, { errMsg: '' }],
           describe: '', // 商品描述
           tao: ''
         },
@@ -176,6 +173,10 @@
         this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
           .then(res => {
             res.data.image = JSON.parse(res.data.image)
+            for (let i = 0; i <= 4 - res.data.image.length; i++) {
+              res.data.image.push({ errMsg: '' })
+            }
+            console.log(res.data.image)
             res.data.price = Number.parseInt(res.data.price)
             res.data.preferential = Number.parseInt(res.data.preferential);
 
@@ -206,9 +207,13 @@
                 this.goodsData.goods_id = this.$route.params.id
                 _url = goodsServer.UPDATE_GOODS
               }
-              this.goodsData.image = JSON.stringify(this.goodsData.imageList)
+              let imgList = this.goodsData.imageList.filter((ite, ind) => {
+                if (ite.name) {
+                  return ite
+                }
+              })
+              this.goodsData.image = JSON.stringify(imgList)
               delete this.goodsData.imageList
-              console.log(_url)
               this.$post(_url, this.goodsData)
                 .then(res => {
                   this.$toast({
@@ -228,8 +233,19 @@
         }, 400)
       },
       resetForm (formName) {
-        this.$refs[formName].resetFields()
-        this.$router.go(-1)
+        this.$messageBox({
+          header: '',
+          content: '是否放弃当前编辑内容',
+          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+              this.$refs[formName].resetFields()
+              this.$router.go(-1)
+            }
+          }
+        })
       },
       uploadImgSuccess (data) {
         this.goodsData.imageList[data.nowIndex].name = data.name
@@ -238,6 +254,23 @@
         item.errMsg = data.msg
         // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
       }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否确认离开？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
     }
   }
 </script>

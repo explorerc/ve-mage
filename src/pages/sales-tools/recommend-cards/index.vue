@@ -2,6 +2,7 @@
   <div class='wrap-page card-list-page'>
     <div class="page-title">
       <span class="title">推荐卡片</span>
+      <com-back></com-back>
       <div class="top-bar clearfix" v-if="tableData.length>0">
         <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
         <el-button class='btn more' round><router-link :to="`/data/live/${activityId}`">查看活动数据</router-link></el-button>
@@ -42,7 +43,7 @@
         <div class="empty-box">
           <p class="img"></p>
           <p class='title'>推荐卡片</p>
-          <p class='desc'>自定卡片内容进行引流，<br>推送二维码、店铺链接、微信公众号、图片海报等内容</p>
+          <p class='desc'>自定卡片内容进行引流<br>推送二维码、店铺链接、微信公众号、图片海报等内容</p>
           <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='primary-button'>创建卡片</el-button></router-link>
         </div>
       </template>
@@ -108,6 +109,14 @@
 <style lang='scss' scope>
 @import '~assets/css/mixin.scss';
 @import './common.scss';
+.back-btn-all {
+  float: right;
+  margin: 14px 0px 14px 10px !important;
+  padding: 0;
+  width: 100px;
+  height: 34px;
+  line-height: 34px;
+}
 .card-list-page {
   .el-table thead {
     height: 36px;

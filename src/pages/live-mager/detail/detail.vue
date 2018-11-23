@@ -158,7 +158,7 @@
           <!-- <span>直播</span> -->
           <ol>
             <li @click="linkTo($event,'/salesTools/questionnaire/list/')">问卷</li>
-            <li>红包雨</li>
+            <li @click="redBagTips=true">红包雨</li>
             <li @click="linkTo($event,'/salesTools/recommendGoodsList/')">商品推荐</li>
             <li @click="linkTo($event,'/salesTools/recommendCards/')">推荐卡片</li>
           </ol>
@@ -509,7 +509,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item redpack'>
+          <div class='item redpack' @click="redBagTips=true">
             <div class="card">
               <div class='pic'>
               </div>
@@ -657,6 +657,14 @@
       <p>您设置的时间为:</p>
       <p>{{startTime}}</p>
     </message-box>
+    <!-- 红包雨tip提示 -->
+    <message-box v-if="redBagTips" @handleClick="redBagTips=false">
+      <div slot="msgBox" class="red-bag-tip">
+        <div class="red-bag-header"></div>
+        <div class="red-bag-content">红包雨为活动发起者在直播中推送的功能，无需在控制台设置。通过红包雨功能，活动主办方可以通过设置红包数量和金额，并设置参与条件，向达成参与条件的观众发放红包。</div>
+        <button type="button" class="primary-button" style="padding: 0 60px;margin: 10px 0 30px 0;" @click="redBagTips=false">知道了</button>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -691,6 +699,7 @@ export default {
       inCountdown: false,
       isAppoint: false,
       overdue: false,
+      redBagTips: false,
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
@@ -1103,6 +1112,22 @@ export default {
         color: $color-error;
         font-size: 20px;
       }
+    }
+  }
+  .red-bag-tip{
+    width: 450px;
+    background-color: #fff;
+    .red-bag-header{
+      height: 160px;
+      background-image: url("../../../assets/image/red-bag-header.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .red-bag-content{
+      padding: 20px;
+      text-align: left;
+      font-size: 14px;
+      line-height: 20px;
     }
   }
 }

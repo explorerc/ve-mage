@@ -6,6 +6,7 @@
                  inactive-color="#DEE1FF"
                  active-color="#4B5AFE" @change='openSwitch'>
       </el-switch>
+      <com-back></com-back>
       <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
       <!--<button class="primary-button fr" @click="goBack">返回</button>-->
     </div>
@@ -393,11 +394,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  .bottom-btn {
-    text-align: center;
-    button {
-      width: 200px;
-      margin: 60px auto 50px auto;
-    }
+.bottom-btn {
+  text-align: center;
+  button {
+    width: 200px;
+    margin: 60px auto 50px auto;
   }
+}
 </style>

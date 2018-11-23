@@ -1,7 +1,7 @@
 <template>
-  <div class="site-container">
-    <div class="group">
-      <div class="title">活动官网
+  <div class="live-mager">
+    <div class="live-title">
+      <span class="title">活动官网</span>
         <el-switch v-model="enable"
                    inactive-color="#DEE1FF"
                    :width="32"
@@ -9,78 +9,82 @@
                    active-color="#FFD021"
                    @change="confirmState">
         </el-switch>
+      <com-back></com-back>
         <!-- <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span> -->
-      </div>
     </div>
-    <div class="switch-cover " :class='{"close":!enable}'>
-      <div class="group">
-        <div class="fwn">我的模板</div>
-        <div class="group-content">
-          <div class="template-block clearfix"
-              style=""
-              v-if="this.data.tid">
-            <img :src="this[`t${data.tid}`]">
-            <div class="option-wrap">
-              <div class="option-group">
-                <a @click="goEdit">编辑</a>
-                <a @click="goPreview">预览</a>
+    <div class="mager-box border-box">
+      <div class="from-box">
+        <div class="switch-cover " :class='{"close":!enable}'>
+          <div class="group">
+            <div class="fwn">我的模板</div>
+            <div class="group-content">
+              <div class="template-block clearfix"
+                  style=""
+                  v-if="this.data.tid">
+                <img :src="this[`t${data.tid}`]">
+                <div class="option-wrap">
+                  <div class="option-group">
+                    <a @click="goEdit">编辑</a>
+                    <a @click="goPreview">预览</a>
+                  </div>
+                </div>
+                <span class='tpl-name'
+                      v-html="this.data.tplName"></span>
+              </div>
+              <div v-else class='empty'>
+                暂未选择
               </div>
             </div>
-            <span class='tpl-name'
-                  v-html="this.data.tplName"></span>
           </div>
-          <div v-else class='empty'>
-            暂未选择
-          </div>
-        </div>
-      </div>
-      <div class="group">
-        <div class="fwn fwn2">模板库</div>
-        <div class="group-content fs0">
-          <div class="template-block clearfix">
-            <img :src="t0478320"
-                alt="">
-            <div class="option-wrap">
-              <div class="option-group">
-                <a @click="useTemplate('template1')">使用模板</a>
-                <a @click="showPreview('0478320')">预览</a>
+          <div class="group">
+            <div class="fwn fwn2">模板库</div>
+            <div class="group-content fs0">
+              <div class="template-block clearfix">
+                <img :src="t0478320"
+                    alt="">
+                <div class="option-wrap">
+                  <div class="option-group">
+                    <a @click="useTemplate('template1')">使用模板</a>
+                    <a @click="showPreview('0478320')">预览</a>
+                  </div>
+                </div>
+                <span class='tpl-name'
+                      v-html="tplData['template1']()['tplName']"></span>
+              </div>
+              <div class="template-block clearfix">
+                <img :src="t0478321">
+                <div class="option-wrap">
+                  <div class="option-group">
+                    <a @click="useTemplate('template2')">使用模板</a>
+                    <a @click="showPreview('0478321')">预览</a>
+                  </div>
+                </div>
+                <span class='tpl-name'
+                      v-html="tplData['template2']()['tplName']"></span>
+              </div>
+              <div class="template-block clearfix">
+                <img :src="t0478322" >
+                <div class="option-wrap">
+                  <div class="option-group">
+                    <a @click="useTemplate('template3')">使用模板</a>
+                    <a @click="showPreview('0478322')">预览</a>
+                  </div>
+                </div>
+                <span class='tpl-name'
+                      v-html="tplData['template3']()['tplName']"></span>
+              </div>
+              <div class="template-block clearfix">
+                <img :src="t0478323">
+                <div class="option-wrap">
+                  <div class="option-group">
+                    <a @click="useTemplate('template4')">使用模板</a>
+                    <a @click="showPreview('0478323')">预览</a>
+                  </div>
+                </div>
+                <span class='tpl-name'
+                      v-html="tplData['template4']()['tplName']"></span>
               </div>
             </div>
-            <span class='tpl-name'
-                  v-html="tplData['template1']()['tplName']"></span>
-          </div>
-          <div class="template-block clearfix">
-            <img :src="t0478321">
-            <div class="option-wrap">
-              <div class="option-group">
-                <a @click="useTemplate('template2')">使用模板</a>
-                <a @click="showPreview('0478321')">预览</a>
-              </div>
-            </div>
-            <span class='tpl-name'
-                  v-html="tplData['template2']()['tplName']"></span>
-          </div>
-          <div class="template-block clearfix">
-            <img :src="t0478322" >
-            <div class="option-wrap">
-              <div class="option-group">
-                <a @click="useTemplate('template3')">使用模板</a>
-                <a @click="showPreview('0478322')">预览</a>
-              </div>
-            </div>
-            <span class='tpl-name'
-                  v-html="tplData['template3']()['tplName']"></span>
-          </div>
-          <div class="template-block clearfix">
-            <img :src="t0478323">
-            <div class="option-wrap">
-              <div class="option-group">
-                <a @click="useTemplate('template4')">使用模板</a>
-                <a @click="showPreview('0478323')">预览</a>
-              </div>
-            </div>
-            <span class='tpl-name'
-                  v-html="tplData['template4']()['tplName']"></span>
           </div>
         </div>
       </div>
@@ -142,7 +146,7 @@ export default {
       }
     },
     confirmState (res) {
-      this.switchDisabled = true
+      // this.switchDisabled = true
       if (this.isPublish && !res) {
         this.$messageBox({
           header: '提示',
@@ -223,11 +227,54 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.site-container {
-  padding-top: 56px;
-  padding-left: 100px;
+@import 'assets/css/mixin.scss';
+.live-mager {
+  border-radius: 5px;
+  overflow: hidden;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  width: 1366px;
+  min-width: 1019px;
+  color: #222;
+  // transition: width .2s;
+
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+
+  .live-title {
+    border-bottom: 1px solid $color-bd;
+    line-height: 60px;
+
+    span.title {
+      display: inline-block;
+      font-size: 24px;
+      padding-right: 10px;
+    }
+
+    .live-btn {
+      position: relative;
+      top: 5px;
+    }
+  }
+
+  .border-box {
+    border: solid 1px $color-bd;
+    background-color: #fff;
+    border-radius: 4px;
+    margin-top: -2px;
+  }
+}
+.live-mager {
   .switch-cover {
     position: relative;
+    z-index: 199;
     &.close::before {
       content: '';
       width: 100%;
@@ -238,11 +285,12 @@ export default {
       bottom: 0;
       right: 0;
       background: rgba($color: #fff, $alpha: 0.7);
-      z-index: 9999;
+      z-index: 199;
       cursor: not-allowed;
     }
   }
   .group {
+    padding:0 50px;
     .title {
       font-size: 24px;
       & > span {

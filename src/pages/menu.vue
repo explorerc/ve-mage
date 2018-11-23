@@ -81,7 +81,7 @@
           <el-menu-item index="/setAccount">账户信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu> -->
-      <el-submenu index="2">
+     <!-- <el-submenu index="2">
         <template slot="title">
           <i class="menu-icon icon_marketing"></i>
           <span>营销管理</span>
@@ -91,7 +91,7 @@
           <el-menu-item index="/5">用户池</el-menu-item>
           <el-menu-item index="/6">用户群组</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
+      </el-submenu>-->
       <el-submenu index="3">
         <template slot="title">
           <i class="menu-icon icon_crm"></i>

@@ -97,35 +97,31 @@
 </script>
 
 <style lang="scss" scoped>
-  .data-container {
-    margin: 40px auto;
-    max-width: 1366px;
-    min-width: 1109px;
-    color: #222;
-    /* 设备宽度大于 1600 */
-    @media all and (min-width: 1600px) {
-      width: 1366px;
-    }
-    .data-header {
-      .nav-menu-box {
-        float: right;
-        margin-top: -16px;
+.data-container {
+  margin: 40px auto;
+  max-width: 1366px;
+  color: #222;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  .title {
+    font-size: 24px;
+    line-height: 40px;
+  }
+  .detail {
+    font-size: 14px;
+    span {
+      &:last-child {
+        margin-left: 10px;
       }
-      .title {
-        font-size: 24px;
-        line-height: 40px;
-      }
-      .detail {
-        font-size: 14px;
-        span {
-          &:last-child {
-            margin-left: 10px;
-          }
-        }
-      }
-    }
-    .data-content {
-      margin-top: 20px;
     }
   }
+  .nav-menu-box{
+    text-align: right;
+  }
+}
+.data-content {
+  margin-top: 20px;
+}
 </style>

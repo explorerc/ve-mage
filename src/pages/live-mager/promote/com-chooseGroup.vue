@@ -58,7 +58,7 @@
                     @click.stop="clickRowTag(idx)"
                     :class="{active:tag.isChecked}"
                     :key="tag.id">
-                  {{tag.name}}
+                  {{tag.name}} ({{tag.count}}人）
                   <el-checkbox v-model="tag.isChecked"
                                 class="fr"
                                 small></el-checkbox>
@@ -183,6 +183,7 @@ export default {
         this.$emit('selectedGroupListfn', this.selectedGroupList, this.selectedGroupListStr, this.groupArr.toString())
         console.log(this.groupArr)
         if (this.groupArr.length === 0) {
+          this.selectedCount = 0
           this.$emit('totalCount', 0)
           return false
         }
@@ -200,7 +201,7 @@ export default {
         newArray.forEach((item, idx) => {
           if (!item.isChecked) return
           temArray.push(item)
-          listStr += `${item.name}、`
+          listStr += `${item.name} (${item.count}人）、`
           temArr.push(item.id)
         })
         this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
@@ -209,6 +210,7 @@ export default {
         this.$emit('selectedTagListfn', this.selectedTagList, this.selectedTagListStr, this.tagArr.toString())
         console.log(this.tagArr)
         if (this.tagArr.length === 0) {
+          this.selectedCount = 0
           this.$emit('totalCount', 0)
           return false
         }

@@ -2,6 +2,7 @@
   <div class="clearfix set-live-guided-container">
     <p class="v-title">
       直播引导页
+      <com-back></com-back>
     </p>
     <div class="v-content">
       <div class="v-set clearfix">
