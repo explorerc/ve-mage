@@ -3,7 +3,7 @@
     <ul>
       <li v-for="(item,index) in dragData" :key="item.id">
         <p class="v-question-title">
-          <span class="v-index">{{index}}</span>{{item.title}}<span class="v-red" v-if="item.required === 'Y'">*</span>
+          <span class="v-index">{{index+1}}</span>{{item.title}}<span class="v-red" v-if="item.required === 'Y'">*</span>
         </p>
         <p class="v-content">
           {{item.answer}}
