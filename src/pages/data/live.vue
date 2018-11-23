@@ -821,19 +821,21 @@ export default {
       this.cardDataDetail = false
       this.redBagDataDetail = false
       this.goodsDataDetail = false
-      this.$nextTick(() => {
-        this.preDataList = []
-        this.chatDataList = []
-        this.prizeDataList = []
-        this.pagerDataList = []
-        this.answerDataList = []
-        this.cardDataList = []
-        this.goodsDataList = []
-        this.redBagDataList = []
-        this.page = 1
-        this.pageSize = 10
-        this.total = 0
-      })
+      setTimeout(() => {
+        this.$nextTick(() => {
+          this.preDataList = []
+          this.chatDataList = []
+          this.prizeDataList = []
+          this.pagerDataList = []
+          this.answerDataList = []
+          this.cardDataList = []
+          this.goodsDataList = []
+          this.redBagDataList = []
+          this.page = 1
+          this.pageSize = 10
+          this.total = 0
+        })
+      }, 1000)
     },
     download (par) {
       switch (par.type) {
