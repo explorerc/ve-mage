@@ -1,6 +1,6 @@
 <template>
   <div id="goods-info">
-    <header>新建/编辑商品信息</header>
+    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息</header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
@@ -14,7 +14,6 @@
           <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
-
       </el-form-item>
       <el-form-item label="优惠价格：" prop="preferential">
         <div class="a_unit">
@@ -255,6 +254,23 @@
         item.errMsg = data.msg
         // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
       }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否确认离开？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
     }
   }
 </script>
