@@ -4,10 +4,10 @@
          style="margin-top: 30px;">
       <span class="title">活动回放</span>
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
-      <com-back></com-back>
+      <com-back :class='"back-btn"'></com-back>
       <button class="primary-button fr"
               style="margin-top: 10px;"
-              @click="addVideoClickShow">添加视频
+              @click="addVideoClickShow" v-if="playBackList.length">添加视频
       </button>
     </div>
     <transition name="fade">
@@ -29,99 +29,111 @@
       </div>
     </transition>
     <div class="list-box">
-      <div class="list-header">
-        <nav class="table-nav">
-          <span :class="{active:navIdx===0}"
-                @click="changeNav(0)">回放片段</span>
-          <span :class="{active:navIdx===1}"
-                @click="changeNav(1)">视频</span>
-        </nav>
-        <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
-      </div>
-      <div class="table-list-box">
-        <el-table :data="playBackList"
-                  style="width: 100%">
-          <!--<el-table-column-->
-          <!--label="缩略图">-->
-          <!--<div slot-scope="scope" class="play-back-cover">-->
-          <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
-          <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
-          <!--</div>-->
-          <!--</el-table-column>-->
-          <el-table-column prop="title"
-                           label="片段名"
-                           show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column prop="duration"
-                           label="时长">
-            <template slot-scope="scope">
-              {{scope.row.duration | formatTime}}
-            </template>
-          </el-table-column>
-          <el-table-column label="生成时间">
-            <template slot-scope="scope">
-              {{scope.row.generateTime | isEmpty}}
-            </template>
-          </el-table-column>
-          <el-table-column label="回放状态">
-            <template slot-scope="scope">
-              <span class="status-success"
-                    v-if="scope.row.status=='SUCCESS'">生成成功</span>
-              <span class="status-error"
-                    v-else-if="scope.row.status=='FAIL'">生成失败</span>
-              <span class="status-default"
-                    v-else>生成中</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <div v-if="scope.row.status=='FAIL'">
-                <el-button type="text"
-                           size="small"
-                           @click.stop="resetMakePlayBack(scope.$index)">重新生成回放
-                </el-button>
-              </div>
-              <div v-else-if="scope.row.status!=='PROCESS'">
-                <el-button type="text"
-                           size="small"
-                           v-if="playBackList[scope.$index].replayId == playBack.replayId"
-                           @click.stop="cancelPlayBack(scope.$index)">取消默认回放
-                </el-button>
-                <el-button type="text"
-                           size="small"
-                           v-else
-                           @click.stop="playBackSetting(scope.$index)">设为默认回放
-                </el-button>
-                <el-button type="text"
-                           size="small"
-                           style="color: blue;"
-                           @click.stop="handlerMore(scope.$index, 1)">预览
-                </el-button>
-                <div class="more">
-                  <span>更多</span>
-                  <div class="more-menu">
-                    <span @click="handlerMore(scope.$index, 0)"
-                          :class="{disabled:playBackList[scope.$index].type=='LINK'}">下载</span>
-                    <!--<span @click="handlerMore(scope.$index, 1)">预览</span>-->
-                    <span @click="handlerMore(scope.$index, 2)">重命名</span>
-                    <span @click="handlerMore(scope.$index, 3)">删除</span>
+      <template v-if="playBackList.length">
+        <div class="list-header">
+          <nav class="table-nav">
+            <span :class="{active:navIdx===0}"
+                  @click="changeNav(0)">回放片段</span>
+            <span :class="{active:navIdx===1}"
+                  @click="changeNav(1)">视频</span>
+          </nav>
+          <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
+        </div>
+        <div class="table-list-box">
+          <el-table :data="playBackList"
+                    style="width: 100%">
+            <!--<el-table-column-->
+            <!--label="缩略图">-->
+            <!--<div slot-scope="scope" class="play-back-cover">-->
+            <!--<span class="play-back-default" v-if="playBackList[scope.$index].replayId == playBack.replayId">回放</span>-->
+            <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
+            <!--</div>-->
+            <!--</el-table-column>-->
+            <el-table-column label="片段名"
+                            width="250">
+              <template slot-scope="scope">
+                <span class="overflow-hide" :title="scope.row.title">{{scope.row.title}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="duration"
+                            label="时长">
+              <template slot-scope="scope">
+                {{scope.row.duration | formatTime}}
+              </template>
+            </el-table-column>
+            <el-table-column label="生成时间">
+              <template slot-scope="scope">
+                {{scope.row.generateTime | isEmpty}}
+              </template>
+            </el-table-column>
+            <el-table-column label="回放状态">
+              <template slot-scope="scope">
+                <span class="status-success"
+                      v-if="scope.row.status=='SUCCESS'">生成成功</span>
+                <span class="status-error"
+                      v-else-if="scope.row.status=='FAIL'">生成失败</span>
+                <span class="status-default"
+                      v-else>生成中</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <div v-if="scope.row.status=='FAIL'">
+                  <el-button type="text"
+                            size="small"
+                            @click.stop="resetMakePlayBack(scope.$index)">重新生成回放
+                  </el-button>
+                </div>
+                <div v-else-if="scope.row.status!=='PROCESS'">
+                  <el-button type="text"
+                            size="small"
+                            v-if="playBackList[scope.$index].replayId == playBack.replayId"
+                            @click.stop="cancelPlayBack(scope.$index)">取消默认回放
+                  </el-button>
+                  <el-button type="text"
+                            size="small"
+                            v-else
+                            @click.stop="playBackSetting(scope.$index)">设为默认回放
+                  </el-button>
+                  <el-button type="text"
+                            size="small"
+                            style="color: blue;"
+                            @click.stop="handlerMore(scope.$index, 1)">预览
+                  </el-button>
+                  <div class="more">
+                    <span>更多</span>
+                    <div class="more-menu">
+                      <span @click="handlerMore(scope.$index, 0)"
+                            :class="{disabled:playBackList[scope.$index].type=='LINK'}">下载</span>
+                      <!--<span @click="handlerMore(scope.$index, 1)">预览</span>-->
+                      <span @click="handlerMore(scope.$index, 2)">重命名</span>
+                      <span @click="handlerMore(scope.$index, 3)">删除</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <span v-else>--</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="pagination-box"
-             v-if="total>pageSize">
-          <div class="page-pagination">
-            <ve-pagination :total="total"
-                           :pageSize="pageSize"
-                           :currentPage="page"
-                           @changePage="changePage"/>
+                <span v-else>--</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination-box"
+              v-if="total>pageSize">
+            <div class="page-pagination">
+              <ve-pagination :total="total"
+                            :pageSize="pageSize"
+                            :currentPage="page"
+                            @changePage="changePage"/>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div class="empty-box">
+          <p class="img"></p>
+          <p class='title'>您还没有添加回放视频，快去添加吧</p>
+          <!-- <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p> -->
+          <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
+        </div>
+      </template>
     </div>
     <!-- 重命名 -->
     <message-box v-show="renameShow"
@@ -788,14 +800,23 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-.list-box .el-table .cell {
-  overflow: visible;
-}
+  .list-box  {
+    .el-table .cell{
+      overflow: visible;
+    }
+    .overflow-hide{
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 </style>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
-.back-btn-all {
-  margin-top: 10px;
+.back-btn {
+  margin-top: 10px !important;
 }
 .status-default {
   color: $color-blue;
@@ -847,6 +868,47 @@
   border-radius: 4px;
   .list-header {
     border-bottom: solid 1px $color-bd;
+  }
+  .empty-box {
+    text-align: center;
+    color: $color-font-sub;
+    min-height: 400px;
+    padding: 100px 0;
+    .img {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto;
+      border-radius: 500px;
+      // background:rgba(245,245,245,1);
+      box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
+      background: url('~assets/image/play_empty.png') no-repeat;
+      background-size: contain;
+    }
+    .title {
+      font-size: 18px;
+      color: $color-font;
+      padding-top: 13px;
+    }
+    .desc {
+      display: block;
+      width: 340px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    a {
+      display: block;
+      &:hover .el-button {
+        color: $color-font;
+      }
+    }
+    .el-button {
+      padding: 0;
+      width: 220px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      margin-top: 20px;
+    }
   }
 }
 

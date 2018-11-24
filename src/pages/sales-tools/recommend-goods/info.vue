@@ -77,9 +77,6 @@
     },
     data () {
       let valiName = (rule, value, callback) => {
-        // console.log(rule)
-        // console.log(value)
-
         if (this.timerVail) return
         this.timerVail = setTimeout(() => {
           clearTimeout(this.timerVail)
@@ -103,15 +100,19 @@
         }, 500)
       }
       let valicxjg = (rule, value, callback) => {
-        let maxV = this[rule.obj].price
-        if (value && value < 0) {
-          return callback(new Error('商品促销价格不能小于0'))
-        } else if (value && maxV && value >= maxV) {
-          return callback(new Error('商品促销价格不能大于原始价格'))
-        } else if (value && !maxV) {
-          return callback(new Error('请先填写原始价格'))
+        if (typeof value === 'number') {
+          let maxV = this[rule.obj].price
+          if (value && value < 0) {
+            return callback(new Error('商品促销价格不能小于0'))
+          } else if (value && maxV && value >= maxV) {
+            return callback(new Error('优惠价格需小于原始价格'))
+          } else if (value && !maxV) {
+            return callback(new Error('请先填写原始价格'))
+          } else {
+            return callback()
+          }
         } else {
-          return callback()
+          return callback(new Error('请输入优惠价格'))
         }
       }
       let valiUpload = (rule, value, callback) => {
@@ -174,10 +175,10 @@
         this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
           .then(res => {
             res.data.image = JSON.parse(res.data.image)
-            for (let i = 0; i <= 4 - res.data.image.length; i++) {
+            let imgLen = res.data.image.length
+            for (let i = 0; i < 4 - imgLen; i++) {
               res.data.image.push({ errMsg: '' })
             }
-            console.log(res.data.image)
             res.data.price = Number.parseInt(res.data.price)
             res.data.preferential = Number.parseInt(res.data.preferential);
 
@@ -191,7 +192,6 @@
               tao: this.goodsData.tao
             } = res.data)
           })
-        console.log(this.goodsData)
       },
       onSubmit (formName) {
         if (this.timer) return

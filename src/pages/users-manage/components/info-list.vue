@@ -27,7 +27,7 @@
             {{itemData.event === 'APPLY_ACTIVITY' ? '报名':'问卷'}}
           </div>
           <div class="v-activity-content v-operation">
-            <a :href="PUBLIC_PATH+'subscribe/'+itemData.behavior_id">查看</a>
+            <a href="javascript:;" @click="getQuestionDetial(itemData.activity_id,itemData.data.question_id,itemData.data.answer_id)">查看</a>
           </div>
         </li>
       </template>
@@ -60,14 +60,38 @@
                        @changePage="changePage" />
       </div>
     </div>
+    <message-box v-show="messageBoxViewShow"
+                 @handleClick="messageBoxClick"
+                 width="590px"
+                 class="message-box v-question-box"
+                 confirmText="确定"
+                 type='prompt'
+                 :header='boxTitle'>
+      <div class="v-content">
+        <img v-if="defaultImg"
+             :src="defaultImg"
+             alt="">
+        <p class="v-title">
+          {{this.title}}
+        </p>
+        <p class="v-summary">
+          {{this.description}}
+        </p>
+        <div class="v-hr"></div>
+        <questions-detail :dragData="dragData"></questions-detail>
+      </div>
+    </message-box>
   </div>
 </template>
 <script>
 // import { MessageBox } from 'components/common/message-box'
 import VePagination from 'src/components/ve-pagination'
 import userService from 'src/api/user-service'
+import questionsDetail from './question-detail'
+import questionService from 'src/api/questionnaire-service'
 export default {
-  components: { VePagination },
+  components: { VePagination,
+    questionsDetail },
   data () {
     return {
       tableList: [],
@@ -78,13 +102,22 @@ export default {
         page_size: 9
       },
       total: 0,
-      pageSize: 9
+      pageSize: 9,
+      imgUrl: '',
+      boxTitle: '',
+      title: '',
+      description: '',
+      dragData: [],
+      messageBoxViewShow: false
     }
   },
   created () {
     this.getDataList()
   },
   computed: {
+    defaultImg () {
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+    }
   },
   watch: {
   },
@@ -119,26 +152,36 @@ export default {
           })
         }
       })
-      // this.$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
-      //   res.data.list.map((item, indx) => {
-      //     if (item.imgUrl) {
-      //       item.imgUrl = this.$imgHost + '/' + item.imgUrl
-      //     } else {
-      //       item.imgUrl = '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
-      //     }
-      //     return item
-      //   })
-      //   res.data.list.forEach(element => {
-      //     this.tableList.push(element)
-      //   })
-      //   this.total = res.data.total
-      //   this.searchParams.page = parseInt(res.data.currPage) + 1
-      //   this.searchParams.totalPage = res.data.totalPage
-      // })
     },
     changePage (currentPage) {
       this.searchParams.page = currentPage
       this.getDataList()
+    },
+    getQuestionDetial (activityId, naireId, answerId) {
+      this.dragData = []
+      this.$get(questionService.GET_ANSWER, {
+        activityId: activityId,
+        naireId: naireId,
+        answerId: answerId
+      }).then((res) => {
+        this.dragData = res.data.detail
+        this.title = res.data.title
+        this.imgUrl = res.data.imgUrl
+        this.description = res.data.description
+        this.dragData.forEach(item => {
+          if (item.type === 'checkbox') {
+            item.answer = item.answer.length > 0 ? item.answer.join('、') : '-'
+          } else {
+            item.answer = item.answer ? item.answer : '-'
+          }
+        })
+        this.messageBoxViewShow = true
+      })
+    },
+    messageBoxClick (e) {
+      if (e.action === 'cancel') {
+        this.messageBoxViewShow = false
+      }
     }
   }
 }
@@ -217,6 +260,67 @@ export default {
     width: 100%;
     margin-top: 20px;
     overflow: hidden;
+  }
+  .v-question-box {
+    .ve-message-box__btns {
+      display: none;
+    }
+    .ve-message-box__container {
+      overflow-y: auto;
+    }
+    .v-content {
+      max-height: 500px;
+      img {
+        display: block;
+        margin: 30px auto 40px;
+        max-width: 450px;
+        max-height: 70px;
+      }
+      .v-title {
+        font-size: 30px;
+        text-align: center;
+      }
+      .v-summary {
+        font-size: 16px;
+        color: #555;
+        text-align: center;
+        margin-top: 30px;
+      }
+      .v-hr {
+        width: 100%;
+        height: 1px;
+        background-color: #ffd021;
+        margin: 30px auto 0;
+      }
+      ul {
+        margin-top: 35px;
+        li {
+          position: relative;
+        }
+        .v-question-title {
+          font-weight: bold;
+          word-break: break-all;
+          padding-left: 26px;
+          .v-index {
+            position: absolute;
+            top: 2px;
+            left: 0;
+            width: 26px;
+            text-align: left;
+            display: inline-block;
+          }
+          .v-red {
+            color: #fc5659;
+            margin-left: 10px;
+          }
+        }
+        .v-content {
+          word-break: break-all;
+          margin: 10px auto 20px;
+          padding-left: 26px;
+        }
+      }
+    }
   }
 }
 </style>

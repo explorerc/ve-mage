@@ -3,54 +3,63 @@
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
         <span class="title">短信通知</span>
-        <com-back></com-back>
-        <div class="right-box">
+        <com-back :class='"back-btn"'></com-back>
+        <div class="right-box" v-if="tableData.length">
           <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信</button></router-link>
         </div>
       </div>
       <div class="content table">
-        <el-table :data="tableData" stripe style="width: 100%">
-          <el-table-column prop='title' label="短信标题" width="300">
-          </el-table-column>
-          <el-table-column prop="time" label="发送时间" width="180">
-          </el-table-column>
-          <el-table-column prop="sendCount" label="发送数量" width="150">
-          </el-table-column>
-          <!-- <el-table-column label="观众分组" width="200" prop='groupId'>
-          </el-table-column> -->
-          <el-table-column label="状态" width="180" prop="status">
-            <template slot-scope="scope">
-            <span v-if="scope.row.status === 'AWAIT'" class='await'>等待发送</span>
-            <span v-if="scope.row.status === 'SEND'" class='send'>已发送</span>
-            <span v-if="scope.row.status === 'DRAFT'" class='draft'>草稿</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="操作">
-            <template slot-scope="scope">
-              <div class="tool-box">
-                <span><router-link :to="{ name:'msgOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
-                <span v-if='type === "PREPARE" && scope.row.status !== "SEND"' @click="del(scope.row.inviteId,scope.$index)">删除</span>
-                <!-- <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
-                              <div class="tool" v-if='moreIdx == scope.$index ? true : false'>
-                                <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
-                                <span @click="del(scope.$index,tableData)">删除</span>
-                              </div> -->
+        <template v-if="tableData.length">
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop='title' label="短信标题" width="300">
+            </el-table-column>
+            <el-table-column prop="time" label="发送时间" width="180">
+            </el-table-column>
+            <el-table-column prop="sendCount" label="发送数量" width="150">
+            </el-table-column>
+            <!-- <el-table-column label="观众分组" width="200" prop='groupId'>
+            </el-table-column> -->
+            <el-table-column label="状态" width="180" prop="status">
+              <template slot-scope="scope">
+              <span v-if="scope.row.status === 'AWAIT'" class='await'>等待发送</span>
+              <span v-if="scope.row.status === 'SEND'" class='send'>已发送</span>
+              <span v-if="scope.row.status === 'DRAFT'" class='draft'>草稿</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作">
+              <template slot-scope="scope">
+                <div class="tool-box">
+                  <span><router-link :to="{ name:'msgOverview', query:{ id : scope.row.inviteId}}">查看</router-link></span>
+                  <span v-if='type === "PREPARE" && scope.row.status !== "SEND"' @click="del(scope.row.inviteId,scope.$index)">删除</span>
+                  <!-- <span class='more' @click="showMore(scope.$index,tableData)">更多</span>
+                                <div class="tool" v-if='moreIdx == scope.$index ? true : false'>
+                                  <span @click="switchAutosend(scope.$index,tableData)">{{scope.row.autoSend === true ? '开启' : '关闭'}}自动发送</span>
+                                  <span @click="del(scope.$index,tableData)">删除</span>
+                                </div> -->
+                </div>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="form-row">
+              <div class="pagination-box">
+                <div class="page-pagination">
+                    <ve-pagination
+                      :total="total"
+                      :pageSize="queryData.pageSize"
+                      :currentPage="currPage"
+                      @changePage="currentChange"/>
+                </div>
               </div>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="form-row">
-            <div class="pagination-box">
-              <div class="page-pagination">
-                  <ve-pagination
-                    :total="total"
-                    :pageSize="queryData.pageSize"
-                    :currentPage="currPage"
-                    @changePage="currentChange"/>
-              </div>
-            </div>
-        </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <div class="img"></div>
+            <div class="txt">您还没有添加短信通知，快去添加吧</div>
+            <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建短信</el-button></router-link>
+          </div>
+        </template>
       </div>
     </div>
     <!-- 删除确认 -->
@@ -217,7 +226,7 @@
 </style>
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
-.back-btn-all {
+.back-btn {
   margin: 10px 0 10px 10px;
 }
 .live-title {
@@ -304,6 +313,30 @@
     }
     span.send {
       color: $color-blue;
+    }
+    .empty {
+      text-align: center;
+      margin: 100px 0;
+      .txt {
+        padding-top: 20px;
+        font-size: 16px;
+        color: $color-font;
+      }
+      .img {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+        background: url('~assets/image/msg_empty.png') no-repeat center;
+        background-size: contain;
+      }
+      .el-button {
+        padding: 0;
+        width: 220px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        margin-top: 20px;
+      }
     }
   }
   .pagination-box {
