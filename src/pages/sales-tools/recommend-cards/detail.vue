@@ -162,7 +162,8 @@
         })
       },
       verify () {
-        const reg = new RegExp('^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$') // eslint-disable-line
+        // const reg = new RegExp(/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/) // eslint-disable-line
+        const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
         this.title.length ? this.titleError = '' : this.titleError = '请输入卡片名称'
         this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
         if (this.btnSwitch) {
