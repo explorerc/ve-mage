@@ -77,9 +77,6 @@
     },
     data () {
       let valiName = (rule, value, callback) => {
-        // console.log(rule)
-        // console.log(value)
-
         if (this.timerVail) return
         this.timerVail = setTimeout(() => {
           clearTimeout(this.timerVail)
@@ -103,15 +100,19 @@
         }, 500)
       }
       let valicxjg = (rule, value, callback) => {
-        let maxV = this[rule.obj].price
-        if (value && value < 0) {
-          return callback(new Error('商品促销价格不能小于0'))
-        } else if (value && maxV && value >= maxV) {
-          return callback(new Error('商品促销价格不能大于原始价格'))
-        } else if (value && !maxV) {
-          return callback(new Error('请先填写原始价格'))
+        if (value instanceof Number) {
+          let maxV = this[rule.obj].price
+          if (value && value < 0) {
+            return callback(new Error('商品促销价格不能小于0'))
+          } else if (value && maxV && value >= maxV) {
+            return callback(new Error('商品促销价格不能大于原始价格'))
+          } else if (value && !maxV) {
+            return callback(new Error('请先填写原始价格'))
+          } else {
+            return callback()
+          }
         } else {
-          return callback()
+          return callback(new Error('请输入优惠价格'))
         }
       }
       let valiUpload = (rule, value, callback) => {
