@@ -19,7 +19,7 @@
               问卷名称
             </td>
             <td>
-              问卷数量
+              问题数量
             </td>
             <td>
               是否推送
@@ -173,6 +173,7 @@ export default {
       }
     },
     view (naireId) {
+      this.dragData = []
       this.$post(questionService.GET_QUESTION, {
         activityId: this.activityId,
         naireId: naireId
@@ -201,7 +202,7 @@ export default {
       this.$messageBox({
         header: '提示',
         width: '450px',
-        content: '是否删除问卷',
+        content: '删除问卷将同时删除所有答卷，是否确认删除',
         cancelText: '取消', // 不传递cancelText将只有一个确定按钮
         type: 'error',
         confirmText: '确定',
@@ -214,12 +215,32 @@ export default {
       })
     },
     del (itemData) {
-      this.$post(questionService.POST_QUESTION_DELETE, {
+      this.$config({ handlers: true }).$post(questionService.POST_QUESTION_DELETE, {
         activityId: this.activityId,
         naireId: itemData.naireId
       }).then((res) => {
         let index = this.tableData.indexOf(itemData)
         this.tableData.splice(index, 1)
+      }).catch(err => {
+        if (err.code === 15105) {
+          this.$messageBox({
+            header: '提示',
+            content: '问卷推送中，暂时无法删除，请活动结束后重试',
+            autoClose: 10,
+            confirmText: '知道了',
+            handleClick: (e) => {
+            }
+          })
+        } else {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            autoClose: 10,
+            confirmText: '知道了',
+            handleClick: (e) => {
+            }
+          })
+        }
       })
     },
     messageBoxClick (e) {
