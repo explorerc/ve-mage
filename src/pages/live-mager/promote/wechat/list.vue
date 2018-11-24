@@ -4,11 +4,12 @@
       <div class="live-title">
         <span class="title">微信通知</span>
         <com-back :class='"back-btn"'></com-back>
-        <div class="right-box">
+        <div class="right-box" v-if="tableData.length">
           <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信</button></router-link>
         </div>
       </div>
       <div class="content table">
+        <template v-if="tableData.length">
         <el-table :data="tableData" stripe style="width: 100%">
           <el-table-column prop='title' label="微信标题" width="300">
           </el-table-column>
@@ -51,6 +52,14 @@
               </div>
             </div>
         </div>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <div class="img"></div>
+            <div class="txt">您还没有添加微信通知，快去添加吧</div>
+            <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信</el-button></router-link>
+          </div>
+        </template>
       </div>
     </div>
     <!-- 删除确认 -->
@@ -293,6 +302,30 @@
     }
     span.send {
       color: $color-blue;
+    }
+    .empty {
+      text-align: center;
+      margin: 100px 0;
+      .txt {
+        padding-top: 20px;
+        font-size: 16px;
+        color: $color-font;
+      }
+      .img {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+        background: url('~assets/image/wechat_empty.png') no-repeat center;
+        background-size: contain;
+      }
+      .el-button {
+        padding: 0;
+        width: 220px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        margin-top: 20px;
+      }
     }
   }
   .pagination-box {

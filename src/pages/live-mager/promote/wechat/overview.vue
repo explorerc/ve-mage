@@ -137,9 +137,7 @@ export default {
     },
     // 查询群组
     async queryGroupList (keyword) {
-      await this.$get(userManage.GET_GROUP_LIST, {
-        type: '2'
-      }).then((res) => {
+      await this.$get(userManage.GET_GROUP_LIST).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({

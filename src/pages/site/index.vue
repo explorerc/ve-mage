@@ -32,7 +32,8 @@
                       v-html="this.data.tplName"></span>
               </div>
               <div v-else class='empty'>
-                暂未选择
+                <div class="img"></div>
+                <div class="txt">您还没有创建官网样式，请从模板库中选择并创建个性化官网</div>
               </div>
             </div>
           </div>
@@ -290,7 +291,7 @@ export default {
     }
   }
   .group {
-    padding:0 50px;
+    padding: 0 50px;
     .title {
       font-size: 24px;
       & > span {
@@ -401,10 +402,21 @@ export default {
       display: inline-block;
       width: 225px;
       height: 280px;
-      line-height: 280px;
       text-align: center;
+      padding: 20px;
       border: 1px dashed #dadada;
-      color: #555;
+      .img {
+        width: 180px;
+        height: 180px;
+        background: url('~assets/image/site/site_empty.png') no-repeat center;
+        background-size: contain;
+        margin: 0 auto;
+      }
+      .txt {
+        padding-top: 20px;
+        font-size: 12px;
+        color: #555;
+      }
     }
   }
 }
