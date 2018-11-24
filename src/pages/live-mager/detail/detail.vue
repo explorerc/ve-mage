@@ -758,7 +758,7 @@ export default {
             this.hostOnline = data.data.hostOnline
             if (this.hostOnline) {
               this.$toast({
-                content: '主持人已进入直播前台，无法再次进入',
+                content: '暂不支持这种方式发起直播',
                 position: 'center'
               })
               return false

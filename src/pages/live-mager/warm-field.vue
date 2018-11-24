@@ -4,6 +4,7 @@
       <span class="title">暖场设置</span>
       <el-switch v-model="isSwitch"
                  inactive-color="#DEE1FF"
+                 :disabled="isSwitchDisabled"
                  active-color="#4B5AFE" @change='openSwitch'>
       </el-switch>
       <com-back></com-back>
@@ -69,7 +70,7 @@
 
   export default {
     name: 'warm-field',
-    components: { VeUploadImage, VeUploadVideo },
+    components: {VeUploadImage, VeUploadVideo},
     data () {
       return {
         warm: {
@@ -97,6 +98,7 @@
           linkVideo: '' // 外链视频
         },
         isSwitch: false,
+        isSwitchDisabled: false,
         loading: false,
         isDisabled: false,
         percentVideo: 0, // 上传进度
@@ -370,12 +372,21 @@
           submodule: 'WARMUP',
           enabled: type ? 'Y' : 'N'
         }
-        this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.isSwitchDisabled = true
+        this.$config({handlers: true}).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           this.$toast({
-            content: '设置成功'
+            content: '设置成功',
+            position: 'center'
           })
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isSwitchDisabled = false
+          }, 3000)
         }).catch((res) => {
-          console.log(res)
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isSwitchDisabled = false
+          }, 3000)
           if (res.code === 60706) {
             this.isSwitch = !type
             this.$messageBox({
@@ -394,11 +405,11 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-.bottom-btn {
-  text-align: center;
-  button {
-    width: 200px;
-    margin: 60px auto 50px auto;
+  .bottom-btn {
+    text-align: center;
+    button {
+      width: 200px;
+      margin: 60px auto 50px auto;
+    }
   }
-}
 </style>
