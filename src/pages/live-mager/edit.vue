@@ -5,7 +5,8 @@
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
-        <com-back></com-back>
+        <com-back :url="`/liveMager/detail/${activityId}`" v-if="activityId"></com-back>
+        <com-back :url="`/liveMager/list`" v-else></com-back>
       </div>
       <div class="tips">
         <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播

@@ -758,7 +758,7 @@ export default {
             this.hostOnline = data.data.hostOnline
             if (this.hostOnline) {
               this.$toast({
-                content: '主持人已进入直播前台，无法再次进入',
+                content: '暂不支持这种方式发起直播',
                 position: 'center'
               })
               return false
@@ -1423,10 +1423,10 @@ export default {
                 background-image: url('~assets/image/detail/icon-guide.png');
               }
               &:hover i.icon-site {
-                background-image: url('~assets/image/detail/icon-site-hover.png');
+                background-image: url('~assets/image/detail/icon-guide-hover.png');
               }
               &:hover i.icon-guide {
-                background-image: url('~assets/image/detail/icon-guide-hover.png');
+                background-image: url('~assets/image/detail/icon-site-hover.png');
               }
             }
           }

@@ -2,6 +2,8 @@
   <div class="v-questionaire" @mousedown="canPaas = false">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
+      <!-- <com-back :class='"back-btn"'></com-back> -->
+      <button class="v-back" @click="back">返回</button>
     </div>
     <div class="content from-box">
       <div class="tt">
@@ -295,6 +297,10 @@ export default {
           })(item)
         })
       })
+    },
+    back () {
+      // window.history.go(-1)
+      this.$router.push(`/salesTools/questionnaire/list/${this.activityId}`)
     },
     removeQuestion (options) {
       if (options.type === 'phone') {
@@ -821,6 +827,48 @@ export default {
     span.title {
       display: inline-block;
       font-size: 24px;
+    }
+    button {
+      float: right;
+      width: 120px;
+      height: 40px;
+      border: 1px solid #4b5afe;
+      line-height: 38px;
+      border-radius: 20px;
+      background-color: #fff;
+      font-size: 14px;
+      color: #4b5afe;
+      text-align: center;
+      margin-top: 10px;
+      &.v-save {
+        border-color: #ffd021;
+        background-color: #ffd021;
+        color: #222;
+        margin: 10px 30px 0 10px;
+      }
+      &.v-back {
+        cursor: pointer;
+        width: auto;
+        background-color: transparent;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 20px;
+        border: none;
+        padding: 0 30px;
+        font-size: 14px;
+        color: #888888;
+        border: 1px solid #888888;
+      }
+      &:hover {
+        background-color: #fdd43f;
+        border-color: #fdd43f;
+        color: #222;
+      }
+      &:active {
+        background-color: #eec11a;
+        border-color: #eec11a;
+        color: #222;
+      }
     }
   }
   .content {

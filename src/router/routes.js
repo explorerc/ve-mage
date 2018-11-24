@@ -256,6 +256,11 @@ export default [{
     component: msgOverview
   },
   {
+    path: '/liveMager/promote/wechat/overview/:id',
+    name: 'wechatOverview',
+    component: wechatOverview
+  },
+  {
     path: '/liveMager/promote/wechat/edit/:id',
     name: 'wechatEdit',
     component: wechatCreate
@@ -267,7 +272,7 @@ export default [{
   },
   {
     path: '/liveMager/promote/msg/edit/:id',
-    name: 'msgEdit',
+    name: 'msgCreate',
     component: msgCreate
   },
   {
@@ -431,16 +436,6 @@ export default [{
   meta: {
     noAuth: true
   }
-},
-{
-  path: '/liveMager/promote/wechat/overview/:id',
-  name: 'wechatOverview',
-  component: wechatOverview
-},
-{
-  path: '/liveMager/promote/msg/create/:id',
-  name: 'msgCreate',
-  component: msgCreate
 },
 {
   path: '/salesTools/recommendCardsDetails/:id',

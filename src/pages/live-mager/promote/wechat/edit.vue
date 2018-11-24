@@ -1,8 +1,9 @@
 <template>
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
-    <div class="edit-wx-page live-mager" @mousedown="canPass = false">
+    <div class="edit-wx-page live-mager" @keydown="canPass = false">
       <div class="live-title">
         <span class="title">创建微信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box ">
