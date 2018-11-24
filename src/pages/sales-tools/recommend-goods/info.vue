@@ -100,12 +100,12 @@
         }, 500)
       }
       let valicxjg = (rule, value, callback) => {
-        if (value instanceof Number) {
+        if (typeof value === 'number') {
           let maxV = this[rule.obj].price
           if (value && value < 0) {
             return callback(new Error('商品促销价格不能小于0'))
           } else if (value && maxV && value >= maxV) {
-            return callback(new Error('商品促销价格不能大于原始价格'))
+            return callback(new Error('优惠价格需小于原始价格'))
           } else if (value && !maxV) {
             return callback(new Error('请先填写原始价格'))
           } else {
