@@ -70,7 +70,7 @@
     },
     methods: {
       getList () {
-        this.$config({loading: true}).$get(cardService.GET_CARDS_LIST, {
+        this.$get(cardService.GET_CARDS_LIST, {
           activity_id: this.activityId
         }).then((res) => {
           this.notFirst = true

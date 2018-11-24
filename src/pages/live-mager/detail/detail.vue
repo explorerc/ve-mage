@@ -1102,6 +1102,9 @@ export default {
       ol {
         margin-top: 20px;
       }
+      .title {
+        width: 370px;
+      }
     }
   }
   .in-countdown {
@@ -1114,16 +1117,16 @@ export default {
       }
     }
   }
-  .red-bag-tip{
+  .red-bag-tip {
     width: 450px;
     background-color: #fff;
-    .red-bag-header{
+    .red-bag-header {
       height: 160px;
-      background-image: url("../../../assets/image/red-bag-header.png");
+      background-image: url('../../../assets/image/red-bag-header.png');
       background-repeat: no-repeat;
       background-size: cover;
     }
-    .red-bag-content{
+    .red-bag-content {
       padding: 20px;
       text-align: left;
       font-size: 14px;
@@ -1334,12 +1337,14 @@ export default {
   float: left;
   width: 640px;
   p {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
   .title {
     font-size: 22px;
     color: $color-font;
     margin-right: 8px;
+    word-break: break-all;
+    width: 610px;
     .id-tag {
       padding: 2px 12px;
       color: $color-font-sub;
@@ -1377,6 +1382,7 @@ export default {
     }
     &.tool {
       position: relative;
+      padding-top: 20px;
       .link-box {
         padding: 20px 0px;
         position: relative;

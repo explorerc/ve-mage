@@ -4,74 +4,86 @@
       <span class="title">问卷</span>
     </div>
     <div class="v-tbns clearfix">
-      <com-back></com-back>
-      <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
-      <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
+      <com-back :class='"back-btn"'></com-back>
+      <template  v-if="tableData.length">
+        <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
+        <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
 
-      </a> -->
-      <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}`">查看数据</router-link>
+        </a> -->
+        <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}`">查看数据</router-link>
+      </template>
     </div>
     <div class="v-table">
-      <table>
-        <thead>
-          <tr>
-            <td>
-              问卷名称
-            </td>
-            <td>
-              问卷数量
-            </td>
-            <td>
-              是否推送
-            </td>
-            <td>
-              修改时间
-            </td>
-            <td>
-              操作
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-if="tableData.length>0">
-            <tr v-for="itemData in tableData" :key="itemData.naireId">
+      <template v-if="tableData.length">
+        <table>
+          <thead>
+            <tr>
               <td>
-                {{itemData.title}}
+                问卷名称
               </td>
               <td>
-                {{itemData.questionNum}}
+                问卷数量
               </td>
               <td>
-                {{itemData.publish === 'Y' ? '是':'否'}}
+                是否推送
               </td>
               <td>
-                {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
+                修改时间
               </td>
               <td>
-                <a href="javascript:;" @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
-                <a href="javascript:;" @click="view(itemData.naireId)">预览</a><span>|</span>
-                <a href="javascript:;" class="v-del" @click="confirmDel(itemData)">删除</a>
+                操作
               </td>
             </tr>
-          </template>
-          <template v-else>
-            <tr class="v-nodata">
-              <td colspan="5">
-                暂无数据
-              </td>
-            </tr>
-          </template>
-        </tbody>
-      </table>
-      <div class="pagination-box">
-        <div class="page-pagination"
-             v-if="total>pageSize">
-          <ve-pagination :total="total"
-                         :pageSize="pageSize"
-                         :currentPage="searchParams.page"
-                         @changePage="changePage" />
+          </thead>
+          <tbody>
+            <template v-if="tableData.length>0">
+              <tr v-for="itemData in tableData" :key="itemData.naireId">
+                <td>
+                  {{itemData.title}}
+                </td>
+                <td>
+                  {{itemData.questionNum}}
+                </td>
+                <td>
+                  {{itemData.publish === 'Y' ? '是':'否'}}
+                </td>
+                <td>
+                  {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
+                </td>
+                <td>
+                  <a href="javascript:;" @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
+                  <a href="javascript:;" @click="view(itemData.naireId)">预览</a><span>|</span>
+                  <a href="javascript:;" class="v-del" @click="confirmDel(itemData)">删除</a>
+                </td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr class="v-nodata">
+                <td colspan="5">
+                  暂无数据
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+        <div class="pagination-box">
+          <div class="page-pagination"
+              v-if="total>pageSize">
+            <ve-pagination :total="total"
+                          :pageSize="pageSize"
+                          :currentPage="searchParams.page"
+                          @changePage="changePage" />
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div class="empty-box">
+          <p class="img"></p>
+          <p class='title'>问卷</p>
+          <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p>
+          <router-link :to="{ name: 'questionnaire', params: { activityId: activityId }}"><el-button class='primary-button'>新建问卷</el-button></router-link>
+        </div>
+      </template>
     </div>
     <message-box v-if="messageBoxViewShow"
        @handleClick="messageBoxClick"
@@ -232,8 +244,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
-.back-btn-all {
-  margin: 10px 0px 10px 10px;
+.back-btn {
+  margin: 10px 0px 10px 10px !important;
 }
 .v-list /deep/ {
   overflow: hidden;
@@ -339,6 +351,47 @@ export default {
             }
           }
         }
+      }
+    }
+    .empty-box {
+      text-align: center;
+      color: $color-font-sub;
+      min-height: 400px;
+      padding: 100px 0;
+      .img {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+        border-radius: 500px;
+        // background:rgba(245,245,245,1);
+        box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
+        background: url('~assets/image/ques_empty.png') no-repeat;
+        background-size: contain;
+      }
+      .title {
+        font-size: 18px;
+        color: $color-font;
+        padding-top: 13px;
+      }
+      .desc {
+        display: block;
+        width: 340px;
+        margin: 0 auto;
+        padding: 20px 0;
+      }
+      a {
+        display: block;
+        &:hover .el-button {
+          color: $color-font;
+        }
+      }
+      .el-button {
+        padding: 0;
+        width: 220px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        margin-top: 20px;
       }
     }
   }
