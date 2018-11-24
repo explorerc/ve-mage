@@ -4,7 +4,7 @@
       <span class="title">问卷</span>
     </div>
     <div class="v-tbns clearfix">
-      <com-back :class='"back-btn"'></com-back>
+      <com-back :class='"back-btn"' :url="`/liveMager/detail/${activityId}`"></com-back>
       <template  v-if="tableData.length">
         <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
         <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">

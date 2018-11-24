@@ -514,6 +514,15 @@ export default {
     }
   },
   mounted () {
+    // 滚动到推广
+    if (window.location.href.search('tools') > -1) {
+      let timer = setInterval(() => {
+        document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
+        if (document.querySelector('.main-container').scrollTop >= 1355) {
+          clearInterval(timer)
+        }
+      }, 10)
+    }
     this.activityId = this.$route.params.id
     this.$nextTick(() => {
       this.initPage()

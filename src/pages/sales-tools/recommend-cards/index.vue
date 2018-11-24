@@ -2,10 +2,10 @@
   <div class='wrap-page card-list-page'>
     <div class="page-title">
       <span class="title">推荐卡片</span>
-      <com-back></com-back>
+      <com-back :url="`/liveMager/detail/${activityId}`"></com-back>
       <div class="top-bar clearfix" v-if="tableData.length>0">
         <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
-        <el-button class='btn more' round><router-link :to="`/data/live/${activityId}`">查看活动数据</router-link></el-button>
+        <el-button class='btn more' round><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
       </div>
     </div>
     <div class="content from-box">
