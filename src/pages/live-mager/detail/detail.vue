@@ -1344,8 +1344,9 @@ export default {
     color: $color-font;
     margin-right: 8px;
     word-break: break-all;
-    width: 610px;
+    width: 650px;
     .id-tag {
+      display: inline-block;
       padding: 2px 12px;
       color: $color-font-sub;
       font-size: 14px;
@@ -1362,6 +1363,7 @@ export default {
         background-size: contain;
         position: absolute;
         top: 0px;
+        right:9px;
         &:hover {
           background-image: url('~assets/image/detail/roomid_hover.png');
         }
