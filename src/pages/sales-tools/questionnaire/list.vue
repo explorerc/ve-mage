@@ -10,7 +10,7 @@
         <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
 
         </a> -->
-        <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}`">查看数据</router-link>
+        <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}#questions`">查看数据</router-link>
       </template>
     </div>
     <div class="v-table">
