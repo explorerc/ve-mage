@@ -428,8 +428,8 @@ export default {
             margin: 5px 0 0 149px;
           }
           .v-cutdown-content {
-            width: 260px;
-            margin: 10px 0 0 107px;
+            width: 285px;
+            margin: 10px 0 0 98px;
             .v-red {
               color: #fc5659;
               font-size: 26px;

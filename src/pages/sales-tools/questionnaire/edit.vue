@@ -771,7 +771,7 @@ export default {
 .v-questionaire {
   overflow: hidden;
   padding-bottom: 30px;
-  margin: 0 auto;
+  margin: 30px auto;
   color: #222;
   position: relative;
   height: 100%;
