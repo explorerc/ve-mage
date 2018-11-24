@@ -32,7 +32,8 @@
           </div>
         </div>
       </div>
-      <div class="ve-modal" @click.prevent="handleClick(action.cancel)"></div>
+      <div class="ve-modal" v-if="type === 'noneModal'"></div>
+      <div class="ve-modal" v-else @click.prevent="handleClick(action.cancel)"></div>
     </div>
   </transition>
 </template>
@@ -76,7 +77,7 @@
         type: String,
         default: '300px'
       },
-      type: { // prompt , error， none
+      type: { // prompt , error， none, noneModal
         type: String,
         default: ''
       }
