@@ -483,7 +483,7 @@ export default {
       height: 44px;
       border-radius: 4px;
     }
-    .v-register{
+    .v-register {
       font-size: 16px;
       color: #666;
       margin-top: 15px;

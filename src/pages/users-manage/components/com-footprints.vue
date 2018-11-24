@@ -220,6 +220,13 @@ export default {
       }
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
         res.data.list.forEach(element => {
+          if (element.event === 'STAY_ACTIVITY_WEBSITE_TIME' || element.event === 'STAY_ACTIVITY_TIME') {
+            if (element.data.time > 0) {
+              element.data.time = element.data.time > 1 ? Math.round(element.data.time / 60) : 1
+            } else {
+              element.data.time = 0
+            }
+          }
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total

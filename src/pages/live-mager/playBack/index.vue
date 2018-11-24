@@ -49,10 +49,11 @@
             <!--<img class="play-back-img" :src="playBackList[scope.$index].pic">-->
             <!--</div>-->
             <!--</el-table-column>-->
-            <el-table-column prop="title"
-                            label="片段名"
-                            width="250"
-                            show-overflow-tooltip>
+            <el-table-column label="片段名"
+                            width="250">
+              <template slot-scope="scope">
+                <span class="overflow-hide" :title="scope.row.title">{{scope.row.title}}</span>
+              </template>
             </el-table-column>
             <el-table-column prop="duration"
                             label="时长">
@@ -797,6 +798,20 @@
   }
 </script>
 <style lang="scss" scoped src="../css/live.scss">
+</style>
+<style lang="scss">
+  .list-box  {
+    .el-table .cell{
+      overflow: visible;
+    }
+    .overflow-hide{
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 </style>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';

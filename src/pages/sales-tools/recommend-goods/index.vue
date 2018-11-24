@@ -110,7 +110,7 @@
       },
       check () {
         if (this.isShowlive) {
-          this.$router.push(`/data/live/${this.activity_id}`)
+          this.$router.push(`/data/live/${this.activity_id}#tools`)
         }
       },
       isShowLiveData () {

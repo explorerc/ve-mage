@@ -47,7 +47,7 @@
             </div>
           </div>
         </div>
-        <div class="right">
+        <div class="right" ref="contentBox">
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
@@ -600,6 +600,12 @@ export default {
                 },
                 {
                   value: '选项'
+                },
+                {
+                  value: '选项'
+                },
+                {
+                  value: '选项'
                 }
               ]
             },
@@ -648,6 +654,7 @@ export default {
           this.dragData.push(obj)
           break
       }
+      this.$refs.contentBox.scrollTop = this.$refs.contentBox.scrollHeight
     },
     save () {
       let data = []
