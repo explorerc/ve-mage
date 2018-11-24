@@ -57,7 +57,7 @@
           <div class="empty">
             <div class="img"></div>
             <div class="txt">您还没有添加微信通知，快去添加吧</div>
-            <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信</el-button></router-link>
+            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信</el-button></router-link>
           </div>
         </template>
       </div>

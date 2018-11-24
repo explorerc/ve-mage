@@ -3,9 +3,10 @@
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
     <div class="edit-msg-page live-mager"
-         @mousedown="canPass = false">
+         @keydown="canPass = false">
       <div class="live-title">
         <span class="title">创建短信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">

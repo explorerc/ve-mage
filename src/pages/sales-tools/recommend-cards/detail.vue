@@ -1,7 +1,8 @@
 <template>
-  <div class='wrap-page card-page'>
+  <div class='wrap-page card-page' @keydown="canPaas = false">
     <div class="page-title">
       <span class="title">{{cardId === 'new' ? '创建' :'编辑'}}卡片</span>
+      <com-back :class='"back-btn"'></com-back>
     </div>
     <div class="tips-title">
       <i></i>注意：在推荐卡片中嵌入链接可能会导致观众跳转分流，请合理使用
@@ -94,7 +95,8 @@
         uploadImgErrorMsg: '',
         cardId: this.$route.query.cardId,
         saveData: '',
-        canSave: false
+        canSave: false,
+        canPaas: true
       }
     },
     mounted () {
@@ -143,6 +145,7 @@
             content: '保存成功',
             position: 'center'
           })
+          this.canPaas = true
           this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
         })
       },
@@ -152,6 +155,7 @@
             content: '更新成功',
             position: 'center'
           })
+          this.canPaas = true
           setTimeout(() => {
             this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
           }, 500)
@@ -195,6 +199,27 @@
           this.desc = res.data.desc
         })
       }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      if (this.canPaas) {
+        next(true)
+        return false
+      }
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
     },
     computed: {
       defaultImg () {

@@ -4,7 +4,7 @@
        com-loading-text="拼命加载中">
     <div class="live-title">
       <span class="title">活动列表</span>
-      <div class="search-box fr">
+      <div class="search-box fr" v-if="tableList.length">
         <el-select v-model="searchParams.status"
                    placeholder="直播状态">
           <el-option v-for="item in optionsStates"
@@ -34,17 +34,27 @@
     </div>
     <div class="mager-box"
          style="padding-bottom: 60px;">
-      <live-table :tableList="tableList"
-                  @handleClick="handleClick"/>
-      <div class="pagination-box">
-        <div class="page-pagination"
-             v-if="total>pageSize">
-          <ve-pagination :total="total"
-                         :pageSize="pageSize"
-                         :currentPage="searchParams.page"
-                         @changePage="changePage"/>
-        </div>
-      </div>
+         <template v-if="tableList.length">
+          <live-table :tableList="tableList"
+                      @handleClick="handleClick"/>
+            <div class="pagination-box">
+              <div class="page-pagination"
+                  v-if="total>pageSize">
+                <ve-pagination :total="total"
+                              :pageSize="pageSize"
+                              :currentPage="searchParams.page"
+                              @changePage="changePage"/>
+              </div>
+            </div>
+         </template>
+         <template v-else>
+          <div class="empty-box">
+            <p class="img"></p>
+            <p class='title'>你还没有活动，快去创建吧</p>
+            <!-- <p class='desc'>你还没有活动，快去创建吧</p> -->
+            <router-link :to="`/liveMager/create`"><el-button class='primary-button'>创建活动</el-button></router-link>
+          </div>
+         </template>
     </div>
     <message-box class='in-countdown'
                  v-show="inCountdown"
@@ -296,6 +306,50 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
+@import '~assets/css/mixin.scss';
+.mager-box {
+  .empty-box {
+    text-align: center;
+    color: $color-font-sub;
+    min-height: 400px;
+    padding: 100px 0;
+    .img {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto;
+      border-radius: 500px;
+      // background:rgba(245,245,245,1);
+      box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
+      background: url('~assets/image/webinar_empty.png') no-repeat;
+      background-size: contain;
+    }
+    .title {
+      font-size: 18px;
+      color: $color-font;
+      padding-top: 13px;
+    }
+    .desc {
+      display: block;
+      width: 340px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    a {
+      display: block;
+      &:hover .el-button {
+        color: $color-font;
+      }
+    }
+    .el-button {
+      padding: 0;
+      width: 220px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      margin-top: 20px;
+    }
+  }
+}
 .in-countdown {
   p {
     text-align: center;

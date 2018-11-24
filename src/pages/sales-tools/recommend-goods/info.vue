@@ -1,6 +1,6 @@
 <template>
   <div id="goods-info">
-    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息</header>
+    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息<com-back :class='"back-btn"'></com-back></header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
@@ -281,89 +281,94 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
-
-  #goods-info {
-    padding: 50px 100px;
-    font-family: PingFangSC-Regular;
-    /deep/ {
-      header {
-        height: 26px;
-        font-size: 24px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 26px;
-        margin-bottom: 25px;
-      }
-      .el-form {
-        padding: 40px 80px;
-        border: 1px solid #eee;
-        background-color: white;
-        .el-form-item:nth-of-type(1) {
-          .el-form-item__content {
-            width: 460px;
-          }
-        }
-        .el-form-item:nth-of-type(2), .el-form-item:nth-of-type(3) {
-          width: 400px;
-        }
-        /*.el-form-item:last-of-type {*/
-        /*text-align: center;*/
-        /*}*/
-        .inupt_textarea {
-          width: 760px;
-          height: 120px;
-          .limit.area {
-            right: 12px;
-            bottom: 10px;
-          }
-        }
-        .inupt_text {
-          width: 440px;
-        }
-        .a_unit {
-          overflow: hidden;
-          width: 250px;
-          .el-input {
-            width: 200px;
-            float: left;
-          }
-          span {
-            display: inline-block;
-            width: 40px;
-            float: right;
-            text-align: left;
-          }
-        }
-        .slot_inp_b {
-          .el-input__inner {
-            padding-right: 60px;
-          }
-        }
-        .el-input-group__append {
-          width: 60px;
-          transform: translateX(-61px);
-          text-align: center;
-          border: transparent;
-          background-color: transparent;
-          padding: 0;
+@import '~assets/css/mixin.scss';
+.back-btn {
+  margin: 0;
+  position: relative;
+  bottom: 10px;
+}
+#goods-info {
+  padding: 50px 100px;
+  font-family: PingFangSC-Regular;
+  /deep/ {
+    header {
+      height: 26px;
+      font-size: 24px;
+      font-weight: 400;
+      color: rgba(34, 34, 34, 1);
+      line-height: 26px;
+      margin-bottom: 25px;
+    }
+    .el-form {
+      padding: 40px 80px;
+      border: 1px solid #eee;
+      background-color: white;
+      .el-form-item:nth-of-type(1) {
+        .el-form-item__content {
+          width: 460px;
         }
       }
-      .upload_box {
-        position: relative;
-        &::before {
-          content: '';
-          width: 32px;
-          height: 35px;
+      .el-form-item:nth-of-type(2),
+      .el-form-item:nth-of-type(3) {
+        width: 400px;
+      }
+      /*.el-form-item:last-of-type {*/
+      /*text-align: center;*/
+      /*}*/
+      .inupt_textarea {
+        width: 760px;
+        height: 120px;
+        .limit.area {
+          right: 12px;
+          bottom: 10px;
+        }
+      }
+      .inupt_text {
+        width: 440px;
+      }
+      .a_unit {
+        overflow: hidden;
+        width: 250px;
+        .el-input {
+          width: 200px;
+          float: left;
+        }
+        span {
           display: inline-block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 100;
-          background-image: url("~assets/image/index-img.png");
-          background-size: cover;
+          width: 40px;
+          float: right;
+          text-align: left;
         }
-        /* > i {
+      }
+      .slot_inp_b {
+        .el-input__inner {
+          padding-right: 60px;
+        }
+      }
+      .el-input-group__append {
+        width: 60px;
+        transform: translateX(-61px);
+        text-align: center;
+        border: transparent;
+        background-color: transparent;
+        padding: 0;
+      }
+    }
+    .upload_box {
+      position: relative;
+      &::before {
+        content: '';
+        width: 32px;
+        height: 35px;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background-image: url('~assets/image/index-img.png');
+        background-size: cover;
+      }
+      /* > i {
            width: 32px;
            height: 35px;
            display: inline-block;
@@ -374,40 +379,40 @@
            background-image: url("~assets/image/index-img.png");
            background-size: cover;
          }*/
-        .ve-upload-box {
+      .ve-upload-box {
+        width: 140px;
+        height: 140px;
+        margin: auto 20px auto 0;
+        display: inline-block;
+        .upload-img-box {
           width: 140px;
           height: 140px;
-          margin: auto 20px auto 0;
-          display: inline-block;
-          .upload-img-box {
-            width: 140px;
-            height: 140px;
-          }
-          .over-upload {
-            width: 140px;
-          }
-          .com-upload {
+        }
+        .over-upload {
+          width: 140px;
+        }
+        .com-upload {
+          width: 100%;
+          .upload-file-box {
             width: 100%;
-            .upload-file-box {
-              width: 100%;
-              .upload-icon {
-                margin: 10px auto 5px auto;
-              }
-              span {
-                display: inline-block;
-                /*margin: auto 5px;*/
-                color: #cccccc;
-                font-size: 12px;
-              }
+            .upload-icon {
+              margin: 10px auto 5px auto;
+            }
+            span {
+              display: inline-block;
+              /*margin: auto 5px;*/
+              color: #cccccc;
+              font-size: 12px;
             }
           }
         }
-        > span {
-          font-size: 30px;
-          transform: translateY(-60px);
-          color: #999999
-        }
+      }
+      > span {
+        font-size: 30px;
+        transform: translateY(-60px);
+        color: #999999;
       }
     }
   }
+}
 </style>

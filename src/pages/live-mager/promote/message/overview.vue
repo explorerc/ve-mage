@@ -5,6 +5,7 @@
     <div class="overview-wx-page live-mager">
       <div class="live-title">
         <span class="title">短信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">

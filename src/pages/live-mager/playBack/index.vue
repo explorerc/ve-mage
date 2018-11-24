@@ -128,8 +128,8 @@
       <template v-else>
         <div class="empty-box">
           <p class="img"></p>
-          <p class='title'>您还没有添加回放视频，快去添加吧</p>
-          <!-- <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p> -->
+          <p class='title'>您还没有添加视频，快去添加吧</p>
+          <p class='desc'>直播结束后系统会自动生成回放</p>
           <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
         </div>
       </template>
