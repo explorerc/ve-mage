@@ -810,6 +810,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      vertical-align: middle;
     }
   }
 </style>
