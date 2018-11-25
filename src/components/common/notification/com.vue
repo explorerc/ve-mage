@@ -85,6 +85,7 @@ export default {
     .title {
       display: inline-block;
       margin-bottom: 8px;
+      color: #fff;
     }
     .icon-close {
       position: absolute;
