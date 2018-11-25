@@ -162,6 +162,7 @@
 import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import activityService from 'src/api/activity-service'
+import EventBus from 'src/utils/eventBus'
 
 export default {
   data () {
@@ -188,6 +189,17 @@ export default {
   },
   created () {
     this.activityId = this.$route.params.id
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '直播引导页'
+    }])
     let data = {
       'activityId': this.activityId
     }
