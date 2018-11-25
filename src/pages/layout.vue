@@ -6,6 +6,8 @@
     </el-aside>
     <el-container class="main-box">
       <el-header class="header-container">
+        <com-breadcrumb :breads="bs"
+                        class="breadcrumb"></com-breadcrumb>
         <com-login :isShow="isShow"
                    @changeState="changeState"></com-login>
       </el-header>
@@ -34,11 +36,14 @@
 <script>
 
 import menu from './menu'
+import breadcrumb from './breadcrumb'
 import loginReg from './Login-reg'
+import EventBus from 'src/utils/eventBus'
 
 export default {
   data () {
     return {
+      bs: [],
       name: '',
       timer: '',
       msg: '',
@@ -58,10 +63,15 @@ export default {
         this.isShow = false
       }
     }, false)
+
+    EventBus.$on('breads', (data) => {
+      this.bs = data
+    })
   },
   components: {
     'com-menu': menu,
-    'com-login': loginReg
+    'com-login': loginReg,
+    'com-breadcrumb': breadcrumb
   },
   methods: {
     changeState () {
@@ -101,6 +111,9 @@ export default {
   border-bottom: 1px solid #e2e2e2;
   span {
     cursor: pointer;
+  }
+  .breadcrumb {
+    position: absolute;
   }
 }
 .main-container /deep/ {
