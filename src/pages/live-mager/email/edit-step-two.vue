@@ -393,11 +393,13 @@
       delGroupPerson (idx) {
         const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
         this.groupList[delIdx].isChecked = false
+        this.email.change = 1
       },
       // 标签
       delTagPerson (idx) {
         const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
         this.tagList[delIdx].isChecked = false
+        this.email.change = 1
       },
       // 查询群组
       queryGroupList (keyword) {
