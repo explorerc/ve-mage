@@ -289,11 +289,13 @@ export default {
     delPerson (idx) {
       const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
       this.groupList[delIdx].isChecked = false
+      this.changed = 1
     },
     /* 删除分组 */
     delGroupPerson (idx) {
       const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
       this.groupList[delIdx].isChecked = false
+      this.changed = 1
     },
     // 查询群组
     queryGroupList (keyword) {
