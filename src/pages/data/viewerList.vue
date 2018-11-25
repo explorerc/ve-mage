@@ -99,22 +99,17 @@
           :options="options"
           @change="handleAreaChange">
         </el-cascader>
-        <!--<el-select style="width: 100px;"-->
-        <!--v-model="searchParams.provinceId">-->
-        <!--<el-option v-for="item in provinceList"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
-        <!--<el-select style="width: 112px;"-->
-        <!--v-model="searchParams.cityId">-->
-        <!--<el-option v-for="item in cityList"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">观看类型</span>
+        <el-select v-model="searchParams.type"
+                   placeholder="观看类型">
+          <el-option v-for="item in watcherList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
       </div>
       <div class="search-item flm">
         <span class="search-title">观众出入时段</span>
@@ -227,6 +222,7 @@
           last_leave_at: '',
           device: '',
           score: '',
+          type: '',
           page: 1,
           pageSize: 10
         },
@@ -235,6 +231,11 @@
           {value: '', label: '全部'},
           {value: 'M', label: '男'},
           {value: 'W', label: '女'}
+        ],
+        watcherList: [
+          {value: '', label: '全部'},
+          {value: 'live', label: '直播'},
+          {value: 'replay', label: '回放'}
         ],
         watcherTypeList: [
           {value: '', label: '全部用户'},
