@@ -4,7 +4,7 @@
       <el-select v-model="provinceValue"
                  @change="changeProvince"
                  @focus="focusProvince"
-                 placeholder="省/自治区/直辖市">
+                 placeholder="请选择省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
                    :label="item.label"
                    :value="item.value"
@@ -16,7 +16,7 @@
       <el-select v-model="cityValue"
                  @change="changeCity"
                  @focus="focusCity"
-                 placeholder="市">
+                 placeholder="请选择所在城市">
         <el-option v-for="(item,index) in cities"
                    :label="item.label"
                    :value="item.value"
@@ -26,10 +26,10 @@
 
     </div>
     <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
-         class="q-edit-select">
+         class="q-edit-select" :class="{'v-disabled': conntyDisabled}">
       <el-select v-model="countyValue"
                  @focus="focusCounty"
-                 placeholder="区/县">
+                 placeholder="请选择区/县">
         <el-option v-for="(item,index) in counties"
                    :label="item.label"
                    :value="item.value"
@@ -41,8 +41,8 @@
             class="remove">{{getCountyState}}</span>
     </div>
     <div v-if="edit||(!edit&&this.value.detail.level === 'address')"
-         class="q-edit-select">
-      <com-input placeholder="详细地址"
+         class="q-edit-select" :class="{'v-disabled': addressDisabled}">
+      <com-input placeholder="请输入详细地址"
                  :disabled="edit"
                  v-model="value.address"
                  @focus="focusAddress"
@@ -88,7 +88,9 @@ export default {
       errorTip: '',
       provinceValue: '',
       cityValue: '',
-      countyValue: ''
+      countyValue: '',
+      conntyDisabled: false,
+      addressDisabled: false
     }
   },
   mounted () {
@@ -188,15 +190,19 @@ export default {
   computed: {
     getCountyState () {
       if (this.value.detail.level === 'county' || this.value.detail.level === 'address') {
+        this.conntyDisabled = false
         return '隐'
       } else {
+        this.conntyDisabled = true
         return '显'
       }
     },
     getAddressState () {
       if (this.value.detail.level === 'address') {
+        this.addressDisabled = false
         return '隐'
       } else {
+        this.addressDisabled = true
         return '显'
       }
     }
@@ -211,6 +217,20 @@ export default {
     display: block;
     width: 100%;
     margin-bottom: 10px;
+    &.v-disabled /deep/ {
+      .com-input {
+        input {
+          background-color: #f5f5f5;
+          color: #bbb;
+          border-color: #f5f5f5;
+        }
+      }
+      .el-input__inner {
+        background-color: #f5f5f5;
+        color: #bbb;
+        border-color: #f5f5f5;
+      }
+    }
     .el-select {
       width: 93%;
     }

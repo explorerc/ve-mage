@@ -598,7 +598,7 @@ export function barAndLine (id, data, gridData) {
   let seriesData = []
   let colorsBar = {
     'red_packet': '#FFD021',
-    'answer': '#63C8F5',
+    'question': '#63C8F5',
     'recommend_card': '#FD9130',
     'goods_recommend': '#AFADAE'
   }

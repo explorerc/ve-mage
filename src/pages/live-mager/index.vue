@@ -82,7 +82,7 @@
   import activityService from 'src/api/activity-service'
   import LiveTable from './live/live-table'
   import VePagination from 'src/components/ve-pagination'
-
+  import EventBus from 'src/utils/eventBus'
   export default {
     name: 'index',
     components: { LiveTable, VePagination },
@@ -130,6 +130,13 @@
         immediate: true,
         deep: true
       }
+    },
+    created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表'
+      }])
     },
     methods: {
       handleClick (event) {
@@ -345,7 +352,7 @@
     }
     &.empty-search {
       .img {
-        background-image:url('~assets/image/search_empty.png')
+        background-image: url('~assets/image/search_empty.png');
       }
     }
   }
