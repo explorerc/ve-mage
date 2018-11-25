@@ -132,6 +132,7 @@
   import {pie, barRadius} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
   import {mapMutations} from 'vuex'
+  import EventBus from 'src/utils/eventBus'
   import * as types from '../../store/mutation-types'
 
   export default {
@@ -176,6 +177,18 @@
       }
     },
     created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '观众画像',
+        url: `/data/viewer/${this.$route.params.id}`
+      }])
       this.storeSelectMenu(3)
       this.activityId = this.$route.params.id
       this.initPage()

@@ -328,7 +328,7 @@
         title: '活动详情',
         url: `/liveMager/detail/${this.$route.params.id}`
       }, {
-        title: '活动数据',
+        title: '概览数据',
         url: `/data/preview/${this.$route.params.id}`
       }])
     },
