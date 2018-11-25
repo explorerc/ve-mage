@@ -102,9 +102,13 @@
         }, 500)
       }
       let price = (rule, value, callback) => {
-        if (typeof value === 'number') {
-          if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+        if (typeof value === 'number' && (value || value === 0)) {
+          if (value < 0 || value >= 999999) {
+            return callback(new Error('原始价格应大于0小于999999'))
+          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
             return callback(new Error('价格最多为小数点后两位'))
+          } else {
+            return callback()
           }
         } else {
           return callback(new Error('请输入原始价格'))
@@ -114,21 +118,25 @@
         // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
         //   value = String(value).slice(0, String(value).indexOf('.') + 3)
         // }
-        if (typeof value === 'number') {
-          let maxV = this[rule.obj].price
-          if (value && value < 0) {
-            return callback(new Error('商品促销价格不能小于0'))
-          } else if (value && maxV && value >= maxV) {
-            return callback(new Error('优惠价格需小于原始价格'))
-          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-            return callback(new Error('优惠价格最多为小数点后两位'))
-          } else if (value && !maxV) {
-            return callback(new Error('请先填写原始价格'))
+        if (value) {
+          if (typeof value === 'number') {
+            let maxV = this[rule.obj].price
+            if (value && value < 0) {
+              return callback(new Error('优惠价格不能小于0'))
+            } else if (value && maxV && value >= maxV) {
+              return callback(new Error('优惠价格需小于原始价格'))
+            } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+              return callback(new Error('优惠价格最多为小数点后两位'))
+            } else if (value && !maxV) {
+              return callback(new Error('请先填写原始价格'))
+            } else {
+              return callback()
+            }
           } else {
-            return callback()
+            return callback(new Error('请输入优惠价格'))
           }
         } else {
-          return callback(new Error('请输入优惠价格'))
+          return callback()
         }
       }
       let valiUpload = (rule, value, callback) => {
@@ -148,14 +156,6 @@
           return callback(new Error('请上传图片'))
         }
       }
-      // let url = (rule, value, callback) => {
-      //   let isHave = value.includes('http') || value.includes('https')
-      //   if (!isHave) {
-      //     return callback(new Error('请输入有效的商品链接以http或https开头'))
-      //   } else {
-      //     return callback()
-      //   }
-      // }
       return {
         isShowMsgB: true,
         errTitle: '',
@@ -175,17 +175,14 @@
             { required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData' }
           ],
           price: [
-            { required: true, type: 'number', message: '请输入原始价格', trigger: 'blur' },
-            { type: 'number', min: 0, max: 999999, message: '原始价格应大于0小于999999', trigger: 'blur' },
-            { validator: price }
+            { validator: price, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           preferential: [
             { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           url: [
-            { required: true, type: 'url', message: '请输入有效的商品链接以http或https开头', trigger: 'blur' },
+            { required: true, type: 'url', message: '请输入商品链接', trigger: 'blur' },
             { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
-            // { validator: url, type: 'url' }
           ],
           imageList: [
             { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
@@ -258,7 +255,7 @@
               return false
             }
           })
-        }, 100)
+        }, 400)
       },
       resetForm (formName) {
         this.$messageBox({
