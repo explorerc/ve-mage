@@ -3,7 +3,7 @@
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
         <span class="title">短信通知</span>
-        <com-back :class='"back-btn"'></com-back>
+        <com-back :class='"back-btn"' :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信</button></router-link>
         </div>
@@ -78,6 +78,7 @@
   // import createHttp from 'src/api/activity-manger'
   import VePagination from 'src/components/ve-pagination'
   import activityService from 'src/api/activity-service'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -111,6 +112,17 @@
     created () {
       this.queryList()
       this.queryInfo()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '短信通知'
+      }])
     },
     methods: {
       switchAutosend (idx, data) {

@@ -77,7 +77,7 @@
         title: '活动详情',
         url: `/liveMager/detail/${this.$route.params.id}`
       }, {
-        title: '卡片列表',
+        title: '推荐卡片',
         url: `/salesTools/recommendCards/${this.$route.params.id}`
       }])
     },

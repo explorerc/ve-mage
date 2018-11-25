@@ -670,7 +670,7 @@
       <div class="item statics">
         <p class='block-separte'>数据</p>
         <div class="card-list clearfix">
-          <div class='item record'
+          <div class='item statics'
                @click="linkTo($event,'/data/preview/')"
                :class="{'disabled':staticTime == '统计中...'}">
             <div class="card">
@@ -693,7 +693,7 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item record'
+          <div class='item aud'
                @click="linkTo($event,'/data/viewer/')"
                :class="{'disabled':staticTime == '统计中...'}">
             <div class="card">
@@ -1450,7 +1450,7 @@ export default {
         background-size: contain;
         position: absolute;
         top: 0px;
-        right:9px;
+        right: 9px;
         &:hover {
           background-image: url('~assets/image/detail/roomid_hover.png');
         }
@@ -1829,7 +1829,19 @@ export default {
 }
 .item.cards .card .pic {
   width: 80px;
-  background-image: url('~assets/image/detail/tools_good.png');
+  background-image: url('~assets/image/detail/tools_cards.png');
+}
+.item.record .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/playback.png');
+}
+.item.statics .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/statics.png');
+}
+.item.aud .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/aud.png');
 }
 
 .btm {

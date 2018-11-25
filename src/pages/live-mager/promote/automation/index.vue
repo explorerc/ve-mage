@@ -426,6 +426,7 @@ import comTpl from './com-tpl'
 import comTest from '../com-test'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
+import EventBus from 'src/utils/eventBus'
 // import {getMsg} from './tpl'
 export default {
   data () {
@@ -587,6 +588,17 @@ export default {
     this.getList()
     this.findCountdown()
     this.getSwitchinfo()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '自动化通知'
+    }])
   },
   methods: {
     closeModal (e) {
