@@ -191,19 +191,19 @@ export default {
     getCountyState () {
       if (this.value.detail.level === 'county' || this.value.detail.level === 'address') {
         this.conntyDisabled = false
-        return '隐'
+        return '隐藏'
       } else {
         this.conntyDisabled = true
-        return '显'
+        return '开启'
       }
     },
     getAddressState () {
       if (this.value.detail.level === 'address') {
         this.addressDisabled = false
-        return '隐'
+        return '隐藏'
       } else {
         this.addressDisabled = true
-        return '显'
+        return '开启'
       }
     }
   }

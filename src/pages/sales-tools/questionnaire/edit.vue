@@ -16,23 +16,23 @@
               </p>
               <ul>
                 <li :class="{disabled:!base.name}"
-                    @click="addQuestion('name')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>姓<span></span>名</li>
+                    @click="addQuestion('name')"><i class="iconfont icon-xingming"></i>姓<span></span>名</li>
                 <li :class="{disabled:!base.phone}"
-                    @click="addQuestion('phone')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>手机号</li>
+                    @click="addQuestion('phone')"><i class="iconfont icon-shoujihao"></i>手机号</li>
                 <li :class="{disabled:!base.email}"
-                    @click="addQuestion('email')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>邮<span></span>箱</li>
+                    @click="addQuestion('email')"><i class="iconfont icon-youjian"></i>邮<span></span>箱</li>
                 <li :class="{disabled:!base.sex}"
-                    @click="addQuestion('sex')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>性<span></span>别</li>
+                    @click="addQuestion('sex')"><i class="iconfont icon-xingbie"></i>性<span></span>别</li>
                 <li :class="{disabled:!base.birth}"
-                    @click="addQuestion('birth')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>生<span></span>日</li>
+                    @click="addQuestion('birth')"><i class="iconfont icon-shengri"></i>生<span></span>日</li>
                 <li :class="{disabled:!base.area}"
-                    @click="addQuestion('area')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>地<span></span>域</li>
+                    @click="addQuestion('area')"><i class="iconfont icon-diyu"></i>地<span></span>域</li>
                 <li :class="{disabled:!base.industry}"
-                    @click="addQuestion('industry')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>行<span></span>业</li>
+                    @click="addQuestion('industry')"><i class="iconfont icon-hangye"></i>行<span></span>业</li>
                 <li :class="{disabled:!base.position}"
-                    @click="addQuestion('position')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>职<span></span>位</li>
+                    @click="addQuestion('position')"><i class="iconfont icon-zhiye"></i>职<span></span>位</li>
                 <li :class="{disabled:!base.edu}"
-                    @click="addQuestion('edu')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>教育水平</li>
+                    @click="addQuestion('edu')"><i class="iconfont icon-jiaoyushuiping"></i>教育水平</li>
               </ul>
             </div>
             <div class="v-selects">
@@ -40,10 +40,10 @@
                 题型
               </p>
               <ul>
-                <li @click="addQuestion('radio')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>单选题</li>
-                <li @click="addQuestion('checkbox')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>多选题</li>
-                <li @click="addQuestion('select')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>下拉题</li>
-                <li @click="addQuestion('text')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>问答题</li>
+                <li @click="addQuestion('radio')"><i class="iconfont icon-danxuan"></i>单选题</li>
+                <li @click="addQuestion('checkbox')"><i class="iconfont icon-duoxuan"></i>多选题</li>
+                <li @click="addQuestion('select')"><i class="iconfont icon-xiala"></i>下拉题</li>
+                <li @click="addQuestion('text')"><i class="iconfont icon-wenda"></i>问答题</li>
               </ul>
             </div>
           </div>
@@ -869,7 +869,7 @@ export default {
         width: auto;
         background-color: transparent;
         height: 40px;
-        line-height: 40px;
+        line-height: 38px;
         border-radius: 20px;
         border: none;
         padding: 0 30px;

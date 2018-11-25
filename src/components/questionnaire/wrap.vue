@@ -51,9 +51,9 @@
                    :width="32"
                    active-color="#FFD021"></el-switch>
         <div class="sort"
-             v-if="value.detail.format!='phone'">排序</div>
+             v-if="value.detail.format!='phone'"><i class="iconfont icon-yidong"></i></div>
         <div class="del"
-             @click="remove">删除</div>
+             @click="remove"><i class="iconfont icon-shanchu1"></i></div>
       </div>
     </div>
   </div>
@@ -296,8 +296,8 @@ export default {
           width: 30px;
           height: 30px;
           line-height: 30px;
-          border-radius: 30px;
-          border: 1px solid #d2d2d2;
+          // border-radius: 30px;
+          // border: 1px solid #d2d2d2;
           cursor: pointer;
           margin-left: 10px;
         }
@@ -307,8 +307,8 @@ export default {
           width: 30px;
           height: 30px;
           line-height: 30px;
-          border-radius: 30px;
-          border: 1px solid #d2d2d2;
+          // border-radius: 30px;
+          // border: 1px solid #d2d2d2;
           cursor: pointer;
           margin-left: 10px;
         }
