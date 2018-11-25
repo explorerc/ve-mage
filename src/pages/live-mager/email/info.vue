@@ -26,7 +26,7 @@
               <div>
                 <span v-for='(item,idx) in selectedTagList'>{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></span>（合计{{email.expectNum}}人）
               </div>
-              <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
+              <el-button  class='send-detail default-button' @click='sendDetail = true' v-if="email.status=='SEND'">发送详情</el-button>
             </template>
             <template v-else>
               暂未选择
@@ -192,9 +192,7 @@ export default {
     },
     // 查询群组
     async queryGroupList (keyword) {
-      await this.$get(userManage.GET_GROUP_LIST, {
-        type: '2'
-      }).then((res) => {
+      await this.$get(userManage.GET_GROUP_LIST).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
