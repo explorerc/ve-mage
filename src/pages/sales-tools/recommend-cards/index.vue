@@ -5,7 +5,7 @@
       <com-back :url="`/liveMager/detail/${activityId}`" :class='"back-btn"'></com-back>
       <div class="top-bar clearfix" v-if="tableData.length>0">
         <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
-        <el-button class='btn more' round><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
+        <el-button class='btn more' round v-if="status !== 'PREPARE'"><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
       </div>
     </div>
     <div class="content from-box">
@@ -53,6 +53,7 @@
 
 <script>
   import cardService from 'src/api/salesCards-service.js'
+  import activityService from 'src/api/activity-service'
   import EventBus from 'src/utils/eventBus'
   export default {
     data () {
@@ -60,13 +61,15 @@
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
         tableData: [],
-        notFirst: false
+        notFirst: false,
+        status: ''
       }
     },
     mounted () {
       this.getList()
     },
     created () {
+      this.getInfo()
       this.tableData = []
       EventBus.$emit('breads', [{
         title: '活动管理'
@@ -82,6 +85,13 @@
       }])
     },
     methods: {
+      getInfo () {
+        this.$get(activityService.GET_WEBINAR_INFO, {
+          id: this.activityId
+        }).then((res) => {
+          this.status = res.data.status
+        })
+      },
       getList () {
         this.$get(cardService.GET_CARDS_LIST, {
           activity_id: this.activityId
