@@ -1,5 +1,6 @@
 <template>
-  <div class="v-questionaire" @mousedown="canPaas = false">
+  <div class="v-questionaire"
+       @mousedown="canPaas = false">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
     </div>
@@ -164,6 +165,7 @@
 </template>
 
 <script>
+import EventBus from 'src/utils/eventBus'
 import draggable from 'vuedraggable'
 import question from 'components/questionnaire/wrap'
 import questions from '../questionnaire/components/questions'
@@ -231,6 +233,22 @@ export default {
         }
       }
     })
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '问卷列表',
+      url: `/salesTools/questionnaire/list/${this.activityId}`
+    }, {
+      title: '编辑问卷'
+    }])
   },
   mounted () {
     if (this.questionId && this.activityId) {
