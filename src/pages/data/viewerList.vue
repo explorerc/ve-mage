@@ -103,7 +103,7 @@
       <div class="search-item flm">
         <span class="search-title">观看类型</span>
         <el-select v-model="searchParams.type"
-                   placeholder="观看设备">
+                   placeholder="观看类型">
           <el-option v-for="item in watcherList"
                      :key="item.value"
                      :label="item.label"
