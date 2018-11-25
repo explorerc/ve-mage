@@ -1700,7 +1700,7 @@ export default {
 }
 
 .item.automaze .card .pic {
-  background-image: url('~assets/image/detail/base.png');
+  background-image: url('~assets/image/detail/automaze.png');
 }
 
 .item.mail .card .pic {

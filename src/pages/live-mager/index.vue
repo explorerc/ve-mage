@@ -4,8 +4,8 @@
        com-loading-text="拼命加载中">
     <div class="live-title">
       <span class="title">活动列表</span>
-      <div class="search-box fr" v-if="tableList.length">
-        <el-select v-model="searchParams.status"
+      <div class="search-box fr" v-if="tableList.length || isSearch">
+        <el-select v-model="searchParams.status" @change='statusChange'
                    placeholder="直播状态">
           <el-option v-for="item in optionsStates"
                      :key="item.value"
@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="mager-box"
-         style="padding-bottom: 60px;">
+         style="padding-bottom: 60px;" v-show="endRequset">
          <template v-if="tableList.length">
           <live-table :tableList="tableList"
                       @handleClick="handleClick"/>
@@ -48,12 +48,20 @@
             </div>
          </template>
          <template v-else>
-          <div class="empty-box">
-            <p class="img"></p>
-            <p class='title'>你还没有活动，快去创建吧</p>
-            <!-- <p class='desc'>你还没有活动，快去创建吧</p> -->
-            <router-link :to="`/liveMager/create`"><el-button class='primary-button'>创建活动</el-button></router-link>
-          </div>
+           <template v-if="isSearch">
+             <div class="empty-box empty-search">
+                <p class="img"></p>
+                <p class='title'>暂无数据</p>
+              </div>
+           </template>
+           <template v-else>
+              <div class="empty-box">
+                <p class="img"></p>
+                <p class='title'>你还没有活动，快去创建吧</p>
+                <!-- <p class='desc'>你还没有活动，快去创建吧</p> -->
+                <router-link :to="`/liveMager/create`"><el-button class='primary-button'>创建活动</el-button></router-link>
+              </div>
+           </template>
          </template>
     </div>
     <message-box class='in-countdown'
@@ -108,7 +116,9 @@
         },
         tableList: [],
         total: 0,
-        PC_HOST: process.env.PC_HOST
+        PC_HOST: process.env.PC_HOST,
+        isSearch: false,
+        endRequset: false
       }
     },
     watch: {
@@ -245,6 +255,7 @@
         // this.queryList()
       },
       searchEnter () {
+        this.isSearch = true
         this.queryList()
       },
       createLive () {
@@ -256,14 +267,9 @@
         }).then((res) => {
           this.queryList()
         })
-        // liveHttp.deleteById(activityId).then((res) => {
-        //   if (res.code !== 200) return
-        //   this.queryList()
-        // })
       },
       queryList () {
-        // this.loading = true
-        this.$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
+        this.$config().$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
           res.data.list.map((item, indx) => {
             if (item.imgUrl) {
               item.imgUrl = this.$imgHost + '/' + item.imgUrl
@@ -271,23 +277,9 @@
             return item
           })
           this.tableList = res.data.list
+          this.endRequset = true
           this.total = res.data.total
         })
-        // liveHttp.queryList(this.searchParams).then((res) => {
-        //   this.loading = false
-        //   if (res.code === 200) {
-        //     res.data.list.map((item, indx) => {
-        //       if (item.imgUrl) {
-        //         item.imgUrl = this.$imgHost + '/' + item.imgUrl
-        //       }
-        //       return item
-        //     })
-        //     this.tableList = res.data.list
-        //     this.total = res.data.total
-        //   }
-        // }).catch(() => {
-        //   this.loading = false
-        // })
       },
       publish (id) {
         this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
@@ -298,6 +290,9 @@
             position: 'center'
           })
         })
+      },
+      statusChange (res) {
+        this.isSearch = true
       }
     }
   }
@@ -347,6 +342,11 @@
       text-align: center;
       line-height: 40px;
       margin-top: 20px;
+    }
+    &.empty-search {
+      .img {
+        background-image:url('~assets/image/search_empty.png')
+      }
     }
   }
 }
