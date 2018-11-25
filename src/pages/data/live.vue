@@ -113,7 +113,7 @@
         </div>
         <div class="item-box hd-data-item fr live-item live-item04">
           <span class="hd-title">红包雨</span>
-          <div class="hd-data">
+          <div class="hd-data" style="margin-left: 30px;">
             <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
             <span>参与人数</span>
           </div>
@@ -122,7 +122,7 @@
             <span>领取人数</span>
           </div>
           <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">￥{{interactCountData.redBag.money}}</span>
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.money}}</span>
             <span>领取金额</span>
           </div>
         </div>
