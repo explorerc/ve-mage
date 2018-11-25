@@ -621,11 +621,17 @@ export function barAndLine (id, data, gridData) {
   let option = {
     tooltip: {
       trigger: 'axis',
+      textStyle: {
+        fontSize: 12
+      },
       axisPointer: {
         type: 'cross',
         crossStyle: {
           color: '#999'
         }
+      },
+      formatter: (item) => {
+        return `${item[0].axisValue}<br/>${item[0].data.name}：${item[0].data.value}`
       }
     },
     toolbox: {
