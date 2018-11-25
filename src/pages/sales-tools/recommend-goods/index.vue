@@ -59,12 +59,25 @@
 <script>
   import draggable from 'vuedraggable'
   import goodsServer from 'src/api/salesGoods-service'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     components: { draggable },
     created () {
       this.getList()
       this.isShowLiveData()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.activity_id}`
+      }, {
+        title: '商品列表',
+        url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
+      }])
     },
     data () {
       return {
