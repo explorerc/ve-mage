@@ -246,6 +246,7 @@ import userService from 'src/api/user-service'
 import comAddgroup from '../components/com-addGroup'
 import userManage from 'src/api/userManage-service'
 import groupService from 'src/api/user_group'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -313,6 +314,14 @@ export default {
   created () {
     this.getCustomerDetail()
     // console.log(this.user.emails)
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户池',
+      url: '/userManage/pond'
+    }, {
+      title: '用户详情'
+    }])
   },
   methods: {
     saveInfo (val, type) {

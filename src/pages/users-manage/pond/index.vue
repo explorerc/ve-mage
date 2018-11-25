@@ -311,6 +311,7 @@ import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
 import province from 'src/components/province'
 import city from 'src/components/city'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -491,6 +492,13 @@ export default {
       exportStr: '', // 导出数据的拼接str
       imgHost: process.env.IMGHOST + '/'
     }
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户池'
+    }])
   },
   mounted () {
     this.queryUserPool(this.filterCondition)
