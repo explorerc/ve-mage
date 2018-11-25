@@ -152,10 +152,10 @@
           confirmText: '删除',
           handleClick: (e) => {
             if (e.action === 'cancel') {
-              this.$toast({
+            /*  this.$toast({
                 content: '已取消删除',
                 position: 'center'
-              })
+              }) */
             } else if (e.action === 'confirm') {
               this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
                 .then(res => {
