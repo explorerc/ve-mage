@@ -102,7 +102,7 @@ export default {
   created () {
     this.queryInfo()
     this.queryTagList().then(this.queryGroupList()).then(() => {
-      this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
+      this.$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.id
       }).then((res) => {
         this.group = res.data.groupId
@@ -132,7 +132,7 @@ export default {
       })
     },
     queryInfo () {
-      this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+      this.$get(activityService.GET_WEBINAR_INFO, {
         id: this.$route.params.id
       }).then((res) => {
         this.type = res.data.status
