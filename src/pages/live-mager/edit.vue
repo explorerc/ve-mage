@@ -99,6 +99,7 @@
   // import http from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import comChoose from 'src/pages/users-manage/components/com-choose'
+  import EventBus from 'src/utils/eventBus'
   export default {
     name: 'edit',
     data () {
@@ -138,14 +139,35 @@
       }
     },
     created () {
-      this.queryTags()
-    },
-    mounted () {
-      // this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
+      let bread = []
       if (this.activityId) { // 编辑页面请求接口返回活动信息
         this.isNew = false
         this.queryInfo()
+        bread = [{
+          title: '活动管理'
+        }, {
+          title: '活动列表',
+          url: '/liveMager/list'
+        }, {
+          title: '活动详情',
+          url: `/liveMager/detail/${this.activityId}`
+        }, {
+          title: '编辑活动'
+        }
+        ]
+      } else {
+        bread = [{
+          title: '活动管理'
+        }, {
+          title: '新建活动'
+        }
+        ]
       }
+      this.queryTags()
+      EventBus.$emit('breads', bread)
+    },
+    mounted () {
+      // this.tagList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] // 标签来源于客户管理中的内容标签模块
     },
     watch: {
       editorContent (newValue, oldValue) {

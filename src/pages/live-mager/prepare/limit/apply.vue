@@ -90,6 +90,7 @@
   // import prepareHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import veTips from 'src/components/ve-msg-tips'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -155,6 +156,17 @@
       ]
       this.quesData = [
       ]
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.activityId}`
+      }, {
+        title: '活动报名'
+      }])
     },
     methods: {
       removeItem (idx) {

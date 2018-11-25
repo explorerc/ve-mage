@@ -76,6 +76,7 @@ import activityService from 'src/api/activity-service'
 import userManage from 'src/api/userManage-service'
 import comPhone from '../com-phone'
 import comDetail from '../com-detail'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -117,6 +118,20 @@ export default {
         }, 500)
       })
     })
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '微信通知',
+      url: `/liveMager/promote/wechat/list/${this.activityId}`
+    }, {
+      title: '预览'
+    }])
   },
   methods: {
     sendNow () {
