@@ -758,7 +758,7 @@ export default {
             this.hostOnline = data.data.hostOnline
             if (this.hostOnline) {
               this.$toast({
-                content: '主持人已进入直播前台，无法再次进入',
+                content: '暂不支持这种方式发起直播',
                 position: 'center'
               })
               return false
@@ -1344,8 +1344,9 @@ export default {
     color: $color-font;
     margin-right: 8px;
     word-break: break-all;
-    width: 610px;
+    width: 650px;
     .id-tag {
+      display: inline-block;
       padding: 2px 12px;
       color: $color-font-sub;
       font-size: 14px;
@@ -1362,6 +1363,7 @@ export default {
         background-size: contain;
         position: absolute;
         top: 0px;
+        right:9px;
         &:hover {
           background-image: url('~assets/image/detail/roomid_hover.png');
         }
@@ -1423,10 +1425,10 @@ export default {
                 background-image: url('~assets/image/detail/icon-guide.png');
               }
               &:hover i.icon-site {
-                background-image: url('~assets/image/detail/icon-site-hover.png');
+                background-image: url('~assets/image/detail/icon-guide-hover.png');
               }
               &:hover i.icon-guide {
-                background-image: url('~assets/image/detail/icon-guide-hover.png');
+                background-image: url('~assets/image/detail/icon-site-hover.png');
               }
             }
           }

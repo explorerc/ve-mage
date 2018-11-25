@@ -1,6 +1,8 @@
 <template>
   <div id="goods-info">
-    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息</header>
+    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息
+      <com-back :class='"back-btn"'></com-back>
+    </header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
@@ -99,13 +101,27 @@
           }
         }, 500)
       }
-      let valicxjg = (rule, value, callback) => {
+      let price = (rule, value, callback) => {
+        if (typeof value === 'number') {
+          if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+            return callback(new Error('价格最多为小数点后两位'))
+          }
+        } else {
+          return callback(new Error('请输入原始价格'))
+        }
+      }
+      let preferential = (rule, value, callback) => {
+        // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+        //   value = String(value).slice(0, String(value).indexOf('.') + 3)
+        // }
         if (typeof value === 'number') {
           let maxV = this[rule.obj].price
           if (value && value < 0) {
             return callback(new Error('商品促销价格不能小于0'))
           } else if (value && maxV && value >= maxV) {
             return callback(new Error('优惠价格需小于原始价格'))
+          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+            return callback(new Error('优惠价格最多为小数点后两位'))
           } else if (value && !maxV) {
             return callback(new Error('请先填写原始价格'))
           } else {
@@ -132,6 +148,14 @@
           return callback(new Error('请上传图片'))
         }
       }
+      // let url = (rule, value, callback) => {
+      //   let isHave = value.includes('http') || value.includes('https')
+      //   if (!isHave) {
+      //     return callback(new Error('请输入有效的商品链接以http或https开头'))
+      //   } else {
+      //     return callback()
+      //   }
+      // }
       return {
         isShowMsgB: true,
         errTitle: '',
@@ -152,14 +176,16 @@
           ],
           price: [
             { required: true, type: 'number', message: '请输入原始价格', trigger: 'blur' },
-            { type: 'number', min: 0, max: 999999, message: '原始价格应大于0小于999999', trigger: 'blur' }
+            { type: 'number', min: 0, max: 999999, message: '原始价格应大于0小于999999', trigger: 'blur' },
+            { validator: price }
           ],
           preferential: [
-            { validator: valicxjg, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
+            { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           url: [
-            { required: true, type: 'url', message: '请输入商品链接', trigger: 'blur' },
+            { required: true, type: 'url', message: '请输入有效的商品链接以http或https开头', trigger: 'blur' },
             { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
+            // { validator: url, type: 'url' }
           ],
           imageList: [
             { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
@@ -232,7 +258,7 @@
               return false
             }
           })
-        }, 400)
+        }, 100)
       },
       resetForm (formName) {
         this.$messageBox({
@@ -284,6 +310,12 @@
 <style lang="scss" scoped>
   @import '~assets/css/mixin.scss';
 
+  .back-btn {
+    margin: 0;
+    position: relative;
+    bottom: 10px;
+  }
+
   #goods-info {
     padding: 50px 100px;
     font-family: PingFangSC-Regular;
@@ -305,7 +337,8 @@
             width: 460px;
           }
         }
-        .el-form-item:nth-of-type(2), .el-form-item:nth-of-type(3) {
+        .el-form-item:nth-of-type(2),
+        .el-form-item:nth-of-type(3) {
           width: 400px;
         }
         /*.el-form-item:last-of-type {*/
@@ -361,20 +394,20 @@
           top: 0;
           left: 0;
           z-index: 100;
-          background-image: url("~assets/image/index-img.png");
+          background-image: url('~assets/image/index-img.png');
           background-size: cover;
         }
         /* > i {
-           width: 32px;
-           height: 35px;
-           display: inline-block;
-           position: absolute;
-           top: 0;
-           left: 0;
-           z-index: 100;
-           background-image: url("~assets/image/index-img.png");
-           background-size: cover;
-         }*/
+             width: 32px;
+             height: 35px;
+             display: inline-block;
+             position: absolute;
+             top: 0;
+             left: 0;
+             z-index: 100;
+             background-image: url("~assets/image/index-img.png");
+             background-size: cover;
+           }*/
         .ve-upload-box {
           width: 140px;
           height: 140px;
@@ -406,7 +439,7 @@
         > span {
           font-size: 30px;
           transform: translateY(-60px);
-          color: #999999
+          color: #999999;
         }
       }
     }

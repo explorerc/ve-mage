@@ -7,7 +7,7 @@
         inactive-color="#DEE1FF"
         active-color="#4B5AFE" @change='openSwitch'>
       </el-switch>
-      <com-back></com-back>
+      <com-back :class='"back-btn"'></com-back>
       <div class="right-box">
         <span>最多可添加 <i>5</i> 条信息</span>
         <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 || !isOpen ? true : false">添加信息</button>
@@ -459,9 +459,9 @@
 </style>
 <style lang='scss' scoped>
 @import 'assets/css/mixin.scss';
-.back-btn-all {
-  margin-top: 0px;
-  margin-bottom: 0px;
+.back-btn {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 .live-title {
   .right-box {

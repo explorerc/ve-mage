@@ -35,7 +35,7 @@
             <div class="from-content">
               <div :class="{error:errorMsg.groupIds}">
                 <button class="default-button fl"
-                        @click="selectPersonShow=true">选择分组
+                        @click="chooseGroup">选择分组
                 </button>
                 <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/{{countBalance}}</span>
                 <ve-msg-tips tip-type="html"
@@ -50,7 +50,7 @@
                                 v-if="selectedGroupList.length">
                 <span class="list-item"
                       v-for="(person,idx) in selectedGroupList"
-                      :key="person.id">{{person.name}} ({{person.count}}人）
+                      :key="person.id">{{person.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delGroupPerson(idx)"></i>
                 </span>
@@ -62,7 +62,7 @@
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
+                      :key="tag.id">{{tag.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -166,7 +166,8 @@
         groupIdStr: '',
         tagIdStr: '',
         totalCountStr: '',
-        countBalance: 0
+        countBalance: 0,
+        clicked: false
       }
     },
     computed: mapState('liveMager', {
@@ -197,16 +198,32 @@
           this.queryEmailInfo(emailId)
         }
       } else {
-        this.totalCountStr = this.emailInfo.sendCount
+        this.totalCountStr = this.emailInfo.expectNum
       }
       this.email.activityId = this.$route.params.id
       this.getLimit()
-      this.queryGroupList().then(this.queryTagList()).then(this.reArrangeList(this.emailInfo.groupIds.split(','), this.emailInfo.tagIds.split(',')))
+      this.initData()
+      // this.queryTagList()
+      // this.$nextTick((res) => {
+      //   this.queryGroupList()
+      // })
+      // this.$nextTick((res) => {
+      //   this.reArrangeList(this.emailInfo.groupIds ? this.emailInfo.groupIds.split(',') : [], this.emailInfo.tagIds ? this.emailInfo.tagIds.split(',') : [])
+      // })
     },
     methods: {
       ...mapMutations('liveMager', {
         storeEmailInfo: types.EMAIL_INFO
       }),
+      async initData () {
+        await this.queryTagList()
+        await this.queryGroupList()
+        await this.reArrangeList(this.emailInfo.groupIds ? this.emailInfo.groupIds.split(',') : [], this.emailInfo.tagIds ? this.emailInfo.tagIds.split(',') : [])
+      },
+      chooseGroup () {
+        this.selectPersonShow = true
+        this.clicked = true
+      },
       /* 清除错误信息 */
       clearError () {
         if (this.email.planTime) {
@@ -247,7 +264,7 @@
         }).then((res) => {
           this.email = res.data
           this.storeEmailInfo(this.email)
-          this.totalCountStr = this.emailInfo.sendCount
+          this.totalCountStr = this.emailInfo.expectNum
         })
       },
       /* enter搜索 */
@@ -257,6 +274,7 @@
       /* 点击确定 */
       okSelectList () {
         this.selectPersonShow = false
+        this.email.change = 1
         if (this.email.groupIds) {
           this.errorMsg.groupIds = ''
         }
@@ -375,15 +393,17 @@
       delGroupPerson (idx) {
         const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
         this.groupList[delIdx].isChecked = false
+        this.email.change = 1
       },
       // 标签
       delTagPerson (idx) {
         const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
         this.tagList[delIdx].isChecked = false
+        this.email.change = 1
       },
       // 查询群组
-      async queryGroupList (keyword) {
-        await this.$get(userManage.GET_GROUP_LIST, {
+      queryGroupList (keyword) {
+        return this.$get(userManage.GET_GROUP_LIST, {
           keyword: keyword,
           not_empty_field: 'email'
         }).then((res) => {
@@ -401,8 +421,8 @@
         })
       },
       /* 查询标签 */
-      async queryTagList (key) {
-        await this.$get(userManage.GET_TAG_LIST, {
+      queryTagList (key) {
+        return this.$get(userManage.GET_TAG_LIST, {
           keyword: key
         }).then((res) => {
           let temArray = []
@@ -429,7 +449,9 @@
         this.email.tagIds = idStr // 标签id
       },
       totalCount (res) {
-        this.totalCountStr = res
+        if (this.clicked) {
+          this.totalCountStr = res
+        }
       },
       reArrangeList (group, tag) {
         this.groupList.forEach((item, idx) => {

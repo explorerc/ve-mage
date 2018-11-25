@@ -72,30 +72,33 @@ export default {
   display: inline-block;
   position: relative;
   line-height: 1.5;
-  background: #fff;
   padding: 16px 20px;
   border-radius: 4px;
   width: 380px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-size: 16px;
   z-index: 3000;
+  background-color: #333;
+  opacity: .9;
   .header {
     color: rgba(0, 0, 0, 0.85);
     .title {
       display: inline-block;
       margin-bottom: 8px;
+      color: #fff;
     }
     .icon-close {
       position: absolute;
       cursor: pointer;
       top: 14px;
       right: 20px;
+      color: #fff;
     }
   }
   .content {
-    color: rgba(0, 0, 0, 0.65);
     padding: 0;
     font-size: 14px;
+    color: #fff;
   }
 }
 </style>

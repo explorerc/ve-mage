@@ -3,9 +3,10 @@
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
     <div class="edit-msg-page live-mager"
-         @mousedown="canPass = false">
+         @keydown="canPass = false">
       <div class="live-title">
         <span class="title">创建短信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">
@@ -23,7 +24,8 @@
             <div class="from-title">接收人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver'
-                         @click='selectPersonShow=true'>选择收信人</el-button>
+                         @click='chooseReceiver'>选择收信人</el-button>
+                         <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -31,7 +33,7 @@
                                 v-if="selectedGroupList.length">
                 <span class="list-item"
                       v-for="(person,idx) in selectedGroupList"
-                      :key="person.id">{{person.name}} ({{person.count}}人）
+                      :key="person.id">{{person.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delGroupPerson(idx)"></i>
                 </span>
@@ -43,7 +45,7 @@
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
+                      :key="tag.id">{{tag.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -125,7 +127,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
+      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn" @totalCount="totalCount"></choose-group>
     </div>
     <!-- 测试发送弹窗 -->
     <com-test v-if='testModal'
@@ -140,6 +142,7 @@
 <script>
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
+import activityService from 'src/api/activity-service'
 import chooseGroup from '../com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
@@ -202,10 +205,15 @@ export default {
       canPass: true,
       saveDisabled: false,
       groupIdStr: '',
-      tagIdStr: ''
+      tagIdStr: '',
+      changed: 0,
+      countBalance: 0,
+      sendBalance: 0,
+      clicked: false
     }
   },
   created () {
+    this.getLimit()
     this.queryGroupList()
     this.queryTagList()
     if (this.inviteId) {
@@ -217,6 +225,7 @@ export default {
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
+        this.sendBalance = res.data.expectNum
         setTimeout(() => {
           this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
         }, 500)
@@ -240,6 +249,7 @@ export default {
       this.saveDisabled = true
       this.canPass = true
       let data = {
+        change: this.changed,
         inviteId: this.inviteId,
         activityId: this.$route.params.id,
         title: this.titleValue,
@@ -298,6 +308,7 @@ export default {
     },
     /* 点击确定 */
     okSelectList () {
+      this.changed = 1
       this.selectPersonShow = false
     },
     /* 点击取消 */
@@ -308,11 +319,13 @@ export default {
     delGroupPerson (idx) {
       const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
       this.groupList[delIdx].isChecked = false
+      this.changed = 1
     },
     // 标签
     delTagPerson (idx) {
       const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
       this.tagList[delIdx].isChecked = false
+      this.changed = 1
     },
     // 查询群组
     queryGroupList (keyword) {
@@ -383,6 +396,25 @@ export default {
           }
         })
       })
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.activitId,
+        type: 'SMS'
+      }).then((res) => {
+        console.log(res)
+        this.countBalance = res.data.balance
+      })
+    },
+    totalCount (res) {
+      if (this.clicked) {
+        this.sendBalance = res
+      }
+    },
+    chooseReceiver () {
+      this.selectPersonShow = true
+      this.clicked = true
     },
     /* 验证 */
     formValid () {

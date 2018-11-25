@@ -5,6 +5,7 @@
     <div class="overview-wx-page live-mager">
       <div class="live-title">
         <span class="title">短信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">
@@ -17,8 +18,8 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
-              <template v-for="(item,idx) in selectedTagList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedTagList.length">、</template></template>
+              <template v-for="(item,idx) in selectedGroupList">{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
+              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template>（合计{{expectNum}}人）
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
@@ -47,7 +48,7 @@
         </div>
         <div class="btn-group">
           <!-- <router-link><router-link :to="{name:'promoteMsg',params:{id:activityId}}">返回</router-link></router-link> -->
-          <router-link  v-if="status !== 'SEND' && type === 'PREPARE'" :to="{name:'msgEdit',params:{id:activityId},query:{id:id}}"><el-button class='default-button'
+          <router-link  v-if="status !== 'SEND' && type === 'PREPARE'" :to="{name:'msgCreate',params:{id:activityId},query:{id:id}}"><el-button class='default-button'
                     >编辑短信</el-button></router-link>
           <el-button class='primary-button'
                      v-if="status === 'SEND'"
@@ -91,29 +92,20 @@ export default {
       selectedTagList: [],
       groupList: [],
       tagList: [],
-      sendDetail: false
+      sendDetail: false,
+      expectNum: 0
     }
   },
   created () {
     this.queryInfo()
-    this.queryTagList().then(this.queryGroupList()).then(() => {
-      this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
-        inviteId: this.id
-      }).then((res) => {
-        this.group = res.data.groupId
-        this.tag = res.data.tagId
-        this.title = res.data.title
-        this.status = res.data.status
-        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
-        this.msgTag = res.data.signature
-        this.msgContent = res.data.desc
-        // this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
-        this.reArrangeList(res.data.groupId.split(','), 'group')
-        this.reArrangeList(res.data.tagId.split(','), 'tag')
-      })
-    })
+    this.initData()
   },
   methods: {
+    async initData () {
+      await this.queryTagList()
+      await this.queryGroupList()
+      await this.queryMsgInfo()
+    },
     sendNow () {
       this.$post(noticeService.POST_SEND_MSG, {
         inviteId: this.id
@@ -133,8 +125,8 @@ export default {
       })
     },
     // 查询群组
-    async queryGroupList (keyword) {
-      await this.$get(userManage.GET_GROUP_LIST).then((res) => {
+    queryGroupList (keyword) {
+      return this.$get(userManage.GET_GROUP_LIST).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
@@ -148,8 +140,8 @@ export default {
       })
     },
     /* 查询标签 */
-    async queryTagList (key) {
-      await this.$get(userManage.GET_TAG_LIST, {
+    queryTagList (key) {
+      return this.$get(userManage.GET_TAG_LIST, {
         activityId: this.$route.params.id
       }).then((res) => {
         let temArray = []
@@ -192,6 +184,23 @@ export default {
           })
         })
       }
+    },
+    queryMsgInfo () {
+      return this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
+        inviteId: this.id
+      }).then((res) => {
+        this.group = res.data.groupId
+        this.tag = res.data.tagId
+        this.title = res.data.title
+        this.status = res.data.status
+        this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
+        this.msgTag = res.data.signature
+        this.msgContent = res.data.desc
+        this.expectNum = res.data.expectNum
+        // this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
+        this.reArrangeList(res.data.groupId.split(','), 'group')
+        this.reArrangeList(res.data.tagId.split(','), 'tag')
+      })
     },
     // reArrangeList (arr, tag) {
     //   this.groupList.forEach((item, idx) => {

@@ -7,7 +7,7 @@
       <com-back :class='"back-btn"'></com-back>
       <button class="primary-button fr"
               style="margin-top: 10px;"
-              @click="addVideoClickShow" v-if="playBackList.length">添加视频
+              @click="addVideoClickShow" >添加视频
       </button>
     </div>
     <transition name="fade">
@@ -29,7 +29,6 @@
       </div>
     </transition>
     <div class="list-box">
-      <template v-if="playBackList.length">
         <div class="list-header">
           <nav class="table-nav">
             <span :class="{active:navIdx===0}"
@@ -40,6 +39,7 @@
           <ve-msg-tips tip='您可以根据需要从回放片段或视频中设置默认回放'></ve-msg-tips>
         </div>
         <div class="table-list-box">
+          <template v-if="playBackList.length">
           <el-table :data="playBackList"
                     style="width: 100%">
             <!--<el-table-column-->
@@ -124,16 +124,21 @@
                             @changePage="changePage"/>
             </div>
           </div>
+          </template>
+          <template v-else>
+            <div class="empty-box">
+              <p class="img"></p>
+              <template v-if="navIdx == 0">
+                <p class='title'>暂无回放</p>
+                <p class='desc'>直播结束后系统会自动生成回放</p>
+                <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
+              </template>
+              <template v-else>
+                <p class='title'>您还没有添加视频，快去添加吧</p>
+              </template>
+            </div>
+          </template>
         </div>
-      </template>
-      <template v-else>
-        <div class="empty-box">
-          <p class="img"></p>
-          <p class='title'>您还没有添加回放视频，快去添加吧</p>
-          <!-- <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p> -->
-          <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
-        </div>
-      </template>
     </div>
     <!-- 重命名 -->
     <message-box v-show="renameShow"
@@ -529,10 +534,8 @@
         }).then((res) => {
           playBack.status = 'PROCESS'
           this.$toast({
-            header: `提示`,
             content: '开始重新生成回放',
-            autoClose: 2000,
-            position: 'top-center'
+            position: 'center'
           })
         })
       },
@@ -810,6 +813,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      vertical-align: middle;
     }
   }
 </style>
