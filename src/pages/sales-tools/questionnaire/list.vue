@@ -1,16 +1,14 @@
 <template>
   <div class="v-list">
-    <div class="v-list-title">
+    <div class="v-list-title clearfix">
       <span class="title">问卷</span>
-    </div>
-    <div class="v-tbns clearfix">
       <com-back :class='"back-btn"' :url="`/liveMager/detail/${activityId}`"></com-back>
       <template  v-if="tableData.length">
         <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
         <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
 
         </a> -->
-        <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}`">查看数据</router-link>
+        <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}#questions`">查看数据</router-link>
       </template>
     </div>
     <div class="v-table">
@@ -22,7 +20,7 @@
                 问卷名称
               </td>
               <td>
-                问卷数量
+                问题数量
               </td>
               <td>
                 是否推送
@@ -285,14 +283,11 @@ export default {
   .v-list-title {
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
+    margin: 30px 0;
     span.title {
       display: inline-block;
       font-size: 24px;
     }
-  }
-  .v-tbns {
-    width: 100%;
-    margin-bottom: 30px;
     a {
       float: right;
       width: 120px;
@@ -321,6 +316,9 @@ export default {
         border-color: #eec11a;
         color: #222;
       }
+    }
+    .default-button {
+      line-height: 38px;
     }
   }
   .v-table {

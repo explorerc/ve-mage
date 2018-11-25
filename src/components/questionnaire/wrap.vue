@@ -179,6 +179,10 @@ export default {
   border-radius: 4px;
   border: 1px solid #d2d2d2;
   overflow: hidden;
+  &.sortable-chosen {
+    border-top: 1px solid #4b5afe !important;
+    border-color: #4b5afe;
+  }
   /deep/ {
     .el-radio + .el-radio {
       margin-left: 0;
