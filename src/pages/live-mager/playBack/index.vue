@@ -128,9 +128,14 @@
           <template v-else>
             <div class="empty-box">
               <p class="img"></p>
-              <p class='title'>您还没有添加视频，快去添加吧</p>
-              <p class='desc'>直播结束后系统会自动生成回放</p>
-              <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
+              <template v-if="navIdx == 0">
+                <p class='title'>暂无回放</p>
+                <p class='desc'>直播结束后系统会自动生成回放</p>
+                <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
+              </template>
+              <template v-else>
+                <p class='title'>您还没有添加视频，快去添加吧</p>
+              </template>
             </div>
           </template>
         </div>
@@ -529,10 +534,8 @@
         }).then((res) => {
           playBack.status = 'PROCESS'
           this.$toast({
-            header: `提示`,
             content: '开始重新生成回放',
-            autoClose: 2000,
-            position: 'top-center'
+            position: 'center'
           })
         })
       },

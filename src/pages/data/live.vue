@@ -113,7 +113,7 @@
         </div>
         <div class="item-box hd-data-item fr live-item live-item04">
           <span class="hd-title">红包雨</span>
-          <div class="hd-data">
+          <div class="hd-data" style="margin-left: 30px;">
             <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
             <span>参与人数</span>
           </div>
@@ -122,7 +122,7 @@
             <span>领取人数</span>
           </div>
           <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">￥{{interactCountData.redBag.money}}</span>
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.money}}</span>
             <span>领取金额</span>
           </div>
         </div>
@@ -163,10 +163,16 @@
       </div>
       <div class="chart-box">
         <div class="chart-container">
-          <div class="chart-box" style="width: 100%;">
+          <div class="chart-box" style="width: 100%;position: relative;">
             <p class="title">
               <ve-title width="200px" title="互动工具参与趋势图" tip="查看直播中主持人使用互动工具的情况以及观众的参与情况"></ve-title>
             </p>
+            <div class="lenge-box">
+              <span>红包</span>
+              <span>问卷</span>
+              <span>卡片</span>
+              <span>商品推荐</span>
+            </div>
             <div class="chart-item" id="chart04" style="height: 400px;"></div>
           </div>
         </div>
@@ -788,33 +794,36 @@ export default {
             barWidth: '40',
             data: res.data.interact
           })
-          serveDatas.push({
-            name: res.data.viewer.name,
-            type: 'line',
-            data: res.data.viewer.dataList || [0]
-          })
+          // serveDatas.push({
+          //   name: res.data.viewer.name,
+          //   type: 'line',
+          //   data: res.data.viewer.dataList || [0]
+          // })
           chartDatas = {
             xAxis: res.data.xAxis,
             list: serveDatas
           }
+          // 互动工具参与趋势图（PV、UV）
+          this.hdChart = barAndLine('chart04', chartDatas, {
+            left: 48,
+            top: 20,
+            bottom: 20
+          })
         } else {
-          chartDatas = {
-            xAxis: [''],
-            list: [
-              {
-                name: '观众人数',
-                type: 'line',
-                data: [0]
-              }
-            ]
-          }
+          this.hdChart = barAndLine('chart04', {
+            xAxis: ['0'],
+            list: [{
+              name: '',
+              type: 'bar',
+              barWidth: '40',
+              data: 0
+            }]
+          }, {
+            left: 48,
+            top: 20,
+            bottom: 20
+          })
         }
-        // 互动工具参与趋势图（PV、UV）
-        this.hdChart = barAndLine('chart04', chartDatas, {
-          left: 48,
-          top: 20,
-          bottom: 20
-        })
       })
     },
     closeMesssageBox () {
@@ -877,6 +886,38 @@ export default {
       height: 110px;
       .hd-title {
         margin-top: 20px;
+      }
+    }
+  }
+  .lenge-box {
+    position: absolute;
+    top: 54px;
+    right: 22px;
+    span {
+      display: inline-block;
+      color: #555;
+      font-size: 12px;
+      margin-right: 10px;
+      &:before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 13px;
+        border-radius: 2px;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      &:nth-child(1):before {
+        background-color: #FFD021;
+      }
+      &:nth-child(2):before {
+        background-color: #63C8F5;
+      }
+      &:nth-child(3):before {
+        background-color: #FD9130;
+      }
+      &:nth-child(4):before {
+        background-color: #AFADAE;
       }
     }
   }

@@ -18,8 +18,8 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
-              <template v-for="(item,idx) in selectedTagList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedTagList.length">、</template></template>
+              <template v-for="(item,idx) in selectedGroupList">{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
+              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template> （合计{{expectNum}}人）
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
@@ -95,7 +95,8 @@ export default {
       selectedGroupList: [],
       selectedTagList: [],
       groupList: [],
-      tagList: []
+      tagList: [],
+      expectNum: 0
     }
   },
   created () {
@@ -110,6 +111,7 @@ export default {
         this.status = res.data.status
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.wxContent = res.data.desc
+        this.expectNum = res.data.expectNum
         setTimeout(() => {
           this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
         }, 500)

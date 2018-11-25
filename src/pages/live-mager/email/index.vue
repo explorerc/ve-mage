@@ -233,7 +233,7 @@ export default {
     },
     queryInfoEmail () {
       const email = this.emailList[this.currentEmailIdx]
-      this.storeEmailInfo(email)
+      // this.storeEmailInfo(email)
       this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
     },
     sendEmail () {
@@ -300,7 +300,7 @@ export default {
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
 .back-btn {
-  margin: 0 0 0 10px;
+  margin: 0 0 0 10px !important;
 }
 .email-table-box {
   font-size: 14px;
