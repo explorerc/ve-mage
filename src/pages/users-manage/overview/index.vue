@@ -179,7 +179,11 @@ export default {
       let arr = this.info.userLevel
       for (let i = 0; i < arr.length; i++) {
         this.uersInfo[i].val = arr[i]
-        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+        if (this.info.total > 0) {
+          this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+        } else {
+          this.uersInfo[i].centage = 0
+        }
       }
     }).catch(err => {
       this.$messageBox({

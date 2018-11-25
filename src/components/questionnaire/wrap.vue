@@ -33,7 +33,7 @@
            v-if="edit">
         <a v-if="showAddItem"
            class="add-select-item"
-           @click="addItem">添加选项</a>
+           @click="addItem"><i data-v-d1ee2774="" class="iconfont icon-tianjia"></i>添加选项</a>
         <span v-if="!(value.detail&&value.detail.format==='phone')"
               class="required-des">必填</span>
         <el-switch class='switch'
@@ -182,6 +182,15 @@ export default {
   &.sortable-chosen {
     border-top: 1px solid #4b5afe !important;
     border-color: #4b5afe;
+    .sort {
+      color: #4b5afe;
+    }
+  }
+  .sort,
+  .del {
+    &:hover {
+      color: #4b5afe;
+    }
   }
   /deep/ {
     .el-radio + .el-radio {
@@ -261,6 +270,14 @@ export default {
           float: left;
           cursor: pointer;
           margin-top: 6px;
+          &:hover {
+            color: #4b5afe;
+          }
+          i {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 5px;
+          }
         }
         .required-des {
           display: inline-block;
