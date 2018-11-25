@@ -233,7 +233,7 @@ export default {
     },
     queryInfoEmail () {
       const email = this.emailList[this.currentEmailIdx]
-      this.storeEmailInfo(email)
+      // this.storeEmailInfo(email)
       this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
     },
     sendEmail () {
