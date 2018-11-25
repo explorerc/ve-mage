@@ -1,6 +1,8 @@
 <template>
   <div id="goods-info">
-    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息<com-back :class='"back-btn"'></com-back></header>
+    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息
+      <com-back :class='"back-btn"'></com-back>
+    </header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
@@ -99,13 +101,27 @@
           }
         }, 500)
       }
-      let valicxjg = (rule, value, callback) => {
+      let price = (rule, value, callback) => {
+        if (typeof value === 'number') {
+          if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+            return callback(new Error('价格最多为小数点后两位'))
+          }
+        } else {
+          return callback(new Error('请输入原始价格'))
+        }
+      }
+      let preferential = (rule, value, callback) => {
+        // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+        //   value = String(value).slice(0, String(value).indexOf('.') + 3)
+        // }
         if (typeof value === 'number') {
           let maxV = this[rule.obj].price
           if (value && value < 0) {
             return callback(new Error('商品促销价格不能小于0'))
           } else if (value && maxV && value >= maxV) {
             return callback(new Error('优惠价格需小于原始价格'))
+          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
+            return callback(new Error('优惠价格最多为小数点后两位'))
           } else if (value && !maxV) {
             return callback(new Error('请先填写原始价格'))
           } else {
@@ -132,6 +148,14 @@
           return callback(new Error('请上传图片'))
         }
       }
+      // let url = (rule, value, callback) => {
+      //   let isHave = value.includes('http') || value.includes('https')
+      //   if (!isHave) {
+      //     return callback(new Error('请输入有效的商品链接以http或https开头'))
+      //   } else {
+      //     return callback()
+      //   }
+      // }
       return {
         isShowMsgB: true,
         errTitle: '',
@@ -152,14 +176,16 @@
           ],
           price: [
             { required: true, type: 'number', message: '请输入原始价格', trigger: 'blur' },
-            { type: 'number', min: 0, max: 999999, message: '原始价格应大于0小于999999', trigger: 'blur' }
+            { type: 'number', min: 0, max: 999999, message: '原始价格应大于0小于999999', trigger: 'blur' },
+            { validator: price }
           ],
           preferential: [
-            { validator: valicxjg, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
+            { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           url: [
-            { required: true, type: 'url', message: '请输入商品链接', trigger: 'blur' },
+            { required: true, type: 'url', message: '请输入有效的商品链接以http或https开头', trigger: 'blur' },
             { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
+            // { validator: url, type: 'url' }
           ],
           imageList: [
             { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
@@ -232,7 +258,7 @@
               return false
             }
           })
-        }, 400)
+        }, 100)
       },
       resetForm (formName) {
         this.$messageBox({
@@ -282,138 +308,140 @@
 </script>
 
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
-.back-btn {
-  margin: 0;
-  position: relative;
-  bottom: 10px;
-}
-#goods-info {
-  padding: 50px 100px;
-  font-family: PingFangSC-Regular;
-  /deep/ {
-    header {
-      height: 26px;
-      font-size: 24px;
-      font-weight: 400;
-      color: rgba(34, 34, 34, 1);
-      line-height: 26px;
-      margin-bottom: 25px;
-    }
-    .el-form {
-      padding: 40px 80px;
-      border: 1px solid #eee;
-      background-color: white;
-      .el-form-item:nth-of-type(1) {
-        .el-form-item__content {
-          width: 460px;
+  @import '~assets/css/mixin.scss';
+
+  .back-btn {
+    margin: 0;
+    position: relative;
+    bottom: 10px;
+  }
+
+  #goods-info {
+    padding: 50px 100px;
+    font-family: PingFangSC-Regular;
+    /deep/ {
+      header {
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 26px;
+        margin-bottom: 25px;
+      }
+      .el-form {
+        padding: 40px 80px;
+        border: 1px solid #eee;
+        background-color: white;
+        .el-form-item:nth-of-type(1) {
+          .el-form-item__content {
+            width: 460px;
+          }
+        }
+        .el-form-item:nth-of-type(2),
+        .el-form-item:nth-of-type(3) {
+          width: 400px;
+        }
+        /*.el-form-item:last-of-type {*/
+        /*text-align: center;*/
+        /*}*/
+        .inupt_textarea {
+          width: 760px;
+          height: 120px;
+          .limit.area {
+            right: 12px;
+            bottom: 10px;
+          }
+        }
+        .inupt_text {
+          width: 440px;
+        }
+        .a_unit {
+          overflow: hidden;
+          width: 250px;
+          .el-input {
+            width: 200px;
+            float: left;
+          }
+          span {
+            display: inline-block;
+            width: 40px;
+            float: right;
+            text-align: left;
+          }
+        }
+        .slot_inp_b {
+          .el-input__inner {
+            padding-right: 60px;
+          }
+        }
+        .el-input-group__append {
+          width: 60px;
+          transform: translateX(-61px);
+          text-align: center;
+          border: transparent;
+          background-color: transparent;
+          padding: 0;
         }
       }
-      .el-form-item:nth-of-type(2),
-      .el-form-item:nth-of-type(3) {
-        width: 400px;
-      }
-      /*.el-form-item:last-of-type {*/
-      /*text-align: center;*/
-      /*}*/
-      .inupt_textarea {
-        width: 760px;
-        height: 120px;
-        .limit.area {
-          right: 12px;
-          bottom: 10px;
-        }
-      }
-      .inupt_text {
-        width: 440px;
-      }
-      .a_unit {
-        overflow: hidden;
-        width: 250px;
-        .el-input {
-          width: 200px;
-          float: left;
-        }
-        span {
+      .upload_box {
+        position: relative;
+        &::before {
+          content: '';
+          width: 32px;
+          height: 35px;
           display: inline-block;
-          width: 40px;
-          float: right;
-          text-align: left;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 100;
+          background-image: url('~assets/image/index-img.png');
+          background-size: cover;
         }
-      }
-      .slot_inp_b {
-        .el-input__inner {
-          padding-right: 60px;
-        }
-      }
-      .el-input-group__append {
-        width: 60px;
-        transform: translateX(-61px);
-        text-align: center;
-        border: transparent;
-        background-color: transparent;
-        padding: 0;
-      }
-    }
-    .upload_box {
-      position: relative;
-      &::before {
-        content: '';
-        width: 32px;
-        height: 35px;
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        background-image: url('~assets/image/index-img.png');
-        background-size: cover;
-      }
-      /* > i {
-           width: 32px;
-           height: 35px;
-           display: inline-block;
-           position: absolute;
-           top: 0;
-           left: 0;
-           z-index: 100;
-           background-image: url("~assets/image/index-img.png");
-           background-size: cover;
-         }*/
-      .ve-upload-box {
-        width: 140px;
-        height: 140px;
-        margin: auto 20px auto 0;
-        display: inline-block;
-        .upload-img-box {
+        /* > i {
+             width: 32px;
+             height: 35px;
+             display: inline-block;
+             position: absolute;
+             top: 0;
+             left: 0;
+             z-index: 100;
+             background-image: url("~assets/image/index-img.png");
+             background-size: cover;
+           }*/
+        .ve-upload-box {
           width: 140px;
           height: 140px;
-        }
-        .over-upload {
-          width: 140px;
-        }
-        .com-upload {
-          width: 100%;
-          .upload-file-box {
+          margin: auto 20px auto 0;
+          display: inline-block;
+          .upload-img-box {
+            width: 140px;
+            height: 140px;
+          }
+          .over-upload {
+            width: 140px;
+          }
+          .com-upload {
             width: 100%;
-            .upload-icon {
-              margin: 10px auto 5px auto;
-            }
-            span {
-              display: inline-block;
-              /*margin: auto 5px;*/
-              color: #cccccc;
-              font-size: 12px;
+            .upload-file-box {
+              width: 100%;
+              .upload-icon {
+                margin: 10px auto 5px auto;
+              }
+              span {
+                display: inline-block;
+                /*margin: auto 5px;*/
+                color: #cccccc;
+                font-size: 12px;
+              }
             }
           }
         }
-      }
-      > span {
-        font-size: 30px;
-        transform: translateY(-60px);
-        color: #999999;
+        > span {
+          font-size: 30px;
+          transform: translateY(-60px);
+          color: #999999;
+        }
       }
     }
   }
-}
 </style>
