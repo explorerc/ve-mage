@@ -118,7 +118,7 @@ export default {
       })
     },
     queryInfo () {
-      this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+      this.$get(activityService.GET_WEBINAR_INFO, {
         id: this.$route.params.id
       }).then((res) => {
         this.type = res.data.status
@@ -186,7 +186,7 @@ export default {
       }
     },
     queryMsgInfo () {
-      return this.$config({ loading: true }).$get(noticeService.GET_QUERY_MSG, {
+      return this.$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.id
       }).then((res) => {
         this.group = res.data.groupId
