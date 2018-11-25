@@ -529,10 +529,8 @@
         }).then((res) => {
           playBack.status = 'PROCESS'
           this.$toast({
-            header: `提示`,
             content: '开始重新生成回放',
-            autoClose: 2000,
-            position: 'top-center'
+            position: 'center'
           })
         })
       },
