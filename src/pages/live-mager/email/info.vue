@@ -2,6 +2,7 @@
   <div class="live-mager edit-step-box">
     <div class="live-title">
       <span class="title">查看邮件</span>
+      <com-back :class='"back-btn"'></com-back>
     </div>
     <div class="tip-box">
       通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
@@ -139,16 +140,18 @@ export default {
   },
   created () {
     // 如果vuex可以取到值就return
-    if (this.email.emailInviteId) {
-      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : ''
-      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : ''
-      this.queryTagList().then(this.queryGroupList()).then(() => {
-        setTimeout(() => {
-          this.reArrangeList(listStr.split(','), tagStr.split(','))
-        }, 500)
-      })
-      return false
-    }
+    // if (this.email.emailInviteId) {
+    //   debugger
+    //   const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : ''
+    //   const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : ''
+    //   this.queryTagList().then(this.queryGroupList()).then(() => {
+    //     setTimeout(() => {
+    //       this.reArrangeList(listStr.split(','), tagStr.split(','))
+    //     }, 500)
+    //   })
+    //   return false
+    // }
+    // debugger
     // 如果vuex不能取到值就查询接口
     const queryId = this.$route.params.id
     if (!queryId) {
