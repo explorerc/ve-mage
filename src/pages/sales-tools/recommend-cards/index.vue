@@ -5,7 +5,8 @@
       <com-back :url="`/liveMager/detail/${activityId}`" :class='"back-btn"'></com-back>
       <div class="top-bar clearfix" v-if="tableData.length>0">
         <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
-        <el-button class='btn more' round v-if="status !== 'PREPARE'"><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
+        <el-button class='btn more' round :disabled="true" v-if="status == 'PREPARE'">查看活动数据</el-button>
+        <el-button class='btn more' round v-else><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
       </div>
     </div>
     <div class="content from-box">
