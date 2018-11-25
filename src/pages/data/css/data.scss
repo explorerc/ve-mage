@@ -139,6 +139,10 @@
       &:before{
         background-color: #FFD021;
       }
+      .hd-data{
+        text-indent: 0;
+        width: calc(33.3333% - 10px);
+      }
     }
     .live-item05{
       &:before{
