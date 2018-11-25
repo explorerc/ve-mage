@@ -18,8 +18,8 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
-              <template v-for="(item,idx) in selectedTagList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedTagList.length">、</template></template>
+              <template v-for="(item,idx) in selectedGroupList">{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
+              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template>（合计{{expectNum}}人）
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
@@ -92,7 +92,8 @@ export default {
       selectedTagList: [],
       groupList: [],
       tagList: [],
-      sendDetail: false
+      sendDetail: false,
+      expectNum: 0
     }
   },
   created () {
@@ -195,6 +196,7 @@ export default {
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgTag = res.data.signature
         this.msgContent = res.data.desc
+        this.expectNum = res.data.expectNum
         // this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
         this.reArrangeList(res.data.groupId.split(','), 'group')
         this.reArrangeList(res.data.tagId.split(','), 'tag')
