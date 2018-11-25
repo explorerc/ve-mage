@@ -1,5 +1,6 @@
 <template>
-  <div class="v-questionaire" @mousedown="canPaas = false">
+  <div class="v-questionaire"
+       @mousedown="canPaas = false">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
       <!-- <com-back :class='"back-btn"'></com-back> -->
@@ -15,23 +16,23 @@
               </p>
               <ul>
                 <li :class="{disabled:!base.name}"
-                    @click="addQuestion('name')">姓名</li>
+                    @click="addQuestion('name')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>姓<span></span>名</li>
                 <li :class="{disabled:!base.phone}"
-                    @click="addQuestion('phone')">手机号</li>
+                    @click="addQuestion('phone')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>手机号</li>
                 <li :class="{disabled:!base.email}"
-                    @click="addQuestion('email')">邮箱</li>
+                    @click="addQuestion('email')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>邮<span></span>箱</li>
                 <li :class="{disabled:!base.sex}"
-                    @click="addQuestion('sex')">性别</li>
+                    @click="addQuestion('sex')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>性<span></span>别</li>
                 <li :class="{disabled:!base.birth}"
-                    @click="addQuestion('birth')">生日</li>
+                    @click="addQuestion('birth')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>生<span></span>日</li>
                 <li :class="{disabled:!base.area}"
-                    @click="addQuestion('area')">地域</li>
+                    @click="addQuestion('area')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>地<span></span>域</li>
                 <li :class="{disabled:!base.industry}"
-                    @click="addQuestion('industry')">行业</li>
+                    @click="addQuestion('industry')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>行<span></span>业</li>
                 <li :class="{disabled:!base.position}"
-                    @click="addQuestion('position')">职位</li>
+                    @click="addQuestion('position')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>职<span></span>位</li>
                 <li :class="{disabled:!base.edu}"
-                    @click="addQuestion('edu')">教育水平</li>
+                    @click="addQuestion('edu')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>教育水平</li>
               </ul>
             </div>
             <div class="v-selects">
@@ -39,10 +40,10 @@
                 题型
               </p>
               <ul>
-                <li @click="addQuestion('radio')">单选题</li>
-                <li @click="addQuestion('checkbox')">多选题</li>
-                <li @click="addQuestion('select')">下拉题</li>
-                <li @click="addQuestion('text')">问答题</li>
+                <li @click="addQuestion('radio')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>单选题</li>
+                <li @click="addQuestion('checkbox')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>多选题</li>
+                <li @click="addQuestion('select')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>下拉题</li>
+                <li @click="addQuestion('text')"><i data-v-d1ee2774="" class="iconfont icon-wenhao"></i>问答题</li>
               </ul>
             </div>
           </div>
@@ -166,6 +167,7 @@
 </template>
 
 <script>
+import EventBus from 'src/utils/eventBus'
 import draggable from 'vuedraggable'
 import question from 'components/questionnaire/wrap'
 import questions from '../questionnaire/components/questions'
@@ -233,6 +235,22 @@ export default {
         }
       }
     })
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '问卷列表',
+      url: `/salesTools/questionnaire/list/${this.activityId}`
+    }, {
+      title: '编辑问卷'
+    }])
   },
   mounted () {
     if (this.questionId && this.activityId) {
@@ -896,7 +914,7 @@ export default {
         border: 1px solid #e2e2e2;
         background-color: #fff;
         border-radius: 4px;
-        padding: 32px 30px;
+        padding: 32px 22px;
         // overflow: hidden;
         .v-selects {
           ul {
@@ -904,18 +922,28 @@ export default {
             overflow: hidden;
           }
           li {
-            width: 95px;
+            width: 110px;
             height: 38px;
             margin-right: 32px;
             margin-bottom: 15px;
             float: left;
             line-height: 38px;
-            text-align: center;
+            text-align: left;
+            padding-left: 15px;
             border-radius: 4px;
             border: 1px solid #dadada;
             cursor: pointer;
             &:nth-child(2n) {
               margin-right: 0;
+            }
+            i {
+              display: inline-block;
+              margin-right: 5px;
+            }
+            span {
+              display: inline-block;
+              width: 17px;
+              height: 1px;
             }
           }
         }

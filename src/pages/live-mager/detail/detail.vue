@@ -15,36 +15,63 @@
       </div>
       <div class="middle">
         <p class='title'>{{title}} <span class='id-tag'>ID:{{activityId}} <i @click='copy("copyId")'></i></span></p>
-              <input type="text" :value="`${this.activityId}`" id="copyId"
-                     style="position:absolute;opacity:0;">
+        <input type="text"
+               :value="`${this.activityId}`"
+               id="copyId"
+               style="position:absolute;opacity:0;">
         <p class='desc-label'>活动标签: <span class="tag"
-                                          v-for="item in tagList">{{item.name}}</span></p>
+                v-for="item in tagList">{{item.name}}</span></p>
         <p class='desc-label'>开播时间: {{startTime}}</p>
         <p class="desc-label tool">活动状态:
-          <el-switch class='switch' v-model="isPublished" :active-text="isPublished ? '已发布' : '未发布' "
-                     inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchActive"></el-switch>
-          <span v-if="isPublished" class='link-box' @mouseover="showLinkBox = true"
+          <el-switch class='switch'
+                     v-model="isPublished"
+                     :active-text="isPublished ? '已发布' : '未发布' "
+                     inactive-color="#DEE1FF"
+                     :width="32"
+                     active-color="#FFD021"
+                     @change="switchActive"></el-switch>
+          <span v-if="isPublished"
+                class='link-box'
+                @mouseover="showLinkBox = true"
                 @mouseout="showLinkBox = false"><i></i>复制链接
-          <ul v-show='showLinkBox'>
-            <li :class="{'isSwitch':!dataBrand[0].switch}">
-              <i class='icon-site'></i>活动官网
-              <router-link v-if="dataBrand[0].switch" :to="`${this.PC_HOST}site/${activityId}`" target="_blank"><el-button
-                size="mini" round>查看</el-button></router-link>
-              <router-link v-else :to="`/liveMager/site/${activityId}`"><el-button size="mini"
-                                                                                   round>开启</el-button></router-link>
-              <el-button v-if="dataBrand[0].switch" size="mini" round @click="copy('copyContent2')">复制</el-button>
-              <input type="text" :value='`https:${this.PC_HOST}site/${activityId}`' id="copyContent2"
-                     style="position:absolute;opacity:0;">
-            </li>
-            <li>
-              <i class='icon-guide'></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`"
-                                                           target="_blank"><el-button size="mini"
-                                                                                      round>查看</el-button></router-link> <el-button
-              size="mini" round @click="copy('copyContent')">复制</el-button>
-              <input type="text" :value='`https:${this.PC_HOST}subscribe/${this.activityId}`' id="copyContent"
-                     style="position:absolute;opacity:0;">
-            </li>
-          </ul>
+            <ul v-show='showLinkBox'>
+              <li :class="{'isSwitch':!dataBrand[0].switch}">
+                <i class='icon-site'></i>活动官网
+                <router-link v-if="dataBrand[0].switch"
+                             :to="`${this.PC_HOST}site/${activityId}`"
+                             target="_blank">
+                  <el-button size="mini"
+                             round>查看</el-button>
+                </router-link>
+                <router-link v-else
+                             :to="`/liveMager/site/${activityId}`">
+                  <el-button size="mini"
+                             round>开启</el-button>
+                </router-link>
+                <el-button v-if="dataBrand[0].switch"
+                           size="mini"
+                           round
+                           @click="copy('copyContent2')">复制</el-button>
+                <input type="text"
+                       :value='`https:${this.PC_HOST}site/${activityId}`'
+                       id="copyContent2"
+                       style="position:absolute;opacity:0;">
+              </li>
+              <li>
+                <i class='icon-guide'></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`"
+                             target="_blank">
+                  <el-button size="mini"
+                             round>查看</el-button>
+                </router-link>
+                <el-button size="mini"
+                           round
+                           @click="copy('copyContent')">复制</el-button>
+                <input type="text"
+                       :value='`https:${this.PC_HOST}subscribe/${this.activityId}`'
+                       id="copyContent"
+                       style="position:absolute;opacity:0;">
+              </li>
+            </ul>
           </span>
         </p>
       </div>
@@ -59,7 +86,8 @@
            v-else-if="status === '结束'">直播已结束</p>
         <div class="count-box"
              :style="{'height':countDownstatus ? '0px' : 'auto'}">
-          <com-countdown :endTime.sync="countdownTime" @timeOut='timeOut'>
+          <com-countdown :endTime.sync="countdownTime"
+                         @timeOut='timeOut'>
             <ol class='clearfix'
                 slot='slot1'
                 slot-scope="scoped">
@@ -71,7 +99,8 @@
           </com-countdown>
         </div>
         <el-button class='primary-button'
-                   @click='turnOn' :disabled="overdue">正式直播
+                   @click='turnOn'
+                   :disabled="overdue">正式直播
         </el-button>
       </div>
     </div>
@@ -126,11 +155,13 @@
         <div>
           <!-- <span>准备</span> -->
           <ol>
-            <li v-show="dataPrepare[0].switch" @click="linkTo($event,'/liveMager/edit/')">基本信息</li>
+            <li v-show="dataPrepare[0].switch"
+                @click="linkTo($event,'/liveMager/edit/')">基本信息</li>
             <li v-show="dataPrepare[1].switch"
                 @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">活动报名
             </li>
-            <li v-show="dataPrepare[2].switch" @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">
+            <li v-show="dataPrepare[2].switch"
+                @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">
               暖场设置
             </li>
           </ol>
@@ -138,9 +169,12 @@
         <div>
           <!-- <span>品牌</span> -->
           <ol>
-            <li v-show="dataBrand[0].switch" @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网</li>
-            <li v-show="dataBrand[1].switch" @click="linkTo($event,'/setLiveGuided/')">直播引导页</li>
-            <li v-show="dataBrand[2].switch" @click="linkTo($event,'/setLiveWatch/')">观看页</li>
+            <li v-show="dataBrand[0].switch"
+                @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网</li>
+            <li v-show="dataBrand[1].switch"
+                @click="linkTo($event,'/setLiveGuided/')">直播引导页</li>
+            <li v-show="dataBrand[2].switch"
+                @click="linkTo($event,'/setLiveWatch/')">观看页</li>
           </ol>
         </div>
         <div>
@@ -149,9 +183,12 @@
             <li v-show="dataPromote[0].switch"
                 @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知
             </li>
-            <li v-show="dataPromote[1].switch" @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
-            <li v-show="dataPromote[2].switch" @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知</li>
-            <li v-show="dataPromote[3].switch" @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知</li>
+            <li v-show="dataPromote[1].switch"
+                @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
+            <li v-show="dataPromote[2].switch"
+                @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知</li>
+            <li v-show="dataPromote[3].switch"
+                @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知</li>
           </ol>
         </div>
         <div>
@@ -166,13 +203,15 @@
         <div>
           <!-- <span>回放</span> -->
           <ol>
-            <li v-show="dataRecord[0].switch" @click="linkTo($event,'/liveMager/playBack/')">活动回放</li>
+            <li v-show="dataRecord[0].switch"
+                @click="linkTo($event,'/liveMager/playBack/')">活动回放</li>
           </ol>
         </div>
         <div>
-          <template  v-if="staticTime == '统计中...'">
+          <template v-if="staticTime == '统计中...'">
             <ol title='预告、直播中状态不能进入数据中心'>
-              <li @click="linkTo($event,'/data/preview/')" :class="'disabled'">数据</li>
+              <li @click="linkTo($event,'/data/preview/')"
+                  :class="'disabled'">数据</li>
               <li :class="'disabled'">观众</li>
             </ol>
           </template>
@@ -224,28 +263,32 @@
                   <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === false">开启后收集目标观众信息
                   </template>
                   <!-- 未设置已开启 -->
-                    <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">
-                      暂未设置
-                    </template>
+                  <template v-if="dataPrepare[1].isSet === false && dataPrepare[1].switch === true">
+                    暂未设置
+                  </template>
                   <!-- 已设置已开启 -->
-                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">
-                      已设置活动报名
-                    </template>
+                  <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === true">
+                    已设置活动报名
+                  </template>
                   <!-- 已设置未开启 -->
-                    <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">
-                      已设置活动报名
-                    </template>
-                  </span>
+                  <template v-if="dataPrepare[1].isSet === true && dataPrepare[1].switch === false">
+                    已设置活动报名
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
-              <el-switch class='switch' v-model="dataPrepare[1].switch" inactive-color="#DEE1FF" :width="32"
+              <el-switch class='switch'
+                         v-model="dataPrepare[1].switch"
+                         inactive-color="#DEE1FF"
+                         :width="32"
                          active-color="#FFD021"
                          @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
-          <div class='item wram' @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">
+          <div class='item wram'
+               @click="linkTo($event,'/liveMager/warmField/', dataPrepare[2].switch)">
             <!-- 暖场设置 -->
             <div class="card">
               <div class='pic'>
@@ -254,27 +297,30 @@
               <div class='desc'>
                 <span>暖场设置</span>
                 <span class='des'>
-                    <!-- 未设置未开启 -->
-                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">
-                      为活动设置暖场视频
-                    </template>
+                  <!-- 未设置未开启 -->
+                  <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === false">
+                    为活动设置暖场视频
+                  </template>
                   <!-- 未设置已开启 -->
-                    <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">
-                      暂未设置
-                    </template>
+                  <template v-if="dataPrepare[2].isSet === false && dataPrepare[2].switch === true">
+                    暂未设置
+                  </template>
                   <!-- 已设置已开启 -->
-                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">
-                      {{dataPrepare[2].desc}}
-                    </template>
+                  <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === true">
+                    {{dataPrepare[2].desc}}
+                  </template>
                   <!-- 已设置未开启 -->
-                    <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">
-                      {{dataPrepare[2].desc}}
-                    </template>
-                  </span>
+                  <template v-if="dataPrepare[2].isSet === true && dataPrepare[2].switch === false">
+                    {{dataPrepare[2].desc}}
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
-              <el-switch class='switch' v-model="dataPrepare[2].switch" inactive-color="#DEE1FF" :width="32"
+              <el-switch class='switch'
+                         v-model="dataPrepare[2].switch"
+                         inactive-color="#DEE1FF"
+                         :width="32"
                          active-color="#FFD021"
                          @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare')"></el-switch>
               <!-- <span class='set'>设置</span> -->
@@ -286,7 +332,8 @@
       <div class="item promote">
         <p class='block-separte'>品牌</p>
         <div class="card-list clearfix">
-          <div class='item site' @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">
+          <div class='item site'
+               @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">
             <!-- 活动官网 -->
             <div class="card">
               <div class='pic'>
@@ -298,7 +345,7 @@
                   <template v-if="dataBrand[0].switch">
                     <template>{{dataBrand[0].isSet ? '已设置' : '未设置'}}
                     </template>
-                                      </template>
+                  </template>
 
                   <template v-else>
                     打造活动品牌聚合页面
@@ -307,13 +354,17 @@
               </div>
             </div>
             <div class="btm">
-              <el-switch class='switch' v-model="dataBrand[0].switch" inactive-color="#DEE1FF" :width="32"
+              <el-switch class='switch'
+                         v-model="dataBrand[0].switch"
+                         inactive-color="#DEE1FF"
+                         :width="32"
                          active-color="#FFD021"
                          @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
-          <div class='item guide' @click="linkTo($event,'/setLiveGuided/')">
+          <div class='item guide'
+               @click="linkTo($event,'/setLiveGuided/')">
             <!-- 直播引导页 -->
             <div class="card">
               <div class='pic'>
@@ -336,7 +387,8 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item watch' @click="linkTo($event,'/setLiveWatch/')">
+          <div class='item watch'
+               @click="linkTo($event,'/setLiveWatch/')">
             <!-- 观看页 -->
             <div class="card">
               <div class='pic'>
@@ -361,11 +413,13 @@
           </div>
         </div>
       </div>
-      <div class="item marketing" id="tg">
+      <div class="item marketing"
+           id="tg">
         <p class='block-separte'>推广</p>
         <div class="card-list clearfix">
 
-          <div class='item automaze' @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">
+          <div class='item automaze'
+               @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">
             <!-- 自动化通知 -->
             <div class="card">
               <div class='pic'>
@@ -374,44 +428,48 @@
               <div class='desc'>
                 <span>自动化通知</span>
                 <span class='des'>
-                    <template v-if="isPublished">
-                      <!-- 未开启 -->
-                      <template v-if="dataPromote[0].switch === false">已开启</template>
-                      <!-- 已开启 -->
-                      <!-- <template v-if="dataPromote[0].switch === true">已开启</template> -->
-                      <!-- 已开启 -->
-                      <template v-if="dataPromote[0].switch === true">
-                        <template v-if="dataPromote[0].desc === 'PREPARE'">
-                          <template v-if="isAppoint">报名</template>
-                          <template v-else>预约</template>
-                        </template>
-                        <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-                        <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                  <template v-if="isPublished">
+                    <!-- 未开启 -->
+                    <template v-if="dataPromote[0].switch === false">已开启</template>
+                    <!-- 已开启 -->
+                    <!-- <template v-if="dataPromote[0].switch === true">已开启</template> -->
+                    <!-- 已开启 -->
+                    <template v-if="dataPromote[0].switch === true">
+                      <template v-if="dataPromote[0].desc === 'PREPARE'">
+                        <template v-if="isAppoint">报名</template>
+                        <template v-else>预约</template>
                       </template>
-                      <!-- 已设置未开启 -->
-                      <template v-if="dataPromote[0].switch === false">
-                        <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
-                        <template v-if="dataPromote[0].desc === 'PREPARE'">
-                          <template v-if="isAppoint">报名</template>
-                          <template v-else>预约</template>
-                        </template>
-                        <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
-                        <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
-                      </template>
+                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
                     </template>
-                    <template v-else>设置自动化活动通知提醒</template>
-                  </span>
+                    <!-- 已设置未开启 -->
+                    <template v-if="dataPromote[0].switch === false">
+                      <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
+                      <template v-if="dataPromote[0].desc === 'PREPARE'">
+                        <template v-if="isAppoint">报名</template>
+                        <template v-else>预约</template>
+                      </template>
+                      <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
+                      <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
+                    </template>
+                  </template>
+                  <template v-else>设置自动化活动通知提醒</template>
+                </span>
               </div>
             </div>
             <div class="btm">
-              <el-switch class='switch' v-model="dataPromote[0].switch" inactive-color="#DEE1FF" :width="32"
+              <el-switch class='switch'
+                         v-model="dataPromote[0].switch"
+                         inactive-color="#DEE1FF"
+                         :width="32"
                          active-color="#FFD021"
                          @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
 
-          <div class='item mail' @click="linkTo($event,'/liveMager/email/')">
+          <div class='item mail'
+               @click="linkTo($event,'/liveMager/email/')">
             <!-- 邮箱 -->
             <div class="card">
               <div class='pic'>
@@ -420,22 +478,23 @@
               <div class='desc'>
                 <span>邮件邀约</span>
                 <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataPromote[1].isSet">
-                      已设置邮件邀约
-                    </template>
+                  <!-- 已设置 -->
+                  <template v-if="dataPromote[1].isSet">
+                    已设置邮件邀约
+                  </template>
                   <!-- 未设置 -->
-                    <template v-else>
-                      通过邮件进行活动推广
-                    </template>
-                  </span>
+                  <template v-else>
+                    通过邮件进行活动推广
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
             </div>
           </div>
 
-          <div class='item message' @click="linkTo($event,'/liveMager/promote/msg/list/')">
+          <div class='item message'
+               @click="linkTo($event,'/liveMager/promote/msg/list/')">
             <!-- 短信 -->
             <div class="card">
               <div class='pic'>
@@ -444,22 +503,23 @@
               <div class='desc'>
                 <span>短信通知</span>
                 <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataPromote[2].isSet">
-                      已设置短信通知
-                    </template>
+                  <!-- 已设置 -->
+                  <template v-if="dataPromote[2].isSet">
+                    已设置短信通知
+                  </template>
                   <!-- 未设置 -->
-                    <template v-else>
-                      通过短信进行活动推广
-                    </template>
-                  </span>
+                  <template v-else>
+                    通过短信进行活动推广
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
             </div>
           </div>
 
-          <div class='item wechat' @click="linkTo($event,'/liveMager/promote/wechat/list/')">
+          <div class='item wechat'
+               @click="linkTo($event,'/liveMager/promote/wechat/list/')">
             <!-- 微信 -->
             <div class="card">
               <div class='pic'>
@@ -468,15 +528,15 @@
               <div class='desc'>
                 <span>微信通知</span>
                 <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataPromote[3].isSet">
-                      已设置微信通知
-                    </template>
+                  <!-- 已设置 -->
+                  <template v-if="dataPromote[3].isSet">
+                    已设置微信通知
+                  </template>
                   <!-- 未设置 -->
-                    <template v-else>
-                      通过微信进行活动推广
-                    </template>
-                  </span>
+                  <template v-else>
+                    通过微信进行活动推广
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
@@ -488,7 +548,8 @@
       <div class="item living">
         <p class='block-separte'>直播</p>
         <div class="card-list clearfix">
-          <div class='item ques' @click="linkTo($event,'/salesTools/questionnaire/list/')">
+          <div class='item ques'
+               @click="linkTo($event,'/salesTools/questionnaire/list/')">
             <div class="card">
               <div class='pic'>
               </div>
@@ -509,7 +570,8 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item redpack' @click="redBagTips=true">
+          <div class='item redpack'
+               @click="redBagTips=true">
             <div class="card">
               <div class='pic'>
               </div>
@@ -530,7 +592,8 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item goods' @click="linkTo($event,'/salesTools/recommendGoodsList/')">
+          <div class='item goods'
+               @click="linkTo($event,'/salesTools/recommendGoodsList/')">
             <div class="card">
               <div class='pic'>
               </div>
@@ -551,7 +614,8 @@
             <div class="btm">
             </div>
           </div>
-          <div class='item cards' @click="linkTo($event,'/salesTools/recommendCards/')">
+          <div class='item cards'
+               @click="linkTo($event,'/salesTools/recommendCards/')">
             <div class="card">
               <div class='pic'>
               </div>
@@ -577,7 +641,8 @@
       <div class="item setting">
         <p class='block-separte'>活动回放</p>
         <div class="card-list clearfix">
-          <div class='item record' @click="linkTo($event,'/liveMager/playBack/')">
+          <div class='item record'
+               @click="linkTo($event,'/liveMager/playBack/')">
             <!-- 观看页 -->
             <div class="card">
               <div class='pic'>
@@ -586,15 +651,15 @@
               <div class='desc'>
                 <span>活动回放</span>
                 <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="dataRecord[0].isSet">
-                      已设置默认活动回放
-                    </template>
+                  <!-- 已设置 -->
+                  <template v-if="dataRecord[0].isSet">
+                    已设置默认活动回放
+                  </template>
                   <!-- 未设置 -->
-                    <template v-else>
-                      设置活动后的回放视频
-                    </template>
-                  </span>
+                  <template v-else>
+                    设置活动后的回放视频
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
@@ -605,43 +670,47 @@
       <div class="item statics">
         <p class='block-separte'>数据</p>
         <div class="card-list clearfix">
-          <div class='item record' @click="linkTo($event,'/data/preview/')" :class="{'disabled':staticTime == '统计中...'}">
+          <div class='item record'
+               @click="linkTo($event,'/data/preview/')"
+               :class="{'disabled':staticTime == '统计中...'}">
             <div class="card">
               <div class='pic'>
               </div>
               <div class='desc'>
                 <span>数据</span>
                 <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="staticTime == '统计中...'">
-                     展示单次活动数据洞察
-                    </template>
+                  <!-- 已设置 -->
+                  <template v-if="staticTime == '统计中...'">
+                    展示单次活动数据洞察
+                  </template>
                   <!-- 未设置 -->
-                    <template v-else>
-                     {{staticTime}}
-                    </template>
-                  </span>
+                  <template v-else>
+                    {{staticTime}}
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
             </div>
           </div>
-          <div class='item record' @click="linkTo($event,'/data/viewer/')" :class="{'disabled':staticTime == '统计中...'}">
+          <div class='item record'
+               @click="linkTo($event,'/data/viewer/')"
+               :class="{'disabled':staticTime == '统计中...'}">
             <div class="card">
               <div class='pic'>
               </div>
               <div class='desc'>
                 <span>观众</span>
                 <span class='des'>
-                    <!-- 已设置 -->
-                    <template v-if="staticTime == '统计中...'">
-                      记录单次活动观众数据
-                    </template>
+                  <!-- 已设置 -->
+                  <template v-if="staticTime == '统计中...'">
+                    记录单次活动观众数据
+                  </template>
                   <!-- 未设置 -->
-                    <template v-else>
-                     {{staticViewer}} 位观众数据
-                    </template>
-                  </span>
+                  <template v-else>
+                    {{staticViewer}} 位观众数据
+                  </template>
+                </span>
               </div>
             </div>
             <div class="btm">
@@ -650,19 +719,28 @@
         </div>
       </div>
     </div>
-    <message-box class='in-countdown' v-show="inCountdown" width="300" header="提示"
+    <message-box class='in-countdown'
+                 v-show="inCountdown"
+                 width="300"
+                 header="提示"
                  cancelText="放弃"
-                 confirmText='仍然进入' @handleClick='inCountdownClick'>
+                 confirmText='仍然进入'
+                 @handleClick='inCountdownClick'>
       <p>当前时间与您预先设置的时间不一致，是否现在发起正式直播？</p>
       <p>您设置的时间为:</p>
       <p>{{startTime}}</p>
     </message-box>
     <!-- 红包雨tip提示 -->
-    <message-box v-if="redBagTips" @handleClick="redBagTips=false">
-      <div slot="msgBox" class="red-bag-tip">
+    <message-box v-if="redBagTips"
+                 @handleClick="redBagTips=false">
+      <div slot="msgBox"
+           class="red-bag-tip">
         <div class="red-bag-header"></div>
         <div class="red-bag-content">红包雨为活动发起者在直播中推送的功能，无需在控制台设置。通过红包雨功能，活动主办方可以通过设置红包数量和金额，并设置参与条件，向达成参与条件的观众发放红包。</div>
-        <button type="button" class="primary-button" style="padding: 0 60px;margin: 10px 0 30px 0;" @click="redBagTips=false">知道了</button>
+        <button type="button"
+                class="primary-button"
+                style="padding: 0 60px;margin: 10px 0 30px 0;"
+                @click="redBagTips=false">知道了</button>
       </div>
     </message-box>
   </div>
@@ -670,6 +748,7 @@
 
 <script>
 // import http from 'src/api/activity-manger'
+import EventBus from 'src/utils/eventBus'
 import activityService from 'src/api/activity-service'
 import processCard from 'components/process-card'
 import comCountdown from 'components/com-countDown'
@@ -707,6 +786,14 @@ export default {
     }
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情'
+    }])
   },
   mounted () {
     this.getDetails()
