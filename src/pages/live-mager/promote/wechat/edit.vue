@@ -22,7 +22,8 @@
           <div class="from-row" style='padding:4px 12px;'>
             <div class="from-title">收信人：</div>
             <div class="from-content">
-              <el-button class='default-button select-receiver' @click='selectPersonShow=true'>选择收信人</el-button>
+              <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
+              <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
               <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
               <!-- 分组 -->
               <transition-group name="list"
@@ -79,7 +80,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'WECHAT'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
+      <choose-group :webinarType="'WECHAT'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"  @totalCount="totalCount"></choose-group>
       <!-- 测试发送弹窗 -->
       <com-test  :imgUrl="qrImgurl" v-if='testModal'  @closeTest='closeTest' :type="'Wechat'" :deliverd.sync='deliverd'></com-test>
     </div>
@@ -91,6 +92,7 @@ import userManage from 'src/api/userManage-service'
 import userService from 'src/api/user-service'
 import chooseGroup from '../com-chooseGroup'
 import ChatService from 'components/chat/ChatService.js'
+import activityService from 'src/api/activity-service'
 import playbackService from 'src/api/playback-service'
 import noticeService from 'src/api/notice-service'
 import comTest from '../com-test'
@@ -159,7 +161,11 @@ export default {
       saveDisabled: false,
       deliverd: false,
       groupIdStr: '',
-      tagIdStr: ''
+      tagIdStr: '',
+      changed: 0,
+      countBalance: 0,
+      sendBalance: 0,
+      clicked: false
     }
   },
   created () {
@@ -171,6 +177,7 @@ export default {
         this.sendSetting = res.data.status
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.wxContent = res.data.desc
+        this.sendBalance = res.data.expectNum
         setTimeout(() => {
           this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
         }, 500)
@@ -178,6 +185,7 @@ export default {
     }
     this.queryGroupList()
     this.queryTaglist()
+    this.getLimit()
   },
   mounted () {
     if (!this.accountInfo.businessUserId) {
@@ -214,6 +222,7 @@ export default {
       this.saveDisabled = true
       this.canPass = true
       let data = {
+        change: this.changed,
         inviteId: this.inviteId,
         activityId: this.$route.params.id,
         title: this.titleValue,
@@ -265,6 +274,7 @@ export default {
     },
     /* 点击确定 */
     okSelectList () {
+      this.changed = 1
       this.selectPersonShow = false
     },
     /* 点击取消 */
@@ -358,6 +368,25 @@ export default {
           }
         })
       })
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.activityId,
+        type: 'WECHAT'
+      }).then((res) => {
+        console.log(res)
+        this.countBalance = res.data.balance
+      })
+    },
+    totalCount (res) {
+      if (this.clicked) {
+        this.sendBalance = res
+      }
+    },
+    chooseReceiver () {
+      this.selectPersonShow = true
+      this.clicked = true
     },
     /* 验证 */
     formValid () {

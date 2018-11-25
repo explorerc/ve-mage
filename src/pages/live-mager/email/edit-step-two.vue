@@ -50,7 +50,7 @@
                                 v-if="selectedGroupList.length">
                 <span class="list-item"
                       v-for="(person,idx) in selectedGroupList"
-                      :key="person.id">{{person.name}} ({{person.count}}人）
+                      :key="person.id">{{person.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delGroupPerson(idx)"></i>
                 </span>
@@ -62,7 +62,7 @@
                                 v-if="selectedTagList.length">
                 <span class="list-item"
                       v-for="(tag,idx) in selectedTagList"
-                      :key="tag.id">{{tag.name}} ({{tag.count}}人）
+                      :key="tag.id">{{tag.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delTagPerson(idx)"></i>
                 </span>
@@ -274,6 +274,7 @@
       /* 点击确定 */
       okSelectList () {
         this.selectPersonShow = false
+        this.email.change = 1
         if (this.email.groupIds) {
           this.errorMsg.groupIds = ''
         }
