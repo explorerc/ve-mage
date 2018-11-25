@@ -305,6 +305,16 @@ export default {
         background-color: #ffd021;
         color: #222;
         margin-left: 10px;
+        &.disabled {
+          border-color: #ddd;
+          background-color: #ddd;
+          color: #999;
+          &:hover {
+            border-color: #ddd;
+            background-color: #ddd;
+            color: #999;
+          }
+        }
       }
       &:hover {
         background-color: #fdd43f;
