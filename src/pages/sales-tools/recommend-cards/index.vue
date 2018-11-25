@@ -125,10 +125,10 @@
 .back-btn {
   float: right;
   margin: 14px 0px 14px 10px !important;
-  padding: 0;
-  width: 100px;
-  height: 34px;
-  line-height: 34px;
+  padding: 0 !important;
+  width: 100px !important;
+  height: 34px !important;
+  line-height: 34px !important;
 }
 .card-list-page {
   .el-table thead {

@@ -28,7 +28,7 @@
                          @empty="searchEmpty('group')"
                          placeholder="输入分组名称"></com-input>
             </div>
-            <div class="select-person-box">
+            <div class="select-person-box" :class='{"search-empty":!groupList.length}'>
               <ul>
                 <li v-for="(person,idx) in groupList"
                     @click.stop="clickRowGroup(idx)"
@@ -52,7 +52,7 @@
                          @empty="searchEmpty('tag')"
                          placeholder="输入标签名称"></com-input>
             </div>
-            <div class="select-person-box">
+            <div class="select-person-box" :class='{"search-empty":!tagList.length}'>
               <ul>
                 <li v-for="(tag,idx) in tagList"
                     @click.stop="clickRowTag(idx)"
@@ -86,6 +86,8 @@ export default {
     return {
       curTab: 1,
       searchPerson: '',
+      searchGroup: '',
+      searchTag: '',
       selectedCount: 0,
       selectedGroupListStr: '',
       selectedTagListStr: '',
@@ -93,7 +95,9 @@ export default {
       selectedTagList: [],
       groupArr: [],
       tagArr: [],
-      isInit: true
+      isInit: true,
+      groupEmpty: false,
+      tagEmpty: false
     }
   },
   props: {
@@ -226,5 +230,9 @@ export default {
 
 <style lang="scss" scoped src="src/pages/live-mager/css/live.scss">
 </style>
-<style>
+<style lang='scss' scoped>
+.select-content .search-empty {
+  background:url('~assets/image/search_empty.png') no-repeat center;
+  background-size:180px;
+}
 </style>

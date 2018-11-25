@@ -295,7 +295,6 @@ export default {
       })
     },
     closeTest () {
-      // debugger
       this.testModal = false
     },
     /* enter搜索 */
@@ -346,8 +345,10 @@ export default {
       })
     },
     /* 查询标签 */
-    queryTagList (key) {
-      this.$get(userManage.GET_TAG_LIST).then((res) => {
+    queryTagList (keyword) {
+      this.$get(userManage.GET_TAG_LIST, {
+        keyword: keyword
+      }).then((res) => {
         let temArray = []
         res.data.list.forEach(item => {
           temArray.push({
