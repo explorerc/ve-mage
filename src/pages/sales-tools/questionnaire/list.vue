@@ -2,13 +2,18 @@
   <div class="v-list">
     <div class="v-list-title clearfix">
       <span class="title">问卷</span>
-      <com-back :class='"back-btn"' :url="`/liveMager/detail/${activityId}`"></com-back>
-      <template  v-if="tableData.length">
-        <router-link class="v-add" :class="{disabled: isAdd}" :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
+      <com-back :class='"back-btn"'
+                :url="`/liveMager/detail/${activityId}`"></com-back>
+      <template v-if="tableData.length">
+        <router-link class="v-add"
+                     :class="{disabled: isAdd}"
+                     :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
         <!-- <a class="v-add" :class="{disabled: isAdd}" :href="'/salesTools/questionnaire/edit/'+activityId">
 
         </a> -->
-        <router-link class="v-view" :class="{disabled: !hasData}" :to="`/data/live/${this.activityId}#questions`">查看数据</router-link>
+        <router-link class="v-view"
+                     :class="{disabled: !hasData}"
+                     :to="`/data/live/${this.activityId}#questions`">查看数据</router-link>
       </template>
     </div>
     <div class="v-table">
@@ -35,7 +40,8 @@
           </thead>
           <tbody>
             <template v-if="tableData.length>0">
-              <tr v-for="itemData in tableData" :key="itemData.naireId">
+              <tr v-for="itemData in tableData"
+                  :key="itemData.naireId">
                 <td>
                   {{itemData.title}}
                 </td>
@@ -49,9 +55,13 @@
                   {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
                 </td>
                 <td>
-                  <a href="javascript:;" @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
-                  <a href="javascript:;" @click="view(itemData.naireId)">预览</a><span>|</span>
-                  <a href="javascript:;" class="v-del" @click="confirmDel(itemData)">删除</a>
+                  <a href="javascript:;"
+                     @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
+                  <a href="javascript:;"
+                     @click="view(itemData.naireId)">预览</a><span>|</span>
+                  <a href="javascript:;"
+                     class="v-del"
+                     @click="confirmDel(itemData)">删除</a>
                 </td>
               </tr>
             </template>
@@ -66,11 +76,11 @@
         </table>
         <div class="pagination-box">
           <div class="page-pagination"
-              v-if="total>pageSize">
+               v-if="total>pageSize">
             <ve-pagination :total="total"
-                          :pageSize="pageSize"
-                          :currentPage="searchParams.page"
-                          @changePage="changePage" />
+                           :pageSize="pageSize"
+                           :currentPage="searchParams.page"
+                           @changePage="changePage" />
           </div>
         </div>
       </template>
@@ -79,23 +89,27 @@
           <p class="img"></p>
           <p class='title'>问卷</p>
           <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p>
-          <router-link :to="{ name: 'questionnaire', params: { activityId: activityId }}"><el-button class='primary-button'>新建问卷</el-button></router-link>
+          <router-link :to="{ name: 'questionnaire', params: { activityId: activityId }}">
+            <el-button class='primary-button'>新建问卷</el-button>
+          </router-link>
         </div>
       </template>
     </div>
     <message-box v-if="messageBoxViewShow"
-       @handleClick="messageBoxClick"
-       width="700px"
-       class="message-box v-view"
-       confirmText="确定"
-       type='prompt'
-       header='预览'>
+                 @handleClick="messageBoxClick"
+                 width="700px"
+                 class="message-box v-view"
+                 confirmText="确定"
+                 type='prompt'
+                 header='预览'>
       <div class="box">
         <div class="text">预览</div>
       </div>
       <div class="v-content">
         <div class="v-hearder">
-          <img v-if="defaultImg" :src="defaultImg" alt="">
+          <img v-if="defaultImg"
+               :src="defaultImg"
+               alt="">
           <p class="v-title">
             {{this.title}}
           </p>
@@ -104,13 +118,16 @@
           </p>
         </div>
         <div class="v-questions">
-          <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
+          <questions :dragData="dragData"
+                     :phoneData="phoneData"
+                     :isView="true"></questions>
         </div>
       </div>
     </message-box>
   </div>
 </template>
 <script>
+import EventBus from 'src/utils/eventBus'
 import VePagination from 'src/components/ve-pagination'
 import questions from '../questionnaire/components/questions'
 import questionService from 'src/api/questionnaire-service'
@@ -140,6 +157,20 @@ export default {
     }
   },
   beforeDestroy () {
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.activityId}`
+    }, {
+      title: '问卷列表',
+      url: `/salesTools/questionnaire/list/${this.$route.params.activityId}`
+    }])
   },
   mounted () {
     this.activityId = this.$route.params.activityId
