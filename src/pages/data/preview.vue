@@ -236,6 +236,7 @@
   import VeTitle from './ve-title'
   import VeCircle from 'src/components/ve-circle'
   import dataService from 'src/api/data-service'
+  import EventBus from 'src/utils/eventBus'
   import { sankey, pieOne } from 'src/utils/chart-tool'
 
   export default {
@@ -318,6 +319,18 @@
           this.userTrailChart.resize()
         }
       }
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '活动数据',
+        url: `/data/preview/${this.$route.params.id}`
+      }])
     },
     methods: {
       initPage () {

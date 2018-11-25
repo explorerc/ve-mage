@@ -201,6 +201,7 @@
   import * as types from '../../store/mutation-types'
   import province from '../../components/province'
   import city from '../../components/city'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'viewerList',
@@ -314,6 +315,18 @@
       this.dealSearchParam()
       this.queryList()
       this.dealWithCity()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '观众',
+        url: `/data/viewer/${this.$route.params.id}`
+      }])
     },
     methods: {
       ...mapMutations('dataCenter', {
