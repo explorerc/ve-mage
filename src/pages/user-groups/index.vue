@@ -126,12 +126,18 @@
   import groupService from 'src/api/user_group'
   import VePagination from 'src/components/ve-pagination'
   import condOption from 'src/pages/user-groups/cond-option'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'index',
     components: { VePagination, condOption },
     created () {
       this.onSearch()
+      EventBus.$emit('breads', [{
+        title: '用户管理'
+      }, {
+        title: '用户群组'
+      }])
     },
     filters: {
       getType (val) {
@@ -400,93 +406,93 @@
 </script>
 
 <style lang="scss" scoped>
-  #userGroups {
-    font-family: PingFangSC-Regular;
-    padding: 40px 100px;
-    /deep/ {
-      header {
-        height: 40px;
-        width: 100%;
-        line-height: 40px;
-        padding-left: 20px;
+#userGroups {
+  font-family: PingFangSC-Regular;
+  padding: 40px 100px;
+  /deep/ {
+    header {
+      height: 40px;
+      width: 100%;
+      line-height: 40px;
+      padding-left: 20px;
+      display: inline-block;
+      background: #cccccc;
+    }
+    .operation {
+      overflow: hidden;
+      h4 {
         display: inline-block;
-        background: #cccccc;
+        height: 26px;
+        color: rgba(34, 34, 34, 1);
+        line-height: 26px;
+        font-size: 24px;
+        float: left;
+        font-weight: 400;
       }
-      .operation {
-        overflow: hidden;
-        h4 {
-          display: inline-block;
-          height: 26px;
-          color: rgba(34, 34, 34, 1);
-          line-height: 26px;
-          font-size: 24px;
+      div {
+        float: right;
+        .el-input {
           float: left;
-          font-weight: 400;
-        }
-        div {
-          float: right;
-          .el-input {
-            float: left;
-            width: 220px;
-            height: 34px;
-            margin-right: 20px;
-            .el-input__inner {
-              border-radius: 20px;
-              border-color: rgba(136, 136, 136, 1);
-              &:hover {
-                border-color: #5d6afe;
-              }
-            }
-          }
-          .el-button {
-            color: rgba(85, 85, 85, 1);
-            width: 120px;
-            height: 34px;
-            border-radius: 16px;
-            border: 1px solid rgba(136, 136, 136, 1);
-          }
-        }
-      }
-      .table-box {
-        margin-top: 22px;
-        padding: 30px;
-        border: 1px dashed #cccccc;
-        .el-table {
-          .btns {
-            color: rgba(34, 34, 34, 1);
+          width: 220px;
+          height: 34px;
+          margin-right: 20px;
+          .el-input__inner {
+            border-radius: 20px;
+            border-color: rgba(136, 136, 136, 1);
             &:hover {
-              color: rgba(75, 90, 254, 1);
+              border-color: #5d6afe;
             }
           }
-          .default:after {
-            content: '默认';
-            color: #4b5afe;
-            height: 17px;
-            font-size: 10px;
-            padding: 0 3px;
-            border: 1px solid #4b5afe;
+        }
+        .el-button {
+          color: rgba(85, 85, 85, 1);
+          width: 120px;
+          height: 34px;
+          border-radius: 16px;
+          border: 1px solid rgba(136, 136, 136, 1);
+        }
+      }
+    }
+    .table-box {
+      margin-top: 22px;
+      padding: 30px;
+      border: 1px dashed #cccccc;
+      .el-table {
+        .btns {
+          color: rgba(34, 34, 34, 1);
+          &:hover {
+            color: rgba(75, 90, 254, 1);
           }
         }
-        .VePagination {
-          text-align: center;
-          margin-top: 20px;
+        .default:after {
+          content: '默认';
+          color: #4b5afe;
+          height: 17px;
+          font-size: 10px;
+          padding: 0 3px;
+          border: 1px solid #4b5afe;
         }
       }
-      .input_s {
-        width: 100%;
+      .VePagination {
+        text-align: center;
+        margin-top: 20px;
       }
     }
+    .input_s {
+      width: 100%;
+    }
   }
+}
 
-  .userGroupDelConfirm {
-    border: none;
-    .el-message-box__header {
-      border-top: 6px solid #fc5659;
-    }
-    .userGroupDelConfirmBtn {
-      width: 120px;
-      background-color: #fc5659;
-      color: #222;
-    }
+.userGroupDelConfirm {
+  border: none;
+  .el-message-box__header {
+    border-top: 6px solid #fc5659;
   }
+  .userGroupDelConfirmBtn {
+    width: 120px;
+    background-color: #fc5659;
+    color: #222;
+  }
+}
 </style>
