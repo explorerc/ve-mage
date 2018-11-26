@@ -31,7 +31,7 @@
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
         <div class="right">
-          <com-input :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱" @keyup.enter.native='filterSearch'></com-input>
+          <com-input type='search' :value.sync="filterCondition.keyword" placeholder="姓名/昵称/手机号/邮箱" @keyup.enter.native='filterSearch'></com-input>
           <span @click='showFilter = !showFilter'>精准搜索<i class='el-submenu__icon-arrow el-icon-arrow-down' :class="{'is-open':showFilter }"></i></span>
         </div>
       </div>
@@ -874,12 +874,12 @@ export default {
         float: right;
         .com-input {
           margin-right: 10px;
-          width: 202px;
+          width: 206px;
         }
         .com-input input {
           padding-right: 10px;
           padding-left: 15px;
-          border-radius: 4px;
+          border-radius: 17px;
         }
         span {
           cursor: pointer;
