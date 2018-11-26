@@ -298,7 +298,7 @@ export default {
     &.el-menu--collapse {
       width: 100%;
     }
-    .is-opened {
+    .is-active {
       .el-submenu__title {
         color: #ffd021 !important;
         .icon_console {
@@ -324,6 +324,9 @@ export default {
         }
       }
       .el-menu-item.is-active {
+        color: #ffd021 !important;
+      }
+      .el-submenu__icon-arrow {
         color: #ffd021 !important;
       }
     }
@@ -367,8 +370,8 @@ export default {
       }
     }
     .el-menu-item {
-      height: 34px;
-      line-height: 34px;
+      height: 55px;
+      line-height: 55px;
       padding-left: 74px !important;
       a {
         color: inherit !important;
@@ -385,7 +388,7 @@ export default {
       right: 32px;
     }
     .el-menu-item {
-      font-size: 12px;
+      font-size: 16px;
     }
     .el-menu-item-group__title {
       display: none;
