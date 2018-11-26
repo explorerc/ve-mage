@@ -181,7 +181,7 @@
             { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           url: [
-            { required: true, type: 'url', message: '请输入商品链接', trigger: 'blur' },
+            { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur' },
             { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
           ],
           imageList: [
