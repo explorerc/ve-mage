@@ -364,7 +364,7 @@
         /*text-align: center;*/
         /*}*/
         .inupt_textarea {
-          width: 760px;
+          width: 100%;
           height: 120px;
           .limit.area {
             right: 12px;
@@ -401,8 +401,11 @@
           background-color: transparent;
           padding: 0;
         }
-        .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
-          background-color: #4b5afe;
+        .el-input__inner, .el-input.el-input__inner, .el-input__inner {
+          border-color: #CECECE !important;
+        }
+        .el-input__inner:hover, .el-input.is-active .el-input__inner, .el-input__inner:focus {
+          border-color: #888888 !important;
         }
       }
       .upload_box {

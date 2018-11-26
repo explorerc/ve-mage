@@ -133,6 +133,9 @@
 <style lang='scss' scope>
 @import '~assets/css/mixin.scss';
 @import './common.scss';
+.page-title{
+  padding-top: 40px;
+}
 .back-btn {
   float: right;
   margin: 14px 0px 14px 10px !important;
