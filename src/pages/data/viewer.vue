@@ -261,16 +261,7 @@
         return this.$get(dataService.GET_VIEWER_BASE, {
           activityId: this.activityId
         }).then((res) => {
-          let serveData = [
-            // { name: '观众总数', value: 0 },
-            // { name: '老用户', value: 0 },
-            // { name: '新用户', value: 0 },
-            {name: '优质用户', value: 0},
-            {name: '高价值用户', value: 0},
-            {name: '一般用户', value: 0},
-            {name: '潜力用户', value: 0},
-            {name: '流失用户', value: 0}
-          ]
+          let serveData = []
           if (res.code === 200 && res.data.length !== 0) {
             this.basicUserData = res.data
             serveData = [
