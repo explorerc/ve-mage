@@ -267,6 +267,9 @@ export function lines (id, data, colorParam, gridData) {
  * @returns {Promise<Response>}
  */
 export function pie (id, data) {
+  data = (data && data.length > 0) ? data : [
+    {name: '暂无数据', value: 0}
+  ]
   let option = {
     tooltip: {
       trigger: 'item',
@@ -274,7 +277,11 @@ export function pie (id, data) {
         fontSize: 12
       },
       formatter: (item) => {
-        return `${item.name}<br/>${item.value}(${item.percent}%)`
+        if (item.value) {
+          return `${item.name}<br/>${item.value}(${item.percent}%)`
+        } else {
+          return `${item.name}`
+        }
       }
     },
     color: ['#40C5FF', '#FEC400', '#FF8419', '#5189EE', '#666666', '#E2E2E2', '#b6a2de', '#2ec7c9', '#5ab1ef', '#ffb980'],
