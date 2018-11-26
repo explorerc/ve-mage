@@ -86,7 +86,6 @@
   }
   i:hover + span {
     opacity: 0.8;
-    transition: opacity 1s;
   }
   &.left {
     width: 20px;
