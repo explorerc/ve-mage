@@ -5,7 +5,7 @@
            class="title">{{title}}-
         <span>{{publishState}}</span>
       </div>
-      <div class="back-btn" @click="goBack">
+      <div class="back-btn-site" @click="goBack">
         <i class="iconfont icon-jiantou"></i>
       </div>
       <el-select v-if="!isPreview&&!ptid" v-model="cType"
@@ -545,7 +545,7 @@ export default {
       }
     }
 
-    .back-btn {
+    .back-btn-site {
       position: absolute;
       display: inline-block;
       top: 50%;
