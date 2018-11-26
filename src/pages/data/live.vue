@@ -1,5 +1,5 @@
 <template>
-  <div class="data-box spread">
+  <div class="data-box spread live-box">
     <div class="data-pad">
       <p class="title">观看数据</p>
       <div class="item-container clearfix">
@@ -81,83 +81,83 @@
         <div class="item-box hd-data-item fl live-item live-item01">
           <span class="hd-title">聊天</span>
           <div class="hd-data" style="width: 50%;">
-            <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.nums}}</span>
             <span>聊天人数</span>
+            <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.nums}}</span>
           </div>
           <div class="hd-data" style="width: 50%;">
-            <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.msg}}</span>
             <span>消息数量</span>
+            <span class="data-link" @click="goChatDataDetail">{{interactCountData.chat.msg}}</span>
           </div>
         </div>
         <div class="item-box hd-data-item fr live-item live-item02">
           <span class="hd-title">分享</span>
           <div class="hd-data" style="width: 50%;">
-            <span>{{interactCountData.share.effective}}</span>
             <span>有效分享</span>
+            <span>{{interactCountData.share.effective}}</span>
           </div>
           <div class="hd-data" style="width: 50%;">
-            <span>{{interactCountData.share.invite}}</span>
             <span>邀请人数</span>
+            <span>{{interactCountData.share.invite}}</span>
           </div>
         </div>
         <div class="item-box hd-data-item fl live-item live-item03">
           <span class="hd-title">调查问卷</span>
           <div class="hd-data" style="width: 50%;">
-            <span class="data-link" @click="goPagerDataDetail">{{interactCountData.pager.push}}</span>
             <span>推送次数</span>
+            <span class="data-link" @click="goPagerDataDetail">{{interactCountData.pager.push}}</span>
           </div>
           <div class="hd-data" style="width: 50%;">
-            <span class="data-link" @click="goPagerDataDetail">{{interactCountData.pager.receive}}</span>
             <span>收到数据</span>
+            <span class="data-link" @click="goPagerDataDetail">{{interactCountData.pager.receive}}</span>
           </div>
         </div>
         <div class="item-box hd-data-item fr live-item live-item04">
           <span class="hd-title">红包雨</span>
-          <div class="hd-data" style="margin-left: 30px;">
-            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
+          <div class="hd-data">
             <span>参与人数</span>
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.join}}</span>
           </div>
           <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.receive}}</span>
             <span>领取人数</span>
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.receive}}</span>
           </div>
           <div class="hd-data">
-            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.money}}</span>
             <span>领取金额</span>
+            <span class="data-link" @click="goRedBagDataDetail">{{interactCountData.redBag.money}}</span>
           </div>
         </div>
         <div class="item-box hd-data-item fl live-item live-item05" style="width: 100%;">
           <span class="hd-title">商品推荐</span>
           <div class="hd-data" style="width: 25%;">
-            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
             <span>商品上架数</span>
+            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.shelf}}/{{interactCountData.goods.total}}</span>
           </div>
           <div class="hd-data" style="width: 25%;">
-            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.push}}</span>
             <span>推送次数</span>
+            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.push}}</span>
           </div>
           <div class="hd-data" style="width: 25%;">
-            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.browse}}</span>
             <span>浏览次数</span>
+            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.browse}}</span>
           </div>
           <div class="hd-data" style="width: 25%;">
-            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.click}}</span>
             <span>点击购买次数</span>
+            <span class="data-link" @click="goGoodsDataDetail">{{interactCountData.goods.click}}</span>
           </div>
         </div>
         <div class="item-box hd-data-item fl live-item live-item06">
           <span class="hd-title">推荐卡片</span>
           <div class="hd-data">
-            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.push}}</span>
             <span>推送次数</span>
+            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.push}}</span>
           </div>
           <div class="hd-data">
-            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.browse}}</span>
             <span>浏览次数</span>
+            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.browse}}</span>
           </div>
           <div class="hd-data">
-            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.click}}</span>
             <span>点击次数</span>
+            <span class="data-link" @click="goCardDataDetail">{{interactCountData.card.click}}</span>
           </div>
         </div>
       </div>
@@ -889,18 +889,68 @@ export default {
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-.spread {
+.live-box {
   .page-pagination {
     position: relative;
     top: 10px;
   }
+  .live-item01{
+    .hd-title{
+      background-color: #FF6B6D;
+    }
+  }
+  .live-item02{
+    .hd-title{
+      background-color: #A05AFB;
+    }
+  }
+  .live-item03{
+    .hd-title{
+      background-color: #63C8F5;
+    }
+  }
+  .live-item04{
+    .hd-title{
+      background-color: #FFD021;
+    }
+    .hd-data{
+      text-indent: 0;
+      width: calc(33.3333% - 10px);
+    }
+  }
+  .live-item05{
+    .hd-title{
+      background-color: #AFADAE;
+    }
+  }
+  .live-item06{
+    .hd-title{
+      background-color: #FD9130;
+    }
+  }
   .item-container {
     border: none;
     margin-bottom: 20px;
-    .item-box {
+    .hd-data-item {
+      position: relative;
       height: 110px;
+      padding-top: 32px;
       .hd-title {
-        margin-top: 20px;
+        /*margin-top: 20px;*/
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 66px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        font-size:14px;
+        text-indent: 0;
+        color: #fff;
+        font-weight: normal;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
       }
     }
   }
