@@ -632,6 +632,9 @@ export default {
           'content': '删除成功',
           'position': 'center'
         })
+        setTimeout((res) => {
+          this.queryTotal(this.filterCondition)
+        }, 1000)
       })
     },
     queryUserPool (data) {
@@ -674,6 +677,29 @@ export default {
           })
         })
         this.usersListData = arr
+      })
+    },
+    queryTotal (data) {
+      Object.assign(data, {
+        'activity_ids': this.activityArray.id.toString(),
+        'groups': this.groupArray.id.toString(),
+        'tags': this.tagArray.id.toString()
+      })
+      if (data.city === '全部') {
+        data.city = ''
+      }
+      if (data.province === '全部') {
+        data.province = ''
+      }
+      if (data === 'search') {
+        data = {
+          'keyword': this.filterCondition.keyword,
+          'page': 1, // 分页页码 默认不传为第一页
+          'page_size': 100
+        }
+      }
+      this.$get(userManage.GET_USERS_POOL, data).then((res) => {
+        this.total = res.data.count
       })
     },
     doFilter () {
