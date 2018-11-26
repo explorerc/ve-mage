@@ -274,6 +274,13 @@
               {name: '潜力用户', value: this.basicUserData.potentialUser},
               {name: '流失用户', value: this.basicUserData.lossUser}
             ]
+            let temArry = []
+            serveData.forEach(item => {
+              if (item.value !== 0) {
+                temArry.push(item)
+              }
+            })
+            serveData = temArry
           }
           // 各级别用户占比
           this.$nextTick(() => {
