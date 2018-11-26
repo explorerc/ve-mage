@@ -97,6 +97,7 @@
 import brandService from 'src/api/brand-service'
 import defaultData from './templateData'
 import activityService from 'src/api/activity-service'
+import EventBus from 'src/utils/eventBus'
 
 export default {
   data () {
@@ -111,6 +112,19 @@ export default {
       t0478322: require('assets/image/site_tp3.jpg'),
       t0478323: require('assets/image/site_tp4.png')
     }
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '活动官网'
+    }])
   },
   mounted () {
     this.init()
