@@ -295,6 +295,7 @@ export default {
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 .back-btn {
+  height: 40px !important;
   margin: 10px 0px 10px 10px !important;
 }
 .v-list /deep/ {
