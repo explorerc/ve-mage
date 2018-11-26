@@ -1,6 +1,6 @@
 <template>
   <div class='detail-wrap'>
-    <div class="com-modal"></div>
+    <div class="com-modal" @click='close'></div>
     <div class="com-detail-box">
       <div class="header">
         <span class="title">收信人详情</span>

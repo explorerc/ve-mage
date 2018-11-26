@@ -143,9 +143,7 @@
                  confirmText="确定"
                  type='prompt'
                  header='预览'>
-      <div class="box">
-        <div class="text">预览</div>
-      </div>
+      <div class="text">预览</div>
       <div class="v-content">
         <div class="v-hearder">
           <img v-if="defaultImg"
@@ -594,6 +592,15 @@ export default {
               list: [
                 {
                   value: '选项'
+                },
+                {
+                  value: '选项'
+                },
+                {
+                  value: '选项'
+                },
+                {
+                  value: '选项'
                 }
               ]
             },
@@ -933,6 +940,11 @@ export default {
             border-radius: 4px;
             border: 1px solid #dadada;
             cursor: pointer;
+            &:hover {
+              border-color: #4b5afe;
+              background-color: #e9ebff;
+              color: #4b5afe;
+            }
             &:nth-child(2n) {
               margin-right: 0;
             }
@@ -1046,23 +1058,23 @@ export default {
         display: none;
       }
     }
-    .box {
-      width: 145px;
-      height: 85px;
-      background-color: #ffd021;
-      color: #fff;
-      /* Rotate div */
-      transform: rotate(-45deg);
-      position: absolute;
-      left: -50px;
-      top: -50px;
-      z-index: 1;
-    }
+    // .box {
+    //   width: 145px;
+    //   height: 85px;
+    //   background-color: #ffd021;
+    //   color: #fff;
+    //   /* Rotate div */
+    //   transform: rotate(-45deg);
+    //   position: absolute;
+    //   left: -50px;
+    //   top: -50px;
+    //   z-index: 1;
+    // }
     .text {
       position: absolute;
-      bottom: 9px;
-      left: 33px;
-      font-size: 16px;
+      top: 20px;
+      left: 20px;
+      font-size: 18px;
     }
     .v-content {
       overflow: auto;

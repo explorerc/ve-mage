@@ -52,6 +52,13 @@ $color-ui-components:#4B5AFE;
   border-color: $color-ui-components;
   background-color: $color-ui-components;
 }
+.el-date-table th{
+  font-size: 14px;
+  text-align: center;
+}
+.el-date-table td span{
+  font-size: 14px;
+}
 .el-date-table td.available {
   color:$color-font;
 }
@@ -70,6 +77,9 @@ $color-ui-components:#4B5AFE;
 }
 .el-date-picker__header-label.active, .el-date-picker__header-label:hover {
   color:$color-default;
+}
+.el-button {
+  font-weight: 400;
 }
 .el-button--text:active {
   color:$color-default;
@@ -144,6 +154,9 @@ $color-ui-components:#4B5AFE;
   white-space: nowrap;
 }
 
+.el-checkbox {
+  font-weight: 400;
+}
 textarea::-webkit-input-placeholder {
   color: #888888;
   font-size: 14px;
