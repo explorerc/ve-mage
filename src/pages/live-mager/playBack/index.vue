@@ -894,7 +894,7 @@
     text-align: center;
     color: $color-font-sub;
     min-height: 400px;
-    padding: 100px 0;
+    padding: 70px 0;
     .img {
       width: 180px;
       height: 180px;
