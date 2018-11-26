@@ -258,6 +258,7 @@ export default {
     height: 10px;
     background: white;
     i {
+      font-style: normal;
       height: 100%;
       position: absolute;
       top: 0;

@@ -427,7 +427,7 @@ export default {
           width: 210px;
           font-size: 12px;
           text-align: center;
-          margin: 0 auto 30px;
+          margin: 0 auto 23px;
         }
         .v-phone-countdown {
           text-align: center;

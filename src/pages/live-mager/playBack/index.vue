@@ -134,7 +134,7 @@
               </template>
               <template v-else>
                 <p class='title'>您还没有添加视频，快去添加吧</p>
-                <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
+                <!-- <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button> -->
               </template>
             </div>
           </template>

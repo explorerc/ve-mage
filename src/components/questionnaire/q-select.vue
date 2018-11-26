@@ -6,7 +6,7 @@
          class="q-select-item"
          :label="index"
          :key="index">
-      <span class="select-icon">√</span>
+      <span class="select-icon"><i class="iconfont icon-wenjuan_xialatixialajiantou-"></i></span>
       <div class="select-input">
         <com-input v-model="item.value"
                    :class="{error:item.error}"

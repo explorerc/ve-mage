@@ -519,6 +519,8 @@ export default {
       transform: scale(0.5);
       transform-origin: top left;
       color: #333;
+      max-height: 22px;
+      width: 247px;
     }
     .v-pc-icon {
       display: block;

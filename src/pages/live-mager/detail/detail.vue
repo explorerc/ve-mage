@@ -283,7 +283,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare')"></el-switch>
+                         @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare', '/liveMager/prepare/limit-apply/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -322,7 +322,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare')"></el-switch>
+                         @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare', '/liveMager/warmField/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -359,7 +359,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
+                         @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand', '/liveMager/site/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -463,7 +463,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote')"></el-switch>
+                         @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote', '/liveMager/promote/auto/preview/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -891,7 +891,7 @@ export default {
         this.inCountdown = false
         this.$messageBox({
           header: '提示',
-          width: '200',
+          width: '450px',
           content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
           cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
           confirmText: '确认开播',
@@ -921,7 +921,7 @@ export default {
 
       })
     },
-    switchChange (type, status, dataType) {
+    switchChange (type, status, dataType, url) {
       const data = {
         activityId: this.activityId,
         submodule: type,
@@ -935,11 +935,15 @@ export default {
           this.$toast({
             'content': '设置成功'
           })
+          setTimeout((res) => {
+            this.$router.push(url + this.activityId)
+          }, 500)
         }
       }).catch((res) => {
-        if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+        if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
           console.log(type + ' ' + status)
           this.$messageBox({
+            width: '450px',
             header: '提示',
             content: res.msg,
             autoClose: 10,
@@ -952,16 +956,6 @@ export default {
           })
         }
       })
-      // http.detailSwitch(data).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       'content': '设置成功'
-      //     })
-      //   } else {
-      //     console.log('设置失败')
-      //   }
-      // })
     },
     getDetails () {
       this.$get(activityService.GET_DETAILS, {
@@ -1011,7 +1005,7 @@ export default {
     publishActive () { // 发布活动
       this.$messageBox({
         header: '提示',
-        width: '200',
+        width: '450px',
         content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
         cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认发布',
@@ -1037,7 +1031,7 @@ export default {
       }
       this.$messageBox({
         header: '提示',
-        width: '200',
+        width: '450px',
         content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
         cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认下线',
@@ -1173,7 +1167,7 @@ export default {
     }
     .process .top dt:before {
       width: 100px;
-      right: -110px;
+      right: -105px;
     }
     .process .bottom > div ol {
       width: 140px;
@@ -1230,7 +1224,7 @@ export default {
 }
 
 .process {
-  padding: 30px 0;
+  padding: 40px 0;
   .top {
     li {
       text-align: center;
@@ -1371,14 +1365,15 @@ export default {
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background: rgba(255, 208, 33, 0.7);
+        background-color:#ffd021;
+        border-color:#ffd021;
       }
     }
   }
 }
 
 .desc {
-  padding-top: 20px;
+  padding-top: 50px;
 }
 
 .left {
