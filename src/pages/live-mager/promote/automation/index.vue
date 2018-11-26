@@ -619,9 +619,9 @@ export default {
         activityId: this.activityId
       }).then((res) => {
         this.hourValue = res.data.firstCount
-        this.selhourValue = res.data.firstCount
-        this.minValue = res.data.secondCount
-        this.selminValue = res.data.secondCount
+        this.selhourValue = res.data.firstCount * 1
+        this.minValue = res.data.secondCount * 1
+        this.selminValue = res.data.secondCount * 1
         this.limit = res.data.webinarLimit
         this.tplData.tag = res.data.tag
         this.tplData.webinarName = res.data.webinarName

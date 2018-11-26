@@ -26,7 +26,7 @@
           <com-input type="textarea" class="msg-content" :value.sync="desc" placeholder="请输入卡片描述" :max-length="140"></com-input>
         </div>
       </div>
-      <div class="from-row">
+      <div class="from-row" style="padding:0 12px;">
         <div class="from-title">显示按钮：</div>
         <div class="from-content switch-box">
           <el-switch class='switch' v-model="btnSwitch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange()"></el-switch>
