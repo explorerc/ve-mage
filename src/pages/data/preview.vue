@@ -148,7 +148,7 @@
             <div class="item-title">
               <ve-title width="160px" title="平均观看时长" tip="观众观看直播的平均时间"></ve-title>
             </div>
-            <div class="item-mid">{{watchCoefficientData.watchTime.value}}</div>
+            <div class="item-mid">{{watchCoefficientData.watchTime.value|fmtTime}}</div>
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watchCoefficientData.watchTime.ratio < 0">▼</i>
@@ -302,6 +302,14 @@
           }
         },
         tripNoneData: false
+      }
+    },
+    filters: {
+      fmtTime (value) {
+        let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+        let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+        let s = ((value % 60 >> 0) + '').padStart(2, 0)
+        return `${h}:${m}:${s}`
       }
     },
     beforeDestroy () {

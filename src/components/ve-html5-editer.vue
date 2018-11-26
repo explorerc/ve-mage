@@ -168,7 +168,7 @@ const editor = new VueHtml5Editor({
         console.error(json.msg)
       } else {
         if (json.data.host.indexOf('http') !== 0) {
-          return 'https://' + json.data.host + '/' + json.data.name
+          return 'https:' + json.data.host + '/' + json.data.name
         }
         return json.data.host + '/' + json.data.name
       }
