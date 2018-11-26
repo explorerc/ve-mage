@@ -285,7 +285,7 @@
         this.$get(dataService.GET_VIEWER_REGION, {
           activityId: this.activityId
         }).then((res) => {
-          let listData = [{name: '', value: 0}]
+          let listData = []
           if (res.code === 200 && res.data.length !== 0) {
             listData = res.data.list
           }
