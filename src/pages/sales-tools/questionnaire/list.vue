@@ -376,6 +376,7 @@ export default {
     padding: 20px 20px 40px;
     border: 1px solid #e2e2e2;
     background-color: #fff;
+    min-height: 550px;
     border-radius: 4px;
     overflow: hidden;
     table {

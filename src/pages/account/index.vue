@@ -1119,6 +1119,8 @@ export default {
         display: inline-block;
         width: 70px;
         text-align: left;
+        height: 46px;
+        line-height: 46px;
       }
       .ve-upload-box {
         width: 100px;
@@ -1146,6 +1148,8 @@ export default {
         margin-right: 15px;
         overflow: hidden;
         vertical-align: middle;
+        height: 46px;
+        line-height: 46px;
       }
       .test-upload {
         width: 65px;
