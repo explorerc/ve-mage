@@ -327,6 +327,7 @@ export default {
     span.title {
       display: inline-block;
       font-size: 24px;
+      padding-top: 32px;
     }
   }
   .content /deep/ {

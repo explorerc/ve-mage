@@ -424,11 +424,11 @@ export default {
       ],
       industrysVal: '',
       provinceList: [
-        {value: '', label: '全部'},
+        { value: '', label: '全部' },
         ...province
       ],
       cityList: [
-        {value: '', label: '全部'}
+        { value: '', label: '全部' }
       ],
       // districtsVal: [''],
       firstVal: '',
@@ -795,7 +795,7 @@ export default {
             break
           }
         }
-        this.cityList = [{value: '', label: '全部'}, ...city[newVal]]
+        this.cityList = [{ value: '', label: '全部' }, ...city[newVal]]
         this.filterCondition.city = ''
         this.cityId = ''
       }
@@ -853,6 +853,7 @@ export default {
     span.title {
       display: inline-block;
       font-size: 24px;
+      padding-top: 32px;
     }
   }
   .content /deep/ {
