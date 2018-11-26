@@ -212,42 +212,46 @@ export default {
 
 <style scoped lang="scss">
 .q-edit-content {
-  margin-bottom: 30px;
-  .q-edit-select {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    &.v-disabled /deep/ {
-      .com-input {
-        input {
+  /deep/ {
+    margin-bottom: 30px;
+    .q-edit-select {
+      display: block;
+      width: 100%;
+      margin-bottom: 14px;
+      &.v-disabled {
+        .com-input {
+          input {
+            background-color: #f5f5f5;
+            color: #bbb;
+            border-color: #f5f5f5;
+          }
+        }
+        .el-input__inner {
           background-color: #f5f5f5;
           color: #bbb;
           border-color: #f5f5f5;
         }
       }
-      .el-input__inner {
-        background-color: #f5f5f5;
-        color: #bbb;
-        border-color: #f5f5f5;
+      .el-select {
+        width: 93%;
+        .el-input__inner {
+          padding-left: 10px !important;
+        }
+      }
+      .com-input {
+        width: 93%;
+      }
+      .remove {
+        cursor: pointer;
+        font-size: 12px;
+        margin-left: 10px;
       }
     }
-    .el-select {
-      width: 93%;
-    }
-    .com-input {
-      width: 93%;
-    }
-    .remove {
-      cursor: pointer;
-      font-size: 12px;
-      margin-left: 10px;
-    }
-  }
 
-  &.display {
-    margin-bottom: 0;
-  }
-  /deep/ {
+    &.display {
+      margin-bottom: 0;
+    }
+
     .error-msg {
       position: absolute;
       color: #fc5659;

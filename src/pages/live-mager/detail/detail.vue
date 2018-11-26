@@ -283,7 +283,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare')"></el-switch>
+                         @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare', '/liveMager/prepare/limit-apply/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -322,7 +322,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare')"></el-switch>
+                         @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare', '/liveMager/warmField/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -359,7 +359,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand')"></el-switch>
+                         @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand', '/liveMager/site/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -463,7 +463,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote')"></el-switch>
+                         @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote', '/liveMager/promote/auto/preview/')"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -921,11 +921,68 @@ export default {
 
       })
     },
-    switchChange (type, status, dataType) {
+    closeSite (type, dataType, url) {
+      this.$messageBox({
+        header: '提示',
+        width: '200',
+        content: '活动官网已经发布，请确认是否关闭？',
+        cancelText: '暂不关闭', // 不传递cancelText将只有一个确定按钮
+        confirmText: '确认关闭',
+        handleClick: (e) => {
+          console.log(e)
+          if (e.action === 'cancel') {
+            this[dataType].forEach(item => {
+              if (item.submodule === type) {
+                item.switch = !status
+              }
+            })
+          } else if (e.action === 'confirm') {
+            this.$config({
+              handlers: true
+            }).$post(activityService.POST_DETAIL_SWITCH, {
+              activityId: this.activityId,
+              submodule: type,
+              enabled: 'N'
+            }).then((res) => {
+              console.log(res)
+              if (res.code === 200) {
+                this.$toast({
+                  'content': '设置成功'
+                })
+                setTimeout((res) => {
+                  this.$router.push(url + this.activityId)
+                }, 500)
+              }
+            }).catch((res) => {
+              if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
+                console.log(type + ' ' + status)
+                this.$messageBox({
+                  width: '450px',
+                  header: '提示',
+                  content: res.msg,
+                  autoClose: 10,
+                  confirmText: '知道了'
+                })
+                this[dataType].forEach(item => {
+                  if (item.submodule === type) {
+                    item.switch = !status
+                  }
+                })
+              }
+            })
+          }
+        }
+      })
+    },
+    switchChange (type, status, dataType, url) {
       const data = {
         activityId: this.activityId,
         submodule: type,
         enabled: status ? 'Y' : 'N'
+      }
+      if (type === 'TEMPLATE' && !status && this.isPublished) { // 关闭官网 二次提示
+        this.closeSite(type, dataType, url)
+        return false
       }
       this.$config({
         handlers: true
@@ -935,9 +992,12 @@ export default {
           this.$toast({
             'content': '设置成功'
           })
+          setTimeout((res) => {
+            this.$router.push(url + this.activityId)
+          }, 500)
         }
       }).catch((res) => {
-        if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+        if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
           console.log(type + ' ' + status)
           this.$messageBox({
             width: '450px',
@@ -953,16 +1013,6 @@ export default {
           })
         }
       })
-      // http.detailSwitch(data).then((res) => {
-      //   console.log(res)
-      //   if (res.code === 200) {
-      //     this.$toast({
-      //       'content': '设置成功'
-      //     })
-      //   } else {
-      //     console.log('设置失败')
-      //   }
-      // })
     },
     getDetails () {
       this.$get(activityService.GET_DETAILS, {
@@ -1174,7 +1224,7 @@ export default {
     }
     .process .top dt:before {
       width: 100px;
-      right: -110px;
+      right: -105px;
     }
     .process .bottom > div ol {
       width: 140px;
@@ -1372,7 +1422,8 @@ export default {
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background: rgba(255, 208, 33, 0.7);
+        background-color: #ffd021;
+        border-color: #ffd021;
       }
     }
   }

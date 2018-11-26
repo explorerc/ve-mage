@@ -105,10 +105,11 @@ export default {
     }
   }
   min-width: 1366px;
+
   .edit {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 3px;
+    right: 3px;
     width: auto;
     height: 16px;
     display: none;
@@ -117,11 +118,17 @@ export default {
     i {
       cursor: pointer;
       display: inline-block;
-      background-color: red;
-      padding: 2px;
-      font-size: 16px;
+      background-color: #ffd021;
+      width: 30px;
+      height: 30px;
+      background-image: url('~assets/image/site/edit.png');
+      background-size: 32px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 2px;
       &:first-child {
-        margin-right: 1px;
+        margin-right: 2px;
+        background-image: url('~assets/image/site/del_edit.png');
       }
     }
   }

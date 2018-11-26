@@ -353,6 +353,7 @@
         window.history.go(-1)
       },
       resetData () {
+        this.isNew = true
         this.dateEmpty = false
         this.outRange = false
         this.showChooseTag = false
@@ -366,6 +367,8 @@
         this.editorContent = ''
         this.poster = ''
         this.tagArray = []
+        this.tagGroup = []
+        this.activityId = ''
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
