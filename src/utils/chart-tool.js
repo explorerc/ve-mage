@@ -395,8 +395,6 @@ export function barRadius (id, data) {
         fontSize: 12
       },
       formatter: (item) => {
-        console.log('-------')
-        console.log(item)
         return `${item[1].name}：${item[1].value}`
       }
     },
@@ -720,7 +718,6 @@ export function scatter (id, datas, gridData) {
   datas.data.forEach(item => {
     maxValue = maxValue > parseInt(item[2]) ? maxValue : parseInt(item[2])
   })
-  console.log('scatter-maxValue=' + maxValue)
   let option = {
     legend: {
       data: ['观看时长'],
