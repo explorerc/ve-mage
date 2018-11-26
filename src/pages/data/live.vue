@@ -406,6 +406,7 @@ import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
 import NavMenu from './nav-menu'
 import { mapMutations } from 'vuex'
 import * as types from '../../store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 
 export default {
   name: 'live-data',
@@ -518,6 +519,20 @@ export default {
     if (this.hdChart) { // 互动工具参与趋势图（PV、UV）
       this.hdChart.dispose()
     }
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '直播数据',
+      url: `/data/live/${this.$route.params.id}`
+    }])
   },
   mounted () {
     // 滚动到推广

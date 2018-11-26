@@ -186,7 +186,7 @@
           </div>
           <div class="filter-confirm">
             <el-button round class='primary-button' @click='doFilter'>查询</el-button>
-            <el-button round @click='showFilter = false'>取消</el-button>
+            <el-button round @click='reset'>重置</el-button>
           </div>
         </div>
       </transition>
@@ -311,6 +311,7 @@ import comImport from '../components/com-import'
 import userManage from 'src/api/userManage-service'
 import province from 'src/components/province'
 import city from 'src/components/city'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -491,6 +492,13 @@ export default {
       exportStr: '', // 导出数据的拼接str
       imgHost: process.env.IMGHOST + '/'
     }
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户池'
+    }])
   },
   mounted () {
     this.queryUserPool(this.filterCondition)
@@ -727,6 +735,24 @@ export default {
         }
       }
       window.location.href = `/api/user/customer/export${this.exportStr}`
+    },
+    reset () {
+      this.groupArray['id'] = []
+      this.groupArray['name'] = []
+      this.tagArray['id'] = []
+      this.tagArray['name'] = []
+      this.activityArray['id'] = []
+      this.activityArray['name'] = []
+      this.firstVal = []
+      this.lastVal = []
+      this.cityId = ''
+      this.provinceId = ''
+      const obj = this.filterCondition
+      for (const key in obj) {
+        if (key !== 'page' && key !== 'page_size') {
+          obj[key] = ''
+        }
+      }
     }
   },
   watch: {

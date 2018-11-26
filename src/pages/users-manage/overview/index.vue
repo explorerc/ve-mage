@@ -145,6 +145,7 @@ import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
 import groupService from 'src/api/user_group'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -174,6 +175,11 @@ export default {
     }
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户总览'
+    }])
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel

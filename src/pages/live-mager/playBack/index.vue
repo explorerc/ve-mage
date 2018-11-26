@@ -302,6 +302,7 @@
   import ChatService from 'components/chat/ChatService.js'
   import { mapMutations, mapState } from 'vuex'
   import * as types from 'src/store/mutation-types'
+  import EventBus from 'src/utils/eventBus'
 
   const outLineMode = {
     'FOREVER': 'NEVER',
@@ -423,6 +424,18 @@
     created () {
       this.activityId = this.$route.params.id
       this.initPage()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '活动回放',
+        url: `/liveMager/playBack/${this.$route.params.id}`
+      }])
     },
     methods: {
       ...mapMutations('login', {

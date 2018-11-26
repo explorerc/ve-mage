@@ -94,6 +94,7 @@ import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
 import comDetail from 'src/pages/live-mager/promote/com-detail'
+import EventBus from 'src/utils/eventBus'
 
 const statusType = {
   DRAFT: '草稿',
@@ -139,6 +140,20 @@ export default {
     }
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.email.activityId}`
+    }, {
+      title: '邮件邀约',
+      url: `/liveMager/email/${this.email.activityId}`
+    }, {
+      title: '预览'
+    }])
     // 如果vuex可以取到值就return
     // if (this.email.emailInviteId) {
     //   debugger

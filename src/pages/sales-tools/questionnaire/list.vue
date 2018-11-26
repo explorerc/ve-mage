@@ -357,6 +357,16 @@ export default {
         border-color: #eec11a;
         color: #222;
       }
+      &.disabled {
+        border-color: #ddd;
+        background-color: #ddd;
+        color: #999;
+        &:hover {
+          border-color: #ddd;
+          background-color: #ddd;
+          color: #999;
+        }
+      }
     }
     .default-button {
       line-height: 38px;

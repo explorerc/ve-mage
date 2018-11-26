@@ -99,22 +99,17 @@
           :options="options"
           @change="handleAreaChange">
         </el-cascader>
-        <!--<el-select style="width: 100px;"-->
-        <!--v-model="searchParams.provinceId">-->
-        <!--<el-option v-for="item in provinceList"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
-        <!--<el-select style="width: 112px;"-->
-        <!--v-model="searchParams.cityId">-->
-        <!--<el-option v-for="item in cityList"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">观看类型</span>
+        <el-select v-model="searchParams.type"
+                   placeholder="观看类型">
+          <el-option v-for="item in watcherList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
       </div>
       <div class="search-item flm">
         <span class="search-title">观众出入时段</span>
@@ -201,6 +196,7 @@
   import * as types from '../../store/mutation-types'
   import province from '../../components/province'
   import city from '../../components/city'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'viewerList',
@@ -226,6 +222,7 @@
           last_leave_at: '',
           device: '',
           score: '',
+          type: '',
           page: 1,
           pageSize: 10
         },
@@ -234,6 +231,11 @@
           {value: '', label: '全部'},
           {value: 'M', label: '男'},
           {value: 'W', label: '女'}
+        ],
+        watcherList: [
+          {value: '', label: '全部'},
+          {value: 'live', label: '直播'},
+          {value: 'replay', label: '回放'}
         ],
         watcherTypeList: [
           {value: '', label: '全部用户'},
@@ -314,6 +316,18 @@
       this.dealSearchParam()
       this.queryList()
       this.dealWithCity()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '观众',
+        url: `/data/viewer/${this.$route.params.id}`
+      }])
     },
     methods: {
       ...mapMutations('dataCenter', {

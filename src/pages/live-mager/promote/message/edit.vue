@@ -5,7 +5,8 @@
     <div class="edit-msg-page live-mager"
          @keydown="canPass = false">
       <div class="live-title">
-        <span class="title">创建短信通知</span>
+        <span class="title" v-if="inviteId">编辑短信通知</span>
+        <span class="title" v-else>创建短信通知</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
@@ -146,6 +147,7 @@ import activityService from 'src/api/activity-service'
 import chooseGroup from '../com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -216,6 +218,20 @@ export default {
     this.getLimit()
     this.queryGroupList()
     this.queryTagList()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activitId}`
+    }, {
+      title: '短信通知',
+      url: `/liveMager/promote/msg/list/${this.activitId}`
+    }, {
+      title: this.inviteId ? '编辑' : '新建'
+    }])
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.inviteId
@@ -295,7 +311,6 @@ export default {
       })
     },
     closeTest () {
-      // debugger
       this.testModal = false
     },
     /* enter搜索 */
@@ -346,8 +361,10 @@ export default {
       })
     },
     /* 查询标签 */
-    queryTagList (key) {
-      this.$get(userManage.GET_TAG_LIST).then((res) => {
+    queryTagList (keyword) {
+      this.$get(userManage.GET_TAG_LIST, {
+        keyword: keyword
+      }).then((res) => {
         let temArray = []
         res.data.list.forEach(item => {
           temArray.push({

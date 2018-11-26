@@ -2,7 +2,7 @@
   <div class="live-mager email-box">
     <div class="live-title">
       <span class="title">邮件邀约</span>
-      <com-back :class='"back-btn"'></com-back>
+      <com-back :class='"back-btn"' :url="`/liveMager/detail/${this.activeId}`"></com-back>
       <template v-if='emailList.length'>
         <button class="default-button fr"
                 @click="addEmail">新建邮件</button>
@@ -124,6 +124,7 @@ import activityService from 'src/api/activity-service'
 import VePagination from 'src/components/ve-pagination'
 import { mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 
 const handleType = {
   info: 'queryInfoEmail',
@@ -180,6 +181,17 @@ export default {
       this.$router.go(-1)
     }
     this.activeId = queryId
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activeId}`
+    }, {
+      title: '邮件邀约'
+    }])
     this.getLimit()
     this.queryEmailListById()
   },

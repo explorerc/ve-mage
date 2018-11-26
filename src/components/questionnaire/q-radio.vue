@@ -17,7 +17,7 @@
            v-text="item.value"></div>
       <span class="remove"
             v-if="edit&&value.detail.list.length>1"
-            @click="delItem(index)">删</span>
+            @click="delItem(index)"><i class="iconfont icon-shanchuxuanxiang"></i></span>
     </el-radio>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}

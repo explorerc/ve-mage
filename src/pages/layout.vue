@@ -96,7 +96,7 @@ export default {
     width: 85px !important;
     transition: width 0.5s;
   }
-  overflow: visible;
+  overflow: hidden;
   height: 100%;
   color: #f5f5f5;
   background-color: #212221;
