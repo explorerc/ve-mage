@@ -255,7 +255,7 @@ export default {
       border-color: #fc5659;
     }
     &:hover {
-      border-color: #4b5afe;
+      border-color: #888888;
     }
     /*&:focus {*/
     /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
@@ -335,7 +335,7 @@ export default {
       border-color: #fc5659;
     }
     &:hover {
-      border-color: #4b5afe;
+      border-color: #888888;
     }
     &::-moz-placeholder {
       color: #bfbfbf;

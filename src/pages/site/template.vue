@@ -491,6 +491,7 @@ export default {
     }
   }
 }
+
 .from-box {
   // margin: 20px;
   .from-row {
@@ -726,6 +727,14 @@ export default {
       margin: auto;
       border: 0;
       border-radius: 4px;
+    }
+  }
+}
+.editor-content /deep/ {
+  .com-input {
+    span {
+      right: 10px !important;
+      bottom: 6px !important;
     }
   }
 }
