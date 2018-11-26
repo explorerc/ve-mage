@@ -113,7 +113,7 @@
         title: '推荐卡片',
         url: `/salesTools/recommendCards/${this.$route.params.id}`
       }, {
-        title: this.cardId !== 'new' ? '编辑' : '新建'
+        title: this.cardId !== 'new' ? '编辑卡片' : '新建卡片'
       }])
     },
     mounted () {

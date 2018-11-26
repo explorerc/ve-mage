@@ -283,6 +283,7 @@ export default {
       position: relative;
     }
     i.arrow {
+      font-style: normal;
       top: 25px;
     }
     .del {

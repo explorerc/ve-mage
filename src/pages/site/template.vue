@@ -552,7 +552,7 @@ export default {
       left: 20px;
       margin-top: -20px;
       padding: 0 15px;
-      background-color: #ffda51;
+      // background-color: #ffda51;
       line-height: 40px;
       border-radius: 4px;
       font-size: 18px;
@@ -567,7 +567,7 @@ export default {
         color: #4b5afe;
       }
     }
-    .type-select {
+    .type-select /deep/ {
       position: absolute;
       top: 0;
       left: 80px;
@@ -575,6 +575,11 @@ export default {
       width: 220px;
       text-align: center;
       cursor: pointer;
+      background: none;
+      .el-input__inner {
+        border: none !important;
+        background-color: #ffda51 !important;
+      }
     }
     .save {
       position: absolute;
