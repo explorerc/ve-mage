@@ -372,7 +372,7 @@ export default {
     .el-menu-item {
       height: 55px;
       line-height: 55px;
-      padding-left: 74px !important;
+      padding-left: 64px !important;
       a {
         color: inherit !important;
         text-decoration: none;
