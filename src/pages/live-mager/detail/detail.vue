@@ -891,7 +891,7 @@ export default {
         this.inCountdown = false
         this.$messageBox({
           header: '提示',
-          width: '450',
+          width: '450px',
           content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
           cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
           confirmText: '确认开播',
@@ -943,7 +943,7 @@ export default {
         if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
           console.log(type + ' ' + status)
           this.$messageBox({
-            width: '450',
+            width: '450px',
             header: '提示',
             content: res.msg,
             autoClose: 10,
@@ -1005,7 +1005,7 @@ export default {
     publishActive () { // 发布活动
       this.$messageBox({
         header: '提示',
-        width: '450',
+        width: '450px',
         content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
         cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认发布',
@@ -1031,7 +1031,7 @@ export default {
       }
       this.$messageBox({
         header: '提示',
-        width: '450',
+        width: '450px',
         content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
         cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认下线',
@@ -1167,7 +1167,7 @@ export default {
     }
     .process .top dt:before {
       width: 100px;
-      right: -110px;
+      right: -105px;
     }
     .process .bottom > div ol {
       width: 140px;
@@ -1365,7 +1365,8 @@ export default {
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background: rgba(255, 208, 33, 0.7);
+        background-color:#ffd021;
+        border-color:#ffd021;
       }
     }
   }

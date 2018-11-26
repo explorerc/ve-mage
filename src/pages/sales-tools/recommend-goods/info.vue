@@ -61,13 +61,34 @@
 <script>
   import VeUpload from 'src/components/ve-upload-goods'
   import goodsServer from 'src/api/salesGoods-service'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'info',
     created () {
       if (this.$route.params.type === 'update') {
         this.getGoodsDetail()
+        this.Breadcrumb = '编辑商品'
+      } else {
+        this.Breadcrumb = '新建商品'
       }
+    },
+    mounted () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '商品列表',
+        url: `/salesTools/recommendGoodsList/${this.$route.params.id}`
+      }, {
+        title: this.Breadcrumb,
+        url: `/salesTools/recommendGoodsList/${this.$route.params.id}/${this.$route.params.type}`
+      }])
     },
     components: {
       VeUpload
@@ -157,6 +178,7 @@
         }
       }
       return {
+        Breadcrumb: '',
         isShowMsgB: true,
         errTitle: '',
         goodsData: {
@@ -379,6 +401,9 @@
           background-color: transparent;
           padding: 0;
         }
+        .el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+          background-color: #4b5afe;
+        }
       }
       .upload_box {
         position: relative;
@@ -408,7 +433,7 @@
         .ve-upload-box {
           width: 140px;
           height: 140px;
-          margin: auto 20px auto 0;
+          margin: auto 10px auto 0;
           display: inline-block;
           .upload-img-box {
             width: 140px;

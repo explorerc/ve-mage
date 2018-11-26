@@ -97,7 +97,7 @@ export default {
   /deep/ {
     .com-input {
       &.code {
-        margin-top: 5px;
+        margin-top: 14px;
         width: 140px;
       }
     }

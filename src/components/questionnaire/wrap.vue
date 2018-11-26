@@ -165,7 +165,7 @@ export default {
   },
   computed: {
     showAddItem () {
-      return !this.value.ext.fixedness && (this.value.type === QTypes.RADIO || this.value.type === QTypes.CHECKBOX || this.value.type === QTypes.SELECT)
+      return !this.value.ext.fixedness && (this.value.type === QTypes.RADIO || this.value.type === QTypes.CHECKBOX || this.value.type === QTypes.SELECT) && this.value.detail.list.length < 20
     }
   }
 }
@@ -212,6 +212,7 @@ export default {
       margin-top: 2px;
       margin-right: 15px;
       padding-left: 10px;
+      font-size: 14px;
     }
     .v-red {
       display: inline-block;
@@ -225,6 +226,7 @@ export default {
       background-color: #fff;
       .q-des {
         margin-bottom: 15px;
+        font-size: 14px;
       }
       .q-edit {
         padding: 0 10px;
@@ -293,9 +295,9 @@ export default {
         .sort {
           display: inline-block;
           text-align: center;
-          width: 30px;
-          height: 30px;
-          line-height: 30px;
+          // width: 30px;
+          // height: 30px;
+          // line-height: 30px;
           // border-radius: 30px;
           // border: 1px solid #d2d2d2;
           cursor: pointer;
@@ -304,9 +306,9 @@ export default {
         .del {
           display: inline-block;
           text-align: center;
-          width: 30px;
-          height: 30px;
-          line-height: 30px;
+          // width: 30px;
+          // height: 30px;
+          // line-height: 30px;
           // border-radius: 30px;
           // border: 1px solid #d2d2d2;
           cursor: pointer;
