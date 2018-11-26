@@ -782,8 +782,7 @@ export default {
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
-      dataRecord: [],
-      canCloseSite: true
+      dataRecord: []
     }
   },
   created () {
@@ -922,7 +921,7 @@ export default {
 
       })
     },
-    closeSite (type, dataType) {
+    closeSite (type, dataType, url) {
       this.$messageBox({
         header: '提示',
         width: '200',
@@ -937,9 +936,40 @@ export default {
                 item.switch = !status
               }
             })
-            this.canCloseSite = false
           } else if (e.action === 'confirm') {
-            this.canCloseSite = true
+            this.$config({
+              handlers: true
+            }).$post(activityService.POST_DETAIL_SWITCH, {
+              activityId: this.activityId,
+              submodule: type,
+              enabled: 'N'
+            }).then((res) => {
+              console.log(res)
+              if (res.code === 200) {
+                this.$toast({
+                  'content': '设置成功'
+                })
+                setTimeout((res) => {
+                  this.$router.push(url + this.activityId)
+                }, 500)
+              }
+            }).catch((res) => {
+              if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
+                console.log(type + ' ' + status)
+                this.$messageBox({
+                  width: '450px',
+                  header: '提示',
+                  content: res.msg,
+                  autoClose: 10,
+                  confirmText: '知道了'
+                })
+                this[dataType].forEach(item => {
+                  if (item.submodule === type) {
+                    item.switch = !status
+                  }
+                })
+              }
+            })
           }
         }
       })
@@ -951,7 +981,7 @@ export default {
         enabled: status ? 'Y' : 'N'
       }
       if (type === 'TEMPLATE' && !status && this.isPublished) { // 关闭官网 二次提示
-        this.closeSite(type, dataType)
+        this.closeSite(type, dataType, url)
         return false
       }
       this.$config({
