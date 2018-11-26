@@ -1,6 +1,8 @@
 @import "assets/css/mixin.scss";
+
 .switch-cover {
   position: relative;
+
   &.close::before {
     content: '';
     width: 100%;
@@ -15,6 +17,7 @@
     cursor: not-allowed;
   }
 }
+
 .live-mager {
   border-radius: 5px;
   overflow: hidden;
@@ -38,6 +41,7 @@
   .live-title {
     //border-bottom: 1px solid $color-bd;
     line-height: 60px;
+    padding-top: 50px;
 
     span.title {
       display: inline-block;
