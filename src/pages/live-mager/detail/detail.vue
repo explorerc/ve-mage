@@ -1174,7 +1174,7 @@ export default {
     }
     .process .top dt:before {
       width: 100px;
-      right: -110px;
+      right: -105px;
     }
     .process .bottom > div ol {
       width: 140px;
@@ -1372,7 +1372,8 @@ export default {
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background: rgba(255, 208, 33, 0.7);
+        background-color:#ffd021;
+        border-color:#ffd021;
       }
     }
   }
