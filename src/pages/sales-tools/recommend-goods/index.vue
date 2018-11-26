@@ -271,6 +271,9 @@
 
     .no-goods {
       text-align: center;
+      background-color: #ffffff;
+      border-radius:4px;
+      border:1px solid #e2e2e2;
       img {
         width: 180px;
         height: 180px;
@@ -287,6 +290,12 @@
         font-weight: 400;
         color: rgba(85, 85, 85, 1);
         margin: 10px auto 30px auto;
+      }
+      button {
+        margin-bottom: 90px;
+        span{
+          margin: auto 40px;
+        }
       }
     }
   }

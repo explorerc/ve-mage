@@ -102,9 +102,7 @@
                  confirmText="确定"
                  type='prompt'
                  header='预览'>
-      <div class="box">
-        <div class="text">预览</div>
-      </div>
+      <div class="text">预览</div>
       <div class="v-content">
         <div class="v-hearder">
           <img v-if="defaultImg"
@@ -295,6 +293,7 @@ export default {
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 .back-btn {
+  height: 40px !important;
   margin: 10px 0px 10px 10px !important;
 }
 .v-list /deep/ {
@@ -480,23 +479,23 @@ export default {
       display: none;
     }
   }
-  .box {
-    width: 145px;
-    height: 85px;
-    background-color: #ffd021;
-    color: #fff;
-    /* Rotate div */
-    transform: rotate(-45deg);
-    position: absolute;
-    left: -50px;
-    top: -50px;
-    z-index: 1;
-  }
+  // .box {
+  //   width: 145px;
+  //   height: 85px;
+  //   background-color: #ffd021;
+  //   color: #fff;
+  //   /* Rotate div */
+  //   transform: rotate(-45deg);
+  //   position: absolute;
+  //   left: -50px;
+  //   top: -50px;
+  //   z-index: 1;
+  // }
   .text {
     position: absolute;
-    bottom: 9px;
-    left: 33px;
-    font-size: 16px;
+    top: 20px;
+    left: 20px;
+    font-size: 18px;
   }
   .v-content {
     overflow: auto;
