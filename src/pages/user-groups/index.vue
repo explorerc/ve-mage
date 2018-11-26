@@ -114,6 +114,7 @@
                         @optionData="optionData"
                         :rule="Group.rule"
                         :type="isAddOrEdit"></condOption>
+
           </div>
         </div>
       </div>
@@ -438,25 +439,31 @@
           margin-right: 20px;
           .el-input__inner {
             border-radius: 20px;
-            border-color: rgba(136, 136, 136, 1);
-            &:hover {
-              border-color: #5d6afe;
+            &:hover,&:focus {
+              border-color: #888888;
             }
           }
         }
         .el-button {
-          color: rgba(85, 85, 85, 1);
+          color: #555555;
           width: 120px;
           height: 34px;
           border-radius: 16px;
-          border: 1px solid rgba(136, 136, 136, 1);
+          border: 1px solid #888888;
+          &:hover,&:focus {
+            background-color:#ffd021 ;
+            border-color: #ffd021;
+            color: black;
+          }
         }
       }
     }
     .table-box {
       margin-top: 22px;
       padding: 30px;
-      border: 1px dashed #cccccc;
+      border: 1px solid #E2E2E2;
+      background-color: white;
+      border-radius: 4px;
       .el-table {
         .btns {
           color: rgba(34, 34, 34, 1);
