@@ -782,7 +782,8 @@ export default {
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
-      dataRecord: []
+      dataRecord: [],
+      canCloseSite: true
     }
   },
   created () {
@@ -921,11 +922,37 @@ export default {
 
       })
     },
+    closeSite (type, dataType) {
+      this.$messageBox({
+        header: '提示',
+        width: '200',
+        content: '活动官网已经发布，请确认是否关闭？',
+        cancelText: '暂不关闭', // 不传递cancelText将只有一个确定按钮
+        confirmText: '确认关闭',
+        handleClick: (e) => {
+          console.log(e)
+          if (e.action === 'cancel') {
+            this[dataType].forEach(item => {
+              if (item.submodule === type) {
+                item.switch = !status
+              }
+            })
+            this.canCloseSite = false
+          } else if (e.action === 'confirm') {
+            this.canCloseSite = true
+          }
+        }
+      })
+    },
     switchChange (type, status, dataType, url) {
       const data = {
         activityId: this.activityId,
         submodule: type,
         enabled: status ? 'Y' : 'N'
+      }
+      if (type === 'TEMPLATE' && !status && this.isPublished) { // 关闭官网 二次提示
+        this.closeSite(type, dataType)
+        return false
       }
       this.$config({
         handlers: true
@@ -1365,8 +1392,8 @@ export default {
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background-color:#ffd021;
-        border-color:#ffd021;
+        background-color: #ffd021;
+        border-color: #ffd021;
       }
     }
   }

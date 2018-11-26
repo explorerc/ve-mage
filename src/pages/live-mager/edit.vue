@@ -156,7 +156,6 @@
         }
         ]
       } else {
-        this.emptyData()
         bread = [{
           title: '活动管理'
         }, {
