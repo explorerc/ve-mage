@@ -157,7 +157,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${activityId}`
     }, {
-      title: '直播引导页'
+      title: '暖场设置'
     }])
     if (!activityId) {
       this.goBack()
