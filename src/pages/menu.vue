@@ -380,7 +380,7 @@ export default {
       &.is-active {
         background-color: #2f302f !important;
         border-left: 4px solid #ffd021;
-        padding-left: 70px !important;
+        padding-left: 64px !important;
       }
     }
     .el-submenu__icon-arrow {

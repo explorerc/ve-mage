@@ -272,7 +272,7 @@
           header: '删除群组',
           type: 'error',
           width: '450px',
-          content: '<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ',
+          content: '删除群组后，组内人员将不再归属于该组。是否确认删除群组？ ',
           cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
           confirmText: '删除',
           handleClick: (e) => {

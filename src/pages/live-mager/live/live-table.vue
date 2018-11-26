@@ -8,30 +8,29 @@
 </template>
 
 <script>
-  import LiveItem from './live-item'
-  export default {
-    name: 'live-table',
-    components: { LiveItem },
-    props: {
-      tableList: {
-        type: Array,
-        default: []
-      }
-    },
-    data () {
-      return {}
-    },
-    methods: {
-      handleClick (item) {
-        this.$emit('handleClick', item)
-      }
+import LiveItem from './live-item'
+export default {
+  name: 'live-table',
+  components: { LiveItem },
+  props: {
+    tableList: {
+      type: Array,
+      default: []
+    }
+  },
+  data () {
+    return {}
+  },
+  methods: {
+    handleClick (item) {
+      this.$emit('handleClick', item)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
 .live-list {
-  margin-top: 20px;
   .none-data {
     text-align: center;
     line-height: 60px;
