@@ -200,7 +200,7 @@ export default {
       title: '微信通知',
       url: `/liveMager/promote/wechat/list/${this.activityId}`
     }, {
-      title: this.inviteId ? '编辑' : '新建'
+      title: this.inviteId ? '编辑微信通知' : '新建微信通知'
     }])
   },
   mounted () {
