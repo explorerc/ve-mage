@@ -261,16 +261,7 @@
         return this.$get(dataService.GET_VIEWER_BASE, {
           activityId: this.activityId
         }).then((res) => {
-          let serveData = [
-            // { name: '观众总数', value: 0 },
-            // { name: '老用户', value: 0 },
-            // { name: '新用户', value: 0 },
-            {name: '优质用户', value: 0},
-            {name: '高价值用户', value: 0},
-            {name: '一般用户', value: 0},
-            {name: '潜力用户', value: 0},
-            {name: '流失用户', value: 0}
-          ]
+          let serveData = []
           if (res.code === 200 && res.data.length !== 0) {
             this.basicUserData = res.data
             serveData = [
@@ -283,6 +274,13 @@
               {name: '潜力用户', value: this.basicUserData.potentialUser},
               {name: '流失用户', value: this.basicUserData.lossUser}
             ]
+            let temArry = []
+            serveData.forEach(item => {
+              if (item.value !== 0) {
+                temArry.push(item)
+              }
+            })
+            serveData = temArry
           }
           // 各级别用户占比
           this.$nextTick(() => {
@@ -294,7 +292,7 @@
         this.$get(dataService.GET_VIEWER_REGION, {
           activityId: this.activityId
         }).then((res) => {
-          let listData = [{name: '', value: 0}]
+          let listData = []
           if (res.code === 200 && res.data.length !== 0) {
             listData = res.data.list
           }
