@@ -1,11 +1,13 @@
 <template>
   <div class="apply-page live-mager" @mousedown="canPaas = false">
-    <div class="live-title">
+    <div class="live-title" style="border:none;">
       <span class="title">活动报名</span>
       <el-switch
         v-model="isOpen"
         inactive-color="#DEE1FF"
-        active-color="#4B5AFE" @change='openSwitch'>
+        :width="32"
+        active-color="#FFD021"
+        @change='openSwitch'>
       </el-switch>
       <com-back :class='"back-btn"'></com-back>
       <div class="right-box">
@@ -472,6 +474,9 @@
 <style lang='scss' scoped>
 @import 'assets/css/mixin.scss';
 .back-btn {
+  padding: 0 !important;
+  width: 118px !important;
+  height: 40px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
 }

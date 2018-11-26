@@ -3,9 +3,9 @@
     <div class="live-title">
       <span class="title">暖场设置</span>
       <el-switch v-model="isSwitch"
-                 inactive-color="#DEE1FF"
-                 :disabled="isSwitchDisabled"
-                 active-color="#4B5AFE" @change='openSwitch'>
+        inactive-color="#DEE1FF"
+        :width="32"
+        active-color="#FFD021" @change='openSwitch'>
       </el-switch>
       <com-back></com-back>
       <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
@@ -423,5 +423,9 @@ export default {
     width: 200px;
     margin: 60px auto 50px auto;
   }
+}
+.el-switch {
+  position: relative;
+  bottom: 3px;
 }
 </style>

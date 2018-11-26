@@ -137,7 +137,7 @@
   float: right;
   margin: 14px 0px 14px 10px !important;
   padding: 0 !important;
-  width: 100px !important;
+  width: 120px !important;
   height: 34px !important;
   line-height: 34px !important;
 }

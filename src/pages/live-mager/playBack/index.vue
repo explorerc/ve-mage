@@ -1,7 +1,7 @@
 <template>
   <div class="live-mager play-back">
     <div class="live-title"
-         style="margin-top: 30px;">
+         style="margin-top: 30px;border:none;">
       <span class="title">活动回放</span>
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
       <com-back :class='"back-btn"'></com-back>
@@ -131,10 +131,10 @@
               <template v-if="navIdx == 0">
                 <p class='title'>暂无回放</p>
                 <p class='desc'>直播结束后系统会自动生成回放</p>
-                <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
               </template>
               <template v-else>
                 <p class='title'>您还没有添加视频，快去添加吧</p>
+                <el-button class='primary-button' @click="addVideoClickShow">添加视频</el-button>
               </template>
             </div>
           </template>
@@ -816,24 +816,28 @@
 <style lang="scss" scoped src="../css/live.scss">
 </style>
 <style lang="scss">
-  .list-box  {
-    .el-table .cell{
-      overflow: visible;
-    }
-    .overflow-hide{
-      display: inline-block;
-      width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      vertical-align: middle;
-    }
+.list-box {
+  .el-table .cell {
+    overflow: visible;
   }
+  .overflow-hide {
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+}
 </style>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .back-btn {
   margin-top: 10px !important;
+  padding: 0px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  width: 116px !important;
 }
 .status-default {
   color: $color-blue;
