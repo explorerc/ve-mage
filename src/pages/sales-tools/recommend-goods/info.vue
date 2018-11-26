@@ -422,17 +422,6 @@
           background-image: url('~assets/image/index-img.png');
           background-size: cover;
         }
-        /* > i {
-             width: 32px;
-             height: 35px;
-             display: inline-block;
-             position: absolute;
-             top: 0;
-             left: 0;
-             z-index: 100;
-             background-image: url("~assets/image/index-img.png");
-             background-size: cover;
-           }*/
         .ve-upload-box {
           width: 140px;
           height: 140px;
