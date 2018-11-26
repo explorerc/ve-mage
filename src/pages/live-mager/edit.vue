@@ -546,7 +546,7 @@
       width: 100%;
     }
     .from-content.editor-content:not(.error):hover .vue-html5-editor {
-      border-color: $color-blue-hover;
+      border-color: $color-gray-hover;
     }
     .from-content.error {
       .vue-html5-editor {

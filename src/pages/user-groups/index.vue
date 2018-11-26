@@ -438,6 +438,8 @@
           height: 34px;
           margin-right: 20px;
           .el-input__inner {
+            height: 34px;
+            line-height: 34px;
             border-radius: 20px;
             &:hover,&:focus {
               border-color: #888888;
