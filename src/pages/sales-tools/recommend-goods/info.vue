@@ -259,7 +259,6 @@
                 }
               })
               this.goodsData.image = JSON.stringify(imgList)
-              delete this.goodsData.imageList
               this.$post(_url, this.goodsData)
                 .then(res => {
                   this.$toast({
@@ -277,7 +276,7 @@
               return false
             }
           })
-        }, 400)
+        }, 100)
       },
       resetForm (formName) {
         this.$messageBox({
