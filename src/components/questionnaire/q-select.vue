@@ -15,7 +15,7 @@
                    :max-length="value.ext.fixedness?0:30"></com-input>
         <span class="remove"
               v-if="value.detail.list.length>1&&!value.ext.fixedness"
-              @click="delItem(index)">删</span>
+              @click="delItem(index)"><i class="iconfont icon-shanchuxuanxiang"></i></span>
       </div>
     </div>
     <el-select v-if="!edit"
@@ -116,7 +116,10 @@ export default {
       height: 40px;
       .select-icon {
         display: inline-block;
-        margin-top: 8px;
+        margin-top: 10px;
+        .iconfont {
+          font-size: 20px;
+        }
       }
       .select-input {
         left: 20px;

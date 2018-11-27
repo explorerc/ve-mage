@@ -614,7 +614,7 @@ export default {
             &::after {
               display: block;
               position: absolute;
-              content: '';
+              content: "";
               height: 0px;
               width: 0px;
               top: -5px;
@@ -708,7 +708,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: '';
+                content: "";
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -765,7 +765,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: '';
+                content: "";
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -940,7 +940,7 @@ export default {
     }
     .v-steps {
       width: 100%;
-      border-top: 2px solid #e2e2e2;
+      border-top: 1px solid #e2e2e2;
     }
     .v-step {
       position: relative;

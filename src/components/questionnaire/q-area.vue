@@ -26,7 +26,8 @@
 
     </div>
     <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
-         class="q-edit-select" :class="{'v-disabled': conntyDisabled}">
+         class="q-edit-select"
+         :class="{'v-disabled': conntyDisabled}">
       <el-select v-model="countyValue"
                  @focus="focusCounty"
                  placeholder="请选择区/县">
@@ -41,7 +42,8 @@
             class="remove">{{getCountyState}}</span>
     </div>
     <div v-if="edit||(!edit&&this.value.detail.level === 'address')"
-         class="q-edit-select" :class="{'v-disabled': addressDisabled}">
+         class="q-edit-select"
+         :class="{'v-disabled': addressDisabled}">
       <com-input placeholder="请输入详细地址"
                  :disabled="edit"
                  v-model="value.address"
@@ -213,7 +215,7 @@ export default {
 <style scoped lang="scss">
 .q-edit-content {
   /deep/ {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     .q-edit-select {
       display: block;
       width: 100%;
