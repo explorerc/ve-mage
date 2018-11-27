@@ -96,16 +96,15 @@ export default {
 </script>
 <style  scoped lang="scss">
 .v-login-reg /deep/ {
-  width: 110px;
-  position: absolute;
-  top: 13px;
-  right: 30px;
+  width: 150px;
+  float: right;
+  margin-right: 20px;
   text-align: left;
   z-index: 2;
   cursor: pointer;
   .v-name {
     display: inline-block;
-    width: 50px;
+    width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
