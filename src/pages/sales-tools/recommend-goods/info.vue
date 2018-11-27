@@ -410,7 +410,7 @@
           margin-bottom: 24px;
         }
         .el-form-item.textarea-box{
-          transform: translateY(-15px);
+          transform: translateY(-8px);
         }
         .el-form-item:last-child {
           text-align: center;

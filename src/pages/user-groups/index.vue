@@ -22,7 +22,6 @@
     </div>
     <div class="table-box">
       <el-table :data="tableData"
-                border
                 class="el-table">
         <el-table-column label="群组名称">
           <template slot-scope="scope">
@@ -81,10 +80,11 @@
     <message-box v-if="isShow"
                  :header="dialogTitle"
                  width="590px"
+                 class="massage-style"
                  type="prompt"
                  confirmText='保存'
                  @handleClick="saveHandleClick">
-      <div class="prop-input">
+      <div>
         <div>
           <el-form :model="Group"
                    :rules="rules"
@@ -406,7 +406,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #userGroups {
   font-family: PingFangSC-Regular;
   padding: 40px 100px;
@@ -490,6 +490,11 @@
     .input_s {
       width: 100%;
     }
+  }
+}
+.massage-style{
+  .el-form .el-form-item:first-child {
+    margin-top: 14px;
   }
 }
 
