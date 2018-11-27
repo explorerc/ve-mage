@@ -102,8 +102,8 @@ export default {
   background-color: #212221;
 }
 .header-container {
-  height: 70px;
-  padding-top: 20px;
+  height: 70px!important;
+  line-height: 70px;
   text-align: right;
   position: relative;
   // margin-right: 10px;

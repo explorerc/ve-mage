@@ -19,7 +19,7 @@
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border class="el-table"
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="el-table"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" v-if="type === 2"></el-table-column>
         <el-table-column label="用户信息">
@@ -245,7 +245,8 @@
       }
     }
     .table_box {
-      border: 1px dashed #cccccc;
+      border: 1px solid #e2e2e2;
+      background-color: white;
       margin: 20px auto;
       padding: 30px;
       th.el-table_1_column_1 span.el-checkbox__inner {
@@ -257,6 +258,11 @@
       }
       th.el-table_1_column_1 span.el-checkbox__inner:after {
         border: none;
+      }
+      tr {
+        span{
+          color: rgba(34, 34, 34, 1);
+        }
       }
       .btns {
         color: rgba(34, 34, 34, 1);
