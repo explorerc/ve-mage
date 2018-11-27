@@ -247,7 +247,7 @@ export default {
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;
     background-image: none;
-    border: 1px solid #d9d9d9;
+    border: 1px solid #CECECE;
     border-radius: 4px;
     transition: all 0.3s;
     padding: 0 10px;

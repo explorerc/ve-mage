@@ -882,8 +882,8 @@ export default {
                   text-align: center;
                   margin-left: 20px;
                   &:hover {
-                    border-color: #4b5afe;
-                    background-color: #4b5afe;
+                    border-color: #888;
+                    background-color: #888888;
                     color: #fff;
                   }
                 }

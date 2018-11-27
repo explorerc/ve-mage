@@ -1089,10 +1089,10 @@ export default {
         text-overflow: ellipsis;
       }
       .el-input.is-focus .el-input__inner {
-        border-color: $color-blue;
+        border-color: $color-gray;
       }
       &:hover .el-input__inner {
-        border-color: $color-blue;
+        border-color: $color-gray;
       }
     }
     .el-cascader {
