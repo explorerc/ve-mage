@@ -1241,7 +1241,7 @@ export default {
         margin-top: 20px;
       }
       .title {
-        width: 370px;
+        width: 374px;
       }
     }
   }
@@ -1277,7 +1277,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
   border: 1px solid rgba(226, 226, 226, 1);
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .process {
@@ -1479,7 +1479,7 @@ export default {
     padding-bottom: 10px;
   }
   .title {
-    font-size: 22px;
+    font-size: 20px;
     color: $color-font;
     margin-right: 8px;
     word-break: break-all;
