@@ -11,12 +11,12 @@
       </div>
       <div class="asset-header-item">
         <span>可用金额（元）</span>
-        <img width="93" height="58" src="../../assets/image/qianbao@2x.png">
+        <img width="100" height="60" src="../../assets/image/qianbao@2x.png">
         <span class="mid">{{billInfo.balance}}</span>
       </div>
       <div class="asset-header-item">
         <span>今日支出（元）</span>
-        <img class="zhichu-img" width="78" height="47" src="../../assets/image/zhichu@2x.png">
+        <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
         <span class="mid-zhichu">{{billInfo.payToday}}</span>
       </div>
     </div>
@@ -217,9 +217,6 @@ export default {
           margin-top: 3px;
           font-weight: bold;
         }
-        .zhichu-img {
-          margin: 16px auto;
-        }
       }
     }
   }
@@ -248,9 +245,8 @@ export default {
         margin: 0 20px;
       }
       .export-btn {
-        margin-top: 2px;
-        height: 36px;
-        line-height: 36px;
+        height: 34px;
+        line-height: 34px;
       }
       .status {
         color: #FC5659;

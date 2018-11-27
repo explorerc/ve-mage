@@ -144,8 +144,10 @@ $color-ui-components:#4B5AFE;
 }
 
 .el-select-dropdown__item.selected,
-.el-cascader-menu__item.is-active {
-  color: $color-gray-hover;
+.el-cascader-menu__item.is-active,
+.el-select .el-input__inner:focus,
+.el-select .el-input.is-focus .el-input__inner{
+  border-color: $color-gray-hover;
   font-weight: normal;
 }
 .el-table .cell {
@@ -160,4 +162,11 @@ $color-ui-components:#4B5AFE;
 textarea::-webkit-input-placeholder {
   color: #888888;
   font-size: 14px;
+}
+.el-input__inner {
+  height: 34px;
+  line-height: 34px;
+}
+.el-input__icon {
+  line-height: 34px;
 }
