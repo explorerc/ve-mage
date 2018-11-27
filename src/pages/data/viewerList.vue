@@ -441,12 +441,12 @@
 <style lang="scss" scoped>
   .data-box {
     .export-btn {
-      height: 30px;
-      line-height: 30px;
+      height: 34px;
+      line-height: 34px;
       padding: 0 20px;
     }
     .data-pad {
-      padding-top: 20px;
+      padding-top: 30px;
     }
     .search-box /deep/ {
       .search-com {
@@ -458,11 +458,14 @@
       }
     }
     .search-total {
-      height: 60px;
+      height: 34px;
+      line-height: 34px;
+      margin: 30px 0;
     }
     .search-item /deep/ {
       display: inline-block;
-      margin: 10px 0 10px 0;
+      height: 34px;
+      line-height: 34px;
       .el-select {
         display: inline-block;
       }
@@ -507,6 +510,7 @@
     }
     .flm {
       margin-left: 14px;
+      margin-top: 30px;
     }
     .user-info {
       .user-avatar {

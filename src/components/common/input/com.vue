@@ -241,9 +241,9 @@ export default {
   input {
     display: inline-block;
     width: 100%;
-    height: 40px;
+    height: 34px;
     font-size: 14px;
-    line-height: 40px;
+    line-height: 34px;
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;
     background-image: none;
