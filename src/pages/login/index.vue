@@ -16,7 +16,7 @@
     <div class="v-right">
       <div class="v-content">
         <p class="v-title">
-          欢迎登录微吼直播
+          欢迎登录微吼知客
         </p>
         <ul class="v-tabs clearfix">
           <li v-on:click="changeFunction('账号登录')"
