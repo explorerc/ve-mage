@@ -287,7 +287,7 @@ export default {
       return !(this.phoneData.length === 0)
     },
     defaultImg () {
-      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl + '?x-oss-process=image/resize,m_fill,h_140,w_700' : ''
     }
   },
   methods: {
