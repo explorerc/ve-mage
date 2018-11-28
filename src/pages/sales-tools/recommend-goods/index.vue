@@ -198,13 +198,14 @@
     header {
       overflow: hidden;
       text-align: right;
+      margin-bottom: 20px;
       p {
         float: left;
         height: 26px;
         font-size: 24px;
         font-weight: 400;
         color: rgba(34, 34, 34, 1);
-        line-height: 26px;
+        line-height: 52px;
       }
       .back-btn {
         margin-top: 0 !important;
@@ -272,8 +273,8 @@
     .no-goods {
       text-align: center;
       background-color: #ffffff;
-      border-radius:4px;
-      border:1px solid #e2e2e2;
+      border-radius: 4px;
+      border: 1px solid #e2e2e2;
       img {
         width: 180px;
         height: 180px;
@@ -293,7 +294,7 @@
       }
       button {
         margin-bottom: 90px;
-        span{
+        span {
           margin: auto 40px;
         }
       }

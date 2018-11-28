@@ -102,7 +102,7 @@ export default {
   background-color: #212221;
 }
 .header-container {
-  height: 70px!important;
+  height: 70px !important;
   line-height: 70px;
   text-align: right;
   position: relative;
@@ -120,7 +120,7 @@ export default {
   position: absolute;
   left: 220px;
   right: 0;
-  top: 60px;
+  top: 70px;
   bottom: 0;
   overflow-y: auto;
   min-width: 1000px;
