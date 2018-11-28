@@ -8,7 +8,7 @@
             <div class="item-title">
               <ve-title title="观看直播人数"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('/data/viewerList',basicCountData.live.nums)">
+            <div class="item-mid data-link" @click="goPage('/data/viewerList',basicCountData.live.nums,'live')">
               {{basicCountData.live.nums}}
             </div>
           </div>
@@ -30,7 +30,7 @@
             <div class="item-title">
               <ve-title title="观看回放人数"></ve-title>
             </div>
-            <div class="item-mid data-link" @click="goPage('/data/viewerList',basicCountData.playBack.nums)">
+            <div class="item-mid data-link" @click="goPage('/data/viewerList',basicCountData.playBack.nums,'replay')">
               {{basicCountData.playBack.nums}}
             </div>
           </div>
@@ -397,594 +397,595 @@
 </template>
 
 <script>
-import VePagination from 'src/components/ve-pagination'
-import VeTitle from './ve-title'
-import VeCircle from 'src/components/ve-circle'
-import dataService from 'src/api/data-service'
-import cardService from 'src/api/salesCards-service.js'
-import { lines, bars, barAndLine, scatter } from 'src/utils/chart-tool'
-import NavMenu from './nav-menu'
-import { mapMutations } from 'vuex'
-import * as types from '../../store/mutation-types'
-import EventBus from 'src/utils/eventBus'
+  import VePagination from 'src/components/ve-pagination'
+  import VeTitle from './ve-title'
+  import VeCircle from 'src/components/ve-circle'
+  import dataService from 'src/api/data-service'
+  import cardService from 'src/api/salesCards-service.js'
+  import {lines, bars, barAndLine, scatter} from 'src/utils/chart-tool'
+  import NavMenu from './nav-menu'
+  import {mapMutations} from 'vuex'
+  import * as types from '../../store/mutation-types'
+  import EventBus from 'src/utils/eventBus'
 
-export default {
-  name: 'live-data',
-  components: { VeTitle, VeCircle, NavMenu, VePagination },
-  data () {
-    return {
-      activityId: this.$route.params.id,
-      loading: false,
-      basicCountData: {
-        live: {
-          nums: 0,
-          times: 0,
-          duration: 0
+  export default {
+    name: 'live-data',
+    components: {VeTitle, VeCircle, NavMenu, VePagination},
+    data () {
+      return {
+        activityId: this.$route.params.id,
+        loading: false,
+        basicCountData: {
+          live: {
+            nums: 0,
+            times: 0,
+            duration: 0
+          },
+          playBack: {
+            nums: 0,
+            times: 0,
+            duration: 0
+          }
         },
-        playBack: {
-          nums: 0,
-          times: 0,
-          duration: 0
-        }
-      },
-      interactCountData: {
-        signUp: 0,
-        subscribe: 0,
-        chat: {
-          nums: 0,
-          msg: 0
+        interactCountData: {
+          signUp: 0,
+          subscribe: 0,
+          chat: {
+            nums: 0,
+            msg: 0
+          },
+          share: {
+            invite: 0,
+            effective: 0
+          },
+          prize: {
+            join: 0,
+            win: 0
+          },
+          pager: {
+            push: 0,
+            receive: 0
+          },
+          answer: {
+            push: 0,
+            join: 0,
+            win: 0
+          },
+          card: {
+            push: 0,
+            browse: 0,
+            click: 0
+          },
+          goods: {
+            shelf: 0,
+            total: 0,
+            push: 0,
+            browse: 0,
+            click: 0
+          },
+          redBag: {
+            join: 0,
+            receive: 0,
+            money: 0
+          }
         },
-        share: {
-          invite: 0,
-          effective: 0
+        watchType: 0,
+        watcherLineData: {
+          live: {
+            xAxis: [],
+            pv: [],
+            uv: [],
+            ip: []
+          },
+          playback: {
+            xAxis: [],
+            pv: [],
+            uv: [],
+            ip: []
+          }
         },
-        prize: {
-          join: 0,
-          win: 0
-        },
-        pager: {
-          push: 0,
-          receive: 0
-        },
-        answer: {
-          push: 0,
-          join: 0,
-          win: 0
-        },
-        card: {
-          push: 0,
-          browse: 0,
-          click: 0
-        },
-        goods: {
-          shelf: 0,
-          total: 0,
-          push: 0,
-          browse: 0,
-          click: 0
-        },
-        redBag: {
-          join: 0,
-          receive: 0,
-          money: 0
-        }
-      },
-      watchType: 0,
-      watcherLineData: {
-        live: {
-          xAxis: [],
-          pv: [],
-          uv: [],
-          ip: []
-        },
-        playback: {
-          xAxis: [],
-          pv: [],
-          uv: [],
-          ip: []
-        }
-      },
-      preDataDetail: false, // 预约
-      chatDataDetail: false, // 聊天
-      prizeDataDetail: false, // 抽奖
-      pagerDataDetail: false, // 问卷
-      answerDataDetail: false, // 答案
-      cardDataDetail: false, // 推荐卡片
-      goodsDataDetail: false, // 商品推荐
-      redBagDataDetail: false, // 红包
-      preDataList: [],
-      chatDataList: [],
-      prizeDataList: [],
-      pagerDataList: [],
-      answerDataList: [],
-      cardDataList: [],
-      goodsDataList: [],
-      redBagDataList: [],
-      page: 1,
-      pageSize: 20,
-      total: 0
-    }
-  },
-  beforeDestroy () {
-    window.callbackResize = null
-    if (this.watcherChart) { // 观众趋势图
-      this.watcherChart.dispose()
-    }
-    if (this.timeLongChart) { // 观众时长分布图
-      this.timeLongChart.dispose()
-    }
-    if (this.playBackTimeChart) { // 观看回放时段
-      this.playBackTimeChart.dispose()
-    }
-    if (this.hdChart) { // 互动工具参与趋势图（PV、UV）
-      this.hdChart.dispose()
-    }
-  },
-  created () {
-    EventBus.$emit('breads', [{
-      title: '活动管理'
-    }, {
-      title: '活动列表',
-      url: '/liveMager/list'
-    }, {
-      title: '活动详情',
-      url: `/liveMager/detail/${this.$route.params.id}`
-    }, {
-      title: '直播数据',
-      url: `/data/live/${this.$route.params.id}`
-    }])
-  },
-  mounted () {
-    // 滚动到推广
-    if (window.location.href.search('tools') > -1) {
-      let timer = setInterval(() => {
-        document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
-        if (document.querySelector('.main-container').scrollTop >= 1355) {
-          clearInterval(timer)
-        }
-      }, 10)
-    }
-    // 滚动到推广
-    if (window.location.href.search('questions') > -1) {
-      let timer = setInterval(() => {
-        document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
-        if (document.querySelector('.main-container').scrollTop >= 1355) {
-          clearInterval(timer)
-        }
-      }, 10)
-    }
-    this.activityId = this.$route.params.id
-    this.$nextTick(() => {
-      this.initPage()
-    })
-    window.callbackResize = () => {
-      // 重新绘制
-      this.resizeRenderChart()
-    }
-  },
-  methods: {
-    ...mapMutations('dataCenter', {
-      storeSelectMenu: types.DATA_SELECT_MENU
-    }),
-    resizeRenderChart () {
+        preDataDetail: false, // 预约
+        chatDataDetail: false, // 聊天
+        prizeDataDetail: false, // 抽奖
+        pagerDataDetail: false, // 问卷
+        answerDataDetail: false, // 答案
+        cardDataDetail: false, // 推荐卡片
+        goodsDataDetail: false, // 商品推荐
+        redBagDataDetail: false, // 红包
+        preDataList: [],
+        chatDataList: [],
+        prizeDataList: [],
+        pagerDataList: [],
+        answerDataList: [],
+        cardDataList: [],
+        goodsDataList: [],
+        redBagDataList: [],
+        page: 1,
+        pageSize: 20,
+        total: 0
+      }
+    },
+    beforeDestroy () {
+      window.callbackResize = null
       if (this.watcherChart) { // 观众趋势图
-        this.watcherChart.resize()
+        this.watcherChart.dispose()
       }
       if (this.timeLongChart) { // 观众时长分布图
-        this.timeLongChart.resize()
+        this.timeLongChart.dispose()
       }
       if (this.playBackTimeChart) { // 观看回放时段
-        this.playBackTimeChart.resize()
+        this.playBackTimeChart.dispose()
       }
       if (this.hdChart) { // 互动工具参与趋势图（PV、UV）
-        this.hdChart.resize()
+        this.hdChart.dispose()
       }
     },
-    goPage (url, limit) {
-      if (limit !== 0) {
-        this.$router.push(`${url}/${this.$route.params.id}`)
-        this.storeSelectMenu(3)
+    created () {
+      this.storeSelectMenu(2)
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '直播数据',
+        url: `/data/live/${this.$route.params.id}`
+      }])
+    },
+    mounted () {
+      // 滚动到推广
+      if (window.location.href.search('tools') > -1) {
+        let timer = setInterval(() => {
+          document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
+          if (document.querySelector('.main-container').scrollTop >= 1355) {
+            clearInterval(timer)
+          }
+        }, 10)
       }
-    },
-    initPage () {
-      // 基础数据
-      this.basicCount()
-      // 观众趋势图（PV、UV）
-      this.watcherCountData()
-      // 直播观众时长分布图
-      this.liveTimeLengthChart()
-      // 观看回放时段
-      this.playBackTimeScatter()
-      // 互动数据
-      this.interactCount()
-      // 互动工具参与趋势图（PV、UV）
-      this.hdTrendChart()
-    },
-    exportFile (type) {
-      let url = ''
-      if (type === 'chart') { /* 聊天信息导出 */
-        url = process.env.API_PATH + dataService.GET_LIVE_CHAT_LIST_EXPORT + '?activityId=' + this.activityId
+      // 滚动到推广
+      if (window.location.href.search('questions') > -1) {
+        let timer = setInterval(() => {
+          document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
+          if (document.querySelector('.main-container').scrollTop >= 1355) {
+            clearInterval(timer)
+          }
+        }, 10)
       }
-      window.open(encodeURI(encodeURI(url)))
-    },
-    changePage (idx) {
-      this.page = idx
-      // preDataDetail: false, // 预约
-      //   chatDataDetail: false, // 聊天
-      //   prizeDataDetail: false, // 抽奖
-      //   pagerDataDetail: false, // 问卷
-      //   answerDataDetail: false, // 答案
-      //   cardDataDetail: false, // 推荐卡片
-      //   goodsDataDetail: false, // 商品推荐
-      //   redBagDataDetail: false, // 红包
-      if (this.chatDataDetail) { // 聊天分页
-        this.goChatDataDetail()
-      } else if (this.redBagDataDetail) { // 红包分页
-        this.goRedBagDataList()
-      }
-    },
-    interactCount () {
-      this.$get(dataService.GET_LIVE_VIEWER_HD, {
-        activityId: this.activityId
-      }).then((res) => {
-        if (res.code === 200 && res.data.length !== 0) {
-          this.interactCountData = res.data
-          console.log(this.interactCountData, '999999999999')
-        }
+      this.activityId = this.$route.params.id
+      this.$nextTick(() => {
+        this.initPage()
       })
+      window.callbackResize = () => {
+        // 重新绘制
+        this.resizeRenderChart()
+      }
     },
-    watcherCountData () {
-      this.$get(dataService.GET_LIVE_VIEWER, {
-        activityId: this.activityId
-      }).then((res) => {
-        if (res.code === 200 && res.data.length !== 0) {
-          this.watcherLineData = res.data
-          this.$nextTick(() => {
-            // 观众趋势图（PV、UV）
-            this.watcherChart = lines('chart01', {
-              xAxisData: this.watcherLineData.live.xAxis,
-              datas: [
-                { name: '浏览次数', data: this.watcherLineData.live.pv },
-                { name: '浏览人数', data: this.watcherLineData.live.uv }
-              ]
+    methods: {
+      ...mapMutations('dataCenter', {
+        storeSelectMenu: types.DATA_SELECT_MENU
+      }),
+      resizeRenderChart () {
+        if (this.watcherChart) { // 观众趋势图
+          this.watcherChart.resize()
+        }
+        if (this.timeLongChart) { // 观众时长分布图
+          this.timeLongChart.resize()
+        }
+        if (this.playBackTimeChart) { // 观看回放时段
+          this.playBackTimeChart.resize()
+        }
+        if (this.hdChart) { // 互动工具参与趋势图（PV、UV）
+          this.hdChart.resize()
+        }
+      },
+      goPage (url, limit, type) {
+        if (limit !== 0) {
+          this.$router.push(`${url}/${this.$route.params.id}?type=${type}`)
+          this.storeSelectMenu(3)
+        }
+      },
+      initPage () {
+        // 基础数据
+        this.basicCount()
+        // 观众趋势图（PV、UV）
+        this.watcherCountData()
+        // 直播观众时长分布图
+        this.liveTimeLengthChart()
+        // 观看回放时段
+        this.playBackTimeScatter()
+        // 互动数据
+        this.interactCount()
+        // 互动工具参与趋势图（PV、UV）
+        this.hdTrendChart()
+      },
+      exportFile (type) {
+        let url = ''
+        if (type === 'chart') { /* 聊天信息导出 */
+          url = process.env.API_PATH + dataService.GET_LIVE_CHAT_LIST_EXPORT + '?activityId=' + this.activityId
+        }
+        window.open(encodeURI(encodeURI(url)))
+      },
+      changePage (idx) {
+        this.page = idx
+        // preDataDetail: false, // 预约
+        //   chatDataDetail: false, // 聊天
+        //   prizeDataDetail: false, // 抽奖
+        //   pagerDataDetail: false, // 问卷
+        //   answerDataDetail: false, // 答案
+        //   cardDataDetail: false, // 推荐卡片
+        //   goodsDataDetail: false, // 商品推荐
+        //   redBagDataDetail: false, // 红包
+        if (this.chatDataDetail) { // 聊天分页
+          this.goChatDataDetail()
+        } else if (this.redBagDataDetail) { // 红包分页
+          this.goRedBagDataList()
+        }
+      },
+      interactCount () {
+        this.$get(dataService.GET_LIVE_VIEWER_HD, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200 && res.data.length !== 0) {
+            this.interactCountData = res.data
+            console.log(this.interactCountData, '999999999999')
+          }
+        })
+      },
+      watcherCountData () {
+        this.$get(dataService.GET_LIVE_VIEWER, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200 && res.data.length !== 0) {
+            this.watcherLineData = res.data
+            this.$nextTick(() => {
+              // 观众趋势图（PV、UV）
+              this.watcherChart = lines('chart01', {
+                xAxisData: this.watcherLineData.live.xAxis,
+                datas: [
+                  {name: '浏览次数', data: this.watcherLineData.live.pv},
+                  {name: '浏览人数', data: this.watcherLineData.live.uv}
+                ]
+              })
             })
+          }
+        })
+      },
+      basicCount () {
+        this.$get(dataService.GET_LIVE_COUNT, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200 && res.data.length !== 0) {
+            this.basicCountData = res.data
+          }
+        })
+      },
+      goChatDataDetail () {
+        this.chatDataDetail = true
+        this.$get(dataService.GET_LIVE_CHAT_LIST, {
+          activityId: this.activityId,
+          page: this.page,
+          pageSize: this.pageSize
+        }).then((res) => {
+          if (res.code === 200 && res.data.length !== 0) {
+            this.chatDataList = res.data.list
+            this.total = res.data.total
+          }
+        })
+      },
+      goPagerDataDetail () {
+        this.pagerDataDetail = true
+        this.$get(dataService.GET_NAIRE_LISTS, {activityId: this.activityId})
+          .then((res) => {
+            if (res && res.code === 200) {
+              this.pagerDataList = res.data
+            }
+            console.log(this.pagerDataList)
           })
-        }
-      })
-    },
-    basicCount () {
-      this.$get(dataService.GET_LIVE_COUNT, {
-        activityId: this.activityId
-      }).then((res) => {
-        if (res.code === 200 && res.data.length !== 0) {
-          this.basicCountData = res.data
-        }
-      })
-    },
-    goChatDataDetail () {
-      this.chatDataDetail = true
-      this.$get(dataService.GET_LIVE_CHAT_LIST, {
-        activityId: this.activityId,
-        page: this.page,
-        pageSize: this.pageSize
-      }).then((res) => {
-        if (res.code === 200 && res.data.length !== 0) {
-          this.chatDataList = res.data.list
-          this.total = res.data.total
-        }
-      })
-    },
-    goPagerDataDetail () {
-      this.pagerDataDetail = true
-      this.$get(dataService.GET_NAIRE_LISTS, { activityId: this.activityId })
-        .then((res) => {
-          if (res && res.code === 200) {
-            this.pagerDataList = res.data
-          }
-          console.log(this.pagerDataList)
-        })
-    },
-    goCardDataDetail () {
-      this.cardDataDetail = true
-      this.cardDataList = [
-        // {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
-        // {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
-      ]
-      // 请求卡片接口
-      this.$get(cardService.GET_CARDS_LIST, {
-        activity_id: this.activityId
-      }).then((res) => {
-        console.log(res)
-        this.cardDataList = res.data.list
-      })
-    },
-    downLoadExport (id) {
-      let url = process.env.API_PATH + dataService.GET_LIVE_RED_BAG_LIST_EXOPORT + '?red_packet_id=' + id
-      window.open(encodeURI(encodeURI(url)))
-    },
-    goRedBagDataDetail () {
-      this.redBagDataDetail = true
-      this.page = 1
-      this.pageSize = 20
-      this.total = 0
-      this.goRedBagDataList()
-    },
-    goRedBagDataList () {
-      this.$get(dataService.GET_LIVE_RED_BAG_LIST, {
-        activity_id: this.activityId,
-        page: this.page,
-        page_size: this.pageSize
-      }).then((res) => {
-        this.loading = false
-        if (res.code === 200) {
-          this.total = res.data.count
-          this.redBagDataList = res.data.list
-        }
-      })
-    },
-    goGoodsDataDetail () {
-      this.goodsDataDetail = true
-      this.$get(dataService.GET_GOODS_LISTS, { activity_id: this.activityId })
-        .then((res) => {
-          if (res && res.code === 200) {
-            this.goodsDataList = res.data
-          }
-          console.log(this.goodsDataList)
-        })
-    },
-    changeMenu (val) {
-      if (this.watchType === val) return
-      this.watchType = val
-      const typeAttr = this.watchType ? 'playback' : 'live'
-      if (!this.watcherLineData[typeAttr]) return
-      this.watcherChart = lines('chart01', {
-        xAxisData: this.watcherLineData[typeAttr].xAxis,
-        datas: [
-          { name: '浏览次数', data: this.watcherLineData[typeAttr].pv },
-          { name: '浏览人数', data: this.watcherLineData[typeAttr].uv }
+      },
+      goCardDataDetail () {
+        this.cardDataDetail = true
+        this.cardDataList = [
+          // {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100},
+          // {'cardId': 10000, 'name': '卡片名称', 'isLine': 'Y', 'pushCount': 271, 'browse': 1, 'click': 100}
         ]
-      })
-    },
-    liveTimeLengthChart () {
-      this.$get(dataService.GET_LIVE_DURATION, {
-        activityId: this.activityId
-      }).then((res) => {
-        if (res.code === 200 && res.data.length !== 0) {
-          if (!res.data.list) return
-          // 直播观众时长分布图
-          this.timeLongChart = bars('chart02', res.data.list, {
-            left: 48,
-            right: 20,
-            top: 20,
-            bottom: 20
-          })
-        }
-      })
-    },
-    playBackTimeScatter () {
-      this.$get(dataService.GET_LIVE_VIEW_RECORD, {
-        activityId: this.activityId
-      }).then((res) => {
-        let serveDatas = null
-        if (res.code === 200 && res.data.length !== 0) {
-          if (!res.data.list) return
-          let xAxis = []
-          let sDatas = []
-          res.data.list.forEach(item => {
-            xAxis.push(item.time)
-            sDatas.push([item.time, item.week, item.value])
-          })
-          serveDatas = {
-            yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-            xAxis: Array.from(new Set(xAxis)),
-            data: sDatas
-          }
-        } else {
-          serveDatas = {
-            yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-            xAxis: Array.from(new Set([0])),
-            data: [[0, 0, 0]]
-          }
-        }
-        this.playBackTimeChart = scatter('chart03', serveDatas, {
-          left: 70,
-          right: 10,
-          top: 20,
-          bottom: 20
+        // 请求卡片接口
+        this.$get(cardService.GET_CARDS_LIST, {
+          activity_id: this.activityId
+        }).then((res) => {
+          console.log(res)
+          this.cardDataList = res.data.list
         })
-      })
-    },
-    hdTrendChart () {
-      this.$get(dataService.GET_LIVE_TOOL, {
-        activityId: this.activityId
-      }).then((res) => {
-        let chartDatas = null
-        if (res.code === 200 && res.data.length !== 0) {
-          res.data.xAxis = res.data.xAxis || ['']
-          res.data.interact = res.data.interact || []
-          let serveDatas = []
-          serveDatas.push({
-            name: '',
-            type: 'bar',
-            barWidth: '40',
-            data: res.data.interact
-          })
-          // serveDatas.push({
-          //   name: res.data.viewer.name,
-          //   type: 'line',
-          //   data: res.data.viewer.dataList || [0]
-          // })
-          chartDatas = {
-            xAxis: res.data.xAxis,
-            list: serveDatas
+      },
+      downLoadExport (id) {
+        let url = process.env.API_PATH + dataService.GET_LIVE_RED_BAG_LIST_EXOPORT + '?red_packet_id=' + id
+        window.open(encodeURI(encodeURI(url)))
+      },
+      goRedBagDataDetail () {
+        this.redBagDataDetail = true
+        this.page = 1
+        this.pageSize = 20
+        this.total = 0
+        this.goRedBagDataList()
+      },
+      goRedBagDataList () {
+        this.$get(dataService.GET_LIVE_RED_BAG_LIST, {
+          activity_id: this.activityId,
+          page: this.page,
+          page_size: this.pageSize
+        }).then((res) => {
+          this.loading = false
+          if (res.code === 200) {
+            this.total = res.data.count
+            this.redBagDataList = res.data.list
           }
-          // 互动工具参与趋势图（PV、UV）
-          this.hdChart = barAndLine('chart04', chartDatas, {
-            left: 48,
+        })
+      },
+      goGoodsDataDetail () {
+        this.goodsDataDetail = true
+        this.$get(dataService.GET_GOODS_LISTS, {activity_id: this.activityId})
+          .then((res) => {
+            if (res && res.code === 200) {
+              this.goodsDataList = res.data
+            }
+            console.log(this.goodsDataList)
+          })
+      },
+      changeMenu (val) {
+        if (this.watchType === val) return
+        this.watchType = val
+        const typeAttr = this.watchType ? 'playback' : 'live'
+        if (!this.watcherLineData[typeAttr]) return
+        this.watcherChart = lines('chart01', {
+          xAxisData: this.watcherLineData[typeAttr].xAxis,
+          datas: [
+            {name: '浏览次数', data: this.watcherLineData[typeAttr].pv},
+            {name: '浏览人数', data: this.watcherLineData[typeAttr].uv}
+          ]
+        })
+      },
+      liveTimeLengthChart () {
+        this.$get(dataService.GET_LIVE_DURATION, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.code === 200 && res.data.length !== 0) {
+            if (!res.data.list) return
+            // 直播观众时长分布图
+            this.timeLongChart = bars('chart02', res.data.list, {
+              left: 48,
+              right: 20,
+              top: 20,
+              bottom: 20
+            })
+          }
+        })
+      },
+      playBackTimeScatter () {
+        this.$get(dataService.GET_LIVE_VIEW_RECORD, {
+          activityId: this.activityId
+        }).then((res) => {
+          let serveDatas = null
+          if (res.code === 200 && res.data.length !== 0) {
+            if (!res.data.list) return
+            let xAxis = []
+            let sDatas = []
+            res.data.list.forEach(item => {
+              xAxis.push(item.time)
+              sDatas.push([item.time, item.week, item.value])
+            })
+            serveDatas = {
+              yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+              xAxis: Array.from(new Set(xAxis)),
+              data: sDatas
+            }
+          } else {
+            serveDatas = {
+              yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+              xAxis: Array.from(new Set([0])),
+              data: [[0, 0, 0]]
+            }
+          }
+          this.playBackTimeChart = scatter('chart03', serveDatas, {
+            left: 70,
+            right: 10,
             top: 20,
             bottom: 20
           })
-        } else {
-          this.hdChart = barAndLine('chart04', {
-            xAxis: ['0'],
-            list: [{
+        })
+      },
+      hdTrendChart () {
+        this.$get(dataService.GET_LIVE_TOOL, {
+          activityId: this.activityId
+        }).then((res) => {
+          let chartDatas = null
+          if (res.code === 200 && res.data.length !== 0) {
+            res.data.xAxis = res.data.xAxis || ['']
+            res.data.interact = res.data.interact || []
+            let serveDatas = []
+            serveDatas.push({
               name: '',
               type: 'bar',
               barWidth: '40',
-              data: 0
-            }]
-          }, {
-            left: 48,
-            top: 20,
-            bottom: 20
-          })
-        }
-      })
-    },
-    closeMesssageBox () {
-      this.preDataDetail = false
-      this.chatDataDetail = false
-      this.prizeDataDetail = false
-      this.pagerDataDetail = false
-      this.answerDataDetail = false
-      this.cardDataDetail = false
-      this.redBagDataDetail = false
-      this.goodsDataDetail = false
-      setTimeout(() => {
-        this.$nextTick(() => {
-          this.preDataList = []
-          this.chatDataList = []
-          this.prizeDataList = []
-          this.pagerDataList = []
-          this.answerDataList = []
-          this.cardDataList = []
-          this.goodsDataList = []
-          this.redBagDataList = []
-          this.page = 1
-          this.pageSize = 10
-          this.total = 0
+              data: res.data.interact
+            })
+            // serveDatas.push({
+            //   name: res.data.viewer.name,
+            //   type: 'line',
+            //   data: res.data.viewer.dataList || [0]
+            // })
+            chartDatas = {
+              xAxis: res.data.xAxis,
+              list: serveDatas
+            }
+            // 互动工具参与趋势图（PV、UV）
+            this.hdChart = barAndLine('chart04', chartDatas, {
+              left: 48,
+              top: 20,
+              bottom: 20
+            })
+          } else {
+            this.hdChart = barAndLine('chart04', {
+              xAxis: ['0'],
+              list: [{
+                name: '',
+                type: 'bar',
+                barWidth: '40',
+                data: 0
+              }]
+            }, {
+              left: 48,
+              top: 20,
+              bottom: 20
+            })
+          }
         })
-      }, 1000)
-    },
-    download (par) {
-      switch (par.type) {
-        case 'goods':
-          this.downloadGoods(par.id)
-          break
-        case 'pager':
-          this.downloadPager(par)
-          break
+      },
+      closeMesssageBox () {
+        this.preDataDetail = false
+        this.chatDataDetail = false
+        this.prizeDataDetail = false
+        this.pagerDataDetail = false
+        this.answerDataDetail = false
+        this.cardDataDetail = false
+        this.redBagDataDetail = false
+        this.goodsDataDetail = false
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.preDataList = []
+            this.chatDataList = []
+            this.prizeDataList = []
+            this.pagerDataList = []
+            this.answerDataList = []
+            this.cardDataList = []
+            this.goodsDataList = []
+            this.redBagDataList = []
+            this.page = 1
+            this.pageSize = 10
+            this.total = 0
+          })
+        }, 1000)
+      },
+      download (par) {
+        switch (par.type) {
+          case 'goods':
+            this.downloadGoods(par.id)
+            break
+          case 'pager':
+            this.downloadPager(par)
+            break
+        }
+      },
+      downloadGoods (id) {
+        let _url = `/api${dataService.GET_GOODS_EXPORT}?goods_id=${id}`
+        window.location.href = _url
+      },
+      downloadPager (par) {
+        let _url = `/api${dataService.GET_NAIRE_DOWNLOAD}?activityId=${this.activityId}&&naireId=${par.naireId}`
+        window.location.href = _url
       }
-    },
-    downloadGoods (id) {
-      let _url = `/api${dataService.GET_GOODS_EXPORT}?goods_id=${id}`
-      window.location.href = _url
-    },
-    downloadPager (par) {
-      let _url = `/api${dataService.GET_NAIRE_DOWNLOAD}?activityId=${this.activityId}&&naireId=${par.naireId}`
-      window.location.href = _url
     }
   }
-}
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-.live-box {
-  .page-pagination {
-    position: relative;
-    top: 10px;
-  }
-  .live-item01{
-    .hd-title{
-      background-color: #FF6B6D;
-    }
-  }
-  .live-item02{
-    .hd-title{
-      background-color: #A05AFB;
-    }
-  }
-  .live-item03{
-    .hd-title{
-      background-color: #63C8F5;
-    }
-  }
-  .live-item04{
-    .hd-title{
-      background-color: #FFD021;
-    }
-    .hd-data{
-      text-indent: 0;
-      width: calc(33.3333% - 10px);
-    }
-  }
-  .live-item05{
-    .hd-title{
-      background-color: #AFADAE;
-    }
-  }
-  .live-item06{
-    .hd-title{
-      background-color: #FD9130;
-    }
-  }
-  .item-container {
-    border: none;
-    margin-bottom: 20px;
-    .hd-data-item {
+  .live-box {
+    .page-pagination {
       position: relative;
-      height: 110px;
-      padding-top: 32px;
+      top: 10px;
+    }
+    .live-item01 {
       .hd-title {
-        /*margin-top: 20px;*/
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 66px;
-        height: 24px;
-        line-height: 24px;
-        text-align: center;
-        font-size:14px;
-        text-indent: 0;
-        color: #fff;
-        font-weight: normal;
-        border-bottom-right-radius: 4px;
-        border-bottom-left-radius: 4px;
+        background-color: #FF6B6D;
       }
     }
-  }
-  .lenge-box {
-    position: absolute;
-    top: 54px;
-    right: 22px;
-    span {
-      display: inline-block;
-      color: #555;
-      font-size: 12px;
-      margin-right: 10px;
-      &:before {
-        content: '';
-        display: inline-block;
-        width: 20px;
-        height: 13px;
-        border-radius: 2px;
-        margin-right: 6px;
-        vertical-align: middle;
+    .live-item02 {
+      .hd-title {
+        background-color: #A05AFB;
       }
-      &:nth-child(1):before {
-        background-color: #FFD021;
-      }
-      &:nth-child(2):before {
+    }
+    .live-item03 {
+      .hd-title {
         background-color: #63C8F5;
       }
-      &:nth-child(3):before {
-        background-color: #FD9130;
+    }
+    .live-item04 {
+      .hd-title {
+        background-color: #FFD021;
       }
-      &:nth-child(4):before {
+      .hd-data {
+        text-indent: 0;
+        width: calc(33.3333% - 10px);
+      }
+    }
+    .live-item05 {
+      .hd-title {
         background-color: #AFADAE;
       }
     }
+    .live-item06 {
+      .hd-title {
+        background-color: #FD9130;
+      }
+    }
+    .item-container {
+      border: none;
+      margin-bottom: 20px;
+      .hd-data-item {
+        position: relative;
+        height: 110px;
+        padding-top: 32px;
+        .hd-title {
+          /*margin-top: 20px;*/
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 66px;
+          height: 24px;
+          line-height: 24px;
+          text-align: center;
+          font-size: 14px;
+          text-indent: 0;
+          color: #fff;
+          font-weight: normal;
+          border-bottom-right-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+      }
+    }
+    .lenge-box {
+      position: absolute;
+      top: 54px;
+      right: 22px;
+      span {
+        display: inline-block;
+        color: #555;
+        font-size: 12px;
+        margin-right: 10px;
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 13px;
+          border-radius: 2px;
+          margin-right: 6px;
+          vertical-align: middle;
+        }
+        &:nth-child(1):before {
+          background-color: #FFD021;
+        }
+        &:nth-child(2):before {
+          background-color: #63C8F5;
+        }
+        &:nth-child(3):before {
+          background-color: #FD9130;
+        }
+        &:nth-child(4):before {
+          background-color: #AFADAE;
+        }
+      }
+    }
   }
-}
 </style>
