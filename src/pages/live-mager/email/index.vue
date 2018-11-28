@@ -312,7 +312,9 @@ export default {
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
 .back-btn {
-  margin: 10px 0 0 10px !important;
+  margin: 0px 0 0 10px !important;
+  height: 40px !important;
+  line-height: 40px !important;
 }
 .email-table-box {
   font-size: 14px;

@@ -10,7 +10,6 @@
              class='poster has-poster'
              :style="{backgroundImage:'url('+ imgHost + poster + ')'}"></div>
         <div class="poster default-poster"
-             :style="{backgroundImage:'url(//cnstatic01.e.vhall.com/static/img/v35-webinar.png)'}"
              v-else></div>
       </div>
       <div class="middle">
@@ -1444,6 +1443,9 @@ export default {
     border-radius: 5px;
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    &.default-poster {
+      background-image: url('~assets/image/webinar_cover_empty.png');
+    }
   }
   .status {
     position: absolute;
@@ -1521,7 +1523,7 @@ export default {
       display: inline-block;
       margin: 0 3px;
       &:nth-of-type(1) {
-        margin-left:0px;
+        margin-left: 0px;
       }
     }
     &.tool {

@@ -4,7 +4,10 @@
     <span v-if='liveData.status=="LIVING"' class="live-state"><i class="live-point"></i>直播中</span>
     <span v-if='liveData.status=="PLAYBACK"' class="live-state">回放</span>
     <span v-if='liveData.status=="FINISH"' class="live-state">结束</span>
-    <div class="live-img" :style="imgStyle"></div>
+    <div class="live-img" :style="imgStyle">
+        <img :src="liveData.imgUrl" v-if="imgUrl !== 'empty'" class='img'>
+        <div class="img" v-else></div>
+    </div>
     <div class="live-md">
       <span :title="liveData.title">{{liveData.title}}</span>
       <span class="time">{{liveData.startTime}}</span>
@@ -88,7 +91,7 @@
           id: 0,
           title: '-',
           status: '-',
-          imgUrl: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
+          imgUrl: '',
           startTime: '0000-00-00 00-00'
         }
       },
@@ -99,10 +102,10 @@
     },
     computed: {
       imgStyle () {
-        const imgUrl = this.liveData.imgUrl ? this.liveData.imgUrl : '//cnstatic01.e.vhall.com/static/img/v35-webinar.png'
-        return {
-          backgroundImage: 'url(' + imgUrl + ')'
-        }
+        this.imgUrl = this.liveData.imgUrl ? this.liveData.imgUrl : 'empty'
+        // return {
+        //   backgroundImage: 'url(' + imgUrl + ')'
+        // }
       }
     },
     methods: {
@@ -151,6 +154,12 @@
     background-position: center center;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    .img {
+      width: 100%;
+      height: 100%;
+      background: url('~assets/image/webinar_cover_empty.png') no-repeat center;
+      background-size: cover;
+    }
   }
   .live-md {
     height: 60px;

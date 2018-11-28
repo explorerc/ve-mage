@@ -367,7 +367,7 @@
         } else if (!this.email.senderName) {
           this.errorMsg.senderName = '发件人不能为空'
           return false
-        } else if (!this.email.groupIds) {
+        } else if (!this.email.groupIds && !this.email.tagIds) {
           this.errorMsg.groupIds = '请选择收件人'
           return false
         }
