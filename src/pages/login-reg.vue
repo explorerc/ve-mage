@@ -3,7 +3,11 @@
        @click="changeState">
     <div class="v-info"
          id="toggler-div">
-      <img :src="avatarImg" alt="" class="v-avatar" id="toggler-img" @avatarChange="avatarChange($event)">
+      <img :src="avatarImg"
+           alt=""
+           class="v-avatar"
+           id="toggler-img"
+           @avatarChange="avatarChange($event)">
       <span class="v-name"
             id="toggler-span">{{name}}</span>
     </div>

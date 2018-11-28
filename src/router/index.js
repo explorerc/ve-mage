@@ -77,6 +77,7 @@ router.beforeEach((to, from, next) => {
           })
           .catch(() => {
             sessionStorage.setItem('isLogin', false)
+            debugger
             to.name === 'login' ? next() : next('/login')
           })
       }
