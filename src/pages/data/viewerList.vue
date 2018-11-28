@@ -382,6 +382,12 @@
         } else if (type === 'loss') { // 流失用户
           this.searchParams.user_level = 5
         }
+
+        if (type === 'live') { // 观看直播人数
+          this.searchParams.type = 'live'
+        } else if (type === 'replay') { // 观看回放人数
+          this.searchParams.type = 'replay'
+        }
       },
       goPageDetail (id) {
         this.$router.push(`/userManage/info/${id}`)
