@@ -110,7 +110,7 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 30px;
+        bottom: 15px;
         right: 35px;
         height: 40px;
         line-height: 39px;

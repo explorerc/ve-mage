@@ -5,8 +5,8 @@
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
-        <com-back :url="`/liveMager/detail/${activityId}`" v-if="activityId"></com-back>
-        <com-back :url="`/liveMager/list`" v-else></com-back>
+        <com-back :url="`/liveMager/detail/${activityId}`" v-if="activityId" :class="'back-btn'"></com-back>
+        <com-back :url="`/liveMager/list`" v-else :class="'back-btn'"></com-back>
       </div>
       <div class="tips">
         <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
@@ -36,8 +36,8 @@
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标签：</div>
-          <div class="from-content">
-            <el-button  round v-if='!tagArray.length' @click='showChooseTag = true'>选择标签</el-button>
+          <div class="from-content" >
+            <el-button  round v-if='!tagArray.length' @click='showChooseTag = true' class='choose-tag'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
               <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
               <li v-if="tagArray.length<3" class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
@@ -421,6 +421,9 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
+  .back-btn {
+    margin: 28px 0 !important;
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -560,6 +563,10 @@ export default {
     .from-content .vue-html5-editor .content img {
       max-width: 100%;
     }
+    .from-content .choose-tag {
+      // position: relative;
+      margin-top: 3px;
+    }
   }
 }
 .finish-box {
@@ -696,7 +703,7 @@ export default {
     border-radius: 20px;
     border: 1px solid rgba(240, 241, 254, 1);
     margin-right: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     span {
       cursor: pointer;
       display: inline-block;
@@ -743,7 +750,7 @@ export default {
   }
   .title {
     padding: 10px;
-    font-size: 16px;
+    font-size: 14px;
   }
   .el-checkbox-button /deep/ {
     margin: 5px;

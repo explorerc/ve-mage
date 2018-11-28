@@ -254,6 +254,7 @@ export default {
       this.$nextTick((res) => {
         // 更新
         this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
+          this.saveDisabled = false
           // console.log(res)
           this.$toast({
             content: '保存成功',

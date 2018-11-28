@@ -180,7 +180,13 @@
         this.canPaas = false
         switch (res) {
           case 'select':
-            this.quesData[idx]['detail']['list'].push({value: ''})
+            if (this.quesData[idx]['detail']['list']) {
+              this.quesData[idx]['detail']['list'].push({value: ''})
+            } else {
+              Object.assign(this.quesData[idx]['detail'], {'list': [
+                {value: ''}
+              ]})
+            }
             this.quesData[idx]['title'] = '下拉选择'
             this.quesData[idx]['type'] = 'select'
             this.quesData[idx]['placeholder'] = '请选择下拉选项'
@@ -459,8 +465,13 @@
 <style lang="scss" scoped src="../../css/live.scss">
 </style>
 <style lang="scss">
-.apply-page .el-select .el-input__inner {
-  border: 1px solid #e2d2d2;
+.apply-page .el-select {
+  .el-input {
+    margin-top: 3px;
+  }
+  .el-input__inner {
+    border: 1px solid #e2d2d2;
+  }
 }
 .el-input.is-disabled .el-input__inner {
   background-color: #fff;
@@ -652,9 +663,6 @@
   }
 }
 
-.apply-page > div {
-  margin: 30px 0px;
-}
 .primary-button {
   padding: 0px;
   width: 200px;

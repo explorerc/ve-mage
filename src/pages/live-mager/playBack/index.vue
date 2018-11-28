@@ -1,7 +1,7 @@
 <template>
   <div class="live-mager play-back">
     <div class="live-title"
-         style="margin-top: 30px;border:none;">
+         style="border:none;">
       <span class="title">活动回放</span>
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
       <com-back :class='"back-btn"'></com-back>

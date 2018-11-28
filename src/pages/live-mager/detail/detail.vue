@@ -19,10 +19,10 @@
                :value="`${this.activityId}`"
                id="copyId"
                style="position:absolute;opacity:0;">
-        <p class='desc-label'>活动标签: <span class="tag"
+        <p class='desc-label'>活动标签 : <span class="tag"
                 v-for="item in tagList">{{item.name}}</span></p>
-        <p class='desc-label'>开播时间: {{startTime}}</p>
-        <p class="desc-label tool">活动状态:
+        <p class='desc-label'>开播时间 :  {{startTime}}</p>
+        <p class="desc-label tool">活动状态 :
           <el-switch class='switch'
                      v-model="isPublished"
                      :active-text="isPublished ? '已发布' : '未发布' "
@@ -1520,6 +1520,9 @@ export default {
       border: 1px solid rgba(219, 222, 253, 1);
       display: inline-block;
       margin: 0 3px;
+      &:nth-of-type(1) {
+        margin-left:0px;
+      }
     }
     &.tool {
       position: relative;

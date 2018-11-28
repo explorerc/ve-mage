@@ -611,7 +611,7 @@
     line-height: 40px;
   }
   .edit-groups {
-    margin-top: 15px;
+    margin-top: 30px;
     width: 500px;
     &.sec {
       margin-top: 0px;
