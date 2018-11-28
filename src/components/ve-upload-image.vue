@@ -29,8 +29,8 @@
       @load="uploadImgSuccess">
       <div class="upload-file-box" ref="uploadFile" title="点击上传" v-show="!(fileSrc||(!fileSrc && coverImg))">
         <i class="upload-icon"></i>
-        <span v-if="!errorTxt" v-html="tipTxt"></span>
-        <span class="error-msg" v-else>{{errorTxt}}</span>
+        <span v-html="tipTxt"></span><br>
+        <span v-if="errorTxt" class="error-msg" >{{errorTxt}}</span>
       </div>
     </com-upload>
   </div>
