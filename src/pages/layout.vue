@@ -109,7 +109,7 @@ export default {
   // margin-right: 10px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e2e2;
-  z-index: 10;
+  z-index: 1;
   span {
     cursor: pointer;
   }
