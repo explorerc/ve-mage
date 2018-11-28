@@ -186,7 +186,7 @@ export default {
       return this.tableData.length > 9
     },
     defaultImg () {
-      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl + '?x-oss-process=image/resize,m_fill,h_140,w_700' : ''
     }
   },
   methods: {
