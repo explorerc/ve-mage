@@ -55,7 +55,8 @@
         <dl>
           <dt>
               <div class="img img-empty" v-if="!poster.length"></div>
-              <img class="img" :src="`${imgHost}/${poster}?x-oss-process=image/resize,m_fill,h_200,w_240`" v-else>
+            <div class="img cov_img" :style="{backgroundImage:`url(${$imgHost}/${poster})`}" v-else></div>
+              <!--<img :src="`${imgHost}/${poster}?x-oss-process=image/resize,m_fill,h_200,w_240`">-->
             </dt>
           <dd class='desc' v-if="desc.length>0">{{desc}}</dd>
           <dd class='desc' v-else>此处是卡片描述，最多可添加140个字</dd>
@@ -363,6 +364,10 @@
         border: 1px dashed #d9d9d9;
         border-radius: 4px;
         margin: 0 auto;
+      }
+      .cov_img{
+        background: no-repeat center;
+        background-size: cover;
       }
       .desc {
         padding: 20px 0;

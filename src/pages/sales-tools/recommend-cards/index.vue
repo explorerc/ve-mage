@@ -14,7 +14,7 @@
           <el-table :data="tableData" stripe style="width: 100%" :class="'table-box'">
             <el-table-column  label="卡片图片" width="150">
               <template slot-scope="scope">
-                <img :src="`${imgHost}/${scope.row.pic}`" :class="'img'">
+                <div :class="'img'" class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${scope.row.pic})`}"></div>
               </template>
           </el-table-column>
           <el-table-column label="卡片名称"  show-overflow-tooltip>
@@ -197,6 +197,10 @@
     }
     .el-table .cell {
       white-space: normal;
+    }
+    .cov_img{
+      background: no-repeat center;
+      background-size: cover;
     }
   }
 }
