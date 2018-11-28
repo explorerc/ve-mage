@@ -107,7 +107,7 @@ export default {
     }
     .el-radio__input {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: 13px;
     }
     .el-radio__label {
       left: 20px;

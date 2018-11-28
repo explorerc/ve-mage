@@ -2,7 +2,7 @@
   <div class="ve-title">
     {{title}}
     <div class="ve-tip-box" v-if="tip">
-      <i>？</i>
+      <i>?</i>
       <span class="tip" :style="{width:width}">
         <span>{{tip}}</span>
       </span>

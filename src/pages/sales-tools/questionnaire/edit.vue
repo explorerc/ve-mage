@@ -4,7 +4,8 @@
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
       <!-- <com-back :class='"back-btn"'></com-back> -->
-      <button class="v-back" @click="back">返回</button>
+      <button class="v-back"
+              @click="back">返回</button>
     </div>
     <div class="content from-box">
       <div class="tt">
@@ -48,7 +49,8 @@
             </div>
           </div>
         </div>
-        <div class="right" ref="contentBox">
+        <div class="right"
+             ref="contentBox">
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
@@ -800,6 +802,14 @@ export default {
   color: #222;
   position: relative;
   height: 100%;
+  /deep/ {
+    .iconfont {
+      font-size: 18px;
+    }
+    .icon-shanchuxuanxiang {
+      font-size: 20px;
+    }
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -1048,14 +1058,33 @@ export default {
   .v-view /deep/ {
     color: #222;
     .ve-message-box {
+      padding-bottom: 0;
       .ve-message-box__header {
         background-color: rgba(0, 0, 0, 0);
         .prompt-title {
           display: none;
         }
       }
+      .ve-message-box__container {
+        padding-bottom: 0;
+        .single-select-wrap {
+          .question-content {
+            padding-bottom: 0;
+          }
+        }
+      }
       .ve-message-box__btns {
         display: none;
+      }
+      .el-radio__input {
+        margin-top: 8px;
+      }
+      .el-checkbox__input {
+        margin-top: 7px;
+      }
+      .q-select-item.display {
+        margin-bottom: 0;
+        height: 30px;
       }
     }
     // .box {

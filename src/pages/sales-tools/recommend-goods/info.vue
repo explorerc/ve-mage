@@ -38,19 +38,19 @@
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
       </el-form-item>
-      <el-form-item label="商品链接：" prop="url">
+      <el-form-item label="商品链接：" prop="url" class="url">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
       </el-form-item>
-      <el-form-item label="商品描述：">
+      <el-form-item label="商品描述：" >
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
                    placeholder="请输入商品描述"></com-input>
       </el-form-item>
 
-      <el-form-item label="淘口令：">
+      <el-form-item label="淘口令：" class="textarea-box">
         <com-input class="inupt_textarea" :max-length=100 type="textarea" :rows=5 :cols=4 v-model.trim="goodsData.tao"
                    placeholder="请输入淘口令"></com-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item class="btns_box">
         <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
         <el-button @click="resetForm('goodsData')" round>取消</el-button>
       </el-form-item>
@@ -203,7 +203,7 @@
             { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
           url: [
-            { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur' },
+            { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur', minlength: 0, maxlength: 300 },
             { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
           ],
           imageList: [
@@ -406,8 +406,18 @@
         .el-input__inner:hover, .el-input.is-active .el-input__inner, .el-input__inner:focus {
           border-color: #888888 !important;
         }
+        .el-form-item.url{
+          margin-bottom: 24px;
+        }
+        .el-form-item.textarea-box{
+          transform: translateY(-8px);
+        }
+        .el-form-item:last-child {
+          text-align: center;
+        }
       }
       .upload_box {
+        height: 141px;
         position: relative;
         &::before {
           content: '';
@@ -418,7 +428,7 @@
           top: 0;
           left: 0;
           z-index: 100;
-          background-image: url('~assets/image/index-img.png');
+          background-image: url('~assets/image/index01.svg');
           background-size: cover;
         }
         .ve-upload-box {

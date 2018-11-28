@@ -230,7 +230,7 @@ export default {
       title: '短信通知',
       url: `/liveMager/promote/msg/list/${this.activitId}`
     }, {
-      title: this.inviteId ? '编辑' : '新建'
+      title: this.inviteId ? '编辑短信通知' : '新建短信通知'
     }])
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {

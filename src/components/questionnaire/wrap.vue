@@ -33,7 +33,8 @@
            v-if="edit">
         <a v-if="showAddItem"
            class="add-select-item"
-           @click="addItem"><i data-v-d1ee2774="" class="iconfont icon-tianjia"></i>添加选项</a>
+           @click="addItem"><i data-v-d1ee2774=""
+             class="iconfont icon-tianjia"></i><span>添加选项</span></a>
         <span v-if="!(value.detail&&value.detail.format==='phone')"
               class="required-des">必填</span>
         <el-switch class='switch'
@@ -271,7 +272,7 @@ export default {
         .add-select-item {
           float: left;
           cursor: pointer;
-          margin-top: 6px;
+          margin-left: 18px;
           &:hover {
             color: #4b5afe;
           }
@@ -279,6 +280,10 @@ export default {
             display: inline-block;
             vertical-align: middle;
             margin-right: 5px;
+          }
+          span {
+            vertical-align: middle;
+            display: inline-block;
           }
         }
         .required-des {
@@ -302,10 +307,12 @@ export default {
           // border: 1px solid #d2d2d2;
           cursor: pointer;
           margin-left: 10px;
+          vertical-align: middle;
         }
         .del {
           display: inline-block;
           text-align: center;
+          vertical-align: middle;
           // width: 30px;
           // height: 30px;
           // line-height: 30px;

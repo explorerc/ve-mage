@@ -100,9 +100,10 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       barWidth: '60%',
       stack: '总量',
       label: {
-        normal: {
-          show: true,
-          position: 'insideRight'
+        show: true,
+        position: 'insideRight',
+        formatter: (item) => {
+          return item.value ? item.value : ''
         }
       },
       data: sData
