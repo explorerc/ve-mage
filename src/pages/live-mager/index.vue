@@ -2,11 +2,11 @@
   <div class="live-mager"
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
-    <div class="live-title">
+    <div class="live-title" style='line-height: 52px;'>
       <span class="title">活动列表</span>
       <div class="search-box fr" v-if="tableList.length || isSearch">
         <el-select v-model="searchParams.status" @change='statusChange'
-                   placeholder="直播状态">
+                   placeholder="直播状态" popper-class='webinar-list-select'>
           <el-option v-for="item in optionsStates"
                      :key="item.value"
                      :label="item.label"
@@ -14,7 +14,7 @@
           </el-option>
         </el-select>
         <el-select v-model="searchParams.sortBy"
-                   placeholder="请选择">
+                   placeholder="请选择" popper-class='webinar-list-select'>
           <el-option v-for="item in optionsOrder"
                      :key="item.value"
                      :label="item.label"

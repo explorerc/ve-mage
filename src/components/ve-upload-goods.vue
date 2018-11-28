@@ -24,7 +24,10 @@
     </div>
     <div class="big-img" v-if="isShowBigImg">
       <span @click="isShowBigImg = false" class="el-icon-circle-close"></span>
-      <div :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
+      <!--:style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'+'?x-oss-process=image/resize,m_pad,h_500,w_500'}"-->
+      <div>
+        <img :src="`${imgHost}/${fileSrc}?x-oss-process=image/resize,m_pad,h_500,w_500`" alt="">
+      </div>
     </div>
     <com-upload
       :accept="accept"

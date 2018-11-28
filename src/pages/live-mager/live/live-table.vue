@@ -40,7 +40,7 @@ export default {
   .live-item-box {
     float: left;
     margin-left: 22px;
-    margin-top: 22px;
+    margin-bottom: 22px;
     width: 325px;
     /* 设备宽度大于 1920px */
     @media all and (min-width: 1600px) {

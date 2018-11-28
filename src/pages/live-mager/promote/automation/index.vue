@@ -969,7 +969,7 @@ export default {
 .auto-page {
   .live-title {
     border-bottom: none;
-
+    padding-bottom: 30px;
     span.tips {
       color: $color-font-sub;
     }

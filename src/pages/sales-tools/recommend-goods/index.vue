@@ -26,7 +26,9 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
-              <img :src="row.image ? `${$imgHost}/${row.image[0].name}` :require('assets/image/avatar@2x.png')" alt="">
+              <div class="cover_img"
+                   :style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}"></div>
+           <!--   <img :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_fill,h_60,w_60` :require('assets/image/avatar@2x.png')" alt="">-->
             </td>
             <td>{{row.title}}</td>
             <td>
@@ -198,13 +200,14 @@
     header {
       overflow: hidden;
       text-align: right;
+      margin-bottom: 20px;
       p {
         float: left;
         height: 26px;
         font-size: 24px;
         font-weight: 400;
         color: rgba(34, 34, 34, 1);
-        line-height: 26px;
+        line-height: 52px;
       }
       .back-btn {
         margin-top: 0 !important;
@@ -252,11 +255,12 @@
                 color: #2878ff;
               }
             }
-            img {
+            .cover_img {
               width: 60px;
               height: 60px;
               margin: 10px auto 10px 0;
-              vertical-align: middle;
+              background: no-repeat center;
+              background-size: cover;
             }
           }
           td.dis-prices {
@@ -272,8 +276,8 @@
     .no-goods {
       text-align: center;
       background-color: #ffffff;
-      border-radius:4px;
-      border:1px solid #e2e2e2;
+      border-radius: 4px;
+      border: 1px solid #e2e2e2;
       img {
         width: 180px;
         height: 180px;
@@ -293,7 +297,7 @@
       }
       button {
         margin-bottom: 90px;
-        span{
+        span {
           margin: auto 40px;
         }
       }
