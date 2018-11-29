@@ -314,7 +314,6 @@ export default {
       this.bgImgUrl = data.name
     },
     uploadBgError (data) {
-      debugger
       this.uploadBgErrorMsg = data.msg
       this.bgImgUrl = ''
     },
