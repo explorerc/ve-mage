@@ -3,7 +3,7 @@
     <p class="v-account-title">
       账号设置
     </p>
-    <div class="v-info">
+    <div class="v-info" style="margin-top: 20px;">
       <p class="v-title">
         基本信息
       </p>
@@ -1089,9 +1089,9 @@ export default {
   }
   margin: 0 auto;
   .v-account-title {
-    margin: 30px 0;
-    line-height: 60px;
     font-size: 24px;
+    line-height: 60px;
+    margin-top: 20px;
     color: #222;
   }
   .v-info {

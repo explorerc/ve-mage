@@ -56,7 +56,6 @@ export default {
       this.isEdit = true
     },
     handleChange (value) {
-      debugger
       this.$emit('saveInfo', this.selectedOptions)
       this.isEdit = false
     }

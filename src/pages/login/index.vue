@@ -11,6 +11,7 @@
         <p class="v-subtitle">
           提供专属直播间、加速企业营销、获客、变现
         </p>
+        <img src="../../assets/image/login@2x.png" alt="">
       </div>
     </div>
     <div class="v-right">
@@ -438,11 +439,9 @@ export default {
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(
-      222deg,
-      rgba(255, 208, 33, 1) 0%,
-      rgba(255, 194, 0, 1) 100%
-    );
+    background: url('~assets/image/login_bg.png') no-repeat;
+    background-position: center center;
+    background-size: cover;
     position: relative;
     .v-logo {
       position: absolute;
@@ -452,7 +451,7 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 375px;
+      width: 600px;
       margin: 260px auto;
       text-align: center;
       .v-title {
@@ -463,6 +462,10 @@ export default {
         font-size: 18px;
         color: #222;
         margin-top: 12px;
+      }
+      img {
+        width: 525px;
+        margin: 55px 0 0 -25px;
       }
     }
   }
