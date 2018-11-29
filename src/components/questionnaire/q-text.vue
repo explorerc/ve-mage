@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     getCode () {
-      alert('获取验证码稍后实现')
+      // alert('获取验证码稍后实现')
     },
     focus () {
       this.errorTip = ''
