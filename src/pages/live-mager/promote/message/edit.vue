@@ -263,6 +263,9 @@ export default {
     },
     save () {
       this.saveDisabled = true
+      setTimeout((res) => {
+        this.saveDisabled = false
+      }, 3000)
       this.canPass = true
       let data = {
         change: this.changed,
@@ -291,7 +294,6 @@ export default {
         this.canPass = true
         this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       }).catch((res) => {
-        this.saveDisabled = false
         this.$messageBox({
           header: '提示',
           content: res.msg,

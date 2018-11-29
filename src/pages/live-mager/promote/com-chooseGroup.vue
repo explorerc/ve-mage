@@ -232,7 +232,7 @@ export default {
 </style>
 <style lang='scss' scoped>
 .select-content .search-empty {
-  background:url('~assets/image/search_empty.png') no-repeat center;
-  background-size:180px;
+  background: url('~assets/image/search_empty.png') no-repeat center;
+  background-size: 150px;
 }
 </style>

@@ -293,443 +293,506 @@
 </template>
 
 <script>
-  import VeUploadImage from 'src/components/ve-upload-image'
-  import VeUploadVideo from 'src/components/ve-upload-video'
-  import VePagination from 'src/components/ve-pagination'
-  import veMsgTips from 'src/components/ve-msg-tips'
-  import playbackService from 'src/api/playback-service'
-  import ChatConfig from 'src/api/chat-config'
-  import ChatService from 'components/chat/ChatService.js'
-  import { mapMutations, mapState } from 'vuex'
-  import * as types from 'src/store/mutation-types'
-  import EventBus from 'src/utils/eventBus'
+import VeUploadImage from 'src/components/ve-upload-image'
+import VeUploadVideo from 'src/components/ve-upload-video'
+import VePagination from 'src/components/ve-pagination'
+import veMsgTips from 'src/components/ve-msg-tips'
+import playbackService from 'src/api/playback-service'
+import ChatConfig from 'src/api/chat-config'
+import ChatService from 'components/chat/ChatService.js'
+import { mapMutations, mapState } from 'vuex'
+import * as types from 'src/store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 
-  const outLineMode = {
-    'FOREVER': 'NEVER',
-    'TIMING': 'PLAN'
-  }
-  export default {
-    name: 'play-back',
-    components: { VeUploadImage, veMsgTips, VeUploadVideo, VePagination },
-    data () {
-      return {
-        navIdx: 0,
-        addVideoShow: false,
-        renameShow: false,
-        playBackShow: false,
-        newTitle: '',
-        selectRowIdx: 0,
-        sdkParam: { // sdk上传插件初始化参数
-          sign: '',
-          signed_at: '',
-          app_id: '',
-          fileName: '',
-          fileSize: ''
-        },
-        sdkPlayParam: { // sdk播放器初始化参数
-          app_id: '',
-          accountId: '',
-          token: '',
-          recordId: '', // 回放视频id
-          linkVideo: '' // 外链视频
-        },
-        tempPlayBackCover: '',
-        playBack: {
-          isSwitch: true,
-          replayId: '',
-          outLineMode: '',
-          outLineTime: '',
-          playBackCover: '',
-          recordId: '',
-          outLineLink: ''
-        },
-        outLineError: '',
-        recordIdError: '',
-        newTitleError: '',
-        playBackList: [],
-        isLoadingList: false,
-        options: [
-          { value: '0', label: '默认回放' },
-          { value: '1', label: '上传视频' },
-          { value: '2', label: '外部链接' }
-        ],
-        recordId: '',
-        activityId: '',
-        page: 1,
-        pageSize: 25,
-        total: 0,
-        outLineLink: '',
-        outLineMode: '0',
-        playBackMode: '0',
-        uploadErrorMsg: '',
-        uploadImgErrorMsg: '',
-        playMsg: '',
-        loadingTimeout: 0,
-        prePlayShow: false
-      }
-    },
-    filters: {
-      formatTime: function (value) {
-        if (value) {
-          let h = ((value / 3600 >> 0) + '').padStart(2, 0)
-          let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
-          let s = ((value % 60 >> 0) + '').padStart(2, 0)
-          return `${h}:${m}:${s}`
-        }
-        return value || '--'
-      }
-    },
-    computed: {
-      ...mapState('login', {
-        accountInfo: state => state.accountInfo
-      }),
-      defaultImg () {
-        if (!this.tempPlayBackCover) {
-          return ''
-        }
-        return `${this.$imgHost}/${this.tempPlayBackCover}`
-      }
-    },
-    watch: {
-      outLineMode (newVal) {
-        if (newVal !== '1') { // 永不下线
-          this.playBack.outLineMode = outLineMode.FOREVER
-          this.playBack.outLineTime = ''
-        } else { // 定时下线
-          this.playBack.outLineMode = outLineMode.TIMING
-        }
+const outLineMode = {
+  'FOREVER': 'NEVER',
+  'TIMING': 'PLAN'
+}
+export default {
+  name: 'play-back',
+  components: { VeUploadImage, veMsgTips, VeUploadVideo, VePagination },
+  data () {
+    return {
+      navIdx: 0,
+      addVideoShow: false,
+      renameShow: false,
+      playBackShow: false,
+      newTitle: '',
+      selectRowIdx: 0,
+      sdkParam: { // sdk上传插件初始化参数
+        sign: '',
+        signed_at: '',
+        app_id: '',
+        fileName: '',
+        fileSize: ''
       },
-      'playBack.outLineTime' (newVal) {
-        if (newVal) {
-          this.outLineError = newVal ? '' : this.outLineError
-          if ((new Date(newVal)).getTime() <= (new Date().getTime())) {
-            this.outLineError = '只能选择当前时间之后的时间'
-          } else {
-            this.outLineError = ''
-          }
+      sdkPlayParam: { // sdk播放器初始化参数
+        app_id: '',
+        accountId: '',
+        token: '',
+        recordId: '', // 回放视频id
+        linkVideo: '' // 外链视频
+      },
+      tempPlayBackCover: '',
+      playBack: {
+        isSwitch: true,
+        replayId: '',
+        outLineMode: '',
+        outLineTime: '',
+        playBackCover: '',
+        recordId: '',
+        outLineLink: ''
+      },
+      outLineError: '',
+      recordIdError: '',
+      newTitleError: '',
+      playBackList: [],
+      isLoadingList: false,
+      options: [
+        { value: '0', label: '默认回放' },
+        { value: '1', label: '上传视频' },
+        { value: '2', label: '外部链接' }
+      ],
+      recordId: '',
+      activityId: '',
+      page: 1,
+      pageSize: 25,
+      total: 0,
+      outLineLink: '',
+      outLineMode: '0',
+      playBackMode: '0',
+      uploadErrorMsg: '',
+      uploadImgErrorMsg: '',
+      playMsg: '',
+      loadingTimeout: 0,
+      prePlayShow: false
+    }
+  },
+  filters: {
+    formatTime: function (value) {
+      if (value) {
+        let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+        let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+        let s = ((value % 60 >> 0) + '').padStart(2, 0)
+        return `${h}:${m}:${s}`
+      }
+      return value || '--'
+    }
+  },
+  computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    }),
+    defaultImg () {
+      if (!this.tempPlayBackCover) {
+        return ''
+      }
+      return `${this.$imgHost}/${this.tempPlayBackCover}`
+    }
+  },
+  watch: {
+    outLineMode (newVal) {
+      if (newVal !== '1') { // 永不下线
+        this.playBack.outLineMode = outLineMode.FOREVER
+        this.playBack.outLineTime = ''
+      } else { // 定时下线
+        this.playBack.outLineMode = outLineMode.TIMING
+      }
+    },
+    'playBack.outLineTime' (newVal) {
+      if (newVal) {
+        this.outLineError = newVal ? '' : this.outLineError
+        if ((new Date(newVal)).getTime() <= (new Date().getTime())) {
+          this.outLineError = '只能选择当前时间之后的时间'
         } else {
           this.outLineError = ''
         }
-      },
-      outLineLink (newVal) {
-        this.outLineError = newVal ? '' : this.outLineError
-      },
-      recordId (newVal) {
-        this.recordIdError = newVal ? '' : this.recordIdError
-      },
-      newTitle (newVal) {
-        this.newTitleError = newVal ? '' : this.newTitleError
+      } else {
+        this.outLineError = ''
       }
     },
-    created () {
-      this.activityId = this.$route.params.id
-      this.initPage()
-      EventBus.$emit('breads', [{
-        title: '活动管理'
-      }, {
-        title: '活动列表',
-        url: '/liveMager/list'
-      }, {
-        title: '活动详情',
-        url: `/liveMager/detail/${this.$route.params.id}`
-      }, {
-        title: '活动回放',
-        url: `/liveMager/playBack/${this.$route.params.id}`
-      }])
+    outLineLink (newVal) {
+      this.outLineError = newVal ? '' : this.outLineError
     },
-    methods: {
-      ...mapMutations('login', {
-        setAccountInfo: types.ACCOUNT_INFO
-      }),
-      initPage () {
-        this.$get(playbackService.GET_PLAYBACK, {
-          activityId: this.activityId
-        }).then((res) => {
-          this.playBack = {
-            replayId: res.data.replayId,
-            outLineMode: res.data.offlineType,
-            outLineTime: res.data.offlineTime,
-            playBackCover: res.data.cover,
-            outLineLink: ''
-          }
-          this.tempPlayBackCover = res.data.cover
-          this.outLineMode = res.data.offlineType === outLineMode.TIMING ? '1' : '0'
-        }).then(() => {
-          this.queryPlayBackList()
-          /* 获取pass信息 */
-          this.$get(playbackService.GET_PAAS_SDK_INFO).then((res) => {
-            // this.vhallParams = res.data
-            /* $nextTick保证dom被渲染之后进行paas插件初始化 */
-            this.$nextTick(() => {
-              // 初始化pass上传插件
-              // this.initVhallUpload()
-              this.sdkParam.sign = res.data.sign
-              this.sdkParam.signed_at = res.data.signedAt
-              this.sdkParam.app_id = res.data.appId
-              this.sdkPlayParam = {
-                app_id: res.data.appId,
-                accountId: res.data.accountId,
-                token: res.data.token,
-                recordId: '',
-                linkVideo: ''
-              }
-            })
-          })
-        })
-        this.initMsgServe()
-      },
-      async initMsgServe () {
-        // const loginInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-        const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
-          thirdUserId: this.accountInfo.businessUserId,
-          channel: this.accountInfo.channelRoom
-        }).then(res => {
-          return res.data
-        })
-        ChatService.OBJ.init({
-          accountId: roomInfo.accountId,
-          token: roomInfo.token,
-          appId: roomInfo.appId,
-          channelId: roomInfo.channelRoom
-        })
-        /* 监听下载消息 */
-        ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
-          console.log('---------下载消息---------')
-          console.log(msg)
-          this.downLoadVideo()
-        })
-      },
-      changePage (currentPage) {
-        this.page = currentPage
-        this.queryPlayBackList()
-      },
-      queryPlayBackList () {
-        if (this.isLoadingList) return
-        this.isLoadingList = true
-        this.$config({ handlers: true }).$get(playbackService.GET_PLAYBACK_LIST, {
-          activityId: this.activityId,
-          page: this.page,
-          pageSize: this.pageSize,
-          type: this.navIdx === 0 ? 'SLICE' : ''
-        }).then((res) => {
-          this.isLoadingList = false
-          this.playBackList = res.data.list
-          this.total = res.data.total
-        }).catch(() => {
-          this.isLoadingList = false
-        })
-      },
-      changeNav (idx) {
-        this.page = 0
-        this.total = 0
-        this.navIdx = idx
-        this.queryPlayBackList()
-      },
-      playBackSetting (idx) {
-        this.playBackShow = true
-        this.selectRowIdx = idx
-        this.tempPlayBackCover = this.playBack.playBackCover
-      },
-      /* 取消默认回放 */
-      cancelPlayBack (idx) {
-        this.$post(playbackService.POST_CANCEL_PLAYBACK_CONFIG, {
-          activityId: this.activityId
-        }).then((res) => {
-          this.playBack.replayId = ''
-        })
-      },
-      /* 重新生成回放 */
-      resetMakePlayBack (idx) {
-        this.selectRowIdx = idx
-        const playBack = this.playBackList[this.selectRowIdx]
-        this.$post(playbackService.POST_REMAKE_PLAYBACK, {
-          replayId: playBack.replayId
-        }).then((res) => {
-          playBack.status = 'PROCESS'
-          this.$toast({
-            content: '开始重新生成回放',
-            position: 'center'
-          })
-        })
-      },
-      /* 更多 */
-      handlerMore (idx, type) {
-        this.selectRowIdx = idx
-        const playBack = this.playBackList[this.selectRowIdx]
-        if (type === 0) { // 下载
-          this.downLoadVideo()
-        } else if (type === 1) { // 预览
-          if (playBack.type === 'LINK') { /* 外链 */
-            this.sdkPlayParam.outLineLink = playBack.link
-            this.sdkPlayParam.recordId = ''
-          } else {
-            this.sdkPlayParam.recordId = playBack.video
-            this.sdkPlayParam.outLineLink = ''
-          }
-          // 播放器进行播放
-          this.$playVideo({
-            ...this.sdkPlayParam
-          })
-        } else if (type === 2) { // 重命名
-          this.newTitle = playBack.title
-          this.renameShow = true
-        } else if (type === 3) { // 删除
-          this.delPlayBack()
+    recordId (newVal) {
+      this.recordIdError = newVal ? '' : this.recordIdError
+    },
+    newTitle (newVal) {
+      this.newTitleError = newVal ? '' : this.newTitleError
+    }
+  },
+  created () {
+    this.activityId = this.$route.params.id
+    this.initPage()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '活动回放',
+      url: `/liveMager/playBack/${this.$route.params.id}`
+    }])
+  },
+  methods: {
+    ...mapMutations('login', {
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
+    initPage () {
+      this.$get(playbackService.GET_PLAYBACK, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.playBack = {
+          replayId: res.data.replayId,
+          outLineMode: res.data.offlineType,
+          outLineTime: res.data.offlineTime,
+          playBackCover: res.data.cover,
+          outLineLink: ''
         }
-      },
-      /* 下载 */
-      downLoadVideo (rId) {
-        let replayId = 0
-        if (rId) {
-          replayId = rId
+        this.tempPlayBackCover = res.data.cover
+        this.outLineMode = res.data.offlineType === outLineMode.TIMING ? '1' : '0'
+      }).then(() => {
+        this.queryPlayBackList()
+        /* 获取pass信息 */
+        this.$get(playbackService.GET_PAAS_SDK_INFO).then((res) => {
+          // this.vhallParams = res.data
+          /* $nextTick保证dom被渲染之后进行paas插件初始化 */
+          this.$nextTick(() => {
+            // 初始化pass上传插件
+            // this.initVhallUpload()
+            this.sdkParam.sign = res.data.sign
+            this.sdkParam.signed_at = res.data.signedAt
+            this.sdkParam.app_id = res.data.appId
+            this.sdkPlayParam = {
+              app_id: res.data.appId,
+              accountId: res.data.accountId,
+              token: res.data.token,
+              recordId: '',
+              linkVideo: ''
+            }
+          })
+        })
+      })
+      this.initMsgServe()
+    },
+    async initMsgServe () {
+      // const loginInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+      const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
+        thirdUserId: this.accountInfo.businessUserId,
+        channel: this.accountInfo.channelRoom
+      }).then(res => {
+        return res.data
+      })
+      ChatService.OBJ.init({
+        accountId: roomInfo.accountId,
+        token: roomInfo.token,
+        appId: roomInfo.appId,
+        channelId: roomInfo.channelRoom
+      })
+      /* 监听下载消息 */
+      ChatService.OBJ.regHandler(ChatConfig.download, (msg) => {
+        console.log('---------下载消息---------')
+        console.log(msg)
+        this.downLoadVideo()
+      })
+    },
+    changePage (currentPage) {
+      this.page = currentPage
+      this.queryPlayBackList()
+    },
+    queryPlayBackList () {
+      if (this.isLoadingList) return
+      this.isLoadingList = true
+      this.$config({ handlers: true }).$get(playbackService.GET_PLAYBACK_LIST, {
+        activityId: this.activityId,
+        page: this.page,
+        pageSize: this.pageSize,
+        type: this.navIdx === 0 ? 'SLICE' : ''
+      }).then((res) => {
+        this.isLoadingList = false
+        this.playBackList = res.data.list
+        this.total = res.data.total
+      }).catch(() => {
+        this.isLoadingList = false
+      })
+    },
+    changeNav (idx) {
+      this.page = 0
+      this.total = 0
+      this.navIdx = idx
+      this.queryPlayBackList()
+    },
+    playBackSetting (idx) {
+      this.playBackShow = true
+      this.selectRowIdx = idx
+      this.tempPlayBackCover = this.playBack.playBackCover
+    },
+    /* 取消默认回放 */
+    cancelPlayBack (idx) {
+      this.$post(playbackService.POST_CANCEL_PLAYBACK_CONFIG, {
+        activityId: this.activityId
+      }).then((res) => {
+        this.playBack.replayId = ''
+      })
+    },
+    /* 重新生成回放 */
+    resetMakePlayBack (idx) {
+      this.selectRowIdx = idx
+      const playBack = this.playBackList[this.selectRowIdx]
+      this.$post(playbackService.POST_REMAKE_PLAYBACK, {
+        replayId: playBack.replayId
+      }).then((res) => {
+        playBack.status = 'PROCESS'
+        this.$toast({
+          content: '开始重新生成回放',
+          position: 'center'
+        })
+      })
+    },
+    /* 更多 */
+    handlerMore (idx, type) {
+      this.selectRowIdx = idx
+      const playBack = this.playBackList[this.selectRowIdx]
+      if (type === 0) { // 下载
+        this.downLoadVideo()
+      } else if (type === 1) { // 预览
+        if (playBack.type === 'LINK') { /* 外链 */
+          this.sdkPlayParam.outLineLink = playBack.link
+          this.sdkPlayParam.recordId = ''
         } else {
-          replayId = this.playBackList[this.selectRowIdx].replayId
+          this.sdkPlayParam.recordId = playBack.video
+          this.sdkPlayParam.outLineLink = ''
         }
-        console.log('------------downLoadVideo-------------')
-        if (rId) { // 收到下载消息直接
+        // 播放器进行播放
+        this.$playVideo({
+          ...this.sdkPlayParam
+        })
+      } else if (type === 2) { // 重命名
+        this.newTitle = playBack.title
+        this.renameShow = true
+      } else if (type === 3) { // 删除
+        this.delPlayBack()
+      }
+    },
+    /* 下载 */
+    downLoadVideo (rId) {
+      let replayId = 0
+      if (rId) {
+        replayId = rId
+      } else {
+        replayId = this.playBackList[this.selectRowIdx].replayId
+      }
+      console.log('------------downLoadVideo-------------')
+      if (rId) { // 收到下载消息直接
+        this.downLoadFile(replayId)
+      } else {
+        // 防止多次点击
+        if (this.loadingTimeout) {
+          return
+        }
+        this.loadingTimeout = setTimeout(() => {
+          clearTimeout(this.loadingTimeout)
+          this.loadingTimeout = 0
           this.downLoadFile(replayId)
-        } else {
-          // 防止多次点击
-          if (this.loadingTimeout) {
+        }, 1000)
+      }
+    },
+    downLoadFile (replayId) {
+      this.$config({ handlers: true }).$post(playbackService.POST_DOWNLOAD_VIDEO, {
+        replayId: replayId
+      }).then((res) => {
+        if (res.data.downloadUrl) {
+          let dl = document.createElement('a')
+          dl.href = res.data.downloadUrl
+          dl.click()
+        }
+      }).catch(e => {
+        let errorMsg = e.msg || '网络异常'
+        this.$messageBox({
+          header: '提示',
+          content: errorMsg,
+          autoClose: 5,
+          confirmText: '知道了'
+        })
+      })
+    },
+    addVideoClickShow () {
+      this.recordId = ''
+      this.outLineLink = ''
+      this.newTitle = ''
+      this.recordIdError = ''
+      this.outLineError = ''
+      this.newTitleError = ''
+      this.addVideoShow = true
+    },
+    /* 添加视频 */
+    addVideohandleClick (e) {
+      if (e.action === 'confirm') {
+        if (this.playBackMode === '0') {
+          this.outLineLink = ''
+          this.outLineError = ''
+          if (!this.recordId) {
+            this.recordIdError = '视频不能为空'
             return
           }
-          this.loadingTimeout = setTimeout(() => {
-            clearTimeout(this.loadingTimeout)
-            this.loadingTimeout = 0
-            this.downLoadFile(replayId)
-          }, 1000)
+        } else if (this.playBackMode === '1') {
+          this.recordId = ''
+          this.recordIdError = ''
+          if (!this.preViewOutLine()) return
         }
-      },
-      downLoadFile (replayId) {
-        this.$config({ handlers: true }).$post(playbackService.POST_DOWNLOAD_VIDEO, {
-          replayId: replayId
+        if (!this.newTitle) {
+          this.newTitleError = '视频标题不能为空'
+          return
+        }
+        this.$post(playbackService.POST_CREATE_PLAYBACK, {
+          activityId: this.activityId,
+          title: this.newTitle,
+          type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
+          link: this.outLineLink.replace('http://', location.protocol + '//'),
+          video: this.recordId
         }).then((res) => {
-          if (res.data.downloadUrl) {
-            let dl = document.createElement('a')
-            dl.href = res.data.downloadUrl
-            dl.click()
-          }
-        }).catch(e => {
-          let errorMsg = e.msg || '网络异常'
-          this.$messageBox({
-            header: '提示',
-            content: errorMsg,
-            autoClose: 5,
-            confirmText: '知道了'
-          })
+          this.navIdx = 1
+          this.queryPlayBackList()
         })
-      },
-      addVideoClickShow () {
-        this.recordId = ''
-        this.outLineLink = ''
-        this.newTitle = ''
+      } else {
+        this.sdkParam.fileName = ''
         this.recordIdError = ''
         this.outLineError = ''
         this.newTitleError = ''
-        this.addVideoShow = true
-      },
-      /* 添加视频 */
-      addVideohandleClick (e) {
-        if (e.action === 'confirm') {
-          if (this.playBackMode === '0') {
-            this.outLineLink = ''
-            this.outLineError = ''
-            if (!this.recordId) {
-              this.recordIdError = '视频不能为空'
-              return
-            }
-          } else if (this.playBackMode === '1') {
-            this.recordId = ''
-            this.recordIdError = ''
-            if (!this.preViewOutLine()) return
-          }
-          if (!this.newTitle) {
-            this.newTitleError = '视频标题不能为空'
-            return
-          }
-          this.$post(playbackService.POST_CREATE_PLAYBACK, {
-            activityId: this.activityId,
-            title: this.newTitle,
-            type: this.playBackMode !== '0' ? 'LINK' : 'VIDEO',
-            link: this.outLineLink.replace('http://', location.protocol + '//'),
-            video: this.recordId
-          }).then((res) => {
-            this.navIdx = 1
-            this.queryPlayBackList()
-          })
-        } else {
-          this.sdkParam.fileName = ''
-          this.recordIdError = ''
-          this.outLineError = ''
-          this.newTitleError = ''
-        }
-        this.addVideoShow = false
-      },
-      /* 重命名 */
-      renameHandleClick (e) {
-        if (e.action === 'confirm') {
-          if (!this.newTitle) {
-            this.newTitleError = '标题不能为空'
-            return
-          }
-          this.updataTitle()
-        }
-        this.renameShow = false
-      },
-      /* 设置默认回放 */
-      savePlayBackConfig (e) {
-        if (e.action === 'confirm') {
-          if (this.outLineMode === '0') {
-            this.playBack.outLineTime = ''
-          } else {
-            if (!this.playBack.outLineTime) {
-              this.outLineError = '请填写下线时间'
-              return
-            } else {
-              if ((new Date(this.playBack.outLineTime)).getTime() <= (new Date().getTime())) {
-                this.outLineError = '只能选择当前时间之后的时间'
-                return
-              }
-            }
-          }
-          this.playBack.playBackCover = this.tempPlayBackCover
-          const replayId = this.playBackList[this.selectRowIdx].replayId
-          this.$post(playbackService.POST_SAVE_PLAYBACK_CONFIG, {
-            replayId: replayId,
-            cover: this.playBack.playBackCover,
-            offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
-            offlineTime: this.playBack.outLineTime
-          }).then((res) => {
-            this.playBack.replayId = replayId
-          })
-        } else {
-          this.tempPlayBackCover = ''
-          this.uploadImgErrorMsg = ''
-          this.outLineError = ''
-          this.playBack.outLineTime = ''
-        }
-        this.playBackShow = false
-      },
-      updataTitle () {
-        let playBack = this.playBackList[this.selectRowIdx]
-        this.$post(playbackService.POST_RETITLE_PLAYBACK, {
-          replayId: playBack.replayId,
-          title: this.newTitle
-        }).then((res) => {
-          playBack.title = this.newTitle
-        })
-      },
-      delPlayBack () {
-        if (this.playBackList[this.selectRowIdx].replayId + '' === this.playBack.replayId + '') {
-          // 默认回放不能删除
-          this.$messageBox({
-            header: '提示',
-            content: '默认回放不能删除!',
-            autoClose: 5,
-            confirmText: '知道了'
-          })
+      }
+      this.addVideoShow = false
+    },
+    /* 重命名 */
+    renameHandleClick (e) {
+      if (e.action === 'confirm') {
+        if (!this.newTitle) {
+          this.newTitleError = '标题不能为空'
           return
         }
+        this.updataTitle()
+      }
+      this.renameShow = false
+    },
+    /* 设置默认回放 */
+    savePlayBackConfig (e) {
+      if (e.action === 'confirm') {
+        if (this.outLineMode === '0') {
+          this.playBack.outLineTime = ''
+        } else {
+          if (!this.playBack.outLineTime) {
+            this.outLineError = '请填写下线时间'
+            return
+          } else {
+            if ((new Date(this.playBack.outLineTime)).getTime() <= (new Date().getTime())) {
+              this.outLineError = '只能选择当前时间之后的时间'
+              return
+            }
+          }
+        }
+        this.playBack.playBackCover = this.tempPlayBackCover
+        const replayId = this.playBackList[this.selectRowIdx].replayId
+        this.$post(playbackService.POST_SAVE_PLAYBACK_CONFIG, {
+          replayId: replayId,
+          cover: this.playBack.playBackCover,
+          offlineType: this.outLineMode === '0' ? 'NEVER' : 'PLAN',
+          offlineTime: this.playBack.outLineTime
+        }).then((res) => {
+          this.playBack.replayId = replayId
+        })
+      } else {
+        this.tempPlayBackCover = ''
+        this.uploadImgErrorMsg = ''
+        this.outLineError = ''
+        this.playBack.outLineTime = ''
+      }
+      this.playBackShow = false
+    },
+    updataTitle () {
+      let playBack = this.playBackList[this.selectRowIdx]
+      this.$post(playbackService.POST_RETITLE_PLAYBACK, {
+        replayId: playBack.replayId,
+        title: this.newTitle
+      }).then((res) => {
+        playBack.title = this.newTitle
+      })
+    },
+    delPlayBack () {
+      if (this.playBackList[this.selectRowIdx].replayId + '' === this.playBack.replayId + '') {
+        // 默认回放不能删除
+        this.$messageBox({
+          header: '提示',
+          content: '默认回放不能删除!',
+          autoClose: 5,
+          confirmText: '知道了'
+        })
+        return
+      }
+      this.$messageBox({
+        header: '删除此视频',
+        width: '400px',
+        content: '您是否确定要删除此视频？',
+        cancelText: '取消',
+        confirmText: '删除',
+        type: 'error',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            const delId = this.playBackList[this.selectRowIdx].replayId
+            this.$post(playbackService.POST_DELETE_PLAYBACK_BY_ID, {
+              replayId: delId
+            }).then((res) => {
+              this.$toast({
+                header: `提示`,
+                content: '删除成功！',
+                autoClose: 2000,
+                position: 'right-top'
+              })
+              this.queryPlayBackList()
+            })
+          }
+        }
+      })
+    },
+    preViewOutLine () {
+      if (!this.outLineLink) {
+        this.outLineError = '视频链接不能为空'
+        return false
+      }
+      const reg = /^<embed|<iframe.*(embed>|iframe>)$/
+      if (reg.test(this.outLineLink)) {
+        this.playBack.outLineLink = this.outLineLink
+      } else {
+        this.outLineError = '格式不正确'
+        return false
+      }
+      return true
+    },
+    uploadImgSuccess (data) {
+      this.tempPlayBackCover = data.name
+    },
+    uploadError (data) {
+      this.uploadImgErrorMsg = data.msg
+    },
+    uploadVideo () {
+      document.getElementById('upload').click()
+    },
+    errorUploadVideo (msg, file) {
+      this.sdkParam.fileName = file.name
+      this.recordIdError = msg
+    },
+    uploadVideoSuccess (recordId, fileName) {
+      this.recordId = recordId
+      this.sdkParam.fileName = fileName
+    },
+    /* 预览，删除触发 */
+    handleVideoClick (e) {
+      if (e.type === 'pre-view') { // 预览
+        this.$playVideo({
+          ...this.sdkPlayParam
+        })
+      } else if (e.type === 'delete') { // 删除
         this.$messageBox({
           header: '删除此视频',
           width: '400px',
@@ -739,79 +802,16 @@
           type: 'error',
           handleClick: (e) => {
             if (e.action === 'confirm') {
-              const delId = this.playBackList[this.selectRowIdx].replayId
-              this.$post(playbackService.POST_DELETE_PLAYBACK_BY_ID, {
-                replayId: delId
-              }).then((res) => {
-                this.$toast({
-                  header: `提示`,
-                  content: '删除成功！',
-                  autoClose: 2000,
-                  position: 'right-top'
-                })
-                this.queryPlayBackList()
-              })
+              this.recordId = ''
+              this.sdkParam.fileName = ''
+              this.sdkParam.fileSize = ''
             }
           }
         })
-      },
-      preViewOutLine () {
-        if (!this.outLineLink) {
-          this.outLineError = '视频链接不能为空'
-          return false
-        }
-        const reg = /^<embed|<iframe.*(embed>|iframe>)$/
-        if (reg.test(this.outLineLink)) {
-          this.playBack.outLineLink = this.outLineLink
-        } else {
-          this.outLineError = '格式不正确'
-          return false
-        }
-        return true
-      },
-      uploadImgSuccess (data) {
-        this.tempPlayBackCover = data.name
-      },
-      uploadError (data) {
-        this.uploadImgErrorMsg = data.msg
-      },
-      uploadVideo () {
-        document.getElementById('upload').click()
-      },
-      errorUploadVideo (msg, file) {
-        this.sdkParam.fileName = file.name
-        this.recordIdError = msg
-      },
-      uploadVideoSuccess (recordId, fileName) {
-        this.recordId = recordId
-        this.sdkParam.fileName = fileName
-      },
-      /* 预览，删除触发 */
-      handleVideoClick (e) {
-        if (e.type === 'pre-view') { // 预览
-          this.$playVideo({
-            ...this.sdkPlayParam
-          })
-        } else if (e.type === 'delete') { // 删除
-          this.$messageBox({
-            header: '删除此视频',
-            width: '400px',
-            content: '您是否确定要删除此视频？',
-            cancelText: '取消',
-            confirmText: '删除',
-            type: 'error',
-            handleClick: (e) => {
-              if (e.action === 'confirm') {
-                this.recordId = ''
-                this.sdkParam.fileName = ''
-                this.sdkParam.fileSize = ''
-              }
-            }
-          })
-        }
       }
     }
   }
+}
 </script>
 <style lang="scss" scoped src="../css/live.scss">
 </style>
@@ -896,8 +896,8 @@
     min-height: 400px;
     padding: 70px 0;
     .img {
-      width: 180px;
-      height: 180px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto;
       border-radius: 500px;
       // background:rgba(245,245,245,1);
