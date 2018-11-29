@@ -119,10 +119,11 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -340px;
-  margin-left: -300px;
+  // margin-top: -340px;
+  // margin-left: -300px;
   width: 600px;
-  height: 680px;
+  max-height: 300px;
+  transform: translate(-50%, -70%);
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
@@ -159,6 +160,9 @@ export default {
   }
   .el-pagination {
     text-align: center;
+  }
+  .page-pagination {
+    padding-bottom: 20px;
   }
 }
 </style>
