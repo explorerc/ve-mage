@@ -315,6 +315,7 @@ export default {
     color: $color-font-sub;
     min-height: 400px;
     padding: 100px 0;
+    background-color: #fff;
     .img {
       width: 150px;
       height: 150px;
