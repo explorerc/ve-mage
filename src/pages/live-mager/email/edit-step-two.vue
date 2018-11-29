@@ -612,8 +612,9 @@
   }
   .edit-groups {
     margin-top: 30px;
-    width: 500px;
-    &.sec {
+    // width: 500px;
+    display: inline-block;
+    &:nth-of-type(1) {
       margin-top: 0px;
     }
     span {
