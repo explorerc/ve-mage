@@ -66,12 +66,14 @@
               <div class="v-phone pull-right">
                 <div class="v-img">
                   <template v-if="defaultImg">
-                    <img :src="$imgHost + '/' + imgUrl"
-                         alt="">
+                    <div class="img-bg" :style="{backgroundImage:`url(${$imgHost}/${imgUrl})`}"></div>
+                    <!--<img :src="$imgHost + '/' + imgUrl"-->
+                         <!--alt="">-->
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/guid.jpg"
-                         alt="">
+                    <div class="img-bg"></div>
+                    <!--<img src="../../assets/image/guid.jpg"-->
+                         <!--alt="">-->
                   </template>
                 </div>
                 <div class="v-phone-info">
@@ -111,12 +113,14 @@
               <div class="v-pc  pull-right clearfix">
                 <div class="v-img pull-left">
                   <template v-if="defaultImg">
-                    <img :src="$imgHost + '/' + imgUrl"
-                         alt="">
+                    <!--<img :src="$imgHost + '/' + imgUrl"-->
+                         <!--alt="">-->
+                    <div class="img-bg" :style="{backgroundImage:`url(${$imgHost}/${imgUrl})`}"></div>
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/guid.jpg"
-                         alt="">
+                    <div class="img-bg"></div>
+                    <!--<img src="../../assets/image/guid.jpg"-->
+                         <!--alt="">-->
                   </template>
                 </div>
                 <div class="v-pc-info pull-left">
@@ -268,7 +272,8 @@ export default {
       this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_GUIDE, data).then(res => {
         this.canPass = true
         this.$toast({
-          content: '保存成功'
+          content: '保存成功',
+          position: 'center'
         })
       }).catch((err) => {
         this.$messageBox({
@@ -402,6 +407,14 @@ export default {
         margin-top: 45px;
         border-radius: 5px 5px 0 0;
         overflow: hidden;
+        .img-bg{
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-image: url("../../assets/image/guid.jpg");
+        }
         img {
           width: 100%;
           height: 100%;
@@ -477,6 +490,14 @@ export default {
         height: 266px;
         border-radius: 1px 0 0 1px;
         overflow: hidden;
+        .img-bg{
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-image: url("../../assets/image/guid.jpg");
+        }
         img {
           width: 100%;
           height: 100%;
