@@ -118,6 +118,9 @@
     }
   }
   .nav-menu-box{
+    display: inline-block;
+    float: right;
+    margin-top: -20px;
     text-align: right;
   }
 }
