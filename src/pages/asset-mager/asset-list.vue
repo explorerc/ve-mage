@@ -161,10 +161,19 @@ export default {
 @import 'assets/css/mixin.scss';
 
 .asset-box {
-  margin: 0 30px 30px;
+  margin: 0 auto 30px auto;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
   .v-asset-title {
     font-size: 24px;
     line-height: 60px;
+    margin-top: 20px;
   }
   .asset-header {
     font-size: 0;
