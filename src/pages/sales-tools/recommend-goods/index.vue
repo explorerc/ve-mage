@@ -59,136 +59,136 @@
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
-  import goodsServer from 'src/api/salesGoods-service'
-  import EventBus from 'src/utils/eventBus'
+import draggable from 'vuedraggable'
+import goodsServer from 'src/api/salesGoods-service'
+import EventBus from 'src/utils/eventBus'
 
-  export default {
-    components: { draggable },
-    created () {
-      this.getList()
-      this.isShowLiveData()
-      EventBus.$emit('breads', [{
-        title: '活动管理'
-      }, {
-        title: '活动列表',
-        url: '/liveMager/list'
-      }, {
-        title: '活动详情',
-        url: `/liveMager/detail/${this.$route.params.activity_id}`
-      }, {
-        title: '商品列表',
-        url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
-      }])
-    },
-    data () {
-      return {
-        activity_id: this.$route.params.activity_id,
-        tableData: [],
-        timerShelf: null,
-        isShowlive: null
-      }
-    },
-    watch: {
-      tableData: {
-        handler (val, oldVal) {
-          if (val.length >= 1) {
-            this.sortGoods()
-          }
-        },
-        deep: true
-      }
-    },
-    methods: {
-      getList () {
-        this.$post(goodsServer.GOODS_LISTS, { activity_id: this.activity_id })
-          .then(res => {
-            res.data.forEach((ite, ind) => {
-              ite.image = JSON.parse(ite.image)
-            })
-            this.tableData = res.data
-            console.log(this.tableData)
-          })
-          .catch(() => {
-            this.tableData = []
-          })
-      },
-      // 创建
-      createGoods () {
-        this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
-      },
-      sortGoods () {
-        let goods = this.tableData.map((ite, ind) => {
-          return ite.goods_id
-        })
-        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
-      },
-      check () {
-        if (this.isShowlive) {
-          this.$router.push(`/data/live/${this.activity_id}#tools`)
+export default {
+  components: { draggable },
+  created () {
+    this.getList()
+    this.isShowLiveData()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.activity_id}`
+    }, {
+      title: '商品列表',
+      url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
+    }])
+  },
+  data () {
+    return {
+      activity_id: this.$route.params.activity_id,
+      tableData: [],
+      timerShelf: null,
+      isShowlive: null
+    }
+  },
+  watch: {
+    tableData: {
+      handler (val, oldVal) {
+        if (val.length >= 1) {
+          this.sortGoods()
         }
       },
-      isShowLiveData () {
-        this.$get(goodsServer.GET_DETAILS, { activityId: this.activity_id })
-          .then(res => {
-            this.isShowlive = res.data.data.time
+      deep: true
+    }
+  },
+  methods: {
+    getList () {
+      this.$post(goodsServer.GOODS_LISTS, { activity_id: this.activity_id })
+        .then(res => {
+          res.data.forEach((ite, ind) => {
+            ite.image = JSON.parse(ite.image)
           })
-      },
-      // 上下架
-      handleShelf (row) {
-        if (this.timerShelf) return
-        this.timerShelf = setTimeout(() => {
-          clearTimeout(this.timerShelf)
-          this.timerShelf = null
-          this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
-            .then(res => {
-              setTimeout(() => {
-                this.getList()
-              }, 500)
-              this.$toast({
-                content: '操作成功!',
-                position: 'center'
-              })
+          this.tableData = res.data
+          console.log(this.tableData)
+        })
+        .catch(() => {
+          this.tableData = []
+        })
+    },
+    // 创建
+    createGoods () {
+      this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
+    },
+    sortGoods () {
+      let goods = this.tableData.map((ite, ind) => {
+        return ite.goods_id
+      })
+      this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+    },
+    check () {
+      if (this.isShowlive) {
+        this.$router.push(`/data/live/${this.activity_id}#tools`)
+      }
+    },
+    isShowLiveData () {
+      this.$get(goodsServer.GET_DETAILS, { activityId: this.activity_id })
+        .then(res => {
+          this.isShowlive = res.data.data.time
+        })
+    },
+    // 上下架
+    handleShelf (row) {
+      if (this.timerShelf) return
+      this.timerShelf = setTimeout(() => {
+        clearTimeout(this.timerShelf)
+        this.timerShelf = null
+        this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
+          .then(res => {
+            setTimeout(() => {
+              this.getList()
+            }, 500)
+            this.$toast({
+              content: '操作成功!',
+              position: 'center'
             })
-        }, 1000)
-      },
-      // 编辑
-      handleEdit (row, index) {
-        this.$router.push(`/salesTools/recommendGoodsInfo/${row.goods_id}/update`)
-      },
-      handleDelete (row, index) {
-        console.log(row)
-        this.$messageBox({
-          header: '删除该商品',
-          type: 'error',
-          width: '450px',
-          content: '删除后观看页将不再显示该商品',
-          cancelText: '取消', // 不传递cancelText将只有一个确定按钮
-          confirmText: '删除',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
+          })
+      }, 1000)
+    },
+    // 编辑
+    handleEdit (row, index) {
+      this.$router.push(`/salesTools/recommendGoodsInfo/${row.goods_id}/update`)
+    },
+    handleDelete (row, index) {
+      console.log(row)
+      this.$messageBox({
+        header: '删除该商品',
+        type: 'error',
+        width: '450px',
+        content: '删除后观看页将不再显示该商品',
+        cancelText: '取消', // 不传递cancelText将只有一个确定按钮
+        confirmText: '删除',
+        handleClick: (e) => {
+          if (e.action === 'cancel') {
             /*  this.$toast({
                 content: '已取消删除',
                 position: 'center'
               }) */
-            } else if (e.action === 'confirm') {
-              this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
-                .then(res => {
-                  this.tableData.splice(index, 1)
-                  setTimeout(() => {
-                    this.getList()
-                  }, 1000)
-                  this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
-                  })
+          } else if (e.action === 'confirm') {
+            this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
+              .then(res => {
+                this.tableData.splice(index, 1)
+                setTimeout(() => {
+                  this.getList()
+                }, 1000)
+                this.$toast({
+                  content: '删除成功!',
+                  position: 'center'
                 })
-            }
+              })
           }
-        })
-      }
+        }
+      })
     }
   }
+}
 </script>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
@@ -279,8 +279,8 @@
       border-radius: 4px;
       border: 1px solid #e2e2e2;
       img {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
         margin: 84px auto 40px auto;
       }
       p:nth-of-type(1) {

@@ -1,14 +1,17 @@
 @import "assets/css/mixin.scss";
-.data-box{
-  .pad{
+
+.data-box {
+  .pad {
     padding: 0 30px;
   }
-  .data-pad{
-    padding:0 30px 30px 30px;
+
+  .data-pad {
+    padding: 0 30px 30px 30px;
     margin-top: 20px;
     border-radius: 4px;
     background-color: #fff;
     border: solid 1px $color-bd;
+
     &:after {
       content: ".";
       display: block;
@@ -17,27 +20,33 @@
       visibility: hidden;
     }
   }
+
   .title {
     font-size: 20px;
     margin: 20px 0 10px 0;
     box-sizing: border-box;
   }
-  .data-link{
+
+  .data-link {
     user-select: none;
     color: #4B5AFE;
-    &:hover{
+
+    &:hover {
       cursor: pointer;
       color: $color-blue-hover;
     }
   }
-  .chart-box /deep/{
-    .ve-title{
+
+  .chart-box /deep/ {
+    .ve-title {
       font-size: 16px;
       color: #333;
     }
   }
+
   .item-container {
     border-bottom: solid 1px $color-bd;
+
     .item-box {
       border-radius: 4px;
       box-sizing: border-box;
@@ -46,15 +55,18 @@
       font-size: 14px;
       text-align: left;
       line-height: 40px;
+
       .item-title {
         display: block;
         font-size: 18px;
       }
+
       .item-mid {
         height: 50px;
         line-height: 30px;
         font-size: 30px;
         font-weight: 600;
+
         span {
           display: inline-block;
           border: solid 1px $color-bd;
@@ -66,28 +78,34 @@
           font-weight: 400;
         }
       }
+
       .item-bottom {
         line-height: 0;
         margin-top: 10px;
+
         span {
           .down {
             color: $color-red;
           }
+
           .up {
             color: green;
           }
-          &:last-child{
+
+          &:last-child {
             margin-left: 10px;
           }
         }
       }
     }
-    .hd-data-item{
+
+    .hd-data-item {
       width: calc(50% - 10px);
       text-align: left;
       font-size: 0;
       background-color: #F7F7F7;
-      .hd-title{
+
+      .hd-title {
         display: block;
         font-size: 16px;
         font-weight: bold;
@@ -95,19 +113,22 @@
         user-select: none;
         text-indent: 30px;
       }
-      .hd-data{
+
+      .hd-data {
         display: inline-block;
         width: 33.333%;
         line-height: 30px;
         text-indent: 30px;
-        span:first-child{
+
+        span:first-child {
           display: block;
           font-size: 14px;
           padding-right: 6px;
           text-indent: 30px;
           color: #555;
         }
-        span:last-child{
+
+        span:last-child {
           display: block;
           font-size: 26px;
           font-weight: bold;
@@ -115,7 +136,8 @@
         }
       }
     }
-    .live-item{
+
+    .live-item {
       position: relative;
       //&:before{
       //  position: absolute;
@@ -125,6 +147,7 @@
       //  height: 100%;
       //}
     }
+
     //.live-item01{
     //  &:before{
     //    background-color: #FF6B6D;
@@ -160,23 +183,28 @@
     //  }
     //}
   }
+
   .chart-container {
     display: flex;
     justify-content: space-between;
-    .chart-box{
+
+    .chart-box {
       width: 32%;
-      .title{
+
+      .title {
         position: relative;
         margin: 20px 0;
         font-weight: normal;
         border: none;
         font-size: 16px;
-        .chart-menu/deep/{
+
+        .chart-menu/deep/ {
           display: inline-block;
           position: absolute;
           top: 0;
           right: 0;
-          .nav-menu-box{
+
+          .nav-menu-box {
             height: 30px;
             line-height: 30px;
           }
@@ -184,16 +212,19 @@
       }
     }
   }
-  .msg-table-box{
+
+  .msg-table-box {
     position: relative;
     padding: 40px 0 10px 0;
-    .table-box{
+
+    .table-box {
       min-height: 100px;
       max-height: 400px;
       overflow-x: hidden;
       overflow-y: auto;
     }
-    .export-btn{
+
+    .export-btn {
       position: absolute;
       top: 0;
       right: 0;
@@ -202,18 +233,22 @@
       z-index: 2;
     }
   }
-  .none-chart{
-    display: block;
-    height: 100%;
+
+  .v-nodata {
+    height: auto !important;
+    margin-bottom: 100px !important;
+  }
+
+  .none-chart {
     text-align: center;
     color: #8E9198;
     user-select: none;
-    &::before{
-      content: '';
-      display: inline-block;
-      width: 0;
-      height: 100%;
-      vertical-align: middle;
+
+    img {
+      display: block;
+      width: 150px;
+      height: 150px;
+      margin: 200px auto 50px;
     }
   }
 }

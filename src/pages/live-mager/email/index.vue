@@ -357,8 +357,8 @@ export default {
       color: $color-font;
     }
     .img {
-      width: 180px;
-      height: 180px;
+      width: 150px;
+      height: 150px;
       margin: 0 auto;
       background: url('~assets/image/email_empty.png') no-repeat center;
       background-size: contain;
