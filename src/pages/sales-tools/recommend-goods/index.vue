@@ -26,9 +26,9 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
-              <div class="cover_img"
-                   :style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}"></div>
-           <!--   <img :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_fill,h_60,w_60` :require('assets/image/avatar@2x.png')" alt="">-->
+              <div class="cover_img">
+                <!--:style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}"-->
+              <img :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_pad,h_60,w_60` :require('assets/image/avatar@2x.png')" alt=""></div>
             </td>
             <td>{{row.title}}</td>
             <td>
@@ -256,11 +256,15 @@
               }
             }
             .cover_img {
-              width: 60px;
-              height: 60px;
               margin: 10px auto 10px 0;
               background: no-repeat center;
               background-size: cover;
+              width: 60px;
+              height: 60px;
+              img {
+                width: 60px;
+                height: 60px;
+              }
             }
           }
           td.dis-prices {
