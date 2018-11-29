@@ -429,8 +429,8 @@ export default {
       min-height: 400px;
       padding: 100px 0;
       .img {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
         margin: 0 auto;
         border-radius: 500px;
         // background:rgba(245,245,245,1);

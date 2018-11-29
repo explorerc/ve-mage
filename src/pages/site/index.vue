@@ -420,8 +420,8 @@ export default {
       padding: 20px;
       border: 1px dashed #dadada;
       .img {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
         background: url('~assets/image/site/site_empty.png') no-repeat center;
         background-size: contain;
         margin: 0 auto;

@@ -1441,7 +1441,8 @@ export default {
     width: 300px;
     height: 169px;
     border-radius: 5px;
-    background-size: 100% 100%;
+    background-size: cover;
+    background-position: center center;
     background-repeat: no-repeat;
     &.default-poster {
       background-image: url('~assets/image/webinar_cover_empty.png');

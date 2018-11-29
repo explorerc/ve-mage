@@ -5,7 +5,8 @@
     <span v-if='liveData.status=="PLAYBACK"' class="live-state">回放</span>
     <span v-if='liveData.status=="FINISH"' class="live-state">结束</span>
     <div class="live-img" :style="imgStyle">
-        <img :src="liveData.imgUrl" v-if="imgUrl !== 'empty'" class='img'>
+        <!--<img :src="liveData.imgUrl" v-if="imgUrl !== 'empty'" class='img'>-->
+        <div class="img" v-if="imgUrl !== 'empty'" :style="{backgroundImage:`url(${liveData.imgUrl})`}" :src="liveData.imgUrl"></div>
         <div class="img" v-else></div>
     </div>
     <div class="live-md">
@@ -31,8 +32,8 @@
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING')}" @click.stop="handleClick(action.viewer)">观众</span>
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING')}" @click.stop="handleClick(action.data)">数据</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||liveData.data_finish_time)}" @click.stop="handleClick(action.data)">数据</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>

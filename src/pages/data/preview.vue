@@ -224,8 +224,13 @@
         <p class="title">
           <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径"></ve-title>
         </p>
-        <div id="myChart" style="height: 500px;margin-bottom: 50px;">
-          <span v-if="tripNoneData" class="none-chart">暂无数据</span>
+        <div id="myChart" style="height: 500px;margin-bottom: 50px;" :class="{'v-nodata': tripNoneData}">
+          <span v-if="tripNoneData" class="none-chart">
+            <img src="../../assets/image/nodata@2x.png" alt="">
+            <p>
+              暂无数据
+            </p>
+          </span>
         </div>
       </div>
     </div>
@@ -233,244 +238,243 @@
 </template>
 
 <script>
-  import VeTitle from './ve-title'
-  import VeCircle from 'src/components/ve-circle'
-  import dataService from 'src/api/data-service'
-  import EventBus from 'src/utils/eventBus'
-  import { sankey, pieOne } from 'src/utils/chart-tool'
+import VeTitle from './ve-title'
+import VeCircle from 'src/components/ve-circle'
+import dataService from 'src/api/data-service'
+import EventBus from 'src/utils/eventBus'
+import { sankey, pieOne } from 'src/utils/chart-tool'
 
-  export default {
-    name: 'preview',
-    components: { VeTitle, VeCircle },
-    data () {
-      return {
-        activityId: '',
-        vhallRateData: {
+export default {
+  name: 'preview',
+  components: { VeTitle, VeCircle },
+  data () {
+    return {
+      activityId: '',
+      vhallRateData: {
+        'value': 0,
+        'ratio': 0,
+        'average': 0
+      },
+      activityScoreData: {
+        'viewer': 0,
+        'watchDuration': 0,
+        'spread': 0,
+        'extension': 0,
+        'interact': 0
+      },
+      watcherCountData: {
+        'watch': {
           'value': 0,
           'ratio': 0,
           'average': 0
         },
-        activityScoreData: {
-          'viewer': 0,
-          'watchDuration': 0,
-          'spread': 0,
-          'extension': 0,
-          'interact': 0
+        'viewer': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
         },
-        watcherCountData: {
-          'watch': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'viewer': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'newUser': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'newGoodUser': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          }
+        'newUser': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
         },
-        watchCoefficientData: {
-          'watchTime': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'extension': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'spread': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'interactint': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          }
+        'newGoodUser': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        }
+      },
+      watchCoefficientData: {
+        'watchTime': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
         },
-        tripNoneData: false
-      }
-    },
-    filters: {
-      fmtTime (value) {
-        let h = ((value / 3600 >> 0) + '').padStart(2, 0)
-        let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
-        let s = ((value % 60 >> 0) + '').padStart(2, 0)
-        return `${h}:${m}:${s}`
-      }
-    },
-    beforeDestroy () {
-      window.callbackResize = null
+        'extension': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        },
+        'spread': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        },
+        'interactint': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        }
+      },
+      tripNoneData: false
+    }
+  },
+  filters: {
+    fmtTime (value) {
+      let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+      let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+      let s = ((value % 60 >> 0) + '').padStart(2, 0)
+      return `${h}:${m}:${s}`
+    }
+  },
+  beforeDestroy () {
+    window.callbackResize = null
+    if (this.userTrailChart) {
+      this.userTrailChart.dispose()
+    }
+  },
+  created () {
+    this.activityId = this.$route.params.id
+    this.initPage()
+    window.callbackResize = () => {
+      // 重新绘制
       if (this.userTrailChart) {
-        this.userTrailChart.dispose()
+        this.userTrailChart.resize()
       }
+    }
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '概览数据',
+      url: `/data/preview/${this.$route.params.id}`
+    }])
+  },
+  methods: {
+    initPage () {
+      // 用户观看统计
+      this.activityScore()
+      // 用户观看统计
+      this.watcherCount()
+      // 观看影响系数因子
+      this.watchCoefficient()
+      this.$nextTick(() => {
+        // 微吼指数
+        this.vhallRate()
+        // 用户旅途
+        this.renderChart()
+      })
     },
-    created () {
-      this.activityId = this.$route.params.id
-      this.initPage()
-      window.callbackResize = () => {
-        // 重新绘制
-        if (this.userTrailChart) {
-          this.userTrailChart.resize()
+    vhallRate () {
+      this.$get(dataService.GET_PREVIEW_COUNT, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.vhallRateData = res.data
+        } else {
+          this.vhallRateData = {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          }
         }
-      }
-      EventBus.$emit('breads', [{
-        title: '活动管理'
-      }, {
-        title: '活动列表',
-        url: '/liveMager/list'
-      }, {
-        title: '活动详情',
-        url: `/liveMager/detail/${this.$route.params.id}`
-      }, {
-        title: '概览数据',
-        url: `/data/preview/${this.$route.params.id}`
-      }])
+        pieOne('chartVallId', this.vhallRateData.value)
+      })
     },
-    methods: {
-      initPage () {
-        // 用户观看统计
-        this.activityScore()
-        // 用户观看统计
-        this.watcherCount()
-        // 观看影响系数因子
-        this.watchCoefficient()
-        this.$nextTick(() => {
-          // 微吼指数
-          this.vhallRate()
-          // 用户旅途
-          this.renderChart()
-        })
-      },
-      vhallRate () {
-        this.$get(dataService.GET_PREVIEW_COUNT, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.vhallRateData = res.data
+    activityScore () {
+      this.$get(dataService.GET_PREVIEW_SCORE, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.activityScoreData = res.data
+        }
+      })
+    },
+    watcherCount () {
+      this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.watcherCountData = res.data
+        }
+      })
+    },
+    watchCoefficient () {
+      this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.watchCoefficientData = res.data
+        }
+      })
+    },
+    renderChart () {
+      this.$get(dataService.GET_PREVIEW_USER_TRIP, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200) {
+          if (res.data.length <= 0) {
+            this.tripNoneData = true
           } else {
-            this.vhallRateData = {
-              'value': 0,
-              'ratio': 0,
-              'average': 0
-            }
+            this.randerUserTrailChart(res.data)
           }
-          pieOne('chartVallId', this.vhallRateData.value)
-        })
-      },
-      activityScore () {
-        this.$get(dataService.GET_PREVIEW_SCORE, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.activityScoreData = res.data
-          }
-        })
-      },
-      watcherCount () {
-        this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.watcherCountData = res.data
-          }
-        })
-      },
-      watchCoefficient () {
-        this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.watchCoefficientData = res.data
-          }
-        })
-      },
-      renderChart () {
-        this.$get(dataService.GET_PREVIEW_USER_TRIP, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200) {
-            if (res.data.length <= 0) {
-              this.tripNoneData = true
-            } else {
-              this.randerUserTrailChart(res.data)
-            }
-          }
-        })
-      },
-      /* 绘制用户旅途 */
-      randerUserTrailChart (data) {
-        if (data.sourceList && data.sourceList.length > 0) {
-          let keyDatas = []
-          let links = []
-          data.sourceList.forEach((item) => {
-            keyDatas.push({
-              name: item.source + '',
-              showName: item.sourceName,
-              value: item.value
-            })
-          })
-          data.sourceLinks.forEach((item) => {
-            links.push({
-              source: item.source + '',
-              sourceName: item.sourceName,
-              target: item.target + '',
-              targetName: item.targetName,
-              value: item.value
-            })
-          })
-          this.$nextTick(() => {
-            this.userTrailChart = sankey('myChart', {
-              data: keyDatas,
-              links: links
-            })
-          })
         }
+      })
+    },
+    /* 绘制用户旅途 */
+    randerUserTrailChart (data) {
+      if (data.sourceList && data.sourceList.length > 0) {
+        let keyDatas = []
+        let links = []
+        data.sourceList.forEach((item) => {
+          keyDatas.push({
+            name: item.source + '',
+            showName: item.sourceName,
+            value: item.value
+          })
+        })
+        data.sourceLinks.forEach((item) => {
+          links.push({
+            source: item.source + '',
+            sourceName: item.sourceName,
+            target: item.target + '',
+            targetName: item.targetName,
+            value: item.value
+          })
+        })
+        this.$nextTick(() => {
+          this.userTrailChart = sankey('myChart', {
+            data: keyDatas,
+            links: links
+          })
+        })
       }
     }
   }
+}
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-  .preview {
-    .item-container {
-      .vhall-item /deep/ {
-        height: 180px;
-        width: 300px;
-        .item-mid {
-          position: relative;
-          height: 90px;
-          line-height: 80px;
-          .vhall-status{
-            position: absolute;
-            top: 62%;
-            left: 50%;
-            transform: translateX(-50%);
-          }
-        }
-        .ve-title {
-          padding: 10px 0;
+.preview {
+  .item-container {
+    .vhall-item /deep/ {
+      height: 180px;
+      width: 300px;
+      .item-mid {
+        position: relative;
+        height: 90px;
+        line-height: 80px;
+        .vhall-status {
+          position: absolute;
+          top: 62%;
+          left: 50%;
+          transform: translateX(-50%);
         }
       }
-      .spread {
-        margin-left: 20px;
-        height: 180px;
-        width: calc(100% - 320px);
+      .ve-title {
+        padding: 10px 0;
       }
     }
+    .spread {
+      margin-left: 20px;
+      height: 180px;
+      width: calc(100% - 320px);
+    }
   }
-
+}
 </style>
