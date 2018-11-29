@@ -41,9 +41,9 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//static.vhallyun.com',
-    PUBLIC_PATH: '//zhike1.vhall.com/',
-    MOBILE_HOST: '//zhike1.vhall.com/m/',
-    PC_HOST: '//zhike1.vhall.com/webinar/'
+    PUBLIC_PATH: '//zhike.vhall.com/',
+    MOBILE_HOST: '//zhike.vhall.com/m/',
+    PC_HOST: '//zhike.vhall.com/webinar/'
   }
 }
 module.exports = config
