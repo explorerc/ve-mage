@@ -1035,6 +1035,7 @@
         }
       }
       .users-list {
+        overflow: hidden;
         .el-table {
           .users-info {
             width: 170px;
