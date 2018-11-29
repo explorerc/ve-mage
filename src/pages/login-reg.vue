@@ -42,7 +42,8 @@ export default {
   data () {
     return {
       name: '',
-      avatar: ''
+      avatar: '',
+      mobileHost: process.env.MOBILE_HOST
     }
   },
   components: {
@@ -53,7 +54,7 @@ export default {
       accountInfo: state => state.accountInfo
     }),
     avatarImg: function () {
-      return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      return this.avatar ? this.$imgHost + '/' + this.avatar : 'https:' + require('assets/image/avatar@2x.png')
     }
   },
   created () {
@@ -126,7 +127,7 @@ export default {
     width: 200px;
     position: absolute;
     z-index: 3;
-    top: 46px;
+    top: 56px;
     right: 10px;
     background-color: #fff;
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
