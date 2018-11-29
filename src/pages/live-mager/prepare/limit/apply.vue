@@ -541,13 +541,19 @@
       width: 470px;
       text-align: left;
       margin: 20px 0px;
-      padding-left: 40px;
+      padding-left: 16px;
       margin-right: 20px;
       &.spe {
         width: 450px;
       }
       &.handle {
         width: 100px;
+      }
+      &:nth-of-type(2) {
+        padding-left: 12px;
+      }
+      &:nth-of-type(3) {
+        padding-left: 35px;
       }
     }
   }
@@ -683,6 +689,13 @@
   .set-content .table-content .inp,
   .set-content .table-content > li > div {
     width: 240px;
+  }
+  .set-content .table-title li:nth-of-type(2) {
+    padding-left: 81px;
+  }
+  .set-content .table-title li:nth-of-type(3) {
+    width: 260px;
+    padding-left: 179px;
   }
 }
 </style>
