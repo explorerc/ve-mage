@@ -1056,7 +1056,7 @@ export default {
 <style lang="scss" scoped>
 @import "assets/css/variable.scss";
 .account-container /deep/ {
-  padding-bottom: 30px;
+  padding-bottom: 150px;
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;

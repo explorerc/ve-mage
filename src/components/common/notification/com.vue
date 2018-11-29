@@ -76,7 +76,7 @@ export default {
   border-radius: 4px;
   width: 380px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 28px;
+  font-size: 14px;
   z-index: 3000;
   background-color: #333;
   opacity: 0.9;
