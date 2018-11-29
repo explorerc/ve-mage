@@ -26,9 +26,12 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
-              <div class="cover_img">
-                <!--:style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}"-->
-              <img :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_pad,h_60,w_60` :require('assets/image/avatar@2x.png')" alt=""></div>
+              <div class="cover_img" :style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}">
+                <!---->
+               <!-- <img
+                  :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_pad,h_60,w_60` :require('assets/image/avatar@2x.png' "
+                  alt="">-->
+              </div>
             </td>
             <td>{{row.title}}</td>
             <td>
@@ -59,253 +62,253 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-import goodsServer from 'src/api/salesGoods-service'
-import EventBus from 'src/utils/eventBus'
+  import draggable from 'vuedraggable'
+  import goodsServer from 'src/api/salesGoods-service'
+  import EventBus from 'src/utils/eventBus'
 
-export default {
-  components: { draggable },
-  created () {
-    this.getList()
-    this.isShowLiveData()
-    EventBus.$emit('breads', [{
-      title: '活动管理'
-    }, {
-      title: '活动列表',
-      url: '/liveMager/list'
-    }, {
-      title: '活动详情',
-      url: `/liveMager/detail/${this.$route.params.activity_id}`
-    }, {
-      title: '商品列表',
-      url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
-    }])
-  },
-  data () {
-    return {
-      activity_id: this.$route.params.activity_id,
-      tableData: [],
-      timerShelf: null,
-      isShowlive: null
-    }
-  },
-  watch: {
-    tableData: {
-      handler (val, oldVal) {
-        if (val.length >= 1) {
-          this.sortGoods()
+  export default {
+    components: { draggable },
+    created () {
+      this.getList()
+      this.isShowLiveData()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.activity_id}`
+      }, {
+        title: '商品列表',
+        url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
+      }])
+    },
+    data () {
+      return {
+        activity_id: this.$route.params.activity_id,
+        tableData: [],
+        timerShelf: null,
+        isShowlive: null
+      }
+    },
+    watch: {
+      tableData: {
+        handler (val, oldVal) {
+          if (val.length >= 1) {
+            this.sortGoods()
+          }
+        },
+        deep: true
+      }
+    },
+    methods: {
+      getList () {
+        this.$post(goodsServer.GOODS_LISTS, { activity_id: this.activity_id })
+          .then(res => {
+            res.data.forEach((ite, ind) => {
+              ite.image = JSON.parse(ite.image)
+            })
+            this.tableData = res.data
+            console.log(this.tableData)
+          })
+          .catch(() => {
+            this.tableData = []
+          })
+      },
+      // 创建
+      createGoods () {
+        this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
+      },
+      sortGoods () {
+        let goods = this.tableData.map((ite, ind) => {
+          return ite.goods_id
+        })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+      },
+      check () {
+        if (this.isShowlive) {
+          this.$router.push(`/data/live/${this.activity_id}#tools`)
         }
       },
-      deep: true
-    }
-  },
-  methods: {
-    getList () {
-      this.$post(goodsServer.GOODS_LISTS, { activity_id: this.activity_id })
-        .then(res => {
-          res.data.forEach((ite, ind) => {
-            ite.image = JSON.parse(ite.image)
-          })
-          this.tableData = res.data
-          console.log(this.tableData)
-        })
-        .catch(() => {
-          this.tableData = []
-        })
-    },
-    // 创建
-    createGoods () {
-      this.$router.push(`/salesTools/recommendGoodsInfo/${this.activity_id}/create`)
-    },
-    sortGoods () {
-      let goods = this.tableData.map((ite, ind) => {
-        return ite.goods_id
-      })
-      this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
-    },
-    check () {
-      if (this.isShowlive) {
-        this.$router.push(`/data/live/${this.activity_id}#tools`)
-      }
-    },
-    isShowLiveData () {
-      this.$get(goodsServer.GET_DETAILS, { activityId: this.activity_id })
-        .then(res => {
-          this.isShowlive = res.data.data.time
-        })
-    },
-    // 上下架
-    handleShelf (row) {
-      if (this.timerShelf) return
-      this.timerShelf = setTimeout(() => {
-        clearTimeout(this.timerShelf)
-        this.timerShelf = null
-        this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
+      isShowLiveData () {
+        this.$get(goodsServer.GET_DETAILS, { activityId: this.activity_id })
           .then(res => {
-            setTimeout(() => {
-              this.getList()
-            }, 500)
-            this.$toast({
-              content: '操作成功!',
-              position: 'center'
-            })
+            this.isShowlive = res.data.data.time
           })
-      }, 1000)
-    },
-    // 编辑
-    handleEdit (row, index) {
-      this.$router.push(`/salesTools/recommendGoodsInfo/${row.goods_id}/update`)
-    },
-    handleDelete (row, index) {
-      console.log(row)
-      this.$messageBox({
-        header: '删除该商品',
-        type: 'error',
-        width: '450px',
-        content: '删除后观看页将不再显示该商品',
-        cancelText: '取消', // 不传递cancelText将只有一个确定按钮
-        confirmText: '删除',
-        handleClick: (e) => {
-          if (e.action === 'cancel') {
-            /*  this.$toast({
-                content: '已取消删除',
+      },
+      // 上下架
+      handleShelf (row) {
+        if (this.timerShelf) return
+        this.timerShelf = setTimeout(() => {
+          clearTimeout(this.timerShelf)
+          this.timerShelf = null
+          this.$post(goodsServer.GOODS_SHELF, { goods_id: row.goods_id, type: row.added === '0' ? '1' : '0' })
+            .then(res => {
+              setTimeout(() => {
+                this.getList()
+              }, 500)
+              this.$toast({
+                content: '操作成功!',
                 position: 'center'
-              }) */
-          } else if (e.action === 'confirm') {
-            this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
-              .then(res => {
-                this.tableData.splice(index, 1)
-                setTimeout(() => {
-                  this.getList()
-                }, 1000)
-                this.$toast({
-                  content: '删除成功!',
-                  position: 'center'
-                })
               })
+            })
+        }, 1000)
+      },
+      // 编辑
+      handleEdit (row, index) {
+        this.$router.push(`/salesTools/recommendGoodsInfo/${row.goods_id}/update`)
+      },
+      handleDelete (row, index) {
+        console.log(row)
+        this.$messageBox({
+          header: '删除该商品',
+          type: 'error',
+          width: '450px',
+          content: '删除后观看页将不再显示该商品',
+          cancelText: '取消', // 不传递cancelText将只有一个确定按钮
+          confirmText: '删除',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+              /*  this.$toast({
+                  content: '已取消删除',
+                  position: 'center'
+                }) */
+            } else if (e.action === 'confirm') {
+              this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
+                .then(res => {
+                  this.tableData.splice(index, 1)
+                  setTimeout(() => {
+                    this.getList()
+                  }, 1000)
+                  this.$toast({
+                    content: '删除成功!',
+                    position: 'center'
+                  })
+                })
+            }
           }
-        }
-      })
+        })
+      }
     }
   }
-}
 </script>
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
+  @import '~assets/css/mixin.scss';
 
-#goods-list {
-  font-family: PingFangSC-Regular;
-  padding: 40px 100px;
-  /deep/ {
-    header {
-      overflow: hidden;
-      text-align: right;
-      margin-bottom: 20px;
-      p {
-        float: left;
-        height: 26px;
-        font-size: 24px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 52px;
+  #goods-list {
+    font-family: PingFangSC-Regular;
+    padding: 40px 100px;
+    /deep/ {
+      header {
+        overflow: hidden;
+        text-align: right;
+        margin-bottom: 20px;
+        p {
+          float: left;
+          height: 26px;
+          font-size: 24px;
+          font-weight: 400;
+          color: rgba(34, 34, 34, 1);
+          line-height: 52px;
+        }
+        .back-btn {
+          margin-top: 0 !important;
+        }
       }
-      .back-btn {
-        margin-top: 0 !important;
-      }
-    }
-    .table-box {
-      margin-top: 22px;
-      padding: 30px;
-      border: 1px dashed #cccccc;
-      background-color: white;
-      table thead tr th,
-      table tbody tr td {
-        border-color: #ebeef5;
-        font-size: 14px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        border: none;
-        thead,
-        tbody {
-          height: 47px;
-          line-height: 47px;
-          th,
-          td {
-            color: #222222;
-            padding-left: 10px;
-            font-weight: 400;
-            &:nth-of-type(1) {
-              width: 5%;
-            }
-            &:nth-of-type(2) {
-              width: 10%;
-            }
-            &:nth-of-type(3) {
-              width: 20%;
-            }
-            &:nth-of-type(4),
-            &:nth-of-type(5) {
-              width: 15%;
-            }
-            &:nth-of-type(6) {
-              width: 25%;
-              span {
-                color: #2878ff;
+      .table-box {
+        margin-top: 22px;
+        padding: 30px;
+        border: 1px solid #e2e2e2;
+        background-color: white;
+        table thead tr th,
+        table tbody tr td {
+          border-color: #ebeef5;
+          font-size: 14px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border: none;
+          thead,
+          tbody {
+            height: 47px;
+            line-height: 47px;
+            th,
+            td {
+              color: #222222;
+              padding-left: 10px;
+              font-weight: 400;
+              &:nth-of-type(1) {
+                width: 5%;
               }
-            }
-            .cover_img {
-              margin: 10px auto 10px 0;
-              background: no-repeat center;
-              background-size: cover;
-              width: 60px;
-              height: 60px;
-              img {
+              &:nth-of-type(2) {
+                width: 10%;
+              }
+              &:nth-of-type(3) {
+                width: 20%;
+              }
+              &:nth-of-type(4),
+              &:nth-of-type(5) {
+                width: 15%;
+              }
+              &:nth-of-type(6) {
+                width: 25%;
+                span {
+                  color: #2878ff;
+                }
+              }
+              .cover_img {
+                margin: 10px auto 10px 0;
+                background: no-repeat center;
+                background-size: contain;
                 width: 60px;
                 height: 60px;
+                img {
+                  width: 60px;
+                  height: 60px;
+                }
               }
             }
-          }
-          td.dis-prices {
-            color: #fc5659;
-          }
-          tr:hover {
-            background-color: #f5f7fa;
+            td.dis-prices {
+              color: #fc5659;
+            }
+            tr:hover {
+              background-color: #f5f7fa;
+            }
           }
         }
       }
-    }
 
-    .no-goods {
-      text-align: center;
-      background-color: #ffffff;
-      border-radius: 4px;
-      border: 1px solid #e2e2e2;
-      img {
-        width: 150px;
-        height: 150px;
-        margin: 84px auto 40px auto;
-      }
-      p:nth-of-type(1) {
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 22px;
-      }
-      p:nth-of-type(2) {
-        font-size: 14px;
-        font-weight: 400;
-        color: rgba(85, 85, 85, 1);
-        margin: 10px auto 30px auto;
-      }
-      button {
-        margin-bottom: 90px;
-        span {
-          margin: auto 40px;
+      .no-goods {
+        text-align: center;
+        background-color: #ffffff;
+        border-radius: 4px;
+        border: 1px solid #e2e2e2;
+        img {
+          width: 150px;
+          height: 150px;
+          margin: 84px auto 40px auto;
+        }
+        p:nth-of-type(1) {
+          font-size: 16px;
+          font-weight: 400;
+          color: rgba(34, 34, 34, 1);
+          line-height: 22px;
+        }
+        p:nth-of-type(2) {
+          font-size: 14px;
+          font-weight: 400;
+          color: rgba(85, 85, 85, 1);
+          margin: 10px auto 30px auto;
+        }
+        button {
+          margin-bottom: 90px;
+          span {
+            margin: auto 40px;
+          }
         }
       }
     }
   }
-}
 </style>
