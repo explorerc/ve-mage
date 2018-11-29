@@ -291,7 +291,7 @@ export default {
       return !(this.phoneData.length === 0)
     },
     defaultImg () {
-      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : '232323'
+      return this.imgUrl ? this.$imgHost + '/' + this.imgUrl : ''
     }
   },
   methods: {
