@@ -409,7 +409,16 @@
 <style lang="scss">
 #userGroups {
   font-family: PingFangSC-Regular;
-  padding: 40px 100px;
+  /*padding: 40px 100px;*/
+  margin: 50px auto;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
   /deep/ {
     header {
       height: 40px;
@@ -466,7 +475,13 @@
       border: 1px solid #E2E2E2;
       background-color: white;
       border-radius: 4px;
-      .el-table {
+      .el-table /deep/{
+        tbody {
+          .el-table__row .cell{
+            color: #222222!important;
+          }
+
+        }
         .btns {
           color: rgba(34, 34, 34, 1);
           &:hover {
