@@ -472,7 +472,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -517,7 +517,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -562,7 +562,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -607,7 +607,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -642,7 +642,7 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -682,7 +682,7 @@
               type: '',
               unit: ''
             }, {
-              key: null,
+              key: 'is_null',
               name: '为空',
               type: '',
               unit: ''
@@ -706,7 +706,7 @@
               type: '',
               unit: ''
             }, {
-              key: null,
+              key: 'is_null',
               name: '为空',
               type: '',
               unit: ''
@@ -741,7 +741,7 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -771,7 +771,7 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -895,7 +895,7 @@
             type: 'select',
             unit: ''
           }, {
-            key: null,
+            key: 'is_null',
             name: '为空',
             type: 'select',
             unit: ''
@@ -928,7 +928,7 @@
               type: 'select',
               unit: ''
             }, {
-              key: null,
+              key: 'is_null',
               name: '为空',
               type: 'select',
               unit: ''
