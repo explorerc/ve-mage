@@ -2,7 +2,7 @@
   <div class="live-mager"
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
-    <div class="live-title" style='line-height: 52px;'>
+    <div class="live-title" style='line-height: 52px;padding-bottom:20px;'>
       <span class="title">活动列表</span>
       <div class="search-box fr" v-if="tableList.length || isSearch">
         <el-select v-model="searchParams.status" @change='statusChange'
@@ -51,7 +51,7 @@
            <template v-if="isSearch">
              <div class="empty-box empty-search">
                 <p class="img"></p>
-                <p class='title'>暂无数据</p>
+                <p class='title'>很抱歉，没有找到搜索结果</p>
               </div>
            </template>
            <template v-else>
@@ -313,8 +313,8 @@ export default {
   .empty-box {
     text-align: center;
     color: $color-font-sub;
-    min-height: 400px;
-    padding: 100px 0;
+    min-height: 550px;
+    padding: 150px 0;
     background-color: #fff;
     .img {
       width: 150px;

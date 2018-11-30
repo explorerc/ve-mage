@@ -370,6 +370,7 @@ export default {
       }
     }
     .el-menu-item {
+      position: relative;
       height: 55px;
       line-height: 55px;
       padding-left: 64px !important;
@@ -377,10 +378,22 @@ export default {
         color: inherit !important;
         text-decoration: none;
       }
+      &:before{
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+      }
       &.is-active {
         background-color: #2f302f !important;
-        border-left: 4px solid #ffd021;
+        /*border-left: 4px solid #ffd021;*/
         padding-left: 64px !important;
+        &:before{
+          background-color: #ffd021;
+        }
       }
     }
     .el-submenu__icon-arrow {
