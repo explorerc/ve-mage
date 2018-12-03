@@ -504,7 +504,7 @@ export default {
       bottom: 0;
       margin: auto 0 auto -170px;
       max-height: 475px;
-      text-aligun: left;
+      text-align: left;
       font-size: 22px;
     }
     .v-title {

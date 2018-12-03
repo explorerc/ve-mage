@@ -196,8 +196,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{watchTime}}
-                  </p>
+                    {{watchTime}} </p>
                   <p class="v-title">
                     累计观看 (分)
                   </p>
@@ -305,7 +304,10 @@ export default {
       if (this.user.watch_replay_time) {
         time += parseInt(this.user.watch_replay_time)
       }
-      return time || '-'
+      if (time === 0) {
+        return '-'
+      }
+      return time < 60 ? 1 : Math.round(time / 60)
     },
     avatarImg () {
       return this.user.avatar ? this.imgHost + '/' + this.user.avatar : ''
