@@ -28,9 +28,9 @@
             <td>
               <div class="cover_img" :style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}">
                 <!---->
-               <!-- <img
-                  :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_pad,h_60,w_60` :require('assets/image/avatar@2x.png' "
-                  alt="">-->
+                <!-- <img
+                   :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_pad,h_60,w_60` :require('assets/image/avatar@2x.png' "
+                   alt="">-->
               </div>
             </td>
             <td>{{row.title}}</td>
@@ -220,6 +220,7 @@
         margin-top: 22px;
         padding: 30px;
         border: 1px solid #e2e2e2;
+        border-radius: 4px;
         background-color: white;
         table thead tr th,
         table tbody tr td {
@@ -230,15 +231,19 @@
           width: 100%;
           border-collapse: collapse;
           border: none;
-          thead,
-          tbody {
+          thead, tbody {
             height: 47px;
             line-height: 47px;
-            th,
-            td {
+            th {
+              border-top-color: transparent !important;
+              background-color: #f6f6f6;
+            }
+            th, td {
               color: #222222;
               padding-left: 10px;
               font-weight: 400;
+              border-right-color: transparent !important;
+              border-left-color: transparent !important;
               &:nth-of-type(1) {
                 width: 5%;
               }
@@ -254,8 +259,11 @@
               }
               &:nth-of-type(6) {
                 width: 25%;
-                span {
-                  color: #2878ff;
+                button {
+                  color: #222222;
+                  &:hover {
+                    color: #2878FF;
+                  }
                 }
               }
               .cover_img {
@@ -273,10 +281,23 @@
             td.dis-prices {
               color: #fc5659;
             }
+          /*  tr {
+              display: table;
+              width: 100%;
+              table-layout: fixed;
+            }*/
             tr:hover {
               background-color: #f5f7fa;
             }
           }
+         /* thead {
+            width: calc(100% - 100px);
+          }
+          tbody {
+            display: block;
+            height: 550px;
+            overflow-y: scroll;
+          }*/
         }
       }
 
