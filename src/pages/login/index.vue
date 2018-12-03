@@ -452,8 +452,12 @@ export default {
     }
     .v-content {
       width: 600px;
-      margin: 260px auto;
+      // margin: 260px auto;
       text-align: center;
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      margin-left: -300px;
       .v-title {
         font-size: 36px;
         color: #222;
@@ -464,7 +468,7 @@ export default {
         margin-top: 12px;
       }
       img {
-        width: 525px;
+        width: 490px;
         margin: 55px 0 0 -25px;
       }
     }
