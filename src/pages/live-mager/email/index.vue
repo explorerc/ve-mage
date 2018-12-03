@@ -2,7 +2,7 @@
   <div class="live-mager email-box">
     <div class="live-title">
       <span class="title">邮件邀约</span>
-      <com-back :class='"back-btn"' :url="`/liveMager/detail/${this.activeId}`"></com-back>
+      <com-back  :url="`/liveMager/detail/${this.activeId}`"></com-back>
       <template v-if='emailList.length'>
         <button class="default-button fr"
                 @click="addEmail">新建邮件</button>
@@ -311,11 +311,6 @@ export default {
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
-.back-btn {
-  margin: 0px 0 0 10px !important;
-  height: 40px !important;
-  line-height: 40px !important;
-}
 .email-table-box {
   font-size: 14px;
 }

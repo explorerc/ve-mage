@@ -2,8 +2,7 @@
   <div class="v-list">
     <div class="v-list-title clearfix">
       <span class="title">问卷</span>
-      <com-back :class='"back-btn"'
-                :url="`/liveMager/detail/${activityId}`"></com-back>
+      <com-back :url="`/liveMager/detail/${activityId}`" style='line-height: 30px;'></com-back>
       <template v-if="tableData.length">
         <router-link class="v-add"
                      :class="{disabled: isAdd}"
@@ -296,10 +295,6 @@ export default {
 </script>
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
-.back-btn {
-  height: 40px !important;
-  margin: 10px 0px 10px 10px !important;
-}
 .v-list /deep/ {
   overflow: hidden;
   padding-bottom: 30px;
@@ -315,6 +310,7 @@ export default {
     width: 1019px;
   }
   .v-list-title {
+    position: relative;
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
     margin: 30px 0;

@@ -84,7 +84,7 @@
                               v-model="email.planTime"
                               type="datetime"
                               placeholder="选择日期时间"
-                              align="right"
+                              align="center"
                               format="yyyy-MM-dd HH:mm"
                               value-format="yyyy-MM-dd HH:mm">
               </el-date-picker>

@@ -2,9 +2,9 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
-      <com-back class="back-btn" :url="`/liveMager/detail/${activity_id}`"></com-back>
-      <div v-if="tableData.length>=1">
-        <com-button @click="check" class="default-button" round :disabled="!isShowlive">查看活动数据</com-button>
+      <com-back :url="`/liveMager/detail/${activity_id}`"></com-back>
+      <div v-if="tableData.length>=1" class='btn-box'>
+        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看活动数据</com-button>
         <com-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </com-button>
@@ -194,103 +194,117 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  #goods-list {
-    font-family: PingFangSC-Regular;
-    padding: 40px 100px;
-    /deep/ {
-      header {
-        overflow: hidden;
-        text-align: right;
-        margin-bottom: 20px;
-        p {
-          float: left;
-          height: 26px;
-          font-size: 24px;
-          font-weight: 400;
-          color: rgba(34, 34, 34, 1);
-          line-height: 52px;
-        }
-        .back-btn {
-          margin-top: 0 !important;
-        }
+#goods-list {
+  font-family: PingFangSC-Regular;
+  padding: 34px 100px;
+  /deep/ {
+    header {
+      position: relative;
+      overflow: hidden;
+      text-align: right;
+      height: 40px;
+      margin-bottom: 25px;
+      p {
+        float: left;
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 52px;
       }
-      .table-box {
-        margin-top: 22px;
-        padding: 30px;
-        border: 1px solid #e2e2e2;
-        border-radius: 4px;
-        background-color: white;
-        table thead tr th,
-        table tbody tr td {
-          border-color: #ebeef5;
-          font-size: 14px;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          border: none;
-          thead, tbody {
-            height: 47px;
-            line-height: 47px;
-            th {
-              border-top-color: transparent !important;
-              background-color: #f6f6f6;
+      .default-button,
+      .primary-button {
+        transition: unset;
+        height: 30px;
+        line-height: 30px;
+      }
+      .btn-box {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 97px;
+      }
+    }
+    .table-box {
+      margin-top: 22px;
+      padding: 30px;
+      border: 1px solid #e2e2e2;
+      border-radius: 4px;
+      background-color: white;
+      min-height: 550px;
+      table thead tr th,
+      table tbody tr td {
+        border-color: #ebeef5;
+        font-size: 14px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+        thead,
+        tbody {
+          height: 47px;
+          line-height: 47px;
+          th {
+            border-top-color: transparent !important;
+            background-color: #f6f6f6;
+          }
+          th,
+          td {
+            color: #222222;
+            padding-left: 10px;
+            font-weight: 400;
+            border-right-color: transparent !important;
+            border-left-color: transparent !important;
+            &:nth-of-type(1) {
+              width: 5%;
             }
-            th, td {
-              color: #222222;
-              padding-left: 10px;
-              font-weight: 400;
-              border-right-color: transparent !important;
-              border-left-color: transparent !important;
-              &:nth-of-type(1) {
-                width: 5%;
-              }
-              &:nth-of-type(2) {
-                width: 10%;
-              }
-              &:nth-of-type(3) {
-                width: 20%;
-              }
-              &:nth-of-type(4),
-              &:nth-of-type(5) {
-                width: 15%;
-              }
-              &:nth-of-type(6) {
-                width: 25%;
-                button {
-                  color: #222222;
-                  &:hover {
-                    color: #2878FF;
-                  }
+            &:nth-of-type(2) {
+              width: 10%;
+            }
+            &:nth-of-type(3) {
+              width: 20%;
+            }
+            &:nth-of-type(4),
+            &:nth-of-type(5) {
+              width: 15%;
+            }
+            &:nth-of-type(6) {
+              width: 25%;
+              button {
+                color: #222222;
+                &:hover {
+                  color: #2878ff;
                 }
               }
-              .cover_img {
-                margin: 10px auto 10px 0;
-                background: no-repeat center;
-                background-size: contain;
+            }
+            .cover_img {
+              margin: 10px auto 10px 0;
+              background: no-repeat center;
+              background-size: contain;
+              width: 60px;
+              height: 60px;
+              img {
                 width: 60px;
                 height: 60px;
-                img {
-                  width: 60px;
-                  height: 60px;
-                }
               }
             }
-            td.dis-prices {
-              color: #fc5659;
-            }
+          }
+          td.dis-prices {
+            color: #fc5659;
+          }
           /*  tr {
               display: table;
               width: 100%;
               table-layout: fixed;
             }*/
-            tr:hover {
-              background-color: #f5f7fa;
-            }
+          tr:hover {
+            background-color: #f5f7fa;
           }
-         /* thead {
+        }
+        /* thead {
             width: calc(100% - 100px);
           }
           tbody {
@@ -298,38 +312,38 @@
             height: 550px;
             overflow-y: scroll;
           }*/
-        }
       }
+    }
 
-      .no-goods {
-        text-align: center;
-        background-color: #ffffff;
-        border-radius: 4px;
-        border: 1px solid #e2e2e2;
-        img {
-          width: 150px;
-          height: 150px;
-          margin: 84px auto 40px auto;
-        }
-        p:nth-of-type(1) {
-          font-size: 16px;
-          font-weight: 400;
-          color: rgba(34, 34, 34, 1);
-          line-height: 22px;
-        }
-        p:nth-of-type(2) {
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(85, 85, 85, 1);
-          margin: 10px auto 30px auto;
-        }
-        button {
-          margin-bottom: 90px;
-          span {
-            margin: auto 40px;
-          }
+    .no-goods {
+      text-align: center;
+      background-color: #ffffff;
+      border-radius: 4px;
+      border: 1px solid #e2e2e2;
+      img {
+        width: 150px;
+        height: 150px;
+        margin: 84px auto 40px auto;
+      }
+      p:nth-of-type(1) {
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 22px;
+      }
+      p:nth-of-type(2) {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(85, 85, 85, 1);
+        margin: 10px auto 30px auto;
+      }
+      button {
+        margin-bottom: 90px;
+        span {
+          margin: auto 40px;
         }
       }
     }
   }
+}
 </style>

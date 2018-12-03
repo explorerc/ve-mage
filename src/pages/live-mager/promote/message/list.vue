@@ -3,7 +3,7 @@
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
         <span class="title">短信通知</span>
-        <com-back :class='"back-btn"' :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
+        <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信</button></router-link>
         </div>
@@ -238,9 +238,6 @@ export default {
 </style>
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
-.back-btn {
-  margin: 10px 0 10px 10px;
-}
 .live-title {
   .right-box {
     float: right;

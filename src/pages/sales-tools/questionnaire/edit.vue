@@ -3,9 +3,9 @@
        @mousedown="canPaas = false">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
-      <!-- <com-back :class='"back-btn"'></com-back> -->
-      <button class="v-back"
-              @click="back">返回</button>
+      <com-back :url="`/salesTools/questionnaire/list/${activityId}`"></com-back>
+      <!-- <button class="v-back"
+              @click="back">返回</button> -->
     </div>
     <div class="content from-box">
       <div class="tt">
@@ -37,7 +37,7 @@
               </ul>
             </div>
             <div class="v-selects">
-              <p class="v-title">
+              <p class="v-title" style="margin-top:20px;">
                 题型
               </p>
               <ul>
@@ -320,10 +320,10 @@ export default {
         })
       })
     },
-    back () {
-      // window.history.go(-1)
-      this.$router.push(`/salesTools/questionnaire/list/${this.activityId}`)
-    },
+    // back () {
+    //   // window.history.go(-1)
+    //   this.$router.push(`/salesTools/questionnaire/list/${this.activityId}`)
+    // },
     removeQuestion (options) {
       if (options.type === 'phone') {
         this.phoneData.splice(0, 1)
@@ -861,58 +861,65 @@ export default {
     }
   }
   .v-questionaire-title {
+    position: relative;
     // border-bottom: 1px solid $color-bd;
+    margin-bottom: 30px;
     line-height: 60px;
     span.title {
       display: inline-block;
       font-size: 24px;
     }
-    button {
-      float: right;
-      width: 120px;
-      height: 40px;
-      border: 1px solid #4b5afe;
-      line-height: 38px;
+    .back-btn-all {
       border-radius: 20px;
-      background-color: #fff;
-      font-size: 14px;
-      color: #4b5afe;
-      text-align: center;
-      margin-top: 10px;
-      &.v-save {
-        border-color: #ffd021;
-        background-color: #ffd021;
-        color: #222;
-        margin: 10px 30px 0 10px;
-      }
-      &.v-back {
-        cursor: pointer;
-        width: auto;
-        background-color: transparent;
-        height: 40px;
-        line-height: 38px;
-        border-radius: 20px;
-        border: none;
-        padding: 0 30px;
-        font-size: 14px;
-        color: #888888;
-        border: 1px solid #888888;
-      }
-      &:hover {
-        background-color: #fdd43f;
-        border-color: #fdd43f;
-        color: #222;
-      }
-      &:active {
-        background-color: #eec11a;
-        border-color: #eec11a;
-        color: #222;
-      }
+      padding: 0px;
+      width:90px;
     }
+    // button {
+    //   float: right;
+    //   width: 120px;
+    //   height: 40px;
+    //   border: 1px solid #4b5afe;
+    //   line-height: 38px;
+    //   border-radius: 20px;
+    //   background-color: #fff;
+    //   font-size: 14px;
+    //   color: #4b5afe;
+    //   text-align: center;
+    //   margin-top: 10px;
+    //   &.v-save {
+    //     border-color: #ffd021;
+    //     background-color: #ffd021;
+    //     color: #222;
+    //     margin: 10px 30px 0 10px;
+    //   }
+    //   // &.v-back {
+    //   //   cursor: pointer;
+    //   //   width: auto;
+    //   //   background-color: transparent;
+    //   //   height: 40px;
+    //   //   line-height: 38px;
+    //   //   border-radius: 20px;
+    //   //   border: none;
+    //   //   padding: 0 30px;
+    //   //   font-size: 14px;
+    //   //   color: #888888;
+    //   //   border: 1px solid #888888;
+    //   // }
+    //   &:hover {
+    //     background-color: #fdd43f;
+    //     border-color: #fdd43f;
+    //     color: #222;
+    //   }
+    //   &:active {
+    //     background-color: #eec11a;
+    //     border-color: #eec11a;
+    //     color: #222;
+    //   }
+    // }
   }
   .content {
     position: absolute;
-    top: 60px;
+    top: 90px;
     left: 0;
     right: 0;
     bottom: 80px;
@@ -935,24 +942,28 @@ export default {
         border: 1px solid #e2e2e2;
         background-color: #fff;
         border-radius: 4px;
-        padding: 32px 22px;
+        padding: 32px 34px;
         // overflow: hidden;
         .v-selects {
+          .v-title {
+            color: #222;
+            font-size: 20px;
+          }
           ul {
-            margin-top: 10px;
+            margin-top: 25px;
             overflow: hidden;
           }
           li {
             width: 110px;
-            height: 38px;
-            margin-right: 32px;
+            height: 34px;
+            margin-right: 10px;
             margin-bottom: 15px;
             float: left;
-            line-height: 38px;
+            line-height: 33px;
             text-align: left;
             padding-left: 15px;
             border-radius: 4px;
-            border: 1px solid #dadada;
+            border: 1px solid rgba(214, 214, 214, 1);
             cursor: pointer;
             &:hover {
               border-color: #4b5afe;
@@ -1001,8 +1012,11 @@ export default {
             vertical-align: top;
             display: inline-block;
             width: 95px;
+            font-size: 14px;
             .v-red {
               color: #fc5659;
+              position: relative;
+              top: 2px;
             }
           }
           .ve-upload-box,

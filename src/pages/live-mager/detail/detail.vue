@@ -1493,7 +1493,7 @@ export default {
     width: 650px;
     .id-tag {
       display: inline-block;
-      padding: 2px 12px;
+      padding: 2px 7px;
       color: $color-font-sub;
       font-size: 14px;
       background: rgba(239, 239, 239, 1);

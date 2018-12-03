@@ -116,9 +116,9 @@ export default {
       height: 40px;
       .select-icon {
         display: inline-block;
-        margin-top: 10px;
+        margin-top: 14px;
         .iconfont {
-          font-size: 20px;
+          font-size: 9px;
         }
       }
       .select-input {

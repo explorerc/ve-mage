@@ -7,7 +7,7 @@
                    :width="32"
                    :disabled="switchDisabled"
                    active-color="#FFD021"
-                   @change="confirmState">
+                   @change="confirmState" >
         </el-switch>
       <com-back></com-back>
         <!-- <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span> -->
@@ -251,6 +251,10 @@ export default {
   width: 1366px;
   min-width: 1019px;
   color: #222;
+  .el-switch {
+    position: relative;
+    bottom: 2px;
+  }
   // transition: width .2s;
 
   /* 设备宽度大于 1600 */
@@ -264,9 +268,9 @@ export default {
   }
 
   .live-title {
-    border-bottom: 1px solid $color-bd;
+    position: relative;
     line-height: 60px;
-    padding: 40px 0 30px 0;
+    margin: 30px 0 5px 0;
     span.title {
       display: inline-block;
       font-size: 24px;
@@ -363,6 +367,7 @@ export default {
       img {
         width: 100%;
         height: 100%;
+        border-radius: 4px;
       }
       &:hover {
         border-color: transparent;

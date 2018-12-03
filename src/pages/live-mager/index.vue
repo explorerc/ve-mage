@@ -27,7 +27,7 @@
                    :maxLength="30"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
-        <button class="primary-button"
+        <button class="primary-button create-btn"
                 @click="createLive">创建直播
         </button>
       </div>

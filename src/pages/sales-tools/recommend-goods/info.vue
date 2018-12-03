@@ -1,7 +1,7 @@
 <template>
   <div id="goods-info">
     <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息
-      <com-back :class='"back-btn"'></com-back>
+      <com-back></com-back>
     </header>
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
@@ -24,7 +24,7 @@
           <span>元</span>
         </div>
       </el-form-item>
-      <el-form-item label="商品图片：" prop="imageList">
+      <el-form-item label="商品图片：" prop="imageList" style="margin-bottom:10px;">
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
@@ -327,13 +327,6 @@
 
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
-
-.back-btn {
-  margin: 0;
-  position: relative;
-  bottom: 10px;
-}
-
 #goods-info {
   padding: 50px 100px;
   font-family: PingFangSC-Regular;
@@ -345,6 +338,7 @@
       color: rgba(34, 34, 34, 1);
       line-height: 26px;
       margin-bottom: 35px;
+      position: relative;
     }
     .el-form {
       padding: 40px 80px;
@@ -390,6 +384,7 @@
       .slot_inp_b {
         .el-input__inner {
           padding-right: 60px;
+          border-radius: 4px;
         }
       }
       .el-input-group__append {
@@ -421,7 +416,6 @@
       }
     }
     .upload_box {
-      height: 141px;
       position: relative;
       &::before {
         content: '';
@@ -449,6 +443,7 @@
         }
         .com-upload {
           width: 100%;
+          height: 140px;
           .upload-file-box {
             width: 100%;
             .upload-icon {

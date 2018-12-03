@@ -565,7 +565,8 @@ export default {
       &:hover {
         cursor: pointer;
         opacity: 0.9;
-        color: #4b5afe;
+        // color: #4b5afe;
+        background-color: #ffda51;
       }
     }
     .type-select /deep/ {
@@ -591,6 +592,9 @@ export default {
       text-align: center;
       cursor: pointer;
       font-size: 14px;
+      &:hover {
+        background-color: #ffda51;
+      }
     }
     .reset {
       position: absolute;
@@ -601,6 +605,9 @@ export default {
       text-align: center;
       cursor: pointer;
       font-size: 14px;
+      &:hover {
+        background-color: #ffda51;
+      }
     }
     .preview-group {
       position: absolute;

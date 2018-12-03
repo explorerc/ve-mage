@@ -4,9 +4,9 @@
          style="border:none;">
       <span class="title">活动回放</span>
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
-      <com-back :class='"back-btn"'></com-back>
-      <button class="primary-button fr"
-              style="margin-top: 10px;"
+      <com-back style='top:62px;'></com-back>
+      <button class="primary-button fr add-btn"
+              style="margin-top: 17px;"
               @click="addVideoClickShow" >添加视频
       </button>
     </div>
@@ -832,12 +832,13 @@ export default {
 </style>
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
-.back-btn {
-  margin-top: 10px !important;
-  padding: 0px !important;
-  height: 40px !important;
-  line-height: 40px !important;
-  width: 116px !important;
+.live-title /deep/ {
+  padding-bottom: 0px !important;
+  .add-btn {
+    height: 30px;
+    line-height: 30px;
+    margin-right: 110px;
+  }
 }
 .status-default {
   color: $color-blue;
@@ -891,6 +892,7 @@ export default {
     border-bottom: solid 1px $color-bd;
   }
   .empty-box {
+    font-size: 14px;
     text-align: center;
     color: $color-font-sub;
     min-height: 400px;
@@ -906,9 +908,9 @@ export default {
       background-size: contain;
     }
     .title {
-      font-size: 18px;
+      font-size: 14px;
       color: $color-font;
-      padding-top: 13px;
+      padding-top: 30px;
     }
     .desc {
       display: block;

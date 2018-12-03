@@ -968,6 +968,7 @@ export default {
 @import '~assets/css/mixin.scss';
 .auto-page {
   .live-title {
+    position: relative;
     border-bottom: none;
     padding-bottom: 30px;
     span.tips {

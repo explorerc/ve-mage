@@ -115,16 +115,16 @@ export default {
       cursor: pointer;
       display: inline-block;
       background-color: #ffd021;
-      width: 30px;
-      height: 30px;
-      background-image: url('~assets/image/site/edit.png');
+      width: 32px;
+      height: 32px;
+      background-image: url('~assets/image/site/edit.svg');
       background-size: 32px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
       &:first-child {
         margin-right: 2px;
-        background-image: url('~assets/image/site/del_edit.png');
+        background-image: url('~assets/image/site/del_edit.svg');
       }
     }
   }

@@ -28,7 +28,8 @@
                          @empty="searchEmpty('group')"
                          placeholder="输入分组名称"></com-input>
             </div>
-            <div class="select-person-box" :class='{"search-empty":!groupList.length}'>
+            <div class="select-person-box" :class='{"search-empty":!groupList.length}' style='border:none;'>
+              <span v-if="!groupList.length">没有找到搜索结果</span>
               <ul>
                 <li v-for="(person,idx) in groupList"
                     @click.stop="clickRowGroup(idx)"
@@ -44,7 +45,7 @@
           </div>
           <!-- 标签 -->
           <div class="select-content fl" v-show="curTab===2">
-            <div class="search-person-box">
+            <div class="search-person-box" >
               <com-input type="search"
                          class="search-com"
                          :value.sync="searchPerson"
@@ -52,7 +53,7 @@
                          @empty="searchEmpty('tag')"
                          placeholder="输入标签名称"></com-input>
             </div>
-            <div class="select-person-box" :class='{"search-empty":!tagList.length}'>
+            <div class="select-person-box" :class='{"search-empty":!tagList.length}' style='border:none;'>
               <ul>
                 <li v-for="(tag,idx) in tagList"
                     @click.stop="clickRowTag(idx)"
@@ -232,7 +233,13 @@ export default {
 </style>
 <style lang='scss' scoped>
 .select-content .search-empty {
-  background: url('~assets/image/search_empty.png') no-repeat center;
+  background: url('~assets/image/search_empty.png') no-repeat;
+  background-position: center 50px;
   background-size: 150px;
+  span {
+    line-height: 450px;
+    display: block;
+    text-align: center;
+  }
 }
 </style>

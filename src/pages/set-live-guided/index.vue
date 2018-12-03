@@ -44,7 +44,7 @@
               辅助信息：
             </p>
             <p class="v-info pull-left"
-               style="width: 350px; margin-top: 10px;"
+               style="width: 332px; margin-top: 10px;"
                @click='canPass = false'>
               <el-radio v-model="showType"
                         label='DESCRIPTION'>显示直播简介</el-radio>
@@ -310,6 +310,7 @@ export default {
     float: right;
   }
   .v-title {
+    position: relative;
     line-height: 60px;
     margin: 30px 0;
     font-size: 24px;
@@ -407,13 +408,13 @@ export default {
         margin-top: 45px;
         border-radius: 5px 5px 0 0;
         overflow: hidden;
-        .img-bg{
+        .img-bg {
           width: 100%;
           height: 100%;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
-          background-image: url("../../assets/image/guid.jpg");
+          background-image: url('../../assets/image/guid.jpg');
         }
         img {
           width: 100%;
@@ -441,6 +442,11 @@ export default {
           font-size: 12px;
           text-align: center;
           margin: 0 auto 23px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
         .v-phone-countdown {
           text-align: center;
@@ -463,17 +469,16 @@ export default {
         }
         .v-phone-enroll {
           display: block;
-          width: 280px;
-          height: 52px;
-          line-height: 52px;
+          width: 140px;
+          height: 26px;
+          line-height: 26px;
           background-color: #ffd021;
           border-radius: 50px;
-          margin: -20px 0 0 50px;
+          margin: 10px auto;
           text-decoration: none;
           text-align: center;
           color: #222;
-          transform: scale(0.5);
-          -webkit-transform-origin: top left;
+          font-size: 12px;
         }
       }
     }
@@ -490,13 +495,13 @@ export default {
         height: 266px;
         border-radius: 1px 0 0 1px;
         overflow: hidden;
-        .img-bg{
+        .img-bg {
           width: 100%;
           height: 100%;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
-          background-image: url("../../assets/image/guid.jpg");
+          background-image: url('../../assets/image/guid.jpg');
         }
         img {
           width: 100%;

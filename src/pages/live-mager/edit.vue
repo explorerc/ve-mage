@@ -421,9 +421,6 @@ export default {
   padding-bottom: 30px;
   margin: 0 auto;
   color: #222;
-  .back-btn {
-    margin: 28px 0 !important;
-  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -439,12 +436,13 @@ export default {
     }
   }
   .edit-title {
+    margin-top: 32px;
+    position: relative;
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
     span.title {
       display: inline-block;
       font-size: 24px;
-      padding-top: 32px;
     }
   }
   .tips {
@@ -574,14 +572,24 @@ export default {
   // top: 50%;
   // left: 50%;
   // margin-left: -110px;
-  // margin-right: -225px;
-  margin: 200px auto;
-  width: 450px;
-  height: 220px;
+  // margin-right: -225px;/* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  margin: 60px auto;
+  height: 550px;
+  background: #fff;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid #e2e2e2;
   dl {
     text-align: center;
-
-    margin: 0 auto;
+    margin: 160px auto;
   }
   dt {
     width: 122px;

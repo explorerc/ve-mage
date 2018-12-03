@@ -135,12 +135,10 @@
 @import './common.scss';
 
 .back-btn {
-  float: right;
-  margin: 14px 0px 14px 10px !important;
-  padding: 0 !important;
-  width: 120px !important;
   height: 34px !important;
   line-height: 34px !important;
+  float: right;
+  width: 120px !important;
 }
 .card-list-page {
   .el-table thead {
@@ -148,8 +146,10 @@
     line-height: 36px;
   }
   .top-bar {
-    padding: 15px 0;
-    float: right;
+    position: absolute;
+    top: 50%;
+    right: 134px;
+    transform: translateY(-50%);
     .btn {
       padding: 0;
       width: 120px;
@@ -169,6 +169,11 @@
           border-color: #fff;
           background: $color-blue;
         }
+      }
+      &:disabled:hover {
+        border-color: #4b5afe;
+        color: #4b5afe;
+        background-color: transparent;
       }
     }
   }
@@ -198,7 +203,7 @@
     .el-table .cell {
       white-space: normal;
     }
-    .cov_img{
+    .cov_img {
       background: no-repeat center;
       background-size: cover;
     }

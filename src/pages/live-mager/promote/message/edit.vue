@@ -556,7 +556,6 @@ export default {
     height: 34px;
     line-height: 34px;
     border-radius: 20px;
-    border: 1px solid rgba(136, 136, 136, 1);
   }
   .el-radio {
     padding: 12px 0;

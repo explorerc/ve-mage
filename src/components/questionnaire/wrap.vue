@@ -291,7 +291,7 @@ export default {
           vertical-align: middle;
         }
         .el-switch__core {
-          height: 18px;
+          height: 20px;
           .el-switch__button {
             width: 14px;
             height: 14px;
