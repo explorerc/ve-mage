@@ -1224,6 +1224,8 @@ export default {
     .process .top dt:before {
       width: 100px;
       right: -105px;
+      width: 60px;
+      right: -75px;
     }
     .process .bottom > div ol {
       width: 140px;
@@ -1477,9 +1479,11 @@ export default {
 
 .middle {
   float: left;
+  height: 170px;
   width: 640px;
+  position: relative;
   p {
-    padding-bottom: 10px;
+    padding-bottom: 20px;
   }
   .title {
     font-size: 20px;
@@ -1528,8 +1532,9 @@ export default {
       }
     }
     &.tool {
-      position: relative;
-      padding-top: 20px;
+      position: absolute;
+      bottom: 0;
+      padding: 0;
       .link-box {
         padding: 20px 0px;
         position: relative;
@@ -1705,14 +1710,14 @@ export default {
     width: 1px;
     height: 100%;
     position: absolute;
-    top: 0px;
+    top: 7px;
     left: -107px;
     background: rgba(226, 226, 226, 1);
     border-radius: 1px;
   }
   .count-box {
     overflow: hidden;
-    margin: 13px 0 36px 0;
+    margin: 24px 0 36px 0;
     li {
       float: left;
       width: 56px;

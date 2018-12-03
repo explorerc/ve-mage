@@ -122,7 +122,7 @@ export default {
   // margin-top: -340px;
   // margin-left: -300px;
   width: 600px;
-  max-height: 300px;
+  min-height: 300px;
   transform: translate(-50%, -70%);
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);

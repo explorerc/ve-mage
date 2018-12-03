@@ -34,8 +34,8 @@ export default {
   .none-data {
     text-align: center;
     line-height: 60px;
-    font-size: 16px;
-    color: #909399;
+    font-size: 14px;
+    color: #555;
   }
   .live-item-box {
     float: left;
