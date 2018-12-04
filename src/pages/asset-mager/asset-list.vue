@@ -92,7 +92,7 @@
                 <com-input style="width: 334px"
                            type="text"
                            v-model="amount"
-                           placeholder="10～20000"
+                           placeholder="20～20000"
                            :value.sync="amount"
                            :errorTips="amountError"
                 ></com-input>
@@ -161,7 +161,7 @@
           <div class="from-row">
             <div class="from-title">充值成功</div>
             <span>当前余额</span>
-            <span style="line-height: 20px">{{amount + billInfo.balance}}</span>元
+            <span style="line-height: 20px">{{parseFloat(amount) + parseFloat(billInfo.balance)}}</span>元
           </div>
           <div class="from-row">
             <img src="" alt="">
@@ -313,7 +313,7 @@
       // 检查输入的金额
       checkAmount () {
         const newAmount = this.amount
-        if (newAmount < 0 || newAmount > 20000) {
+        if (newAmount === '' || newAmount < 20 || newAmount > 20000) {
           this.amountError = '请输入20～20000之间的数字'
           return false
         } else {
@@ -347,7 +347,7 @@
           appId: roomInfo.appId,
           channelId: roomInfo.channelRoom
         })
-        /* 监听支付消息 */
+        /* 监听支付消息1 */
         ChatService.OBJ.regHandler(ChatConfig.charge, (msg) => {
           console.log('---------支付消息---------')
           console.log(msg)
