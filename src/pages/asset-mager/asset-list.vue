@@ -107,7 +107,6 @@
                  class="pay-money-msg"
                  width="530px"
                  type="promt"
-                 confirmText="已支付"
                  @handleClick="paidMoney"
                  header="充值">
       <div class="mager-box message-box-content">
@@ -352,6 +351,8 @@
         ChatService.OBJ.regHandler(ChatConfig.charge, (msg) => {
           console.log('---------支付消息---------')
           console.log(msg)
+          this.payMoneyShow = false
+          this.successMoneyShow = true
         })
       },
       // 获取订单号
