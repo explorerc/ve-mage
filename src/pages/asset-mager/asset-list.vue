@@ -175,8 +175,6 @@
 <script>
   import assetService from 'src/api/asset-service'
   import VePagination from 'src/components/ve-pagination'
-  // import ChatConfig from 'src/api/chat-config'
-  // import ChatService from 'components/chat/ChatService.js'
   import { mapState } from 'vuex'
   import ChatService from '../../components/chat/ChatService'
   import ChatConfig from 'src/api/chat-config'
@@ -219,9 +217,7 @@
         billNo: '', // 订单编号
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
-        aldis: false,
-        wxDisabled: false, // 微信按钮不禁用
-        wxdis: false
+        wxDisabled: false // 微信按钮不禁用
       }
     },
     filters: {
