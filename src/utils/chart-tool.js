@@ -100,9 +100,10 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       barWidth: '60%',
       stack: '总量',
       label: {
-        normal: {
-          show: true,
-          position: 'insideRight'
+        show: true,
+        position: 'insideRight',
+        formatter: (item) => {
+          return item.value ? item.value : ''
         }
       },
       data: sData
@@ -267,6 +268,9 @@ export function lines (id, data, colorParam, gridData) {
  * @returns {Promise<Response>}
  */
 export function pie (id, data) {
+  data = (data && data.length > 0) ? data : [
+    {name: '暂无数据', value: 0}
+  ]
   let option = {
     tooltip: {
       trigger: 'item',
@@ -274,7 +278,11 @@ export function pie (id, data) {
         fontSize: 12
       },
       formatter: (item) => {
-        return `${item.name}<br/>${item.value}(${item.percent}%)`
+        if (item.value) {
+          return `${item.name}<br/>${item.value}(${item.percent}%)`
+        } else {
+          return `${item.name}`
+        }
       }
     },
     color: ['#40C5FF', '#FEC400', '#FF8419', '#5189EE', '#666666', '#E2E2E2', '#b6a2de', '#2ec7c9', '#5ab1ef', '#ffb980'],
@@ -388,8 +396,6 @@ export function barRadius (id, data) {
         fontSize: 12
       },
       formatter: (item) => {
-        console.log('-------')
-        console.log(item)
         return `${item[1].name}：${item[1].value}`
       }
     },
@@ -594,18 +600,26 @@ export function bars (id, data, gridData) {
  * @returns {Promise<Response>}
  */
 export function barAndLine (id, data, gridData) {
-  console.log(data)
   let legendData = []
   let seriesData = []
+  let colorsBar = {
+    'red_packet': '#FFD021',
+    'question': '#63C8F5',
+    'recommend_card': '#FD9130',
+    'goods_recommend': '#AFADAE'
+  }
   data.list.forEach(item => {
     legendData.push(item.name)
     if (item.type === 'bar') {
       item.itemStyle = {
-        barBorderRadius: [5, 5, 0, 0]
+        barBorderRadius: [5, 5, 0, 0],
+        color: (params) => {
+          return colorsBar[params.data.type]
+        }
       }
     } else {
       item.lineStyle = {
-        color: 'red'
+        color: '#3C81FF'
       }
     }
     seriesData.push(item)
@@ -613,11 +627,17 @@ export function barAndLine (id, data, gridData) {
   let option = {
     tooltip: {
       trigger: 'axis',
+      textStyle: {
+        fontSize: 12
+      },
       axisPointer: {
         type: 'cross',
         crossStyle: {
           color: '#999'
         }
+      },
+      formatter: (item) => {
+        return `${item[0].axisValue}<br/>${item[0].data.name}：${item[0].data.value}`
       }
     },
     toolbox: {
@@ -639,7 +659,7 @@ export function barAndLine (id, data, gridData) {
       }
     },
     legend: {
-      top: -5,
+      top: -16,
       right: 10,
       data: legendData
     },
@@ -699,7 +719,6 @@ export function scatter (id, datas, gridData) {
   datas.data.forEach(item => {
     maxValue = maxValue > parseInt(item[2]) ? maxValue : parseInt(item[2])
   })
-  console.log('scatter-maxValue=' + maxValue)
   let option = {
     legend: {
       data: ['观看时长'],

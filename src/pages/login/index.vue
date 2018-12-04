@@ -11,12 +11,13 @@
         <p class="v-subtitle">
           提供专属直播间、加速企业营销、获客、变现
         </p>
+        <img src="../../assets/image/login@2x.png" alt="">
       </div>
     </div>
     <div class="v-right">
       <div class="v-content">
         <p class="v-title">
-          欢迎登录微吼直播
+          欢迎登录微吼知客
         </p>
         <ul class="v-tabs clearfix">
           <li v-on:click="changeFunction('账号登录')"
@@ -43,7 +44,8 @@
                      @changePassword="change($event)"
                      placeholder="密码"
                      :maxLength="30"
-                     @inputFocus="inputFocus()"></com-input>
+                     @inputFocus="inputFocus()"
+                     @enterClick="accountSubmit"></com-input>
           <div class="input-form v-label"
                style="margin-top:-28px;"
                :style="{opacity:accountOpacity}">
@@ -60,6 +62,7 @@
           <button class="primary-button"
                   @click="accountSubmit">提交
           </button>
+          <router-link class="v-register" to="/register">申请免费试用</router-link>
         </div>
         <div class="v-mobile"
              v-show="!isAccount">
@@ -78,7 +81,8 @@
                      :inputValue.sync="code"
                      placeholder="验证码"
                      :maxLength="6"
-                     @inputFocus="inputFocus()">
+                     @inputFocus="inputFocus()"
+                     @enterClick="phoneSubmit">
             <a href="javascript:;"
                class="v-getcode"
                :class="{prohibit:isProhibit}"
@@ -93,6 +97,7 @@
           <button class="primary-button"
                   @click="phoneSubmit">提交
           </button>
+          <router-link class="v-register" to="/register">申请免费试用</router-link>
         </div>
       </div>
       <div class="v-info">
@@ -434,11 +439,9 @@ export default {
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(
-      222deg,
-      rgba(255, 208, 33, 1) 0%,
-      rgba(255, 194, 0, 1) 100%
-    );
+    background: url('~assets/image/login_bg.png') no-repeat;
+    background-position: center center;
+    background-size: cover;
     position: relative;
     .v-logo {
       position: absolute;
@@ -448,9 +451,13 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 375px;
-      margin: 260px auto;
+      width: 600px;
+      // margin: 260px auto;
       text-align: center;
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      margin-left: -300px;
       .v-title {
         font-size: 36px;
         color: #222;
@@ -459,6 +466,10 @@ export default {
         font-size: 18px;
         color: #222;
         margin-top: 12px;
+      }
+      img {
+        width: 490px;
+        margin: 55px 0 0 -25px;
       }
     }
   }
@@ -479,6 +490,12 @@ export default {
       height: 44px;
       border-radius: 4px;
     }
+    .v-register {
+      font-size: 16px;
+      color: #666;
+      margin-top: 15px;
+      display: block;
+    }
     .v-content {
       width: 340px;
       position: absolute;
@@ -487,7 +504,7 @@ export default {
       bottom: 0;
       margin: auto 0 auto -170px;
       max-height: 475px;
-      text-aligun: left;
+      text-align: left;
       font-size: 22px;
     }
     .v-title {

@@ -117,7 +117,7 @@ export default {
       active: -1,
       host: process.env.IMGHOST + '/',
       uploadImgErrorMsg: '', // 上传图片错误提示
-      autoplay: true
+      autoplay: false
     }
   },
   methods: {
@@ -130,7 +130,7 @@ export default {
           content: '',
           img: '',
           link: '',
-          type: '',
+          type: 'top',
           target: '_self'
         }
         this.value.list.push(obj)
@@ -283,6 +283,7 @@ export default {
       position: relative;
     }
     i.arrow {
+      font-style: normal;
       top: 25px;
     }
     .del {

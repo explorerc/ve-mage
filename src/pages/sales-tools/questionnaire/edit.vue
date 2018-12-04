@@ -1,7 +1,11 @@
 <template>
-  <div class="v-questionaire">
+  <div class="v-questionaire"
+       @mousedown="canPaas = false">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
+      <com-back :url="`/salesTools/questionnaire/list/${activityId}`"></com-back>
+      <!-- <button class="v-back"
+              @click="back">返回</button> -->
     </div>
     <div class="content from-box">
       <div class="tt">
@@ -12,31 +16,41 @@
                 个人信息
               </p>
               <ul>
-                <li :class="{disabled:!base.name}" @click="addQuestion('name')">姓名</li>
-                <li :class="{disabled:!base.phone}" @click="addQuestion('phone')">手机号</li>
-                <li :class="{disabled:!base.email}" @click="addQuestion('email')">邮箱</li>
-                <li :class="{disabled:!base.sex}" @click="addQuestion('sex')">性别</li>
-                <li :class="{disabled:!base.birth}" @click="addQuestion('birth')">生日</li>
-                <li :class="{disabled:!base.area}" @click="addQuestion('area')">地域</li>
-                <li :class="{disabled:!base.industry}" @click="addQuestion('industry')">行业</li>
-                <li :class="{disabled:!base.position}" @click="addQuestion('position')">职位</li>
-                <li :class="{disabled:!base.edu}" @click="addQuestion('edu')">教育水平</li>
+                <li :class="{disabled:!base.name}"
+                    @click="addQuestion('name')"><i class="iconfont icon-xingming"></i>姓<span></span>名</li>
+                <li :class="{disabled:!base.phone}"
+                    @click="addQuestion('phone')"><i class="iconfont icon-shoujihao"></i>手机号</li>
+                <li :class="{disabled:!base.email}"
+                    @click="addQuestion('email')"><i class="iconfont icon-youjian"></i>邮<span></span>箱</li>
+                <li :class="{disabled:!base.sex}"
+                    @click="addQuestion('sex')"><i class="iconfont icon-xingbie"></i>性<span></span>别</li>
+                <li :class="{disabled:!base.birth}"
+                    @click="addQuestion('birth')"><i class="iconfont icon-shengri"></i>生<span></span>日</li>
+                <li :class="{disabled:!base.area}"
+                    @click="addQuestion('area')"><i class="iconfont icon-diyu"></i>地<span></span>域</li>
+                <li :class="{disabled:!base.industry}"
+                    @click="addQuestion('industry')"><i class="iconfont icon-hangye"></i>行<span></span>业</li>
+                <li :class="{disabled:!base.position}"
+                    @click="addQuestion('position')"><i class="iconfont icon-zhiye"></i>职<span></span>位</li>
+                <li :class="{disabled:!base.edu}"
+                    @click="addQuestion('edu')"><i class="iconfont icon-jiaoyushuiping"></i>教育水平</li>
               </ul>
             </div>
             <div class="v-selects">
-              <p class="v-title">
+              <p class="v-title" style="margin-top:20px;">
                 题型
               </p>
               <ul>
-                <li @click="addQuestion('radio')">单选题</li>
-                <li @click="addQuestion('checkbox')">多选题</li>
-                <li @click="addQuestion('select')">下拉题</li>
-                <li @click="addQuestion('text')">问答题</li>
+                <li @click="addQuestion('radio')"><i class="iconfont icon-danxuan"></i>单选题</li>
+                <li @click="addQuestion('checkbox')"><i class="iconfont icon-duoxuan"></i>多选题</li>
+                <li @click="addQuestion('select')"><i class="iconfont icon-xiala"></i>下拉题</li>
+                <li @click="addQuestion('text')"><i class="iconfont icon-wenda"></i>问答题</li>
               </ul>
             </div>
           </div>
         </div>
-        <div class="right">
+        <div class="right"
+             ref="contentBox">
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
@@ -45,14 +59,13 @@
                 </span>
                 问卷头图
               </span>
-              <ve-upload
-                    title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140"
-                    accept="png|jpg|jpeg|bmp"
-                    :fileSize="2048"
-                    :defaultImg="defaultImg"
-                    :errorMsg="error.uploadErrorMsg"
-                    @error="uploadError($event)"
-                    @success="uploadImgSuccess($event)">
+              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140"
+                         accept="png|jpg|jpeg|bmp"
+                         :fileSize="2048"
+                         :defaultImg="defaultImg"
+                         :errorMsg="error.uploadErrorMsg"
+                         @error="uploadError($event)"
+                         @success="uploadImgSuccess($event)">
               </ve-upload>
             </div>
             <div class="v-form">
@@ -63,11 +76,11 @@
                 问卷标题
               </span>
               <com-input placeholder="问卷标题"
-                     :max-length="30"
-                     class="q-title"
-                     :value.sync="title"
-                     :errorTips="error.titleError"
-                     @focus="focus('titleError')"></com-input>
+                         :max-length="30"
+                         class="q-title"
+                         :value.sync="title"
+                         :errorTips="error.titleError"
+                         @focus="focus('titleError')"></com-input>
             </div>
             <div class="v-form">
               <span class="v-title">
@@ -77,16 +90,17 @@
                 问卷简介
               </span>
               <com-input placeholder="问卷简介"
-                     :max-length="300"
-                     class="q-title"
-                     type="textarea"
-                     :value.sync="description"
-                     :errorTips="error.descriptionError"
-                     @focus="focus('descriptionError')"></com-input>
+                         :max-length="300"
+                         class="q-title"
+                         type="textarea"
+                         :value.sync="description"
+                         :errorTips="error.descriptionError"
+                         @focus="focus('descriptionError')"></com-input>
             </div>
           </div>
           <div class="rb">
-            <div class="v-question-info" :class="{hasPhone:hasPhone}">
+            <div class="v-question-info"
+                 :class="{hasPhone:hasPhone}">
               <draggable v-model="dragData"
                          :options="{handle:'.sort'}">
                 <com-question v-for="(item,index) in dragData"
@@ -106,7 +120,8 @@
                             :edit="true"
                             :ref="`comPhone`"
                             :index="dragData.length+1"
-                            :key="dragData.length+1" @remove="removePhone($event)">
+                            :key="dragData.length+1"
+                            @remove="removePhone($event)">
               </com-question>
             </div>
           </div>
@@ -114,10 +129,12 @@
       </div>
     </div>
     <div class="v-control clearfix">
-      <button class="v-save" @click="save">
+      <button class="v-save"
+              @click="save">
         保存
       </button>
-      <button class="v-view" @click="view">
+      <button class="v-view"
+              @click="view">
         预览
       </button>
     </div>
@@ -128,26 +145,33 @@
                  confirmText="确定"
                  type='prompt'
                  header='预览'>
-                <div class="box">
-                  <div class="text">预览</div>
-                </div>
-                <div class="v-content">
-                  <div class="v-hearder">
-                    <img v-if="defaultImg" :src="defaultImg" alt="">
-                    <p class="v-title">
-                      {{this.title}}
-                    </p>
-                    <p class="v-summary">
-                      {{this.description}}
-                    </p>
-                  </div>
-                  <questions :dragData="dragData" :phoneData="phoneData" :isView="true"></questions>
-                </div>
+      <div class="text">预览</div>
+      <div class="v-content">
+        <div class="v-hearder">
+          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}">
+
+          </div>
+          <!-- <img :src="defaultImg"
+               alt=""
+               v-if="defaultImg"
+               class="v-question-img"> -->
+          <p class="v-title">
+            {{this.title}}
+          </p>
+          <p class="v-summary">
+            {{this.description}}
+          </p>
+        </div>
+        <questions :dragData="dragData"
+                   :phoneData="phoneData"
+                   :isView="true"></questions>
+      </div>
     </message-box>
   </div>
 </template>
 
 <script>
+import EventBus from 'src/utils/eventBus'
 import draggable from 'vuedraggable'
 import question from 'components/questionnaire/wrap'
 import questions from '../questionnaire/components/questions'
@@ -189,10 +213,48 @@ export default {
       ],
       phoneData: [],
       saveResult: true,
+      canPaas: true,
       messageBoxViewShow: false // 预览框显示隐藏
     }
   },
   beforeDestroy () {
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPaas) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
+  },
+  created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '问卷列表',
+      url: `/salesTools/questionnaire/list/${this.activityId}`
+    }, {
+      title: '编辑问卷'
+    }])
   },
   mounted () {
     if (this.questionId && this.activityId) {
@@ -258,6 +320,10 @@ export default {
         })
       })
     },
+    // back () {
+    //   // window.history.go(-1)
+    //   this.$router.push(`/salesTools/questionnaire/list/${this.activityId}`)
+    // },
     removeQuestion (options) {
       if (options.type === 'phone') {
         this.phoneData.splice(0, 1)
@@ -302,7 +368,7 @@ export default {
             type: QTypes.TEXT,
             required: 'N',
             detail: {
-              max: 10
+              max: ''
             },
             ext: {
               name: '姓名',
@@ -341,7 +407,7 @@ export default {
             required: 'N',
             detail: {
               format: 'email',
-              max: 30
+              max: ''
             },
             ext: {
               name: '邮箱',
@@ -478,7 +544,7 @@ export default {
             type: QTypes.TEXT,
             required: 'N',
             detail: {
-              max: 10
+              max: ''
             },
             ext: {
               name: '职位',
@@ -532,6 +598,15 @@ export default {
               list: [
                 {
                   value: '选项'
+                },
+                {
+                  value: '选项'
+                },
+                {
+                  value: '选项'
+                },
+                {
+                  value: '选项'
                 }
               ]
             },
@@ -551,6 +626,12 @@ export default {
             required: 'N',
             detail: {
               list: [
+                {
+                  value: '选项'
+                },
+                {
+                  value: '选项'
+                },
                 {
                   value: '选项'
                 },
@@ -594,7 +675,7 @@ export default {
             type: QTypes.TEXT,
             required: 'N',
             detail: {
-              max: 300
+              max: ''
             },
             ext: {
               name: '问答题',
@@ -604,6 +685,7 @@ export default {
           this.dragData.push(obj)
           break
       }
+      this.$refs.contentBox.scrollTop = this.$refs.contentBox.scrollHeight
     },
     save () {
       let data = []
@@ -647,6 +729,7 @@ export default {
         if (this.questionId) {
           _data.naireId = this.questionId
           this.$config({ handlers: true }).$post(questionService.POST_QUESTION_UPDATE, _data).then((res) => {
+            this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
             this.saveResult = true
@@ -667,6 +750,7 @@ export default {
           })
         } else {
           this.$config({ handlers: true }).$post(questionService.POST_QUESTION_CREAT, _data).then((res) => {
+            this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
             this.saveResult = true
@@ -718,9 +802,18 @@ export default {
 .v-questionaire {
   overflow: hidden;
   padding-bottom: 30px;
-  margin: 0 auto;
+  margin: 30px auto;
   color: #222;
   position: relative;
+  height: 100%;
+  /deep/ {
+    .iconfont {
+      font-size: 18px;
+    }
+    .icon-shanchuxuanxiang {
+      font-size: 20px;
+    }
+  }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -768,22 +861,71 @@ export default {
     }
   }
   .v-questionaire-title {
+    position: relative;
     // border-bottom: 1px solid $color-bd;
+    margin-bottom: 30px;
     line-height: 60px;
     span.title {
       display: inline-block;
       font-size: 24px;
     }
+    .back-btn-all {
+      border-radius: 20px;
+      padding: 0px;
+      width:90px;
+    }
+    // button {
+    //   float: right;
+    //   width: 120px;
+    //   height: 40px;
+    //   border: 1px solid #4b5afe;
+    //   line-height: 38px;
+    //   border-radius: 20px;
+    //   background-color: #fff;
+    //   font-size: 14px;
+    //   color: #4b5afe;
+    //   text-align: center;
+    //   margin-top: 10px;
+    //   &.v-save {
+    //     border-color: #ffd021;
+    //     background-color: #ffd021;
+    //     color: #222;
+    //     margin: 10px 30px 0 10px;
+    //   }
+    //   // &.v-back {
+    //   //   cursor: pointer;
+    //   //   width: auto;
+    //   //   background-color: transparent;
+    //   //   height: 40px;
+    //   //   line-height: 38px;
+    //   //   border-radius: 20px;
+    //   //   border: none;
+    //   //   padding: 0 30px;
+    //   //   font-size: 14px;
+    //   //   color: #888888;
+    //   //   border: 1px solid #888888;
+    //   // }
+    //   &:hover {
+    //     background-color: #fdd43f;
+    //     border-color: #fdd43f;
+    //     color: #222;
+    //   }
+    //   &:active {
+    //     background-color: #eec11a;
+    //     border-color: #eec11a;
+    //     color: #222;
+    //   }
+    // }
   }
   .content {
-    widows: 800px;
-    min-height: 500px;
-    margin-bottom: 80px;
-    // overflow: hidden;
-    position: relative;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+    overflow: hidden;
     .tt {
-      overflow-y: hidden;
-      position: relative;
+      height: 100%;
     }
     .left {
       position: absolute;
@@ -800,37 +942,62 @@ export default {
         border: 1px solid #e2e2e2;
         background-color: #fff;
         border-radius: 4px;
-        padding: 32px 30px;
+        padding: 32px 34px;
         // overflow: hidden;
         .v-selects {
+          .v-title {
+            color: #222;
+            font-size: 20px;
+          }
           ul {
-            margin-top: 10px;
+            margin-top: 25px;
             overflow: hidden;
           }
           li {
-            width: 95px;
-            height: 38px;
-            margin-right: 32px;
+            width: 110px;
+            height: 34px;
+            margin-right: 10px;
             margin-bottom: 15px;
             float: left;
-            line-height: 38px;
-            text-align: center;
+            line-height: 33px;
+            text-align: left;
+            padding-left: 15px;
             border-radius: 4px;
-            border: 1px solid #dadada;
+            border: 1px solid rgba(214, 214, 214, 1);
             cursor: pointer;
+            &:hover {
+              border-color: #4b5afe;
+              background-color: #e9ebff;
+              color: #4b5afe;
+            }
             &:nth-child(2n) {
               margin-right: 0;
+            }
+            i {
+              display: inline-block;
+              margin-right: 5px;
+            }
+            span {
+              display: inline-block;
+              width: 17px;
+              height: 1px;
             }
           }
         }
       }
     }
     .right {
-      float: left;
-      padding-bottom: 2333px;
-      margin-bottom: -2333px;
-      width: 100%;
-      padding-left: 320px;
+      // float: left;
+      // padding-bottom: 2333px;
+      // margin-bottom: -2333px;
+      // width: 100%;
+      // padding-left: 320px;
+      position: absolute;
+      left: 320px;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      overflow: auto;
       .ru {
         border: 1px solid #e2e2e2;
         background-color: #fff;
@@ -845,8 +1012,11 @@ export default {
             vertical-align: top;
             display: inline-block;
             width: 95px;
+            font-size: 14px;
             .v-red {
               color: #fc5659;
+              position: relative;
+              top: 2px;
             }
           }
           .ve-upload-box,
@@ -906,33 +1076,52 @@ export default {
   .v-view /deep/ {
     color: #222;
     .ve-message-box {
+      padding-bottom: 0;
       .ve-message-box__header {
         background-color: rgba(0, 0, 0, 0);
         .prompt-title {
           display: none;
         }
       }
+      .ve-message-box__container {
+        padding-bottom: 0;
+        .single-select-wrap {
+          .question-content {
+            padding-bottom: 0;
+          }
+        }
+      }
       .ve-message-box__btns {
         display: none;
       }
+      .el-radio__input {
+        margin-top: 8px;
+      }
+      .el-checkbox__input {
+        margin-top: 7px;
+      }
+      .q-select-item.display {
+        margin-bottom: 0;
+        height: 30px;
+      }
     }
-    .box {
-      width: 145px;
-      height: 85px;
-      background-color: #ffd021;
-      color: #fff;
-      /* Rotate div */
-      transform: rotate(-45deg);
-      position: absolute;
-      left: -50px;
-      top: -50px;
-      z-index: 1;
-    }
+    // .box {
+    //   width: 145px;
+    //   height: 85px;
+    //   background-color: #ffd021;
+    //   color: #fff;
+    //   /* Rotate div */
+    //   transform: rotate(-45deg);
+    //   position: absolute;
+    //   left: -50px;
+    //   top: -50px;
+    //   z-index: 1;
+    // }
     .text {
       position: absolute;
-      bottom: 9px;
-      left: 33px;
-      font-size: 16px;
+      top: 20px;
+      left: 20px;
+      font-size: 18px;
     }
     .v-content {
       overflow: auto;
@@ -943,11 +1132,19 @@ export default {
       margin: 0 auto;
       padding: 20px 0 30px;
       border-bottom: 2px solid #ffd021;
-      img {
+      // img {
+      //   margin: 0 auto;
+      //   display: block;
+      //   max-width: 700px;
+      //   max-height: 140px;
+      // }
+      .v-question-img {
         margin: 0 auto;
         display: block;
-        max-width: 700px;
-        max-height: 140px;
+        width: 620px;
+        height: 124px;
+        background-position: center;
+        background-size: cover;
       }
       .v-title {
         max-width: 500px;

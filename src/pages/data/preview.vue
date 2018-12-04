@@ -6,12 +6,12 @@
           <div class="item-title fzc">
             <ve-title width="200px" title="微吼指数" tip="本场活动的综合效果，最高分100"></ve-title>
           </div>
-          <div class="item-mid fzc" style="height: 140px;position: relative;">
+          <div class="item-mid fzc" style="height: 130px;position: relative;">
             <span class="vhall-status" v-if="vhallRateData.value>=90">出色</span>
             <span class="vhall-status" v-else-if="vhallRateData.value>=80">不错</span>
             <span class="vhall-status" v-else-if="vhallRateData.value>=60">很好</span>
             <span class="vhall-status" v-else>加油</span>
-            <div style="height: 140px;margin-top: -8px;" id="chartVallId"></div>
+            <div style="height: 130px;margin-top: -8px;" id="chartVallId"></div>
           </div>
           <div class="item-bottom fzc">
             <span>环比
@@ -31,7 +31,7 @@
             <div class="item-title fzc">
               <ve-title width="300px" title="观众" tip="观众总数，用来衡量一场直播内容和吸引力的重要指标"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'观众得分='+activityScoreData.viewer+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'观众得分='+activityScoreData.viewer+'分（满分100分）'"
                        :value="activityScoreData.viewer"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
@@ -39,7 +39,7 @@
               <ve-title width="300px" title="观看时长"
                         tip="统计该场直播中所有观众的平均观看时长，反应观众在直播间内的平均停留时长。平均观看时长=所有观众观看时长之和/观众总数；注：观看时长包含直播和回放两部分。为了计算简便，系统假定回放"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'观看得分='+activityScoreData.watchDuration+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'观看得分='+activityScoreData.watchDuration+'分（满分100分）'"
                        :value="activityScoreData.watchDuration"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
@@ -47,21 +47,21 @@
               <ve-title width="300px" title="推广"
                         tip="衡量一场直播在前期宣传推广的触达效果。推广方式包括推广中心中的邮件、短信、微信三种方式。推广效果=最终成为观众人数/推广渠道触达人数"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'推广得分='+activityScoreData.extension+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'推广得分='+activityScoreData.extension+'分（满分100分）'"
                        :value="activityScoreData.extension"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
               <ve-title width="300px" title="传播" tip="衡量一场直播中，观众的自传播效果。展现观众在直播中分享拉新的效果"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'传播得分='+activityScoreData.spread+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'传播得分='+activityScoreData.spread+'分（满分100分）'"
                        :value="activityScoreData.spread"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
               <ve-title width="180px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数"></ve-title>
             </div>
-            <ve-circle style="margin-top: 10px;" d="120px" :tips="'互动得分='+activityScoreData.interact+'分（满分100分）'"
+            <ve-circle style="margin-top: 10px;" d="110px" :tips="'互动得分='+activityScoreData.interact+'分（满分100分）'"
                        :value="activityScoreData.interact"></ve-circle>
           </div>
         </div>
@@ -148,7 +148,7 @@
             <div class="item-title">
               <ve-title width="160px" title="平均观看时长" tip="观众观看直播的平均时间"></ve-title>
             </div>
-            <div class="item-mid">{{watchCoefficientData.watchTime.value}}</div>
+            <div class="item-mid">{{watchCoefficientData.watchTime.value|fmtTime}}</div>
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watchCoefficientData.watchTime.ratio < 0">▼</i>
@@ -224,8 +224,13 @@
         <p class="title">
           <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径"></ve-title>
         </p>
-        <div id="myChart" style="height: 500px;margin-bottom: 50px;">
-          <span v-if="tripNoneData" class="none-chart">暂无数据</span>
+        <div id="myChart" style="height: 500px;margin-bottom: 50px;" :class="{'v-nodata': tripNoneData}">
+          <span v-if="tripNoneData" class="none-chart">
+            <img src="../../assets/image/nodata@2x.png" alt="">
+            <p>
+              暂无数据
+            </p>
+          </span>
         </div>
       </div>
     </div>
@@ -233,223 +238,243 @@
 </template>
 
 <script>
-  import VeTitle from './ve-title'
-  import VeCircle from 'src/components/ve-circle'
-  import dataService from 'src/api/data-service'
-  import { sankey, pieOne } from 'src/utils/chart-tool'
+import VeTitle from './ve-title'
+import VeCircle from 'src/components/ve-circle'
+import dataService from 'src/api/data-service'
+import EventBus from 'src/utils/eventBus'
+import { sankey, pieOne } from 'src/utils/chart-tool'
 
-  export default {
-    name: 'preview',
-    components: { VeTitle, VeCircle },
-    data () {
-      return {
-        activityId: '',
-        vhallRateData: {
+export default {
+  name: 'preview',
+  components: { VeTitle, VeCircle },
+  data () {
+    return {
+      activityId: '',
+      vhallRateData: {
+        'value': 0,
+        'ratio': 0,
+        'average': 0
+      },
+      activityScoreData: {
+        'viewer': 0,
+        'watchDuration': 0,
+        'spread': 0,
+        'extension': 0,
+        'interact': 0
+      },
+      watcherCountData: {
+        'watch': {
           'value': 0,
           'ratio': 0,
           'average': 0
         },
-        activityScoreData: {
-          'viewer': 0,
-          'watchDuration': 0,
-          'spread': 0,
-          'extension': 0,
-          'interact': 0
+        'viewer': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
         },
-        watcherCountData: {
-          'watch': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'viewer': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'newUser': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'newGoodUser': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          }
+        'newUser': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
         },
-        watchCoefficientData: {
-          'watchTime': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'extension': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'spread': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          },
-          'interactint': {
-            'value': 0,
-            'ratio': 0,
-            'average': 0
-          }
+        'newGoodUser': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        }
+      },
+      watchCoefficientData: {
+        'watchTime': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
         },
-        tripNoneData: false
-      }
-    },
-    beforeDestroy () {
-      window.callbackResize = null
+        'extension': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        },
+        'spread': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        },
+        'interactint': {
+          'value': 0,
+          'ratio': 0,
+          'average': 0
+        }
+      },
+      tripNoneData: false
+    }
+  },
+  filters: {
+    fmtTime (value) {
+      let h = ((value / 3600 >> 0) + '').padStart(2, 0)
+      let m = ((value / 60 % 60 >> 0) + '').padStart(2, 0)
+      let s = ((value % 60 >> 0) + '').padStart(2, 0)
+      return `${h}:${m}:${s}`
+    }
+  },
+  beforeDestroy () {
+    window.callbackResize = null
+    if (this.userTrailChart) {
+      this.userTrailChart.dispose()
+    }
+  },
+  created () {
+    this.activityId = this.$route.params.id
+    this.initPage()
+    window.callbackResize = () => {
+      // 重新绘制
       if (this.userTrailChart) {
-        this.userTrailChart.dispose()
+        this.userTrailChart.resize()
       }
+    }
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '概览数据',
+      url: `/data/preview/${this.$route.params.id}`
+    }])
+  },
+  methods: {
+    initPage () {
+      // 用户观看统计
+      this.activityScore()
+      // 用户观看统计
+      this.watcherCount()
+      // 观看影响系数因子
+      this.watchCoefficient()
+      this.$nextTick(() => {
+        // 微吼指数
+        this.vhallRate()
+        // 用户旅途
+        this.renderChart()
+      })
     },
-    created () {
-      this.activityId = this.$route.params.id
-      this.initPage()
-      window.callbackResize = () => {
-        // 重新绘制
-        if (this.userTrailChart) {
-          this.userTrailChart.resize()
+    vhallRate () {
+      this.$get(dataService.GET_PREVIEW_COUNT, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.vhallRateData = res.data
+        } else {
+          this.vhallRateData = {
+            'value': 0,
+            'ratio': 0,
+            'average': 0
+          }
         }
-      }
+        pieOne('chartVallId', this.vhallRateData.value)
+      })
     },
-    methods: {
-      initPage () {
-        // 用户观看统计
-        this.activityScore()
-        // 用户观看统计
-        this.watcherCount()
-        // 观看影响系数因子
-        this.watchCoefficient()
-        this.$nextTick(() => {
-          // 微吼指数
-          this.vhallRate()
-          // 用户旅途
-          this.renderChart()
-        })
-      },
-      vhallRate () {
-        this.$get(dataService.GET_PREVIEW_COUNT, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.vhallRateData = res.data
+    activityScore () {
+      this.$get(dataService.GET_PREVIEW_SCORE, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.activityScoreData = res.data
+        }
+      })
+    },
+    watcherCount () {
+      this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.watcherCountData = res.data
+        }
+      })
+    },
+    watchCoefficient () {
+      this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200 && res.data.length !== 0) {
+          this.watchCoefficientData = res.data
+        }
+      })
+    },
+    renderChart () {
+      this.$get(dataService.GET_PREVIEW_USER_TRIP, {
+        activityId: this.activityId
+      }).then((res) => {
+        if (res.code === 200) {
+          if (res.data.length <= 0) {
+            this.tripNoneData = true
           } else {
-            this.vhallRateData = {
-              'value': 0,
-              'ratio': 0,
-              'average': 0
-            }
+            this.randerUserTrailChart(res.data)
           }
-          pieOne('chartVallId', this.vhallRateData.value)
-        })
-      },
-      activityScore () {
-        this.$get(dataService.GET_PREVIEW_SCORE, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.activityScoreData = res.data
-          }
-        })
-      },
-      watcherCount () {
-        this.$get(dataService.GET_PREVIEW_WATCHCOUNT, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.watcherCountData = res.data
-          }
-        })
-      },
-      watchCoefficient () {
-        this.$get(dataService.GET_PREVIEW_WATCHCOEFFICIENT, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200 && res.data.length !== 0) {
-            this.watchCoefficientData = res.data
-          }
-        })
-      },
-      renderChart () {
-        this.$get(dataService.GET_PREVIEW_USER_TRIP, {
-          activityId: this.activityId
-        }).then((res) => {
-          if (res.code === 200) {
-            if (res.data.length <= 0) {
-              this.tripNoneData = true
-            } else {
-              this.randerUserTrailChart(res.data)
-            }
-          }
-        })
-      },
-      /* 绘制用户旅途 */
-      randerUserTrailChart (data) {
-        if (data.sourceList && data.sourceList.length > 0) {
-          let keyDatas = []
-          let links = []
-          data.sourceList.forEach((item) => {
-            keyDatas.push({
-              name: item.source + '',
-              showName: item.sourceName,
-              value: item.value
-            })
-          })
-          data.sourceLinks.forEach((item) => {
-            links.push({
-              source: item.source + '',
-              sourceName: item.sourceName,
-              target: item.target + '',
-              targetName: item.targetName,
-              value: item.value
-            })
-          })
-          this.$nextTick(() => {
-            this.userTrailChart = sankey('myChart', {
-              data: keyDatas,
-              links: links
-            })
-          })
         }
+      })
+    },
+    /* 绘制用户旅途 */
+    randerUserTrailChart (data) {
+      if (data.sourceList && data.sourceList.length > 0) {
+        let keyDatas = []
+        let links = []
+        data.sourceList.forEach((item) => {
+          keyDatas.push({
+            name: item.source + '',
+            showName: item.sourceName,
+            value: item.value
+          })
+        })
+        data.sourceLinks.forEach((item) => {
+          links.push({
+            source: item.source + '',
+            sourceName: item.sourceName,
+            target: item.target + '',
+            targetName: item.targetName,
+            value: item.value
+          })
+        })
+        this.$nextTick(() => {
+          this.userTrailChart = sankey('myChart', {
+            data: keyDatas,
+            links: links
+          })
+        })
       }
     }
   }
+}
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
 <style lang="scss" scoped>
-  .preview {
-    .item-container {
-      .vhall-item /deep/ {
-        height: 180px;
-        width: 300px;
-        .item-mid {
-          position: relative;
-          height: 90px;
-          line-height: 80px;
-          .vhall-status{
-            position: absolute;
-            top: 62%;
-            left: 50%;
-            transform: translateX(-50%);
-          }
-        }
-        .ve-title {
-          padding: 10px 0;
+.preview {
+  .item-container {
+    .vhall-item /deep/ {
+      height: 180px;
+      width: 300px;
+      .item-mid {
+        position: relative;
+        height: 90px;
+        line-height: 80px;
+        .vhall-status {
+          position: absolute;
+          top: 62%;
+          left: 50%;
+          transform: translateX(-50%);
         }
       }
-      .spread {
-        margin-left: 20px;
-        height: 180px;
-        width: calc(100% - 320px);
+      .ve-title {
+        padding: 10px 0;
       }
     }
+    .spread {
+      margin-left: 20px;
+      height: 180px;
+      width: calc(100% - 320px);
+    }
   }
-
+}
 </style>

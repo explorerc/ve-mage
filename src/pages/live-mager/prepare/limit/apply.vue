@@ -1,12 +1,15 @@
 <template>
   <div class="apply-page live-mager" @mousedown="canPaas = false">
-    <div class="live-title">
+    <div class="live-title" style="border:none;">
       <span class="title">活动报名</span>
       <el-switch
         v-model="isOpen"
         inactive-color="#DEE1FF"
-        active-color="#4B5AFE" @change='openSwitch'>
+        :width="32"
+        active-color="#FFD021"
+        @change='openSwitch'>
       </el-switch>
+      <com-back :class='"back-btn"'></com-back>
       <div class="right-box">
         <span>最多可添加 <i>5</i> 条信息</span>
         <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 || !isOpen ? true : false">添加信息</button>
@@ -89,6 +92,7 @@
   // import prepareHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import veTips from 'src/components/ve-msg-tips'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -154,6 +158,17 @@
       ]
       this.quesData = [
       ]
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.activityId}`
+      }, {
+        title: '活动报名'
+      }])
     },
     methods: {
       removeItem (idx) {
@@ -165,23 +180,36 @@
         this.canPaas = false
         switch (res) {
           case 'select':
-            this.quesData[idx]['detail']['list'].push({value: ''})
+            if (this.quesData[idx]['detail']['list']) {
+              this.quesData[idx]['detail']['list'].push({value: ''})
+            } else {
+              Object.assign(this.quesData[idx]['detail'], {'list': [
+                {value: ''}
+              ]})
+            }
             this.quesData[idx]['title'] = '下拉选择'
             this.quesData[idx]['type'] = 'select'
+            this.quesData[idx]['placeholder'] = '请选择下拉选项'
             break
           case 'integer':
             this.quesData[idx]['detail']['format'] = 'integer'
             this.quesData[idx]['title'] = '数字'
+            this.quesData[idx]['placeholder'] = '请输入数字'
             break
           case 'email':
             this.quesData[idx]['detail']['format'] = 'email'
             this.quesData[idx]['title'] = '邮箱'
+            this.quesData[idx]['placeholder'] = '请输入邮箱'
             break
           case 'text':
+            this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '文本'
+            this.quesData[idx]['placeholder'] = '请输入文本'
             break
           case 'name':
+            this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '姓名'
+            this.quesData[idx]['placeholder'] = '请输入姓名'
             break
         }
       },
@@ -334,7 +362,7 @@
             if (ref) {
               let obj = {
                 title: '手机号码',
-                placeholder: '',
+                placeholder: '请输入手机号码',
                 place: '请输入手机号码',
                 label: '手机号码',
                 type: 'text',
@@ -437,8 +465,13 @@
 <style lang="scss" scoped src="../../css/live.scss">
 </style>
 <style lang="scss">
-.apply-page .el-select .el-input__inner {
-  border: 1px solid #e2d2d2;
+.apply-page .el-select {
+  .el-input {
+    margin-top: 3px;
+  }
+  .el-input__inner {
+    border: 1px solid #e2d2d2;
+  }
 }
 .el-input.is-disabled .el-input__inner {
   background-color: #fff;
@@ -451,6 +484,13 @@
 </style>
 <style lang='scss' scoped>
 @import 'assets/css/mixin.scss';
+.back-btn {
+  padding: 0 !important;
+  width: 118px !important;
+  height: 40px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
 .live-title {
   .right-box {
     float: right;
@@ -501,13 +541,19 @@
       width: 470px;
       text-align: left;
       margin: 20px 0px;
-      padding-left: 40px;
+      padding-left: 16px;
       margin-right: 20px;
       &.spe {
         width: 450px;
       }
       &.handle {
         width: 100px;
+      }
+      &:nth-of-type(2) {
+        padding-left: 12px;
+      }
+      &:nth-of-type(3) {
+        padding-left: 35px;
       }
     }
   }
@@ -623,9 +669,6 @@
   }
 }
 
-.apply-page > div {
-  margin: 30px 0px;
-}
 .primary-button {
   padding: 0px;
   width: 200px;
@@ -646,6 +689,13 @@
   .set-content .table-content .inp,
   .set-content .table-content > li > div {
     width: 240px;
+  }
+  .set-content .table-title li:nth-of-type(2) {
+    padding-left: 81px;
+  }
+  .set-content .table-title li:nth-of-type(3) {
+    width: 260px;
+    padding-left: 179px;
   }
 }
 </style>

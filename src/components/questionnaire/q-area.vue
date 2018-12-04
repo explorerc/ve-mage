@@ -1,10 +1,10 @@
 <template>
   <div class="q-edit-content">
     <div class="q-edit-select">
-      <el-select v-model="value.province"
+      <el-select v-model="provinceValue"
                  @change="changeProvince"
                  @focus="focusProvince"
-                 placeholder="省/自治区/直辖市">
+                 placeholder="请选择省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
                    :label="item.label"
                    :value="item.value"
@@ -13,10 +13,10 @@
       </el-select>
     </div>
     <div class="q-edit-select">
-      <el-select v-model="value.city"
+      <el-select v-model="cityValue"
                  @change="changeCity"
                  @focus="focusCity"
-                 placeholder="市">
+                 placeholder="请选择所在城市">
         <el-option v-for="(item,index) in cities"
                    :label="item.label"
                    :value="item.value"
@@ -26,11 +26,11 @@
 
     </div>
     <div v-if="edit||(!edit&&(this.value.detail.level === 'county' || this.value.detail.level === 'address'))"
-         class="q-edit-select">
-      <el-select v-model="value.county"
-                 @change="changeCounty"
+         class="q-edit-select"
+         :class="{'v-disabled': conntyDisabled}">
+      <el-select v-model="countyValue"
                  @focus="focusCounty"
-                 placeholder="区/县">
+                 placeholder="请选择区/县">
         <el-option v-for="(item,index) in counties"
                    :label="item.label"
                    :value="item.value"
@@ -42,8 +42,9 @@
             class="remove">{{getCountyState}}</span>
     </div>
     <div v-if="edit||(!edit&&this.value.detail.level === 'address')"
-         class="q-edit-select">
-      <com-input placeholder="详细地址"
+         class="q-edit-select"
+         :class="{'v-disabled': addressDisabled}">
+      <com-input placeholder="请输入详细地址"
                  :disabled="edit"
                  v-model="value.address"
                  @focus="focusAddress"
@@ -86,7 +87,12 @@ export default {
       provinces: [],
       cities: [],
       counties: [],
-      errorTip: ''
+      errorTip: '',
+      provinceValue: '',
+      cityValue: '',
+      countyValue: '',
+      conntyDisabled: false,
+      addressDisabled: false
     }
   },
   mounted () {
@@ -107,6 +113,8 @@ export default {
     },
     changeProvince (value) {
       this.cities = this.area.cities[value]
+      this.cityValue = ''
+      this.countyValue = ''
     },
     focusProvince () {
       this.errorTip = ''
@@ -120,6 +128,7 @@ export default {
     },
     changeCity (value) {
       this.counties = this.area.counties[value]
+      this.countyValue = ''
     },
     focusCity () {
       this.errorTip = ''
@@ -130,9 +139,6 @@ export default {
           this.errorTip = '此项为必填项'
         }
       }, 300)
-    },
-    changeCounty () {
-
     },
     focusCounty () {
       this.errorTip = ''
@@ -186,16 +192,20 @@ export default {
   computed: {
     getCountyState () {
       if (this.value.detail.level === 'county' || this.value.detail.level === 'address') {
-        return '隐'
+        this.conntyDisabled = false
+        return '隐藏'
       } else {
-        return '显'
+        this.conntyDisabled = true
+        return '开启'
       }
     },
     getAddressState () {
       if (this.value.detail.level === 'address') {
-        return '隐'
+        this.addressDisabled = false
+        return '隐藏'
       } else {
-        return '显'
+        this.addressDisabled = true
+        return '开启'
       }
     }
   }
@@ -204,28 +214,46 @@ export default {
 
 <style scoped lang="scss">
 .q-edit-content {
-  margin-bottom: 30px;
-  .q-edit-select {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    .el-select {
-      width: 93%;
-    }
-    .com-input {
-      width: 93%;
-    }
-    .remove {
-      cursor: pointer;
-      font-size: 12px;
-      margin-left: 10px;
-    }
-  }
-
-  &.display {
-    margin-bottom: 0;
-  }
   /deep/ {
+    margin-bottom: 20px;
+    .q-edit-select {
+      display: block;
+      width: 100%;
+      margin-bottom: 14px;
+      &.v-disabled {
+        .com-input {
+          input {
+            background-color: #f5f5f5;
+            color: #bbb;
+            border-color: #f5f5f5;
+          }
+        }
+        .el-input__inner {
+          background-color: #f5f5f5;
+          color: #bbb;
+          border-color: #f5f5f5;
+        }
+      }
+      .el-select {
+        width: 93%;
+        .el-input__inner {
+          padding-left: 10px !important;
+        }
+      }
+      .com-input {
+        width: 93%;
+      }
+      .remove {
+        cursor: pointer;
+        font-size: 12px;
+        margin-left: 10px;
+      }
+    }
+
+    &.display {
+      margin-bottom: 0;
+    }
+
     .error-msg {
       position: absolute;
       color: #fc5659;

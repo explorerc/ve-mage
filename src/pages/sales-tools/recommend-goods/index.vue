@@ -2,13 +2,13 @@
   <div id="goods-list">
     <header>
       <p>商品推荐</p>
-      <div v-if="tableData.length>=1">
-        <el-button @click="check" round :disabled="!isShowlive">查看活动数据</el-button>
-        <el-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
+      <com-back :url="`/liveMager/detail/${activity_id}`"></com-back>
+      <div v-if="tableData.length>=1" class='btn-box'>
+        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看活动数据</com-button>
+        <com-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
-        </el-button>
+        </com-button>
       </div>
-
     </header>
     <div class="table-box" v-if="tableData.length>=1">
       <table border="1">
@@ -24,16 +24,21 @@
         </thead>
         <draggable element="tbody" v-model="tableData" :options="{handle:'.item'}">
           <tr v-for="(row,ind) in tableData" :key="ind">
-            <td>{{row.number<10?`0${row.number}`:row.number}}</td>
+            <td>{{ind<10?`0${ind+1}`:ind+1}}</td>
             <td>
-              <img :src="row.image ? `${$imgHost}/${row.image[0].name}` :require('assets/image/avatar@2x.png')" alt="">
+              <div class="cover_img" :style="{backgroundImage:`url(${$imgHost}/${row.image[0].name})`}">
+                <!---->
+                <!-- <img
+                   :src="row.image ? `${$imgHost}/${row.image[0].name}?x-oss-process=image/resize,m_pad,h_60,w_60` :require('assets/image/avatar@2x.png' "
+                   alt="">-->
+              </div>
             </td>
             <td>{{row.title}}</td>
             <td>
-              <del v-show="row.preferential !== '0.00'">￥{{row.price === '0.00'?'免费':row.price}}</del>
-              <span v-show="row.preferential === '0.00'">￥{{row.price === '0.00'?'免费':row.price}}</span>
+              <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
+              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
             </td>
-            <td class="dis-prices">￥{{row.price === '0.00'?'免费':row.preferential}}</td>
+            <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td>
               <div>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
@@ -59,12 +64,25 @@
 <script>
   import draggable from 'vuedraggable'
   import goodsServer from 'src/api/salesGoods-service'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     components: { draggable },
     created () {
       this.getList()
       this.isShowLiveData()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.activity_id}`
+      }, {
+        title: '商品列表',
+        url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
+      }])
     },
     data () {
       return {
@@ -110,7 +128,7 @@
       },
       check () {
         if (this.isShowlive) {
-          this.$router.push(`/data/live/${this.activity_id}`)
+          this.$router.push(`/data/live/${this.activity_id}#tools`)
         }
       },
       isShowLiveData () {
@@ -152,10 +170,10 @@
           confirmText: '删除',
           handleClick: (e) => {
             if (e.action === 'cancel') {
-              this.$toast({
-                content: '已取消删除',
-                position: 'center'
-              })
+              /*  this.$toast({
+                  content: '已取消删除',
+                  position: 'center'
+                }) */
             } else if (e.action === 'confirm') {
               this.$post(goodsServer.GOODS_DELETE, { goods_id: row.goods_id })
                 .then(res => {
@@ -176,99 +194,156 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  #goods-list {
-    font-family: PingFangSC-Regular;
-    padding: 40px 100px;
-    /deep/ {
-      header {
-        overflow: hidden;
-        text-align: right;
-        p {
-          float: left;
-          height: 26px;
-          font-size: 24px;
-          font-weight: 400;
-          color: rgba(34, 34, 34, 1);
-          line-height: 26px;
-        }
+#goods-list {
+  font-family: PingFangSC-Regular;
+  padding: 34px 100px;
+  /deep/ {
+    header {
+      position: relative;
+      overflow: hidden;
+      text-align: right;
+      height: 40px;
+      margin-bottom: 25px;
+      p {
+        float: left;
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 52px;
       }
-      .table-box {
-        margin-top: 22px;
-        padding: 30px;
-        border: 1px dashed #cccccc;
-        background-color: white;
-        table thead tr th, table tbody tr td {
-          border-color: #ebeef5;
-          font-size: 14px
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          border: none;
-          thead, tbody {
-            height: 47px;
-            line-height: 47px;
-            th, td {
-              color: #222222;
-              padding-left: 10px;
-              font-weight: 400;
-              &:nth-of-type(1) {
-                width: 5%;
-              }
-              &:nth-of-type(2) {
-                width: 10%;
-              }
-              &:nth-of-type(3) {
-                width: 20%;
-              }
-              &:nth-of-type(4), &:nth-of-type(5) {
-                width: 15%;
-              }
-              &:nth-of-type(6) {
-                width: 25%;
-                span {
-                  color: #2878FF;
+      .default-button,
+      .primary-button {
+        transition: unset;
+        height: 30px;
+        line-height: 30px;
+      }
+      .btn-box {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 97px;
+      }
+    }
+    .table-box {
+      margin-top: 22px;
+      padding: 30px;
+      border: 1px solid #e2e2e2;
+      border-radius: 4px;
+      background-color: white;
+      min-height: 550px;
+      table thead tr th,
+      table tbody tr td {
+        border-color: #ebeef5;
+        font-size: 14px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border: none;
+        thead,
+        tbody {
+          height: 47px;
+          line-height: 47px;
+          th {
+            border-top-color: transparent !important;
+            background-color: #f6f6f6;
+          }
+          th,
+          td {
+            color: #222222;
+            padding-left: 10px;
+            font-weight: 400;
+            border-right-color: transparent !important;
+            border-left-color: transparent !important;
+            &:nth-of-type(1) {
+              width: 5%;
+            }
+            &:nth-of-type(2) {
+              width: 10%;
+            }
+            &:nth-of-type(3) {
+              width: 20%;
+            }
+            &:nth-of-type(4),
+            &:nth-of-type(5) {
+              width: 15%;
+            }
+            &:nth-of-type(6) {
+              width: 25%;
+              button {
+                color: #222222;
+                &:hover {
+                  color: #2878ff;
                 }
               }
+            }
+            .cover_img {
+              margin: 10px auto 10px 0;
+              background: no-repeat center;
+              background-size: contain;
+              width: 60px;
+              height: 60px;
               img {
                 width: 60px;
                 height: 60px;
-                margin: 10px auto 10px 0;
-                vertical-align: middle;
               }
             }
-            td.dis-prices {
-              color: #FC5659;
-            }
-            tr:hover {
-              background-color: #f5f7fa;
-            }
+          }
+          td.dis-prices {
+            color: #fc5659;
+          }
+          /*  tr {
+              display: table;
+              width: 100%;
+              table-layout: fixed;
+            }*/
+          tr:hover {
+            background-color: #f5f7fa;
           }
         }
+        /* thead {
+            width: calc(100% - 100px);
+          }
+          tbody {
+            display: block;
+            height: 550px;
+            overflow-y: scroll;
+          }*/
       }
+    }
 
-      .no-goods {
-        text-align: center;
-        img {
-          width: 180px;
-          height: 180px;
-          margin: 84px auto 40px auto;
-        }
-        p:nth-of-type(1) {
-          font-size: 16px;
-          font-weight: 400;
-          color: rgba(34, 34, 34, 1);
-          line-height: 22px;
-        }
-        p:nth-of-type(2) {
-          font-size: 14px;
-          font-weight: 400;
-          color: rgba(85, 85, 85, 1);
-          margin: 10px auto 30px auto;
+    .no-goods {
+      text-align: center;
+      background-color: #ffffff;
+      border-radius: 4px;
+      border: 1px solid #e2e2e2;
+      img {
+        width: 150px;
+        height: 150px;
+        margin: 84px auto 40px auto;
+      }
+      p:nth-of-type(1) {
+        font-size: 16px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 22px;
+      }
+      p:nth-of-type(2) {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(85, 85, 85, 1);
+        margin: 10px auto 30px auto;
+      }
+      button {
+        margin-bottom: 90px;
+        span {
+          margin: auto 40px;
         }
       }
     }
   }
+}
 </style>

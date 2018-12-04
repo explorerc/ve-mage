@@ -1,7 +1,8 @@
 <template>
   <div class="clearfix set-live-watch-container">
     <p class="v-title">
-      直播观看页
+      观看页
+      <com-back></com-back>
     </p>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
@@ -44,7 +45,7 @@
               <div class="v-pc"
                    :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
                 <div class="clearfix"
-                     style="padding-left: 30px;">
+                     style="padding-left: 30px;position:relative;">
                   <template v-if="defaultLogoImg">
                     <img :src="defaultLogoImg"
                          alt="logo"
@@ -179,6 +180,7 @@ import userService from 'src/api/user-service'
 import activityService from 'src/api/activity-service'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 
 export default {
   data () {
@@ -208,6 +210,17 @@ export default {
   },
   created () {
     this.activityId = this.$route.params.id
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '观看页'
+    }])
     let data = {
       'activityId': this.activityId
     }
@@ -301,7 +314,6 @@ export default {
       this.bgImgUrl = data.name
     },
     uploadBgError (data) {
-      debugger
       this.uploadBgErrorMsg = data.msg
       this.bgImgUrl = ''
     },
@@ -330,7 +342,8 @@ export default {
       this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
         this.$toast({
-          content: '保存成功'
+          content: '保存成功',
+          position: 'center'
         })
       }).catch((err) => {
         this.$messageBox({
@@ -404,6 +417,7 @@ export default {
   }
   margin: 0 auto;
   .v-title {
+    position: relative;
     line-height: 60px;
     margin: 30px 0;
     font-size: 24px;
@@ -468,6 +482,7 @@ export default {
     }
     .ve-upload-box {
       width: 330px;
+      height: 160px;
       .upload-file-box {
         width: 290px;
         span {
@@ -499,13 +514,19 @@ export default {
       display: block;
       width: 27px;
       height: 13px;
-      margin: 3px 6px 0 0;
+      margin-right: 6px;
+      position: relative;
+      top: -50%;
+      left: 0;
+      transform: translateY(50%);
     }
     .v-live-title {
       font-size: 16px;
       transform: scale(0.5);
       transform-origin: top left;
       color: #333;
+      max-height: 22px;
+      width: 247px;
     }
     .v-pc-icon {
       display: block;

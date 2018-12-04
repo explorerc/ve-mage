@@ -100,8 +100,8 @@ export default {
   min-width: 1366px;
   .edit {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 3px;
+    right: 3px;
     width: auto;
     height: 16px;
     display: none;
@@ -110,11 +110,17 @@ export default {
     i {
       cursor: pointer;
       display: inline-block;
-      background-color: red;
-      padding: 2px;
-      font-size: 16px;
+      background-color: #ffd021;
+      width: 32px;
+      height: 32px;
+      background-image: url('~assets/image/site/edit.svg');
+      background-size: 32px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 2px;
       &:first-child {
-        margin-right: 1px;
+        margin-right: 2px;
+        background-image: url('~assets/image/site/del_edit.svg');
       }
     }
   }
@@ -195,6 +201,15 @@ export default {
                 }
               }
             }
+            &:before {
+              content: '';
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              background: rgba(0, 0, 0, 0.3);
+            }
           }
           .left-area {
             width: 400px;
@@ -203,7 +218,7 @@ export default {
           }
           img {
             width: 100%;
-            height: auto;
+            height: 100%;
           }
         }
       }
@@ -229,9 +244,19 @@ export default {
       position: relative;
       .block1-item {
         max-width: 1280px;
+        margin: 0;
+        margin-bottom: 10px;
         &.left {
           .content {
             padding-right: 510px;
+          }
+        }
+        &.right {
+          .img {
+            float: left;
+          }
+          .content {
+            padding-left: 510px;
           }
         }
         img {

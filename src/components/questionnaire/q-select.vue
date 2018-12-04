@@ -6,7 +6,7 @@
          class="q-select-item"
          :label="index"
          :key="index">
-      <span class="select-icon">√</span>
+      <span class="select-icon"><i class="iconfont icon-wenjuan_xialatixialajiantou-"></i></span>
       <div class="select-input">
         <com-input v-model="item.value"
                    :class="{error:item.error}"
@@ -15,7 +15,7 @@
                    :max-length="value.ext.fixedness?0:30"></com-input>
         <span class="remove"
               v-if="value.detail.list.length>1&&!value.ext.fixedness"
-              @click="delItem(index)">删</span>
+              @click="delItem(index)"><i class="iconfont icon-shanchuxuanxiang"></i></span>
       </div>
     </div>
     <el-select v-if="!edit"
@@ -24,7 +24,7 @@
                placeholder="请选择">
       <el-option v-for="(item,index) in value.detail.list"
                  :label="item.value"
-                 :value="item.id"
+                 :value="index"
                  :key="index">
       </el-option>
     </el-select>
@@ -116,7 +116,10 @@ export default {
       height: 40px;
       .select-icon {
         display: inline-block;
-        margin-top: 8px;
+        margin-top: 14px;
+        .iconfont {
+          font-size: 9px;
+        }
       }
       .select-input {
         left: 20px;

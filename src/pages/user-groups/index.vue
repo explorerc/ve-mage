@@ -22,7 +22,6 @@
     </div>
     <div class="table-box">
       <el-table :data="tableData"
-                border
                 class="el-table">
         <el-table-column label="群组名称">
           <template slot-scope="scope">
@@ -81,10 +80,11 @@
     <message-box v-if="isShow"
                  :header="dialogTitle"
                  width="590px"
+                 class="massage-style"
                  type="prompt"
                  confirmText='保存'
                  @handleClick="saveHandleClick">
-      <div class="prop-input">
+      <div>
         <div>
           <el-form :model="Group"
                    :rules="rules"
@@ -114,6 +114,7 @@
                         @optionData="optionData"
                         :rule="Group.rule"
                         :type="isAddOrEdit"></condOption>
+
           </div>
         </div>
       </div>
@@ -126,12 +127,18 @@
   import groupService from 'src/api/user_group'
   import VePagination from 'src/components/ve-pagination'
   import condOption from 'src/pages/user-groups/cond-option'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'index',
     components: { VePagination, condOption },
     created () {
       this.onSearch()
+      EventBus.$emit('breads', [{
+        title: '用户管理'
+      }, {
+        title: '用户群组'
+      }])
     },
     filters: {
       getType (val) {
@@ -265,7 +272,7 @@
           header: '删除群组',
           type: 'error',
           width: '450px',
-          content: '<span>删除群组后，组内人员将不再归属于该组。</br> 是否确认删除群组？</span> ',
+          content: '删除群组后，组内人员将不再归属于该组。是否确认删除群组？ ',
           cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
           confirmText: '删除',
           handleClick: (e) => {
@@ -399,94 +406,122 @@
   }
 </script>
 
-<style lang="scss" scoped>
-  #userGroups {
-    font-family: PingFangSC-Regular;
-    padding: 40px 100px;
-    /deep/ {
-      header {
-        height: 40px;
-        width: 100%;
-        line-height: 40px;
-        padding-left: 20px;
+<style lang="scss">
+#userGroups {
+  font-family: PingFangSC-Regular;
+  /*padding: 40px 100px;*/
+  margin: 50px auto;
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  /deep/ {
+    header {
+      height: 40px;
+      width: 100%;
+      line-height: 40px;
+      padding-left: 20px;
+      display: inline-block;
+      background: #cccccc;
+    }
+    .operation {
+      overflow: hidden;
+      h4 {
         display: inline-block;
-        background: #cccccc;
+        height: 26px;
+        color: rgba(34, 34, 34, 1);
+        line-height: 26px;
+        font-size: 24px;
+        float: left;
+        font-weight: 400;
       }
-      .operation {
-        overflow: hidden;
-        h4 {
-          display: inline-block;
-          height: 26px;
-          color: rgba(34, 34, 34, 1);
-          line-height: 26px;
-          font-size: 24px;
+      div {
+        float: right;
+        .el-input {
           float: left;
-          font-weight: 400;
-        }
-        div {
-          float: right;
-          .el-input {
-            float: left;
-            width: 220px;
+          width: 220px;
+          height: 34px;
+          margin-right: 20px;
+          .el-input__inner {
             height: 34px;
-            margin-right: 20px;
-            .el-input__inner {
-              border-radius: 20px;
-              border-color: rgba(136, 136, 136, 1);
-              &:hover {
-                border-color: #5d6afe;
-              }
+            line-height: 34px;
+            border-radius: 20px;
+            &:hover,&:focus {
+              border-color: #888888;
             }
           }
-          .el-button {
-            color: rgba(85, 85, 85, 1);
-            width: 120px;
-            height: 34px;
-            border-radius: 16px;
-            border: 1px solid rgba(136, 136, 136, 1);
+        }
+        .el-button {
+          color: #555555;
+          width: 120px;
+          height: 34px;
+          border-radius: 16px;
+          border: 1px solid #888888;
+          &:hover,&:focus {
+            background-color:#ffd021 ;
+            border-color: #ffd021;
+            color: black;
           }
         }
-      }
-      .table-box {
-        margin-top: 22px;
-        padding: 30px;
-        border: 1px dashed #cccccc;
-        .el-table {
-          .btns {
-            color: rgba(34, 34, 34, 1);
-            &:hover {
-              color: rgba(75, 90, 254, 1);
-            }
-          }
-          .default:after {
-            content: '默认';
-            color: #4b5afe;
-            height: 17px;
-            font-size: 10px;
-            padding: 0 3px;
-            border: 1px solid #4b5afe;
-          }
-        }
-        .VePagination {
-          text-align: center;
-          margin-top: 20px;
-        }
-      }
-      .input_s {
-        width: 100%;
       }
     }
-  }
+    .table-box {
+      margin-top: 22px;
+      padding: 30px;
+      border: 1px solid #E2E2E2;
+      background-color: white;
+      border-radius: 4px;
+      .el-table /deep/{
+        tbody {
+          .el-table__row .cell{
+            color: #222222!important;
+          }
 
-  .userGroupDelConfirm {
-    border: none;
-    .el-message-box__header {
-      border-top: 6px solid #fc5659;
+        }
+        .btns {
+          color: rgba(34, 34, 34, 1);
+          &:hover {
+            color: rgba(75, 90, 254, 1);
+          }
+        }
+        .default:after {
+          content: '默认';
+          color: #4b5afe;
+          height: 17px;
+          font-size: 10px;
+          padding: 0 3px;
+          border: 1px solid #4b5afe;
+        }
+      }
+      .VePagination {
+        text-align: center;
+        margin-top: 20px;
+      }
     }
-    .userGroupDelConfirmBtn {
-      width: 120px;
-      background-color: #fc5659;
-      color: #222;
+    .input_s {
+      width: 100%;
     }
   }
+}
+.massage-style{
+  .el-form .el-form-item:first-child {
+    margin-top: 14px;
+  }
+}
+
+.userGroupDelConfirm {
+  border: none;
+  .el-message-box__header {
+    border-top: 6px solid #fc5659;
+  }
+  .userGroupDelConfirmBtn {
+    width: 120px;
+    background-color: #fc5659;
+    color: #222;
+  }
+}
 </style>

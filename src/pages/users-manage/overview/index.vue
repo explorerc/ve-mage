@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-      <span class="title">总览</span>
+      <span class="title">用户总览</span>
     </div>
     <div class="content from-box">
       <ol class="clearfix">
@@ -145,6 +145,7 @@ import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
 import groupService from 'src/api/user_group'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -174,12 +175,21 @@ export default {
     }
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户总览'
+    }])
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
       for (let i = 0; i < arr.length; i++) {
         this.uersInfo[i].val = arr[i]
-        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+        if (this.info.total > 0) {
+          this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+        } else {
+          this.uersInfo[i].centage = 0
+        }
       }
     }).catch(err => {
       this.$messageBox({
@@ -317,6 +327,7 @@ export default {
     span.title {
       display: inline-block;
       font-size: 24px;
+      padding-top: 32px;
     }
   }
   .content /deep/ {

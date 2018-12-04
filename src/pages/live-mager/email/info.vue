@@ -2,6 +2,7 @@
   <div class="live-mager edit-step-box">
     <div class="live-title">
       <span class="title">查看邮件</span>
+      <com-back :class='"back-btn"'></com-back>
     </div>
     <div class="tip-box">
       通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
@@ -21,12 +22,12 @@
           <div class="from-content receiver" >
             <template v-if="selectedGroupList.length || selectedTagList.length">
               <div >
-                <span v-for='(item,idx) in selectedGroupList'>{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></span>
+                <span v-for='(item,idx) in selectedGroupList'>{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></span>
               </div>
               <div>
-                <span v-for='(item,idx) in selectedTagList'>{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></span>（合计{{email.sendCount}}人）
+                <span v-for='(item,idx) in selectedTagList'>{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></span>（合计{{email.expectNum}}人）
               </div>
-              <el-button  class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
+              <el-button  class='send-detail default-button' @click='sendDetail = true' v-if="email.status=='SEND'">发送详情</el-button>
             </template>
             <template v-else>
               暂未选择
@@ -93,6 +94,7 @@ import activityService from 'src/api/activity-service'
 import { mapState, mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
 import comDetail from 'src/pages/live-mager/promote/com-detail'
+import EventBus from 'src/utils/eventBus'
 
 const statusType = {
   DRAFT: '草稿',
@@ -138,17 +140,33 @@ export default {
     }
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.email.activityId}`
+    }, {
+      title: '邮件邀约',
+      url: `/liveMager/email/${this.email.activityId}`
+    }, {
+      title: '预览'
+    }])
     // 如果vuex可以取到值就return
-    if (this.email.emailInviteId) {
-      const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : ''
-      const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : ''
-      this.queryTagList().then(this.queryGroupList()).then(() => {
-        setTimeout(() => {
-          this.reArrangeList(listStr.split(','), tagStr.split(','))
-        }, 500)
-      })
-      return false
-    }
+    // if (this.email.emailInviteId) {
+    //   debugger
+    //   const listStr = this.emailInfo.groupIds ? this.emailInfo.groupIds : ''
+    //   const tagStr = this.emailInfo.tagIds ? this.emailInfo.tagIds : ''
+    //   this.queryTagList().then(this.queryGroupList()).then(() => {
+    //     setTimeout(() => {
+    //       this.reArrangeList(listStr.split(','), tagStr.split(','))
+    //     }, 500)
+    //   })
+    //   return false
+    // }
+    // debugger
     // 如果vuex不能取到值就查询接口
     const queryId = this.$route.params.id
     if (!queryId) {
@@ -192,9 +210,7 @@ export default {
     },
     // 查询群组
     async queryGroupList (keyword) {
-      await this.$get(userManage.GET_GROUP_LIST, {
-        type: '2'
-      }).then((res) => {
+      await this.$get(userManage.GET_GROUP_LIST).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
@@ -215,6 +231,7 @@ export default {
           temArray.push({
             name: item.tag_name,
             id: item.tag_id,
+            count: item.user_count,
             isChecked: false
           })
         })
@@ -240,6 +257,7 @@ export default {
           if (ele * 1 === item.id * 1) {
             // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
+              count: item.count,
               id: item.id,
               isChecked: true,
               name: item.name

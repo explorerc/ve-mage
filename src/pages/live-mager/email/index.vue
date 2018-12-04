@@ -2,9 +2,12 @@
   <div class="live-mager email-box">
     <div class="live-title">
       <span class="title">邮件邀约</span>
-      <button class="primary-button fr"
-              @click="addEmail">新建邮件</button>
-      <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
+      <com-back  :url="`/liveMager/detail/${this.activeId}`"></com-back>
+      <template v-if='emailList.length'>
+        <button class="default-button fr"
+                @click="addEmail">新建邮件</button>
+        <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
+      </template>
     </div>
     <div class="email-table-box"
          v-ComLoading="loading">
@@ -13,65 +16,74 @@
       </div>
       <div class="table-list-box"
            style="padding-top: 20px;">
-        <el-table :data="emailList"
-                  style="width: 100%">
-          <el-table-column prop="title"
-                           label="邮件标题">
-          </el-table-column>
-          <el-table-column prop="sendTime"
-                           label="发送时间">
-          </el-table-column>
-          <el-table-column prop="sendCount"
-                           label="发送数量">
-          </el-table-column>
-          <el-table-column prop="statusName"
-                           label="状态">
-            <template slot-scope="scope">
-              <span v-if="scope.row.status=='DRAFT'"
-                    class="cg-status">{{scope.row.statusName}}</span>
-              <span v-if="scope.row.status=='SEND'"
-                    class="fs-status">{{scope.row.statusName}}</span>
-              <span v-if="scope.row.status=='AWAIT'"
-                    class="dd-status">{{scope.row.statusName}}</span>
-              <span v-if="scope.row.status=='FAIL'"
-                    class="del-status">{{scope.row.statusName}}</span>
-              <!--DRAFT: '草稿',-->
-              <!--SEND: '已发送',-->
-              <!--AWAIT: '等待发送'-->
-              <!--v-if="scope.row.status=='DRAFT'"-->
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <!--<el-button-->
-              <!--type="text" size="small"-->
-              <!--@click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>-->
-              <!--<el-button-->
-              <!--type="text" size="small"-->
-              <!--v-if="emailList[scope.$index].status==='DRAFT'"-->
-              <!--@click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>-->
-              <!--<el-button-->
-              <!--type="text" size="small"-->
-              <!--v-else-if="emailList[scope.$index].status!=='SEND'"-->
-              <!--@click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>-->
-              <!--<el-button-->
-              <!--type="text" size="small"-->
-              <!--v-if="emailList[scope.$index].status!=='SEND'"-->
-              <!--@click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>-->
-              <!--<el-button-->
-              <!--type="text" size="small"-->
-              <!--v-if="emailList[scope.$index].status!=='SEND'"-->
-              <!--@click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>-->
-              <div class="table-handler">
-                <span @click.stop="clickEmail(scope.$index,handleType.info)">查看</span>
-                <span v-if="emailList[scope.$index].status!=='SEND'"
-                      @click.stop="clickEmail(scope.$index,handleType.delete)">删除</span>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
+           <template v-if='emailList.length'>
+            <el-table :data="emailList"
+                      style="width: 100%">
+              <el-table-column prop="title"
+                              label="邮件标题">
+              </el-table-column>
+              <el-table-column prop="sendTime"
+                              label="发送时间">
+              </el-table-column>
+              <el-table-column prop="sendCount"
+                              label="发送数量">
+              </el-table-column>
+              <el-table-column prop="statusName"
+                              label="状态">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.status=='DRAFT'"
+                        class="cg-status">{{scope.row.statusName}}</span>
+                  <span v-if="scope.row.status=='SEND'"
+                        class="fs-status">{{scope.row.statusName}}</span>
+                  <span v-if="scope.row.status=='AWAIT'"
+                        class="dd-status">{{scope.row.statusName}}</span>
+                  <span v-if="scope.row.status=='FAIL'"
+                        class="del-status">{{scope.row.statusName}}</span>
+                  <!--DRAFT: '草稿',-->
+                  <!--SEND: '已发送',-->
+                  <!--AWAIT: '等待发送'-->
+                  <!--v-if="scope.row.status=='DRAFT'"-->
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <!--<el-button-->
+                  <!--type="text" size="small"-->
+                  <!--@click.stop="clickEmail(scope.$index,handleType.info)">查看</el-button>-->
+                  <!--<el-button-->
+                  <!--type="text" size="small"-->
+                  <!--v-if="emailList[scope.$index].status==='DRAFT'"-->
+                  <!--@click.stop="clickEmail(scope.$index,handleType.send)" disabled>立刻发送</el-button>-->
+                  <!--<el-button-->
+                  <!--type="text" size="small"-->
+                  <!--v-else-if="emailList[scope.$index].status!=='SEND'"-->
+                  <!--@click.stop="clickEmail(scope.$index,handleType.send)">立刻发送</el-button>-->
+                  <!--<el-button-->
+                  <!--type="text" size="small"-->
+                  <!--v-if="emailList[scope.$index].status!=='SEND'"-->
+                  <!--@click.stop="clickEmail(scope.$index,handleType.edit)">编辑</el-button>-->
+                  <!--<el-button-->
+                  <!--type="text" size="small"-->
+                  <!--v-if="emailList[scope.$index].status!=='SEND'"-->
+                  <!--@click.stop="clickEmail(scope.$index,handleType.delete)">删除</el-button>-->
+                  <div class="table-handler">
+                    <span @click.stop="clickEmail(scope.$index,handleType.info)">查看</span>
+                    <span v-if="emailList[scope.$index].status!=='SEND'"
+                          @click.stop="clickEmail(scope.$index,handleType.delete)">删除</span>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+           </template>
+           <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">您还没有添加邮件邀约，快去添加吧</div>
+              <el-button class='primary-button' @click="addEmail">新建邮件</el-button>
+            </div>
+           </template>
       </div>
-      <div class="pagination-box">
+      <div class="pagination-box" v-if='emailList.length'>
         <div class="page-pagination">
           <ve-pagination :total="total"
                          :pageSize="pageSize"
@@ -112,6 +124,7 @@ import activityService from 'src/api/activity-service'
 import VePagination from 'src/components/ve-pagination'
 import { mapMutations } from 'vuex'
 import * as types from '../../../store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 
 const handleType = {
   info: 'queryInfoEmail',
@@ -168,6 +181,17 @@ export default {
       this.$router.go(-1)
     }
     this.activeId = queryId
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activeId}`
+    }, {
+      title: '邮件邀约'
+    }])
     this.getLimit()
     this.queryEmailListById()
   },
@@ -221,7 +245,7 @@ export default {
     },
     queryInfoEmail () {
       const email = this.emailList[this.currentEmailIdx]
-      this.storeEmailInfo(email)
+      // this.storeEmailInfo(email)
       this.$router.push(`/liveMager/emailInfo/${this.activeId}?email=${email.emailInviteId}`)
     },
     sendEmail () {
@@ -286,6 +310,7 @@ export default {
 </script>
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
+@import '~assets/css/mixin.scss';
 .email-table-box {
   font-size: 14px;
 }
@@ -315,7 +340,33 @@ export default {
 }
 
 .email-box {
-  margin-top: 20px;
+  // margin-top: 20px;
+}
+.table-list-box {
+  .empty {
+    text-align: center;
+    margin: 100px 0;
+    .txt {
+      padding-top: 20px;
+      font-size: 16px;
+      color: $color-font;
+    }
+    .img {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      background: url('~assets/image/email_empty.png') no-repeat center;
+      background-size: contain;
+    }
+    .el-button {
+      padding: 0;
+      width: 220px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      margin-top: 20px;
+    }
+  }
 }
 </style>
 
