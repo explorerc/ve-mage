@@ -1,5 +1,5 @@
 <template>
-  <div class="apply-page live-mager" @mousedown="canPaas = false">
+  <div class="apply-page live-mager" @keydown="canPaas = false">
     <div class="live-title" style="border:none;">
       <span class="title">活动报名</span>
       <el-switch
@@ -263,6 +263,7 @@
         })
       },
       saveLimit () {
+        this.canPaas = true
         this.saveData = {
           'activityId': this.activityId,
           'viewCondition': 'APPOINT',

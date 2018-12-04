@@ -8,7 +8,11 @@
       </div>
       <div class="asset-header-item">
         <span>可用金额（元）
-          <span class="add-money fr" @click="addMoney()">充值</span>
+          <div class="btn-box">
+            <!-- <span class="add-money fr" @click="addMoney()">充值</span> -->
+            <el-button round class='default-button mini' @click="addMoney()">充值</el-button>
+            <!-- <el-button round class='default-button mini' @click="showWithdraw = true">提现</el-button> -->
+          </div>
         </span>
         <img width="93" height="58" src="../../assets/image/qianbao@2x.png">
         <span class="mid">{{billInfo.balance}}</span>
@@ -169,6 +173,8 @@
         </div>
       </div>
     </message-box>
+    <!-- 提现组件 -->
+    <com-withdraw v-if='showWithdraw' @withdrawClose='withdrawClose'></com-withdraw>
   </div>
 </template>
 
@@ -178,10 +184,10 @@
   import { mapState } from 'vuex'
   import ChatService from '../../components/chat/ChatService'
   import ChatConfig from 'src/api/chat-config'
-
+  import comWithdraw from './components/com-withdraw'
   export default {
     name: 'asset-list',
-    components: {VePagination},
+    components: {VePagination, comWithdraw},
     data () {
       return {
         total: 0,
@@ -217,7 +223,8 @@
         billNo: '', // 订单编号
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
-        wxDisabled: false // 微信按钮不禁用
+        wxDisabled: false, // 微信按钮不禁用
+        showWithdraw: false
       }
     },
     filters: {
@@ -397,6 +404,9 @@
       finishMoney () {
         this.successMoneyShow = false
       }
+      // withdrawClose (res) {
+      //   debugger
+      // }
     },
     watch: {
       amount: {
@@ -430,6 +440,7 @@
     }
     .asset-header-item {
       display: inline-block;
+      position: relative;
       width: calc((100% - 40px) / 3);
       height: 100%;
       border-radius: 3px;
@@ -495,6 +506,17 @@
             background-color: $color-default-active;
             border: 1px solid $color-default-hover;
           }
+        }
+      }
+      .btn-box {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        button {
+          padding: 0;
+          width: 80px;
+          height: 30px;
+          line-height: 30px;
         }
       }
     }
