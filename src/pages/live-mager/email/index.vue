@@ -4,7 +4,7 @@
       <span class="title">邮件邀约</span>
       <com-back  :url="`/liveMager/detail/${this.activeId}`"></com-back>
       <template v-if='emailList.length'>
-        <button class="default-button fr"
+        <button class="default-button fr create-button"
                 @click="addEmail">新建邮件</button>
         <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
       </template>
@@ -314,12 +314,19 @@ export default {
 .email-table-box {
   font-size: 14px;
 }
-
+.live-title {
+  .create-button {
+    height: 30px;
+    line-height: 30px;
+    margin-right: 110px;
+    margin-top: 17px;
+  }
+}
 .send-box {
   display: inline-block;
   color: #888;
   font-size: 14px;
-  line-height: 44px;
+  line-height: 60px;
   margin-right: 20px;
 }
 
