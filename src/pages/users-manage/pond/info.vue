@@ -196,8 +196,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{watchTime}}
-                  </p>
+                    {{watchTime}} </p>
                   <p class="v-title">
                     累计观看 (分)
                   </p>
@@ -246,6 +245,7 @@ import userService from 'src/api/user-service'
 import comAddgroup from '../components/com-addGroup'
 import userManage from 'src/api/userManage-service'
 import groupService from 'src/api/user_group'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -304,7 +304,10 @@ export default {
       if (this.user.watch_replay_time) {
         time += parseInt(this.user.watch_replay_time)
       }
-      return time || '-'
+      if (time === 0) {
+        return '-'
+      }
+      return time < 60 ? 1 : Math.round(time / 60)
     },
     avatarImg () {
       return this.user.avatar ? this.imgHost + '/' + this.user.avatar : ''
@@ -313,6 +316,14 @@ export default {
   created () {
     this.getCustomerDetail()
     // console.log(this.user.emails)
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户池',
+      url: '/userManage/pond'
+    }, {
+      title: '用户详情'
+    }])
   },
   methods: {
     saveInfo (val, type) {
@@ -605,7 +616,7 @@ export default {
             &::after {
               display: block;
               position: absolute;
-              content: '';
+              content: "";
               height: 0px;
               width: 0px;
               top: -5px;
@@ -699,7 +710,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: '';
+                content: "";
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -756,7 +767,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: '';
+                content: "";
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -873,8 +884,8 @@ export default {
                   text-align: center;
                   margin-left: 20px;
                   &:hover {
-                    border-color: #4b5afe;
-                    background-color: #4b5afe;
+                    border-color: #888;
+                    background-color: #888888;
                     color: #fff;
                   }
                 }
@@ -931,7 +942,7 @@ export default {
     }
     .v-steps {
       width: 100%;
-      border-top: 2px solid #e2e2e2;
+      border-top: 1px solid #e2e2e2;
     }
     .v-step {
       position: relative;

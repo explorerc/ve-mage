@@ -1,7 +1,8 @@
 <template>
-  <div class='wrap-page card-page'>
+  <div class='wrap-page card-page' @keydown="canPaas = false">
     <div class="page-title">
       <span class="title">{{cardId === 'new' ? '创建' :'编辑'}}卡片</span>
+      <com-back :class='"back-btn"'></com-back>
     </div>
     <div class="tips-title">
       <i></i>注意：在推荐卡片中嵌入链接可能会导致观众跳转分流，请合理使用
@@ -25,7 +26,7 @@
           <com-input type="textarea" class="msg-content" :value.sync="desc" placeholder="请输入卡片描述" :max-length="140"></com-input>
         </div>
       </div>
-      <div class="from-row">
+      <div class="from-row" style="padding:0 12px;">
         <div class="from-title">显示按钮：</div>
         <div class="from-content switch-box">
           <el-switch class='switch' v-model="btnSwitch" inactive-color="#DEE1FF" :width="32" active-color="#FFD021" @change="switchChange()"></el-switch>
@@ -54,7 +55,8 @@
         <dl>
           <dt>
               <div class="img img-empty" v-if="!poster.length"></div>
-              <img class="img" :src="`${imgHost}/${poster}`" v-else>
+            <div class="img cov_img" :style="{backgroundImage:`url(${$imgHost}/${poster})`}" v-else></div>
+              <!--<img :src="`${imgHost}/${poster}?x-oss-process=image/resize,m_fill,h_200,w_240`">-->
             </dt>
           <dd class='desc' v-if="desc.length>0">{{desc}}</dd>
           <dd class='desc' v-else>此处是卡片描述，最多可添加140个字</dd>
@@ -76,6 +78,7 @@
 <script>
   import VeUpload from 'src/components/ve-upload-image'
   import cardService from 'src/api/salesCards-service.js'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -94,8 +97,25 @@
         uploadImgErrorMsg: '',
         cardId: this.$route.query.cardId,
         saveData: '',
-        canSave: false
+        canSave: false,
+        canPaas: true
       }
+    },
+    created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '推荐卡片',
+        url: `/salesTools/recommendCards/${this.$route.params.id}`
+      }, {
+        title: this.cardId !== 'new' ? '编辑卡片' : '新建卡片'
+      }])
     },
     mounted () {
       if (this.cardId !== 'new') {
@@ -143,6 +163,7 @@
             content: '保存成功',
             position: 'center'
           })
+          this.canPaas = true
           this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
         })
       },
@@ -152,13 +173,15 @@
             content: '更新成功',
             position: 'center'
           })
+          this.canPaas = true
           setTimeout(() => {
             this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
           }, 500)
         })
       },
       verify () {
-        const reg = new RegExp('^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$') // eslint-disable-line
+        // const reg = new RegExp(/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/) // eslint-disable-line
+        const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
         this.title.length ? this.titleError = '' : this.titleError = '请输入卡片名称'
         this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
         if (this.btnSwitch) {
@@ -195,6 +218,27 @@
           this.desc = res.data.desc
         })
       }
+    },
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      if (this.canPaas) {
+        next(true)
+        return false
+      }
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
+        }
+      })
     },
     computed: {
       defaultImg () {
@@ -320,6 +364,10 @@
         border: 1px dashed #d9d9d9;
         border-radius: 4px;
         margin: 0 auto;
+      }
+      .cov_img{
+        background: no-repeat center;
+        background-size: cover;
       }
       .desc {
         padding: 20px 0;

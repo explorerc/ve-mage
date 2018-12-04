@@ -3,9 +3,11 @@
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
     <div class="edit-msg-page live-mager"
-         @mousedown="canPass = false">
+         @keydown="canPass = false">
       <div class="live-title">
-        <span class="title">创建短信通知</span>
+        <span class="title" v-if="inviteId">编辑短信通知</span>
+        <span class="title" v-else>创建短信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">
@@ -23,7 +25,8 @@
             <div class="from-title">接收人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver'
-                         @click='selectPersonShow=true'>选择收信人</el-button>
+                         @click='chooseReceiver'>选择收信人</el-button>
+                         <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -31,7 +34,7 @@
                                 v-if="selectedGroupList.length">
                 <span class="list-item"
                       v-for="(person,idx) in selectedGroupList"
-                      :key="person.id">{{person.name}} ({{person.count}}人）
+                      :key="person.id">{{person.name}}
                   <i class="iconfont icon-shanchu"
                      @click="delGroupPerson(idx)"></i>
                 </span>
@@ -125,7 +128,7 @@
         </div>
       </div>
       <!-- 选择收件人 -->
-      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn"></choose-group>
+      <choose-group :webinarType="'SMS'" :show="selectPersonShow" :groupList="groupList" :tagList='tagList' :checkedData="checkedData" @okSelectList="okSelectList" @close="close" @searchEnter="searchEnter" @selectedGroupListfn="selectedGroupListfn" @selectedTagListfn="selectedTagListfn" @totalCount="totalCount"></choose-group>
     </div>
     <!-- 测试发送弹窗 -->
     <com-test v-if='testModal'
@@ -140,9 +143,11 @@
 <script>
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
+import activityService from 'src/api/activity-service'
 import chooseGroup from '../com-chooseGroup'
 import comTest from '../com-test'
 import comPhone from '../com-phone'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -202,12 +207,31 @@ export default {
       canPass: true,
       saveDisabled: false,
       groupIdStr: '',
-      tagIdStr: ''
+      tagIdStr: '',
+      changed: 0,
+      countBalance: 0,
+      sendBalance: 0,
+      clicked: false
     }
   },
   created () {
+    this.getLimit()
     this.queryGroupList()
     this.queryTagList()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activitId}`
+    }, {
+      title: '短信通知',
+      url: `/liveMager/promote/msg/list/${this.activitId}`
+    }, {
+      title: this.inviteId ? '编辑短信通知' : '新建短信通知'
+    }])
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {
         inviteId: this.inviteId
@@ -217,6 +241,7 @@ export default {
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.msgContent = res.data.desc
         this.msgTag = res.data.signature
+        this.sendBalance = res.data.expectNum
         setTimeout(() => {
           this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
         }, 500)
@@ -238,8 +263,12 @@ export default {
     },
     save () {
       this.saveDisabled = true
+      setTimeout((res) => {
+        this.saveDisabled = false
+      }, 3000)
       this.canPass = true
       let data = {
+        change: this.changed,
         inviteId: this.inviteId,
         activityId: this.$route.params.id,
         title: this.titleValue,
@@ -265,7 +294,6 @@ export default {
         this.canPass = true
         this.$router.push({ name: 'promoteMsg', params: { id: this.activitId } })
       }).catch((res) => {
-        this.saveDisabled = false
         this.$messageBox({
           header: '提示',
           content: res.msg,
@@ -285,7 +313,6 @@ export default {
       })
     },
     closeTest () {
-      // debugger
       this.testModal = false
     },
     /* enter搜索 */
@@ -298,6 +325,7 @@ export default {
     },
     /* 点击确定 */
     okSelectList () {
+      this.changed = 1
       this.selectPersonShow = false
     },
     /* 点击取消 */
@@ -308,11 +336,13 @@ export default {
     delGroupPerson (idx) {
       const delIdx = this.groupList.indexOf(this.selectedGroupList[idx])
       this.groupList[delIdx].isChecked = false
+      this.changed = 1
     },
     // 标签
     delTagPerson (idx) {
       const delIdx = this.tagList.indexOf(this.selectedTagList[idx])
       this.tagList[delIdx].isChecked = false
+      this.changed = 1
     },
     // 查询群组
     queryGroupList (keyword) {
@@ -333,13 +363,16 @@ export default {
       })
     },
     /* 查询标签 */
-    queryTagList (key) {
-      this.$get(userManage.GET_TAG_LIST).then((res) => {
+    queryTagList (keyword) {
+      this.$get(userManage.GET_TAG_LIST, {
+        keyword: keyword
+      }).then((res) => {
         let temArray = []
         res.data.list.forEach(item => {
           temArray.push({
             name: item.tag_name,
             id: item.tag_id,
+            count: item.user_count,
             isChecked: false
           })
         })
@@ -382,6 +415,25 @@ export default {
           }
         })
       })
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.activitId,
+        type: 'SMS'
+      }).then((res) => {
+        console.log(res)
+        this.countBalance = res.data.balance
+      })
+    },
+    totalCount (res) {
+      if (this.clicked) {
+        this.sendBalance = res
+      }
+    },
+    chooseReceiver () {
+      this.selectPersonShow = true
+      this.clicked = true
     },
     /* 验证 */
     formValid () {
@@ -504,7 +556,6 @@ export default {
     height: 34px;
     line-height: 34px;
     border-radius: 20px;
-    border: 1px solid rgba(136, 136, 136, 1);
   }
   .el-radio {
     padding: 12px 0;
@@ -693,7 +744,7 @@ export default {
 }
 .live-mager .mager-box .from-box {
   margin: 40px 0 0 0;
-  height: 600px;
+  min-height: 600px;
 }
 </style>
 

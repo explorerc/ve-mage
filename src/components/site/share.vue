@@ -166,12 +166,12 @@ export default {
     },
     doQQSpace () {
       window.open(`
-      http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?desc=${encodeURIComponent(this.share.des)}&url=${encodeURIComponent(this.share.link)}&src%3Dsharemodclk131212&pics=${encodeURIComponent(this.share.imgUrl)}
+      http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?desc=${encodeURIComponent(this.share.des.substr(0, 10))}&url=${encodeURIComponent(this.share.link)}&src%3Dsharemodclk131212&pics=${encodeURIComponent(this.share.imgUrl)}
       `)
     },
     doQQ () {
       window.open(`
-      http://connect.qq.com/widget/shareqq/index.html?url=${encodeURIComponent(this.share.link)}&title=${encodeURIComponent(this.share.title)}&desc=${encodeURIComponent(this.share.des)}&pics=${encodeURIComponent(this.share.imgUrl)}
+      http://connect.qq.com/widget/shareqq/index.html?url=${encodeURIComponent(this.share.link)}&title=${encodeURIComponent(this.share.title)}&desc=${encodeURIComponent(this.share.des.substr(0, 10))}&pics=${encodeURIComponent(this.share.imgUrl)}
       `)
     },
     doWXSpace () {
@@ -181,7 +181,7 @@ export default {
       this.showDialog = true
     },
     doCopy () {
-      this.url.copyClipboard()
+      this.share.link.copyClipboard()
       this.$toast({
         'content': '复制成功',
         'position': 'center'

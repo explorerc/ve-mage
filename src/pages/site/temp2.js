@@ -253,6 +253,7 @@ export default function () {
       block1: {
         enable: true,
         showBtn: false,
+        showDir: true,
         list: [{
           type: 'right',
           content: `<div><span style="font-size: 24px;"><br></span></div><span style="font-size: 24px;"><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div><div><span style="font-size: 24px;"><br></span></div>壹度创意规划设计网:休闲农业与乡</span><div><span style="font-size: 24px;">村旅游策划者与引领者</span></div><div><br></div><div><br></div><div><div><br></div><div><font color="#555555" style="font-size: 16px;">2018年5月10-12日，第九届中国数据库技术大会（DTCC2018）将如约而至。本届大会以“数领先机•智赢未来”为主题，设定2大主会场及</font></div><div><font color="#555555" style="font-size: 16px;">22个技术专场，邀请来自国内外互联网、金融、教育等行业百余位技术专家</font><br></div></div>`,

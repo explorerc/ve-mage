@@ -14,7 +14,7 @@
     </template>
     <template v-else>
       <span class="v-content">
-        {{(this.content === null || !this.content || this.content === "0") ? '-' : format(content)}}
+        {{(this.content === null || !this.content || this.content === "0" || this.inputValue === '0000-00-00 00:00:00') ? '-' : format(content)}}
         <i class="iconfont icon-bianji" @click="modify(content)"></i>
       </span>
     </template>
@@ -34,7 +34,7 @@ export default {
     content: String
   },
   mounted () {
-    this.inputValue = (this.content === null || !this.content || this.content === '0') ? '-' : this.content
+    this.inputValue = (this.content === null || !this.content || this.content === '0' || this.inputValue === '0000-00-00 00:00:00') ? '-' : this.content
   },
   methods: {
     modify (val) {
@@ -42,7 +42,7 @@ export default {
       this.isEdit = true
     },
     inputBlur () {
-      if (this.inputValue === null || !this.inputValue || this.inputValue === '0') {
+      if (this.inputValue === null || !this.inputValue || this.inputValue === '0' || this.inputValue === '0000-00-00 00:00:00') {
         this.isEdit = false
       } else {
         this.$emit('saveInfo', this.format(this.inputValue))
@@ -50,7 +50,7 @@ export default {
       }
     },
     format (date) {
-      if (date === null || !date || date === '0') {
+      if (date === null || !date || date === '0' || this.inputValue === '0000-00-00 00:00:00') {
         return false
       }
       date = new Date(date)

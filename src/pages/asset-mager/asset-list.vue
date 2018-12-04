@@ -416,271 +416,270 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 
-  .asset-box {
-    margin: 30px;
-    .asset-header {
-      font-size: 0;
-      height: 170px;
-      margin-top: 20px;
-      img {
-        display: block;
-        margin: 10px auto;
-      }
-      .asset-header-item {
-        display: inline-block;
-        width: calc((100% - 40px) / 3);
-        height: 100%;
-        border-radius: 3px;
-        background-color: #fff;
-        vertical-align: middle;
-        border: solid 1px $color-bd;
-        &:nth-child(2) {
-          margin: 0 20px;
-        }
-        span {
-          display: block;
-          width: 100%;
-          font-size: 16px;
-          text-align: center;
-          vertical-align: middle;
-
-          &:nth-child(1) {
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: left;
-            margin-left: 20px;
-            color: #888;
-          }
-          &:nth-child(2), &:nth-child(3) {
-            margin-top: 20px;
-          }
-          &:nth-child(3) {
-            font-size: 14px;
-            color: #888;
-          }
-          &.mid {
-            font-size: 24px;
-            margin-top: 0;
-            font-weight: bold;
-            color: $color-red;
-          }
-          &.mid-zhichu {
-            font-size: 24px;
-            margin-top: 3px;
-            font-weight: bold;
-          }
-          .zhichu-img {
-            margin: 16px auto;
-          }
-          .add-money {
-            display: inline-block;
-            width: 70px;
-            margin: -6px 40px 0 0 !important;
-            border: 1px solid #4B5AFE;
-            text-align: center;
-            height: 30px;
-            border-radius: 20px;
-            line-height: 30px;
-            font-size: 14px;
-            color: #4B5AFE;
-            cursor: pointer;
-            &:hover {
-              background-color: $color-default-hover;
-              border: 1px solid $color-default-hover;
-            }
-            &:active {
-              background-color: $color-default-active;
-              border: 1px solid $color-default-hover;
-            }
-          }
-        }
-      }
+.asset-box {
+  margin: 30px;
+  .asset-header {
+    font-size: 0;
+    height: 170px;
+    margin-top: 20px;
+    img {
+      display: block;
+      margin: 10px auto;
     }
-    .asset-list-box {
-      margin-top: 20px;
-      border: solid 1px $color-bd;
+    .asset-header-item {
+      display: inline-block;
+      width: calc((100% - 40px) / 3);
+      height: 100%;
       border-radius: 3px;
-      overflow: hidden;
-    }
-    .asset-list {
-      padding: 20px;
       background-color: #fff;
-      .search-asset {
-        margin-top: 30px;
-        .asset-title {
-          font-size: 20px;
-        }
-        .search-item {
-          display: inline-block;
-          font-size: 14px;
-          .search-title {
-            margin-right: 10px;
-          }
-        }
-        .flm {
-          margin: 0 20px;
-        }
-        .export-btn {
-          margin-top: 2px;
-          height: 36px;
-          line-height: 36px;
-        }
+      vertical-align: middle;
+      border: solid 1px $color-bd;
+      &:nth-child(2) {
+        margin: 0 20px;
       }
-    }
-    .asset-list-table {
-      padding: 20px;
-      background-color: #fff;
-      .page-pagination {
-        margin-top: 30px;
-        text-align: right;
-      }
-      .status {
-        color: #FC5659;
-      }
-      .success {
-        color: #43D2C2;
-      }
-    }
-    /*三个盒子的统一样式*/
-    .message-box-content {
-      position: relative;
-      font-size: 14px;
-      .tip-title {
+      span {
         display: block;
-        margin-top: 10px;
+        width: 100%;
         font-size: 16px;
-        padding: 16px 0 22px 0;
-        border-bottom: solid 1px $color-bd;
+        text-align: center;
+        vertical-align: middle;
 
-      }
-      .from-box {
-        .input-box {
-          padding: 15px 10px 5px 0 !important;
-          .from-title {
-            padding-right: 30px !important;
-          }
-          .black-box {
-            margin-top: -10px;
-            .com-input {
-              width: 100%;
-            }
-          }
+        &:nth-child(1) {
+          margin-top: 20px;
+          font-size: 14px;
+          text-align: left;
+          margin-left: 20px;
+          color: #888;
         }
-        .from-row {
-          position: relative;
-          display: flex;
-          padding: 12px;
-          .from-title {
-            width: 120px;
-            text-align: right;
-            padding-right: 20px;
-            color: #555;
-          }
-          .error /deep/ {
-            .el-input__inner {
-              border: 1px solid $color-red;
-            }
-
-            .default-button {
-              border: 1px solid $color-red;
-            }
-          }
-          .from-content {
-            position: relative;
-            flex: 1;
-            .error-msg {
-              display: block;
-              color: $color-red;
-              margin-left: 10px;
-              text-align: left;
-            }
-            .input-box {
-              width: 400px;
-            }
-            .from-msg-tip {
-              position: absolute;
-              top: -2px;
-              width: 100%;
-              left: 200px;
-            }
-            .com-input {
-              margin-right: 6px;
-            }
-            .modifiyMoney-btn {
-              margin-left: 30px;
-              cursor: pointer;
-              color: #4B5AFE;
-            }
-          }
+        &:nth-child(2),
+        &:nth-child(3) {
+          margin-top: 20px;
         }
-      }
-      .red-bag-msgbox {
-        .ve-message-box .ve-message-box__btns {
+        &:nth-child(3) {
+          font-size: 14px;
+          color: #888;
+        }
+        &.mid {
+          font-size: 24px;
+          margin-top: 0;
+          font-weight: bold;
+          color: $color-red;
+        }
+        &.mid-zhichu {
+          font-size: 24px;
+          margin-top: 3px;
+          font-weight: bold;
+        }
+        .zhichu-img {
+          margin: 16px auto;
+        }
+        .add-money {
+          display: inline-block;
+          width: 70px;
+          margin: -6px 40px 0 0 !important;
+          border: 1px solid #4b5afe;
           text-align: center;
-        }
-      }
-
-    }
-    /* paymoney 盒子的样式*/
-    .pay-money-msg {
-      .message-box-content {
-        .from-box {
-          .input-box {
-            .from-title {
-              margin-left: 60px;
-            }
+          height: 30px;
+          border-radius: 20px;
+          line-height: 30px;
+          font-size: 14px;
+          color: #4b5afe;
+          cursor: pointer;
+          &:hover {
+            background-color: $color-default-hover;
+            border: 1px solid $color-default-hover;
           }
-          .from-row {
-            .from-content {
-              &.modify-box {
-                height: 30px;
-              }
-              .title {
-                font-size: 0;
-                margin-top: 10px;
-                .payway {
-                  display: inline-block;
-                  width: 70px;
-                  height: 30px;
-                  font-size: 14px;
-                  border: 1px solid #e2e2e2;
-                  cursor: pointer;
-                  &.alipay {
-                    border-right: 0px;
-                    background-color: #FFD021;
-                  }
-                }
-              }
-              .black-box {
-                .com-input {
-                  width: 60% !important;
-                }
-                .save-money, .concel-money {
-                  cursor: pointer;
-                  margin-left: 10px;
-                  color: #4B5AFE;
-                }
-              }
-              .payImg {
-                height: 167px;
-                margin-top: 8px;
-                img {
-                  width: 140px;
-                  height: 140px;
-                  display: inline-block;
-                  margin-bottom: 4px;
-                }
-              }
-            }
-            .com-input {
-              margin-right: 6px;
-            }
+          &:active {
+            background-color: $color-default-active;
+            border: 1px solid $color-default-hover;
           }
         }
       }
     }
   }
+  .asset-list-box {
+    margin-top: 20px;
+    border: solid 1px $color-bd;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .asset-list {
+    padding: 20px;
+    background-color: #fff;
+    .search-asset {
+      margin-top: 30px;
+      .asset-title {
+        font-size: 20px;
+      }
+      .search-item {
+        display: inline-block;
+        font-size: 14px;
+        .search-title {
+          margin-right: 10px;
+        }
+      }
+      .flm {
+        margin: 0 20px;
+      }
+      .export-btn {
+        margin-top: 2px;
+        height: 36px;
+        line-height: 36px;
+      }
+    }
+  }
+  .asset-list-table {
+    padding: 20px;
+    background-color: #fff;
+    .page-pagination {
+      margin-top: 30px;
+      text-align: right;
+    }
+    .status {
+      color: #fc5659;
+    }
+    .success {
+      color: #43d2c2;
+    }
+  }
+  /*三个盒子的统一样式*/
+  .message-box-content {
+    position: relative;
+    font-size: 14px;
+    .tip-title {
+      display: block;
+      margin-top: 10px;
+      font-size: 16px;
+      padding: 16px 0 22px 0;
+      border-bottom: solid 1px $color-bd;
+    }
+    .from-box {
+      .input-box {
+        padding: 15px 10px 5px 0 !important;
+        .from-title {
+          padding-right: 30px !important;
+        }
+        .black-box {
+          margin-top: -10px;
+          .com-input {
+            width: 100%;
+          }
+        }
+      }
+      .from-row {
+        position: relative;
+        display: flex;
+        padding: 12px;
+        .from-title {
+          width: 120px;
+          text-align: right;
+          padding-right: 20px;
+          color: #555;
+        }
+        .error /deep/ {
+          .el-input__inner {
+            border: 1px solid $color-red;
+          }
 
+          .default-button {
+            border: 1px solid $color-red;
+          }
+        }
+        .from-content {
+          position: relative;
+          flex: 1;
+          .error-msg {
+            display: block;
+            color: $color-red;
+            margin-left: 10px;
+            text-align: left;
+          }
+          .input-box {
+            width: 400px;
+          }
+          .from-msg-tip {
+            position: absolute;
+            top: -2px;
+            width: 100%;
+            left: 200px;
+          }
+          .com-input {
+            margin-right: 6px;
+          }
+          .modifiyMoney-btn {
+            margin-left: 30px;
+            cursor: pointer;
+            color: #4b5afe;
+          }
+        }
+      }
+    }
+    .red-bag-msgbox {
+      .ve-message-box .ve-message-box__btns {
+        text-align: center;
+      }
+    }
+  }
+  /* paymoney 盒子的样式*/
+  .pay-money-msg {
+    .message-box-content {
+      .from-box {
+        .input-box {
+          .from-title {
+            margin-left: 60px;
+          }
+        }
+        .from-row {
+          .from-content {
+            &.modify-box {
+              height: 30px;
+            }
+            .title {
+              font-size: 0;
+              margin-top: 10px;
+              .payway {
+                display: inline-block;
+                width: 70px;
+                height: 30px;
+                font-size: 14px;
+                border: 1px solid #e2e2e2;
+                cursor: pointer;
+                &.alipay {
+                  border-right: 0px;
+                  background-color: #ffd021;
+                }
+              }
+            }
+            .black-box {
+              .com-input {
+                width: 60% !important;
+              }
+              .save-money,
+              .concel-money {
+                cursor: pointer;
+                margin-left: 10px;
+                color: #4b5afe;
+              }
+            }
+            .payImg {
+              height: 167px;
+              margin-top: 8px;
+              img {
+                width: 140px;
+                height: 140px;
+                display: inline-block;
+                margin-bottom: 4px;
+              }
+            }
+          }
+          .com-input {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

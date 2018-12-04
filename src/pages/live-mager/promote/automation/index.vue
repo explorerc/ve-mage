@@ -9,6 +9,7 @@
                  @change='openSwitch'>
       </el-switch>
       <span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>
+      <com-back></com-back>
     </div>
     <div class='preview mager-box border-box clearfix switch-cover'  :class='{"close":!isOpen}'>
       <div class="time-line fl"></div>
@@ -425,6 +426,7 @@ import comTpl from './com-tpl'
 import comTest from '../com-test'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
+import EventBus from 'src/utils/eventBus'
 // import {getMsg} from './tpl'
 export default {
   data () {
@@ -586,6 +588,17 @@ export default {
     this.getList()
     this.findCountdown()
     this.getSwitchinfo()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '自动化通知'
+    }])
   },
   methods: {
     closeModal (e) {
@@ -606,9 +619,9 @@ export default {
         activityId: this.activityId
       }).then((res) => {
         this.hourValue = res.data.firstCount
-        this.selhourValue = res.data.firstCount
-        this.minValue = res.data.secondCount
-        this.selminValue = res.data.secondCount
+        this.selhourValue = res.data.firstCount * 1
+        this.minValue = res.data.secondCount * 1
+        this.selminValue = res.data.secondCount * 1
         this.limit = res.data.webinarLimit
         this.tplData.tag = res.data.tag
         this.tplData.webinarName = res.data.webinarName
@@ -955,8 +968,9 @@ export default {
 @import '~assets/css/mixin.scss';
 .auto-page {
   .live-title {
+    position: relative;
     border-bottom: none;
-
+    padding-bottom: 30px;
     span.tips {
       color: $color-font-sub;
     }

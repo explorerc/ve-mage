@@ -192,6 +192,7 @@
   import dataService from 'src/api/data-service'
   import { barPile, lines } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'spead',
@@ -220,6 +221,20 @@
         pageSize: 10,
         total: 0
       }
+    },
+    created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '推广数据',
+        url: `/data/spread/${this.$route.params.id}`
+      }])
     },
     beforeDestroy () {
       window.callbackResize = null

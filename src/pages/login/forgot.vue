@@ -139,6 +139,7 @@ import userService from 'src/api/user-service'
 export default {
   data () {
     return {
+      timerId: 0,
       tabValue: 1,
       outValue: '123',
       userPhone: '',
@@ -355,10 +356,11 @@ export default {
         newPassword: this.password
       }
       this.$config({ handlers: true }).$post(userService.POST_BACK_PASSWORD, data).then((res) => {
-        setInterval(() => {
+        this.timerId = setInterval(() => {
           this.time--
           if (this.time <= 0) {
             this.$router.replace('/login')
+            clearInterval(this.timerId)
           }
         }, 1000)
         this.thdIsActive = true
@@ -423,7 +425,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import 'assets/css/mixin.scss';
+@import "assets/css/mixin.scss";
 .forgot-container /deep/ {
   text-align: center;
   display: block;
@@ -594,8 +596,8 @@ export default {
     }
     .v-getcode {
       position: absolute;
-      right: 3px;
-      top: 128px;
+      right: 0px;
+      top: 119px;
       background-color: #ffd021;
       display: inline-block;
       width: 115px;

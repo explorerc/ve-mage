@@ -5,7 +5,7 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: '',
     PUBLIC_PATH: '//localhost:2333/',
-    IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
+    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
     MOBILE_HOST: '//localhost:8866/m/',
     PC_HOST: '//localhost:6688/webinar/',
     proxyTable: {
@@ -41,9 +41,9 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//static.vhallyun.com',
-    PUBLIC_PATH: '//zhike1.vhall.com/',
-    MOBILE_HOST: '//zhike1.vhall.com/m/',
-    PC_HOST: '//zhike1.vhall.com/webinar/'
+    PUBLIC_PATH: '//zhike.vhall.com/',
+    MOBILE_HOST: '//zhike.vhall.com/m/',
+    PC_HOST: '//zhike.vhall.com/webinar/'
   }
 }
 module.exports = config

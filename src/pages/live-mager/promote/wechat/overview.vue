@@ -5,6 +5,7 @@
     <div class="overview-wx-page live-mager">
       <div class="live-title">
         <span class="title">微信通知</span>
+        <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">
@@ -17,8 +18,8 @@
           <div class="from-row">
             <div class="from-title">收件人：</div>
             <div class="from-content">
-              <template v-for="(item,idx) in selectedGroupList">{{item.name}}({{item.count}})<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
-              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template>
+              <template v-for="(item,idx) in selectedGroupList">{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
+              <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template> （合计{{expectNum}}人）
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
             </div>
           </div>
@@ -75,6 +76,7 @@ import activityService from 'src/api/activity-service'
 import userManage from 'src/api/userManage-service'
 import comPhone from '../com-phone'
 import comDetail from '../com-detail'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -94,13 +96,14 @@ export default {
       selectedGroupList: [],
       selectedTagList: [],
       groupList: [],
-      tagList: []
+      tagList: [],
+      expectNum: 0
     }
   },
   created () {
     this.queryInfo()
     this.queryTagList().then(this.queryGroupList()).then(() => {
-      this.$config({ loading: true }).$get(noticeService.GET_QUERY_WECHAT, {
+      this.$get(noticeService.GET_QUERY_WECHAT, {
         inviteId: this.id
       }).then((res) => {
         this.group = res.data.groupId
@@ -109,11 +112,26 @@ export default {
         this.status = res.data.status
         this.date = res.data.sendTime ? res.data.sendTime.toString() : res.data.planTime.toString()
         this.wxContent = res.data.desc
+        this.expectNum = res.data.expectNum
         setTimeout(() => {
           this.reArrangeList(res.data.groupId.split(','), res.data.tagId.split(','))
         }, 500)
       })
     })
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '微信通知',
+      url: `/liveMager/promote/wechat/list/${this.activityId}`
+    }, {
+      title: '预览'
+    }])
   },
   methods: {
     sendNow () {
@@ -129,7 +147,7 @@ export default {
       })
     },
     queryInfo () {
-      this.$config({ loading: true }).$get(activityService.GET_WEBINAR_INFO, {
+      this.$get(activityService.GET_WEBINAR_INFO, {
         id: this.$route.params.id
       }).then((res) => {
         this.type = res.data.status
@@ -137,9 +155,7 @@ export default {
     },
     // 查询群组
     async queryGroupList (keyword) {
-      await this.$get(userManage.GET_GROUP_LIST, {
-        type: '2'
-      }).then((res) => {
+      await this.$get(userManage.GET_GROUP_LIST).then((res) => {
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
@@ -161,6 +177,7 @@ export default {
         res.data.list.forEach((item) => {
           temArray.push({
             name: item.tag_name,
+            count: item.user_count,
             id: item.tag_id,
             isChecked: false
           })
@@ -183,7 +200,8 @@ export default {
         tag.forEach((ele, i) => {
           if (ele * 1 === item.id) {
             this.selectedTagList.push({
-              name: item.name
+              name: item.name,
+              count: item.count
             })
           }
         })

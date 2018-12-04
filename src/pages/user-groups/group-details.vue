@@ -19,7 +19,7 @@
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" border class="el-table"
+      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="el-table"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" v-if="type === 2"></el-table-column>
         <el-table-column label="用户信息">
@@ -61,6 +61,7 @@
   import groupService from 'src/api/user_group'
   import comAddgroup from '../users-manage/components/com-addGroup'
   import comImport from '../users-manage/components/com-import'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'group-details',
@@ -68,6 +69,14 @@
     created () {
       this.onSearch()
       this.getGroupDetail()
+      EventBus.$emit('breads', [{
+        title: '用户管理'
+      }, {
+        title: '用户群组',
+        url: '/userManage/userGroupsIndex'
+      }, {
+        title: '详情'
+      }])
     },
     filters: {
       getSex (a) {
@@ -208,186 +217,192 @@
 </script>
 
 <style lang="scss" scoped>
-  #groupDetails {
-    padding: 50px 100px;
-    font-family: PingFangSC-Regular;
-    /deep/ {
-      header {
-        height: 26px;
-        font-size: 24px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 26px;
-        margin-bottom: 23px;
+#groupDetails {
+  padding: 50px 100px;
+  font-family: PingFangSC-Regular;
+  /deep/ {
+    header {
+      height: 26px;
+      font-size: 24px;
+      font-weight: 400;
+      color: rgba(34, 34, 34, 1);
+      line-height: 26px;
+      margin-bottom: 23px;
+    }
+    .operation {
+      overflow: hidden;
+      .opBtns {
+        float: left;
       }
-      .operation {
-        overflow: hidden;
-        .opBtns {
-          float: left;
-        }
-        .search {
-          float: right;
-          display: inline-block;
-          width: 220px;
-          .el-input__inner {
-            border-radius: 20px;
-            border-color: rgba(136, 136, 136, 1);
-          }
+      .search {
+        float: right;
+        display: inline-block;
+        width: 220px;
+        .el-input__inner {
+          border-radius: 20px;
+          border-color: rgba(136, 136, 136, 1);
         }
       }
-      .table_box {
-        border: 1px dashed #cccccc;
-        margin: 20px auto;
-        padding: 30px;
-        th.el-table_1_column_1 span.el-checkbox__inner {
-          background-color: transparent;
-          border: none;
-        }
-        th.el-table_1_column_1 span.el-checkbox__inner:before {
-          content: "选择";
-        }
-        th.el-table_1_column_1 span.el-checkbox__inner:after {
-          border: none;
-        }
-        .btns {
+    }
+    .table_box {
+      border: 1px solid #e2e2e2;
+      background-color: white;
+      margin: 20px auto;
+      padding: 30px;
+      th.el-table_1_column_1 span.el-checkbox__inner {
+        background-color: transparent;
+        border: none;
+      }
+      th.el-table_1_column_1 span.el-checkbox__inner:before {
+        content: '选择';
+      }
+      th.el-table_1_column_1 span.el-checkbox__inner:after {
+        border: none;
+      }
+      tr {
+        span{
           color: rgba(34, 34, 34, 1);
-          &:hover {
-            color: rgba(75, 90, 254, 1);
+        }
+      }
+      .btns {
+        color: rgba(34, 34, 34, 1);
+        &:hover {
+          color: rgba(75, 90, 254, 1);
+        }
+      }
+
+      .user_info {
+        img {
+          float: left;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          margin-right: 5px;
+          margin-top: 10px;
+        }
+        div {
+          overflow: hidden;
+          .table_info {
+            display: inline-block;
+            max-width: 90px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
         }
-
-        .user_info {
-          img {
-            float: left;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 5px;
-            margin-top: 10px;
+      }
+    }
+    .VePagination {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .el-dialog {
+      .el-dialog__header {
+        height: 40px;
+        background: rgba(255, 208, 33, 1);
+        .el-dialog__title {
+          display: inline-block;
+          font-size: 16px;
+          transform: translateY(-5px);
+        }
+      }
+      .downLoad_tem {
+        width: 100%;
+        display: block;
+        text-align: right;
+        margin-bottom: 10px;
+        i {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          line-height: 16px;
+          text-align: center;
+          border: 1px solid #222222;
+          border-radius: 50%;
+          margin-left: 5px;
+        }
+      }
+      .el-dialog__body {
+        padding: 30px 30px 0;
+        .el-form {
+          overflow: hidden;
+          .el-form-item {
+            .el-input {
+              position: relative;
+              border: 1px solid #cccccc;
+              border-radius: 3px;
+              .el-input__inner {
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+              }
+              .el-input-group__append {
+                height: 38px;
+                line-height: 38px;
+                width: 50px;
+                position: absolute;
+                right: 8px;
+                color: #999999;
+                text-align: right;
+                top: 1px;
+                border: none;
+                padding: 0;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+        .import_success {
+          > i {
+            display: block;
+            margin: auto;
+            width: 60px;
+            height: 60px;
+            background: url('../../assets/image/import.png') center;
+            background-size: cover;
+          }
+          p {
+            margin: 15px auto 26px auto;
+            text-align: center;
+            font-size: 24px;
+            color: #222222;
           }
           div {
-            overflow: hidden;
-            .table_info {
-              display: inline-block;
-              max-width: 90px;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-            }
-          }
-        }
-      }
-      .VePagination {
-        text-align: center;
-        margin-top: 20px;
-      }
-      .el-dialog {
-        .el-dialog__header {
-          height: 40px;
-          background: rgba(255, 208, 33, 1);
-          .el-dialog__title {
-            display: inline-block;
+            display: flex;
             font-size: 16px;
-            transform: translateY(-5px);
-          }
-        }
-        .downLoad_tem {
-          width: 100%;
-          display: block;
-          text-align: right;
-          margin-bottom: 10px;
-          i {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            line-height: 16px;
-            text-align: center;
-            border: 1px solid #222222;
-            border-radius: 50%;
-            margin-left: 5px;
-          }
-        }
-        .el-dialog__body {
-          padding: 30px 30px 0;
-          .el-form {
-            overflow: hidden;
-            .el-form-item {
-              .el-input {
-                position: relative;
-                border: 1px solid #cccccc;
-                border-radius: 3px;
-                .el-input__inner {
-                  border-top-right-radius: 3px;
-                  border-bottom-right-radius: 3px;
-                }
-                .el-input-group__append {
-                  height: 38px;
-                  line-height: 38px;
-                  width: 50px;
-                  position: absolute;
-                  right: 8px;
-                  color: #999999;
-                  text-align: right;
-                  top: 1px;
-                  border: none;
-                  padding: 0;
-                  font-size: 12px;
-                }
-              }
-            }
-          }
-          .import_success {
-            > i {
-              display: block;
-              margin: auto;
-              width: 60px;
-              height: 60px;
-              background: url('../../assets/image/import.png') center;
-              background-size: cover;
-            }
-            p {
-              margin: 15px auto 26px auto;
-              text-align: center;
-              font-size: 24px;
-              color: #222222;
-            }
-            div {
-              display: flex;
-              font-size: 16px;
-              margin-bottom: 10px;
-              span {
-                text-align: center;
-                flex: 1;
-              }
-              span:nth-child(3) {
-                i {
-                  color: red;
-                }
-              }
-            }
-            ul {
-              width: 90%;
-              li {
-                text-align: left;
-                display: inline-block;
-                width: 25%;
-              }
-            }
-          }
-        }
-        .dialog-footer {
-          .el-button {
-            width: 120px;
-            height: 40px;
-            margin: -15px 15px 20px auto;
-            background: rgba(255, 208, 33, 1);
-            border-radius: 20px;
+            margin-bottom: 10px;
             span {
-              color: #222222;
+              text-align: center;
+              flex: 1;
             }
+            span:nth-child(3) {
+              i {
+                color: red;
+              }
+            }
+          }
+          ul {
+            width: 90%;
+            li {
+              text-align: left;
+              display: inline-block;
+              width: 25%;
+            }
+          }
+        }
+      }
+      .dialog-footer {
+        .el-button {
+          width: 120px;
+          height: 40px;
+          margin: -15px 15px 20px auto;
+          background: rgba(255, 208, 33, 1);
+          border-radius: 20px;
+          span {
+            color: #222222;
           }
         }
       }
     }
   }
+}
 </style>
