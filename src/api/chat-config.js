@@ -9,5 +9,6 @@ export default {
   endLive: 'FINISH_LIVE', // 结束直播
   download: 'DOWNLOAD', // 回放下载
   wechat_msg: 'WECHAT_INVITE_TEST', // 微信测试发送成功
-  MARKET_TOOL: 'MARKET_TOOL' // 营销工具 消息 具体详细类型由里面的type区分
+  MARKET_TOOL: 'MARKET_TOOL', // 营销工具 消息 具体详细类型由里面的type区分
+  charge: 'CHARGE' // 支付
 }
