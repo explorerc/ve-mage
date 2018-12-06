@@ -71,111 +71,119 @@
         </div>
       </div>
     </div>
-    <!--充值框-->
-    <message-box v-if="addMoneyShow"
-                 class="add-money-msg"
-                 width="530px"
-                 type="promt"
-                 header="充值"
-                 confirmText="下一步"
-                 @handleClick="payMoney">
-      <div class="mager-box message-box-content">
-        <div class="from-box">
-          <div class="from-row input-box">
-            <div class="from-title">当前余额</div>
-            <span style="line-height: 20px">{{billInfo.balance}}</span>元
-          </div>
-          <div class="from-row input-box">
-            <div class="from-title">充值金额</div>
-            <div class="from-content">
-              <div class="black-box">
-                <com-input style="width: 334px"
-                           type="text"
-                           v-model="amount"
-                           placeholder="20～20000"
-                           :value.sync="amount"
-                           :errorTips="amountError"
-                ></com-input>
+    <div class="money-box-wrap">
+      <!--充值框-->
+      <message-box v-if="addMoneyShow"
+                   class="add-money-msg"
+                   width="464px"
+                   type="promt"
+                   header=""
+                   confirmText="下一步"
+                   @handleClick="payMoney">
+        <div class="mager-box message-box-content">
+          <div class="from-box">
+            <div class="from-row input-box">
+              <div class="from-title">当前余额</div>
+              <div class="from-content">
+                <span style="line-height: 20px">¥ {{billInfo.balance}}</span>
+              </div>
+
+            </div>
+            <div class="from-row input-box">
+              <div class="from-title">充值金额</div>
+              <div class="from-content">
+                <div class="black-box">
+                  <com-input style=""
+                             type="text"
+                             v-model="amount"
+                             placeholder="20～20000"
+                             :value.sync="amount"
+                             :errorTips="amountError"
+                  ></com-input>
+                  <i class="money-sign">¥</i>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </message-box>
-    <!--支付框-->
-    <message-box v-if="payMoneyShow"
-                 class="pay-money-msg"
-                 width="530px"
-                 type="promt"
-                 @handleClick="paidMoney"
-                 header="充值">
-      <div class="mager-box message-box-content">
-        <div class="from-box">
-          <div class="from-row input-box">
-            <div class="from-title  modify-box"><span>充值金额</span></div>
-            <div class="from-content  modify-box" v-if="modifyMoneyShow">
-              <span>{{amount}}</span>元
-              <span class="modifiyMoney-btn" @click="modifyMoney">修改金额</span>
-            </div>
-            <div class="from-content" v-else>
-              <div class="black-box">
-                <com-input style="width: 250px"
-                           type="mobile"
-                           :value.sync="amount"
-                           :errorTips="amountError"
-                ></com-input>
-                <span class="save-money" @click="saveMoney">保存</span>
-                <span class="concel-money" @click="cancelMoney">取消</span>
+      </message-box>
+      <!--支付框-->
+      <message-box v-if="payMoneyShow"
+                   class="pay-money-msg"
+                   width="464px"
+                   type="promt"
+                   @handleClick="paidMoney"
+                   header="">
+        <div class="mager-box message-box-content">
+          <div class="from-box">
+            <div class="from-row input-box">
+              <div class="from-title  modify-box"><span>充值金额</span></div>
+              <div class="from-content  modify-box" v-if="modifyMoneyShow">
+                <span>¥ {{amount}}</span>
+                <i class="modifiyMoney-btn" @click="modifyMoney">修改金额</i>
+              </div>
+              <div class="from-content" v-else>
+                <div class="black-box" style="margin-top: 0px;">
+                  <com-input style=""
+                             type="mobile"
+                             :value.sync="amount"
+                             :errorTips="amountError"
+                  ></com-input>
+                  <i class="pay-money-sign">¥</i>
+                  <span class="save-money" @click="saveMoney">保存</span>
+                  <span class="concel-money" @click="cancelMoney">取消</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="from-row input-box">
-            <div class="from-title">扫码充值</div>
-            <div class="from-content">
-              <div class="black-box">
-                <div class="title">
-                  <button class="payway alipay" @click="alipayChange" ref="alipay" :disabled="alDisabled">支付宝</button>
-                  <button class="payway weixin" @click="wxpayChange" ref="wxpay" :disabled="wxDisabled">微信</button>
-                </div>
-                <div class="payImg">
-                  <img :src='codeSrc' alt="付款二维码">
-                  <p>
-                    请打开{{payway}}扫二维码
+            <div class="from-row input-box">
+              <div class="from-title">扫码充值</div>
+              <div class="from-content">
+                <div class="black-box">
+                  <div class="title">
+                    <button class="payway alipay" @click="payChange('支付宝')" ref="alipay" :disabled="alDisabled">支付宝充值
+                    </button>
+                    <button class="payway weixin" @click="payChange('微信')" ref="wxpay" :disabled="wxDisabled">微信充值
+                    </button>
+                  </div>
+                  <div class="pay-img-box">
+                    <div class="payImg">
+                      <img :src='codeSrc' alt="付款二维码">
+                    </div>
+                  </div>
+
+                  <p class="pay-des">
+                    {{payway}}扫一扫支付
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </message-box>
-    <!--充值成功框-->
-    <message-box v-if="successMoneyShow"
-                 class="paid-money-msg"
-                 width="530px"
-                 type="promt"
-                 @handleClick="finishMoney"
-                 header="充值">
-      <div class="message-box-content">
-        <div class="from-box">
-          <div class="from-row">
-            <div class="from-title">充值成功</div>
-            <span>当前余额</span>
-            <span style="line-height: 20px">{{parseFloat(amount) + parseFloat(billInfo.balance)}}</span>元
+      </message-box>
+      <!--充值成功框-->
+      <message-box v-if="successMoneyShow"
+                   class="paid-money-msg"
+                   width="464px"
+                   type="promt"
+                   @handleClick="finishMoney"
+                   header="">
+        <div class="message-box-content">
+          <div class="success-img">
+            <img src="../../assets/image/success@2x.png" alt="">
           </div>
-          <div class="from-row">
-            <img src="" alt="">
-          </div>
+          <p class="paid-success-text">充值成功</p>
+          <div class="paid-balance">当前账户余额 ¥{{parseFloat(amount) + parseFloat(billInfo.balance)}}</div>
         </div>
-      </div>
-    </message-box>
+      </message-box>
+    </div>
+
   </div>
 </template>
 
 <script>
   import assetService from 'src/api/asset-service'
   import VePagination from 'src/components/ve-pagination'
-  import { mapState } from 'vuex'
+  import {mapState} from 'vuex'
   import ChatService from '../../components/chat/ChatService'
   import ChatConfig from 'src/api/chat-config'
 
@@ -363,36 +371,32 @@
         })
         this.queryCode()
       },
-      // 支付方式切换
-      async alipayChange () {
-        this.payType = 'ALIPAY'
-        this.payway = '支付宝'
-        this.queryCode()
-        this.$refs.alipay.style.backgroundColor = '#FFD021'
-        this.$refs.wxpay.style.backgroundColor = '#ffffff'
-        this.wxDisabled = true
-        await setTimeout(() => {
-          this.wxDisabled = false
-        }, 500)
-      },
-      wxpayChange (e) {
-        this.payType = 'WXPAY'
-        this.payway = '微信'
-        this.queryCode()
-        this.$refs.alipay.style.backgroundColor = '#fff'
-        this.$refs.wxpay.style.backgroundColor = '#FFD021'
-        this.alDisabled = true
-        setTimeout(() => {
-          this.alDisabled = false
-        }, 500)
+      // 支付方式改变
+      payChange (way) {
+        if (way === '支付宝') {
+          this.payType = 'ALIPAY'
+          this.payway = way
+          this.queryCode()
+          this.$refs.alipay.style.backgroundColor = '#FFD021'
+          this.$refs.wxpay.style.backgroundColor = '#ffffff'
+          this.wxDisabled = true
+          setTimeout(() => {
+            this.wxDisabled = false
+          }, 500)
+        } else {
+          this.payType = 'WXPAY'
+          this.payway = way
+          this.queryCode()
+          this.$refs.alipay.style.backgroundColor = '#fff'
+          this.$refs.wxpay.style.backgroundColor = '#FFD021'
+          this.alDisabled = true
+          setTimeout(() => {
+            this.alDisabled = false
+          }, 500)
+        }
       },
       paidMoney (e) {
-        if (e.action === 'confirm') {
-          this.payMoneyShow = false
-          this.successMoneyShow = true
-        } else {
-          this.payMoneyShow = false
-        }
+        this.payMoneyShow = false
       },
       finishMoney () {
         this.successMoneyShow = false
@@ -416,270 +420,380 @@
 </script>
 
 <style lang="scss" scoped>
-@import 'assets/css/mixin.scss';
+  @import 'assets/css/mixin.scss';
 
-.asset-box {
-  margin: 30px;
-  .asset-header {
-    font-size: 0;
-    height: 170px;
-    margin-top: 20px;
-    img {
-      display: block;
-      margin: 10px auto;
-    }
-    .asset-header-item {
-      display: inline-block;
-      width: calc((100% - 40px) / 3);
-      height: 100%;
-      border-radius: 3px;
-      background-color: #fff;
-      vertical-align: middle;
-      border: solid 1px $color-bd;
-      &:nth-child(2) {
-        margin: 0 20px;
-      }
-      span {
+  .asset-box {
+    margin: 30px;
+    .asset-header {
+      font-size: 0;
+      height: 170px;
+      margin-top: 20px;
+      img {
         display: block;
-        width: 100%;
-        font-size: 16px;
-        text-align: center;
-        vertical-align: middle;
-
-        &:nth-child(1) {
-          margin-top: 20px;
-          font-size: 14px;
-          text-align: left;
-          margin-left: 20px;
-          color: #888;
-        }
-        &:nth-child(2),
-        &:nth-child(3) {
-          margin-top: 20px;
-        }
-        &:nth-child(3) {
-          font-size: 14px;
-          color: #888;
-        }
-        &.mid {
-          font-size: 24px;
-          margin-top: 0;
-          font-weight: bold;
-          color: $color-red;
-        }
-        &.mid-zhichu {
-          font-size: 24px;
-          margin-top: 3px;
-          font-weight: bold;
-        }
-        .zhichu-img {
-          margin: 16px auto;
-        }
-        .add-money {
-          display: inline-block;
-          width: 70px;
-          margin: -6px 40px 0 0 !important;
-          border: 1px solid #4b5afe;
-          text-align: center;
-          height: 30px;
-          border-radius: 20px;
-          line-height: 30px;
-          font-size: 14px;
-          color: #4b5afe;
-          cursor: pointer;
-          &:hover {
-            background-color: $color-default-hover;
-            border: 1px solid $color-default-hover;
-          }
-          &:active {
-            background-color: $color-default-active;
-            border: 1px solid $color-default-hover;
-          }
-        }
+        margin: 10px auto;
       }
-    }
-  }
-  .asset-list-box {
-    margin-top: 20px;
-    border: solid 1px $color-bd;
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .asset-list {
-    padding: 20px;
-    background-color: #fff;
-    .search-asset {
-      margin-top: 30px;
-      .asset-title {
-        font-size: 20px;
-      }
-      .search-item {
+      .asset-header-item {
         display: inline-block;
-        font-size: 14px;
-        .search-title {
-          margin-right: 10px;
+        width: calc((100% - 40px) / 3);
+        height: 100%;
+        border-radius: 3px;
+        background-color: #fff;
+        vertical-align: middle;
+        border: solid 1px $color-bd;
+        &:nth-child(2) {
+          margin: 0 20px;
         }
-      }
-      .flm {
-        margin: 0 20px;
-      }
-      .export-btn {
-        margin-top: 2px;
-        height: 36px;
-        line-height: 36px;
-      }
-    }
-  }
-  .asset-list-table {
-    padding: 20px;
-    background-color: #fff;
-    .page-pagination {
-      margin-top: 30px;
-      text-align: right;
-    }
-    .status {
-      color: #fc5659;
-    }
-    .success {
-      color: #43d2c2;
-    }
-  }
-  /*三个盒子的统一样式*/
-  .message-box-content {
-    position: relative;
-    font-size: 14px;
-    .tip-title {
-      display: block;
-      margin-top: 10px;
-      font-size: 16px;
-      padding: 16px 0 22px 0;
-      border-bottom: solid 1px $color-bd;
-    }
-    .from-box {
-      .input-box {
-        padding: 15px 10px 5px 0 !important;
-        .from-title {
-          padding-right: 30px !important;
-        }
-        .black-box {
-          margin-top: -10px;
-          .com-input {
-            width: 100%;
-          }
-        }
-      }
-      .from-row {
-        position: relative;
-        display: flex;
-        padding: 12px;
-        .from-title {
-          width: 120px;
-          text-align: right;
-          padding-right: 20px;
-          color: #555;
-        }
-        .error /deep/ {
-          .el-input__inner {
-            border: 1px solid $color-red;
-          }
+        span {
+          display: block;
+          width: 100%;
+          font-size: 16px;
+          text-align: center;
+          vertical-align: middle;
 
-          .default-button {
-            border: 1px solid $color-red;
-          }
-        }
-        .from-content {
-          position: relative;
-          flex: 1;
-          .error-msg {
-            display: block;
-            color: $color-red;
-            margin-left: 10px;
+          &:nth-child(1) {
+            margin-top: 20px;
+            font-size: 14px;
             text-align: left;
+            margin-left: 20px;
+            color: #888;
           }
-          .input-box {
-            width: 400px;
+          &:nth-child(2),
+          &:nth-child(3) {
+            margin-top: 20px;
           }
-          .from-msg-tip {
-            position: absolute;
-            top: -2px;
-            width: 100%;
-            left: 200px;
+          &:nth-child(3) {
+            font-size: 14px;
+            color: #888;
           }
-          .com-input {
-            margin-right: 6px;
+          &.mid {
+            font-size: 24px;
+            margin-top: 0;
+            font-weight: bold;
+            color: $color-red;
           }
-          .modifiyMoney-btn {
-            margin-left: 30px;
-            cursor: pointer;
+          &.mid-zhichu {
+            font-size: 24px;
+            margin-top: 3px;
+            font-weight: bold;
+          }
+          .zhichu-img {
+            margin: 16px auto;
+          }
+          .add-money {
+            display: inline-block;
+            width: 70px;
+            margin: -6px 40px 0 0 !important;
+            border: 1px solid #4b5afe;
+            text-align: center;
+            height: 30px;
+            border-radius: 20px;
+            line-height: 30px;
+            font-size: 14px;
             color: #4b5afe;
+            cursor: pointer;
+            &:hover {
+              background-color: $color-default-hover;
+              border: 1px solid $color-default-hover;
+            }
+            &:active {
+              background-color: $color-default-active;
+              border: 1px solid $color-default-hover;
+            }
           }
         }
       }
     }
-    .red-bag-msgbox {
-      .ve-message-box .ve-message-box__btns {
-        text-align: center;
+    .asset-list-box {
+      margin-top: 20px;
+      border: solid 1px $color-bd;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .asset-list {
+      padding: 20px;
+      background-color: #fff;
+      .search-asset {
+        margin-top: 30px;
+        .asset-title {
+          font-size: 20px;
+        }
+        .search-item {
+          display: inline-block;
+          font-size: 14px;
+          .search-title {
+            margin-right: 10px;
+          }
+        }
+        .flm {
+          margin: 0 20px;
+        }
+        .export-btn {
+          margin-top: 2px;
+          height: 36px;
+          line-height: 36px;
+        }
       }
     }
-  }
-  /* paymoney 盒子的样式*/
-  .pay-money-msg {
+    .asset-list-table {
+      padding: 20px;
+      background-color: #fff;
+      .page-pagination {
+        margin-top: 30px;
+        text-align: right;
+      }
+      .status {
+        color: #fc5659;
+      }
+      .success {
+        color: #43d2c2;
+      }
+    }
+    /*三个盒子的统一样式*/
     .message-box-content {
+      position: relative;
+      font-size: 14px;
+      .tip-title {
+        display: block;
+        margin-top: 10px;
+        font-size: 16px;
+        padding: 16px 0 22px 0;
+        border-bottom: solid 1px $color-bd;
+      }
       .from-box {
         .input-box {
+          padding: 15px 0px 15px 0 !important;
           .from-title {
-            margin-left: 60px;
+            padding-right: 30px !important;
+          }
+          .black-box {
+            margin-top: -10px;
+            .money-sign {
+              position: absolute;
+              top: 0;
+              right: 10px;
+              color: #555;
+            }
+            .pay-money-sign {
+              position: absolute;
+              top: 0;
+              right: 140px;
+              color: #555;
+            }
           }
         }
         .from-row {
-          .from-content {
-            &.modify-box {
-              height: 30px;
+          position: relative;
+          display: flex;
+          padding: 12px;
+          .from-title {
+            width: 100px;
+            text-align: right;
+            padding-right: 20px;
+            color: #555;
+            font-size: 14px;
+          }
+          .error /deep/ {
+            .el-input__inner {
+              border: 1px solid $color-red;
             }
-            .title {
-              font-size: 0;
-              margin-top: 10px;
-              .payway {
-                display: inline-block;
-                width: 70px;
-                height: 30px;
-                font-size: 14px;
-                border: 1px solid #e2e2e2;
-                cursor: pointer;
-                &.alipay {
-                  border-right: 0px;
-                  background-color: #ffd021;
-                }
-              }
-            }
-            .black-box {
-              .com-input {
-                width: 60% !important;
-              }
-              .save-money,
-              .concel-money {
-                cursor: pointer;
-                margin-left: 10px;
-                color: #4b5afe;
-              }
-            }
-            .payImg {
-              height: 167px;
-              margin-top: 8px;
-              img {
-                width: 140px;
-                height: 140px;
-                display: inline-block;
-                margin-bottom: 4px;
-              }
+
+            .default-button {
+              border: 1px solid $color-red;
             }
           }
-          .com-input {
-            margin-right: 6px;
+          .from-content {
+            position: relative;
+            flex: 1;
+            span {
+              font-family: PingFangSC-Semibold;
+              color: #222;
+              font-weight: 600;
+              font-size: 20px;
+            }
+            .error-msg {
+              display: block;
+              color: $color-red;
+              margin-left: 10px;
+              text-align: left;
+            }
+            .input-box {
+              width: 400px;
+            }
+            .from-msg-tip {
+              position: absolute;
+              top: -2px;
+              width: 100%;
+              left: 200px;
+            }
+            .com-input {
+              margin-right: 6px;
+            }
+            .modifiyMoney-btn {
+              margin-left: 30px;
+              cursor: pointer;
+              color: #4b5afe;
+            }
           }
         }
       }
     }
+    .money-box-wrap /deep/ {
+      border: 1px solid red;
+      .message-box-content {
+        .from-box .from-row .from-content .com-input {
+          width: 100% !important;
+        }
+      }
+      .ve-message-box__wrapper .ve-message-box {
+        padding-bottom: 0;
+        &:before {
+          height: 0 !important;
+        }
+        .ve-message-box__header {
+          height: 40px;
+          line-height: 40px;
+          background-color: #FFD021;
+          padding-bottom: 0;
+          &:before {
+            content: '充值';
+            font-size: 16px;
+            color: #222;
+          }
+          .icon-close:before {
+            display: inline-block;
+            /*font-size: 11px;*/
+            color: #555555;
+          }
+        }
+        .ve-message-box__btns {
+          margin-top: 91px;
+          .button--primary {
+          }
+        }
+      }
+    }
+    .pay-money-msg /deep/ {
+      .ve-message-box__btns {
+        border: 1px solid green;
+        display: none !important;
+      }
+    }
+    .paid-money-msg /deep/ {
+      .ve-message-box__btns {
+        border: 1px solid green;
+        display: none !important;
+      }
+    }
+    /* paymoney 盒子的样式*/
+    .pay-money-msg {
+      .message-box-content {
+        .from-box {
+          .from-row {
+            line-height: 30px;
+            .from-content {
+              &.modify-box {
+                height: 34px;
+                line-height: 30px;
+              }
+              .title {
+                font-size: 0;
+                margin-top: 10px;
+                .payway {
+                  display: inline-block;
+                  width: 160px;
+                  height: 34px;
+                  font-size: 14px;
+                  border: 1px solid #e2e2e2;
+                  cursor: pointer;
+                  &.alipay {
+                    border-right: 0px;
+                    background-color: #ffd021;
+                  }
+                }
+              }
+              .black-box {
+                /*position: relative;*/
+                .com-input {
+                  width: 60% !important;
+                }
+                .save-money,
+                .concel-money {
+                  cursor: pointer;
+                  margin-left: 10px;
+                  color: #4B5AFE;
+                  font-weight: 400;
+                  font-size: 14px;
+                }
+              }
+              .pay-img-box {
+                .payImg {
+                  /*height: 167px;*/
+                  /*padding: 5px;*/
+                  border: 1px solid #E2E2E2;
+                  display: inline-block;
+                  margin: 20px 0 0 57px;
+                  vertical-align: auto;
+                  height: 120px;
+                  width: 120px;
+                  overflow: hidden;
+                  img {
+                    width: 120px;
+                    height: 120px;
+                    display: block;
+                  }
+                }
+              }
+              .payImg {
+                /*height: 167px;*/
+                /*padding: 5px;*/
+                border: 1px solid #E2E2E2;
+                display: inline-block;
+                margin: 20px 0 0 57px;
+                vertical-align: auto;
+                height: 120px;
+                width: 120px;
+                overflow: hidden;
+                img {
+                  width: 120px;
+                  height: 120px;
+                  display: block;
+                }
+              }
+              .pay-des {
+                margin: 0px 0 0 61px;
+                font-size: 14px;
+                color: #555555;
+              }
+            }
+            .com-input {
+              margin-right: 6px;
+            }
+          }
+        }
+      }
+    }
+    .paid-money-msg {
+      .success-img {
+        text-align: center;
+        height: 89px;
+        margin-top: 20px;
+        img {
+          width: 120px;
+        }
+      }
+      .paid-success-text {
+        text-align: center;
+        font-size: 24px;
+        color: #222222;
+        margin-bottom: 10px;
+      }
+      .paid-balance {
+        text-align: center;
+        font-size: 14px;
+        color: #222222;
+        margin-bottom: 48px;
+
+      }
+    }
   }
-}
 </style>

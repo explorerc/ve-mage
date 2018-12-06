@@ -123,15 +123,15 @@ export default {
       phoneStatus: false,
       code: '',
       type: 'password',
-      key: '',
+      key: '', // ?
       isProhibit: true,
       isSend: false,
       second: 60,
-      timerr: '',
+      timerr: '', // ?
       phoneKey: '',
       isImg: false,
       cap: null,
-      accountOpacity: 0,
+      accountOpacity: 0, // ??
       mobileOpacity: 0,
       accountError: '',
       mobileError: '',
@@ -203,7 +203,7 @@ export default {
       }
     },
     change (type) {
-      this.type = type
+      this.type = type // ?
     },
     accountSubmit () {
       this.checkAccountForm()
