@@ -661,7 +661,6 @@
           }
           .icon-close:before {
             display: inline-block;
-            /*font-size: 11px;*/
             color: #555555;
           }
         }
@@ -727,8 +726,6 @@
               }
               .pay-img-box {
                 .payImg {
-                  /*height: 167px;*/
-                  /*padding: 5px;*/
                   border: 1px solid #E2E2E2;
                   display: inline-block;
                   margin: 20px 0 0 57px;
@@ -741,22 +738,6 @@
                     height: 120px;
                     display: block;
                   }
-                }
-              }
-              .payImg {
-                /*height: 167px;*/
-                /*padding: 5px;*/
-                border: 1px solid #E2E2E2;
-                display: inline-block;
-                margin: 20px 0 0 57px;
-                vertical-align: auto;
-                height: 120px;
-                width: 120px;
-                overflow: hidden;
-                img {
-                  width: 120px;
-                  height: 120px;
-                  display: block;
                 }
               }
               .pay-des {
