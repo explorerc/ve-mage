@@ -329,6 +329,7 @@
       changeTemp (idx) {
         this.$messageBox({
           header: '',
+          width: '400px',
           content: '更换邮件模板会导致已编辑的内容丢失',
           cancelText: '取消',
           confirmText: '确认替换',
