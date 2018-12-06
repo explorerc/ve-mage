@@ -258,10 +258,10 @@ export default {
         line-height: 34px;
       }
       .status {
-        color: #FC5659;
+        color: #fc5659;
       }
       .success {
-        color: #43D2C2;
+        color: #43d2c2;
       }
     }
   }
