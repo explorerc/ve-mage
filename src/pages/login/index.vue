@@ -449,7 +449,7 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 600px;
+      width: 375px;
       // margin: 260px auto;
       text-align: center;
       position: absolute;
@@ -466,7 +466,7 @@ export default {
         margin-top: 12px;
       }
       img {
-        width: 490px;
+        width: 525px;
         margin: 30px 0 0 -25px;
         position: relative;
         right: 40px;
