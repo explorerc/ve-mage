@@ -1,15 +1,13 @@
 <template>
   <div class="clearfix login-container">
     <div class="v-left">
-      <p class="v-logo">
-        微吼知客
-      </p>
+      <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
-          微吼知客
+          智能营销平台
         </p>
         <p class="v-subtitle">
-          提供专属直播间、加速企业营销、获客、变现
+          全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
         <img src="../../assets/image/login@2x.png" alt="">
       </div>
@@ -451,13 +449,12 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 600px;
-      // margin: 260px auto;
+      width: 100%;
       text-align: center;
       position: absolute;
       top: 20%;
-      left: 50%;
-      margin-left: -300px;
+      left: 0%;
+      transform: translate(0%, 0%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -468,8 +465,8 @@ export default {
         margin-top: 12px;
       }
       img {
-        width: 490px;
-        margin: 55px 0 0 -25px;
+        width: 62%;
+        margin: 30px 0 0 0;
       }
     }
   }
@@ -483,6 +480,19 @@ export default {
       position: absolute;
       bottom: 15px;
       text-align: center;
+      color: #999;
+      font-size: 14px;
+      font-family: 'PingFang SC', 'Helvetica Neue', Helvetica,
+        'Hiragino Sans GB', 'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial,
+        sans-serif;
+      em {
+        position: relative;
+        bottom: 1px;
+      }
+      a {
+        color: #999;
+        font-size: 14px;
+      }
     }
     .primary-button {
       display: block;
