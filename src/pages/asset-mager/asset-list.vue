@@ -402,6 +402,7 @@
         }
       },
       finishMoney () {
+        this.queryAccountInfo()
         this.successMoneyShow = false
       }
       // withdrawClose (res) {
