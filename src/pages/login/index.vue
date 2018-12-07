@@ -7,7 +7,7 @@
           智能营销平台
         </p>
         <p class="v-subtitle">
-          提供专属直播间、加速企业营销、获客、变现
+          全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
         <img src="../../assets/image/login@2x.png" alt="">
       </div>
@@ -449,13 +449,13 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 375px;
+      width: 600px;
       // margin: 260px auto;
       text-align: center;
       position: absolute;
-      top: 50%;
+      top: 20%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, 0%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -468,8 +468,8 @@ export default {
       img {
         width: 525px;
         margin: 30px 0 0 -25px;
-        position: relative;
-        right: 40px;
+        // position: relative;
+        // right: 40px;
       }
     }
   }
