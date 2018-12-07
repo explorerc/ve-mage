@@ -94,7 +94,7 @@
             <div class="from-content">
               <div class="black-box">
                 <com-input style="width: 334px"
-                           type="text"
+                           type="float"
                            v-model="amount"
                            placeholder="20～20000"
                            :value.sync="amount"

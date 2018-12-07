@@ -153,6 +153,13 @@ export default {
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
         }
+      } else if (this.type === 'float') {
+        let match = value.match(/\d{1,8}(\.\d{0,2})?/)
+        let _value = match ? match[0] : ''
+        if (this.max && _value - 0 > this.max - 0) {
+          _value = this.max
+        }
+        this.innerValue = _value
       } else if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
@@ -247,7 +254,7 @@ export default {
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;
     background-image: none;
-    border: 1px solid #CECECE;
+    border: 1px solid #cecece;
     border-radius: 4px;
     transition: all 0.3s;
     padding: 0 10px;
