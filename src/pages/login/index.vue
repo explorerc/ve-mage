@@ -468,6 +468,8 @@ export default {
       img {
         width: 490px;
         margin: 30px 0 0 -25px;
+        position: relative;
+        right: 40px;
       }
     }
   }
