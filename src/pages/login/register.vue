@@ -1,12 +1,10 @@
 <template>
   <div class="clearfix register-container">
     <div class="v-left">
-      <p class="v-logo">
-        微吼知客
-      </p>
+      <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
-          微吼知客
+          智能营销平台
         </p>
         <p class="v-subtitle">
           提供专属直播间、加速企业营销、获客、变现
@@ -72,7 +70,7 @@
         <router-link class="v-login" to="/login">企业登录</router-link>
       </div>
       <div class="v-info">
-        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> <em>|</em> <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> <em>|</em> <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
       </div>
     </div>
     <message-box v-show="show"
@@ -343,8 +341,12 @@ export default {
     }
     .v-content {
       width: 375px;
-      margin: 260px auto;
+      // margin: 260px auto;
       text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -356,7 +358,9 @@ export default {
       }
       img {
         width: 525px;
-        margin: 55px 0 0 -25px;
+        margin: 30px 0 0 -25px;
+        position: relative;
+        right: 40px;
       }
     }
   }
@@ -449,6 +453,19 @@ export default {
       position: absolute;
       bottom: 15px;
       text-align: center;
+      color: #999;
+      font-size: 14px;
+      font-family: 'PingFang SC', 'Helvetica Neue', Helvetica,
+        'Hiragino Sans GB', 'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial,
+        sans-serif;
+      em {
+        position: relative;
+        bottom: 1px;
+      }
+      a {
+        color: #999;
+        font-size: 14px;
+      }
     }
   }
   .ve-message-box__wrapper {
