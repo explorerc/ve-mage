@@ -75,113 +75,119 @@
         </div>
       </div>
     </div>
-    <!--充值框-->
-    <message-box v-if="addMoneyShow"
-                 class="add-money-msg"
-                 width="530px"
-                 type="promt"
-                 header="充值"
-                 confirmText="下一步"
-                 @handleClick="payMoney">
-      <div class="mager-box message-box-content">
-        <div class="from-box">
-          <div class="from-row input-box">
-            <div class="from-title">当前余额</div>
-            <span style="line-height: 20px">{{billInfo.balance}}</span>元
-          </div>
-          <div class="from-row input-box">
-            <div class="from-title">充值金额</div>
-            <div class="from-content">
-              <div class="black-box">
-                <com-input style="width: 334px"
-                           type="float"
-                           v-model="amount"
-                           placeholder="20～20000"
-                           :value.sync="amount"
-                           :errorTips="amountError"
-                ></com-input>
+    <div class="money-box-wrap">
+      <!--充值框-->
+      <message-box v-if="addMoneyShow"
+                   class="add-money-msg"
+                   width="464px"
+                   type="promt"
+                   header=""
+                   confirmText="下一步"
+                   @handleClick="payMoney">
+        <div class="mager-box message-box-content">
+          <div class="from-box">
+            <div class="from-row input-box">
+              <div class="from-title">当前余额</div>
+              <div class="from-content">
+                <span style="line-height: 20px">¥ {{billInfo.balance}}</span>
+              </div>
+
+            </div>
+            <div class="from-row input-box">
+              <div class="from-title">充值金额</div>
+              <div class="from-content">
+                <div class="black-box">
+                  <com-input style=""
+                             type="float"
+                             v-model="amount"
+                             placeholder="20～20000"
+                             :value.sync="amount"
+                             :errorTips="amountError"
+                  ></com-input>
+                  <i class="money-sign">¥</i>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </message-box>
-    <!--支付框-->
-    <message-box v-if="payMoneyShow"
-                 class="pay-money-msg"
-                 width="530px"
-                 type="promt"
-                 @handleClick="paidMoney"
-                 header="充值">
-      <div class="mager-box message-box-content">
-        <div class="from-box">
-          <div class="from-row input-box">
-            <div class="from-title  modify-box"><span>充值金额</span></div>
-            <div class="from-content  modify-box" v-if="modifyMoneyShow">
-              <span>{{amount}}</span>元
-              <span class="modifiyMoney-btn" @click="modifyMoney">修改金额</span>
-            </div>
-            <div class="from-content" v-else>
-              <div class="black-box">
-                <com-input style="width: 250px"
-                           type="float"
-                           :value.sync="amount"
-                           :errorTips="amountError"
-                ></com-input>
-                <span class="save-money" @click="saveMoney">保存</span>
-                <span class="concel-money" @click="cancelMoney">取消</span>
+      </message-box>
+      <!--支付框-->
+      <message-box v-if="payMoneyShow"
+                   class="pay-money-msg"
+                   width="464px"
+                   type="promt"
+                   @handleClick="paidMoney"
+                   header="">
+        <div class="mager-box message-box-content">
+          <div class="from-box">
+            <div class="from-row input-box">
+              <div class="from-title  modify-box"><span>充值金额</span></div>
+              <div class="from-content  modify-box" v-if="modifyMoneyShow">
+                <span>¥ {{amount}}</span>
+                <i class="modifiyMoney-btn" @click="modifyMoney">修改金额</i>
+              </div>
+              <div class="from-content" v-else>
+                <div class="black-box" style="margin-top: 0px;">
+                  <com-input style=""
+                             type="float"
+                             :value.sync="amount"
+                             :errorTips="amountError"
+                  ></com-input>
+                  <i class="pay-money-sign">¥</i>
+                  <span class="save-money" @click="saveMoney">保存</span>
+                  <span class="concel-money" @click="cancelMoney">取消</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="from-row input-box">
-            <div class="from-title">扫码充值</div>
-            <div class="from-content">
-              <div class="black-box">
-                <div class="title">
-                  <button class="payway alipay" @click="alipayChange" ref="alipay" :disabled="alDisabled">支付宝</button>
-                  <button class="payway weixin" @click="wxpayChange" ref="wxpay" :disabled="wxDisabled">微信</button>
-                </div>
-                <div class="payImg">
-                  <img :src='codeSrc' alt="付款二维码">
-                  <p>
-                    请打开{{payway}}扫二维码
+            <div class="from-row input-box">
+              <div class="from-title">扫码充值</div>
+              <div class="from-content">
+                <div class="black-box">
+                  <div class="title">
+                    <button class="payway alipay" @click="payChange('支付宝')" ref="alipay"  :class='{"active":payType === "ALIPAY"}'>支付宝充值
+                    </button>
+                    <button class="payway weixin" @click="payChange('微信')" ref="wxpay" :class='{"active":payType === "WXPAY"}'>微信充值
+                    </button>
+                  </div>
+                  <div class="pay-img-box">
+                    <div class="payImg">
+                      <img :src='codeSrc' alt="付款二维码">
+                    </div>
+                  </div>
+
+                  <p class="pay-des">
+                    {{payway}}扫一扫支付
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </message-box>
-    <!--充值成功框-->
-    <message-box v-if="successMoneyShow"
-                 class="paid-money-msg"
-                 width="530px"
-                 type="promt"
-                 @handleClick="finishMoney"
-                 header="充值">
-      <div class="message-box-content">
-        <div class="from-box">
-          <div class="from-row">
-            <div class="from-title">充值成功</div>
-            <span>当前余额</span>
-            <span style="line-height: 20px">{{parseFloat(amount) + parseFloat(billInfo.balance)}}</span>元
+      </message-box>
+      <!--充值成功框-->
+      <message-box v-if="successMoneyShow"
+                   class="paid-money-msg"
+                   width="464px"
+                   type="promt"
+                   @handleClick="finishMoney"
+                   header="">
+        <div class="message-box-content">
+          <div class="success-img">
+            <img src="../../assets/image/success@2x.png" alt="">
           </div>
-          <div class="from-row">
-            <img src="" alt="">
-          </div>
+          <p class="paid-success-text">充值成功</p>
+          <div class="paid-balance">当前账户余额 ¥{{parseFloat(amount).toFixed(2) + parseFloat(billInfo.balance).toFixed(2)}}</div>
         </div>
-      </div>
-    </message-box>
-    <!-- 提现组件 -->
-    <com-withdraw v-if='showWithdraw' @withdrawClose='withdrawClose'></com-withdraw>
+      </message-box>
+    </div>
+
   </div>
 </template>
 
 <script>
   import assetService from 'src/api/asset-service'
   import VePagination from 'src/components/ve-pagination'
-  import { mapState } from 'vuex'
+  import {mapState} from 'vuex'
   import ChatService from '../../components/chat/ChatService'
   import ChatConfig from 'src/api/chat-config'
   import comWithdraw from './components/com-withdraw'
@@ -370,36 +376,32 @@
         })
         this.queryCode()
       },
-      // 支付方式切换
-      async alipayChange () {
-        this.payType = 'ALIPAY'
-        this.payway = '支付宝'
-        this.queryCode()
-        this.$refs.alipay.style.backgroundColor = '#FFD021'
-        this.$refs.wxpay.style.backgroundColor = '#ffffff'
-        this.wxDisabled = true
-        await setTimeout(() => {
-          this.wxDisabled = false
-        }, 500)
-      },
-      wxpayChange (e) {
-        this.payType = 'WXPAY'
-        this.payway = '微信'
-        this.queryCode()
-        this.$refs.alipay.style.backgroundColor = '#fff'
-        this.$refs.wxpay.style.backgroundColor = '#FFD021'
-        this.alDisabled = true
-        setTimeout(() => {
-          this.alDisabled = false
-        }, 500)
+      // 支付方式改变
+      payChange (way) {
+        if (way === '支付宝') {
+          this.payType = 'ALIPAY'
+          this.payway = way
+          this.queryCode()
+          this.$refs.alipay.style.backgroundColor = '#FFD021'
+          this.$refs.wxpay.style.backgroundColor = '#ffffff'
+          this.wxDisabled = true
+          setTimeout(() => {
+            this.wxDisabled = false
+          }, 500)
+        } else {
+          this.payType = 'WXPAY'
+          this.payway = way
+          this.queryCode()
+          this.$refs.alipay.style.backgroundColor = '#fff'
+          this.$refs.wxpay.style.backgroundColor = '#FFD021'
+          this.alDisabled = true
+          setTimeout(() => {
+            this.alDisabled = false
+          }, 500)
+        }
       },
       paidMoney (e) {
-        if (e.action === 'confirm') {
-          this.payMoneyShow = false
-          this.successMoneyShow = true
-        } else {
-          this.payMoneyShow = false
-        }
+        this.payMoneyShow = false
       },
       finishMoney () {
         this.queryAccountInfo()
@@ -580,14 +582,23 @@
     }
     .from-box {
       .input-box {
-        padding: 15px 10px 5px 0 !important;
+        padding: 15px 0px 15px 0 !important;
         .from-title {
           padding-right: 30px !important;
         }
         .black-box {
           margin-top: -10px;
-          .com-input {
-            width: 100%;
+          .money-sign {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            color: #555;
+          }
+          .pay-money-sign {
+            position: absolute;
+            top: 2px;
+            right: 140px;
+            color: #555;
           }
         }
       }
@@ -596,10 +607,11 @@
         display: flex;
         padding: 12px;
         .from-title {
-          width: 120px;
+          width: 100px;
           text-align: right;
           padding-right: 20px;
           color: #555;
+          font-size: 14px;
         }
         .error /deep/ {
           .el-input__inner {
@@ -613,6 +625,12 @@
         .from-content {
           position: relative;
           flex: 1;
+          span {
+            font-family: PingFangSC-Semibold;
+            color: #222;
+            font-weight: 600;
+            font-size: 20px;
+          }
           .error-msg {
             display: block;
             color: $color-red;
@@ -639,43 +657,93 @@
         }
       }
     }
-    .red-bag-msgbox {
-      .ve-message-box .ve-message-box__btns {
-        text-align: center;
+  }
+  .money-box-wrap /deep/ {
+    border: 1px solid red;
+    .message-box-content {
+      .from-box .from-row .from-content .com-input {
+        width: 100% !important;
       }
+    }
+    .ve-message-box__wrapper .ve-message-box {
+      padding-bottom: 0;
+      &:before {
+        height: 0 !important;
+      }
+      .ve-message-box__header {
+        height: 40px;
+        line-height: 40px;
+        background-color: #ffd021;
+        padding-bottom: 0;
+        &:before {
+          content: '充值';
+          font-size: 16px;
+          color: #222;
+        }
+        .icon-close:before {
+          display: inline-block;
+          color: #555555;
+        }
+      }
+      .ve-message-box__btns {
+        margin-top: 91px;
+        .button--primary {
+        }
+      }
+    }
+  }
+  .pay-money-msg /deep/ {
+    .ve-message-box__btns {
+      border: 1px solid green;
+      display: none !important;
+    }
+  }
+  .paid-money-msg /deep/ {
+    .ve-message-box__btns {
+      border: 1px solid green;
+      display: none !important;
     }
   }
   /* paymoney 盒子的样式*/
   .pay-money-msg {
     .message-box-content {
       .from-box {
-        .input-box {
-          .from-title {
-            margin-left: 60px;
-          }
-        }
         .from-row {
+          line-height: 30px;
           .from-content {
             &.modify-box {
-              height: 30px;
+              height: 34px;
+              line-height: 30px;
             }
             .title {
               font-size: 0;
               margin-top: 10px;
               .payway {
                 display: inline-block;
-                width: 70px;
-                height: 30px;
+                width: 160px;
+                height: 34px;
                 font-size: 14px;
-                border: 1px solid #e2e2e2;
                 cursor: pointer;
+                border: none;
+                background: #fff;
+                border: 1px solid #e2e2e2;
                 &.alipay {
+                  border-radius: 4px 0px 0px 4px;
                   border-right: 0px;
                   background-color: #ffd021;
+                }
+                &.weixin {
+                  border-left: 0px;
+                  border-radius: 0px 4px 4px 0px;
+                }
+                &.active {
+                  background-color: #ffd021;
+                  border: none;
                 }
               }
             }
             .black-box {
+              /*position: relative;*/
               .com-input {
                 width: 60% !important;
               }
@@ -684,17 +752,30 @@
                 cursor: pointer;
                 margin-left: 10px;
                 color: #4b5afe;
+                font-weight: 400;
+                font-size: 14px;
               }
             }
-            .payImg {
-              height: 167px;
-              margin-top: 8px;
-              img {
-                width: 140px;
-                height: 140px;
+            .pay-img-box {
+              .payImg {
+                border: 1px solid #e2e2e2;
                 display: inline-block;
-                margin-bottom: 4px;
+                margin: 20px 0 0 57px;
+                vertical-align: auto;
+                height: 120px;
+                width: 120px;
+                overflow: hidden;
+                img {
+                  width: 120px;
+                  height: 120px;
+                  display: block;
+                }
               }
+            }
+            .pay-des {
+              margin: 0px 0 0 61px;
+              font-size: 14px;
+              color: #555555;
             }
           }
           .com-input {
@@ -702,6 +783,28 @@
           }
         }
       }
+    }
+  }
+  .paid-money-msg {
+    .success-img {
+      text-align: center;
+      height: 89px;
+      margin-top: 20px;
+      img {
+        width: 120px;
+      }
+    }
+    .paid-success-text {
+      text-align: center;
+      font-size: 24px;
+      color: #222222;
+      margin-bottom: 10px;
+    }
+    .paid-balance {
+      text-align: center;
+      font-size: 14px;
+      color: #222222;
+      margin-bottom: 48px;
     }
   }
 }
