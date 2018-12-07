@@ -176,7 +176,7 @@
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{parseFloat(amount).toFixed(2) + parseFloat(billInfo.balance).toFixed(2)}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{(parseFloat(amount *1) + parseFloat(billInfo.balance *1)).toFixed(2)}}</div>
         </div>
       </message-box>
     </div>
@@ -215,7 +215,7 @@
           type: '',
           date: '',
           page: 1,
-          pageSize: 10
+          pageSize: 25
         },
         addMoneyShow: false, // 充值框隐藏
         payMoneyShow: false, // 支付框隐藏
@@ -323,7 +323,7 @@
       checkAmount () {
         const newAmount = this.amount
         if (newAmount === '' || newAmount < 0 || newAmount > 20000) {
-          this.amountError = '请输入20～20000之间的数字'
+          this.amountError = '请输入10～20000之间的数字'
           return false
         } else {
           this.amountError = ''
