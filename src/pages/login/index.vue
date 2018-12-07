@@ -449,13 +449,12 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 600px;
-      // margin: 260px auto;
+      width: 100%;
       text-align: center;
       position: absolute;
       top: 20%;
-      left: 50%;
-      transform: translate(-50%, 0%);
+      left: 0%;
+      transform: translate(0%, 0%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -466,10 +465,8 @@ export default {
         margin-top: 12px;
       }
       img {
-        width: 525px;
-        margin: 30px 0 0 -25px;
-        // position: relative;
-        // right: 40px;
+        width: 62%;
+        margin: 30px 0 0 0;
       }
     }
   }
