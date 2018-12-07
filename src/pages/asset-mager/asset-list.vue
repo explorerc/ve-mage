@@ -124,7 +124,7 @@
             <div class="from-content" v-else>
               <div class="black-box">
                 <com-input style="width: 250px"
-                           type="mobile"
+                           type="float"
                            :value.sync="amount"
                            :errorTips="amountError"
                 ></com-input>
