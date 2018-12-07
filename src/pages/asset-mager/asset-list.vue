@@ -316,7 +316,7 @@
       // 检查输入的金额
       checkAmount () {
         const newAmount = this.amount
-        if (newAmount === '' || newAmount < 20 || newAmount > 20000) {
+        if (newAmount === '' || newAmount < 0 || newAmount > 20000) {
           this.amountError = '请输入20～20000之间的数字'
           return false
         } else {
