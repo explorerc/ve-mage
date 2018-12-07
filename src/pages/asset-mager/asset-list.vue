@@ -94,7 +94,7 @@
               <div class="from-content">
                 <div class="black-box">
                   <com-input style=""
-                             type="text"
+                             type="mobile"
                              v-model="amount"
                              placeholder="20～20000"
                              :value.sync="amount"
@@ -399,6 +399,7 @@
         this.payMoneyShow = false
       },
       finishMoney () {
+        this.queryAccountInfo()
         this.successMoneyShow = false
       }
     },
