@@ -1,9 +1,7 @@
 <template>
   <div class="clearfix register-container">
     <div class="v-left">
-      <p class="v-logo">
-        微吼知客
-      </p>
+      <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
           智能营销平台
@@ -360,9 +358,9 @@ export default {
       }
       img {
         width: 525px;
-        margin: 30px 0 0 -25px;    
+        margin: 30px 0 0 -25px;
         position: relative;
-    right: 40px;
+        right: 40px;
       }
     }
   }
@@ -457,6 +455,9 @@ export default {
       text-align: center;
       color: #999;
       font-size: 14px;
+      font-family: 'PingFang SC', 'Helvetica Neue', Helvetica,
+        'Hiragino Sans GB', 'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial,
+        sans-serif;
       em {
         position: relative;
         bottom: 1px;
