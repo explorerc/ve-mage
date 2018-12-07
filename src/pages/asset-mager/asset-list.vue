@@ -140,9 +140,9 @@
               <div class="from-content">
                 <div class="black-box">
                   <div class="title">
-                    <button class="payway alipay" @click="payChange('支付宝')" ref="alipay" :disabled="alDisabled">支付宝充值
+                    <button class="payway alipay" @click="payChange('支付宝')" ref="alipay"  :class='{"active":payType === "ALIPAY"}'>支付宝充值
                     </button>
-                    <button class="payway weixin" @click="payChange('微信')" ref="wxpay" :disabled="wxDisabled">微信充值
+                    <button class="payway weixin" @click="payChange('微信')" ref="wxpay" :class='{"active":payType === "WXPAY"}'>微信充值
                     </button>
                   </div>
                   <div class="pay-img-box">
@@ -421,361 +421,371 @@
 </script>
 
 <style lang="scss" scoped>
-  @import 'assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 
-  .asset-box {
-    margin: 30px;
-    .asset-header {
-      font-size: 0;
-      height: 170px;
-      margin-top: 20px;
-      img {
-        display: block;
-        margin: 10px auto;
-      }
-      .asset-header-item {
-        display: inline-block;
-        width: calc((100% - 40px) / 3);
-        height: 100%;
-        border-radius: 3px;
-        background-color: #fff;
-        vertical-align: middle;
-        border: solid 1px $color-bd;
-        &:nth-child(2) {
-          margin: 0 20px;
-        }
-        span {
-          display: block;
-          width: 100%;
-          font-size: 16px;
-          text-align: center;
-          vertical-align: middle;
-
-          &:nth-child(1) {
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: left;
-            margin-left: 20px;
-            color: #888;
-          }
-          &:nth-child(2),
-          &:nth-child(3) {
-            margin-top: 20px;
-          }
-          &:nth-child(3) {
-            font-size: 14px;
-            color: #888;
-          }
-          &.mid {
-            font-size: 24px;
-            margin-top: 0;
-            font-weight: bold;
-            color: $color-red;
-          }
-          &.mid-zhichu {
-            font-size: 24px;
-            margin-top: 3px;
-            font-weight: bold;
-          }
-          .zhichu-img {
-            margin: 16px auto;
-          }
-          .add-money {
-            display: inline-block;
-            width: 70px;
-            margin: -6px 40px 0 0 !important;
-            border: 1px solid #4b5afe;
-            text-align: center;
-            height: 30px;
-            border-radius: 20px;
-            line-height: 30px;
-            font-size: 14px;
-            color: #4b5afe;
-            cursor: pointer;
-            &:hover {
-              background-color: $color-default-hover;
-              border: 1px solid $color-default-hover;
-            }
-            &:active {
-              background-color: $color-default-active;
-              border: 1px solid $color-default-hover;
-            }
-          }
-        }
-      }
+.asset-box {
+  margin: 30px;
+  .asset-header {
+    font-size: 0;
+    height: 170px;
+    margin-top: 20px;
+    img {
+      display: block;
+      margin: 10px auto;
     }
-    .asset-list-box {
-      margin-top: 20px;
-      border: solid 1px $color-bd;
+    .asset-header-item {
+      display: inline-block;
+      width: calc((100% - 40px) / 3);
+      height: 100%;
       border-radius: 3px;
-      overflow: hidden;
-    }
-    .asset-list {
-      padding: 20px;
       background-color: #fff;
-      .search-asset {
-        margin-top: 30px;
-        .asset-title {
-          font-size: 20px;
-        }
-        .search-item {
-          display: inline-block;
-          font-size: 14px;
-          .search-title {
-            margin-right: 10px;
-          }
-        }
-        .flm {
-          margin: 0 20px;
-        }
-        .export-btn {
-          margin-top: 2px;
-          height: 36px;
-          line-height: 36px;
-        }
+      vertical-align: middle;
+      border: solid 1px $color-bd;
+      &:nth-child(2) {
+        margin: 0 20px;
       }
-    }
-    .asset-list-table {
-      padding: 20px;
-      background-color: #fff;
-      .page-pagination {
-        margin-top: 30px;
-        text-align: right;
-      }
-      .status {
-        color: #fc5659;
-      }
-      .success {
-        color: #43d2c2;
-      }
-    }
-    /*三个盒子的统一样式*/
-    .message-box-content {
-      position: relative;
-      font-size: 14px;
-      .tip-title {
+      span {
         display: block;
-        margin-top: 10px;
+        width: 100%;
         font-size: 16px;
-        padding: 16px 0 22px 0;
-        border-bottom: solid 1px $color-bd;
-      }
-      .from-box {
-        .input-box {
-          padding: 15px 0px 15px 0 !important;
-          .from-title {
-            padding-right: 30px !important;
-          }
-          .black-box {
-            margin-top: -10px;
-            .money-sign {
-              position: absolute;
-              top: 0;
-              right: 10px;
-              color: #555;
-            }
-            .pay-money-sign {
-              position: absolute;
-              top: 0;
-              right: 140px;
-              color: #555;
-            }
-          }
-        }
-        .from-row {
-          position: relative;
-          display: flex;
-          padding: 12px;
-          .from-title {
-            width: 100px;
-            text-align: right;
-            padding-right: 20px;
-            color: #555;
-            font-size: 14px;
-          }
-          .error /deep/ {
-            .el-input__inner {
-              border: 1px solid $color-red;
-            }
+        text-align: center;
+        vertical-align: middle;
 
-            .default-button {
-              border: 1px solid $color-red;
-            }
-          }
-          .from-content {
-            position: relative;
-            flex: 1;
-            span {
-              font-family: PingFangSC-Semibold;
-              color: #222;
-              font-weight: 600;
-              font-size: 20px;
-            }
-            .error-msg {
-              display: block;
-              color: $color-red;
-              margin-left: 10px;
-              text-align: left;
-            }
-            .input-box {
-              width: 400px;
-            }
-            .from-msg-tip {
-              position: absolute;
-              top: -2px;
-              width: 100%;
-              left: 200px;
-            }
-            .com-input {
-              margin-right: 6px;
-            }
-            .modifiyMoney-btn {
-              margin-left: 30px;
-              cursor: pointer;
-              color: #4b5afe;
-            }
-          }
+        &:nth-child(1) {
+          margin-top: 20px;
+          font-size: 14px;
+          text-align: left;
+          margin-left: 20px;
+          color: #888;
         }
-      }
-    }
-    .money-box-wrap /deep/ {
-      border: 1px solid red;
-      .message-box-content {
-        .from-box .from-row .from-content .com-input {
-          width: 100% !important;
+        &:nth-child(2),
+        &:nth-child(3) {
+          margin-top: 20px;
         }
-      }
-      .ve-message-box__wrapper .ve-message-box {
-        padding-bottom: 0;
-        &:before {
-          height: 0 !important;
+        &:nth-child(3) {
+          font-size: 14px;
+          color: #888;
         }
-        .ve-message-box__header {
-          height: 40px;
-          line-height: 40px;
-          background-color: #FFD021;
-          padding-bottom: 0;
-          &:before {
-            content: '充值';
-            font-size: 16px;
-            color: #222;
+        &.mid {
+          font-size: 24px;
+          margin-top: 0;
+          font-weight: bold;
+          color: $color-red;
+        }
+        &.mid-zhichu {
+          font-size: 24px;
+          margin-top: 3px;
+          font-weight: bold;
+        }
+        .zhichu-img {
+          margin: 16px auto;
+        }
+        .add-money {
+          display: inline-block;
+          width: 70px;
+          margin: -6px 40px 0 0 !important;
+          border: 1px solid #4b5afe;
+          text-align: center;
+          height: 30px;
+          border-radius: 20px;
+          line-height: 30px;
+          font-size: 14px;
+          color: #4b5afe;
+          cursor: pointer;
+          &:hover {
+            background-color: $color-default-hover;
+            border: 1px solid $color-default-hover;
           }
-          .icon-close:before {
-            display: inline-block;
-            color: #555555;
+          &:active {
+            background-color: $color-default-active;
+            border: 1px solid $color-default-hover;
           }
         }
-        .ve-message-box__btns {
-          margin-top: 91px;
-          .button--primary {
-          }
-        }
-      }
-    }
-    .pay-money-msg /deep/ {
-      .ve-message-box__btns {
-        border: 1px solid green;
-        display: none !important;
-      }
-    }
-    .paid-money-msg /deep/ {
-      .ve-message-box__btns {
-        border: 1px solid green;
-        display: none !important;
-      }
-    }
-    /* paymoney 盒子的样式*/
-    .pay-money-msg {
-      .message-box-content {
-        .from-box {
-          .from-row {
-            line-height: 30px;
-            .from-content {
-              &.modify-box {
-                height: 34px;
-                line-height: 30px;
-              }
-              .title {
-                font-size: 0;
-                margin-top: 10px;
-                .payway {
-                  display: inline-block;
-                  width: 160px;
-                  height: 34px;
-                  font-size: 14px;
-                  border: 1px solid #e2e2e2;
-                  cursor: pointer;
-                  &.alipay {
-                    border-right: 0px;
-                    background-color: #ffd021;
-                  }
-                }
-              }
-              .black-box {
-                /*position: relative;*/
-                .com-input {
-                  width: 60% !important;
-                }
-                .save-money,
-                .concel-money {
-                  cursor: pointer;
-                  margin-left: 10px;
-                  color: #4B5AFE;
-                  font-weight: 400;
-                  font-size: 14px;
-                }
-              }
-              .pay-img-box {
-                .payImg {
-                  border: 1px solid #E2E2E2;
-                  display: inline-block;
-                  margin: 20px 0 0 57px;
-                  vertical-align: auto;
-                  height: 120px;
-                  width: 120px;
-                  overflow: hidden;
-                  img {
-                    width: 120px;
-                    height: 120px;
-                    display: block;
-                  }
-                }
-              }
-              .pay-des {
-                margin: 0px 0 0 61px;
-                font-size: 14px;
-                color: #555555;
-              }
-            }
-            .com-input {
-              margin-right: 6px;
-            }
-          }
-        }
-      }
-    }
-    .paid-money-msg {
-      .success-img {
-        text-align: center;
-        height: 89px;
-        margin-top: 20px;
-        img {
-          width: 120px;
-        }
-      }
-      .paid-success-text {
-        text-align: center;
-        font-size: 24px;
-        color: #222222;
-        margin-bottom: 10px;
-      }
-      .paid-balance {
-        text-align: center;
-        font-size: 14px;
-        color: #222222;
-        margin-bottom: 48px;
-
       }
     }
   }
+  .asset-list-box {
+    margin-top: 20px;
+    border: solid 1px $color-bd;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .asset-list {
+    padding: 20px;
+    background-color: #fff;
+    .search-asset {
+      margin-top: 30px;
+      .asset-title {
+        font-size: 20px;
+      }
+      .search-item {
+        display: inline-block;
+        font-size: 14px;
+        .search-title {
+          margin-right: 10px;
+        }
+      }
+      .flm {
+        margin: 0 20px;
+      }
+      .export-btn {
+        margin-top: 2px;
+        height: 36px;
+        line-height: 36px;
+      }
+    }
+  }
+  .asset-list-table {
+    padding: 20px;
+    background-color: #fff;
+    .page-pagination {
+      margin-top: 30px;
+      text-align: right;
+    }
+    .status {
+      color: #fc5659;
+    }
+    .success {
+      color: #43d2c2;
+    }
+  }
+  /*三个盒子的统一样式*/
+  .message-box-content {
+    position: relative;
+    font-size: 14px;
+    .tip-title {
+      display: block;
+      margin-top: 10px;
+      font-size: 16px;
+      padding: 16px 0 22px 0;
+      border-bottom: solid 1px $color-bd;
+    }
+    .from-box {
+      .input-box {
+        padding: 15px 0px 15px 0 !important;
+        .from-title {
+          padding-right: 30px !important;
+        }
+        .black-box {
+          margin-top: -10px;
+          .money-sign {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            color: #555;
+          }
+          .pay-money-sign {
+            position: absolute;
+            top: 2px;
+            right: 140px;
+            color: #555;
+          }
+        }
+      }
+      .from-row {
+        position: relative;
+        display: flex;
+        padding: 12px;
+        .from-title {
+          width: 100px;
+          text-align: right;
+          padding-right: 20px;
+          color: #555;
+          font-size: 14px;
+        }
+        .error /deep/ {
+          .el-input__inner {
+            border: 1px solid $color-red;
+          }
+
+          .default-button {
+            border: 1px solid $color-red;
+          }
+        }
+        .from-content {
+          position: relative;
+          flex: 1;
+          span {
+            font-family: PingFangSC-Semibold;
+            color: #222;
+            font-weight: 600;
+            font-size: 20px;
+          }
+          .error-msg {
+            display: block;
+            color: $color-red;
+            margin-left: 10px;
+            text-align: left;
+          }
+          .input-box {
+            width: 400px;
+          }
+          .from-msg-tip {
+            position: absolute;
+            top: -2px;
+            width: 100%;
+            left: 200px;
+          }
+          .com-input {
+            margin-right: 6px;
+          }
+          .modifiyMoney-btn {
+            margin-left: 30px;
+            cursor: pointer;
+            color: #4b5afe;
+          }
+        }
+      }
+    }
+  }
+  .money-box-wrap /deep/ {
+    border: 1px solid red;
+    .message-box-content {
+      .from-box .from-row .from-content .com-input {
+        width: 100% !important;
+      }
+    }
+    .ve-message-box__wrapper .ve-message-box {
+      padding-bottom: 0;
+      &:before {
+        height: 0 !important;
+      }
+      .ve-message-box__header {
+        height: 40px;
+        line-height: 40px;
+        background-color: #ffd021;
+        padding-bottom: 0;
+        &:before {
+          content: '充值';
+          font-size: 16px;
+          color: #222;
+        }
+        .icon-close:before {
+          display: inline-block;
+          color: #555555;
+        }
+      }
+      .ve-message-box__btns {
+        margin-top: 91px;
+        .button--primary {
+        }
+      }
+    }
+  }
+  .pay-money-msg /deep/ {
+    .ve-message-box__btns {
+      border: 1px solid green;
+      display: none !important;
+    }
+  }
+  .paid-money-msg /deep/ {
+    .ve-message-box__btns {
+      border: 1px solid green;
+      display: none !important;
+    }
+  }
+  /* paymoney 盒子的样式*/
+  .pay-money-msg {
+    .message-box-content {
+      .from-box {
+        .from-row {
+          line-height: 30px;
+          .from-content {
+            &.modify-box {
+              height: 34px;
+              line-height: 30px;
+            }
+            .title {
+              font-size: 0;
+              margin-top: 10px;
+              .payway {
+                display: inline-block;
+                width: 160px;
+                height: 34px;
+                font-size: 14px;
+                cursor: pointer;
+                border: none;
+                background: #fff;
+                border: 1px solid #e2e2e2;
+                &.alipay {
+                  border-radius: 4px 0px 0px 4px;
+                  border-right: 0px;
+                  background-color: #ffd021;
+                }
+                &.weixin {
+                  border-left: 0px;
+                  border-radius: 0px 4px 4px 0px;
+                }
+                &.active {
+                  background-color: #ffd021;
+                  border: none;
+                }
+              }
+            }
+            .black-box {
+              /*position: relative;*/
+              .com-input {
+                width: 60% !important;
+              }
+              .save-money,
+              .concel-money {
+                cursor: pointer;
+                margin-left: 10px;
+                color: #4b5afe;
+                font-weight: 400;
+                font-size: 14px;
+              }
+            }
+            .pay-img-box {
+              .payImg {
+                border: 1px solid #e2e2e2;
+                display: inline-block;
+                margin: 20px 0 0 57px;
+                vertical-align: auto;
+                height: 120px;
+                width: 120px;
+                overflow: hidden;
+                img {
+                  width: 120px;
+                  height: 120px;
+                  display: block;
+                }
+              }
+            }
+            .pay-des {
+              margin: 0px 0 0 61px;
+              font-size: 14px;
+              color: #555555;
+            }
+          }
+          .com-input {
+            margin-right: 6px;
+          }
+        }
+      }
+    }
+  }
+  .paid-money-msg {
+    .success-img {
+      text-align: center;
+      height: 89px;
+      margin-top: 20px;
+      img {
+        width: 120px;
+      }
+    }
+    .paid-success-text {
+      text-align: center;
+      font-size: 24px;
+      color: #222222;
+      margin-bottom: 10px;
+    }
+    .paid-balance {
+      text-align: center;
+      font-size: 14px;
+      color: #222222;
+      margin-bottom: 48px;
+    }
+  }
+}
 </style>
