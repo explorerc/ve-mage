@@ -1,7 +1,7 @@
 <!--新建/编辑活动-->
 <template>
   <div @keydown="canPaas = false">
-    <div class='edit-page live-mager' v-if='!createdSuccess'>
+    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)">
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
@@ -37,13 +37,13 @@
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标签：</div>
           <div class="from-content" >
-            <el-button  round v-if='!tagArray.length' @click='showChooseTag = true' class='choose-tag'>选择标签</el-button>
+            <el-button  round v-if='!tagArray.length' @click='showClooseTag' class='choose-tag'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
-              <li v-for="(item,idx) in tagArray" :key="idx">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
-              <li v-if="tagArray.length<3" class="add-tag"  @click='showChooseTag=true,tagEmpty = false'><span></span></li>
+              <li v-for="(item,idx) in tagArray" :key="idx" class="tag">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
+            <li v-if="tagArray.length<3" class="add-tag"  @click='addShowClooseTag'><span></span></li>
             </ol>
             <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
-            <div class="tag-modal" v-show='showChooseTag'>
+            <div class="tag-modal" v-show='showChooseTag' @click.stop="">
               <div class='title'>选择标签，最多可选择 3 个</div>
               <i class='el-submenu__icon-arrow el-icon-arrow-down arrow' @click="showChooseTag = false"></i>
               <el-checkbox-group v-model="tagGroup" size="mini" :max='3' @change='selectTag'>
@@ -63,7 +63,7 @@
           <div class="from-title">直播介绍：</div>
           <div class="from-content editor-content" style='position:relative;' :class="{ 'error':outRange}">
             <ve-editer height="280" v-model="editorContent" ></ve-editer>
-            <span class='content-count'><i class='count'>{{countCount}}</i>/1000</span>
+            <span class='content-count'><i class='count' ref="count">{{countCount}}</i>/1000</span>
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
           </div>
         </div>
@@ -340,6 +340,7 @@ export default {
     //   this.tagArray.id = res.id
     // // this.filterCondition.tags = res.id.toString()
     // },
+
     searchHandler (res) {
       console.log(res)
       this.tagKeyword = res
@@ -369,6 +370,20 @@ export default {
       this.tagArray = []
       this.tagGroup = []
       this.activityId = ''
+    },
+    clooseTagClose (e) {
+      this.showChooseTag = false
+    },
+    showClooseTag () {
+      this.$nextTick(() => {
+        this.showChooseTag = true
+      })
+    },
+    addShowClooseTag () {
+      this.showClooseTag()
+      this.$nextTick(() => {
+        this.tagEmpty = false
+      })
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -454,14 +469,16 @@ export default {
     border-radius: 4px;
     border: 1px solid rgba(129, 140, 254, 1);
     margin-bottom: 20px;
+    font-size: 14px;
     i {
-      width: 20px;
-      height: 20px;
+      width: 14px;
+      height: 14px;
       display: inline-block;
       background: url('~assets/image/excal.svg') no-repeat;
       position: relative;
-      top: 4px;
+      top: 3px;
       right: 4px;
+      background-size: cover;
     }
   }
   .content /deep/ {
@@ -712,9 +729,14 @@ export default {
     border: 1px solid rgba(240, 241, 254, 1);
     margin-right: 10px;
     margin-bottom: 4px;
+    &:hover {
+      span {
+        display: inline-block;
+      }
+    }
     span {
       cursor: pointer;
-      display: inline-block;
+      display: none;
       position: relative;
       top: 2px;
       background: url('~assets/image/close.svg') no-repeat;
