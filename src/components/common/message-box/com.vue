@@ -236,7 +236,7 @@
           text-align: center;
           box-sizing: border-box;
           outline: none;
-          font-weight: 500;
+          font-weight: 400;
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;

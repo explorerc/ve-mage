@@ -3,6 +3,7 @@
     <div class="q-edit-select">
       <el-select v-model="provinceValue"
                  @change="changeProvince"
+                 :disabled="edit"
                  @focus="focusProvince"
                  placeholder="请选择省/自治区/直辖市">
         <el-option v-for="(item,index) in provinces"
@@ -15,6 +16,7 @@
     <div class="q-edit-select">
       <el-select v-model="cityValue"
                  @change="changeCity"
+                 :disabled="edit"
                  @focus="focusCity"
                  placeholder="请选择所在城市">
         <el-option v-for="(item,index) in cities"
@@ -29,6 +31,7 @@
          class="q-edit-select"
          :class="{'v-disabled': conntyDisabled}">
       <el-select v-model="countyValue"
+                 :disabled="edit"
                  @focus="focusCounty"
                  placeholder="请选择区/县">
         <el-option v-for="(item,index) in counties"

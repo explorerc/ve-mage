@@ -335,6 +335,7 @@ export default {
         background-color: #ffd021;
         color: #222;
         margin-left: 10px;
+        margin-right: 100px;
         &.disabled {
           border-color: #ddd;
           background-color: #ddd;
@@ -368,7 +369,10 @@ export default {
       }
     }
     .default-button {
-      line-height: 38px;
+      line-height: 40px;
+      &.back-btn-all {
+        height: 40px;
+      }
     }
   }
   .v-table {

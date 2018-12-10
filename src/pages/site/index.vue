@@ -109,7 +109,7 @@ export default {
       tplData: defaultData,
       t0478320: require('assets/image/site_tp1.png'),
       t0478321: require('assets/image/site_tp2.png'),
-      t0478322: require('assets/image/site_tp3.jpg'),
+      t0478322: require('assets/image/site_tp3.png'),
       t0478323: require('assets/image/site_tp4.png')
     }
   },
@@ -356,8 +356,8 @@ export default {
     }
     .template-block {
       display: inline-block;
-      width: 225px;
-      height: 280px;
+      width: 227px;
+      height: 282px;
       border: 1px solid #dadada;
       margin-right: 40px;
       font-size: 14px;

@@ -355,6 +355,7 @@ export default {
             autoClose: 3000,
             position: 'center'
           })
+          this.$router.push({path: '/liveMager/detail/' + this.tid})
         })
       }
     },

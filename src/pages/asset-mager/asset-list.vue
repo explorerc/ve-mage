@@ -76,10 +76,11 @@
       <message-box v-if="addMoneyShow"
                    class="add-money-msg"
                    width="464px"
-                   type="promt"
-                   header=""
+                   type="prompt"
+                   :header="dialogTitle"
                    confirmText="下一步"
                    @handleClick="payMoney">
+
         <div class="mager-box message-box-content">
           <div class="from-box">
             <div class="from-row input-box">
@@ -111,7 +112,8 @@
       <message-box v-if="payMoneyShow"
                    class="pay-money-msg"
                    width="464px"
-                   type="promt"
+                   type="prompt"
+                   :header="dialogTitle"
                    @handleClick="paidMoney"
                    header="">
         <div class="mager-box message-box-content">
@@ -164,7 +166,8 @@
       <message-box v-if="successMoneyShow"
                    class="paid-money-msg"
                    width="464px"
-                   type="promt"
+                   type="prompt"
+                   :header="dialogTitle"
                    @handleClick="finishMoney"
                    header="">
         <div class="message-box-content">
@@ -225,7 +228,8 @@
         billNo: '', // 订单编号
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
-        wxDisabled: false // 微信按钮不禁用
+        wxDisabled: false, // 微信按钮不禁用
+        dialogTitle: '充值'
       }
     },
     filters: {
@@ -647,24 +651,6 @@
     }
     .ve-message-box__wrapper .ve-message-box {
       padding-bottom: 0;
-      &:before {
-        height: 0 !important;
-      }
-      .ve-message-box__header {
-        height: 40px;
-        line-height: 40px;
-        background-color: #ffd021;
-        padding-bottom: 0;
-        &:before {
-          content: '充值';
-          font-size: 16px;
-          color: #222;
-        }
-        .icon-close:before {
-          display: inline-block;
-          color: #555555;
-        }
-      }
       .ve-message-box__btns {
         margin-top: 91px;
         .button--primary {

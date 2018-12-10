@@ -91,18 +91,18 @@
           <div class="chart-item" id="chart05" style="height: 400px;"></div>
         </div>
       </div>
-      <p class="title">直播引导页</p>
+      <p class="title">活动引导页</p>
       <div class="item-container clearfix">
         <div class="item-box fl">
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问人数" tip="访问直播引导页的人数"></ve-title>
+              <ve-title width="130px" title="页面访问人数" tip="访问活动引导页的人数"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.nums}}</div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问次数" tip="访问直播引导页的人次数"></ve-title>
+              <ve-title width="130px" title="页面访问次数" tip="访问活动引导页的人次数"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.times}}</div>
           </div>
@@ -253,7 +253,7 @@
       if (this.webChart) { // 活动官网--页面访问趋势图
         this.webChart.dispose()
       }
-      if (this.linkChart) { // 直播引导页--页面访问趋势图
+      if (this.linkChart) { // 活动引导页--页面访问趋势图
         this.linkChart.dispose()
       }
     },
@@ -282,7 +282,7 @@
         if (this.webChart) { // 活动官网--页面访问趋势图
           this.webChart.resize()
         }
-        if (this.linkChart) { // 直播引导页--页面访问趋势图
+        if (this.linkChart) { // 活动引导页--页面访问趋势图
           this.linkChart.resize()
         }
       },
@@ -291,7 +291,7 @@
         this.spreadChannel()
         // 活动官网--统计数据
         this.officialChannel()
-        // 直播引导页--统计数据
+        // 活动引导页--统计数据
         this.leadPage()
         this.$nextTick(() => {
           this.renderChart()
@@ -350,7 +350,7 @@
         this.initAcitviteRatio()
         // 活动官网--页面访问趋势图
         this.webwiteChart()
-        // 直播引导页--页面访问趋势图
+        // 活动引导页--页面访问趋势图
         this.pageLinkChart()
       },
       changePageLinkMenu (val) {

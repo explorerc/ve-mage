@@ -241,8 +241,13 @@ export default {
 .live-title {
   .right-box {
     float: right;
+    margin-right: 110px;
     .btn {
-      margin: 10px 0;
+      margin: 17px 0;
+      padding: 0;
+      width: 120px;
+      height: 30px;
+      line-height: 30px;
     }
   }
 }

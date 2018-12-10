@@ -809,6 +809,8 @@ export default {
   /deep/ {
     .iconfont {
       font-size: 18px;
+      display: inline-block;
+      margin-top: -2px !important;
     }
     .icon-shanchuxuanxiang {
       font-size: 20px;

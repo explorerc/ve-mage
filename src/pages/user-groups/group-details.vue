@@ -15,6 +15,12 @@
         <com-import v-if="dialogImport" @handleClick="handleClick" :isFixed="'0'" :isDis=true
                     :groupId="Number.parseInt(search.group_id)"></com-import>
       </div>
+      <el-button size="small"
+                 round
+                 class="fr"
+                 @click="userGroupsIndexReturn"
+      >返回
+      </el-button>
       <el-input class="search" size="small" placeholder="搜索用户ID/姓名/手机号/邮箱" suffix-icon="el-icon-search"
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
@@ -119,13 +125,13 @@
               let level
               switch (item.user_level) {
                 case 1:
-                  level = '<span style="color:#0FBDAA;">优质用户</span>'
+                  level = '<span style="color:#714cea;">优质用户</span>'
                   break
                 case 2:
-                  level = '<span style="color:#714CEA;">高价值用户</span>'
+                  level = '<span style="color:#43D2C2;">高价值用户</span>'
                   break
                 case 3:
-                  level = '<span style="color:#FFAA00;">一般用户</span>'
+                  level = '<span style="color:#FFD021;">一般用户</span>'
                   break
                 case 4:
                   level = '<span style="color:#FB5757;">潜力用户</span>'
@@ -211,6 +217,9 @@
             }
           }
         })
+      },
+      userGroupsIndexReturn () {
+        this.$router.push({path: '/userManage/userGroupsIndex'})
       }
     }
   }
@@ -233,6 +242,19 @@
       overflow: hidden;
       .opBtns {
         float: left;
+      }
+      .el-button {
+        color: #555555;
+        width: 120px;
+        height: 34px;
+        border-radius: 16px;
+        border: 1px solid #888888;
+        margin-left: 20px;
+        &:hover,&:focus {
+          background-color:#ffd021 ;
+          border-color: #ffd021;
+          color: black;
+        }
       }
       .search {
         float: right;
