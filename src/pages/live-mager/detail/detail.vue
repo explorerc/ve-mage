@@ -1405,6 +1405,9 @@ export default {
       }
     }
   }
+  .bottom {
+    margin-top: -1px;
+  }
   .bottom > div {
     margin: 10px 33px;
     // margin: 10px 55px;
@@ -1706,9 +1709,9 @@ export default {
   &:before {
     content: '';
     width: 1px;
-    height: 100%;
+    height: 140px;
     position: absolute;
-    top: 7px;
+    top: 16px;
     left: -107px;
     background: rgba(226, 226, 226, 1);
     border-radius: 1px;

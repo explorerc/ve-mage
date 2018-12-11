@@ -79,7 +79,7 @@
     <!--dialog-->
     <message-box v-if="isShow"
                  :header="dialogTitle"
-                 width="590px"
+                 width="450px"
                  class="massage-style"
                  type="prompt"
                  confirmText='保存'

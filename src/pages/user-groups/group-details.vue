@@ -271,6 +271,7 @@
       background-color: white;
       margin: 20px auto;
       padding: 30px;
+      min-height: 550px;
       th.el-table_1_column_1 span.el-checkbox__inner {
         background-color: transparent;
         border: none;
