@@ -75,7 +75,7 @@
       },
       width: {
         type: String,
-        default: '300px'
+        default: '400px'
       },
       type: { // prompt , error， none, noneModal
         type: String,
