@@ -534,7 +534,7 @@ export default {
           data.msg = '图片类型错误'
         }
       }
-      this.$messageBox({
+      this.ageBox({
         header: '提示',
         content: data.msg,
         autoClose: 3,
@@ -891,7 +891,7 @@ export default {
             'oldPassword': this.oldPassword
           }
           this.$config({ handlers: true }).$post(userService.POST_CHANGE_PASSWORD, data).then((res) => {
-            this.$messageBox({
+            this.ageBox({
               header: '提示',
               content: '修改成功',
               confirmText: '确定',
