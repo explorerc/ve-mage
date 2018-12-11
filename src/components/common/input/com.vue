@@ -281,6 +281,8 @@ export default {
     top: 50%;
     transform: translateY(-50%);
     right: 8px;
+    display: block;
+    height: 14px;
     .length {
       color: #4b5afe;
     }

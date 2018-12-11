@@ -131,6 +131,16 @@
         </p>
       </com-tab>
     </com-tabs>
+    <message-box v-if="shenQingShow"
+                 header='提示'
+                 confirmText='现在申请'
+                 cancelText='知道了'
+                 @handleClick="sqHandler">
+      <div style="text-align: center;padding: 20px 0;">
+        <span style="display: block;">您尚未开通产品试用资格</span>
+        <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
+      </div>
+    </message-box>
   </div>
 </template>
 <script>
@@ -176,7 +186,8 @@ export default {
       },
       isStepOneSuccess: false,
       isStepTwoSuccess: false,
-      isStepThreeSuccess: false
+      isStepThreeSuccess: false,
+      shenQingShow: false
     }
   },
   components: {
@@ -257,6 +268,12 @@ export default {
         this.phoneStatus = false
       }
     },
+    sqHandler (e) {
+      this.shenQingShow = false
+      if (e.action === 'confirm') {
+        this.$router.push('/register')
+      }
+    },
     getCode () {
       // 获取验证码
       if (this.isProhibit) {
@@ -287,6 +304,8 @@ export default {
       }).catch(err => {
         if (err.code === 10050) {
           this.errorTips.phoneCode = '验证码输入过于频繁'
+        } else if (err.code === 10013) {
+          this.shenQingShow = true
         } else {
           this.errorTips.phoneCode = err.msg
         }
