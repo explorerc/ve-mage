@@ -151,7 +151,7 @@
         <div class="chart-box" style="width: 100%;">
           <p class="title">页面访问
             <span class="chart-menu">
-             <nav-menu :menus="['人数', '人次']" :currentMenu="pageLinkType" @changeMenu="changePageLinkMenu"></nav-menu>
+             <nav-menu :menus="['人次','人数']" :currentMenu="pageLinkType" @changeMenu="changePageLinkMenu"></nav-menu>
           </span></p>
           <div class="chart-item" id="chart06" style="height: 400px;"></div>
         </div>

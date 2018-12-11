@@ -987,14 +987,14 @@ export default {
         handlers: true
       }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
         console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            'content': '设置成功'
-          })
-          setTimeout((res) => {
-            this.$router.push(url + this.activityId)
-          }, 500)
-        }
+        // if (res.code === 200) {
+        //   this.$toast({
+        //     'content': '设置成功'
+        //   })
+        //   setTimeout((res) => {
+        //     this.$router.push(url + this.activityId)
+        //   }, 500)
+        // }
       }).catch((res) => {
         if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
           console.log(type + ' ' + status)

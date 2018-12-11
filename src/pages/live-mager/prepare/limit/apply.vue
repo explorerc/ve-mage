@@ -319,12 +319,12 @@
       },
       saveLimitfn (data) {
         this.$config({ handlers: [60704] }).$post(activityService.SAVE_LIMIT, data).then((res) => {
-          this.$toast({
-            content: '设置成功',
-            position: 'center'
-          })
+          // this.$toast({
+          //   content: '设置成功',
+          //   position: 'center'
+          // })
           this.canPaas = true
-          this.$router.push({path: '/liveMager/detail/' + this.activityId})
+          this.$router.push(`/liveMager/detail/${this.activityId}`)
         }).catch(res => {
           this.$messageBox({
             header: '提示',
@@ -377,9 +377,9 @@
               }
               this.quesData.push(obj)
             } else {
-              this.$toast({
-                'content': '设置成功'
-              })
+              // this.$toast({
+              //   'content': '设置成功'
+              // })
             }
           }
         }).catch((res) => {
