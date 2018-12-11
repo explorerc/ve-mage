@@ -211,7 +211,7 @@
           font-size: 14px;
           cursor: pointer;
           &:hover {
-            color: $color-default;
+            color: #555555;
           }
         }
       }

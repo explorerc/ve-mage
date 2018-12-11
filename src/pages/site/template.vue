@@ -348,14 +348,14 @@ export default {
           description: this.siteDes,
           icon: this.icon
         }).then(res => {
-          this.options[1].status = '(已设置)'
+          /* this.options[1].status = '(已设置)'
           this.hasData = true
           this.$toast({
             content: '保存成功',
             autoClose: 3000,
             position: 'center'
-          })
-          this.$router.push({path: '/liveMager/detail/' + this.tid})
+          }) */
+          this.$router.push(`/liveMager/detail/${this.tid}`)
         })
       }
     },
