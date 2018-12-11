@@ -348,6 +348,7 @@ export default {
     }
   }
   .group-content {
+    padding-bottom: 15px;
     &:first-of-type {
       padding: 35px 0;
     }
@@ -384,6 +385,7 @@ export default {
         width: 100%;
         height: 100%;
         border: 2px solid #ffd021;
+        border-radius: 4px;
         .option-group {
           position: absolute;
           top: 50%;
@@ -424,6 +426,8 @@ export default {
       text-align: center;
       padding: 20px;
       border: 1px dashed #dadada;
+      margin-bottom: 15px;
+      border-radius: 4px;
       .img {
         width: 150px;
         height: 150px;

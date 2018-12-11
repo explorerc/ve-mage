@@ -1483,7 +1483,7 @@ export default {
   width: 640px;
   position: relative;
   p {
-    padding-bottom: 20px;
+    padding-bottom: 15px;
   }
   .title {
     font-size: 20px;
