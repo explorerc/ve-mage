@@ -13,10 +13,10 @@
     </div>
     <ul class="v-select"
         v-show="isShow">
-      <li id="preventClick"
-          :title="name">
-        {{name}}
-      </li>
+      <!--<li id="preventClick"-->
+          <!--:title="name">-->
+        <!--{{name}}-->
+      <!--</li>-->
       <li>
         <a href="/setAccount"><i class="iconfont icon-shezhi21"></i>账号设置</a>
       </li>
@@ -101,7 +101,7 @@ export default {
 </script>
 <style  scoped lang="scss">
 .v-login-reg /deep/ {
-  width: 150px;
+  max-width: 230px;
   float: right;
   margin-right: 20px;
   text-align: left;
@@ -109,7 +109,8 @@ export default {
   cursor: pointer;
   .v-name {
     display: inline-block;
-    width: 80px;
+    min-width: 60px;
+    max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -145,8 +146,8 @@ export default {
         background-color: #f0f1fe;
       }
       &:first-child {
-        height: 70px;
-        line-height: 70px;
+        height: 40px;
+        line-height: 40px;
         font-size: 18px;
         color: #222;
         border-bottom: 1px solid #e2e2e2;
