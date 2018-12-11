@@ -4,7 +4,7 @@
       <p class="title">观看数据</p>
       <div class="item-container clearfix">
         <div class="item-box fl">
-          <div class="box fl" style="width: 33.33333%;">
+          <div class="box fl" style="width: 16.66666%;">
             <div class="item-title">
               <ve-title title="观看直播人数"></ve-title>
             </div>
@@ -12,21 +12,19 @@
               {{basicCountData.live.nums}}
             </div>
           </div>
-          <div class="box fl" style="width: 33.33333%;">
+          <div class="box fl" style="width: 16.66666%;">
             <div class="item-title">
               <ve-title title="观看直播人次（次）"></ve-title>
             </div>
             <div class="item-mid">{{basicCountData.live.times}}</div>
           </div>
-          <div class="box fl" style="width: 33.33333%;">
+          <div class="box fl" style="width: 16.66666%;">
             <div class="item-title">
               <ve-title title="人均观看直播时长"></ve-title>
             </div>
             <div class="item-mid">{{basicCountData.live.duration|fmtTime}}</div>
           </div>
-        </div>
-        <div class="item-box fl">
-          <div class="box fl" style="width: 33.33333%;">
+          <div class="box fl" style="width: 16.66666%;">
             <div class="item-title">
               <ve-title title="观看回放人数"></ve-title>
             </div>
@@ -34,13 +32,13 @@
               {{basicCountData.playBack.nums}}
             </div>
           </div>
-          <div class="box fl" style="width: 33.33333%;">
+          <div class="box fl" style="width: 16.66666%;">
             <div class="item-title">
               <ve-title title="观看回放人次（次）"></ve-title>
             </div>
             <div class="item-mid">{{basicCountData.playBack.times}}</div>
           </div>
-          <div class="box fl" style="width: 33.33333%;">
+          <div class="box fl" style="width: 16.66666%;">
             <div class="item-title">
               <ve-title title="人均观看回放时长"></ve-title>
             </div>
@@ -60,13 +58,13 @@
           </div>
         </div>
         <div class="chart-container">
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width: 50%;margin-top: 20px">
             <p class="title">
               <ve-title width="200px" title="观看时长与观众分布图" tip="查看直播过程中，不同观看时段的观众数量"></ve-title>
             </p>
             <div class="chart-item" id="chart02" style="height: 360px;"></div>
           </div>
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width: 50%;margin-top: 20px">
             <p class="title">
               <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图"></ve-title>
             </p>

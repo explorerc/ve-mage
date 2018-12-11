@@ -144,6 +144,9 @@ $color-ui-components:#4B5AFE;
 .el-switch__label.is-active {
   color:#555;
 }
+.el-switch__label {
+  font-weight: 400;
+}
 .el-carousel__item.is-active{
   z-index: inherit;
 }

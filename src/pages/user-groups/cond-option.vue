@@ -1256,6 +1256,9 @@
                 float: right;
                 font-size: 16px;
                 transform: translate(-4px, 12px);
+                &:hover {
+                  color: red;
+                }
               }
             }
           }
@@ -1274,7 +1277,7 @@
             font-size: 18px;
             display: inline-block;
             text-align: center;
-            line-height: 18px;
+            line-height: 16px;
           }
         }
       }

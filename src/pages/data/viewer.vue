@@ -313,6 +313,7 @@
     .item-container {
       border: none;
       .item-box:first-child {
+        border-radius: 0 !important;
         border-bottom: solid 1px #e2e2e2;
       }
     }
