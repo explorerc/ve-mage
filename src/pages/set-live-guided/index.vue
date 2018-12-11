@@ -31,7 +31,7 @@
             <p class="v-info-label pull-left">
               引导图片：
             </p>
-            <ve-upload title="建议图片不小于1920*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
+            <ve-upload title="建议图片不小于900*1080px<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
                        accept="png|jpg|jpeg"
                        :defaultImg="defaultImg"
                        :fileSize="2048"
@@ -451,7 +451,7 @@ export default {
           -webkit-box-orient: vertical;
         }
         .v-phone-countdown {
-          max-height: 50px;
+          height: 30px;
           text-align: center;
           font-size: 20px;
           transform: scale(0.5);

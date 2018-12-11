@@ -299,6 +299,9 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
+        if (err.code === 10013) {
+          this.shenQingShow = true
+        }
         this.mobileError = err.msg
         this.isSend = false
         this.isProhibit = true
