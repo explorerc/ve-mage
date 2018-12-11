@@ -52,7 +52,7 @@
                         label='COUNTDOWN'>显示直播倒计时</el-radio>
               <com-input type="textarea"
                          :value.sync="description"
-                         :disabled="showType==='COUNTDOWN'"
+                         v-if="showType!=='COUNTDOWN'"
                          placeholder="请输入简介"
                          :max-length="50"></com-input>
             </p>
@@ -60,8 +60,53 @@
         </div>
         <div class="v-show pull-right">
           <com-tabs :value.sync="tabValue">
-            <com-tab label="手机预览"
+            <com-tab label="电脑预览"
                      :index="1"
+                     class="clearfix">
+              <div class="v-pc  pull-right clearfix">
+                <div class="v-img pull-left">
+                  <template v-if="defaultImg">
+                    <!--<img :src="$imgHost + '/' + imgUrl"-->
+                    <!--alt="">-->
+                    <div class="img-bg" :style="{backgroundImage:`url(${$imgHost}/${imgUrl})`}"></div>
+                  </template>
+                  <template v-else>
+                    <div class="img-bg"></div>
+                    <!--<img src="../../assets/image/guid.jpg"-->
+                    <!--alt="">-->
+                  </template>
+                </div>
+                <div class="v-pc-info pull-left">
+                  <p class="v-pc-title">
+                    {{title}}
+                  </p>
+                  <div v-if="showType === 'DESCRIPTION'"
+                       class="v-pc-description">
+                    <p>
+                      {{description}}
+                    </p>
+                  </div>
+                  <div class="v-pc-operation"
+                       v-else>
+                    <p class="v-count-title">
+                      距离直播开始还有
+                    </p>
+                    <div class="v-cutdown-content">
+                      <span class="v-red">XX</span>天
+                      <span class="v-red">XX</span>小时
+                      <span class="v-red">XX</span>分钟
+                      <span class="v-red">XX</span>秒
+                    </div>
+                  </div>
+                  <span href="javascript:;"
+                        class="v-pc-enroll">
+                    {{viewCondition === 'APPOINT'? '报名':'预约'}}
+                  </span>
+                </div>
+              </div>
+            </com-tab>
+            <com-tab label="手机预览"
+                     :index="2"
                      class="clearfix">
               <div class="v-phone pull-right">
                 <div class="v-img">
@@ -104,51 +149,6 @@
                       {{viewCondition === 'APPOINT'? '报名':'预约'}}
                     </span>
                   </div>
-                </div>
-              </div>
-            </com-tab>
-            <com-tab label="电脑预览"
-                     :index="2"
-                     class="clearfix">
-              <div class="v-pc  pull-right clearfix">
-                <div class="v-img pull-left">
-                  <template v-if="defaultImg">
-                    <!--<img :src="$imgHost + '/' + imgUrl"-->
-                         <!--alt="">-->
-                    <div class="img-bg" :style="{backgroundImage:`url(${$imgHost}/${imgUrl})`}"></div>
-                  </template>
-                  <template v-else>
-                    <div class="img-bg"></div>
-                    <!--<img src="../../assets/image/guid.jpg"-->
-                         <!--alt="">-->
-                  </template>
-                </div>
-                <div class="v-pc-info pull-left">
-                  <p class="v-pc-title">
-                    {{title}}
-                  </p>
-                  <div v-if="showType === 'DESCRIPTION'"
-                       class="v-pc-description">
-                    <p>
-                      {{description}}
-                    </p>
-                  </div>
-                  <div class="v-pc-operation"
-                       v-else>
-                    <p class="v-count-title">
-                      距离直播开始还有
-                    </p>
-                    <div class="v-cutdown-content">
-                      <span class="v-red">XX</span>天
-                      <span class="v-red">XX</span>小时
-                      <span class="v-red">XX</span>分钟
-                      <span class="v-red">XX</span>秒
-                    </div>
-                  </div>
-                  <span href="javascript:;"
-                        class="v-pc-enroll">
-                    {{viewCondition === 'APPOINT'? '报名':'预约'}}
-                  </span>
                 </div>
               </div>
             </com-tab>
@@ -404,7 +404,7 @@ export default {
       margin-right: 75px;
       .v-img {
         width: 229px;
-        height: 286px;
+        height: 266px;
         margin-left: 11px;
         margin-top: 45px;
         border-radius: 5px 5px 0 0;
@@ -423,11 +423,12 @@ export default {
         }
       }
       .v-phone-info {
-        width: 228px;
-        height: 122px;
+        width: 230px;
+        height: 143px;
         margin-left: 11px;
         background-color: #fff;
         border-radius: 0 0 5px 5px;
+        padding-top: 10px;
         .v-phone-title {
           font-size: 16px;
           text-align: center;
@@ -450,6 +451,7 @@ export default {
           -webkit-box-orient: vertical;
         }
         .v-phone-countdown {
+          max-height: 50px;
           text-align: center;
           font-size: 20px;
           transform: scale(0.5);
