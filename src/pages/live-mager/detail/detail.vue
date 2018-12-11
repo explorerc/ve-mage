@@ -1314,6 +1314,7 @@ export default {
         width: 95px;
         // width: 130px;
         height: 2px;
+        border-radius: 1px;
         position: absolute;
         background: rgba(211, 215, 255, 1);
         top: 50%;

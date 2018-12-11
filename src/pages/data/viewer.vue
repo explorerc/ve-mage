@@ -320,7 +320,8 @@
     .chart-container {
       .chart-box {
         .title {
-          text-align: center;
+          text-align: left;
+          margin-bottom: -35px !important;
         }
       }
     }
