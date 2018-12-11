@@ -328,6 +328,18 @@ export default {
       }).catch(err => {
         if (err.code === 10050) {
           this.mobileError = '验证码输入过于频繁'
+        } else if (err.code === 10013) {
+          this.$messageBox({
+            header: '提示',
+            content: '您尚未开通产品试用资格请在线申请试用或联系客服400-888-9970',
+            cancelText: '知道了',
+            confirmText: '现在申请',
+            handleClick: (e) => {
+              if (e.action === 'confirm') {
+                this.$router.push('/register')
+              }
+            }
+          })
         } else {
           this.mobileError = err.msg
         }
