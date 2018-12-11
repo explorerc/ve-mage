@@ -1061,7 +1061,6 @@ export default {
     publishActive () { // 发布活动
       this.$messageBox({
         header: '提示',
-        width: '450px',
         content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
         cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认发布',
@@ -1087,7 +1086,6 @@ export default {
       }
       this.$messageBox({
         header: '提示',
-        width: '450px',
         content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
         cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认下线',

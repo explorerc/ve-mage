@@ -8,7 +8,7 @@
         <div class="ve-message-box__header">
           <span v-if="type=='prompt'" class="prompt-title">{{header}}</span>
           <button type="button" @click.prevent="handleClick(action.cancel)">
-            <i class="iconfont icon-close"></i>
+            <i class="iconfont icon-close1"></i>
           </button>
         </div>
         <div class="ve-message-box__container">
@@ -153,6 +153,7 @@
       border-radius: 4px;
       font-size: 16px;
       overflow: hidden;
+      min-width: 400px;
       z-index: 1006;
       &:before {
         display: block;
@@ -174,10 +175,11 @@
           line-height: 40px;
           background-color: $color-default;
           button {
+            color: #555;
             &:hover {
-              color: #2878ff;
+              color: #222222;
             }
-            .icon-close {
+            .icon-close1 {
               position: relative;
               top: -3px;
             }

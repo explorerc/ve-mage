@@ -1285,7 +1285,7 @@ export default {
       line-height: 38px;
       text-align: center;
       font-size: 13px;
-      color: #fff;
+      color: #222;
       position: absolute;
       bottom: 0;
       right: 0;
