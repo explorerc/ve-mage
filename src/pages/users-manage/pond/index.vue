@@ -37,168 +37,166 @@
                                                          :class="{'is-open':showFilter }"></i></span>
         </div>
       </div>
-      <transition name="left-right" mode="out-in">
-        <div class="handle-filter page-bg" v-show='showFilter'>
-          <div class='filter-item'>
-            <div class="condition">
-              <span class="label">用户级别</span>
-              <el-select v-model="filterCondition.user_level" placeholder="请选择" style="width:216px;">
-                <el-option
-                  v-for="item in grands"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="condition">
-              <span class="label">来源</span>
-              <el-select v-model="filterCondition.source" placeholder="请选择">
-                <el-option
-                  v-for="item in sources"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="condition">
-              <span class="label">参与场次</span>
-              <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数"
-                         :type="'number'"></com-input>
-            </div>
+      <div class="handle-filter page-bg" v-if='showFilter'>
+        <div class='filter-item'>
+          <div class="condition">
+            <span class="label">用户级别</span>
+            <el-select v-model="filterCondition.user_level" placeholder="请选择" style="width:216px;">
+              <el-option
+                v-for="item in grands"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
-          <div class='filter-item'>
-            <div class="condition area">
-              <span class="label">所属地域</span>
-              <!-- <el-select v-model="filterCondition.province" filterable placeholder="省份">
-                <el-option
-                  v-for="item in provinceList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name">
-                </el-option>
-              </el-select> -->
-
-              <el-select style="width: 100px;" v-model="provinceId" placeholder="省份">
-                <el-option v-for="item in provinceList"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-              </el-select>
-              <!-- <el-select v-model="filterCondition.city" filterable placeholder="城市">
-                <el-option
-                  v-for="item in cityList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.name">
-                </el-option>
-              </el-select> -->
-
-              <el-select style="width: 112px;" v-model="cityId" placeholder="城市">
-                <el-option v-for="item in cityList"
-                           :key="item.value"
-                           :label="item.label"
-                           :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="condition">
-              <span class="label">性别</span>
-              <el-select v-model="filterCondition.sex" placeholder="请选择">
-                <el-option
-                  v-for="item in sexs"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
-            <div class="condition">
-              <span class="label">所属行业</span>
-              <el-select v-model="filterCondition.industry" placeholder="请选择">
-                <el-option
-                  v-for="item in industrys"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </div>
+          <div class="condition">
+            <span class="label">来源</span>
+            <el-select v-model="filterCondition.source" placeholder="请选择">
+              <el-option
+                v-for="item in sources"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </div>
-          <div class='filter-item'>
-            <div class="condition">
-              <span class="label">首次访问</span>
-              <el-date-picker
-                :clearable="true"
-                v-model="firstVal"
-                type="datetimerange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :editable="false"
-                :default-time="['00:00:00','23:59:59']"
-                align="left">
-              </el-date-picker>
-            </div>
-            <div class="condition">
-              <span class="label">最后访问</span>
-              <el-date-picker
-                :clearable="true"
-                v-model="lastVal"
-                type="datetimerange"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
-                :editable="false"
-                :default-time="['00:00:00','23:59:59']"
-                align="left">
-              </el-date-picker>
-            </div>
-          </div>
-          <div class='filter-item'>
-            <span class="label">参与活动</span>
-            <el-button round v-if='!activityArray.name.length' @click='showChooseActive = true'>选择活动</el-button>
-            <div class="selected" v-else>
-              <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in activityArray.name' :key="idx">{{item}} <span class='close'
-                                                                                                   @click="handleDel(idx,'activityArray')"></span>
-                </li>
-                <li class="added" @click='showChooseActive = true'></li>
-              </ol>
-            </div>
-          </div>
-          <div class='filter-item'>
-            <span class="label">活动标签</span>
-            <el-button round v-if='!tagArray.name.length' @click='showChooseTag = true'>选择标签</el-button>
-            <div class="selected" v-else>
-              <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in tagArray.name' :key="idx">{{item}} <span class='close'
-                                                                                              @click="handleDel(idx,'tagArray')"></span>
-                </li>
-                <li class="added" @click='showChooseTag = true'></li>
-              </ol>
-            </div>
-          </div>
-          <div class='filter-item'>
-            <span class="label">所属群组</span>
-            <el-button round v-if='!groupArray.name.length' @click='showChooseGroup = true'>选择分组</el-button>
-            <div class="selected" v-else>
-              <ol class='tag-box'>
-                <li class='tag' v-for='(item,idx) in groupArray.name' :key="idx">{{item}} <span class='close'
-                                                                                                @click="handleDel(idx,'groupArray')"></span>
-                </li>
-                <li class="added" @click='showChooseGroup = true'></li>
-              </ol>
-            </div>
-          </div>
-          <div class="filter-confirm">
-            <el-button round class='primary-button' @click='doFilter'>查询</el-button>
-            <el-button round @click='reset'>重置</el-button>
+          <div class="condition">
+            <span class="label">参与场次</span>
+            <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数"
+                       :type="'number'"></com-input>
           </div>
         </div>
-      </transition>
+        <div class='filter-item'>
+          <div class="condition area">
+            <span class="label">所属地域</span>
+            <!-- <el-select v-model="filterCondition.province" filterable placeholder="省份">
+              <el-option
+                v-for="item in provinceList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select> -->
+
+            <el-select style="width: 100px;" v-model="provinceId" placeholder="省份">
+              <el-option v-for="item in provinceList"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+            <!-- <el-select v-model="filterCondition.city" filterable placeholder="城市">
+              <el-option
+                v-for="item in cityList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select> -->
+
+            <el-select style="width: 112px;" v-model="cityId" placeholder="城市">
+              <el-option v-for="item in cityList"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="condition">
+            <span class="label">性别</span>
+            <el-select v-model="filterCondition.sex" placeholder="请选择">
+              <el-option
+                v-for="item in sexs"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="condition">
+            <span class="label">所属行业</span>
+            <el-select v-model="filterCondition.industry" placeholder="请选择">
+              <el-option
+                v-for="item in industrys"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+        <div class='filter-item'>
+          <div class="condition">
+            <span class="label">首次访问</span>
+            <el-date-picker
+              :clearable="true"
+              v-model="firstVal"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :editable="false"
+              :default-time="['00:00:00','23:59:59']"
+              align="left">
+            </el-date-picker>
+          </div>
+          <div class="condition">
+            <span class="label">最后访问</span>
+            <el-date-picker
+              :clearable="true"
+              v-model="lastVal"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :editable="false"
+              :default-time="['00:00:00','23:59:59']"
+              align="left">
+            </el-date-picker>
+          </div>
+        </div>
+        <div class='filter-item'>
+          <span class="label">参与活动</span>
+          <el-button round v-if='!activityArray.name.length' @click='showChooseActive = true'>选择活动</el-button>
+          <div class="selected" v-else>
+            <ol class='tag-box'>
+              <li class='tag' v-for='(item,idx) in activityArray.name' :key="idx">{{item}} <span class='close'
+                                                                                                 @click="handleDel(idx,'activityArray')"></span>
+              </li>
+              <li class="added" @click='showChooseActive = true'></li>
+            </ol>
+          </div>
+        </div>
+        <div class='filter-item'>
+          <span class="label">活动标签</span>
+          <el-button round v-if='!tagArray.name.length' @click='showChooseTag = true'>选择标签</el-button>
+          <div class="selected" v-else>
+            <ol class='tag-box'>
+              <li class='tag' v-for='(item,idx) in tagArray.name' :key="idx">{{item}} <span class='close'
+                                                                                            @click="handleDel(idx,'tagArray')"></span>
+              </li>
+              <li class="added" @click='showChooseTag = true'></li>
+            </ol>
+          </div>
+        </div>
+        <div class='filter-item'>
+          <span class="label">所属群组</span>
+          <el-button round v-if='!groupArray.name.length' @click='showChooseGroup = true'>选择分组</el-button>
+          <div class="selected" v-else>
+            <ol class='tag-box'>
+              <li class='tag' v-for='(item,idx) in groupArray.name' :key="idx">{{item}} <span class='close'
+                                                                                              @click="handleDel(idx,'groupArray')"></span>
+              </li>
+              <li class="added" @click='showChooseGroup = true'></li>
+            </ol>
+          </div>
+        </div>
+        <div class="filter-confirm">
+          <el-button round class='primary-button' @click='doFilter'>查询</el-button>
+          <el-button round @click='reset'>重置</el-button>
+        </div>
+      </div>
       <div class="users-list page-bg table_box " :class='{"has-page":total>filterCondition.page_size}'>
         <el-table
           ref="multipleTable"
@@ -212,7 +210,7 @@
           </el-table-column>
           <el-table-column
             label="用户信息"
-            width="250">
+            width="200">
             <template slot-scope="scope">
               <dl class="users-info clearfix">
                 <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
@@ -232,6 +230,7 @@
           <el-table-column
             prop="phone"
             label="手机号"
+            width="150"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
@@ -604,6 +603,7 @@
       },
       filterSearch () {
         console.log('search')
+        this.showFilter = false
         this.queryUserPool('search')
       },
       groupData (res) {
