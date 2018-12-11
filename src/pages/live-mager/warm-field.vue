@@ -298,14 +298,15 @@ export default {
         fileSize: parseInt(this.warm.fileSize)
       }).then((res) => {
         this.canPass = true
-        this.$toast({
-          content: '保存成功',
-          position: 'center'
-        })
-        let st = setTimeout(() => {
-          clearTimeout(st)
-          this.isDisabled = false
-        }, 3000)
+        // this.$toast({
+        //   content: '保存成功',
+        //   position: 'center'
+        // })
+        // let st = setTimeout(() => {
+        //   clearTimeout(st)
+        //   this.isDisabled = false
+        // }, 3000)
+        this.$router.push(`/liveMager/detail/${this.$route.params.id}`)
       }).catch(() => {
         this.isDisabled = false
       })
@@ -386,10 +387,10 @@ export default {
       }
       this.isSwitchDisabled = true
       this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
-        this.$toast({
-          content: '设置成功',
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '设置成功',
+        //   position: 'center'
+        // })
         let st = setTimeout(() => {
           clearTimeout(st)
           this.isSwitchDisabled = false

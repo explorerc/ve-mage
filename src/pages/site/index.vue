@@ -188,11 +188,11 @@ export default {
         submodule: 'TEMPLATE',
         enabled: this.enable ? 'Y' : 'N'
       }).then(res => {
-        this.$toast({
-          content: '保存成功',
-          autoClose: 500,
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '保存成功',
+        //   autoClose: 500,
+        //   position: 'center'
+        // })
 
         let st = setTimeout(() => {
           clearTimeout(st)
