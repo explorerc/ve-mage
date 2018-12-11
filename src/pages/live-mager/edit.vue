@@ -181,6 +181,13 @@ export default {
           this.outRange = false
         }
       })
+    },
+    countCount (newValue, oldValue) {
+      if (this.countCount !== 0) {
+        this.$refs.count.style.color = '#4b5afe'
+      } else {
+        this.$refs.count.style.color = '#999'
+      }
     }
   },
   methods: {
@@ -555,7 +562,7 @@ export default {
       right: 20px;
       color: #999;
       i {
-        color: $color-blue;
+        color: #999;
       }
     }
     .html-editer {
