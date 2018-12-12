@@ -374,11 +374,11 @@
         } else if (type === 'high') { // 优质用户
           this.searchParams.user_level = 1
         } else if (type === 'vip') { // 高价值用户
-          this.searchParams.user_level = 4
+          this.searchParams.user_level = 2
         } else if (type === 'ord') { // 一般用户
           this.searchParams.user_level = 3
         } else if (type === 'potent') { // 潜力用户
-          this.searchParams.user_level = 2
+          this.searchParams.user_level = 4
         } else if (type === 'loss') { // 流失用户
           this.searchParams.user_level = 5
         }
