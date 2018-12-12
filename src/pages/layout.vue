@@ -25,7 +25,7 @@
       </div>
       <section class="main-container"
                :class="{close:close}">
-        <transition name="fade">
+        <transition name="fade" mode="out-in">
           <router-view class="app-view"></router-view>
         </transition>
       </section>
@@ -83,6 +83,12 @@ export default {
 
 
 <style scoped lang="scss">
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .2s ease;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 .main-box {
   background-color: #f5f5f5;
 }
