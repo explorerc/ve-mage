@@ -238,8 +238,17 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
-        if (err.code === 10013) {
+        if (err.code === 10013) { // 未注册
           this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.$messageBox({
+            header: '提示',
+            content: '你已经注册但未通过审核',
+            confirmText: '知道了',
+            autoClose: 5,
+            handleClick: (e) => {
+            }
+          })
         }
         if (!this.isAccount) {
           this.isSend = true
@@ -302,8 +311,17 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
-        if (err.code === 10013) {
+        if (err.code === 10013) { // 未注册
           this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.$messageBox({
+            header: '提示',
+            content: '你已经注册但未通过审核',
+            confirmText: '知道了',
+            autoClose: 5,
+            handleClick: (e) => {
+            }
+          })
         }
         this.mobileError = err.msg
         this.isSend = false
@@ -351,8 +369,17 @@ export default {
       }).catch(err => {
         if (err.code === 10050) {
           this.mobileError = '验证码输入过于频繁'
-        } else if (err.code === 10013) {
+        } else if (err.code === 10013) { // 未注册
           this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.$messageBox({
+            header: '提示',
+            content: '你已经注册但未通过审核',
+            confirmText: '知道了',
+            autoClose: 5,
+            handleClick: (e) => {
+            }
+          })
         } else {
           this.mobileError = err.msg
         }
