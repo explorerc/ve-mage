@@ -833,7 +833,7 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .live-title /deep/ {
-  padding-bottom: 0px !important;
+  /*padding-bottom: 0px !important;*/
   .add-btn {
     height: 30px;
     line-height: 30px;

@@ -970,13 +970,13 @@ export default {
   .live-title {
     position: relative;
     border-bottom: none;
-    padding-bottom: 30px;
+    padding-bottom: 25px;
     span.tips {
       color: $color-font-sub;
     }
     .el-switch {
       position: relative;
-      bottom: 2px;
+      bottom: 4px;
     }
   }
 }

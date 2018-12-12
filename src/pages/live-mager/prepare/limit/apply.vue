@@ -597,7 +597,7 @@
         color: $color-font-sub;
         cursor: pointer;
         &:hover {
-          color: $color-font;
+          color: $color-red-hover;
         }
       }
       .del-box {
@@ -677,7 +677,7 @@
 .primary-button {
   padding: 0px;
   width: 200px;
-  margin: 10px auto 34px auto;
+  margin: 50px auto 34px auto;
   display: block;
 }
 /* 设备宽度大于 1600 */
@@ -702,5 +702,9 @@
     width: 260px;
     padding-left: 179px;
   }
+}
+.el-switch {
+  position: relative;
+  bottom: 6px;
 }
 </style>

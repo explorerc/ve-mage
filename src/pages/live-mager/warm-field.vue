@@ -427,6 +427,6 @@ export default {
 }
 .el-switch {
   position: relative;
-  bottom: 3px;
+  bottom: 4px;
 }
 </style>

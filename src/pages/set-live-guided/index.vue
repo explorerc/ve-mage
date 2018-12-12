@@ -313,7 +313,7 @@ export default {
   .v-title {
     position: relative;
     line-height: 60px;
-    margin: 30px 0;
+    margin: 30px 0 25px;
     font-size: 24px;
     color: #222;
   }

@@ -283,6 +283,7 @@ export default {
     right: 8px;
     display: block;
     height: 14px;
+    line-height: 14px;
     .length {
       color: #4b5afe;
     }

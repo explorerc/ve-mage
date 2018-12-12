@@ -253,7 +253,7 @@ export default {
   color: #222;
   .el-switch {
     position: relative;
-    bottom: 2px;
+    bottom: 4px;
   }
   // transition: width .2s;
 
@@ -443,4 +443,5 @@ export default {
     }
   }
 }
+
 </style>

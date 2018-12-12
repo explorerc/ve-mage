@@ -231,7 +231,8 @@ export default {
       }
       .q-edit {
         padding: 0 10px;
-        margin-bottom: 15px;
+        /*margin-bottom: 15px;*/
+        margin-bottom: 5px;
         &.display {
           // margin-bottom: 0;
         }
