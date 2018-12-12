@@ -1246,6 +1246,9 @@
                 .el-select,
                 .el-input-number {
                   width: 150px;
+                  .el-input__inner {
+                    text-align: left;
+                  }
                 }
                 i.el-input__icon {
                   height: 40px;
@@ -1257,7 +1260,7 @@
                 font-size: 16px;
                 transform: translate(-4px, 12px);
                 &:hover {
-                  color: red;
+                  color: #FC6769;
                 }
               }
             }
@@ -1267,18 +1270,24 @@
             height: 48px;
             line-height: 48px;
           }
-          .add-brn:after{
-            content: '+';
-            border: 1px solid #cccccc;
-            color: #cccccc;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 18px;
-            display: inline-block;
-            text-align: center;
-            line-height: 16px;
+          .add-brn{
+            &:after{
+              content: '+';
+              border: 1px solid #cccccc;
+              color: #cccccc;
+              border-radius: 50%;
+              width: 18px;
+              height: 18px;
+              font-size: 18px;
+              display: inline-block;
+              text-align: center;
+              line-height: 16px;
+            }
+            &:hover {
+              background-color: #FDD43F;
+            }
           }
+
         }
       }
     }

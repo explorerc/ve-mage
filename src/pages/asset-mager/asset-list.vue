@@ -151,7 +151,7 @@
                   </div>
                   <div class="pay-img-box">
                     <div class="payImg">
-                      <img :src='codeSrc' alt="付款二维码">
+                      <img v-if="codeSrc" :src='codeSrc' alt="付款二维码">
                     </div>
                   </div>
 
@@ -421,18 +421,18 @@
       }
     },
     watch: {
-      amount: {
-        handler () {
-          if (this.stout) return
-          this.stout = setTimeout(() => {
-            clearTimeout(this.stout)
-            this.stout = null
-            if (!this.checkAmount()) {
-              return true
-            }
-          }, 200)
-        }
-      }
+      // amount: {
+      //   handler () {
+      //     if (this.stout) return
+      //     this.stout = setTimeout(() => {
+      //       clearTimeout(this.stout)
+      //       this.stout = null
+      //       if (!this.checkAmount()) {
+      //         return true
+      //       }
+      //     }, 200)
+      //   }
+      // }
     }
   }
 </script>

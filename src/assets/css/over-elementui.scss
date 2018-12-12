@@ -33,7 +33,7 @@ $color-ui-components:#4B5AFE;
   background: $color-ui-components;
 }
 .el-radio__input .el-radio__inner:hover {
-  border-color: $color-ui-components;
+  border-color: $color-blue-hover;
 }
 .el-radio__input.is-checked+.el-radio__label {
   color: $color-ui-components;
@@ -210,8 +210,39 @@ textarea::-webkit-input-placeholder {
   border-radius: 0 0 4px 4px;
 }
 .el-select-dropdown__item.hover:hover {
-  color: #4B5AFE;
+  color: $color-blue-hover;
 }
 .el-select-dropdown__list .el-select-dropdown__item.selected {
-  color: #4B5AFE;
+  color: $color-blue-active;
 }
+// 去掉下拉菜单小三角
+.el-popper .popper__arrow {
+  border-width: 0;
+}
+.el-popper .popper__arrow::after {
+  border-width: 0;
+}
+// 修改下拉菜单的active和hover时的颜色
+.el-cascader-menu__item.is-active {
+  color: $color-blue-active !important;
+}
+.el-cascader-menu__item:hover {
+  color: $color-blue-hover !important;
+}
+.el-cascader .el-input.is-focus .el-input__inner {
+  border-color: $color-blue-active;
+}
+// 分页居中
+.el-pagination {
+  text-align: center;
+}
+
+// 修改复选框的颜色
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: $color-blue-active;
+  border-color: $color-blue-active;
+}
+.el-checkbox__input .el-checkbox__inner:hover {
+  border-color: $color-blue;
+}
+

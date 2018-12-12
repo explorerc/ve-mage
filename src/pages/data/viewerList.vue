@@ -482,7 +482,7 @@
       .iconfont {
         display: inline-block;
         font-size: 12px;
-        color: #2878FF;
+        color: #4B5AFE;
         transition: transform .2s;
         &.icon-down {
           transform: rotate(180deg);

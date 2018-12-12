@@ -967,6 +967,9 @@
         }
         .filter-item {
           margin-bottom: 20px;
+          .el-button {
+            border: 1px dotted #dcdfe6;
+          }
         }
         .filter-confirm {
           text-align: center;
@@ -1104,6 +1107,10 @@
           height: 34px;
           line-height: 34px;
           text-overflow: ellipsis;
+          color: #222222;
+        }
+        .el-icon-arrow-up:before {
+          color: #222222;
         }
         .el-input.is-focus .el-input__inner {
           border-color: $color-gray;
@@ -1184,4 +1191,17 @@
       text-align: left;
     }
   }
+  /deep/ {
+    .el-button {
+      background-color: transparent;
+    }
+    .com-input input {
+      background-color: transparent;
+    }
+    // 去掉复选框背景色
+    .el-checkbox__inner {
+      background-color: transparent;
+    }
+  }
+
 </style>
