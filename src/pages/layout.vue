@@ -25,7 +25,7 @@
       </div>
       <section class="main-container"
                :class="{close:close}">
-        <transition>
+        <transition name="fade">
           <router-view class="app-view"></router-view>
         </transition>
       </section>
