@@ -32,6 +32,9 @@ $color-ui-components:#4B5AFE;
   border-color: $color-ui-components;
   background: $color-ui-components;
 }
+.el-radio__input .el-radio__inner:hover {
+  border-color: $color-ui-components;
+}
 .el-radio__input.is-checked+.el-radio__label {
   color: $color-ui-components;
 }
