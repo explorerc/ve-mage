@@ -65,6 +65,16 @@
 
   export default {
     name: 'info',
+    watch: {
+      goodsData: {
+        handler () {
+          if (this.initReady) {
+            this.isShowMsgB = true
+          }
+        },
+        deep: true
+      }
+    },
     created () {
       if (this.$route.params.type === 'update') {
         this.getGoodsDetail()
@@ -72,6 +82,9 @@
       } else {
         this.Breadcrumb = '新建商品'
       }
+      this.$nextTick(() => {
+        this.initReady = true
+      })
     },
     mounted () {
       EventBus.$emit('breads', [{
@@ -179,7 +192,7 @@
       }
       return {
         Breadcrumb: '',
-        isShowMsgB: true,
+        isShowMsgB: false,
         errTitle: '',
         goodsData: {
           title: '', // 标题

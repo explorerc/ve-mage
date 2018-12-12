@@ -290,6 +290,7 @@ export default {
       this.phoneData.push(obj)
       this.base.phone = false
       this.$nextTick(() => {
+        this.canPaas = true
         this.initReady = true
       })
     }
