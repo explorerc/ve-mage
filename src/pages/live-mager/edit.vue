@@ -22,7 +22,7 @@
         <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
           <div class="from-content" :class="{ 'error':dateEmpty }">
-            <el-date-picker @focus='dateEmpty=false' v-model="date" type="datetime" placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'" default-time="10:00:00">
+            <el-date-picker @focus='dateEmpty=false' v-model="date" @change="canPaas=false" type="datetime" placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'" default-time="10:00:00">
             </el-date-picker>
             <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
@@ -193,6 +193,7 @@ export default {
   methods: {
     uploadImgSuccess (data) {
       this.poster = data.name
+      this.canPaas = false
     },
     uploadError (data) {
       console.log('上传失败:', data)
@@ -387,6 +388,7 @@ export default {
       })
     },
     addShowClooseTag () {
+      this.canPaas = false
       this.showClooseTag()
       this.$nextTick(() => {
         this.tagEmpty = false

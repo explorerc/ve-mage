@@ -1,6 +1,5 @@
 <template>
-  <div class="v-questionaire"
-       @mousedown="canPaas = false">
+  <div class="v-questionaire">
     <div class="v-questionaire-title">
       <span class="title">{{questionId?'编辑问卷':'新建问卷'}}</span>
       <com-back :url="`/salesTools/questionnaire/list/${activityId}`"></com-back>
@@ -80,6 +79,7 @@
                          class="q-title"
                          :value.sync="title"
                          :errorTips="error.titleError"
+                         @change="canPaas=false"
                          @focus="focus('titleError')"></com-input>
             </div>
             <div class="v-form">
@@ -94,6 +94,7 @@
                          class="q-title"
                          type="textarea"
                          :value.sync="description"
+                         @change="canPaas=false"
                          :errorTips="error.descriptionError"
                          @focus="focus('descriptionError')"></com-input>
             </div>
@@ -219,6 +220,16 @@ export default {
   },
   beforeDestroy () {
   },
+  watch: {
+    phoneData: {
+      handler () {
+        if (this.initReady) {
+          this.canPaas = false
+        }
+      },
+      deep: true
+    }
+  },
   /* 路由守卫，离开当前页面之前被调用 */
   beforeRouteLeave (to, from, next) {
     if (this.canPaas) {
@@ -278,6 +289,9 @@ export default {
       }
       this.phoneData.push(obj)
       this.base.phone = false
+      this.$nextTick(() => {
+        this.initReady = true
+      })
     }
   },
   computed: {
@@ -351,6 +365,7 @@ export default {
       })
     },
     addQuestion (type) {
+      this.canPaas = false
       if ((this.dragData.length + this.phoneData.length) >= 100) {
         this.$toast({
           content: '场问卷最多能设置100个题目',
@@ -732,6 +747,7 @@ export default {
             this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
+            this.canPaas = true
             this.saveResult = true
             this.$messageBox({
               header: '提示',
@@ -790,6 +806,7 @@ export default {
     },
     uploadImgSuccess (data) {
       this.imgUrl = data.name
+      this.canPaas = false
     },
     uploadError (data) {
       this.error.uploadErrorMsg = data.msg

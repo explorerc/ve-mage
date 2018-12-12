@@ -141,6 +141,15 @@
         <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
       </div>
     </message-box>
+    <message-box v-if="shenHeiShow"
+                 header='提示'
+                 cancelText='知道了'
+                 @handleClick="shenHeiShow=false">
+      <div style="text-align: center;padding: 20px 0;">
+        <span style="display: block;">您的申请正在审核中，请耐心等待</span>
+        <span style="display: block;">如有问题请拨打400-888-9970客服热线</span>
+      </div>
+    </message-box>
   </div>
 </template>
 <script>
@@ -187,7 +196,8 @@ export default {
       isStepOneSuccess: false,
       isStepTwoSuccess: false,
       isStepThreeSuccess: false,
-      shenQingShow: false
+      shenQingShow: false,
+      shenHeiShow: false
     }
   },
   components: {
@@ -307,14 +317,7 @@ export default {
         } else if (err.code === 10013) { // 未注册
           this.shenQingShow = true
         } else if (err.code === 10014) { // 注册未通过审核
-          this.$messageBox({
-            header: '提示',
-            content: '你已经注册但未通过审核',
-            confirmText: '知道了',
-            autoClose: 5,
-            handleClick: (e) => {
-            }
-          })
+          this.shenHeiShow = true
         } else {
           this.errorTips.phoneCode = err.msg
         }
