@@ -149,18 +149,18 @@
                             :class='{"active":payType === "WXPAY"}'>微信充值
                     </button>
                   </div>
-                  <div class="pay-img-box">
-                    <div class="payImg">
-                      <img v-if="codeSrc" :src='codeSrc' alt="付款二维码">
-                    </div>
-                  </div>
-
-                  <p class="pay-des">
-                    {{payway}}扫一扫支付
-                  </p>
                 </div>
               </div>
             </div>
+            <div class="pay-img-box">
+              <div class="payImg">
+                <img v-if="codeSrc" :src='codeSrc' alt="付款二维码">
+              </div>
+              <p class="pay-des">
+                {{payway}}扫一扫支付
+              </p>
+            </div>
+
           </div>
         </div>
       </message-box>
@@ -386,25 +386,25 @@
         this.queryCode()
       },
       // 支付方式改变
-      payChange (way) {
+      async payChange (way) {
         if (way === '支付宝') {
           this.payType = 'ALIPAY'
           this.payway = way
           this.queryCode()
-          this.$refs.alipay.style.backgroundColor = '#FFD021'
-          this.$refs.wxpay.style.backgroundColor = '#ffffff'
+          // this.$refs.alipay.style.backgroundColor = '#FFD021'
+          // this.$refs.wxpay.style.backgroundColor = '#ffffff'
           this.wxDisabled = true
-          setTimeout(() => {
+          await setTimeout(() => {
             this.wxDisabled = false
           }, 500)
         } else {
           this.payType = 'WXPAY'
           this.payway = way
           this.queryCode()
-          this.$refs.alipay.style.backgroundColor = '#fff'
-          this.$refs.wxpay.style.backgroundColor = '#FFD021'
+          // this.$refs.alipay.style.backgroundColor = '#fff'
+          // this.$refs.wxpay.style.backgroundColor = '#FFD021'
           this.alDisabled = true
-          setTimeout(() => {
+          await setTimeout(() => {
             this.alDisabled = false
           }, 500)
         }
@@ -464,7 +464,7 @@
         span {
           display: block;
           width: 100%;
-          font-size: 16px;
+          font-size: 18px;
           text-align: center;
           vertical-align: middle;
 
@@ -481,7 +481,7 @@
           }
           &:nth-child(3) {
             font-size: 14px;
-            color: #888;
+            color: #555;
           }
           &.mid {
             font-size: 24px;
@@ -546,7 +546,7 @@
           margin: 0 20px;
         }
         .export-btn {
-          margin-top: 2px;
+          margin-top: -2px;
           height: 36px;
           line-height: 36px;
         }
@@ -623,9 +623,8 @@
             position: relative;
             flex: 1;
             span {
-              font-family: PingFangSC-Semibold;
               color: #222;
-              font-weight: 600;
+              font-weight: 400;
               font-size: 20px;
             }
             .error-msg {
@@ -656,7 +655,7 @@
       }
     }
     .money-box-wrap /deep/ {
-      border: 1px solid red;
+      /*border: 1px solid red;*/
       .message-box-content {
         .from-box .from-row .from-content .com-input {
           width: 100% !important;
@@ -709,15 +708,20 @@
                   &.alipay {
                     border-radius: 4px 0px 0px 4px;
                     border-right: 0px;
-                    background-color: #ffd021;
+                    &.active {
+                      border-right: 0px;
+                    }
                   }
                   &.weixin {
                     border-left: 0px;
                     border-radius: 0px 4px 4px 0px;
+                    &.active {
+                      border-left: 0px;
+                    }
                   }
                   &.active {
                     background-color: #ffd021;
-                    border: none;
+                    border: 1px solid #ffd021;
                   }
                 }
               }
@@ -731,36 +735,36 @@
                   cursor: pointer;
                   margin-left: 10px;
                   color: #4b5afe;
-                  font-weight: 400;
                   font-size: 14px;
                 }
-              }
-              .pay-img-box {
-                .payImg {
-                  border: 1px solid #e2e2e2;
-                  display: inline-block;
-                  margin: 20px 0 0 57px;
-                  vertical-align: auto;
-                  height: 120px;
-                  width: 120px;
-                  overflow: hidden;
-                  img {
-                    width: 120px;
-                    height: 120px;
-                    display: block;
-                  }
-                }
-              }
-              .pay-des {
-                margin: 0px 0 0 61px;
-                font-size: 14px;
-                color: #555555;
               }
             }
             .com-input {
               margin-right: 6px;
             }
           }
+          .pay-img-box {
+            text-align: center;
+            .payImg {
+              border: 1px solid #e2e2e2;
+              display: inline-block;
+              /*margin: 20px 0 0 57px;*/
+              vertical-align: auto;
+              height: 120px;
+              width: 120px;
+              overflow: hidden;
+              img {
+                width: 120px;
+                height: 120px;
+                display: block;
+              }
+            }
+            .pay-des {
+              font-size: 14px;
+              color: #555555;
+            }
+          }
+
         }
       }
     }
@@ -777,7 +781,8 @@
         text-align: center;
         font-size: 24px;
         color: #222222;
-        margin-bottom: 10px;
+        margin-top: 12px;
+        margin-bottom: 5px;
       }
       .paid-balance {
         text-align: center;
