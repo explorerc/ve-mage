@@ -292,20 +292,21 @@
         }, 100)
       },
       resetForm (formName) {
-        this.$messageBox({
-          header: '',
-          content: '是否放弃当前编辑内容',
-          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-              this.$refs[formName].resetFields()
-              this.isShowMsgB = false
-              this.$router.go(-1)
-            }
-          }
-        })
+        this.$router.go(-1)
+        // this.$messageBox({
+        //   header: '',
+        //   content: '是否放弃当前编辑内容',
+        //   cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+        //   confirmText: '确定',
+        //   handleClick: (e) => {
+        //     if (e.action === 'cancel') {
+        //     } else if (e.action === 'confirm') {
+        //       this.$refs[formName].resetFields()
+        //       this.isShowMsgB = false
+        //       this.$router.go(-1)
+        //     }
+        //   }
+        // })
       },
       uploadImgSuccess (data) {
         this.goodsData.imageList[data.nowIndex].name = data.name
