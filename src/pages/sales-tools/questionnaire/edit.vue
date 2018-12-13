@@ -1096,7 +1096,7 @@ export default {
   .v-view /deep/ {
     color: #222;
     .ve-message-box {
-      padding-bottom: 0;
+      padding-bottom: 20px;
       .ve-message-box__header {
         background-color: rgba(0, 0, 0, 0);
         .prompt-title {
