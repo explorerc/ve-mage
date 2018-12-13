@@ -476,5 +476,10 @@ export default {
       width: calc(100% - 320px);
     }
   }
+  .chart-box /deep/ {
+    .ve-title {
+      padding-left: 0;
+    }
+  }
 }
 </style>

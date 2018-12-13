@@ -235,6 +235,7 @@
           </el-table-column>
           <el-table-column
             prop="mail"
+            width="180"
             label="邮箱"
             show-overflow-tooltip>
             <!-- <template slot-scope="scope">
@@ -257,13 +258,11 @@
           <el-table-column
             prop="lastActive"
             label="最后活跃"
-            width="150"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="comment"
             label="备注"
-            width="100"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column

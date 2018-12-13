@@ -970,7 +970,7 @@ export default {
   .live-title {
     position: relative;
     border-bottom: none;
-    padding-bottom: 25px;
+    /*padding-bottom: 25px;*/
     span.tips {
       color: $color-font-sub;
     }

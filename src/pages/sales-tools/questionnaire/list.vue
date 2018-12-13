@@ -313,7 +313,7 @@ export default {
     position: relative;
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
-    margin: 30px 0 25px;
+    margin: 10px 0 5px;
     span.title {
       display: inline-block;
       font-size: 24px;

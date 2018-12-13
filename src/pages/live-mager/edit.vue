@@ -460,7 +460,8 @@ export default {
     }
   }
   .edit-title {
-    margin-top: 32px;
+    margin-top: 10px;
+    margin-bottom: 5px;
     position: relative;
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
