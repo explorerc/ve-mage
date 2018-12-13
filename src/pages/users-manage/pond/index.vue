@@ -230,7 +230,7 @@
           <el-table-column
             prop="phone"
             label="手机号"
-            width="150"
+            width="140"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
@@ -252,7 +252,7 @@
           <el-table-column
             prop="count"
             label="参与(次)"
-            width="100">
+            width="90">
           </el-table-column>
           <el-table-column
             prop="lastActive"
@@ -263,13 +263,13 @@
           <el-table-column
             prop="comment"
             label="备注"
-            width="150"
+            width="100"
             show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="count"
             label="操作"
-            width="150">
+            width="80">
             <template slot-scope="scope">
               <router-link :to="`/userManage/info/${scope.row.business_consumer_uid}`">
                 <el-button class='detail'
