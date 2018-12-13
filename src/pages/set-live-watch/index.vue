@@ -527,6 +527,7 @@ export default {
       background: url('~assets/image/phone-wechat.png');
       background-size: cover;
       background-position: center center;
+      margin-right: 70px;
       .h5-header{
         position: absolute;
         top: 64px;
