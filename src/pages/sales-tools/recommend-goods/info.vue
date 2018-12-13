@@ -338,7 +338,11 @@
     }
   }
 </script>
-
+<style lang="scss">
+  .el-form-item__error{
+    top: 90%;
+  }
+</style>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
 #goods-info {
