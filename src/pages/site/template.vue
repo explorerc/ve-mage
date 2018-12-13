@@ -746,4 +746,9 @@ export default {
     }
   }
 }
+/deep/ {
+  .ve-upload-box {
+    height: 160px;
+  }
+}
 </style>
