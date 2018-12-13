@@ -518,7 +518,7 @@ export default {
         overflow: hidden;
         background-color: #fff;
         .v-pc-title {
-          font-size: 20px;
+          font-size: 16px;
           text-align: center;
           margin-top: 55px;
         }

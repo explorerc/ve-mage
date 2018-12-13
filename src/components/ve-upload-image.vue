@@ -177,7 +177,7 @@
 .ve-upload-box {
   position: relative;
   width: 440px;
-  height: 140px;
+  height: 160px;
   border: 1px dashed #e2e2e2;
   border-radius: 4px;
   background-color: #f7f7f7;

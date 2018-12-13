@@ -833,9 +833,6 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .live-title /deep/ {
-  height: 60px;
-  line-height: 60px;
-  /*padding-bottom: 0px !important;*/
   .add-btn {
     height: 30px;
     line-height: 30px;
@@ -887,7 +884,7 @@ export default {
 }
 
 .list-box {
-  margin: 10px 0;
+  margin: 0 0 10px;
   background-color: #fff;
   border-radius: 4px;
   .list-header {
