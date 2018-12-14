@@ -333,7 +333,7 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    font-size: inherit;
+    /*font-size: inherit;*/
     &.error {
       border-color: #fc5659;
     }
