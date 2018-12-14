@@ -2,25 +2,26 @@
   <div class="live-mager">
     <div class="live-title">
       <span class="title">活动官网</span>
-        <el-switch v-model="enable"
-                   inactive-color="#DEE1FF"
-                   :width="32"
-                   :disabled="switchDisabled"
-                   active-color="#FFD021"
-                   @change="confirmState" >
-        </el-switch>
+      <el-switch v-model="enable"
+                 inactive-color="#DEE1FF"
+                 :width="32"
+                 :disabled="switchDisabled"
+                 active-color="#FFD021"
+                 @change="confirmState">
+      </el-switch>
       <com-back></com-back>
-        <!-- <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span> -->
+      <!-- <span>开启后，将可以定制您自己的活动官网，方便汇聚活动信息聚集人气</span> -->
     </div>
     <div class="mager-box border-box">
       <div class="from-box">
-        <div class="switch-cover " :class='{"close":!enable}'>
+        <div class="switch-cover "
+             :class='{"close":!enable}'>
           <div class="group">
             <div class="fwn">我的模板</div>
             <div class="group-content">
               <div class="template-block clearfix"
-                  style=""
-                  v-if="this.data.tid">
+                   style=""
+                   v-if="this.data.tid">
                 <img :src="this[`t${data.tid}`]">
                 <div class="option-wrap">
                   <div class="option-group">
@@ -31,7 +32,8 @@
                 <span class='tpl-name'
                       v-html="this.data.tplName"></span>
               </div>
-              <div v-else class='empty'>
+              <div v-else
+                   class='empty'>
                 <div class="img"></div>
                 <div class="txt">您还没有创建官网样式，请从模板库中选择并创建个性化官网</div>
               </div>
@@ -42,7 +44,7 @@
             <div class="group-content fs0">
               <div class="template-block clearfix">
                 <img :src="t0478320"
-                    alt="">
+                     alt="">
                 <div class="option-wrap">
                   <div class="option-group">
                     <a @click="useTemplate('template1')">使用模板</a>
@@ -64,7 +66,7 @@
                       v-html="tplData['template2']()['tplName']"></span>
               </div>
               <div class="template-block clearfix">
-                <img :src="t0478322" >
+                <img :src="t0478322">
                 <div class="option-wrap">
                   <div class="option-group">
                     <a @click="useTemplate('template3')">使用模板</a>
@@ -107,8 +109,8 @@ export default {
       switchDisabled: false,
       data: {},
       tplData: defaultData,
-      t0478320: require('assets/image/site_tp1.png'),
-      t0478321: require('assets/image/site_tp2.png'),
+      t0478320: require('assets/image/site_tp2.png'),
+      t0478321: require('assets/image/site_tp1.png'),
       t0478322: require('assets/image/site_tp3.png'),
       t0478323: require('assets/image/site_tp4.png')
     }
@@ -242,7 +244,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'assets/css/mixin.scss';
+@import "assets/css/mixin.scss";
 .live-mager {
   border-radius: 5px;
   overflow: hidden;
@@ -295,7 +297,7 @@ export default {
     position: relative;
     z-index: 199;
     &.close::before {
-      content: '';
+      content: "";
       width: 100%;
       height: 100%;
       position: absolute;
@@ -332,7 +334,7 @@ export default {
       margin-top: 25px;
       margin-bottom: 17px;
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 2px;
         height: 18px;
@@ -431,7 +433,7 @@ export default {
       .img {
         width: 150px;
         height: 150px;
-        background: url('~assets/image/site/site_empty.png') no-repeat center;
+        background: url("~assets/image/site/site_empty.png") no-repeat center;
         background-size: contain;
         margin: 0 auto;
       }
@@ -443,5 +445,4 @@ export default {
     }
   }
 }
-
 </style>
