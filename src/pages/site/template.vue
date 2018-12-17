@@ -54,7 +54,7 @@
             </div>
           </div>
         </div>
-        <a @click="doReset"
+        <!-- <a @click="doReset"
            class="reset"
            v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
         <a @click="doSave"
@@ -62,94 +62,101 @@
            v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
         <a @click="doSaveTDK"
            class="save"
-           v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
+           v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a> -->
+    </div>
+    <div class="template-content"
+          v-show="cType==='tp'">
+      <component v-if="platform==='PC'"
+                  :editAble="!isPreview"
+                  v-model="data"
+                  v-bind:is="com"
+                  :shareData='share'></component>
+      <div v-if="platform==='H5'"
+            class="h5-wrap">
+            <div class="qrcode-box">
+            <img :src="qrcodeImg" class='qrcode' >
+            <p>请扫码预览</p>
+            </div>
+        <!-- <iframe :src="`${this.mobileHost}site/${this.tid}`"
+                frameborder="0"
+                class="h5-preview"></iframe> -->
       </div>
-      <div class="template-content"
-           v-show="cType==='tp'">
-        <component v-if="platform==='PC'"
-                   :editAble="!isPreview"
-                   v-model="data"
-                   v-bind:is="com"
-                   :shareData='share'></component>
-        <div v-if="platform==='H5'"
-             class="h5-wrap">
-             <div class="qrcode-box">
-              <img :src="qrcodeImg" class='qrcode' >
-              <p>请扫码预览</p>
-             </div>
-          <!-- <iframe :src="`${this.mobileHost}site/${this.tid}`"
-                  frameborder="0"
-                  class="h5-preview"></iframe> -->
-        </div>
-      </div>
-      <div class="template-content"
-           v-show="cType==='tdk'">
-        <div class="content from-box">
-          <div class="from-row">
-            <div class="from-title">
-              <i class="star">*</i>官网标题:</div>
-            <div class="from-content">
-              <com-input ref="siteRef"
-                         :value.sync="siteTitle"
-                         placeholder="请输入官网标题"
-                         :max-length="30"
-                         class='inp'
-                         :errorTips="siteTitleError"
-                         @change="canPaas=false"
-                         @focus='siteTitleError = ""'
-                         @blur="()=>{
-              if(this.siteTitle.length===0){
-                this.siteTitleError='必须填写官网标题'
-              }
-              }"></com-input>
-            </div>
-          </div>
-          <div class="from-row">
-            <div class="from-title">
-              <i class="star">*</i>推广关键字:</div>
-            <div class="from-content">
-              <com-input :value.sync="keyWords"
-                         placeholder="请输入推广关键字,以空格分割"
-                         :max-length="30"
-                         class='inp'
-                         :errorTips="keyWordsError"
-                         @change="canPaas=false"
-                         @focus='keyWordsError = ""'
-                         @blur="()=>{
-              if(this.keyWords.trim().length===0){
-                this.keyWordsError='必须填写推广关键字'
-              }
-              }"></com-input>
-            </div>
-          </div>
-          <div class="from-row">
-            <div class="from-title">收藏图标:</div>
-            <div class="from-content">
-              <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
-                         accept="png|jpg|bmp"
-                         :defaultImg="defaultImg"
-                         :fileSize="500"
-                         :errorMsg="uploadErrorMsg"
-                         @error="uploadError"
-                         @success="uploadImgSuccess"></ve-upload>
-            </div>
-          </div>
-          <div class="from-row">
-            <div class="from-title">网页描述:</div>
-            <div class="from-content editor-content"
-                 style='position:relative;'>
-              <com-input type="textarea"
-                         :value.sync="siteDes"
-                         :rows="5"
-                         placeholder="请输入网页描述信息"
-                         :max-length="60"
-                         class='inp'
-                         @change="canPaas=false"
-                         style="height: 100px;"></com-input>
-            </div>
+    </div>
+    <div class="template-content"
+          v-show="cType==='tdk'">
+      <div class="content from-box">
+        <div class="from-row">
+          <div class="from-title">
+            <i class="star">*</i>官网标题:</div>
+          <div class="from-content">
+            <com-input ref="siteRef"
+                        :value.sync="siteTitle"
+                        placeholder="请输入官网标题"
+                        :max-length="30"
+                        class='inp'
+                        :errorTips="siteTitleError"
+                        @change="canPaas=false"
+                        @focus='siteTitleError = ""'
+                        @blur="()=>{
+            if(this.siteTitle.length===0){
+              this.siteTitleError='必须填写官网标题'
+            }
+            }"></com-input>
           </div>
         </div>
+        <div class="from-row">
+          <div class="from-title">
+            <i class="star">*</i>推广关键字:</div>
+          <div class="from-content">
+            <com-input :value.sync="keyWords"
+                        placeholder="请输入推广关键字,以空格分割"
+                        :max-length="30"
+                        class='inp'
+                        :errorTips="keyWordsError"
+                        @change="canPaas=false"
+                        @focus='keyWordsError = ""'
+                        @blur="()=>{
+            if(this.keyWords.trim().length===0){
+              this.keyWordsError='必须填写推广关键字'
+            }
+            }"></com-input>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">收藏图标:</div>
+          <div class="from-content">
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
+                        accept="png|jpg|bmp"
+                        :defaultImg="defaultImg"
+                        :fileSize="500"
+                        :errorMsg="uploadErrorMsg"
+                        @error="uploadError"
+                        @success="uploadImgSuccess"></ve-upload>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">网页描述:</div>
+          <div class="from-content editor-content"
+                style='position:relative;'>
+            <com-input type="textarea"
+                        :value.sync="siteDes"
+                        :rows="5"
+                        placeholder="请输入网页描述信息"
+                        :max-length="60"
+                        class='inp'
+                        @change="canPaas=false"
+                        style="height: 100px;"></com-input>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="bottom-fix">
+      <div class="btn-group">
+        <button @click="doReset" class='default-button' v-if="!isPreview&&!ptid&&cType==='tp'">重置</button>
+        <button @click="doSave" class='primary-button' v-if="!isPreview&&!ptid&&cType==='tp'">下一步</button>
+        <button @click="doSaveTDK" class='primary-button' v-if="!isPreview&&!ptid&&cType==='tdk'">保存</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -506,6 +513,7 @@ export default {
 
 <style scoped lang="scss">
 @import 'assets/css/variable.scss';
+@import 'assets/css/mixin.scss';
 
 .el-select /deep/ {
   input {
@@ -580,7 +588,7 @@ export default {
       left: 20px;
       margin-top: -20px;
       padding: 0 15px;
-      // background-color: #ffda51;
+      background-color: #ffda51;
       line-height: 40px;
       border-radius: 4px;
       font-size: 18px;
@@ -607,7 +615,8 @@ export default {
       background: none;
       .el-input__inner {
         border: none !important;
-        background-color: #ffda51 !important;
+        background-color: transparent !important;
+        padding-left: 6px;
       }
     }
     .save {
@@ -761,6 +770,24 @@ export default {
       margin: auto;
       border: 0;
       border-radius: 4px;
+    }
+  }
+  .bottom-fix {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 60px;
+    line-height: 60px;
+    border-top: 1px solid #e2e2e2;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    background-color: #fff;
+    .btn-group {
+      float: right;
     }
   }
 }

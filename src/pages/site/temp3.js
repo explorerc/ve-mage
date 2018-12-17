@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478322',
-    tplName: '模板名称3',
+    tplName: '商品展示',
     section1Data: {
       panel: {
         hideVideo: false,
@@ -52,6 +52,7 @@ export default function () {
     },
     section2Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: false,
         bgType: 'color',
@@ -81,6 +82,7 @@ export default function () {
     },
     section3Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: false,
         bgType: 'color',
@@ -183,6 +185,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: true,
         bgType: 'color',
@@ -262,6 +265,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: true,
         bgType: 'color',

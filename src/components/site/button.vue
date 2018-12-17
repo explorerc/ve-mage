@@ -67,6 +67,9 @@ export default {
   position: relative;
   font-size: 14px;
   text-align: center;
+  .btn-content {
+    height: 100%;
+  }
   .nav-blank-title {
     text-align: center;
     height: 50px;

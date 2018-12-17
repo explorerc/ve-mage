@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478321',
-    tplName: '模板名称2',
+    tplName: '活动专题',
     section1Data: {
       panel: {
         hideVideo: false,
@@ -90,6 +90,7 @@ export default function () {
       panel: {
         hideVideo: false,
         enable: true,
+        img: '',
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
@@ -116,6 +117,7 @@ export default function () {
       panel: {
         hideVideo: false,
         enable: true,
+        img: '',
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(253,101,76,1)'
@@ -166,6 +168,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -240,6 +243,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -295,6 +299,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -334,6 +339,7 @@ export default function () {
     },
     section8Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -421,6 +427,7 @@ export default function () {
     },
     section9Data: {
       panel: {
+        img: '',
         hideVideo: true,
         enable: true,
         bgType: 'color',

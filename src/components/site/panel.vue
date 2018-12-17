@@ -35,6 +35,7 @@
             title="图片支持jpg、png、bmp格式 大小不超过2M"
             accept="png|jpg|bmp"
             :fileSize="2048"
+            :defaultImg="value.img.indexOf('mp')===0?host+value.img:value.img"
             :errorMsg="uploadImgErrorMsg"
              @error="uploadError"
              @success="uploadImgSuccess">

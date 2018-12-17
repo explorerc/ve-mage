@@ -48,6 +48,7 @@
             accept="png|jpg|bmp"
             :fileSize="2048"
             :errorMsg="item.uploadImgErrorMsg"
+            :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
              @error="uploadError($event,index)"
              @success="uploadImgSuccess($event,index)">
              </ve-upload>

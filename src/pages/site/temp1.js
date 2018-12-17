@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478320',
-    tplName: '模板名称1',
+    tplName: '产品发布会',
     section1Data: {
       panel: {
         bgType: 'color',
@@ -77,6 +77,7 @@ export default function () {
       panel: {
         hideVideo: false,
         enable: true,
+        img: '',
         bgType: 'color',
         videoType: 'upload',
         link: '',
@@ -115,6 +116,7 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         link: '',
+        img: '',
         color: 'rgba(247,247,247,1);'
       },
       font: {
@@ -151,6 +153,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         link: '',
+        img: '',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
@@ -190,6 +193,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         link: '',
+        img: '',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
@@ -210,6 +214,7 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         link: '',
+        img: '',
         color: 'rgba(19,16,49,1)'
       },
       font: {
