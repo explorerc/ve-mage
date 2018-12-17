@@ -545,6 +545,7 @@
         }
       }
     }
+  }
     .asset-list-box {
       margin-top: 20px;
       border: solid 1px $color-bd;
@@ -826,5 +827,5 @@
         margin-bottom: 48px;
       }
     }
-  }
+}
 </style>
