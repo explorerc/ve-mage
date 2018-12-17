@@ -177,7 +177,7 @@
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{parseFloat(amount) + parseFloat(billInfo.balance)}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{parseFloat(billInfo.balance)}}</div>
         </div>
       </message-box>
     </div>
@@ -371,6 +371,7 @@
           console.log(msg)
           this.payMoneyShow = false
           this.successMoneyShow = true
+          this.queryAccountInfo()
         })
       },
       // 获取订单号
@@ -414,10 +415,15 @@
         this.amount = ''
         this.payType = 'ALIPAY'
         this.amountError = ''
+        this.modifyMoneyShow = true
       },
       finishMoney () {
         this.queryAccountInfo()
         this.successMoneyShow = false
+        this.amount = ''
+        this.modifyMoneyShow = true
+        this.payway = '支付宝'
+        this.payType = 'ALIPAY'
       }
     },
     watch: {
