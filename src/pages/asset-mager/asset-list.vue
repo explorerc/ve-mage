@@ -35,9 +35,9 @@
             </el-date-picker>
           </div>
           <div class="search-item fr">
-            <span class="search-title">渠道来源</span>
+            <span class="search-title">流水类型</span>
             <el-select v-model="searchParams.type"
-                       @change="queryListType()"
+                       @change="queryListType"
                        placeholder="渠道来源">
               <el-option v-for="item in liuTypeList"
                          :key="item.value"
