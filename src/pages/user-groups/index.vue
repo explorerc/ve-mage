@@ -499,6 +499,7 @@
           height: 17px;
           font-size: 10px;
           padding: 0 3px;
+          border-radius: 2px;
           border: 1px solid #4b5afe;
         }
       }

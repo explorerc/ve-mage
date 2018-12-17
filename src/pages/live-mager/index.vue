@@ -357,6 +357,15 @@ export default {
       }
     }
   }
+  /deep/ {
+    .live-item {
+      overflow: hidden;
+      &:hover {
+        box-shadow: 0 2px 10px #999999;
+      }
+    }
+
+  }
 }
 .in-countdown {
   p {

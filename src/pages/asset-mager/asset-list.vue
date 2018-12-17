@@ -530,12 +530,14 @@
             color: #4b5afe;
             cursor: pointer;
             &:hover {
-              background-color: $color-default-hover;
-              border: 1px solid $color-default-hover;
+              background-color: $color-blue-hover;
+              border: 1px solid $color-blue-hover;
+              color: #fff;
             }
             &:active {
-              background-color: $color-default-active;
-              border: 1px solid $color-default-hover;
+              background-color: $color-blue-active;
+              border: 1px solid $color-blue-active;
+              color: #fff;
             }
           }
         }
