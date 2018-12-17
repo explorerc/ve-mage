@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478323',
-    tplName: '模板名称4',
+    tplName: '宣传片展示',
     section1Data: {
       panel: {
         bgType: 'color',
@@ -96,6 +96,7 @@ export default function () {
     },
     section3Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -117,6 +118,7 @@ export default function () {
     },
     section4Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -136,6 +138,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -190,6 +193,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        img: '',
         hideVideo: true,
         enable: true,
         bgType: 'color',
@@ -250,6 +254,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        img: '',
         hideVideo: true,
         enable: true,
         bgType: 'color',

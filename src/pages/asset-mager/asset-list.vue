@@ -37,8 +37,8 @@
           <div class="search-item fr">
             <span class="search-title">流水类型</span>
             <el-select v-model="searchParams.type"
-                       @change="queryList"
-                       placeholder="流水类型">
+                       @change="queryListType"
+                       placeholder="渠道来源">
               <el-option v-for="item in liuTypeList"
                          :key="item.value"
                          :label="item.label"
@@ -64,9 +64,10 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="page-pagination" v-if="total>searchParams.pageSize">
+        <div class="page-pagination" v-if="total > searchParams.pageSize">
           <ve-pagination :total="total"
                          :pageSize="searchParams.pageSize"
+                         :currentPage="currentPage"
                          @changePage="changePage"/>
         </div>
       </div>
@@ -177,7 +178,7 @@
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{parseFloat(billInfo.balance)}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{billInfo.balance}}</div>
         </div>
       </message-box>
     </div>
@@ -216,8 +217,9 @@
           type: '',
           date: '',
           page: 1,
-          pageSize: 10
+          pageSize: 25
         },
+        currentPage: 1,
         addMoneyShow: false, // 充值框隐藏
         payMoneyShow: false, // 支付框隐藏
         successMoneyShow: false, // 充值成功框隐藏
@@ -280,24 +282,31 @@
           })
         })
       },
+      queryListType () {
+        this.searchParams.page = 1
+        this.currentPage = 1
+        this.queryList()
+      },
       exportTable () {
         let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
         const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
         window.open(encodeURI(encodeURI(url)))
       },
-      // 充值
+      // 充值框显示
       addMoney () {
         this.addMoneyShow = true // 充值框显示
       },
-      // 支付
+      // 支付框显示
       async payMoney (e) {
         if (e.action === 'confirm') {
+          console.log('金额2' + this.amount)
           if (!this.amount) {
             this.amountError = '请输入10～20000之间的数字'
             return
           }
           if (this.checkAmount()) {
             this.addMoneyShow = false
+            this.oldAmount = this.amount
             await this.queryBillNo()
             if (this.billNo !== '') {
               this.payMoneyShow = true // 支付框显示
@@ -312,18 +321,18 @@
       },
       // 控制支付中修改金额框的显示
       modifyMoney () {
-        this.oldAmount = this.amount
         this.modifyMoneyShow = !this.modifyMoneyShow
       },
-      // 支付中的保存
+      // 支付按钮-保存
       saveMoney () {
         if (!this.checkAmount()) return
         this.modifyMoneyShow = true
         if (this.amount !== this.oldAmount) {
           this.queryBillNo()
+          this.oldAmount = this.amount
         }
       },
-      // 支付中的取消
+      // 支付按钮-取消
       cancelMoney () {
         this.amount = this.oldAmount
         this.modifyMoneyShow = true
@@ -376,6 +385,9 @@
       },
       // 获取订单号
       async queryBillNo () {
+        if (!this.modifyMoneyShow) {
+          this.amount = this.oldAmount
+        }
         await this.$get(assetService.GET_ASSET_LIST_BILLNO, {
           amount: this.amount
         }).then(res => {
@@ -413,6 +425,7 @@
       paidMoney (e) {
         this.payMoneyShow = false
         this.amount = ''
+        this.oldAmount = ''
         this.payType = 'ALIPAY'
         this.amountError = ''
         this.modifyMoneyShow = true
@@ -421,6 +434,7 @@
         this.queryAccountInfo()
         this.successMoneyShow = false
         this.amount = ''
+        this.oldAmount = ''
         this.modifyMoneyShow = true
         this.payway = '支付宝'
         this.payType = 'ALIPAY'

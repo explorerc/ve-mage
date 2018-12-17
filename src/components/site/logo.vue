@@ -22,6 +22,7 @@
         accept="png|jpg|bmp"
         :fileSize="2048"
         :errorMsg="uploadImgErrorMsg"
+        :defaultImg="value.url.indexOf('mp')===0?host+value.url:value.url"
           @error="uploadError"
           @success="uploadImgSuccess">
         </ve-upload>
