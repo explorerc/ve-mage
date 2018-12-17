@@ -24,8 +24,13 @@
         default: 10
       },
       currentPage: {
-        type: Number,
-        default: 1
+        type: Number
+        // default: 2
+      }
+    },
+    watch: {
+      currentPage () {
+        console.log(this.currentPage)
       }
     },
     methods: {
