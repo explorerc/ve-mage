@@ -8,7 +8,7 @@
       </div>
       <div class="asset-header-item">
         <span>可用金额（元）
-          <span class="add-money fr" @click="addMoney()">充值</span>
+          <!--<span class="add-money fr" @click="addMoney()">充值</span>-->
         </span>
         <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
         <span class="mid">{{billInfo.balance}}</span>
