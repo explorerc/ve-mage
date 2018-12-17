@@ -413,7 +413,7 @@
 #userGroups {
   font-family: PingFangSC-Regular;
   /*padding: 40px 100px;*/
-  margin: 50px auto;
+  margin: 0px auto 50px;
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -433,11 +433,13 @@
     }
     .operation {
       overflow: hidden;
+      margin-top: 25px;
+      margin-bottom: 20px;
       h4 {
         display: inline-block;
         height: 26px;
         color: rgba(34, 34, 34, 1);
-        line-height: 26px;
+        line-height: 34px;
         font-size: 24px;
         float: left;
         font-weight: 400;
