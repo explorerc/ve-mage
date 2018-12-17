@@ -8,7 +8,7 @@
         <div class="ve-message-box__header">
           <span v-if="type=='prompt'" class="prompt-title">{{header}}</span>
           <button type="button" @click.prevent="handleClick(action.cancel)">
-            <i class="iconfont icon-close"></i>
+            <i class="iconfont icon-close1"></i>
           </button>
         </div>
         <div class="ve-message-box__container">
@@ -75,7 +75,7 @@
       },
       width: {
         type: String,
-        default: '300px'
+        default: '400px'
       },
       type: { // prompt , error， none, noneModal
         type: String,
@@ -153,6 +153,7 @@
       border-radius: 4px;
       font-size: 16px;
       overflow: hidden;
+      min-width: 400px;
       z-index: 1006;
       &:before {
         display: block;
@@ -174,10 +175,11 @@
           line-height: 40px;
           background-color: $color-default;
           button {
+            color: #555;
             &:hover {
-              color: #2878ff;
+              color: #222222;
             }
-            .icon-close {
+            .icon-close1 {
               position: relative;
               top: -3px;
             }
@@ -211,7 +213,7 @@
           font-size: 14px;
           cursor: pointer;
           &:hover {
-            color: $color-default;
+            color: #555555;
           }
         }
       }
@@ -236,7 +238,8 @@
           text-align: center;
           box-sizing: border-box;
           outline: none;
-          font-weight: 500;
+          font-weight: 400;
+          font-size: 14px;
           -moz-user-select: none;
           -webkit-user-select: none;
           -ms-user-select: none;

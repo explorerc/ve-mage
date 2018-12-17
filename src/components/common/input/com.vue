@@ -288,6 +288,9 @@ export default {
     top: 50%;
     transform: translateY(-50%);
     right: 8px;
+    display: block;
+    height: 14px;
+    line-height: 14px;
     .length {
       color: #4b5afe;
     }
@@ -337,7 +340,7 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    font-size: inherit;
+    /*font-size: inherit;*/
     &.error {
       border-color: #fc5659;
     }

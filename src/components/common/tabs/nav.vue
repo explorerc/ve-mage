@@ -45,7 +45,7 @@ export default {
   color: #303133;
   cursor: pointer;
   &.active {
-    color: #409eff;
+    color: #4B5AFE;
   }
 }
 .slider {
@@ -58,7 +58,7 @@ export default {
     & > * {
       display: inline-block;
       height: 100%;
-      border-bottom: 2px solid #409eff;
+      border-bottom: 2px solid #4B5AFE;
     }
   }
   &.left {

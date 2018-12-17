@@ -1,15 +1,13 @@
 <template>
   <div class="clearfix login-container">
     <div class="v-left">
-      <p class="v-logo">
-        微吼知客
-      </p>
+      <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
-          微吼知客
+          智能营销平台
         </p>
         <p class="v-subtitle">
-          提供专属直播间、加速企业营销、获客、变现
+          全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
         <img src="../../assets/image/login@2x.png" alt="">
       </div>
@@ -104,6 +102,25 @@
         <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
       </div>
     </div>
+    <message-box v-if="shenQingShow"
+                 header='提示'
+                 confirmText='现在申请'
+                 cancelText='知道了'
+                 @handleClick="sqHandler">
+      <div style="text-align: center;padding: 20px 0;">
+        <span style="display: block;">您尚未开通产品试用资格</span>
+        <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
+      </div>
+    </message-box>
+    <message-box v-if="shenHeiShow"
+                 header='提示'
+                 cancelText='知道了'
+                 @handleClick="shenHeiShow=false">
+      <div style="text-align: center;padding: 20px 0;">
+        <span style="display: block;">您的申请正在审核中，请耐心等待</span>
+        <span style="display: block;">如有问题请拨打400-888-9970客服热线</span>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -137,7 +154,9 @@ export default {
       mobileError: '',
       remember: false,
       isActive: false,
-      isGoMaster: false
+      isGoMaster: false,
+      shenQingShow: false,
+      shenHeiShow: false
     }
   },
   components: {
@@ -229,6 +248,13 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
+        if (err.code === 10013) { // 未注册
+          this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.shenHeiShow = true
+        } else {
+          this.accountError = err.msg
+        }
         if (!this.isAccount) {
           this.isSend = true
           this.isProhibit = true
@@ -246,8 +272,6 @@ export default {
             }
           }, 1000)
         }
-
-        this.accountError = err.msg
         this.accountOpacity = 1
       })
     },
@@ -290,7 +314,13 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
-        this.mobileError = err.msg
+        if (err.code === 10013) { // 未注册
+          this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.shenHeiShow = true
+        } else {
+          this.mobileError = err.msg
+        }
         this.isSend = false
         this.isProhibit = true
         this.second = 60
@@ -299,6 +329,12 @@ export default {
         this.cap.refresh()
         this.mobileOpacity = 1
       })
+    },
+    sqHandler (e) {
+      this.shenQingShow = false
+      if (e.action === 'confirm') {
+        this.$router.push('/register')
+      }
     },
     getCode () {
       // 获取验证码
@@ -330,6 +366,10 @@ export default {
       }).catch(err => {
         if (err.code === 10050) {
           this.mobileError = '验证码输入过于频繁'
+        } else if (err.code === 10013) { // 未注册
+          this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.shenHeiShow = true
         } else {
           this.mobileError = err.msg
         }
@@ -451,13 +491,12 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 600px;
-      // margin: 260px auto;
+      width: 100%;
       text-align: center;
       position: absolute;
       top: 20%;
-      left: 50%;
-      margin-left: -300px;
+      left: 0%;
+      transform: translate(0%, 0%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -468,8 +507,8 @@ export default {
         margin-top: 12px;
       }
       img {
-        width: 490px;
-        margin: 55px 0 0 -25px;
+        width: 62%;
+        margin: 30px 0 0 0;
       }
     }
   }
@@ -483,6 +522,19 @@ export default {
       position: absolute;
       bottom: 15px;
       text-align: center;
+      color: #999;
+      font-size: 14px;
+      font-family: 'PingFang SC', 'Helvetica Neue', Helvetica,
+        'Hiragino Sans GB', 'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial,
+        sans-serif;
+      em {
+        position: relative;
+        bottom: 1px;
+      }
+      a {
+        color: #999;
+        font-size: 14px;
+      }
     }
     .primary-button {
       display: block;

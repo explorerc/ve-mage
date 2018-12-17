@@ -65,6 +65,16 @@
 
   export default {
     name: 'info',
+    watch: {
+      goodsData: {
+        handler () {
+          if (this.initReady) {
+            this.isShowMsgB = true
+          }
+        },
+        deep: true
+      }
+    },
     created () {
       if (this.$route.params.type === 'update') {
         this.getGoodsDetail()
@@ -72,6 +82,9 @@
       } else {
         this.Breadcrumb = '新建商品'
       }
+      this.$nextTick(() => {
+        this.initReady = true
+      })
     },
     mounted () {
       EventBus.$emit('breads', [{
@@ -179,7 +192,7 @@
       }
       return {
         Breadcrumb: '',
-        isShowMsgB: true,
+        isShowMsgB: false,
         errTitle: '',
         goodsData: {
           title: '', // 标题
@@ -279,20 +292,21 @@
         }, 100)
       },
       resetForm (formName) {
-        this.$messageBox({
-          header: '',
-          content: '是否放弃当前编辑内容',
-          cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-              this.$refs[formName].resetFields()
-              this.isShowMsgB = false
-              this.$router.go(-1)
-            }
-          }
-        })
+        this.$router.go(-1)
+        // this.$messageBox({
+        //   header: '',
+        //   content: '是否放弃当前编辑内容',
+        //   cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+        //   confirmText: '确定',
+        //   handleClick: (e) => {
+        //     if (e.action === 'cancel') {
+        //     } else if (e.action === 'confirm') {
+        //       this.$refs[formName].resetFields()
+        //       this.isShowMsgB = false
+        //       this.$router.go(-1)
+        //     }
+        //   }
+        // })
       },
       uploadImgSuccess (data) {
         this.goodsData.imageList[data.nowIndex].name = data.name
@@ -324,7 +338,11 @@
     }
   }
 </script>
-
+<style lang="scss">
+  .el-form-item__error{
+    top: 90%;
+  }
+</style>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
 #goods-info {

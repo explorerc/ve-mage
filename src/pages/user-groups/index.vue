@@ -45,8 +45,11 @@
             <span>{{scope.row.updated_at?scope.row.updated_at:scope.row.created_at}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="describe"
-                         label="群组描述"></el-table-column>
+        <el-table-column label="群组描述">
+          <template slot-scope="scope">
+            <span :title="scope.row.describe">{{scope.row.describe}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button class="btns"
@@ -79,7 +82,7 @@
     <!--dialog-->
     <message-box v-if="isShow"
                  :header="dialogTitle"
-                 width="590px"
+                 width="540px"
                  class="massage-style"
                  type="prompt"
                  confirmText='保存'

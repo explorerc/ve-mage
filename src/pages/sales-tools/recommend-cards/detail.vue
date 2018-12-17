@@ -159,10 +159,10 @@
       },
       saveCard () {
         this.$post(cardService.POST_CREATE_CARD, this.saveData).then((res) => {
-          this.$toast({
-            content: '保存成功',
-            position: 'center'
-          })
+          // this.$toast({
+          //   content: '保存成功',
+          //   position: 'center'
+          // })
           this.canPaas = true
           this.$router.push(`/salesTools/recommendCards/${this.activityId}`)
         })

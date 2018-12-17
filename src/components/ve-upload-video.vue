@@ -219,6 +219,7 @@
     background-color: #f7f7f7;
     text-align: center;
     overflow: hidden;
+    color: #fff;
     .hide {
       display: none;
     }

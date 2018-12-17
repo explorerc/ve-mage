@@ -198,21 +198,22 @@
 
 #goods-list {
   font-family: PingFangSC-Regular;
-  padding: 34px 100px;
+  padding: 0px 100px 34px;
   /deep/ {
     header {
       position: relative;
       overflow: hidden;
       text-align: right;
-      height: 40px;
-      margin-bottom: 25px;
+      line-height: 60px;
+      margin-bottom: 7px;
+      margin-top: 12px;
       p {
         float: left;
-        height: 26px;
+        height: 60px;
         font-size: 24px;
         font-weight: 400;
         color: rgba(34, 34, 34, 1);
-        line-height: 52px;
+        line-height: 60px;
       }
       .default-button,
       .primary-button {

@@ -313,13 +313,15 @@
     .item-container {
       border: none;
       .item-box:first-child {
+        border-radius: 0 !important;
         border-bottom: solid 1px #e2e2e2;
       }
     }
     .chart-container {
       .chart-box {
         .title {
-          text-align: center;
+          text-align: left;
+          margin-bottom: -35px !important;
         }
       }
     }

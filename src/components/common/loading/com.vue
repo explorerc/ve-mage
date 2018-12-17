@@ -44,7 +44,7 @@ export default {
   right: 0;
   background-color: rgba(0, 0, 0, 0.6);
   .inner-wrap {
-    color: #409eff;
+    color: #fff;
     display: inline-block;
     position: absolute;
     top: 50%;

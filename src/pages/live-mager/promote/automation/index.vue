@@ -8,7 +8,7 @@
                  active-color="#FFD021"
                  @change='openSwitch'>
       </el-switch>
-      <span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>
+      <!--<span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>-->
       <com-back></com-back>
     </div>
     <div class='preview mager-box border-box clearfix switch-cover'  :class='{"close":!isOpen}'>
@@ -828,9 +828,9 @@ export default {
         enabled: type ? 'Y' : 'N'
       }
       this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
-        this.$toast({
-          content: '设置成功'
-        })
+        // this.$toast({
+        //   content: '设置成功'
+        // })
       }).catch((res) => {
         console.log(res)
         if (res.code === 60706) {
@@ -873,10 +873,10 @@ export default {
             this.renderData[step].splice(idx, 1)
           }
         })
-        this.$toast({
-          content: '设置成功',
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '设置成功',
+        //   position: 'center'
+        // })
         this.itemList[step][type]['switch'] = false
       }).catch((res) => {
         if (res.code === 65902) {
@@ -898,10 +898,10 @@ export default {
         type: type
       }
       this.$config({ handlers: true }).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
-        this.$toast({
-          content: '设置成功',
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '设置成功',
+        //   position: 'center'
+        // })
         this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
         this.itemList[step][type]['switch'] = true
       }).catch((res) => {
@@ -970,13 +970,13 @@ export default {
   .live-title {
     position: relative;
     border-bottom: none;
-    padding-bottom: 30px;
+    /*padding-bottom: 25px;*/
     span.tips {
       color: $color-font-sub;
     }
     .el-switch {
       position: relative;
-      bottom: 2px;
+      bottom: 4px;
     }
   }
 }

@@ -725,7 +725,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #e2e2e2;
+            background-color: #EFEFEF;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
@@ -782,7 +782,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #e2e2e2;
+            background-color: #F0F1FE;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;

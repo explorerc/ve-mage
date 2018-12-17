@@ -123,7 +123,7 @@
           <div class="v-activity-content">
             {{itemData.val4}}
           </div>
-          <div class="v-activity-content">
+          <div class="v-activity-content v-high">
             {{itemData.val3}}
           </div>
           <div class="v-activity-content">
@@ -369,10 +369,13 @@ export default {
     border-radius: 4px;
     padding: 30px 32px;
     margin-top: 20px;
+    .v-title {
+      font-size: 20px;
+    }
     .v-btns {
       display: block;
       position: absolute;
-      top: 28px;
+      top: 29px;
       right: 30px;
       background-color: #fff;
       z-index: 1;

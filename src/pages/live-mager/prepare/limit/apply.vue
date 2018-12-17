@@ -61,7 +61,10 @@
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div> -->
             <div>
-              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
+              <com-input class='inp'
+                         :value.sync="item.placeholder === null ? '' : item.placeholder"
+                         :max-length="8"
+                         :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
             </div>
             <div v-if="item.ext === 'phone'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
@@ -317,11 +320,12 @@
       },
       saveLimitfn (data) {
         this.$config({ handlers: [60704] }).$post(activityService.SAVE_LIMIT, data).then((res) => {
-          this.$toast({
-            content: '设置成功',
-            position: 'center'
-          })
+          // this.$toast({
+          //   content: '设置成功',
+          //   position: 'center'
+          // })
           this.canPaas = true
+          this.$router.push(`/liveMager/detail/${this.activityId}`)
         }).catch(res => {
           this.$messageBox({
             header: '提示',
@@ -374,9 +378,9 @@
               }
               this.quesData.push(obj)
             } else {
-              this.$toast({
-                'content': '设置成功'
-              })
+              // this.$toast({
+              //   'content': '设置成功'
+              // })
             }
           }
         }).catch((res) => {
@@ -594,7 +598,7 @@
         color: $color-font-sub;
         cursor: pointer;
         &:hover {
-          color: $color-font;
+          color: $color-red-hover;
         }
       }
       .del-box {
@@ -674,7 +678,7 @@
 .primary-button {
   padding: 0px;
   width: 200px;
-  margin: 10px auto 34px auto;
+  margin: 50px auto 34px auto;
   display: block;
 }
 /* 设备宽度大于 1600 */
@@ -699,5 +703,9 @@
     width: 260px;
     padding-left: 179px;
   }
+}
+.el-switch {
+  position: relative;
+  bottom: 6px;
 }
 </style>

@@ -313,7 +313,7 @@ export default {
     position: relative;
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
-    margin: 30px 0;
+    margin: 10px 0 5px;
     span.title {
       display: inline-block;
       font-size: 24px;
@@ -335,6 +335,7 @@ export default {
         background-color: #ffd021;
         color: #222;
         margin-left: 10px;
+        margin-right: 100px;
         &.disabled {
           border-color: #ddd;
           background-color: #ddd;
@@ -368,7 +369,10 @@ export default {
       }
     }
     .default-button {
-      line-height: 38px;
+      line-height: 40px;
+      &.back-btn-all {
+        height: 40px;
+      }
     }
   }
   .v-table {

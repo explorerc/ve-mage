@@ -945,12 +945,12 @@ export default {
             }).then((res) => {
               console.log(res)
               if (res.code === 200) {
-                this.$toast({
-                  'content': '设置成功'
-                })
-                setTimeout((res) => {
-                  this.$router.push(url + this.activityId)
-                }, 500)
+                // this.$toast({
+                //   'content': '设置成功'
+                // })
+                // setTimeout((res) => {
+                //   this.$router.push(url + this.activityId)
+                // }, 500)
               }
             }).catch((res) => {
               if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
@@ -987,14 +987,14 @@ export default {
         handlers: true
       }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
         console.log(res)
-        if (res.code === 200) {
-          this.$toast({
-            'content': '设置成功'
-          })
-          setTimeout((res) => {
-            this.$router.push(url + this.activityId)
-          }, 500)
-        }
+        // if (res.code === 200) {
+        //   this.$toast({
+        //     'content': '设置成功'
+        //   })
+        //   setTimeout((res) => {
+        //     this.$router.push(url + this.activityId)
+        //   }, 500)
+        // }
       }).catch((res) => {
         if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
           console.log(type + ' ' + status)
@@ -1061,7 +1061,6 @@ export default {
     publishActive () { // 发布活动
       this.$messageBox({
         header: '提示',
-        width: '450px',
         content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
         cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认发布',
@@ -1087,7 +1086,6 @@ export default {
       }
       this.$messageBox({
         header: '提示',
-        width: '450px',
         content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
         cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
         confirmText: '确认下线',
@@ -1316,6 +1314,7 @@ export default {
         width: 95px;
         // width: 130px;
         height: 2px;
+        border-radius: 1px;
         position: absolute;
         background: rgba(211, 215, 255, 1);
         top: 50%;
@@ -1407,6 +1406,9 @@ export default {
       }
     }
   }
+  .bottom {
+    margin-top: -1px;
+  }
   .bottom > div {
     margin: 10px 33px;
     // margin: 10px 55px;
@@ -1483,7 +1485,7 @@ export default {
   width: 640px;
   position: relative;
   p {
-    padding-bottom: 20px;
+    padding-bottom: 15px;
   }
   .title {
     font-size: 20px;
@@ -1708,9 +1710,9 @@ export default {
   &:before {
     content: '';
     width: 1px;
-    height: 100%;
+    height: 140px;
     position: absolute;
-    top: 7px;
+    top: 16px;
     left: -107px;
     background: rgba(226, 226, 226, 1);
     border-radius: 1px;

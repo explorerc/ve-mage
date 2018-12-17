@@ -71,10 +71,10 @@ export default {
 .com-notification /deep/ {
   display: inline-block;
   position: relative;
-  line-height: 1.5;
+  line-height: 1.2;
   padding: 16px 20px;
   border-radius: 4px;
-  width: 380px;
+  width: 280px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-size: 14px;
   z-index: 3000;

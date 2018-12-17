@@ -41,29 +41,46 @@
                 </p>
               </div>
             </div>
-            <div class="v-show pull-right">
-              <div class="v-pc"
-                   :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
-                <div class="clearfix"
-                     style="padding-left: 30px;position:relative;">
-                  <template v-if="defaultLogoImg">
-                    <img :src="defaultLogoImg"
-                         alt="logo"
-                         class="v-logo pull-left">
-                  </template>
-                  <div class="pull-left">
-                    <p class="v-live-title">
-                      {{activityTitle}}
-                    </p>
-                    <img src="../../assets/image/mac-icon@2x.png"
-                         alt=""
-                         class="v-pc-icon">
+            <div class="pull-right-menu">
+              <span :class="{active:isPc}" @click="isPc=true">电脑预览</span>
+              <span :class="{active:!isPc}" @click="isPc=false">手机预览</span>
+            </div>
+            <div class="v-show pull-right" v-if="isPc">
+                <div class="v-pc"
+                     :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
+                  <div class="clearfix"
+                       style="padding-left: 30px;position:relative;">
+                    <template v-if="defaultLogoImg">
+                      <img :src="defaultLogoImg"
+                           alt="logo"
+                           class="v-logo pull-left">
+                    </template>
+                    <div class="pull-left">
+                      <p class="v-live-title">
+                        {{activityTitle}}
+                      </p>
+                      <img src="../../assets/image/mac-icon@2x.png"
+                           alt=""
+                           class="v-pc-icon">
+                    </div>
+                  </div>
+                  <div class="v-show-content">
                   </div>
                 </div>
-                <div class="v-show-content">
+                <p class="v-preview">品牌预览</p>
+            </div>
+            <div class="v-show pull-right phone-mode" v-else>
+              <div class="h5-header">
+                <img v-if="defaultLogoImg" :src="defaultLogoImg" class="h5-logo">
+                <div class="h5-header-content">
+                  <p>{{activityTitle}}</p>
+                  <p>
+                    <span>预告</span>
+                    <span>1人在线</span>
+                  </p>
                 </div>
               </div>
-              <p class="v-preview">品牌预览</p>
+              <div class="h5-logo-img"></div>
             </div>
           </div>
           <button @click='brandClick'
@@ -202,7 +219,8 @@ export default {
       status: '', // 直播状态,
       canPass: true,
       activityTitle: '', // 活动标题
-      errorTips: '' // 错误提示
+      errorTips: '', // 错误提示
+      isPc: true
     }
   },
   components: {
@@ -341,10 +359,11 @@ export default {
       }
       this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
-        this.$toast({
-          content: '保存成功',
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '保存成功',
+        //   position: 'center'
+        // })
+        this.$router.push(`/liveMager/detail/${this.activityId}`)
       }).catch((err) => {
         this.$messageBox({
           header: '提示',
@@ -419,12 +438,12 @@ export default {
   .v-title {
     position: relative;
     line-height: 60px;
-    margin: 30px 0;
+    margin: 12px 0 7px;
     font-size: 24px;
     color: #222;
   }
   .v-content {
-    margin-top: 26px;
+    /*margin-top: 26px;*/
     width: 100%;
     min-height: 835px;
     background-color: #fff;
@@ -501,6 +520,77 @@ export default {
   }
   .pull-right {
     float: right;
+    &.phone-mode{
+      position: relative;
+      width: 250px;
+      height: 499px;
+      background: url('~assets/image/phone-wechat.png');
+      background-size: cover;
+      background-position: center center;
+      margin-right: 70px;
+      .h5-header{
+        position: absolute;
+        top: 64px;
+        left: 20px;
+        height: 30px;
+        width: 214px;
+        img.h5-logo{
+          height: 24px;
+          max-width: 100px;
+        }
+        .h5-header-content{
+          display: inline-block;
+          width: 60%;
+          font-size: 14px;
+          transform: scale(0.5) translateX(-60px);
+          p:nth-child(1){
+            font-weight: bold;
+          }
+          p:nth-child(2){
+            span:nth-child(1){
+              display: inline-block;
+              padding: 4px 10px;
+              margin-right: 10px;
+              border-radius: 16px;
+              color: #fff;
+              font-size: 12px;
+              background-color: rgba(0, 0, 0, .7);
+              line-height: 18px;
+            }
+            span:nth-child(2){
+              color: #666;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      .h5-logo-img{
+        width: 229px;
+        height: 410px;
+        margin-top: 14px;
+        margin-left: 12px;
+        background-image: url('~assets/image/h5-logo@2x.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+    }
+  }
+  .pull-right-menu{
+    float: left;
+    width: 40%;
+    margin-left: 40px;
+    margin-bottom: 20px;
+    span{
+      display: inline-block;
+      line-height: 30px;
+      padding: 0 20px;
+      font-size: 14px;
+      &:hover,&.active{
+        cursor: pointer;
+        color: #2878FF;
+      }
+    }
   }
   .v-show {
     width: 462px;
@@ -525,7 +615,7 @@ export default {
       transform: scale(0.5);
       transform-origin: top left;
       color: #333;
-      max-height: 22px;
+      max-height: 12px;
       width: 247px;
     }
     .v-pc-icon {

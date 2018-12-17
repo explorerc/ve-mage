@@ -2,7 +2,7 @@
   <div class="live-mager"
        v-ComLoading="loading"
        com-loading-text="拼命加载中">
-    <div class="live-title" style='line-height: 52px;padding-bottom:20px;'>
+    <div class="live-title">
       <span class="title">活动列表</span>
       <div class="search-box fr" v-if="tableList.length || isSearch">
         <el-select v-model="searchParams.status" @change='statusChange'
@@ -28,7 +28,7 @@
                    @keyup.native.enter="searchEnter"
                    placeholder="输入直播名称"></com-input>
         <button class="primary-button create-btn"
-                @click="createLive">创建直播
+                @click="createLive">新建活动
         </button>
       </div>
     </div>

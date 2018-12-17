@@ -226,13 +226,13 @@
       },
       /* 清除错误信息 */
       clearError () {
-        if (this.email.planTime) {
-          this.errorMsg.planTime = ''
+        if (this.email.title) {
+          this.errorMsg.title = ''
         } else {
           return
         }
-        if (this.email.title) {
-          this.errorMsg.title = ''
+        if (this.email.planTime) {
+          this.errorMsg.planTime = ''
         } else {
           return
         }

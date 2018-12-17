@@ -161,7 +161,7 @@ export default {
   margin-top: -159px;
   margin-left: -240px;
   width: 480px;
-  height: 318px;
+  height: 303px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
   border-radius: 4px;

@@ -95,6 +95,7 @@
                          :max-length="30"
                          class='inp'
                          :errorTips="siteTitleError"
+                         @change="canPaas=false"
                          @focus='siteTitleError = ""'
                          @blur="()=>{
               if(this.siteTitle.length===0){
@@ -112,6 +113,7 @@
                          :max-length="30"
                          class='inp'
                          :errorTips="keyWordsError"
+                         @change="canPaas=false"
                          @focus='keyWordsError = ""'
                          @blur="()=>{
               if(this.keyWords.trim().length===0){
@@ -142,12 +144,12 @@
                          placeholder="请输入网页描述信息"
                          :max-length="60"
                          class='inp'
+                         @change="canPaas=false"
                          style="height: 100px;"></com-input>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -222,8 +224,30 @@ export default {
       changed: undefined,
       hasData: false,
       isFirst: false,
-      qrcodeImg: ''
+      qrcodeImg: '',
+      canPaas: true
     }
+  },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPaas) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
   },
   mounted () {
     this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
@@ -241,6 +265,7 @@ export default {
     },
     uploadImgSuccess (data) {
       this.icon = data.name
+      this.canPaas = false
     },
     uploadError (data) {
       console.log('上传失败:', data)
@@ -348,13 +373,15 @@ export default {
           description: this.siteDes,
           icon: this.icon
         }).then(res => {
-          this.options[1].status = '(已设置)'
+          this.canPaas = true
+          /* this.options[1].status = '(已设置)'
           this.hasData = true
           this.$toast({
             content: '保存成功',
             autoClose: 3000,
             position: 'center'
-          })
+          }) */
+          this.$router.push(`/liveMager/detail/${this.tid}`)
         })
       }
     },
@@ -743,6 +770,11 @@ export default {
       right: 10px !important;
       bottom: 6px !important;
     }
+  }
+}
+/deep/ {
+  .ve-upload-box {
+    height: 160px;
   }
 }
 </style>
