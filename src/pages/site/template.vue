@@ -5,7 +5,7 @@
            class="title">{{title}}-
         <span>{{publishState}}</span>
       </div>
-      <div class="back-btn" @click="goBack">
+      <div class="back-btn-site" @click="goBack">
         <i class="iconfont icon-jiantou"></i>
       </div>
       <el-select v-if="!isPreview&&!ptid" v-model="cType"
@@ -73,9 +73,13 @@
                    :shareData='share'></component>
         <div v-if="platform==='H5'"
              class="h5-wrap">
-          <iframe :src="`${this.mobileHost}site/${this.tid}`"
+             <div class="qrcode-box">
+              <img :src="qrcodeImg" class='qrcode' >
+              <p>请扫码预览</p>
+             </div>
+          <!-- <iframe :src="`${this.mobileHost}site/${this.tid}`"
                   frameborder="0"
-                  class="h5-preview"></iframe>
+                  class="h5-preview"></iframe> -->
         </div>
       </div>
       <div class="template-content"
@@ -91,6 +95,7 @@
                          :max-length="30"
                          class='inp'
                          :errorTips="siteTitleError"
+                         @change="canPaas=false"
                          @focus='siteTitleError = ""'
                          @blur="()=>{
               if(this.siteTitle.length===0){
@@ -108,6 +113,7 @@
                          :max-length="30"
                          class='inp'
                          :errorTips="keyWordsError"
+                         @change="canPaas=false"
                          @focus='keyWordsError = ""'
                          @blur="()=>{
               if(this.keyWords.trim().length===0){
@@ -138,16 +144,17 @@
                          placeholder="请输入网页描述信息"
                          :max-length="60"
                          class='inp'
+                         @change="canPaas=false"
                          style="height: 100px;"></com-input>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
+import eventBus from 'src/utils/eventBus.js'
 import activityService from 'src/api/activity-service'
 import brandService from 'src/api/brand-service'
 import temp1 from './template1.vue'
@@ -216,10 +223,34 @@ export default {
       platform: 'PC',
       changed: undefined,
       hasData: false,
-      isFirst: false
+      isFirst: false,
+      qrcodeImg: '',
+      canPaas: true
     }
   },
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPaas) {
+      next(true)
+      return false
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
+  },
   mounted () {
+    this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
     if (this.$route.path.indexOf('edit') === -1) {
       this.isPreview = true
     }
@@ -234,6 +265,7 @@ export default {
     },
     uploadImgSuccess (data) {
       this.icon = data.name
+      this.canPaas = false
     },
     uploadError (data) {
       console.log('上传失败:', data)
@@ -341,13 +373,15 @@ export default {
           description: this.siteDes,
           icon: this.icon
         }).then(res => {
-          this.options[1].status = '(已设置)'
+          this.canPaas = true
+          /* this.options[1].status = '(已设置)'
           this.hasData = true
           this.$toast({
             content: '保存成功',
             autoClose: 3000,
             position: 'center'
-          })
+          }) */
+          this.$router.push(`/liveMager/detail/${this.tid}`)
         })
       }
     },
@@ -404,6 +438,7 @@ export default {
                 autoClose: 2000,
                 position: 'center'
               })
+              eventBus.$emit('reset')
             })
           }
         }
@@ -483,6 +518,7 @@ export default {
     }
   }
 }
+
 .from-box {
   // margin: 20px;
   .from-row {
@@ -537,14 +573,14 @@ export default {
       }
     }
 
-    .back-btn {
+    .back-btn-site {
       position: absolute;
       display: inline-block;
       top: 50%;
       left: 20px;
       margin-top: -20px;
       padding: 0 15px;
-      background-color: #ffda51;
+      // background-color: #ffda51;
       line-height: 40px;
       border-radius: 4px;
       font-size: 18px;
@@ -556,10 +592,11 @@ export default {
       &:hover {
         cursor: pointer;
         opacity: 0.9;
-        color: #4b5afe;
+        // color: #4b5afe;
+        background-color: #ffda51;
       }
     }
-    .type-select {
+    .type-select /deep/ {
       position: absolute;
       top: 0;
       left: 80px;
@@ -567,6 +604,11 @@ export default {
       width: 220px;
       text-align: center;
       cursor: pointer;
+      background: none;
+      .el-input__inner {
+        border: none !important;
+        background-color: #ffda51 !important;
+      }
     }
     .save {
       position: absolute;
@@ -577,6 +619,9 @@ export default {
       text-align: center;
       cursor: pointer;
       font-size: 14px;
+      &:hover {
+        background-color: #ffda51;
+      }
     }
     .reset {
       position: absolute;
@@ -587,6 +632,9 @@ export default {
       text-align: center;
       cursor: pointer;
       font-size: 14px;
+      &:hover {
+        background-color: #ffda51;
+      }
     }
     .preview-group {
       position: absolute;
@@ -697,6 +745,14 @@ export default {
       margin-top: 64px;
       padding-top: 76px;
       padding-left: 3px;
+      .qrcode-box {
+        width: 200px;
+        margin: 210px auto;
+        text-align: center;
+        p {
+          color: #888;
+        }
+      }
     }
     .h5-preview {
       width: 375px;
@@ -706,6 +762,19 @@ export default {
       border: 0;
       border-radius: 4px;
     }
+  }
+}
+.editor-content /deep/ {
+  .com-input {
+    span {
+      right: 10px !important;
+      bottom: 6px !important;
+    }
+  }
+}
+/deep/ {
+  .ve-upload-box {
+    height: 160px;
   }
 }
 </style>

@@ -99,22 +99,17 @@
           :options="options"
           @change="handleAreaChange">
         </el-cascader>
-        <!--<el-select style="width: 100px;"-->
-        <!--v-model="searchParams.provinceId">-->
-        <!--<el-option v-for="item in provinceList"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
-        <!--<el-select style="width: 112px;"-->
-        <!--v-model="searchParams.cityId">-->
-        <!--<el-option v-for="item in cityList"-->
-        <!--:key="item.value"-->
-        <!--:label="item.label"-->
-        <!--:value="item.value">-->
-        <!--</el-option>-->
-        <!--</el-select>-->
+      </div>
+      <div class="search-item flm">
+        <span class="search-title">观看类型</span>
+        <el-select v-model="searchParams.type"
+                   placeholder="观看类型">
+          <el-option v-for="item in watcherList"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+          </el-option>
+        </el-select>
       </div>
       <div class="search-item flm">
         <span class="search-title">观众出入时段</span>
@@ -131,7 +126,7 @@
       </div>
       <div class="search-btns">
         <button class="primary-button" @click="searchEnter">查询</button>
-        <button class="default-button" @click="cancelClick">取消</button>
+        <button class="default-button" @click="cancelClick">重置</button>
       </div>
     </div>
     <div class="table-list-box data-pad">
@@ -201,6 +196,7 @@
   import * as types from '../../store/mutation-types'
   import province from '../../components/province'
   import city from '../../components/city'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'viewerList',
@@ -226,6 +222,7 @@
           last_leave_at: '',
           device: '',
           score: '',
+          type: '',
           page: 1,
           pageSize: 10
         },
@@ -234,6 +231,11 @@
           {value: '', label: '全部'},
           {value: 'M', label: '男'},
           {value: 'W', label: '女'}
+        ],
+        watcherList: [
+          {value: '', label: '全部'},
+          {value: 'live', label: '直播'},
+          {value: 'replay', label: '回放'}
         ],
         watcherTypeList: [
           {value: '', label: '全部用户'},
@@ -314,6 +316,18 @@
       this.dealSearchParam()
       this.queryList()
       this.dealWithCity()
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '观众',
+        url: `/data/viewer/${this.$route.params.id}`
+      }])
     },
     methods: {
       ...mapMutations('dataCenter', {
@@ -360,13 +374,19 @@
         } else if (type === 'high') { // 优质用户
           this.searchParams.user_level = 1
         } else if (type === 'vip') { // 高价值用户
-          this.searchParams.user_level = 4
+          this.searchParams.user_level = 2
         } else if (type === 'ord') { // 一般用户
           this.searchParams.user_level = 3
         } else if (type === 'potent') { // 潜力用户
-          this.searchParams.user_level = 2
+          this.searchParams.user_level = 4
         } else if (type === 'loss') { // 流失用户
           this.searchParams.user_level = 5
+        }
+
+        if (type === 'live') { // 观看直播人数
+          this.searchParams.type = 'live'
+        } else if (type === 'replay') { // 观看回放人数
+          this.searchParams.type = 'replay'
         }
       },
       goPageDetail (id) {
@@ -402,6 +422,7 @@
       },
       cancelClick () {
         this.citySelect = []
+        this.enterOutTime = []
         this.searchParams = {
           activityId: this.searchParams.activityId,
           keyword: '',
@@ -426,12 +447,12 @@
 <style lang="scss" scoped>
   .data-box {
     .export-btn {
-      height: 30px;
-      line-height: 30px;
+      height: 34px;
+      line-height: 34px;
       padding: 0 20px;
     }
     .data-pad {
-      padding-top: 20px;
+      padding-top: 30px;
     }
     .search-box /deep/ {
       .search-com {
@@ -443,11 +464,14 @@
       }
     }
     .search-total {
-      height: 60px;
+      height: 34px;
+      line-height: 34px;
+      margin: 30px 0;
     }
     .search-item /deep/ {
       display: inline-block;
-      margin: 10px 0 10px 0;
+      height: 34px;
+      line-height: 34px;
       .el-select {
         display: inline-block;
       }
@@ -458,7 +482,7 @@
       .iconfont {
         display: inline-block;
         font-size: 12px;
-        color: #2878FF;
+        color: #4B5AFE;
         transition: transform .2s;
         &.icon-down {
           transform: rotate(180deg);
@@ -492,6 +516,7 @@
     }
     .flm {
       margin-left: 14px;
+      margin-top: 30px;
     }
     .user-info {
       .user-avatar {

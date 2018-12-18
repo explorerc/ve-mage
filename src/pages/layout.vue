@@ -6,6 +6,8 @@
     </el-aside>
     <el-container class="main-box">
       <el-header class="header-container">
+        <com-breadcrumb :breads="bs"
+                        class="breadcrumb"></com-breadcrumb>
         <com-login :isShow="isShow"
                    @changeState="changeState"></com-login>
       </el-header>
@@ -23,7 +25,7 @@
       </div>
       <section class="main-container"
                :class="{close:close}">
-        <transition>
+        <transition name="fade" mode="out-in">
           <router-view class="app-view"></router-view>
         </transition>
       </section>
@@ -34,11 +36,14 @@
 <script>
 
 import menu from './menu'
+import breadcrumb from './breadcrumb'
 import loginReg from './Login-reg'
+import EventBus from 'src/utils/eventBus'
 
 export default {
   data () {
     return {
+      bs: [],
       name: '',
       timer: '',
       msg: '',
@@ -58,10 +63,15 @@ export default {
         this.isShow = false
       }
     }, false)
+
+    EventBus.$on('breads', (data) => {
+      this.bs = data
+    })
   },
   components: {
     'com-menu': menu,
-    'com-login': loginReg
+    'com-login': loginReg,
+    'com-breadcrumb': breadcrumb
   },
   methods: {
     changeState () {
@@ -73,12 +83,18 @@ export default {
 
 
 <style scoped lang="scss">
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .2s ease;
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
 .main-box {
   background-color: #f5f5f5;
 }
 .container {
   height: 100%;
-  min-width: 1340px;
+  min-width: 1220px;
 }
 .left-container {
   width: 220px !important;
@@ -86,32 +102,36 @@ export default {
     width: 85px !important;
     transition: width 0.5s;
   }
-  overflow: visible;
+  overflow: hidden;
   height: 100%;
   color: #f5f5f5;
   background-color: #212221;
 }
 .header-container {
-  height: 70px;
-  padding-top: 20px;
+  height: 70px !important;
+  line-height: 70px;
   text-align: right;
   position: relative;
   // margin-right: 10px;
   background-color: #ffffff;
   border-bottom: 1px solid #e2e2e2;
+  z-index: 1;
   span {
     cursor: pointer;
   }
+  .breadcrumb {
+    position: absolute;
+  }
 }
 .main-container /deep/ {
-  padding: 0;
   position: absolute;
   left: 220px;
   right: 0;
-  top: 60px;
+  top: 70px;
   bottom: 0;
   overflow-y: auto;
-  min-width: 1160px;
+  min-width: 1000px;
+  padding: 0 20px;
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.5s;

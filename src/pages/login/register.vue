@@ -1,16 +1,15 @@
 <template>
   <div class="clearfix register-container">
     <div class="v-left">
-      <p class="v-logo">
-        微吼知客
-      </p>
+      <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
-          微吼知客
+          智能营销平台
         </p>
         <p class="v-subtitle">
-          提供专属直播间、加速企业营销、获客、变现
+          全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
+        <img src="../../assets/image/login@2x.png" alt="">
       </div>
     </div>
     <div class="v-right">
@@ -68,9 +67,10 @@
         </div>
         <button class="primary-button"
                 @click="submit">提交</button>
+        <router-link class="v-login" to="/login">企业登录</router-link>
       </div>
       <div class="v-info">
-        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
+        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> <em>|</em> <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> <em>|</em> <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
       </div>
     </div>
     <message-box v-show="show"
@@ -127,7 +127,6 @@ export default {
       window.initNECaptcha({
         captchaId: _self.key,
         element: '#captcha',
-        mode: 'float',
         width: 260,
         onReady: function (instance) {
         },
@@ -329,11 +328,9 @@ export default {
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(
-      222deg,
-      rgba(255, 208, 33, 1) 0%,
-      rgba(255, 194, 0, 1) 100%
-    );
+    background: url('~assets/image/login_bg.png') no-repeat;
+    background-position: center center;
+    background-size: cover;
     position: relative;
     .v-logo {
       position: absolute;
@@ -343,9 +340,12 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 375px;
-      margin: 260px auto;
+      width: 100%;
       text-align: center;
+      position: absolute;
+      top: 20%;
+      left: 0%;
+      transform: translate(0%, 0%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -354,6 +354,10 @@ export default {
         font-size: 18px;
         color: #222;
         margin-top: 12px;
+      }
+      img {
+        width: 62%;
+        margin: 30px 0 0 0;
       }
     }
   }
@@ -435,11 +439,30 @@ export default {
       height: 44px;
       border-radius: 4px;
     }
+    .v-login {
+      font-size: 16px;
+      color: #666;
+      margin-top: 15px;
+      display: block;
+    }
     .v-info {
       width: 100%;
       position: absolute;
       bottom: 15px;
       text-align: center;
+      color: #999;
+      font-size: 14px;
+      font-family: 'PingFang SC', 'Helvetica Neue', Helvetica,
+        'Hiragino Sans GB', 'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial,
+        sans-serif;
+      em {
+        position: relative;
+        bottom: 1px;
+      }
+      a {
+        color: #999;
+        font-size: 14px;
+      }
     }
   }
   .ve-message-box__wrapper {

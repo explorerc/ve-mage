@@ -81,7 +81,7 @@
           <el-menu-item index="/setAccount">账户信息</el-menu-item>
         </el-menu-item-group>
       </el-submenu> -->
-      <el-submenu index="2">
+     <!-- <el-submenu index="2">
         <template slot="title">
           <i class="menu-icon icon_marketing"></i>
           <span>营销管理</span>
@@ -91,7 +91,7 @@
           <el-menu-item index="/5">用户池</el-menu-item>
           <el-menu-item index="/6">用户群组</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
+      </el-submenu>-->
       <el-submenu index="3">
         <template slot="title">
           <i class="menu-icon icon_crm"></i>
@@ -120,7 +120,7 @@
           <span>账户管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/setAccount">账户信息</el-menu-item>
+          <el-menu-item index="/setAccount">账号设置</el-menu-item>
           <el-menu-item index="/assetMager/assetList">资产管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
@@ -298,7 +298,7 @@ export default {
     &.el-menu--collapse {
       width: 100%;
     }
-    .is-opened {
+    .is-active {
       .el-submenu__title {
         color: #ffd021 !important;
         .icon_console {
@@ -324,6 +324,9 @@ export default {
         }
       }
       .el-menu-item.is-active {
+        color: #ffd021 !important;
+      }
+      .el-submenu__icon-arrow {
         color: #ffd021 !important;
       }
     }
@@ -367,17 +370,30 @@ export default {
       }
     }
     .el-menu-item {
-      height: 34px;
-      line-height: 34px;
-      padding-left: 74px !important;
+      position: relative;
+      height: 55px;
+      line-height: 55px;
+      padding-left: 64px !important;
       a {
         color: inherit !important;
         text-decoration: none;
       }
+      &:before{
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+      }
       &.is-active {
         background-color: #2f302f !important;
-        border-left: 4px solid #ffd021;
-        padding-left: 70px !important;
+        /*border-left: 4px solid #ffd021;*/
+        padding-left: 64px !important;
+        &:before{
+          background-color: #ffd021;
+        }
       }
     }
     .el-submenu__icon-arrow {
@@ -385,7 +401,7 @@ export default {
       right: 32px;
     }
     .el-menu-item {
-      font-size: 12px;
+      font-size: 16px;
     }
     .el-menu-item-group__title {
       display: none;

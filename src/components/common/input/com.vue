@@ -158,6 +158,11 @@ export default {
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
         }
+      } else if (this.type === 'number') {
+        this.innerValue = value.replace(/\D/g, '')
+        if (this.maxLength && value.length > this.maxLength) {
+          this.innerValue = value.substring(0, this.maxLength)
+        }
       } else if (this.maxLength && value.gbLength() > this.maxLength) {
         this.innerValue = value.substring(0, value.gbIndex(this.maxLength) + 1)
       }
@@ -236,13 +241,13 @@ export default {
   input {
     display: inline-block;
     width: 100%;
-    height: 40px;
+    height: 34px;
     font-size: 14px;
-    line-height: 40px;
+    line-height: 34px;
     color: rgba(0, 0, 0, 0.65);
     background-color: #fff;
     background-image: none;
-    border: 1px solid #d9d9d9;
+    border: 1px solid #CECECE;
     border-radius: 4px;
     transition: all 0.3s;
     padding: 0 10px;
@@ -250,7 +255,7 @@ export default {
       border-color: #fc5659;
     }
     &:hover {
-      border-color: #4b5afe;
+      border-color: #888888;
     }
     /*&:focus {*/
     /*box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);*/
@@ -276,6 +281,9 @@ export default {
     top: 50%;
     transform: translateY(-50%);
     right: 8px;
+    display: block;
+    height: 14px;
+    line-height: 14px;
     .length {
       color: #4b5afe;
     }
@@ -325,12 +333,12 @@ export default {
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all 0.3s;
-    font-size: inherit;
+    /*font-size: inherit;*/
     &.error {
       border-color: #fc5659;
     }
     &:hover {
-      border-color: #4b5afe;
+      border-color: #888888;
     }
     &::-moz-placeholder {
       color: #bfbfbf;

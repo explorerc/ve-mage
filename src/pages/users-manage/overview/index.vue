@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-      <span class="title">总览</span>
+      <span class="title">用户总览</span>
     </div>
     <div class="content from-box">
       <ol class="clearfix">
@@ -123,7 +123,7 @@
           <div class="v-activity-content">
             {{itemData.val4}}
           </div>
-          <div class="v-activity-content">
+          <div class="v-activity-content v-high">
             {{itemData.val3}}
           </div>
           <div class="v-activity-content">
@@ -145,6 +145,7 @@ import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
 import groupService from 'src/api/user_group'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -174,12 +175,21 @@ export default {
     }
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户总览'
+    }])
     this.$config({ handlers: true }).$get(userService.GET_CUSTOMER_OVERVIEW, {}).then((res) => {
       this.info = res.data
       let arr = this.info.userLevel
       for (let i = 0; i < arr.length; i++) {
         this.uersInfo[i].val = arr[i]
-        this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+        if (this.info.total > 0) {
+          this.uersInfo[i].centage = (arr[i] / this.info.total) === 0 ? 0 : ((arr[i] / this.info.total) * 100).toFixed(2) + '%'
+        } else {
+          this.uersInfo[i].centage = 0
+        }
       }
     }).catch(err => {
       this.$messageBox({
@@ -314,9 +324,13 @@ export default {
   .pond-title {
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 5px;
     span.title {
       display: inline-block;
       font-size: 24px;
+      /*padding-top: 32px;*/
     }
   }
   .content /deep/ {
@@ -358,10 +372,13 @@ export default {
     border-radius: 4px;
     padding: 30px 32px;
     margin-top: 20px;
+    .v-title {
+      font-size: 20px;
+    }
     .v-btns {
       display: block;
       position: absolute;
-      top: 28px;
+      top: 29px;
       right: 30px;
       background-color: #fff;
       z-index: 1;

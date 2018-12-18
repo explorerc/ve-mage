@@ -46,9 +46,9 @@ export default {
   padding: 10px 20px;
   font-size: 14px;
   &:hover {
-    color: #409eff;
-    border-color: #c6e2ff;
-    background-color: #ecf5ff;
+    color: black;
+    border-color: #FFD021;
+    background-color: #FFD021;
   }
   &.primary {
     color: #fff;

@@ -2,7 +2,7 @@
   <div class="ve-title">
     {{title}}
     <div class="ve-tip-box" v-if="tip">
-      <i>？</i>
+      <i>?</i>
       <span class="tip" :style="{width:width}">
         <span>{{tip}}</span>
       </span>
@@ -30,6 +30,7 @@
     display: inline-block;
     user-select: none;
     font-size: 14px;
+    color: #888 !important;
     .ve-tip-box{
       position: relative;
       display: inline-block;

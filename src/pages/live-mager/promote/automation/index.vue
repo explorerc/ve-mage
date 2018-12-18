@@ -8,9 +8,10 @@
                  active-color="#FFD021"
                  @change='openSwitch'>
       </el-switch>
-      <span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>
+      <!--<span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>-->
+      <com-back></com-back>
     </div>
-    <div class='preview mager-box border-box clearfix'>
+    <div class='preview mager-box border-box clearfix switch-cover'  :class='{"close":!isOpen}'>
       <div class="time-line fl"></div>
       <div class="fl">
         <p class='step order'
@@ -425,6 +426,7 @@ import comTpl from './com-tpl'
 import comTest from '../com-test'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
+import EventBus from 'src/utils/eventBus'
 // import {getMsg} from './tpl'
 export default {
   data () {
@@ -586,6 +588,17 @@ export default {
     this.getList()
     this.findCountdown()
     this.getSwitchinfo()
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '自动化通知'
+    }])
   },
   methods: {
     closeModal (e) {
@@ -606,9 +619,9 @@ export default {
         activityId: this.activityId
       }).then((res) => {
         this.hourValue = res.data.firstCount
-        this.selhourValue = res.data.firstCount
-        this.minValue = res.data.secondCount
-        this.selminValue = res.data.secondCount
+        this.selhourValue = res.data.firstCount * 1
+        this.minValue = res.data.secondCount * 1
+        this.selminValue = res.data.secondCount * 1
         this.limit = res.data.webinarLimit
         this.tplData.tag = res.data.tag
         this.tplData.webinarName = res.data.webinarName
@@ -815,9 +828,9 @@ export default {
         enabled: type ? 'Y' : 'N'
       }
       this.$config({ handlers: true }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
-        this.$toast({
-          content: '设置成功'
-        })
+        // this.$toast({
+        //   content: '设置成功'
+        // })
       }).catch((res) => {
         console.log(res)
         if (res.code === 60706) {
@@ -860,10 +873,10 @@ export default {
             this.renderData[step].splice(idx, 1)
           }
         })
-        this.$toast({
-          content: '设置成功',
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '设置成功',
+        //   position: 'center'
+        // })
         this.itemList[step][type]['switch'] = false
       }).catch((res) => {
         if (res.code === 65902) {
@@ -885,10 +898,10 @@ export default {
         type: type
       }
       this.$config({ handlers: true }).$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
-        this.$toast({
-          content: '设置成功',
-          position: 'center'
-        })
+        // this.$toast({
+        //   content: '设置成功',
+        //   position: 'center'
+        // })
         this.itemList[step][type]['noticeTaskId'] = res.data.noticeTaskId
         this.itemList[step][type]['switch'] = true
       }).catch((res) => {
@@ -955,14 +968,15 @@ export default {
 @import '~assets/css/mixin.scss';
 .auto-page {
   .live-title {
+    position: relative;
     border-bottom: none;
-
+    /*padding-bottom: 25px;*/
     span.tips {
       color: $color-font-sub;
     }
     .el-switch {
       position: relative;
-      bottom: 2px;
+      bottom: 4px;
     }
   }
 }

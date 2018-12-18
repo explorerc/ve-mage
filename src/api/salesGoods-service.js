@@ -12,5 +12,7 @@ export default {
   // 上下架
   GOODS_SHELF: '/manage/goods/added',
   // 商品排序
-  SORT_GOODS: '/manage/goods/sort'
+  SORT_GOODS: '/manage/goods/sort',
+  // 详情页面获取活动信息
+  GET_DETAILS: '/manage/activity-detail/index'
 }

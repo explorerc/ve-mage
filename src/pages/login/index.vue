@@ -1,22 +1,21 @@
 <template>
   <div class="clearfix login-container">
     <div class="v-left">
-      <p class="v-logo">
-        微吼知客
-      </p>
+      <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
-          微吼知客
+          智能营销平台
         </p>
         <p class="v-subtitle">
-          提供专属直播间、加速企业营销、获客、变现
+          全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
+        <img src="../../assets/image/login@2x.png" alt="">
       </div>
     </div>
     <div class="v-right">
       <div class="v-content">
         <p class="v-title">
-          欢迎登录微吼直播
+          欢迎登录微吼知客
         </p>
         <ul class="v-tabs clearfix">
           <li v-on:click="changeFunction('账号登录')"
@@ -43,7 +42,8 @@
                      @changePassword="change($event)"
                      placeholder="密码"
                      :maxLength="30"
-                     @inputFocus="inputFocus()"></com-input>
+                     @inputFocus="inputFocus()"
+                     @enterClick="accountSubmit"></com-input>
           <div class="input-form v-label"
                style="margin-top:-28px;"
                :style="{opacity:accountOpacity}">
@@ -60,6 +60,7 @@
           <button class="primary-button"
                   @click="accountSubmit">提交
           </button>
+          <router-link class="v-register" to="/register">申请免费试用</router-link>
         </div>
         <div class="v-mobile"
              v-show="!isAccount">
@@ -78,7 +79,8 @@
                      :inputValue.sync="code"
                      placeholder="验证码"
                      :maxLength="6"
-                     @inputFocus="inputFocus()">
+                     @inputFocus="inputFocus()"
+                     @enterClick="phoneSubmit">
             <a href="javascript:;"
                class="v-getcode"
                :class="{prohibit:isProhibit}"
@@ -93,12 +95,32 @@
           <button class="primary-button"
                   @click="phoneSubmit">提交
           </button>
+          <router-link class="v-register" to="/register">申请免费试用</router-link>
         </div>
       </div>
       <div class="v-info">
         <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
       </div>
     </div>
+    <message-box v-if="shenQingShow"
+                 header='提示'
+                 confirmText='现在申请'
+                 cancelText='知道了'
+                 @handleClick="sqHandler">
+      <div style="text-align: center;padding: 20px 0;">
+        <span style="display: block;">您尚未开通产品试用资格</span>
+        <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
+      </div>
+    </message-box>
+    <message-box v-if="shenHeiShow"
+                 header='提示'
+                 cancelText='知道了'
+                 @handleClick="shenHeiShow=false">
+      <div style="text-align: center;padding: 20px 0;">
+        <span style="display: block;">您的申请正在审核中，请耐心等待</span>
+        <span style="display: block;">如有问题请拨打400-888-9970客服热线</span>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -118,21 +140,23 @@ export default {
       phoneStatus: false,
       code: '',
       type: 'password',
-      key: '',
+      key: '', // ?
       isProhibit: true,
       isSend: false,
       second: 60,
-      timerr: '',
+      timerr: '', // ?
       phoneKey: '',
       isImg: false,
       cap: null,
-      accountOpacity: 0,
+      accountOpacity: 0, // ??
       mobileOpacity: 0,
       accountError: '',
       mobileError: '',
       remember: false,
       isActive: false,
-      isGoMaster: false
+      isGoMaster: false,
+      shenQingShow: false,
+      shenHeiShow: false
     }
   },
   components: {
@@ -149,7 +173,6 @@ export default {
       window.initNECaptcha({
         captchaId: _self.key,
         element: '#captcha',
-        mode: 'float',
         width: 260,
         onReady: function (instance) {
         },
@@ -199,7 +222,7 @@ export default {
       }
     },
     change (type) {
-      this.type = type
+      this.type = type // ?
     },
     accountSubmit () {
       this.checkAccountForm()
@@ -225,6 +248,13 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
+        if (err.code === 10013) { // 未注册
+          this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.shenHeiShow = true
+        } else {
+          this.accountError = err.msg
+        }
         if (!this.isAccount) {
           this.isSend = true
           this.isProhibit = true
@@ -242,8 +272,6 @@ export default {
             }
           }, 1000)
         }
-
-        this.accountError = err.msg
         this.accountOpacity = 1
       })
     },
@@ -286,7 +314,13 @@ export default {
           this.$router.replace('/liveMager/list')
         }
       }).catch((err) => {
-        this.mobileError = err.msg
+        if (err.code === 10013) { // 未注册
+          this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.shenHeiShow = true
+        } else {
+          this.mobileError = err.msg
+        }
         this.isSend = false
         this.isProhibit = true
         this.second = 60
@@ -295,6 +329,12 @@ export default {
         this.cap.refresh()
         this.mobileOpacity = 1
       })
+    },
+    sqHandler (e) {
+      this.shenQingShow = false
+      if (e.action === 'confirm') {
+        this.$router.push('/register')
+      }
     },
     getCode () {
       // 获取验证码
@@ -326,6 +366,10 @@ export default {
       }).catch(err => {
         if (err.code === 10050) {
           this.mobileError = '验证码输入过于频繁'
+        } else if (err.code === 10013) { // 未注册
+          this.shenQingShow = true
+        } else if (err.code === 10014) { // 注册未通过审核
+          this.shenHeiShow = true
         } else {
           this.mobileError = err.msg
         }
@@ -435,11 +479,9 @@ export default {
     float: left;
     width: 50%;
     height: 100%;
-    background: linear-gradient(
-      222deg,
-      rgba(255, 208, 33, 1) 0%,
-      rgba(255, 194, 0, 1) 100%
-    );
+    background: url('~assets/image/login_bg.png') no-repeat;
+    background-position: center center;
+    background-size: cover;
     position: relative;
     .v-logo {
       position: absolute;
@@ -449,9 +491,12 @@ export default {
       color: #222;
     }
     .v-content {
-      width: 375px;
-      margin: 260px auto;
+      width: 100%;
       text-align: center;
+      position: absolute;
+      top: 20%;
+      left: 0%;
+      transform: translate(0%, 0%);
       .v-title {
         font-size: 36px;
         color: #222;
@@ -460,6 +505,10 @@ export default {
         font-size: 18px;
         color: #222;
         margin-top: 12px;
+      }
+      img {
+        width: 62%;
+        margin: 30px 0 0 0;
       }
     }
   }
@@ -473,12 +522,31 @@ export default {
       position: absolute;
       bottom: 15px;
       text-align: center;
+      color: #999;
+      font-size: 14px;
+      font-family: 'PingFang SC', 'Helvetica Neue', Helvetica,
+        'Hiragino Sans GB', 'Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', Arial,
+        sans-serif;
+      em {
+        position: relative;
+        bottom: 1px;
+      }
+      a {
+        color: #999;
+        font-size: 14px;
+      }
     }
     .primary-button {
       display: block;
       width: 100%;
       height: 44px;
       border-radius: 4px;
+    }
+    .v-register {
+      font-size: 16px;
+      color: #666;
+      margin-top: 15px;
+      display: block;
     }
     .v-content {
       width: 340px;
@@ -488,7 +556,7 @@ export default {
       bottom: 0;
       margin: auto 0 auto -170px;
       max-height: 475px;
-      text-aligun: left;
+      text-align: left;
       font-size: 22px;
     }
     .v-title {

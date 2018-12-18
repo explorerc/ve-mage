@@ -178,7 +178,8 @@
                  type='prompt'
                  :header='messageBoxTitle'
                  :class="[messageBoxType === 'seeState' ? 'v-state' : '']">
-      <div v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
+      <div class="pop-phone"
+           v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
         <p class="v-explain"
            :style="{color:fontColor}">
           <i class="iconfont icon-duihao"
@@ -231,7 +232,8 @@
           您的注册手机更换为：{{newPhone}}
         </p>
       </div>
-      <div v-else-if="messageBoxType === 'changePassword'">
+      <div class="pop-password"
+           v-else-if="messageBoxType === 'changePassword'">
         <com-input :value.sync="oldPassword"
                    placeholder="请输入旧密码"
                    class="v-input"
@@ -289,7 +291,8 @@
           <span class="v-label">营业执照照片：</span>
           <img :src="licensePicUrl"
                alt="成功"
-               class="v-state-img" v-if="licensePicUrl!=''">
+               class="v-state-img"
+               v-if="licensePicUrl!=''">
         </p>
       </div>
     </message-box>
@@ -531,7 +534,7 @@ export default {
           data.msg = '图片类型错误'
         }
       }
-      this.$messageBox({
+      this.ageBox({
         header: '提示',
         content: data.msg,
         autoClose: 3,
@@ -729,7 +732,6 @@ export default {
           window.initNECaptcha({
             captchaId: _self.key,
             element: '#captcha',
-            mode: 'float',
             width: 390,
             onReady: function (instance) {
             },
@@ -748,7 +750,7 @@ export default {
           }, function onload (instance) {
             _self.cap = instance
           })
-          this.confirmText = '提交'
+          this.confirmText = '完成'
           this.messageBoxTitle = '更换手机'
           clearInterval(this.timerr)
           this.isSend = false
@@ -762,7 +764,7 @@ export default {
           this.oldPassword = ''
           this.newPassword = ''
           this.reNewPassword = ''
-          this.confirmText = '提交'
+          this.confirmText = '完成'
           this.messageBoxTitle = '修改密码'
           break
         case 'state': this.messageBoxType = 'seeState'
@@ -889,7 +891,7 @@ export default {
             'oldPassword': this.oldPassword
           }
           this.$config({ handlers: true }).$post(userService.POST_CHANGE_PASSWORD, data).then((res) => {
-            this.$messageBox({
+            this.ageBox({
               header: '提示',
               content: '修改成功',
               confirmText: '确定',
@@ -1052,8 +1054,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import 'assets/css/variable.scss';
+@import "assets/css/variable.scss";
 .account-container /deep/ {
+  padding-bottom: 150px;
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
     width: 1366px;
@@ -1075,16 +1078,26 @@ export default {
       width: 375px;
     }
   }
+  .pop-password {
+    padding: 13px 10px 0;
+  }
+  .pop-phone {
+    padding: 13px 10px 0;
+  }
+  .ve-message-box__container {
+    padding-bottom: 10px !important;
+  }
   margin: 0 auto;
   .v-account-title {
-    margin: 30px 0;
-    line-height: 60px;
     font-size: 24px;
+    line-height: 60px;
+    margin-top: 12px;
+    margin-bottom: 7px;
     color: #222;
   }
   .v-info {
     width: 100%;
-    margin: 35px auto 0;
+    margin: 0 auto 0;
     border: 1px solid #e2e2e2;
     text-align: center;
     border-radius: 4px;
@@ -1107,10 +1120,24 @@ export default {
       height: 46px;
       line-height: 46px;
       text-align: left;
+      margin-right: 10px;
       &.v-avatar-img {
         display: block;
         text-align: center;
         margin: 0 auto;
+      }
+      .el-cascader {
+        width: 214px;
+        height: 30px;
+        line-height: 30px;
+        margin-right: 15px;
+        .el-input__inner {
+          height: 30px;
+          line-height: 30px;
+        }
+        .el-input__icon {
+          line-height: 30px;
+        }
       }
       .v-explain {
         font-size: 14px;
@@ -1118,6 +1145,8 @@ export default {
         display: inline-block;
         width: 70px;
         text-align: left;
+        height: 46px;
+        line-height: 46px;
       }
       .ve-upload-box {
         width: 100px;
@@ -1145,6 +1174,8 @@ export default {
         margin-right: 15px;
         overflow: hidden;
         vertical-align: middle;
+        height: 46px;
+        line-height: 46px;
       }
       .test-upload {
         width: 65px;
@@ -1251,19 +1282,18 @@ export default {
       background-color: #ffd021;
       display: block;
       width: 115px;
-      height: 34px;
-      line-height: 34px;
+      height: 38px;
+      line-height: 38px;
       text-align: center;
       font-size: 13px;
-      color: #fff;
+      color: #222;
       position: absolute;
-      bottom: 22px;
+      bottom: 0;
       right: 0;
       border-radius: 2px;
       text-decoration: none;
-      position: absolute;
-      top: 226px;
-      right: 43px;
+      top: 238px;
+      right: 30px;
       &.prohibit {
         background-color: #e2e2e2;
         opacity: 0.8;
@@ -1339,6 +1369,9 @@ export default {
       border-radius: 4px;
       vertical-align: middle;
     }
+  }
+  #captcha {
+    height: 40px;
   }
 }
 </style>

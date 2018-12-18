@@ -42,12 +42,12 @@ export default {
     handleClose (e) {
       this.$emit('close')
     },
-    afterEnter () {},
+    afterEnter () { },
     afterLeave () {
       this.$emit('closed')
     },
-    createTask () {},
-    clearTask () {}
+    createTask () { },
+    clearTask () { }
   },
   computed: {
     style () {
@@ -71,31 +71,34 @@ export default {
 .com-notification /deep/ {
   display: inline-block;
   position: relative;
-  line-height: 1.5;
-  background: #fff;
+  line-height: 1.2;
   padding: 16px 20px;
   border-radius: 4px;
-  width: 380px;
+  width: 280px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  font-size: 16px;
+  font-size: 14px;
   z-index: 3000;
+  background-color: #333;
+  opacity: 0.9;
   .header {
     color: rgba(0, 0, 0, 0.85);
     .title {
       display: inline-block;
       margin-bottom: 8px;
+      color: #fff;
     }
     .icon-close {
       position: absolute;
       cursor: pointer;
       top: 14px;
       right: 20px;
+      color: #fff;
     }
   }
   .content {
-    color: rgba(0, 0, 0, 0.65);
     padding: 0;
     font-size: 14px;
+    color: #fff;
   }
 }
 </style>

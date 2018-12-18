@@ -96,11 +96,20 @@ export default {
 
 <style scoped lang="scss">
 .template1-container /deep/ {
+  .panel-container {
+    i {
+      font-style: italic;
+      &.iconfont {
+        font-style: normal;
+      }
+    }
+  }
   min-width: 1366px;
+
   .edit {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 3px;
+    right: 3px;
     width: auto;
     height: 16px;
     display: none;
@@ -109,11 +118,17 @@ export default {
     i {
       cursor: pointer;
       display: inline-block;
-      background-color: red;
-      padding: 2px;
-      font-size: 16px;
+      background-color: #ffd021;
+      width: 32px;
+      height: 32px;
+      background-image: url('~assets/image/site/edit.svg');
+      background-size: 32px;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 2px;
       &:first-child {
-        margin-right: 1px;
+        margin-right: 2px;
+        background-image: url('~assets/image/site/del_edit.svg');
       }
     }
   }
@@ -318,7 +333,7 @@ export default {
         margin-right: 80px;
         img {
           width: 130px;
-          height:130px;
+          height: 130px;
         }
       }
     }

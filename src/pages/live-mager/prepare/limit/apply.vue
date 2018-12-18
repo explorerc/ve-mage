@@ -1,12 +1,15 @@
 <template>
   <div class="apply-page live-mager" @mousedown="canPaas = false">
-    <div class="live-title">
+    <div class="live-title" style="border:none;">
       <span class="title">活动报名</span>
       <el-switch
         v-model="isOpen"
         inactive-color="#DEE1FF"
-        active-color="#4B5AFE" @change='openSwitch'>
+        :width="32"
+        active-color="#FFD021"
+        @change='openSwitch'>
       </el-switch>
+      <com-back ></com-back>
       <div class="right-box">
         <span>最多可添加 <i>5</i> 条信息</span>
         <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 || !isOpen ? true : false">添加信息</button>
@@ -58,7 +61,10 @@
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div> -->
             <div>
-              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder"  :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
+              <com-input class='inp'
+                         :value.sync="item.placeholder === null ? '' : item.placeholder"
+                         :max-length="8"
+                         :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
             </div>
             <div v-if="item.ext === 'phone'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
@@ -89,6 +95,7 @@
   // import prepareHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import veTips from 'src/components/ve-msg-tips'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
@@ -154,6 +161,17 @@
       ]
       this.quesData = [
       ]
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.activityId}`
+      }, {
+        title: '活动报名'
+      }])
     },
     methods: {
       removeItem (idx) {
@@ -165,23 +183,36 @@
         this.canPaas = false
         switch (res) {
           case 'select':
-            this.quesData[idx]['detail']['list'].push({value: ''})
+            if (this.quesData[idx]['detail']['list']) {
+              this.quesData[idx]['detail']['list'].push({value: ''})
+            } else {
+              Object.assign(this.quesData[idx]['detail'], {'list': [
+                {value: ''}
+              ]})
+            }
             this.quesData[idx]['title'] = '下拉选择'
             this.quesData[idx]['type'] = 'select'
+            this.quesData[idx]['placeholder'] = '请选择下拉选项'
             break
           case 'integer':
             this.quesData[idx]['detail']['format'] = 'integer'
             this.quesData[idx]['title'] = '数字'
+            this.quesData[idx]['placeholder'] = '请输入数字'
             break
           case 'email':
             this.quesData[idx]['detail']['format'] = 'email'
             this.quesData[idx]['title'] = '邮箱'
+            this.quesData[idx]['placeholder'] = '请输入邮箱'
             break
           case 'text':
+            this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '文本'
+            this.quesData[idx]['placeholder'] = '请输入文本'
             break
           case 'name':
+            this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '姓名'
+            this.quesData[idx]['placeholder'] = '请输入姓名'
             break
         }
       },
@@ -288,11 +319,12 @@
       },
       saveLimitfn (data) {
         this.$config({ handlers: [60704] }).$post(activityService.SAVE_LIMIT, data).then((res) => {
-          this.$toast({
-            content: '设置成功',
-            position: 'center'
-          })
+          // this.$toast({
+          //   content: '设置成功',
+          //   position: 'center'
+          // })
           this.canPaas = true
+          this.$router.push(`/liveMager/detail/${this.activityId}`)
         }).catch(res => {
           this.$messageBox({
             header: '提示',
@@ -334,7 +366,7 @@
             if (ref) {
               let obj = {
                 title: '手机号码',
-                placeholder: '',
+                placeholder: '请输入手机号码',
                 place: '请输入手机号码',
                 label: '手机号码',
                 type: 'text',
@@ -345,9 +377,9 @@
               }
               this.quesData.push(obj)
             } else {
-              this.$toast({
-                'content': '设置成功'
-              })
+              // this.$toast({
+              //   'content': '设置成功'
+              // })
             }
           }
         }).catch((res) => {
@@ -437,8 +469,13 @@
 <style lang="scss" scoped src="../../css/live.scss">
 </style>
 <style lang="scss">
-.apply-page .el-select .el-input__inner {
-  border: 1px solid #e2d2d2;
+.apply-page .el-select {
+  .el-input {
+    margin-top: 3px;
+  }
+  .el-input__inner {
+    border: 1px solid #e2d2d2;
+  }
 }
 .el-input.is-disabled .el-input__inner {
   background-color: #fff;
@@ -454,17 +491,25 @@
 .live-title {
   .right-box {
     float: right;
+    margin-right: 110px;
     i {
       color: $color-blue;
     }
     span {
       display: inline-block;
-      height: 40px;
-      line-height: 40px;
+      height: 30px;
+      line-height: 30px;
       position: relative;
-      bottom: 8px;
-      margin-right: 10px;
+      margin-right: 20px;
       color: $color-font-sub;
+      bottom: -3px;
+    }
+    button {
+      padding: 0;
+      width: 100px;
+      height: 30px;
+      line-height: 30px;
+      margin-top: 17px;
     }
   }
 }
@@ -501,13 +546,19 @@
       width: 470px;
       text-align: left;
       margin: 20px 0px;
-      padding-left: 40px;
+      padding-left: 16px;
       margin-right: 20px;
       &.spe {
         width: 450px;
       }
       &.handle {
         width: 100px;
+      }
+      &:nth-of-type(2) {
+        padding-left: 12px;
+      }
+      &:nth-of-type(3) {
+        padding-left: 35px;
       }
     }
   }
@@ -546,7 +597,7 @@
         color: $color-font-sub;
         cursor: pointer;
         &:hover {
-          color: $color-font;
+          color: $color-red-hover;
         }
       }
       .del-box {
@@ -623,13 +674,10 @@
   }
 }
 
-.apply-page > div {
-  margin: 30px 0px;
-}
 .primary-button {
   padding: 0px;
   width: 200px;
-  margin: 10px auto 34px auto;
+  margin: 50px auto 34px auto;
   display: block;
 }
 /* 设备宽度大于 1600 */
@@ -647,5 +695,16 @@
   .set-content .table-content > li > div {
     width: 240px;
   }
+  .set-content .table-title li:nth-of-type(2) {
+    padding-left: 81px;
+  }
+  .set-content .table-title li:nth-of-type(3) {
+    width: 260px;
+    padding-left: 179px;
+  }
+}
+.el-switch {
+  position: relative;
+  bottom: 6px;
 }
 </style>

@@ -3,16 +3,20 @@
        @click="changeState">
     <div class="v-info"
          id="toggler-div">
-      <img :src="avatarImg" alt="" class="v-avatar" id="toggler-img" @avatarChange="avatarChange($event)">
+      <img :src="avatarImg"
+           alt=""
+           class="v-avatar"
+           id="toggler-img"
+           @avatarChange="avatarChange($event)">
       <span class="v-name"
             id="toggler-span">{{name}}</span>
     </div>
     <ul class="v-select"
         v-show="isShow">
-      <li id="preventClick"
-          :title="name">
-        {{name}}
-      </li>
+      <!--<li id="preventClick"-->
+          <!--:title="name">-->
+        <!--{{name}}-->
+      <!--</li>-->
       <li>
         <a href="/setAccount"><i class="iconfont icon-shezhi21"></i>账号设置</a>
       </li>
@@ -38,7 +42,8 @@ export default {
   data () {
     return {
       name: '',
-      avatar: ''
+      avatar: '',
+      mobileHost: process.env.MOBILE_HOST
     }
   },
   components: {
@@ -49,7 +54,7 @@ export default {
       accountInfo: state => state.accountInfo
     }),
     avatarImg: function () {
-      return this.avatar ? this.$imgHost + '/' + this.avatar : ''
+      return this.avatar ? this.$imgHost + '/' + this.avatar : 'https:' + require('assets/image/avatar@2x.png')
     }
   },
   created () {
@@ -96,16 +101,16 @@ export default {
 </script>
 <style  scoped lang="scss">
 .v-login-reg /deep/ {
-  width: 110px;
-  position: absolute;
-  top: 13px;
-  right: 30px;
+  max-width: 230px;
+  float: right;
+  margin-right: 20px;
   text-align: left;
   z-index: 2;
   cursor: pointer;
   .v-name {
     display: inline-block;
-    width: 50px;
+    min-width: 60px;
+    max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -123,7 +128,7 @@ export default {
     width: 200px;
     position: absolute;
     z-index: 3;
-    top: 46px;
+    top: 56px;
     right: 10px;
     background-color: #fff;
     box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.2);
@@ -141,8 +146,8 @@ export default {
         background-color: #f0f1fe;
       }
       &:first-child {
-        height: 70px;
-        line-height: 70px;
+        height: 40px;
+        line-height: 40px;
         font-size: 18px;
         color: #222;
         border-bottom: 1px solid #e2e2e2;

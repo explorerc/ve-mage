@@ -2,8 +2,9 @@
   <div class="q-edit-content">
     <com-input v-if="!edit"
                @focus="focus"
-               :type="value.style"
+               :type="value.detail.format==='phone'?'mobile':value.style"
                :max-length="value.detail.max?value.detail.max:0"
+               placeholder="请输入"
                :value.sync="value.value"></com-input>
     <com-input v-if="!edit&&value.verification==='Y'"
                class="code"
@@ -52,7 +53,7 @@ export default {
   },
   methods: {
     getCode () {
-      alert('获取验证码稍后实现')
+      // alert('获取验证码稍后实现')
     },
     focus () {
       this.errorTip = ''
@@ -97,7 +98,7 @@ export default {
   /deep/ {
     .com-input {
       &.code {
-        margin-top: 5px;
+        margin-top: 14px;
         width: 140px;
       }
     }
@@ -110,7 +111,7 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 30px;
+        bottom: 15px;
         right: 35px;
         height: 40px;
         line-height: 39px;

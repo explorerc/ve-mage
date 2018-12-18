@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import routes from './routes'
 import userService from 'src/api/user-service'
 import store from '../store/index'
+import EventBus from 'src/utils/eventBus'
 
 Vue.use(Router)
 const router = new Router({
@@ -16,6 +17,7 @@ const router = new Router({
 })
 const vue = new Vue()
 router.beforeEach((to, from, next) => {
+  EventBus.$emit('breads', [])
   if (to.meta.noLogin) {
     // 不需要登录
     let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))

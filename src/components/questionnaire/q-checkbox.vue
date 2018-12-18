@@ -1,6 +1,6 @@
 <template>
   <div class="q-edit-content">
-    <el-checkbox-group v-model="value.value"
+    <el-checkbox-group v-model="valArr"
                        @change="change">
       <el-checkbox v-for="(item,index) in value.detail.list"
                    class="q-select-item"
@@ -17,7 +17,7 @@
              v-text="item.value"></div>
         <span class="remove"
               v-if="edit&&value.detail.list.length>2"
-              @click="delItem(index)">删</span>
+              @click="delItem(index)"><i class="iconfont icon-shanchuxuanxiang"></i></span>
       </el-checkbox>
     </el-checkbox-group>
     <div v-if="!edit&&errorTip"
@@ -42,6 +42,7 @@ export default {
   },
   data () {
     return {
+      valArr: [],
       errorTip: ''
     }
   },
@@ -107,7 +108,7 @@ export default {
       }
       .el-checkbox__input {
         display: inline-block;
-        margin-top: 8px;
+        margin-top: 13px;
       }
       .el-checkbox__label {
         left: 20px;

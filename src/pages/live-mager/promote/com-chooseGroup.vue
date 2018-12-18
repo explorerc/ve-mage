@@ -28,7 +28,8 @@
                          @empty="searchEmpty('group')"
                          placeholder="输入分组名称"></com-input>
             </div>
-            <div class="select-person-box">
+            <div class="select-person-box" :class='{"search-empty":!groupList.length}' style='border:none;'>
+              <span v-if="!groupList.length">没有找到搜索结果</span>
               <ul>
                 <li v-for="(person,idx) in groupList"
                     @click.stop="clickRowGroup(idx)"
@@ -44,7 +45,7 @@
           </div>
           <!-- 标签 -->
           <div class="select-content fl" v-show="curTab===2">
-            <div class="search-person-box">
+            <div class="search-person-box" >
               <com-input type="search"
                          class="search-com"
                          :value.sync="searchPerson"
@@ -52,13 +53,13 @@
                          @empty="searchEmpty('tag')"
                          placeholder="输入标签名称"></com-input>
             </div>
-            <div class="select-person-box">
+            <div class="select-person-box" :class='{"search-empty":!tagList.length}' style='border:none;'>
               <ul>
                 <li v-for="(tag,idx) in tagList"
                     @click.stop="clickRowTag(idx)"
                     :class="{active:tag.isChecked}"
                     :key="tag.id">
-                  {{tag.name}}
+                  {{tag.name}} ({{tag.count}}人）
                   <el-checkbox v-model="tag.isChecked"
                                 class="fr"
                                 small></el-checkbox>
@@ -86,6 +87,8 @@ export default {
     return {
       curTab: 1,
       searchPerson: '',
+      searchGroup: '',
+      searchTag: '',
       selectedCount: 0,
       selectedGroupListStr: '',
       selectedTagListStr: '',
@@ -93,7 +96,9 @@ export default {
       selectedTagList: [],
       groupArr: [],
       tagArr: [],
-      isInit: true
+      isInit: true,
+      groupEmpty: false,
+      tagEmpty: false
     }
   },
   props: {
@@ -181,6 +186,12 @@ export default {
         this.selectedGroupList = temArray
         this.groupArr = temArr
         this.$emit('selectedGroupListfn', this.selectedGroupList, this.selectedGroupListStr, this.groupArr.toString())
+        console.log(this.groupArr)
+        if (this.groupArr.length === 0) {
+          this.selectedCount = 0
+          this.$emit('totalCount', 0)
+          return false
+        }
         if (!this.isInit) {
           this.getMemberCount()
         }
@@ -195,13 +206,19 @@ export default {
         newArray.forEach((item, idx) => {
           if (!item.isChecked) return
           temArray.push(item)
-          listStr += `${item.name}、`
+          listStr += `${item.name} (${item.count}人）、`
           temArr.push(item.id)
         })
         this.selectedTagListStr = listStr.substring(0, listStr.length - 1)
         this.selectedTagList = temArray
         this.tagArr = temArr
         this.$emit('selectedTagListfn', this.selectedTagList, this.selectedTagListStr, this.tagArr.toString())
+        console.log(this.tagArr)
+        if (this.tagArr.length === 0) {
+          this.selectedCount = 0
+          this.$emit('totalCount', 0)
+          return false
+        }
         if (!this.isInit) {
           this.getMemberCount()
         }
@@ -214,5 +231,15 @@ export default {
 
 <style lang="scss" scoped src="src/pages/live-mager/css/live.scss">
 </style>
-<style>
+<style lang='scss' scoped>
+.select-content .search-empty {
+  background: url('~assets/image/search_empty.png') no-repeat;
+  background-position: center 50px;
+  background-size: 150px;
+  span {
+    line-height: 450px;
+    display: block;
+    text-align: center;
+  }
+}
 </style>

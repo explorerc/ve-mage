@@ -61,12 +61,14 @@
                v-show="disDel"></i>
           </div>
           <el-button size="mini"
+                     class="add-brn"
                      @click="and(ind)"
                      v-show="shadowOutD[ind].length<10">AND
           </el-button>
         </div>
         <div class="orBtn">
           <el-button size="mini"
+                     class="add-brn"
                      @click="or"
                      v-show="shadowOutD.length<10">OR
           </el-button>
@@ -472,7 +474,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -517,7 +519,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -562,7 +564,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -607,7 +609,7 @@
                 type: '',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -642,7 +644,7 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -682,7 +684,7 @@
               type: '',
               unit: ''
             }, {
-              key: null,
+              key: 'is_null',
               name: '为空',
               type: '',
               unit: ''
@@ -706,7 +708,7 @@
               type: '',
               unit: ''
             }, {
-              key: null,
+              key: 'is_null',
               name: '为空',
               type: '',
               unit: ''
@@ -741,7 +743,7 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -771,7 +773,7 @@
                 type: 'date',
                 unit: ''
               }, {
-                key: null,
+                key: 'is_null',
                 name: '为空',
                 type: '',
                 unit: ''
@@ -895,7 +897,7 @@
             type: 'select',
             unit: ''
           }, {
-            key: null,
+            key: 'is_null',
             name: '为空',
             type: 'select',
             unit: ''
@@ -928,7 +930,7 @@
               type: 'select',
               unit: ''
             }, {
-              key: null,
+              key: 'is_null',
               name: '为空',
               type: 'select',
               unit: ''
@@ -1217,8 +1219,12 @@
       ul {
         li {
           .option-box {
-            background-color: #ccc;
+            background-color: #eeeeee;
             padding: 10px;
+            border-radius: 4px;
+            >div{
+              height: 42px;
+            }
             .option_title {
               color: rgba(34, 34, 34, 1);
               height: 26px;
@@ -1240,6 +1246,9 @@
                 .el-select,
                 .el-input-number {
                   width: 150px;
+                  .el-input__inner {
+                    text-align: left;
+                  }
                 }
                 i.el-input__icon {
                   height: 40px;
@@ -1250,6 +1259,9 @@
                 float: right;
                 font-size: 16px;
                 transform: translate(-4px, 12px);
+                &:hover {
+                  color: #FC6769;
+                }
               }
             }
           }
@@ -1258,6 +1270,24 @@
             height: 48px;
             line-height: 48px;
           }
+          .add-brn{
+            &:after{
+              content: '+';
+              border: 1px solid #cccccc;
+              color: #cccccc;
+              border-radius: 50%;
+              width: 18px;
+              height: 18px;
+              font-size: 18px;
+              display: inline-block;
+              text-align: center;
+              line-height: 16px;
+            }
+            &:hover {
+              background-color: #FDD43F;
+            }
+          }
+
         }
       }
     }

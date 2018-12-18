@@ -324,9 +324,9 @@ export default {
         height: 34px;
         line-height: 35px;
         border-radius: 17px;
-        border: 1px solid rgba(136, 136, 136, 1);
+        border: 1px solid #CECECE;
         &:hover {
-          border-color: $color-blue-hover;
+          border-color: $color-gray-hover;
         }
       }
     }

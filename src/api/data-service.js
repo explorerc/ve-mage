@@ -41,6 +41,10 @@ export default {
   GET_LIVE_CHAT_LIST: '/manage/data-center/chat-list',
   /* 直播数据--聊天--数据列表--导出 */
   GET_LIVE_CHAT_LIST_EXPORT: '/manage/data-center/download-chat-list',
+  /* 直播数据--红包--数据列表 */
+  GET_LIVE_RED_BAG_LIST: '/initiator/tool/red-packet-list',
+  /* 直播数据--红包--数据列表--下载 */
+  GET_LIVE_RED_BAG_LIST_EXOPORT: '/initiator/tool/red-packet-down-records',
   /* 观众画像--地域占比 */
   GET_VIEWER_REGION: '/manage/data-center/s/viewer-region',
   /* 观众画像--基础数据 */
@@ -56,5 +60,13 @@ export default {
   /* 推广渠道-预约/报名--数据详情 */
   GET_SPREAD_USER_LIST: '/manage/data-center/sign-list',
   /* 推广渠道-预约/报名--导出 */
-  GET_SPREAD_USER_LIST_EXPORT: '/manage/data-center/download-sign-list'
+  GET_SPREAD_USER_LIST_EXPORT: '/manage/data-center/download-sign-list',
+  /* 直播数据-商品列表 */
+  GET_GOODS_LISTS: '/manage/goods/lists',
+  /* 直播数据-商品数据下载 */
+  GET_GOODS_EXPORT: '/manage/goods/export',
+  /* 直播数据-调查问卷列表 */
+  GET_NAIRE_LISTS: '/manage/naire/list',
+  /* 直播数据-商品数据下载 */
+  GET_NAIRE_DOWNLOAD: '/manage/naire/download'
 }

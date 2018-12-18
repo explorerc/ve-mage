@@ -42,7 +42,7 @@
     line-height: 30px;
     font-size: 0;
     border-radius: 15px;
-    border: solid 1px #e2e2e2;
+    border: solid 1px #BBBBBB;
     box-sizing: border-box;
     overflow: hidden;
     user-select: none;
@@ -50,7 +50,7 @@
       display: inline-block;
       font-size: 14px;
       padding: 0 20px;
-      border-right: solid 1px #e2e2e2;
+      border-right: solid 1px #BBBBBB;
       min-width: 70px;
       &:last-child {
         border-right: none;

@@ -2,7 +2,7 @@
 <template>
   <div class='pond-page'>
     <div class="pond-title">
-      <span class="title" >用户详情</span>
+      <span class="title">用户详情</span>
     </div>
     <div class="content from-box">
       <div class="v-user-info">
@@ -10,8 +10,14 @@
           <div class="left">
             <div class="lc">
               <div class="box1">
-                <img :src="avatarImg" alt="" class="v-avatar" v-if="avatarImg">
-                <img src="../../../assets/image/avatar@2x.png" alt="" class="v-avatar" v-else>
+                <img :src="avatarImg"
+                     alt=""
+                     class="v-avatar"
+                     v-if="avatarImg">
+                <img src="../../../assets/image/avatar@2x.png"
+                     alt=""
+                     class="v-avatar"
+                     v-else>
                 <p class="v-name">
                   {{user.real_name?user.real_name:'-'}}
                 </p>
@@ -53,11 +59,15 @@
                   </span>
                   <span class="v-email-info v-fist">
                     <span class="v-content">
-                    {{user.email?user.email:'-'}}
+                      {{user.email?user.email:'-'}}
                     </span>
-                    <i class="iconfont icon-gengduo2" v-if="user.email_list.length > 0"></i>
-                    <div class="v-emails" v-if="user.email_list.length > 0">
-                      <div class="v-email" v-for="item in user.email_list" :key="item.consumer_email_id">
+                    <i class="iconfont icon-gengduo2"
+                       v-if="user.email_list.length > 0"></i>
+                    <div class="v-emails"
+                         v-if="user.email_list.length > 0">
+                      <div class="v-email"
+                           v-for="item in user.email_list"
+                           :key="item.consumer_email_id">
                         <span class="v-email-content">
                           {{item.email}}
                         </span>
@@ -78,10 +88,22 @@
                 </div>
               </div>
               <div class="box3">
-                <date-select title="生日" :content="user.birthday" @saveInfo="saveInfo($event,'birthday')"> </date-select>
-                <industry-select title="行业" :content="user.industry" selectType="comIndustry" @saveInfo="saveInfo($event,'industry')"></industry-select>
-                <single-input title="职位" :content="user.position" @saveInfo="saveInfo($event,'position')" :maxLength='10'></single-input>
-                <industry-select title="教育" :content="user.education_level" selectType="comEducation" type="single" @saveInfo="saveInfo($event,'education_level')"></industry-select>
+                <date-select title="生日"
+                             :content="user.birthday"
+                             @saveInfo="saveInfo($event,'birthday')"> </date-select>
+                <industry-select title="行业"
+                                 :content="user.industry"
+                                 selectType="comIndustry"
+                                 @saveInfo="saveInfo($event,'industry')"></industry-select>
+                <single-input title="职位"
+                              :content="user.position"
+                              @saveInfo="saveInfo($event,'position')"
+                              :maxLength='10'></single-input>
+                <industry-select title="教育"
+                                 :content="user.education_level"
+                                 selectType="comEducation"
+                                 type="single"
+                                 @saveInfo="saveInfo($event,'education_level')"></industry-select>
                 <div class="v-from">
                   <span class="v-title">
                     来源：
@@ -98,16 +120,25 @@
                     {{user.province}}-{{user.city}}
                   </span>
                 </div>
-                <single-input title="地址" :content="user.address" @saveInfo="saveInfo($event,'address')" :maxLength='40'></single-input>
-                <single-input title="备注" :content="user.remark" @saveInfo="saveInfo($event,'remark')" :maxLength='40'></single-input>
+                <single-input title="地址"
+                              :content="user.address"
+                              @saveInfo="saveInfo($event,'address')"
+                              :maxLength='40'></single-input>
+                <single-input title="备注"
+                              :content="user.remark"
+                              @saveInfo="saveInfo($event,'remark')"
+                              :maxLength='40'></single-input>
               </div>
               <div class="box4">
                 <p class="v-title">
                   所属群组
-                  <i class="iconfont icon-tianjia fr" @click="addGroups"></i>
+                  <i class="iconfont icon-tianjia fr"
+                     @click="addGroups"></i>
                 </p>
                 <div class="v-groups clearfix">
-                  <div class="v-item fl" v-for="item in user.group_list" :key="item.title">
+                  <div class="v-item fl"
+                       v-for="item in user.group_list"
+                       :key="item.title">
                     <span>
                       {{item.title}}
                     </span>
@@ -122,7 +153,9 @@
                   所属标签
                 </p>
                 <div class="v-labels clearfix">
-                  <div class="v-item fl" v-for="item in user.tag_list" :key="item.tag_id">
+                  <div class="v-item fl"
+                       v-for="item in user.tag_list"
+                       :key="item.tag_id">
                     <span>
                       {{item.tag_name}}
                     </span>
@@ -163,8 +196,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{watchTime}}
-                  </p>
+                    {{watchTime}} </p>
                   <p class="v-title">
                     累计观看 (分)
                   </p>
@@ -195,7 +227,9 @@
         </div>
       </div>
     </div>
-    <com-addgroup v-if="showAddgroup" @handleClick="handleClick" @groupData="groupData"></com-addgroup>
+    <com-addgroup v-if="showAddgroup"
+                  @handleClick="handleClick"
+                  @groupData="groupData"></com-addgroup>
   </div>
 </template>
 
@@ -211,6 +245,7 @@ import userService from 'src/api/user-service'
 import comAddgroup from '../components/com-addGroup'
 import userManage from 'src/api/userManage-service'
 import groupService from 'src/api/user_group'
+import EventBus from 'src/utils/eventBus'
 export default {
   data () {
     return {
@@ -269,7 +304,10 @@ export default {
       if (this.user.watch_replay_time) {
         time += parseInt(this.user.watch_replay_time)
       }
-      return time || '-'
+      if (time === 0) {
+        return '-'
+      }
+      return time < 60 ? 1 : Math.round(time / 60)
     },
     avatarImg () {
       return this.user.avatar ? this.imgHost + '/' + this.user.avatar : ''
@@ -278,6 +316,14 @@ export default {
   created () {
     this.getCustomerDetail()
     // console.log(this.user.emails)
+    EventBus.$emit('breads', [{
+      title: '用户管理'
+    }, {
+      title: '用户池',
+      url: '/userManage/pond'
+    }, {
+      title: '用户详情'
+    }])
   },
   methods: {
     saveInfo (val, type) {
@@ -433,7 +479,7 @@ export default {
       font-size: 24px;
     }
   }
-  .content /deep/ {
+  .content {
     font-size: 14px;
     width: 100%;
   }
@@ -570,7 +616,7 @@ export default {
             &::after {
               display: block;
               position: absolute;
-              content: '';
+              content: "";
               height: 0px;
               width: 0px;
               top: -5px;
@@ -664,7 +710,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: '';
+                content: "";
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -679,7 +725,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #e2e2e2;
+            background-color: #EFEFEF;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
@@ -721,7 +767,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: '';
+                content: "";
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -736,7 +782,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #e2e2e2;
+            background-color: #F0F1FE;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
@@ -838,8 +884,8 @@ export default {
                   text-align: center;
                   margin-left: 20px;
                   &:hover {
-                    border-color: #4b5afe;
-                    background-color: #4b5afe;
+                    border-color: #888;
+                    background-color: #888888;
                     color: #fff;
                   }
                 }
@@ -874,7 +920,7 @@ export default {
       }
     }
   }
-  .v-record /deep/ {
+  .v-record {
     .ve-message-box__btns {
       display: none;
     }
@@ -896,7 +942,7 @@ export default {
     }
     .v-steps {
       width: 100%;
-      border-top: 2px solid #e2e2e2;
+      border-top: 1px solid #e2e2e2;
     }
     .v-step {
       position: relative;

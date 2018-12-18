@@ -2,9 +2,11 @@
   <div class='wrap-page card-list-page'>
     <div class="page-title">
       <span class="title">推荐卡片</span>
-      <div class="top-bar clearfix">
-        <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='add-new primary-button' round :disabled="tableData.length >=20" >新建卡片 {{tableData.length}}/20</el-button></router-link>
-        <router-link :to="`/data/live/${activityId}`"><el-button class='more' round>查看活动数据</el-button></router-link>
+      <com-back :url="`/liveMager/detail/${activityId}`" :class='"back-btn"'></com-back>
+      <div class="top-bar clearfix" v-if="tableData.length>0">
+        <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
+        <el-button class='btn more' round :disabled="true" v-if="status == 'PREPARE'">查看活动数据</el-button>
+        <el-button class='btn more' round v-else><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
       </div>
     </div>
     <div class="content from-box">
@@ -12,7 +14,7 @@
           <el-table :data="tableData" stripe style="width: 100%" :class="'table-box'">
             <el-table-column  label="卡片图片" width="150">
               <template slot-scope="scope">
-                <img :src="`${imgHost}/${scope.row.pic}`" :class="'img'">
+                <div :class="'img'" class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${scope.row.pic})`}"></div>
               </template>
           </el-table-column>
           <el-table-column label="卡片名称"  show-overflow-tooltip>
@@ -42,7 +44,7 @@
         <div class="empty-box">
           <p class="img"></p>
           <p class='title'>推荐卡片</p>
-          <p class='desc'>自定卡片内容进行引流，<br>推送二维码、店铺链接、微信公众号、图片海报等内容</p>
+          <p class='desc'>自定卡片内容进行引流<br>推送二维码、店铺链接、微信公众号、图片海报等内容</p>
           <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`"><el-button class='primary-button'>创建卡片</el-button></router-link>
         </div>
       </template>
@@ -52,24 +54,47 @@
 
 <script>
   import cardService from 'src/api/salesCards-service.js'
+  import activityService from 'src/api/activity-service'
+  import EventBus from 'src/utils/eventBus'
   export default {
     data () {
       return {
         activityId: this.$route.params.id,
         imgHost: process.env.IMGHOST + '/',
         tableData: [],
-        notFirst: false
+        notFirst: false,
+        status: ''
       }
     },
     mounted () {
       this.getList()
     },
     created () {
+      this.getInfo()
       this.tableData = []
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '推荐卡片',
+        url: `/salesTools/recommendCards/${this.$route.params.id}`
+      }])
     },
     methods: {
+      getInfo () {
+        this.$get(activityService.GET_WEBINAR_INFO, {
+          id: this.activityId
+        }).then((res) => {
+          this.status = res.data.status
+        })
+      },
       getList () {
-        this.$config({loading: true}).$get(cardService.GET_CARDS_LIST, {
+        this.$get(cardService.GET_CARDS_LIST, {
           activity_id: this.activityId
         }).then((res) => {
           this.notFirst = true
@@ -108,17 +133,29 @@
 <style lang='scss' scope>
 @import '~assets/css/mixin.scss';
 @import './common.scss';
+
+.back-btn {
+  height: 34px !important;
+  line-height: 34px !important;
+  float: right;
+  width: 120px !important;
+}
 .card-list-page {
   .el-table thead {
     height: 36px;
     line-height: 36px;
   }
   .top-bar {
-    .el-button {
+    position: absolute;
+    top: 50%;
+    right: 134px;
+    transform: translateY(-50%);
+    .btn {
       padding: 0;
       width: 120px;
       height: 34px;
       line-height: 34px;
+      float: right;
       &.add-new:hover span {
         color: $color-font;
       }
@@ -133,9 +170,11 @@
           background: $color-blue;
         }
       }
-    }
-    a {
-      float: right;
+      &:disabled:hover {
+        border-color: #4b5afe;
+        color: #4b5afe;
+        background-color: transparent;
+      }
     }
   }
   .from-box {
@@ -157,12 +196,16 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       padding-right: 20px;
     }
     .el-table .cell {
       white-space: normal;
+    }
+    .cov_img {
+      background: no-repeat center;
+      background-size: cover;
     }
   }
 }

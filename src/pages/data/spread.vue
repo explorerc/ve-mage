@@ -91,18 +91,18 @@
           <div class="chart-item" id="chart05" style="height: 400px;"></div>
         </div>
       </div>
-      <p class="title">直播引导页</p>
+      <p class="title">活动引导页</p>
       <div class="item-container clearfix">
         <div class="item-box fl">
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问人数" tip="访问直播引导页的人数"></ve-title>
+              <ve-title width="130px" title="页面访问人数" tip="访问活动引导页的人数"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.nums}}</div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问次数" tip="访问直播引导页的人次数"></ve-title>
+              <ve-title width="130px" title="页面访问次数" tip="访问活动引导页的人次数"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.times}}</div>
           </div>
@@ -151,7 +151,7 @@
         <div class="chart-box" style="width: 100%;">
           <p class="title">页面访问
             <span class="chart-menu">
-             <nav-menu :menus="['人数', '人次']" :currentMenu="pageLinkType" @changeMenu="changePageLinkMenu"></nav-menu>
+             <nav-menu :menus="['人次','人数']" :currentMenu="pageLinkType" @changeMenu="changePageLinkMenu"></nav-menu>
           </span></p>
           <div class="chart-item" id="chart06" style="height: 400px;"></div>
         </div>
@@ -192,6 +192,7 @@
   import dataService from 'src/api/data-service'
   import { barPile, lines } from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'spead',
@@ -221,6 +222,20 @@
         total: 0
       }
     },
+    created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '推广数据',
+        url: `/data/spread/${this.$route.params.id}`
+      }])
+    },
     beforeDestroy () {
       window.callbackResize = null
       if (this.effectChart) { // 推广效果
@@ -238,7 +253,7 @@
       if (this.webChart) { // 活动官网--页面访问趋势图
         this.webChart.dispose()
       }
-      if (this.linkChart) { // 直播引导页--页面访问趋势图
+      if (this.linkChart) { // 活动引导页--页面访问趋势图
         this.linkChart.dispose()
       }
     },
@@ -267,7 +282,7 @@
         if (this.webChart) { // 活动官网--页面访问趋势图
           this.webChart.resize()
         }
-        if (this.linkChart) { // 直播引导页--页面访问趋势图
+        if (this.linkChart) { // 活动引导页--页面访问趋势图
           this.linkChart.resize()
         }
       },
@@ -276,7 +291,7 @@
         this.spreadChannel()
         // 活动官网--统计数据
         this.officialChannel()
-        // 直播引导页--统计数据
+        // 活动引导页--统计数据
         this.leadPage()
         this.$nextTick(() => {
           this.renderChart()
@@ -335,7 +350,7 @@
         this.initAcitviteRatio()
         // 活动官网--页面访问趋势图
         this.webwiteChart()
-        // 直播引导页--页面访问趋势图
+        // 活动引导页--页面访问趋势图
         this.pageLinkChart()
       },
       changePageLinkMenu (val) {

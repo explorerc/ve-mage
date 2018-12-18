@@ -8,40 +8,39 @@
 </template>
 
 <script>
-  import LiveItem from './live-item'
-  export default {
-    name: 'live-table',
-    components: { LiveItem },
-    props: {
-      tableList: {
-        type: Array,
-        default: []
-      }
-    },
-    data () {
-      return {}
-    },
-    methods: {
-      handleClick (item) {
-        this.$emit('handleClick', item)
-      }
+import LiveItem from './live-item'
+export default {
+  name: 'live-table',
+  components: { LiveItem },
+  props: {
+    tableList: {
+      type: Array,
+      default: []
+    }
+  },
+  data () {
+    return {}
+  },
+  methods: {
+    handleClick (item) {
+      this.$emit('handleClick', item)
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
 .live-list {
-  margin-top: 20px;
   .none-data {
     text-align: center;
     line-height: 60px;
-    font-size: 16px;
-    color: #909399;
+    font-size: 14px;
+    color: #555;
   }
   .live-item-box {
     float: left;
     margin-left: 22px;
-    margin-top: 22px;
+    margin-bottom: 22px;
     width: 325px;
     /* 设备宽度大于 1920px */
     @media all and (min-width: 1600px) {

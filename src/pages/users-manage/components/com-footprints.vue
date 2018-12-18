@@ -1,8 +1,12 @@
 <template>
   <div style="height: 100%;">
-    <div class="v-footprints bscroll" ref="bscroll" @scroll="scrollEvent($event)">
+    <div class="v-footprints bscroll"
+         ref="bscroll"
+         @scroll="scrollEvent($event)">
       <ol class="bscroll-container">
-        <li class="v-footprint" v-for="itemData in dataList" :key="itemData.behavior_id">
+        <li class="v-footprint"
+            v-for="itemData in dataList"
+            :key="itemData.behavior_id">
           <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
@@ -11,12 +15,13 @@
           </p>
           <p class="v-content">
             {{itemData.event==='JOIN_ACTIVITY'?'参加':'首次访问'}}活动 {{itemData.data.activity_title?itemData.data.activity_title:''}}
-            <button @click="showRecord(itemData.activity_id,itemData.data.activity_title,itemData.generated_at)" v-if="itemData.event!='FIRST_VISIT'">
+            <button @click="showRecord(itemData.activity_id,itemData.data.activity_title,itemData.generated_at)"
+                    v-if="itemData.event!='FIRST_VISIT'">
               查看详情
             </button>
           </p>
         </li>
-         <!-- <li class="v-footprint">
+        <!-- <li class="v-footprint">
           <i class="iconfont icon-dian">
           </i>
           <i class="v-border"></i>
@@ -47,9 +52,12 @@
           {{showActivity.time}}
         </p>
         <div class="v-steps-content">
-          <div class="v-steps bscroll" ref="infoscroll">
+          <div class="v-steps bscroll"
+               ref="infoscroll">
             <ol class="bscroll-container">
-              <li class="v-step" v-for="itemData in dataInfoList" :key="itemData.behavior_id">
+              <li class="v-step"
+                  v-for="itemData in dataInfoList"
+                  :key="itemData.behavior_id">
                 <div class="v-content">
                   <i class="iconfont icon-dian">
                   </i>
@@ -151,7 +159,6 @@ export default {
       this.searchInfoParams.page = 1
       this.searchInfoParams.activity_id = activityId
       this.getDataInfoList(false)
-      this.initInfoScroll()
     },
     recordBoxClick (e) {
       if (e.action === 'cancel') {
@@ -213,11 +220,19 @@ export default {
       }
       this.$config({ handlers: true }).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
         res.data.list.forEach(element => {
+          if (element.event === 'STAY_ACTIVITY_WEBSITE_TIME' || element.event === 'STAY_ACTIVITY_TIME') {
+            if (element.data.time > 0) {
+              element.data.time = element.data.time > 1 ? Math.round(element.data.time / 60) : 1
+            } else {
+              element.data.time = 0
+            }
+          }
           this.dataInfoList.push(element)
         })
         this.infoTotal = res.data.total
         this.searchInfoParams.total = res.data.total
         this.searchInfoParams.totalPage = Math.ceil(res.data.total / res.data.page_size)
+        this.initInfoScroll()
       }).catch(err => {
         if (err.code !== 201) {
           this.$messageBox({
@@ -234,6 +249,7 @@ export default {
       })
     },
     initInfoScroll () {
+      if (this.infoscroll) return
       let _this = this
       this.$nextTick(() => {
         let bscrollDom = this.$refs.infoscroll

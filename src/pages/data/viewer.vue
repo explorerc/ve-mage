@@ -132,6 +132,7 @@
   import {pie, barRadius} from 'src/utils/chart-tool'
   import NavMenu from './nav-menu'
   import {mapMutations} from 'vuex'
+  import EventBus from 'src/utils/eventBus'
   import * as types from '../../store/mutation-types'
 
   export default {
@@ -176,6 +177,18 @@
       }
     },
     created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.$route.params.id}`
+      }, {
+        title: '观众画像',
+        url: `/data/viewer/${this.$route.params.id}`
+      }])
       this.storeSelectMenu(3)
       this.activityId = this.$route.params.id
       this.initPage()
@@ -248,16 +261,7 @@
         return this.$get(dataService.GET_VIEWER_BASE, {
           activityId: this.activityId
         }).then((res) => {
-          let serveData = [
-            // { name: '观众总数', value: 0 },
-            // { name: '老用户', value: 0 },
-            // { name: '新用户', value: 0 },
-            {name: '优质用户', value: 0},
-            {name: '高价值用户', value: 0},
-            {name: '一般用户', value: 0},
-            {name: '潜力用户', value: 0},
-            {name: '流失用户', value: 0}
-          ]
+          let serveData = []
           if (res.code === 200 && res.data.length !== 0) {
             this.basicUserData = res.data
             serveData = [
@@ -270,6 +274,13 @@
               {name: '潜力用户', value: this.basicUserData.potentialUser},
               {name: '流失用户', value: this.basicUserData.lossUser}
             ]
+            let temArry = []
+            serveData.forEach(item => {
+              if (item.value !== 0) {
+                temArry.push(item)
+              }
+            })
+            serveData = temArry
           }
           // 各级别用户占比
           this.$nextTick(() => {
@@ -281,7 +292,7 @@
         this.$get(dataService.GET_VIEWER_REGION, {
           activityId: this.activityId
         }).then((res) => {
-          let listData = [{name: '', value: 0}]
+          let listData = []
           if (res.code === 200 && res.data.length !== 0) {
             listData = res.data.list
           }
@@ -302,13 +313,15 @@
     .item-container {
       border: none;
       .item-box:first-child {
+        border-radius: 0 !important;
         border-bottom: solid 1px #e2e2e2;
       }
     }
     .chart-container {
       .chart-box {
         .title {
-          text-align: center;
+          text-align: left;
+          margin-bottom: -35px !important;
         }
       }
     }

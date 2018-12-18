@@ -17,7 +17,7 @@
            v-text="item.value"></div>
       <span class="remove"
             v-if="edit&&value.detail.list.length>1"
-            @click="delItem(index)">删</span>
+            @click="delItem(index)"><i class="iconfont icon-shanchuxuanxiang"></i></span>
     </el-radio>
     <div v-if="!edit&&errorTip"
          class="error-msg">{{errorTip}}
@@ -107,7 +107,7 @@ export default {
     }
     .el-radio__input {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: 13px;
     }
     .el-radio__label {
       left: 20px;
