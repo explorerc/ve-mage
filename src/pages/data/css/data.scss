@@ -224,26 +224,33 @@
       max-height: 384px;
       overflow-x: hidden;
       overflow-y: auto;
-    }
-    .msg-top {
-      margin-bottom: 15px;
-      .msg-header {
-        font-size: 20px;
-        display: inline-block;
-        line-height: 40px;
-      }
+      margin-top: 20px;
     }
     .export-btn {
-      //position: absolute;
-      //top: 0;
-      //right: 0;
-      //height: 34px;
+      position: absolute;
+      top: 10px;
+      right: 0;
+      height: 34px;
       line-height: 1;
       z-index: 2;
+      padding: 0 20px;
+      background-color: #F5F5F5;
+      border-radius: 20px;
+      color: #555;
+      border: solid 1px #888;
+      font-size: 14px;
+      &:hover {
+        background-color: $color-default-hover;
+        border: solid 1px $color-default-hover;
+      }
+      &:active {
+        background-color: $color-default-active;
+        border: solid 1px $color-default-active;
+      }
     }
     .empty {
       text-align: center;
-      margin: 35px 0;
+      margin: 29px 0;
       .txt {
         padding-top: 20px;
         font-size: 16px;
@@ -257,6 +264,7 @@
         background-size: contain;
       }
     }
+
   }
 
   .v-nodata {

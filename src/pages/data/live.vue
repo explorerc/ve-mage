@@ -180,7 +180,7 @@
     <message-box
       v-show="preDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="预约数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box">
@@ -207,14 +207,11 @@
     <message-box
       v-show="chatDataDetail"
       width="60%"
-      type="none"
-      header=""
+      type="prompt"
+      header="聊天数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" v-ComLoading="loading">
-        <div class="msg-top clearfix">
-          <span class="msg-header">聊天数据详情</span>
-          <button class="primary-button export-btn fr" @click="exportFile('chart')">导出</button>
-        </div>
+        <button class="export-btn" @click="exportFile('chart')">导出</button>
         <div class="table-box">
           <el-table :data="chatDataList" style="width: 100%">
             <el-table-column label="序号" width="80px">
@@ -239,29 +236,37 @@
     <message-box
       v-show="prizeDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
-          <el-table :data="prizeDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="openDate" label="开奖时间"></el-table-column>
-            <el-table-column prop="joinType" label="参与条件"></el-table-column>
-            <el-table-column prop="phone" label="奖品名称"></el-table-column>
-            <el-table-column prop="count" label="奖品数量"></el-table-column>
-            <el-table-column prop="online" label="在线人数"></el-table-column>
-            <el-table-column prop="joinCount" label="参与人数"></el-table-column>
-            <el-table-column label="中奖名单">
-              <template slot-scope="scope">
-                <span class="data-link">下载</span>
-              </template>
-            </el-table-column>
-          </el-table>
+          <template v-if="prizeDataList.length">
+            <el-table :data="prizeDataList" style="width: 100%">
+              <el-table-column label="序号">
+                <template slot-scope="scope">
+                  {{scope.$index}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="openDate" label="开奖时间"></el-table-column>
+              <el-table-column prop="joinType" label="参与条件"></el-table-column>
+              <el-table-column prop="phone" label="奖品名称"></el-table-column>
+              <el-table-column prop="count" label="奖品数量"></el-table-column>
+              <el-table-column prop="online" label="在线人数"></el-table-column>
+              <el-table-column prop="joinCount" label="参与人数"></el-table-column>
+              <el-table-column label="中奖名单">
+                <template slot-scope="scope">
+                  <span class="data-link">下载</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
         </div>
       </div>
     </message-box>
@@ -269,28 +274,36 @@
     <message-box
       v-show="pagerDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="问卷数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
-          <el-table :data="pagerDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index+1}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="title" label="问卷名称"></el-table-column>
-            <el-table-column prop="send_at" label="推送时间"></el-table-column>
-            <el-table-column prop="questionNum" label="题目数量"></el-table-column>
-            <el-table-column prop="answerNum" label="收到数据"></el-table-column>
-            <el-table-column label="问卷结果">
-              <template slot-scope="scope">
+          <template v-if="pagerDataList.length">
+            <el-table :data="pagerDataList" style="width: 100%">
+              <el-table-column label="序号">
+                <template slot-scope="scope">
+                  {{scope.$index+1}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="title" label="问卷名称"></el-table-column>
+              <el-table-column prop="send_at" label="推送时间"></el-table-column>
+              <el-table-column prop="questionNum" label="题目数量"></el-table-column>
+              <el-table-column prop="answerNum" label="收到数据"></el-table-column>
+              <el-table-column label="问卷结果">
+                <template slot-scope="scope">
                 <span class="data-link"
                       @click="download({type:'pager',naireId:scope.row.naireId })">下载</span>
-              </template>
-            </el-table-column>
-          </el-table>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
         </div>
       </div>
     </message-box>
@@ -298,31 +311,39 @@
     <message-box
       v-show="cardDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="卡片数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
-          <el-table :data="cardDataList" style="width: 100%">
-            <el-table-column label="序号" type="index">
-            </el-table-column>
-            <el-table-column prop="title" label="卡片名称"></el-table-column>
-            <el-table-column label="是否设置链接">
-              <template slot-scope="scope">
-                {{scope.row.btn_display === 'Y' ? '是' :'否'}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="push_num" label="推送次数"></el-table-column>
-            <el-table-column prop="view_num" label="卡片浏览数"></el-table-column>
-            <el-table-column prop="visit_person_num" label="点击卡片次数"></el-table-column>
-            <el-table-column label="详情数据">
-              <template slot-scope="scope">
+          <template v-if="cardDataList.length">
+            <el-table :data="cardDataList" style="width: 100%">
+              <el-table-column label="序号" type="index" width="60pz">
+              </el-table-column>
+              <el-table-column prop="title" label="卡片名称"></el-table-column>
+              <el-table-column label="是否设置链接">
+                <template slot-scope="scope">
+                  {{scope.row.btn_display === 'Y' ? '是' :'否'}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="push_num" label="推送次数"></el-table-column>
+              <el-table-column prop="view_num" label="卡片浏览数"></el-table-column>
+              <el-table-column prop="visit_person_num" label="点击卡片次数"></el-table-column>
+              <el-table-column label="详情数据">
+                <template slot-scope="scope">
                 <span class="data-link"><router-link
                   :to="`/api/manage/recommend-card/visit-list?recommend_card_id=${scope.row.recommend_card_id}`"
                   target="_blank">下载</router-link></span>
-              </template>
-            </el-table-column>
-          </el-table>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
         </div>
       </div>
     </message-box>
@@ -330,10 +351,10 @@
     <message-box
       v-show="redBagDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="红包-数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
           <template v-if="redBagDataList.length">
             <el-table :data="redBagDataList" style="width: 100%">
@@ -383,23 +404,31 @@
     <message-box
       v-show="goodsDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="商品数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
-          <el-table :data="goodsDataList" style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
-            <el-table-column prop="title" label="商品名称"></el-table-column>
-            <el-table-column prop="push" label="推送次数"></el-table-column>
-            <el-table-column prop="pv" label="商品详情浏览次数"></el-table-column>
-            <el-table-column prop="buy_nums" label="点击购买次数"></el-table-column>
-            <el-table-column label="详情数据">
-              <template slot-scope="scope">
-                <span class="data-link" @click="download({type:'goods', id:scope.row.goods_id})">下载</span>
-              </template>
-            </el-table-column>
-          </el-table>
+          <template v-if="goodsDataList.length">
+            <el-table :data="goodsDataList" style="width: 100%">
+              <el-table-column type="index" label="序号" width="60"></el-table-column>
+              <el-table-column prop="title" label="商品名称"></el-table-column>
+              <el-table-column prop="push" label="推送次数"></el-table-column>
+              <el-table-column prop="pv" label="商品详情浏览次数"></el-table-column>
+              <el-table-column prop="buy_nums" label="点击购买次数"></el-table-column>
+              <el-table-column label="详情数据">
+                <template slot-scope="scope">
+                  <span class="data-link" @click="download({type:'goods', id:scope.row.goods_id})">下载</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
         </div>
       </div>
     </message-box>
@@ -997,5 +1026,11 @@
         }
       }
     }
+    /deep/ {
+      .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
+        display: none;
+      }
+    }
   }
+
 </style>

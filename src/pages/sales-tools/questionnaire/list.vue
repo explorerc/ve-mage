@@ -473,6 +473,9 @@ export default {
     text-align: center;
     margin-top: 70px;
   }
+  .el-button.back-btn-all {
+    top: 49%;
+  }
   .ve-message-box {
     .ve-message-box__header {
       background-color: rgba(0, 0, 0, 0) !important;
