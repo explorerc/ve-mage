@@ -211,19 +211,28 @@
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" v-ComLoading="loading">
-        <button class="export-btn" @click="exportFile('chart')">导出</button>
+        <button class="export-btn" @click="exportFile('chart')" v-if="chatDataList.length">导出</button>
         <div class="table-box">
-          <el-table :data="chatDataList" style="width: 100%">
-            <el-table-column label="序号" width="80px">
-              <template slot-scope="scope">
-                {{ (page-1)*pageSize + scope.$index + 1}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="nickname" label="姓名"  max-width="100px"></el-table-column>
-            <el-table-column prop="phone" label="手机号" max-width="120px"></el-table-column>
-            <el-table-column prop="message" label="聊天内容" min-width="120px"></el-table-column>
-            <el-table-column prop="time" label="聊天时间" min-width="120px"></el-table-column>
-          </el-table>
+          <template v-if="chatDataList.length">
+            <el-table :data="chatDataList" style="width: 100%">
+              <el-table-column label="序号" width="80px">
+                <template slot-scope="scope">
+                  {{ (page-1)*pageSize + scope.$index + 1}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="nickname" label="姓名"  max-width="100px"></el-table-column>
+              <el-table-column prop="phone" label="手机号" max-width="120px"></el-table-column>
+              <el-table-column prop="message" label="聊天内容" min-width="120px"></el-table-column>
+              <el-table-column prop="time" label="聊天时间" min-width="120px"></el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
+
         </div>
         <div class="page-pagination" v-if="total>pageSize">
           <ve-pagination :total="total"

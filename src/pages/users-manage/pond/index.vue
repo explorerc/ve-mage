@@ -201,88 +201,96 @@
         </div>
       </div>
       <div class="users-list page-bg table_box " :class='{"has-page":total>filterCondition.page_size}'>
-        <el-table
-          ref="multipleTable"
-          :data="usersListData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange">
-          <el-table-column
-            type="selection"
-            width="55">
-          </el-table-column>
-          <el-table-column
-            label="用户信息"
-            width="200">
-            <template slot-scope="scope">
-              <dl class="users-info clearfix">
-                <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
-                <dt v-else class='avatar-empty'><span class='img'></span></dt>
-                <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span>
-                </dd>
-                <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
-                <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
-                <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
-                <dd class='protential' v-if="scope.row.level === 4">潜力用户</dd>
-                <dd class='' v-if="scope.row.level === 5">流失用户</dd>
-                <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
-                <dd class="name" :class="scope.row.level | filterLevelclass">{{scope.row.level | filterLevel}}</dd>
-              </dl>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"
-            width="140"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="mail"
-            width="180"
-            label="邮箱"
-            show-overflow-tooltip>
-            <!-- <template slot-scope="scope">
-              <el-popover trigger="hover" placement="bottom">
-                <p class='mail-tooltips' v-for="(item,idx) in scope.row.mail">
-                  <span>{{item.value}}</span>
-                  <span>{{item.type}}</span>
-                </p>
-                <div slot="reference" class="name-wrapper">
-                  {{ scope.row.mail[1].value }}
-                </div>
-              </el-popover>
-            </template> -->
-          </el-table-column>
-          <el-table-column
-            prop="count"
-            label="参与(次)"
-            width="90">
-          </el-table-column>
-          <el-table-column
-            prop="lastActive"
-            label="最后活跃"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="comment"
-            label="备注"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="count"
-            label="操作"
-            width="80">
-            <template slot-scope="scope">
-              <router-link :to="`/userManage/info/${scope.row.business_consumer_uid}`">
-                <el-button class='detail'
-                           type="text">
-                  详情
-                </el-button>
-              </router-link>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="total">共 <span>{{total}}</span> 条数据</div>
+        <template v-if="usersListData.length">
+          <el-table
+            ref="multipleTable"
+            :data="usersListData"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              label="用户信息"
+              width="200">
+              <template slot-scope="scope">
+                <dl class="users-info clearfix">
+                  <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
+                  <dt v-else class='avatar-empty'><span class='img'></span></dt>
+                  <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span>
+                  </dd>
+                  <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
+                  <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
+                  <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
+                  <dd class='protential' v-if="scope.row.level === 4">潜力用户</dd>
+                  <dd class='' v-if="scope.row.level === 5">流失用户</dd>
+                  <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
+                  <dd class="name" :class="scope.row.level | filterLevelclass">{{scope.row.level | filterLevel}}</dd>
+                </dl>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="phone"
+              label="手机号"
+              width="140"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+              prop="mail"
+              width="180"
+              label="邮箱"
+              show-overflow-tooltip>
+              <!-- <template slot-scope="scope">
+                <el-popover trigger="hover" placement="bottom">
+                  <p class='mail-tooltips' v-for="(item,idx) in scope.row.mail">
+                    <span>{{item.value}}</span>
+                    <span>{{item.type}}</span>
+                  </p>
+                  <div slot="reference" class="name-wrapper">
+                    {{ scope.row.mail[1].value }}
+                  </div>
+                </el-popover>
+              </template> -->
+            </el-table-column>
+            <el-table-column
+              prop="count"
+              label="参与(次)"
+              width="90">
+            </el-table-column>
+            <el-table-column
+              prop="lastActive"
+              label="最后活跃"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+              prop="comment"
+              label="备注"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+              prop="count"
+              label="操作"
+              width="80">
+              <template slot-scope="scope">
+                <router-link :to="`/userManage/info/${scope.row.business_consumer_uid}`">
+                  <el-button class='detail'
+                             type="text">
+                    详情
+                  </el-button>
+                </router-link>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="total">共 <span>{{total}}</span> 条数据</div>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
+        </template>
         <div class="pagination-box" v-if="total>filterCondition.page_size">
           <div class="page-pagination">
             <ve-pagination
@@ -719,6 +727,7 @@
       },
       doFilter () {
         this.queryUserPool(this.filterCondition)
+        this.showFilter = false
       },
       handleCommandk (type) {
         switch (type) {
@@ -958,6 +967,22 @@
         padding-bottom: 30px;
         &.has-page {
           padding-bottom: 30px;
+        }
+        .empty {
+          text-align: center;
+          margin: 29px 0;
+          .txt {
+            padding-top: 20px;
+            font-size: 16px;
+            color: #8E9198;
+          }
+          .img {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            background: url('~assets/image/nodata@2x.png') no-repeat center;
+            background-size: contain;
+          }
         }
       }
       .handle-filter {

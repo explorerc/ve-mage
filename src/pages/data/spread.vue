@@ -165,21 +165,29 @@
       :header="header"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box">
-        <button class="primary-button export-btn fr" @click="exportDataList">导出</button>
+        <button class="primary-button export-btn fr" @click="exportDataList"  v-if="preDataList.length">导出</button>
         <div class="table-box">
-          <el-table :data="preDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="nickname" label="姓名"></el-table-column>
-            <el-table-column prop="phone" label="手机号"></el-table-column>
-            <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
-            <el-table-column prop="guide_page_leave_at" label="离开引导页时间（最后一次）"></el-table-column>
-            <el-table-column prop="appointment_time" label="预约时间"></el-table-column>
-            <el-table-column prop="first_join_at" label="参会时间"></el-table-column>
-          </el-table>
+          <template v-if="preDataList.length">
+            <el-table :data="preDataList" style="width: 100%">
+              <el-table-column label="序号">
+                <template slot-scope="scope">
+                  {{scope.$index}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="nickname" label="姓名"></el-table-column>
+              <el-table-column prop="phone" label="手机号"></el-table-column>
+              <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
+              <el-table-column prop="guide_page_leave_at" label="离开引导页时间（最后一次）"></el-table-column>
+              <el-table-column prop="appointment_time" label="预约时间"></el-table-column>
+              <el-table-column prop="first_join_at" label="参会时间"></el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
         </div>
       </div>
     </message-box>

@@ -76,7 +76,8 @@
         <template v-else>
           <div class="empty">
             <div class="img"></div>
-            <div class="txt">{{searchLabel}}</div>
+            <div class="txt" v-if="searchLabel">{{searchLabel}}</div>
+            <div class="txt" v-else>暂无数据</div>
           </div>
         </template>
       </div>
@@ -288,7 +289,6 @@
             if (res.code === 200) {
               this.total = res.data.total
               this.viewerList = res.data.list
-              console.log(this.viewerList)
             }
           })
         })
@@ -297,7 +297,6 @@
         this.searchParams.page = 1
         this.currentPage = 1
         this.queryList()
-        console.log(this.$refs.search)
       },
       exportTable () {
         let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
@@ -311,7 +310,6 @@
       // 支付框显示
       async payMoney (e) {
         if (e.action === 'confirm') {
-          console.log('金额2' + this.amount)
           if (!this.amount) {
             this.amountError = '请输入10～20000之间的数字'
             return
@@ -388,8 +386,8 @@
         })
         /* 监听支付消息1 */
         ChatService.OBJ.regHandler(ChatConfig.charge, (msg) => {
-          console.log('---------支付消息---------')
-          console.log(msg)
+          // console.log('---------支付消息---------')
+          // console.log(msg)
           this.payMoneyShow = false
           this.successMoneyShow = true
           this.queryAccountInfo()
@@ -462,7 +460,7 @@
           } else if (val.type === 'RE_RED_PACK') {
             this.searchLabel = '很抱歉，没有搜索到红包返回的结果'
           } else {
-            this.searchLabel = '很抱歉，暂无数据'
+            this.searchLabel = '暂无数据'
           }
         },
         deep: true
@@ -597,7 +595,7 @@
         .txt {
           padding-top: 20px;
           font-size: 16px;
-          color: $color-font;
+          color: #8E9198;
         }
         .img {
           width: 150px;
