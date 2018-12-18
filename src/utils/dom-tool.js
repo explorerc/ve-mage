@@ -2,7 +2,7 @@
  * 根据检索自动聚焦输入
  * @param querySelector
  */
-export function focusInput (querySelector) {
+export function focusInput (querySelector, pQuerySelector) {
   if (!querySelector) console.error('querySelector不能为空')
   let s = document.querySelectorAll(querySelector)
   s.forEach(item => {
@@ -20,6 +20,12 @@ export function focusInput (querySelector) {
         }
       }
     }
-    if (input) input.focus()
+    if (input) {
+      document.querySelectorAll(pQuerySelector)[0].scrollTop = input.scrollHeight
+      let st = setTimeout(() => {
+        clearTimeout(st)
+        if (!input.value) input.focus()
+      }, 2000)
+    }
   })
 }
