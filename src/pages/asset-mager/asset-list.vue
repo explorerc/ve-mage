@@ -8,7 +8,7 @@
       </div>
       <div class="asset-header-item">
         <span>可用金额（元）
-          <span class="add-money fr" @click="addMoney()">充值</span>
+          <!--<span class="add-money fr" @click="addMoney()">充值</span>-->
         </span>
         <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
         <span class="mid">{{billInfo.balance}}</span>
@@ -37,8 +37,9 @@
           <div class="search-item fr">
             <span class="search-title">流水类型</span>
             <el-select v-model="searchParams.type"
-                       @change="queryList"
-                       placeholder="流水类型">
+                       @change="queryListType"
+                       ref="search"
+                       placeholder="渠道来源">
               <el-option v-for="item in liuTypeList"
                          :key="item.value"
                          :label="item.label"
@@ -49,26 +50,35 @@
         </div>
       </div>
       <div class="asset-list-table">
-        <el-table :data="viewerList" style="width: 100%">
-          <el-table-column prop="billNumber" label="流水ID"></el-table-column>
-          <el-table-column label="流水类型">
-            <template slot-scope="scope">
-              {{scope.row.type|fmtType}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="amount" label="金额"></el-table-column>
-          <el-table-column prop="createdAt" label="时间"></el-table-column>
-          <el-table-column label="状态" width="160">
-            <template slot-scope="scope">
-              <span :class="{status:true,success:scope.row.status==='SUCCESS'}">{{scope.row.status|fmtStatus}}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="page-pagination" v-if="total>searchParams.pageSize">
-          <ve-pagination :total="total"
-                         :pageSize="searchParams.pageSize"
-                         @changePage="changePage"/>
-        </div>
+        <template v-if="viewerList.length">
+          <el-table :data="viewerList" style="width: 100%">
+            <el-table-column prop="billNumber" label="流水ID"></el-table-column>
+            <el-table-column label="流水类型">
+              <template slot-scope="scope">
+                {{scope.row.type|fmtType}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" label="金额"></el-table-column>
+            <el-table-column prop="createdAt" label="时间"></el-table-column>
+            <el-table-column label="状态" width="160">
+              <template slot-scope="scope">
+                <span :class="{status:true,success:scope.row.status==='SUCCESS'}">{{scope.row.status|fmtStatus}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="page-pagination" v-if="total > searchParams.pageSize">
+            <ve-pagination :total="total"
+                           :pageSize="searchParams.pageSize"
+                           :currentPage="currentPage"
+                           @changePage="changePage"/>
+          </div>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <div class="img"></div>
+            <div class="txt">{{searchLabel}}</div>
+          </div>
+        </template>
       </div>
     </div>
     <div class="money-box-wrap">
@@ -177,7 +187,7 @@
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{parseFloat(billInfo.balance)}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{billInfo.balance}}</div>
         </div>
       </message-box>
     </div>
@@ -216,8 +226,10 @@
           type: '',
           date: '',
           page: 1,
-          pageSize: 10
+          pageSize: 25
         },
+        searchLabel: '',
+        currentPage: 1,
         addMoneyShow: false, // 充值框隐藏
         payMoneyShow: false, // 支付框隐藏
         successMoneyShow: false, // 充值成功框隐藏
@@ -276,28 +288,37 @@
             if (res.code === 200) {
               this.total = res.data.total
               this.viewerList = res.data.list
+              console.log(this.viewerList)
             }
           })
         })
+      },
+      queryListType () {
+        this.searchParams.page = 1
+        this.currentPage = 1
+        this.queryList()
+        console.log(this.$refs.search)
       },
       exportTable () {
         let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
         const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
         window.open(encodeURI(encodeURI(url)))
       },
-      // 充值
+      // 充值框显示
       addMoney () {
         this.addMoneyShow = true // 充值框显示
       },
-      // 支付
+      // 支付框显示
       async payMoney (e) {
         if (e.action === 'confirm') {
+          console.log('金额2' + this.amount)
           if (!this.amount) {
             this.amountError = '请输入10～20000之间的数字'
             return
           }
           if (this.checkAmount()) {
             this.addMoneyShow = false
+            this.oldAmount = this.amount
             await this.queryBillNo()
             if (this.billNo !== '') {
               this.payMoneyShow = true // 支付框显示
@@ -312,18 +333,18 @@
       },
       // 控制支付中修改金额框的显示
       modifyMoney () {
-        this.oldAmount = this.amount
         this.modifyMoneyShow = !this.modifyMoneyShow
       },
-      // 支付中的保存
+      // 支付按钮-保存
       saveMoney () {
         if (!this.checkAmount()) return
         this.modifyMoneyShow = true
         if (this.amount !== this.oldAmount) {
           this.queryBillNo()
+          this.oldAmount = this.amount
         }
       },
-      // 支付中的取消
+      // 支付按钮-取消
       cancelMoney () {
         this.amount = this.oldAmount
         this.modifyMoneyShow = true
@@ -376,6 +397,9 @@
       },
       // 获取订单号
       async queryBillNo () {
+        if (!this.modifyMoneyShow) {
+          this.amount = this.oldAmount
+        }
         await this.$get(assetService.GET_ASSET_LIST_BILLNO, {
           amount: this.amount
         }).then(res => {
@@ -413,6 +437,7 @@
       paidMoney (e) {
         this.payMoneyShow = false
         this.amount = ''
+        this.oldAmount = ''
         this.payType = 'ALIPAY'
         this.amountError = ''
         this.modifyMoneyShow = true
@@ -421,24 +446,27 @@
         this.queryAccountInfo()
         this.successMoneyShow = false
         this.amount = ''
+        this.oldAmount = ''
         this.modifyMoneyShow = true
         this.payway = '支付宝'
         this.payType = 'ALIPAY'
       }
     },
     watch: {
-      // amount: {
-      //   handler () {
-      //     if (this.stout) return
-      //     this.stout = setTimeout(() => {
-      //       clearTimeout(this.stout)
-      //       this.stout = null
-      //       if (!this.checkAmount()) {
-      //         return true
-      //       }
-      //     }, 200)
-      //   }
-      // }
+      searchParams: {
+        handler (val, oldValue) {
+          if (val.type === 'RECHARGE') {
+            this.searchLabel = '很抱歉，没有搜索到账户充值的结果'
+          } else if (val.type === 'RED_PACK') {
+            this.searchLabel = '很抱歉，没有搜索到红包消费的结果'
+          } else if (val.type === 'RE_RED_PACK') {
+            this.searchLabel = '很抱歉，没有搜索到红包返回的结果'
+          } else {
+            this.searchLabel = '很抱歉，暂无数据'
+          }
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -516,12 +544,14 @@
             color: #4b5afe;
             cursor: pointer;
             &:hover {
-              background-color: $color-default-hover;
-              border: 1px solid $color-default-hover;
+              background-color: $color-blue-hover;
+              border: 1px solid $color-blue-hover;
+              color: #fff;
             }
             &:active {
-              background-color: $color-default-active;
-              border: 1px solid $color-default-hover;
+              background-color: $color-blue-active;
+              border: 1px solid $color-blue-active;
+              color: #fff;
             }
           }
         }
@@ -561,6 +591,22 @@
     .asset-list-table {
       padding: 20px;
       background-color: #fff;
+      .empty {
+        text-align: center;
+        margin: 35px 0;
+        .txt {
+          padding-top: 20px;
+          font-size: 16px;
+          color: $color-font;
+        }
+        .img {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+          background: url('~assets/image/search_empty.png') no-repeat center;
+          background-size: contain;
+        }
+      }
       .page-pagination {
         margin-top: 30px;
         text-align: right;

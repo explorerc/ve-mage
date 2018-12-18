@@ -6,7 +6,7 @@
       <template v-if='emailList.length'>
         <button class="default-button fr create-button"
                 @click="addEmail">新建邮件</button>
-        <span class="send-box fr">发送限额：{{countBalance}}/{{countTotal}}</span>
+        <span class="send-box fr">发送限额：{{countTotal - countBalance}}/{{countTotal}}</span>
       </template>
     </div>
     <div class="email-table-box"

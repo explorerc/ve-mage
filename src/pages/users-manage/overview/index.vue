@@ -324,10 +324,13 @@ export default {
   .pond-title {
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 5px;
     span.title {
       display: inline-block;
       font-size: 24px;
-      padding-top: 32px;
+      /*padding-top: 32px;*/
     }
   }
   .content /deep/ {

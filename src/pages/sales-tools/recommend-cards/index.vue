@@ -134,12 +134,12 @@
 @import '~assets/css/mixin.scss';
 @import './common.scss';
 
-.back-btn {
-  height: 34px !important;
-  line-height: 34px !important;
-  float: right;
-  width: 120px !important;
-}
+/*.back-btn {*/
+  /*height: 34px !important;*/
+  /*line-height: 34px !important;*/
+  /*float: right;*/
+  /*width: 120px !important;*/
+/*}*/
 .card-list-page {
   .el-table thead {
     height: 36px;

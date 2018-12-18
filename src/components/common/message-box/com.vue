@@ -21,7 +21,7 @@
           <div class="ve-message-box__btns" v-if="type!=='none'">
             <div v-if="!this.$slots.bottom">
               <button type="button" class="button--primary" :type="type" @click.prevent="handleClick(action.confirm)">
-                <span>{{confirmText}}<span v-if="autoClose" class="auto-close">({{closeTime}}s)</span></span>
+                <span>{{confirmText}}<span v-if="autoClose" class="auto-close" style="display: inline-block;width: 40px;">({{closeTime}}s)</span></span>
               </button>
               <button type="button" class="button--cancel" :type="type" @click.prevent="handleClick(action.cancel)"
                       v-if="cancelText">

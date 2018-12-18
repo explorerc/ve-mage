@@ -733,7 +733,7 @@ export default {
 .tag-list {
   li {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 6px 10px 6px 12px;
     background: rgba(240, 241, 254, 1);
     border-radius: 20px;
     border: 1px solid rgba(240, 241, 254, 1);
@@ -741,22 +741,24 @@ export default {
     margin-bottom: 4px;
     &:hover {
       span {
-        display: inline-block;
+        width: 14px;
+        border: 1px solid rgba(75, 90, 254, 1);
       }
     }
     span {
       cursor: pointer;
-      display: none;
+      display: inline-block;
       position: relative;
       top: 2px;
       background: url('~assets/image/close.svg') no-repeat;
       background-position: center;
       background-size: 6px;
-      width: 14px;
+      width: 0px;
+      transition: width 0.5s;
       height: 14px;
-      line-height: 14px;
+      /*line-height: 26px;*/
       border-radius: 100px;
-      border: 1px solid rgba(75, 90, 254, 1);
+      /*border: 1px solid rgba(255, 2, 254, 1);*/
       &:hover {
         opacity: 0.8;
       }

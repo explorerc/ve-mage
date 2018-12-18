@@ -161,7 +161,7 @@
     <message-box
       v-show="preDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       :header="header"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box">
@@ -468,3 +468,12 @@
   }
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
+<style lang="scss" scoped>
+  .spread {
+    /deep/ {
+      .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
+        display: none;
+      }
+    }
+  }
+</style>

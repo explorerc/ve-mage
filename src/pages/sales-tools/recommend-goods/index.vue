@@ -41,11 +41,11 @@
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td>
               <div>
-                <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
+                <el-button type="text" @click="handleEdit(row,ind)">编辑</el-button>
+                <el-button type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button class="item" size="mini" type="text">移动</el-button>
-                <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button class="item" type="text">移动</el-button>
+                <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
               </div>
             </td>
           </tr>
@@ -229,7 +229,7 @@
       }
     }
     .table-box {
-      margin-top: 22px;
+      /*margin-top: 22px;*/
       padding: 30px;
       border: 1px solid #e2e2e2;
       border-radius: 4px;

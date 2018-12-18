@@ -130,7 +130,7 @@
       </div>
     </div>
     <div class="v-control clearfix">
-      <button class="v-save"
+      <button :class="{'v-save':true,disabled:isSaveDisabled}"
               @click="save">
         保存
       </button>
@@ -179,6 +179,7 @@ import questions from '../questionnaire/components/questions'
 import VeUpload from 'src/components/ve-upload-image'
 import { types as QTypes } from 'components/questionnaire/types'
 import questionService from 'src/api/questionnaire-service'
+import { focusInput } from 'src/utils/dom-tool'
 // import func from './vue-temp/vue-editor-bridge'
 export default {
   components: {
@@ -200,6 +201,7 @@ export default {
         position: true,
         edu: true
       },
+      isSaveDisabled: false,
       questionId: this.$route.params.id,
       activityId: this.$route.params.activityId,
       title: '',
@@ -729,6 +731,9 @@ export default {
           data.push(this.phoneData[0])
         }
       }
+      if (result) {
+        result = document.querySelectorAll('.error').length <= 0
+      }
       if (result && this.saveResult) {
         let _data = {
           activityId: this.activityId,
@@ -744,10 +749,13 @@ export default {
         this.saveResult = false
         if (this.questionId) {
           _data.naireId = this.questionId
+          this.isSaveDisabled = true
           this.$config({ handlers: true }).$post(questionService.POST_QUESTION_UPDATE, _data).then((res) => {
+            this.isSaveDisabled = false
             this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
+            this.isSaveDisabled = false
             this.canPaas = true
             this.saveResult = true
             this.$messageBox({
@@ -766,10 +774,13 @@ export default {
             })
           })
         } else {
+          this.isSaveDisabled = true
           this.$config({ handlers: true }).$post(questionService.POST_QUESTION_CREAT, _data).then((res) => {
+            this.isSaveDisabled = false
             this.canPaas = true
             this.$router.replace('/salesTools/questionnaire/list/' + this.activityId)
           }).catch((res) => {
+            this.isSaveDisabled = false
             this.saveResult = true
             this.$messageBox({
               header: '提示',
@@ -787,10 +798,11 @@ export default {
             })
           })
         }
-      } else if (!result) {
-        this.$toast({
-          content: '保存失败，存在未填写的信息',
-          position: 'center'
+      } else {
+        this.isSaveDisabled = true
+        this.$nextTick(() => {
+          focusInput('.error', '.right')
+          this.isSaveDisabled = false
         })
       }
     },

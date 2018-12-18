@@ -108,22 +108,22 @@ const editor = new VueHtml5Editor({
         template: fontTemplate,
         data () {
           return {
-            nameList: [
-              'Microsoft YaHei',
-              'Helvetica Neue',
-              'Helvetica',
-              'Arial',
-              'sans-serif',
-              'Verdana',
-              'Georgia',
-              'Times New Roman',
-              'Trebuchet MS',
-              'Microsoft JhengHei',
-              'Courier New',
-              'Impact',
-              'Comic Sans MS',
-              'Consolas'
-            ],
+            // nameList: [
+            //   'Microsoft YaHei',
+            //   'Helvetica Neue',
+            //   'Helvetica',
+            //   'Arial',
+            //   'sans-serif',
+            //   'Verdana',
+            //   'Georgia',
+            //   'Times New Roman',
+            //   'Trebuchet MS',
+            //   'Microsoft JhengHei',
+            //   'Courier New',
+            //   'Impact',
+            //   'Comic Sans MS',
+            //   'Consolas'
+            // ],
             lineHeightList: [
               '1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'
             ],
