@@ -186,7 +186,7 @@
         this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
         if (this.btnSwitch) {
           this.btnTxt.length ? this.btnTxtError = '' : this.btnTxtError = '请输入按钮文案'
-          reg.test(this.btnLink) ? this.btnLinkError = '' : this.btnLinkError = '请输入有效的按钮链接以http或https开头'
+          reg.test(this.btnLink) ? this.btnLinkError = '' : this.btnLinkError = '请输入有效的链接以http://或https://开头'
         } else {
           this.canSave = false
         }

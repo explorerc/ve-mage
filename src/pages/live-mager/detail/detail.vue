@@ -210,14 +210,14 @@
           <template v-if="staticTime == '统计中...'">
             <ol title='预告、直播中状态不能进入数据中心'>
               <li @click="linkTo($event,'/data/preview/')"
-                  :class="'disabled'">数据</li>
-              <li :class="'disabled'">观众</li>
+                  :class="'disabled'">活动数据</li>
+              <li :class="'disabled'">观众列表</li>
             </ol>
           </template>
           <template v-else>
             <ol>
-              <li @click="linkTo($event,'/data/preview/')">数据</li>
-              <li @click="linkTo($event,'/data/viewer/')">观众</li>
+              <li @click="linkTo($event,'/data/preview/')">活动数据</li>
+              <li @click="linkTo($event,'/data/viewer/')">观众列表</li>
             </ol>
           </template>
         </div>
@@ -676,7 +676,7 @@
               <div class='pic'>
               </div>
               <div class='desc'>
-                <span>数据</span>
+                <span>活动数据</span>
                 <span class='des'>
                   <!-- 已设置 -->
                   <template v-if="staticTime == '统计中...'">
@@ -699,7 +699,7 @@
               <div class='pic'>
               </div>
               <div class='desc'>
-                <span>观众</span>
+                <span>观众列表</span>
                 <span class='des'>
                   <!-- 已设置 -->
                   <template v-if="staticTime == '统计中...'">

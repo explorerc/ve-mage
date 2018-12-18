@@ -278,6 +278,7 @@
                                   align="right"
                                   :editable="false"
                                   format="yyyy-MM-dd HH:mm"
+                                  :picker-options="pickerOptions"
                                   value-format="yyyy-MM-dd HH:mm">
                   </el-date-picker>
                   <span class="status-error"
@@ -332,6 +333,11 @@ export default {
         token: '',
         recordId: '', // 回放视频id
         linkVideo: '' // 外链视频
+      },
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now() - 8.64e7
+        }
       },
       tempPlayBackCover: '',
       playBack: {

@@ -20,12 +20,12 @@
           <div class="nav-content" :class="{active:active===index}">
             <div>
               <label>栏目名称</label>
-              <com-input placeholder="输入栏目名称" :value.sync="item.text" :max-length="10"></com-input>
+              <com-input placeholder="输入栏目名称" :value.sync="item.text" :max-length="8" :error-tips="item.text.length <= 0 ? '请输入栏目名称' : ''"></com-input>
             </div>
             <div>
               <label>跳转链接</label>
-              <com-input placeholder="输入跳转链接" :value.sync="item.link"></com-input>
-              <label class='tips'>链接需要附带http头协议</label>
+              <com-input placeholder="输入跳转链接" @focus="inpError = ''" @blur="inpBlur(item.link)" :error-tips="inpError" :value.sync="item.link"></com-input>
+              <label class='tips ' :class="{'errorTips':inpError.length > 0}">链接需要附带http头协议</label>
             </div>
             <div>
               <span style="margin-right:20px;margin-left:5px;">打开方式</span>
@@ -53,10 +53,19 @@ export default {
   },
   data () {
     return {
-      active: -1
+      active: -1,
+      inpError: ''
     }
   },
   methods: {
+    inpBlur (val) {
+      if (val.length <= 0) {
+        this.inpError = '请输入跳转链接'
+      } else {
+        const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+        reg.test(val) ? this.inpError = '' : this.inpError = '请输入有效的链接以http://或https://开头'
+      }
+    },
     addNav () {
       let len = this.value.data.list.length
       if (len < 8) {
@@ -210,6 +219,10 @@ export default {
           color: $color-gray;
           position: relative;
           bottom: 13px;
+          &.errorTips {
+            position: relative;
+            bottom: 0;
+          }
         }
       }
       .com-input {

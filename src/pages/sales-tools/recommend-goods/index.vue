@@ -17,6 +17,7 @@
           <th>序号</th>
           <th>封面图</th>
           <th>商品名称</th>
+          <th>商品状态</th>
           <th>原始价格</th>
           <th>优惠价格</th>
           <th>操作</th>
@@ -34,18 +35,19 @@
               </div>
             </td>
             <td>{{row.title}}</td>
+            <td></td>
             <td>
               <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
               <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
             </td>
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td>
-              <div>
+              <div class='btn-box'>
                 <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
                 <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button class="item" size="mini" type="text">移动</el-button>
                 <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button class="item move-btn" size="mini" type="text" title='拖拽可调整商品排序'>移动</el-button>
               </div>
             </td>
           </tr>
@@ -259,6 +261,9 @@
             font-weight: 400;
             border-right-color: transparent !important;
             border-left-color: transparent !important;
+            .btn-box {
+              position:relative;
+            }
             &:nth-of-type(1) {
               width: 5%;
             }
@@ -270,9 +275,12 @@
             }
             &:nth-of-type(4),
             &:nth-of-type(5) {
-              width: 15%;
+              width: 10%;
             }
             &:nth-of-type(6) {
+              width:15%;
+            }
+            &:nth-of-type(7) {
               width: 25%;
               button {
                 color: #222222;
@@ -280,6 +288,23 @@
                   color: #2878ff;
                 }
               }
+            }
+            .move-btn {
+              span {
+                position:absolute;
+                top:50%;
+                left:50%;
+                transform:translate(-50%,-50%);
+                display:inline-block;
+                width:32px;
+                height:32px;
+                color:transparent;
+                background:url('~assets/image/move-icon.svg') no-repeat center;
+                &:hover{
+                  opacity:0.8;
+                }
+              }
+              
             }
             .cover_img {
               margin: 10px auto 10px 0;

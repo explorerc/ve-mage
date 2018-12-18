@@ -311,6 +311,11 @@ export default {
           }
         }
       }
+      &.width4 {
+        .block1-item {
+          width: 350px;
+        }
+      }
       .block1-item {
         width: 540px;
         margin-right: 40px;

@@ -99,10 +99,11 @@
             <div class="from-content">
               <el-date-picker v-model="date"
                               :editable="false"
-                              format='yyyy-MM-dd HH:mm:ss'
-                              value-format="yyyy-MM-dd HH:mm:ss"
+                              format='yyyy-MM-dd HH:mm'
+                              value-format="yyyy-MM-dd HH:mm"
                               type="datetime"
                               placeholder="选择日期时间"
+                              :default-value="defaultValue"
                               :picker-options="pickerOptions">
               </el-date-picker>
             </div>
@@ -188,6 +189,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7
         }
       },
+      defaultValue: new Date(new Date().getTime() + 1800000),
       loading: false,
       searchPerson: '',
       groupList: [],

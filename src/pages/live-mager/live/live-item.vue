@@ -1,5 +1,5 @@
 <template>
-  <div class="live-item" :style="{height: this.height+'px'}">
+  <div class="live-item" :style="{height: this.height+'px'}" @click='goDetail(liveData.id)'>
     <span v-if='liveData.status=="PREPARE"' class="live-state">预告</span>
     <span v-if='liveData.status=="LIVING"' class="live-state"><i class="live-point"></i>直播中</span>
     <span v-if='liveData.status=="PLAYBACK"' class="live-state">回放</span>
@@ -112,6 +112,9 @@
     methods: {
       handleClick (action) {
         this.$emit('handleClick', {...action, ...this.liveData})
+      },
+      goDetail (id) {
+        this.$router.push(`/liveMager/detail/${id}`)
       }
     }
   }
@@ -149,6 +152,7 @@
     }
   }
   .live-img {
+    cursor: pointer;
     height: calc(100% - 94px);
     background-size: 100% 100%;
     border-bottom: 1px solid $color-bd;
@@ -163,6 +167,7 @@
     }
   }
   .live-md {
+    cursor: pointer;
     height: 60px;
     padding: 5px 0;
     span {

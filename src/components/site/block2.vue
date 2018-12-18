@@ -3,7 +3,7 @@
     <div ref="target" class="block2-content">
       <el-carousel trigger="click" :class="widthClass" :autoplay="autoplay" :height="height" :interval="value.loop">
         <el-carousel-item :class="item.type"  v-for="(item,index) in value.list" :key="'block2_item_'+index">
-          <a target="_black" :href="item.link | voidLink" >
+          <a target="_black" :href="item.hrefType === '_sub' ? `${PC_HOST}subscribe/${id}` : value.link | voidLink" >
             <div v-if="item.bgColor" class="left-area" :style="{backgroundColor:item.bgColor}"></div>
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="content"  >
@@ -53,8 +53,12 @@
             <div>
                 <com-editer class="font-editer" v-model="item.content" ></com-editer>
             </div>
-            <div>
+            <div v-if='item.showLink'>
               <label class='normal'>跳转链接</label>
+              <div class="radio-box">
+                <el-radio v-model="item.hrefType" label="_sub">活动引导页链接</el-radio>
+                <el-radio v-model="item.hrefType" label="_define">自定义链接</el-radio>
+              </div>
               <com-input placeholder="跳转链接" v-model="item.link"></com-input>
               <label class='tips'>链接需要附带http头协议</label>
             </div>
@@ -73,6 +77,23 @@
               </div>
               <div class='button-item clearfix'>
                 <com-input placeholder="按钮文字" v-model="item.btn.text"></com-input>
+              </div>
+               <div>
+                <label class='normal'>跳转链接</label>
+                <div class="radio-box">
+                  <el-radio v-model="item.btn.hrefType" label="_sub">活动引导页链接</el-radio>
+                  <el-radio v-model="item.btn.hrefType" label="_define">自定义链接</el-radio>
+                </div>
+                <com-input placeholder="跳转链接" :value="`${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.btn.hrefType === '_sub'"></com-input>
+                <com-input placeholder="跳转链接" @focus="inpError = ''" @blur="inpBlur(item.btn.link)" :error-tips="inpError" :value.sync="item.btn.link" v-else></com-input>
+                <label class='tips'>链接需要附带http头协议</label>
+              </div>
+              <div class='open-way clearfix'>
+                <label class='normal'>按钮打开方式</label>
+                <div class="radio-box">
+                  <el-radio v-model="item.btn.target" label="_self">当前窗口</el-radio>
+                  <el-radio v-model="item.btn.target" label="_blank">新窗口</el-radio>
+                </div>
               </div>
             </div>
           </div>
@@ -114,13 +135,24 @@ export default {
   },
   data () {
     return {
+      inpError: '',
       active: -1,
+      id: this.$route.params.id,
+      PC_HOST: process.env.PC_HOST,
       host: process.env.IMGHOST + '/',
       uploadImgErrorMsg: '', // 上传图片错误提示
       autoplay: false
     }
   },
   methods: {
+    inpBlur (val) {
+      if (val.length <= 0) {
+        this.inpError = '请输入跳转链接'
+      } else {
+        const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+        reg.test(val) ? this.inpError = '' : this.inpError = '请输入有效的链接以http://或https://开头'
+      }
+    },
     addBlock () {
       let len = this.value.list.length
       if (len < this.max) {
@@ -189,6 +221,9 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .block2-container /deep/ {
+  .radio-box {
+    padding-bottom: 10px;
+  }
   .nav-blank-title {
     text-align: center;
     height: 50px;

@@ -22,7 +22,7 @@
         <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
           <div class="from-content" :class="{ 'error':dateEmpty }">
-            <el-date-picker @focus='dateEmpty=false' v-model="date"  @change="canPaas=false" type="datetime" placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultTime">
+            <el-date-picker @focus='dateEmpty=false' v-model="date"  @change="canPaas=false" type="datetime" :clearable='false' placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultValue" >
             </el-date-picker>
             <span class='tips-time'>在预设直播时间或实际开播时间的48小时后，直播将视为过期。<br>在有效期内，直播可反复发起。过期后将无法再发起直播。</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
@@ -136,7 +136,7 @@ export default {
       },
       successTxt: '',
       canPaas: true,
-      defaultTime: new Date(new Date().getTime() + 1800000)
+      defaultValue: new Date(new Date().getTime() + 1800000)
     }
   },
   created () {

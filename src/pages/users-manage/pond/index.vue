@@ -680,7 +680,7 @@
               'business_consumer_uid': item.business_consumer_uid,
               'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '',
               'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nickname.length <= 5 ? item.nickname : item.nickname.substr(0, 5) + '...'),
-              'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
+              'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '',
               'phone': item.phone,
               'mail': item.email,
               'lastActive': item.last_visited_at,

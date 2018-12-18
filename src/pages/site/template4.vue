@@ -248,7 +248,8 @@ export default {
       .block1-item {
         max-width: 1280px;
         margin: 0;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        display: block;
         &.left {
           .content {
             padding-right: 510px;
@@ -354,6 +355,13 @@ export default {
           position: absolute;
           bottom: 65px;
           left: 83px;
+          .com-button {
+            line-height: 13px;
+          }
+        }
+        &.top .content {
+          position: absolute;
+          top: 0;
         }
       }
     }

@@ -72,9 +72,11 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)',
             text: '立即了解',
             link: '',
+            hrefType: '_sub',
             enable: true,
             target: '_self'
           },
+          hrefType: '_sub',
           target: '_self',
           link: ''
         }]
@@ -102,8 +104,10 @@ export default function () {
             text: '',
             bgColor: '',
             fontColor: '',
+            hrefType: '_sub',
             link: ''
           },
+          hrefType: '_sub',
           target: '_self',
           link: ''
         }]
@@ -179,6 +183,7 @@ export default function () {
         fontColor: 'RGBA(34, 34, 34, 1)',
         text: '立刻报名',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
@@ -205,9 +210,11 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo1.png'),
           btn: {
+            hrefType: '_sub',
             link: ''
           },
           link: '',
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -215,8 +222,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo2.png'),
           btn: {
+            hrefType: '_sub',
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -225,8 +234,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo3.png'),
           btn: {
+            hrefType: '_sub',
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -235,8 +246,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo4.png'),
           btn: {
+            hrefType: '_sub',
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -245,8 +258,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo5.png'),
           btn: {
+            hrefType: '_sub',
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -255,8 +270,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo6.png'),
           btn: {
+            hrefType: '_sub',
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         }
@@ -283,12 +300,14 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '立即了解',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
     },
     section8Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: false,
         bgType: 'color',
@@ -298,7 +317,7 @@ export default function () {
       },
       font: {
         enable: true,
-        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">合作伙伴</span></div>`
+        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">参会嘉宾</span></div>`
       },
       block1: {
         enable: true,
@@ -310,6 +329,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -320,6 +340,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -330,6 +351,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -340,6 +362,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -350,6 +373,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -360,6 +384,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -370,6 +395,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -380,6 +406,7 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_sub',
           link: '',
           target: '_self'
         }
