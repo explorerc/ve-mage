@@ -332,33 +332,42 @@
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" style="padding-top: 20px;">
         <div class="table-box">
-          <el-table :data="redBagDataList" style="width: 100%">
-            <el-table-column width="50" label="序号">
-              <template slot-scope="scope">
-                {{ (page-1)*pageSize + scope.$index + 1}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="start_time" label="推送时间" width="140"></el-table-column>
-            <el-table-column label="参与条件">
-              <template slot-scope="scope">
-                <span v-if="scope.row.condition==0">无限制参与</span>
-                <span v-else-if="scope.row.condition==1">分享参与</span>
-                <span v-else-if="scope.row.condition==2">口令参与</span>
-                <span v-else-if="scope.row.condition==3">填写问卷参与</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="amount" label="红包总金额"></el-table-column>
-            <el-table-column prop="number" label="红包数量"></el-table-column>
-            <el-table-column prop="online_user_count" label="在线人数"></el-table-column>
-            <el-table-column prop="joined_user_count" label="参与人数"></el-table-column>
-            <el-table-column prop="get_user_count" label="领取人数"></el-table-column>
-            <el-table-column prop="get_amount" label="领取金额"></el-table-column>
-            <el-table-column label="领取明细" width="80">
-              <template slot-scope="scope">
-                <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
-              </template>
-            </el-table-column>
-          </el-table>
+          <template v-if="redBagDataList.length">
+            <el-table :data="redBagDataList" style="width: 100%">
+              <el-table-column width="50" label="序号">
+                <template slot-scope="scope">
+                  {{ (page-1)*pageSize + scope.$index + 1}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="start_time" label="推送时间" width="140"></el-table-column>
+              <el-table-column label="参与条件">
+                <template slot-scope="scope">
+                  <span v-if="scope.row.condition==0">无限制参与</span>
+                  <span v-else-if="scope.row.condition==1">分享参与</span>
+                  <span v-else-if="scope.row.condition==2">口令参与</span>
+                  <span v-else-if="scope.row.condition==3">填写问卷参与</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="amount" label="红包总金额"></el-table-column>
+              <el-table-column prop="number" label="红包数量"></el-table-column>
+              <el-table-column prop="online_user_count" label="在线人数"></el-table-column>
+              <el-table-column prop="joined_user_count" label="参与人数"></el-table-column>
+              <el-table-column prop="get_user_count" label="领取人数"></el-table-column>
+              <el-table-column prop="get_amount" label="领取金额"></el-table-column>
+              <el-table-column label="领取明细" width="80">
+                <template slot-scope="scope">
+                  <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
+
         </div>
         <div class="page-pagination" v-if="total>pageSize">
           <ve-pagination :total="total"
