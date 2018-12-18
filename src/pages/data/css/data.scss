@@ -225,12 +225,19 @@
       overflow-x: hidden;
       overflow-y: auto;
     }
-
+    .msg-top {
+      margin-bottom: 15px;
+      .msg-header {
+        font-size: 20px;
+        display: inline-block;
+        line-height: 40px;
+      }
+    }
     .export-btn {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 34px;
+      //position: absolute;
+      //top: 0;
+      //right: 0;
+      //height: 34px;
       line-height: 1;
       z-index: 2;
     }

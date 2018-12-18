@@ -502,7 +502,7 @@ export default {
         .img-bg {
           width: 100%;
           height: 100%;
-          border-radius: 6px 0 0 6px;
+          border-radius: 7px 0 0 7px;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
@@ -516,7 +516,7 @@ export default {
       .v-pc-info {
         width: 47%;
         height: 266px;
-        border-radius: 0 6px 6px 0;
+        border-radius: 0 7px 7px 0;
         overflow: hidden;
         background-color: #fff;
         .v-pc-title {

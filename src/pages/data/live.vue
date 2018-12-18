@@ -208,21 +208,24 @@
       v-show="chatDataDetail"
       width="60%"
       type="none"
-      header="聊天数据详情"
+      header=""
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" v-ComLoading="loading">
-        <button class="primary-button export-btn fr" @click="exportFile('chart')">导出</button>
+        <div class="msg-top clearfix">
+          <span class="msg-header">聊天数据详情</span>
+          <button class="primary-button export-btn fr" @click="exportFile('chart')">导出</button>
+        </div>
         <div class="table-box">
           <el-table :data="chatDataList" style="width: 100%">
-            <el-table-column label="序号">
+            <el-table-column label="序号" width="80px">
               <template slot-scope="scope">
                 {{ (page-1)*pageSize + scope.$index + 1}}
               </template>
             </el-table-column>
-            <el-table-column prop="nickname" label="姓名"></el-table-column>
-            <el-table-column prop="phone" label="手机号"></el-table-column>
-            <el-table-column prop="message" label="聊天内容"></el-table-column>
-            <el-table-column prop="time" label="聊天时间"></el-table-column>
+            <el-table-column prop="nickname" label="姓名"  max-width="100px"></el-table-column>
+            <el-table-column prop="phone" label="手机号" max-width="120px"></el-table-column>
+            <el-table-column prop="message" label="聊天内容" min-width="120px"></el-table-column>
+            <el-table-column prop="time" label="聊天时间" min-width="120px"></el-table-column>
           </el-table>
         </div>
         <div class="page-pagination" v-if="total>pageSize">
