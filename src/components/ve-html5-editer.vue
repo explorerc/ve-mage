@@ -279,7 +279,6 @@ export default {
   },
   methods: {
     updateData (res) {
-      debugger
       this.$emit('input', res)
       this.$emit('change', res)
     }
