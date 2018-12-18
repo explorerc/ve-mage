@@ -229,7 +229,7 @@
       }
     }
     .table-box {
-      margin-top: 22px;
+      /*margin-top: 22px;*/
       padding: 30px;
       border: 1px solid #e2e2e2;
       border-radius: 4px;

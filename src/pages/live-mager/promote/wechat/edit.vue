@@ -339,7 +339,7 @@ export default {
       this.$get(userManage.GET_TAG_LIST, {
         keyword: keyword
       }).then((res) => {
-        console.log(res.data.list)
+        // console.log(res.data.list)
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
@@ -396,7 +396,7 @@ export default {
         activityId: this.activityId,
         type: 'WECHAT'
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
         this.countBalance = res.data.balance
       })
     },
@@ -423,7 +423,7 @@ export default {
       }
     },
     listenMsg (msg) {
-      console.log(msg)
+      // console.log(msg)
     },
     initSdk () {
       /* 获取pass信息 */
@@ -459,7 +459,7 @@ export default {
       })
       /* 监听微信测试发送成功消息 */
       ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
-        console.log(msg)
+        // console.log(msg)
         this.deliverd = true
       })
     },
