@@ -85,6 +85,7 @@
                               type="datetime"
                               placeholder="选择日期时间"
                               align="center"
+                              :picker-options="pickerOptions"
                               format="yyyy-MM-dd HH:mm"
                               value-format="yyyy-MM-dd HH:mm">
               </el-date-picker>
@@ -143,6 +144,11 @@
           senderName: '',
           planTime: '',
           groupIds: ''
+        },
+        pickerOptions: {
+          disabledDate (time) {
+            return time.getTime() < Date.now() - 8.64e7
+          }
         },
         email: {
           activityId: '',
