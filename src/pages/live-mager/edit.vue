@@ -754,7 +754,7 @@ export default {
       background-position: center;
       background-size: 6px;
       width: 0px;
-      transition: width 0.5s;
+      transition: width 0.2s;
       height: 14px;
       /*line-height: 26px;*/
       border-radius: 100px;

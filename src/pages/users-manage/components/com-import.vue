@@ -467,7 +467,7 @@ export default {
           width: 61px;
           height: 61px;
           margin: 0 auto;
-          background: url('~assets/image/csv.jpg') no-repeat;
+          background: url('~assets/image/csv.png') no-repeat;
           background-position: center;
           background-size: contain;
         }
