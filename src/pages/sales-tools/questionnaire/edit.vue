@@ -179,6 +179,7 @@ import questions from '../questionnaire/components/questions'
 import VeUpload from 'src/components/ve-upload-image'
 import { types as QTypes } from 'components/questionnaire/types'
 import questionService from 'src/api/questionnaire-service'
+import { focusInput } from 'src/utils/dom-tool'
 // import func from './vue-temp/vue-editor-bridge'
 export default {
   components: {
@@ -787,10 +788,13 @@ export default {
             })
           })
         }
-      } else if (!result) {
-        this.$toast({
-          content: '保存失败，存在未填写的信息',
-          position: 'center'
+      } else {
+        this.$nextTick(() => {
+          // 延迟2秒自动聚焦输入
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            focusInput('.error')
+          }, 2000)
         })
       }
     },

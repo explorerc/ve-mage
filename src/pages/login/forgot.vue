@@ -136,7 +136,7 @@
                  confirmText='现在申请'
                  cancelText='知道了'
                  @handleClick="sqHandler">
-      <div style="text-align: center;padding: 20px 0;">
+      <div style="padding: 20px 0;">
         <span style="display: block;">您尚未开通产品试用资格</span>
         <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
       </div>
@@ -145,7 +145,7 @@
                  header='提示'
                  cancelText='知道了'
                  @handleClick="shenHeiShow=false">
-      <div style="text-align: center;padding: 20px 0;">
+      <div style="padding: 20px 0;">
         <span style="display: block;">您的申请正在审核中，请耐心等待</span>
         <span style="display: block;">如有问题请拨打400-888-9970客服热线</span>
       </div>
