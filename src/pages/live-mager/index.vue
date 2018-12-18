@@ -359,9 +359,9 @@ export default {
   }
   /deep/ {
     .live-item {
-      overflow: hidden;
       &:hover {
-        box-shadow: 0 2px 10px #999999;
+        box-shadow: 0 2px 8px rgba(0,0,0,.3);
+        transition: box-shadow .2s;
       }
     }
 
