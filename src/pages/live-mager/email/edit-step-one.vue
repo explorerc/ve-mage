@@ -293,10 +293,11 @@
           this.email.title = res.data.title
           // 把信息保存到vuex
           this.storeEmailInfo(this.email)
-          this.$toast({
-            content: '保存草稿成功',
-            position: 'center'
-          })
+          // this.$toast({
+          //   content: '保存草稿成功',
+          //   position: 'center'
+          // })
+          this.$router.push(`/liveMager/email/${this.email.activityId}`)
         })
         let st = setTimeout(() => {
           clearTimeout(st)
