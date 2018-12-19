@@ -119,12 +119,14 @@
         }
       },
       close () {
+        this.isNoDataShow = false
         this.$emit('handleClick', {
           action: 'cancel'
         })
         // this.checkedData = []
       },
       confirm () {
+        this.isNoDataShow = false
         this.$emit('selectComConfirm', this.restoreData)
         this.close()
       },
