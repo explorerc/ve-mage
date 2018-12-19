@@ -185,113 +185,113 @@
 </script>
 
 <style lang="scss" scoped>
-  .fade-enter-active {
-    transition: all 0.3s ease;
-  }
+.fade-enter-active {
+  transition: all 0.3s ease;
+}
 
-  .fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-  }
+.fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
 
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 
-  .ve-upload-box {
+.ve-upload-box {
+  position: relative;
+  width: 440px;
+  height: 140px;
+  border: 1px dashed #e2e2e2;
+  border-radius: 4px;
+  background-color: #f7f7f7;
+  text-align: center;
+  overflow: hidden;
+  .over-upload {
+    display: block;
     position: relative;
-    width: 440px;
-    height: 140px;
-    border: 1px dashed #e2e2e2;
-    border-radius: 4px;
-    background-color: #f7f7f7;
-    text-align: center;
-    overflow: hidden;
-    .over-upload {
-      display: block;
-      position: relative;
-      width: 100%;
-      height: 40px;
-      background-color: rgba(0, 0, 0, 0.6);
-      z-index: 3;
-      top: 0;
-      span {
-        display: inline-block;
-        width: 25%;
-        text-align: center;
-        color: #fff;
-        /*margin-top: 50px;*/
-        .iconfont {
-          display: block;
-        }
-        &:hover {
-          color: #ccc;
-        }
-      }
-    }
-    .upload-img-box {
-      height: 100%;
-      width: 249px;
-      margin: 0 auto;
-      overflow: hidden;
-      cursor: pointer;
-      .temp-img {
-        width: 100%;
-        height: 100%;
-        background-position: center center;
-        background-size: cover;
-      }
-      &:hover .over-upload {
-        transition: top 0.3s;
-        top: -30%;
-      }
-    }
-    .upload-file-box {
-      width: 400px;
-      padding-bottom: 40px;
-      cursor: pointer;
-      span {
-        font-size: 14px;
-        line-height: 20px;
-        color: #888;
-        &.error-msg {
-          color: #fc5659!important;
-        }
-      }
-      .upload-icon {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 3;
+    top: 0;
+    span {
+      display: inline-block;
+      width: 25%;
+      text-align: center;
+      color: #fff;
+      /*margin-top: 50px;*/
+      .iconfont {
         display: block;
-        width: 60px;
-        height: 60px;
-        margin: 20px auto 10px auto;
-        background-image: url('../assets/image/upload-image-icon@2x.png');
-        background-size: cover;
       }
-    }
-    .big-img {
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 9999;
-      span {
-        color: white;
-        font-size: 50px;
-        position: absolute;
-        top: 100px;
-        right: 100px;
-        cursor: pointer;
-      }
-      div {
-        width: 500px;
-        height: 500px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-size: cover
+      &:hover {
+        color: #ccc;
       }
     }
   }
+  .upload-img-box {
+    height: 100%;
+    width: 249px;
+    margin: 0 auto;
+    overflow: hidden;
+    cursor: pointer;
+    .temp-img {
+      width: 100%;
+      height: 100%;
+      background-position: center center;
+      background-size: cover;
+    }
+    &:hover .over-upload {
+      transition: top 0.3s;
+      top: -30%;
+    }
+  }
+  .upload-file-box {
+    width: 400px;
+    padding-bottom: 40px;
+    cursor: pointer;
+    span {
+      font-size: 14px;
+      line-height: 20px;
+      color: #888;
+      &.error-msg {
+        color: #fc5659 !important;
+      }
+    }
+    .upload-icon {
+      display: block;
+      width: 60px;
+      height: 60px;
+      margin: 20px auto 0px auto;
+      background-image: url('../assets/image/upload-image-icon@2x.png');
+      background-size: cover;
+    }
+  }
+  .big-img {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    span {
+      color: white;
+      font-size: 50px;
+      position: absolute;
+      top: 100px;
+      right: 100px;
+      cursor: pointer;
+    }
+    div {
+      width: 500px;
+      height: 500px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-size: cover;
+    }
+  }
+}
 </style>
