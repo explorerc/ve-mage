@@ -377,5 +377,10 @@ export default {
     }
   }
 }
+.live-mager /deep/ {
+  .com-input input {
+    background-color: transparent;
+  }
+}
 </style>
 

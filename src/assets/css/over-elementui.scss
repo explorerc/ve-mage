@@ -258,6 +258,12 @@ textarea::-webkit-input-placeholder {
 .el-checkbox__inner{
  background-color: transparent;
 }
+.el-input__inner {
+  background-color: transparent;
+}
+.el-button.is-disabled {
+  background-color: transparent;
+}
 // 修改复选框的颜色
 .el-checkbox__input.is-checked .el-checkbox__inner {
   background-color: $color-blue-active;
@@ -267,10 +273,6 @@ textarea::-webkit-input-placeholder {
   border-color: $color-blue;
 }
 
-// 去掉搜索框的背景色
-.com-input input {
-  background-color: transparent !important;
-}
 // 去掉分页的文字加粗
 .el-pagination.is-background .el-pager li {
   font-weight: 400;

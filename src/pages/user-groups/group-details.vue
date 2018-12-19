@@ -25,7 +25,9 @@
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="el-table"
+      <el-table ref="multipleTable" :data="tableData"
+                tooltip-effect="dark" class="el-table"
+                v-if="tableData.length"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" v-if="type === 2"></el-table-column>
         <el-table-column label="用户信息">
@@ -57,6 +59,10 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="empty" v-if="isNoDataShow">
+        <div class="img"></div>
+        <div class="txt">暂无数据</div>
+      </div>
       <VePagination class="VePagination" v-show="total>10" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
   </div>
@@ -109,7 +115,9 @@
           page: 1,
           pageSize: 10
         },
-        total: 0
+        total: 0,
+        // 控制空白页的显示
+        isNoDataShow: false
       }
     },
     methods: {
@@ -146,6 +154,11 @@
               item.user_level = level
             })
             this.tableData = res.data.list
+            if (this.tableData.length) {
+              this.isNoDataShow = false
+            } else {
+              this.isNoDataShow = true
+            }
           })
       },
       changePage (nowPage) {
@@ -227,7 +240,7 @@
 
 <style lang="scss" scoped>
 #groupDetails {
-  padding: 28px 100px;
+  padding: 48px 100px;
   font-family: PingFangSC-Regular;
   /deep/ {
     header {
@@ -272,6 +285,22 @@
       margin: 20px auto;
       padding: 30px;
       min-height: 550px;
+      .empty {
+        text-align: center;
+        margin: 128px 0;
+        .txt {
+          padding-top: 20px;
+          font-size: 16px;
+          color: #222;
+        }
+        .img {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+          background: url('~assets/image/nodata@2x.png') no-repeat center;
+          background-size: contain;
+        }
+      }
       th.el-table_1_column_1 span.el-checkbox__inner {
         background-color: transparent;
         border: none;

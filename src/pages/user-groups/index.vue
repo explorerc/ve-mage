@@ -430,7 +430,7 @@
     }
     .operation {
       overflow: hidden;
-      margin-top: 25px;
+      margin-top: 45px;
       margin-bottom: 20px;
       h4 {
         display: inline-block;

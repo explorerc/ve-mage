@@ -901,7 +901,7 @@
     .pond-title {
       // border-bottom: 1px solid $color-bd;
       line-height: 60px;
-      margin-top: 10px;
+      margin-top: 30px;
       margin-bottom: 5px;
       span.title {
         display: inline-block;
@@ -933,6 +933,7 @@
             padding-right: 10px;
             padding-left: 15px;
             border-radius: 17px;
+            background-color: transparent;
           }
           span {
             cursor: pointer;

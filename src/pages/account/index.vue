@@ -1091,7 +1091,7 @@ export default {
   .v-account-title {
     font-size: 24px;
     line-height: 60px;
-    margin-top: 12px;
+    margin-top: 32px;
     margin-bottom: 7px;
     color: #222;
   }
