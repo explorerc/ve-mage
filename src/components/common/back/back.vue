@@ -44,7 +44,7 @@ export default {
     height: 30px;
     line-height: 30px;
     position: absolute;
-    top: 54%;
+    top: 52%;
     right: 0%;
     transform: translateY(-50%);
   }

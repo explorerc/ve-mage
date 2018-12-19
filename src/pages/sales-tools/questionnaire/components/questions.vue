@@ -55,9 +55,6 @@ export default {
       padding: 15px 25px;
       .q-edit-content {
         width: 100%;
-        .com-button.code {
-          bottom: 5px;
-        }
         .el-select {
           width: 100%;
         }

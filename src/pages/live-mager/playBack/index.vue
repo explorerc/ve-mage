@@ -4,7 +4,7 @@
          style="border:none;">
       <span class="title">活动回放</span>
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
-      <com-back style='top:42px;'></com-back>
+      <com-back></com-back>
       <button class="primary-button fr add-btn"
               style="margin-top: 17px;"
               @click="addVideoClickShow" >添加视频

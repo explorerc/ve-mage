@@ -272,7 +272,7 @@ export default {
   .live-title {
     position: relative;
     line-height: 60px;
-    margin: 10px 0 5px 0;
+    margin: 30px 0 5px 0;
     span.title {
       display: inline-block;
       font-size: 24px;
@@ -282,6 +282,9 @@ export default {
     .live-btn {
       position: relative;
       top: 5px;
+    }
+    .el-button.back-btn-all {
+      top: 52%;
     }
   }
 

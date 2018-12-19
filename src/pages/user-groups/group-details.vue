@@ -227,7 +227,7 @@
 
 <style lang="scss" scoped>
 #groupDetails {
-  padding: 50px 100px;
+  padding: 28px 100px;
   font-family: PingFangSC-Regular;
   /deep/ {
     header {

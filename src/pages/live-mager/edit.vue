@@ -462,7 +462,7 @@ export default {
     }
   }
   .edit-title {
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 5px;
     position: relative;
     // border-bottom: 1px solid $color-bd;

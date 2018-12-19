@@ -32,7 +32,7 @@ $color-ui-components:#4B5AFE;
   z-index: 9999 !important;
 }
 .webinar-list-select {
-    top:126px !important;
+    top:146px !important;
 }
 .live-mager .el-select-dropdown{
   .popper__arrow{
@@ -104,6 +104,7 @@ $color-ui-components:#4B5AFE;
 }
 .el-button {
   font-weight: 400;
+  background-color: transparent;
 }
 .el-button--text:active {
   color:$color-default;
@@ -254,7 +255,9 @@ textarea::-webkit-input-placeholder {
 .el-pagination {
   text-align: center;
 }
-
+.el-checkbox__inner{
+ background-color: transparent;
+}
 // 修改复选框的颜色
 .el-checkbox__input.is-checked .el-checkbox__inner {
   background-color: $color-blue-active;
