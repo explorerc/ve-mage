@@ -744,7 +744,6 @@ export default {
     &:hover {
       span {
         width: 14px;
-        border: 1px solid rgba(75, 90, 254, 1);
       }
     }
     span {
@@ -752,17 +751,20 @@ export default {
       display: inline-block;
       position: relative;
       top: 2px;
-      background: url('~assets/image/close.svg') no-repeat;
+      background: url('~assets/image/close1.svg') no-repeat;
       background-position: center;
-      background-size: 6px;
-      width: 0px;
+      background-size: cover;
+      width: 0;
       transition: width 0.2s;
       height: 14px;
-      /*line-height: 26px;*/
-      border-radius: 100px;
+      line-height: 26px;
+      /*border-radius: 100px;*/
       /*border: 1px solid rgba(255, 2, 254, 1);*/
       &:hover {
-        opacity: 0.8;
+        /*opacity: 0.8;*/
+        background: url('~assets/image/close1_hover.svg') no-repeat;
+        background-position: center;
+        background-size: cover;
       }
     }
   }
