@@ -1219,17 +1219,17 @@
       text-align: left;
     }
   }
-  /deep/ {
-    .el-button {
-      background-color: transparent;
-    }
-    .com-input input {
-      background-color: transparent;
-    }
-    // 去掉复选框背景色
-    .el-checkbox__inner {
-      background-color: transparent;
-    }
-  }
+  /*/deep/ {*/
+    /*.el-button {*/
+      /*background-color: transparent;*/
+    /*}*/
+    /*.com-input input {*/
+      /*background-color: transparent;*/
+    /*}*/
+    /*// 去掉复选框背景色*/
+    /*.el-checkbox__inner {*/
+      /*background-color: transparent;*/
+    /*}*/
+  /*}*/
 
 </style>

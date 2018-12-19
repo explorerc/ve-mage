@@ -326,7 +326,7 @@ export default {
   display: inline-block;
   color: #888;
   font-size: 14px;
-  line-height: 60px;
+  line-height: 63px;
   margin-right: 20px;
 }
 

@@ -208,7 +208,7 @@
       text-align: right;
       line-height: 60px;
       margin-bottom: 7px;
-      margin-top: 12px;
+      margin-top: 32px;
       p {
         float: left;
         height: 60px;
@@ -223,6 +223,7 @@
         height: 30px;
         line-height: 30px;
       }
+
       .btn-box {
         position: absolute;
         top: 50%;
@@ -304,7 +305,7 @@
                   opacity:0.8;
                 }
               }
-              
+
             }
             .cover_img {
               margin: 10px auto 10px 0;

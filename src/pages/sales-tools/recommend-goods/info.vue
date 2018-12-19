@@ -355,7 +355,7 @@
       font-weight: 400;
       color: rgba(34, 34, 34, 1);
       line-height: 26px;
-      margin-bottom: 35px;
+      margin-bottom: 25px;
       position: relative;
     }
     .el-form {
