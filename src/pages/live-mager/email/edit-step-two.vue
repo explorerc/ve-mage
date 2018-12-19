@@ -197,6 +197,7 @@
       },
       sendType (newVal) {
         this.errorMsg.planTime = ''
+        this.email.planTime = ''
         if (newVal === 'ONCE') {
           this.defaultValue = new Date(new Date().getTime() + 30 * 60 * 1000)
         }

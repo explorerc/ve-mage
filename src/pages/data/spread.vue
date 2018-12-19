@@ -368,6 +368,8 @@
         lines('chart06', {
           xAxisData: this.pageLinkDatas.xAxisData,
           datas: this.pageLinkDatas.lineObj[typeAttr]
+        }, null, {
+          left: 0
         })
       },
       promotionEffect () {
@@ -382,8 +384,8 @@
               list: this.speadDatas.list
             }, {
               left: 34,
-              bottom: 30,
-              top: 20,
+              bottom: 36,
+              top: 18,
               right: 20
             })
           }
@@ -416,6 +418,28 @@
                 { name: '活跃人数', data: ratioDataList.sms.nums }
               ]
             }, ['rgba(82,219,237,1)'])
+          } else {
+            /* 邮件活跃 */
+            this.emailChart = lines('chart02', {
+              xAxisData: [],
+              datas: [
+                { name: '活跃人数', data: [0] }
+              ]
+            }, ['rgba(77,132,255,1)'])
+            /* 微信活跃 */
+            this.weChatChart = lines('chart03', {
+              xAxisData: [],
+              datas: [
+                { name: '活跃人数', data: [0] }
+              ]
+            }, ['rgba(253,133,25,1)'])
+            /* 短信活跃 */
+            this.smsChart = lines('chart04', {
+              xAxisData: [],
+              datas: [
+                { name: '活跃人数', data: [0] }
+              ]
+            }, ['rgba(82,219,237,1)'])
           }
         })
       },
@@ -428,8 +452,8 @@
             this.webChart = lines('chart05', {
               xAxisData: res.data.xAxis || [],
               datas: [
-                { name: 'UV', data: res.data.nums },
-                { name: 'PV', data: res.data.times }
+                { name: 'UV', data: res.data.nums.length > 0 ? res.data.nums : [0] },
+                { name: 'PV', data: res.data.times.length > 0 ? res.data.nums : [0] }
               ]
             }, null, {
               left: 0
@@ -449,16 +473,16 @@
                 pv: []
               }
             }
-            pageLinkDatas.lineObj.uv.push({ name: '全部', data: res.data.all.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '全部', data: res.data.all.times })
-            pageLinkDatas.lineObj.uv.push({ name: '邮件', data: res.data.email.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '邮件', data: res.data.email.times })
-            pageLinkDatas.lineObj.uv.push({ name: '短信', data: res.data.sms.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '短信', data: res.data.sms.times })
-            pageLinkDatas.lineObj.uv.push({ name: '微信', data: res.data.weChat.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '微信', data: res.data.weChat.times })
-            pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times })
+            pageLinkDatas.lineObj.uv.push({ name: '全部', data: res.data.all.nums.length > 0 ? res.data.all.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '全部', data: res.data.all.times.length > 0 ? res.data.all.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '邮件', data: res.data.email.nums.length > 0 ? res.data.email.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '邮件', data: res.data.email.times.length > 0 ? res.data.email.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '短信', data: res.data.sms.nums.length > 0 ? res.data.sms.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '短信', data: res.data.sms.times.length > 0 ? res.data.sms.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '微信', data: res.data.weChat.nums.length > 0 ? res.data.weChat.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '微信', data: res.data.weChat.times.length > 0 ? res.data.weChat.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums.length > 0 ? res.data.other.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times.length > 0 ? res.data.other.times : [0] })
             this.pageLinkDatas = pageLinkDatas
             this.linkChart = lines('chart06', {
               xAxisData: this.pageLinkDatas.xAxisData,

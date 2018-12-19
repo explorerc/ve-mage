@@ -26,13 +26,6 @@ export function focusInput (querySelector, pQuerySelector) {
       let scrollHeith = window.$(input).offset().top - window.$(pBox).offset().top
       scrollHeith = scrollHeith > 100 ? scrollHeith - 50 : scrollHeith
       window.$(pBox).animate({scrollTop: `${scrollHeith}px`}, 500)
-      let st = setTimeout(() => {
-        clearTimeout(st)
-        let pInput = window.$(input).parent(querySelector)
-        if (pInput.length > 0) {
-          input.focus()
-        }
-      }, 2000)
     }
   }
 }

@@ -838,8 +838,8 @@
           this.playBackTimeChart = scatter('chart03', serveDatas, {
             left: 70,
             right: 10,
-            top: 20,
-            bottom: 20
+            top: 10,
+            bottom: 10
           })
         })
       },
@@ -850,7 +850,7 @@
           let chartDatas = null
           if (res.code === 200 && res.data.length !== 0) {
             res.data.xAxis = res.data.xAxis || ['']
-            res.data.interact = res.data.interact || []
+            res.data.interact = res.data.interact.length > 0 ? res.data.interact : [0]
             let serveDatas = []
             serveDatas.push({
               name: '',
@@ -870,12 +870,12 @@
             // 互动工具参与趋势图（PV、UV）
             this.hdChart = barAndLine('chart04', chartDatas, {
               left: 48,
-              top: 20,
-              bottom: 20
+              top: 10,
+              bottom: 30
             })
           } else {
             this.hdChart = barAndLine('chart04', {
-              xAxis: ['0'],
+              xAxis: [''],
               list: [{
                 name: '',
                 type: 'bar',
@@ -1005,8 +1005,9 @@
     }
     .lenge-box {
       position: absolute;
-      top: 54px;
-      right: 22px;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
       span {
         display: inline-block;
         color: #555;
