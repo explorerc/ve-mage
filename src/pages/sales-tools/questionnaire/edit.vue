@@ -802,7 +802,10 @@ export default {
         this.isSaveDisabled = true
         this.$nextTick(() => {
           focusInput('.error', '.right')
-          this.isSaveDisabled = false
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.isSaveDisabled = false
+          }, 3000)
         })
       }
     },

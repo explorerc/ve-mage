@@ -5,7 +5,8 @@
 export function focusInput (querySelector, pQuerySelector) {
   if (!querySelector) console.error('querySelector不能为空')
   let s = document.querySelectorAll(querySelector)
-  s.forEach(item => {
+  if (s.length >= 1) {
+    let item = s[0]
     let input = null
     if (item.tagName.toLocaleLowerCase() === 'input' || item.tagName.toLocaleLowerCase() === 'textarea') {
       input = item
@@ -21,11 +22,17 @@ export function focusInput (querySelector, pQuerySelector) {
       }
     }
     if (input) {
-      document.querySelectorAll(pQuerySelector)[0].scrollTop = input.scrollHeight
+      let pBox = document.querySelectorAll(pQuerySelector)[0]
+      let scrollHeith = window.$(input).offset().top - window.$(pBox).offset().top
+      scrollHeith = scrollHeith > 100 ? scrollHeith - 50 : scrollHeith
+      window.$(pBox).animate({scrollTop: `${scrollHeith}px`}, 500)
       let st = setTimeout(() => {
         clearTimeout(st)
-        if (!input.value) input.focus()
+        let pInput = window.$(input).parent(querySelector)
+        if (pInput.length > 0) {
+          input.focus()
+        }
       }, 2000)
     }
-  })
+  }
 }
