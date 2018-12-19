@@ -62,7 +62,7 @@ export default {
       this.$messageBox({
         header: '',
         width: '400px',
-        content: '是否确认删除该模块？删除后将无法还原',
+        content: '是否确认删除该模块？删除后将无法还原。',
         cancelText: '取消',
         confirmText: '确认删除',
         handleClick: (e) => {

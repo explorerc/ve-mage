@@ -3,7 +3,7 @@
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" :class="item.type" v-for="(item,index) in value.list" :key="'block1_item'+index">
-          <a :target="item.target" :href="item.hrefType === '_sub' ? `${PC_HOST}subscribe/${id}` : value.link | voidLink">
+          <a :target="item.target" :href="item.hrefType === '_sub' ? `https:${PC_HOST}subscribe/${id}` : value.link | voidLink">
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="block1-bg"></div>
             <div class="content"  v-html="item.content">
@@ -65,7 +65,7 @@
                 <el-radio v-model="item.hrefType" label="_define">自定义链接</el-radio>
               </div>
               <!-- <com-input placeholder="跳转链接" :value.sync="item.link"></com-input> -->
-              <com-input placeholder="跳转链接" :value="`${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.hrefType === '_sub'"></com-input>
+              <com-input placeholder="跳转链接" :value="`https:${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.hrefType === '_sub'"></com-input>
               <com-input placeholder="跳转链接" @focus="inpError = ''" @blur="inpBlur(item.link)" :error-tips="inpError" :value.sync="item.link" v-else></com-input>
               <label class='tips' :class="{'errorTips':inpError.length > 0 && item.hrefType === '_define'}">链接需要附带http头协议</label>
             </div>

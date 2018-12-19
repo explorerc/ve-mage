@@ -25,7 +25,7 @@
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
               <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
-              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
+              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -535,6 +535,10 @@ export default {
   .com-input .limit.area {
     bottom: 7px;
     right: 7px;
+  }
+  .msg-tips {
+    top: 4px;
+    left: 5px;
   }
   // height: 730px;
   position: relative;
