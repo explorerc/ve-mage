@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478321',
-    tplName: '模板名称2',
+    tplName: '活动专题',
     section1Data: {
       panel: {
         hideVideo: false,
@@ -82,6 +82,7 @@ export default function () {
         fontColor: 'rgba(255,255,255,1)',
         text: '活动报名',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
@@ -90,6 +91,7 @@ export default function () {
       panel: {
         hideVideo: false,
         enable: true,
+        img: '',
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
@@ -116,6 +118,7 @@ export default function () {
       panel: {
         hideVideo: false,
         enable: true,
+        img: '',
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(253,101,76,1)'
@@ -131,34 +134,34 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">23980</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">参会人数</span></font></div>`,
           img: require('assets/image/tp_icon1.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">800+</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">参会嘉宾</span></font></div>`,
           img: require('assets/image/tp_icon2.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">10+</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">合作媒体</span></font></div>`,
           img: require('assets/image/tp_icon3.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         }, {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">490</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">主题演讲</span></font></div>`,
           img: require('assets/image/tp_icon4.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">8</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">合作企业</span></font></div>`,
           img: require('assets/image/tp_icon5.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         }
         ]
@@ -166,6 +169,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -191,6 +195,7 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)'
           },
           target: '_self',
+          hrefType: '_sub',
           uploadImgErrorMsg: ''
         },
         {
@@ -205,6 +210,7 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)'
           },
           target: '_self',
+          hrefType: '_sub',
           uploadImgErrorMsg: ''
         },
         {
@@ -219,6 +225,7 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)'
           },
           target: '_self',
+          hrefType: '_sub',
           uploadImgErrorMsg: ''
         },
         {
@@ -233,6 +240,7 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)'
           },
           target: '_self',
+          hrefType: '_sub',
           uploadImgErrorMsg: ''
         }
         ]
@@ -240,6 +248,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -261,9 +270,11 @@ export default function () {
           btn: {
             enable: true,
             text: '',
+            hrefType: '_sub',
             bgColor: '',
             fontColor: ''
           },
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -273,9 +284,11 @@ export default function () {
           btn: {
             enable: true,
             text: '',
+            hrefType: '_sub',
             bgColor: '',
             fontColor: ''
           },
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -285,9 +298,11 @@ export default function () {
           btn: {
             enable: true,
             text: '',
+            hrefType: '_sub',
             bgColor: '',
             fontColor: ''
           },
+          hrefType: '_sub',
           target: '_self'
         }
         ]
@@ -295,6 +310,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -312,21 +328,21 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_1.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_2.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_3.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         }
         ]
@@ -334,6 +350,7 @@ export default function () {
     },
     section8Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -351,69 +368,71 @@ export default function () {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo1.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo2.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo3.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo4.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo5.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo6.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo7.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo8.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo9.png'),
-          btn: {}
+          btn: {
+            hrefType: '_sub'
+          }
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo10.png'),
-          btn: {},
+          hrefType: '_sub',
           target: '_self'
         }
         ]
@@ -421,6 +440,7 @@ export default function () {
     },
     section9Data: {
       panel: {
+        img: '',
         hideVideo: true,
         enable: true,
         bgType: 'color',
@@ -436,6 +456,7 @@ export default function () {
         fontColor: 'rgba(255,255,255,1)',
         text: '活动报名',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }

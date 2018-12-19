@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478320',
-    tplName: '模板名称1',
+    tplName: '产品发布会',
     section1Data: {
       panel: {
         bgType: 'color',
@@ -69,6 +69,7 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '活动报名',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
@@ -77,6 +78,7 @@ export default function () {
       panel: {
         hideVideo: false,
         enable: true,
+        img: '',
         bgType: 'color',
         videoType: 'upload',
         link: '',
@@ -93,7 +95,7 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px;">2018轰动设计奖活动</span></font><br></div>`,
           img: require('assets/image/tp_section3_1.jpg'),
-          btn: {},
+          hrefType: '_sub',
           link: '',
           target: '_self'
         },
@@ -101,7 +103,7 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center; line-height: 2.5;"><font color="#0e1726" face="PingFang SC, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, Hiragino Sans GB, Source Han Sans, Noto Sans CJK Sc, Microsoft YaHei, Microsoft Jhenghei, sans-serif"><span style="font-size: 24px;">2018知舍设计奖活动</span></font><br></div>`,
           img: require('assets/image/tp_section3_2.jpg'),
-          btn: {},
+          hrefType: '_sub',
           link: '',
           target: '_self'
         }
@@ -115,6 +117,7 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         link: '',
+        img: '',
         color: 'rgba(247,247,247,1);'
       },
       font: {
@@ -151,6 +154,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         link: '',
+        img: '',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
@@ -190,6 +194,7 @@ export default function () {
         enable: true,
         bgType: 'color',
         link: '',
+        img: '',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)'
       },
@@ -210,6 +215,7 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         link: '',
+        img: '',
         color: 'rgba(19,16,49,1)'
       },
       font: {
@@ -221,6 +227,7 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '立即了解',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }

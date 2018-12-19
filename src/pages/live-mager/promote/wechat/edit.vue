@@ -68,7 +68,7 @@
           <div class="from-row" v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
             </div>
           </div>
@@ -142,6 +142,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7
         }
       },
+      defaultValue: new Date(new Date().getTime() + 1800000),
       loading: false,
       searchPerson: '',
       groupList: [],

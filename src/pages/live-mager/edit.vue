@@ -9,7 +9,7 @@
         <com-back :url="`/liveMager/list`" v-else :class="'back-btn'"></com-back>
       </div>
       <div class="tips">
-        <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
+        <i></i>注意：在预设直播时间或实际开播时间的48小时后，直播将视为过期。在有效期内，直播可反复发起。过期后将无法再发起直播。
       </div>
       <div class="content from-box">
         <div class="from-row">
@@ -22,9 +22,9 @@
         <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
           <div class="from-content" :class="{ 'error':dateEmpty }">
-            <el-date-picker @focus='dateEmpty=false' v-model="date" @change="canPaas=false" type="datetime" placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'" default-time="10:00:00">
+            <el-date-picker @focus='dateEmpty=false' v-model="date"  @change="canPaas=false" type="datetime" :clearable='false' placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultValue" >
             </el-date-picker>
-            <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
+            <span class='tips-time'>在预设直播时间或实际开播时间的48小时后，直播将视为过期。<br>在有效期内，直播可反复发起。过期后将无法再发起直播。</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>
@@ -40,7 +40,7 @@
             <el-button  round v-if='!tagArray.length' @click='showClooseTag' class='choose-tag'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
               <li v-for="(item,idx) in tagArray" :key="idx" class="tag">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
-            <li v-if="tagArray.length<3" class="add-tag"  @click='addShowClooseTag'><span></span></li>
+            <li v-if="tagArray.length<3" class="add-tag"  @click.stop='addShowClooseTag'><span></span></li>
             </ol>
             <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
             <div class="tag-modal" v-show='showChooseTag' @click.stop="">
@@ -135,7 +135,8 @@ export default {
         }
       },
       successTxt: '',
-      canPaas: true
+      canPaas: true,
+      defaultValue: new Date(new Date().getTime() + 1800000)
     }
   },
   created () {
@@ -389,11 +390,12 @@ export default {
     },
     addShowClooseTag () {
       this.canPaas = false
-      this.showClooseTag()
+      this.showChooseTag = !this.showChooseTag
       this.$nextTick(() => {
         this.tagEmpty = false
       })
-    }
+    },
+    dataFocus () {}
   },
   /* 路由守卫，离开当前页面之前被调用 */
   beforeRouteLeave (to, from, next) {

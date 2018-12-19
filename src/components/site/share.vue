@@ -126,6 +126,7 @@
           </label>
         </li>
       </ul>
+      <span class="tips" v-if="!value.wx&&!value.wxSpace&&!value.qq&&!value.qqSpace&&!value.sina&&!value.copy">请选择至少一个分享媒体</span>
     </com-edit>
   </div>
 </template>
@@ -197,6 +198,10 @@ export default {
 <style scoped lang="scss">
 @import 'assets/css/variable.scss';
 .share-container /deep/ {
+  .tips {
+    font-size: 12px;
+    color: $color-error;
+  }
   position: relative;
   ._dialog-container {
     position: fixed;

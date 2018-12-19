@@ -29,7 +29,7 @@
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
-    <div class="support">微吼直播提供技术支持</div>
+    <div class="support">微吼知客提供技术支持</div>
   </div>
 </template>
 
@@ -84,6 +84,9 @@ export default {
 .template1-container.isEdit {
   .section1 {
     position: relative;
+  }
+  .support {
+    margin-bottom: 53px;
   }
 }
 .template1-container /deep/ {
@@ -306,6 +309,11 @@ export default {
           img {
             height: 200px;
           }
+        }
+      }
+      &.width4 {
+        .block1-item {
+          width: 350px;
         }
       }
       .block1-item {

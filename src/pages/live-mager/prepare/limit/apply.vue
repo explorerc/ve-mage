@@ -23,7 +23,7 @@
             <el-radio v-model="radioTime" label="1">与直播同步关闭</el-radio>
             <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
             <div class="set-time" v-if="pickDate">
-              <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :editable="false" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :editable="false" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
             </div>
           </div>
@@ -110,6 +110,7 @@
             return time.getTime() < Date.now() - 8.64e7
           }
         },
+        defaultValue: new Date(new Date().getTime() + 1800000),
         options: [],
         quesData: [],
         queryData: {

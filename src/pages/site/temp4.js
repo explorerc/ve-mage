@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478323',
-    tplName: '模板名称4',
+    tplName: '宣传片展示',
     section1Data: {
       panel: {
         bgType: 'color',
@@ -54,10 +54,12 @@ export default function () {
           content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
           bgColor: 'rgba(30,101,231,1)',
           img: require('assets/image/tp_bg_3.jpg'),
+          showLink: false,
           btn: {
             enable: true,
             text: '活动报名',
             link: '',
+            hrefType: '_sub',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -68,10 +70,12 @@ export default function () {
           content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
           bgColor: 'rgba(30,101,231,1)',
           img: require('assets/image/tp_bg_4.jpg'),
+          showLink: false,
           btn: {
             enable: true,
             text: '活动报名',
             link: '',
+            hrefType: '_sub',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -82,10 +86,12 @@ export default function () {
           content: `<span style="font-size: 42px;"><font color="#ffffff">世界互联网内容营销会议及博览会</font></span><div><br></div><div><span style="font-size: 24px;"><font color="#ffffff">领先品牌营销人员和专家共同举办</font></span><br></div><div><br></div>`,
           bgColor: 'rgba(30,101,231,1)',
           img: require('assets/image/tp_bg_5.jpg'),
+          showLink: false,
           btn: {
             enable: true,
             text: '活动报名',
             link: '',
+            hrefType: '_sub',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -96,6 +102,7 @@ export default function () {
     },
     section3Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -111,12 +118,14 @@ export default function () {
           content: `<span style="font-size: 32px;">大会简介</span><div><span style="font-size: 32px;"><br></span><div><br></div><div><span style="font-size: 16px;">世界互联网内容营销会议及博览会是一个可以让您在内容营销行业中学习和与最优秀和最聪明人士建立联系的活动。您将获得所需的所有材料，以便将内容营销策略反馈给您的团队以及实施内容营销计划，从而拓展您的业务并激励您的受众。</span><br></div><div><br></div><div><span style="font-size: 40px;"><font color="#009db5">___</font></span></div><div style="line-height: 1;"><br></div><div><span style="font-size: 18px;">2018年9月8日-12日 上午9:00</span><br></div><div><span style="font-size: 18px;">中国北京国家会议中心</span><br></div></div>`,
           img: require('assets/image/tp_bg5.jpg'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         }]
       }
     },
     section4Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -136,6 +145,7 @@ export default function () {
     },
     section5Data: {
       panel: {
+        img: '',
         hideVideo: false,
         enable: true,
         bgType: 'color',
@@ -154,6 +164,7 @@ export default function () {
           content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
           img: require('assets/image/tp_section5_1.png'),
           btn: {
+            hrefType: '_sub',
             enable: true,
             bgColor: 'rgba(255, 255, 255, 1)',
             fontColor: 'rgba(75, 90, 254, 1)',
@@ -166,6 +177,7 @@ export default function () {
           content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
           img: require('assets/image/tp_section5_2.png'),
           btn: {
+            hrefType: '_sub',
             enable: true,
             bgColor: 'rgba(255, 255, 255, 1)',
             fontColor: 'rgba(75, 90, 254, 1)',
@@ -178,6 +190,7 @@ export default function () {
           content: `<div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: center;"><span style="font-size: 18px; color: rgb(255, 255, 255);"><br></span></div><div style="text-align: left;"><span style="color: rgb(255, 255, 255); font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;顶级品牌</span><br></div><div style="text-align: left; line-height: 2;"><font color="#ffffff" style="font-size: 18px;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;如何通过个性化获得成功</font></div>`,
           img: require('assets/image/tp_section5_3.png'),
           btn: {
+            hrefType: '_sub',
             enable: true,
             bgColor: 'rgba(255, 255, 255, 1)',
             fontColor: 'rgba(75, 90, 254, 1)',
@@ -190,6 +203,7 @@ export default function () {
     },
     section6Data: {
       panel: {
+        img: '',
         hideVideo: true,
         enable: true,
         bgType: 'color',
@@ -208,6 +222,7 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo1.png'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -215,6 +230,7 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo2.png'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -222,6 +238,7 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo3.png'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -229,6 +246,7 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo4.png'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -236,6 +254,7 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo5.png'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         },
         {
@@ -243,6 +262,7 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo6.png'),
           btn: {},
+          hrefType: '_sub',
           target: '_self'
         }
         ]
@@ -250,6 +270,7 @@ export default function () {
     },
     section7Data: {
       panel: {
+        img: '',
         hideVideo: true,
         enable: true,
         bgType: 'color',
@@ -265,6 +286,7 @@ export default function () {
         fontColor: 'rgba(255,255,255,1)',
         text: '立即了解',
         link: '',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }

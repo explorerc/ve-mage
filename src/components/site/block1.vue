@@ -3,7 +3,7 @@
     <div ref="target" class="block1-content">
       <ul class="block1-group" :class="widthClass">
         <li class="block1-item" :class="item.type" v-for="(item,index) in value.list" :key="'block1_item'+index">
-          <a :target="item.target" :href="item.link | voidLink">
+          <a :target="item.target" :href="item.hrefType === '_sub' ? `${PC_HOST}subscribe/${id}` : value.link | voidLink">
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="block1-bg"></div>
             <div class="content"  v-html="item.content">
@@ -44,27 +44,37 @@
       </com-upload> -->
            <label class='normal'>上传图片</label>
             <ve-upload
-            title="图片支持jpg、png、bmp格式 大小不超过2M"
+            title="请上传图片"
             accept="png|jpg|bmp"
             :fileSize="2048"
             :errorMsg="item.uploadImgErrorMsg"
+            :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
              @error="uploadError($event,index)"
              @success="uploadImgSuccess($event,index)">
              </ve-upload>
             </div>
+            <span class="img-tips">图片支持jpg、png、bmp格式 大小不超过2M</span>
             <label class='normal'>文字内容</label>
             <div>
                <com-editer class="font-editer" v-model="item.content" ></com-editer>
             </div>
             <div :class="{'hide':item.hideLink}">
               <label class='normal'>跳转链接</label>
-              <com-input placeholder="跳转链接" :value.sync="item.link"></com-input>
-              <label class='tips'>链接需要附带http头协议</label>
+              <div class="radio-box">
+                <el-radio v-model="item.hrefType" label="_sub">活动引导页链接</el-radio>
+                <el-radio v-model="item.hrefType" label="_define">自定义链接</el-radio>
+              </div>
+              <!-- <com-input placeholder="跳转链接" :value.sync="item.link"></com-input> -->
+              <com-input placeholder="跳转链接" :value="`${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.hrefType === '_sub'"></com-input>
+              <com-input placeholder="跳转链接" @focus="inpError = ''" @blur="inpBlur(item.link)" :error-tips="inpError" :value.sync="item.link" v-else></com-input>
+              <label class='tips' :class="{'errorTips':inpError.length > 0 && item.hrefType === '_define'}">链接需要附带http头协议</label>
             </div>
             <div class='open-way clearfix' :class="{'hide':item.hideLink}">
               <label class='normal'>打开方式</label>
-              <el-radio v-model="item.target" label="_self">当前窗口</el-radio>
-              <el-radio v-model="item.target" label="_blank">新窗口</el-radio>
+              <div class="radio-box">
+                <el-radio v-model="item.target" label="_self">当前窗口</el-radio>
+                <el-radio v-model="item.target" label="_blank">新窗口</el-radio>
+              </div>
             </div>
             <div v-if='btn' class='clearfix show-btn'>
               <label class='normal'>是否显示按钮</label>
@@ -83,15 +93,17 @@
                 <com-input placeholder="按钮文字" v-model="item.btn.text"></com-input>
               </div>
                <div>
-               <label class='normal'>跳转链接</label>
-               <com-input placeholder="跳转链接" :value.sync="item.btn.link"></com-input>
-               <label class='tips'>链接需要附带http头协议</label>
-            </div>
+                <label class='normal'>跳转链接</label>
+                <com-input placeholder="跳转链接" :value.sync="item.btn.link"></com-input>
+                <label class='tips'>链接需要附带http头协议</label>
+              </div>
               <div class='open-way clearfix'>
-              <label class='normal'>按钮打开方式</label>
-              <el-radio v-model="item.btn.target" label="_self">当前窗口</el-radio>
-              <el-radio v-model="item.btn.target" label="_blank">新窗口</el-radio>
-            </div>
+                <label class='normal'>按钮打开方式</label>
+                <div class="radio-box">
+                  <el-radio v-model="item.btn.target" label="_self">当前窗口</el-radio>
+                  <el-radio v-model="item.btn.target" label="_blank">新窗口</el-radio>
+                </div>
+              </div>
             </div>
           </div>
         </li>
@@ -128,12 +140,23 @@ export default {
   },
   data () {
     return {
+      inpError: '',
       active: -1,
+      id: this.$route.params.id,
+      PC_HOST: process.env.PC_HOST,
       uploadImgErrorMsg: '', // 上传图片错误提示
       host: process.env.IMGHOST + '/'
     }
   },
   methods: {
+    inpBlur (val) {
+      if (val.length <= 0) {
+        this.inpError = '请输入跳转链接'
+      } else {
+        const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+        reg.test(val) ? this.inpError = '' : this.inpError = '请输入有效的链接以http://或https://开头'
+      }
+    },
     addBlock () {
       let len = this.value.list.length
       if (len < this.max) {
@@ -146,8 +169,10 @@ export default {
             text: '',
             bgColor: '',
             fontColor: '',
-            target: '_self'
+            target: '_self',
+            hrefType: '_sub'
           },
+          hrefType: '_sub',
           target: '_self'
         })
         this.active = len
@@ -202,6 +227,15 @@ export default {
 <style lang="scss" scoped>
 @import 'assets/css/variable.scss';
 .block1-container /deep/ {
+  .img-tips {
+    color: $color-gray;
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+  }
+  .img-upload-box {
+    margin-bottom: 10px;
+  }
   .nav-blank-title {
     text-align: center;
     height: 50px;
@@ -276,8 +310,13 @@ export default {
         color: $color-gray;
         position: relative;
         bottom: 13px;
+        &.errorTips {
+          position: relative;
+          bottom: 0;
+        }
       }
       &.el-radio {
+        margin-right: 30px;
         margin-left: 4px;
         padding: 0;
       }
@@ -319,6 +358,7 @@ export default {
       .radio-box {
         text-align: left;
         padding-top: 10px;
+        padding-bottom: 10px;
       }
     }
     .block1-title {
@@ -443,7 +483,6 @@ export default {
   }
   .open-way {
     .normal {
-      float: left;
       padding: 0;
       padding-right: 10px;
     }
