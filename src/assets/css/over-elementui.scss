@@ -4,11 +4,29 @@ $color-ui-components:#4B5AFE;
   .el-input__inner {
     border: none;
     background-color: transparent;
+    text-align: right;
+    padding-right: 33px;
   }
-  color: #555;
+  color: #222;
   input{
-    color: #555;
+    color: #222;
   }
+  .el-input .el-select__caret {
+    color: #222;
+    &.el-icon-arrow-up:before {
+      color: #555;
+      font-family: 'iconfont';
+      content: "\e610";
+    }
+  }
+}
+.el-select__caret.el-icon-arrow-up:before {
+  font-family: 'iconfont';
+  content: "\e610";
+}
+.el-icon-arrow-down:before {
+  font-family: 'iconfont';
+  content: "\e6b0";
 }
 .el-select-dropdown {
   z-index: 9999 !important;

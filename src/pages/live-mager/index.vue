@@ -105,7 +105,7 @@ export default {
       ],
       optionsOrder: [
         { value: 'createTime', label: '按创建时间排序' },
-        { value: 'startTime', label: '按直播开始时间排序' }
+        { value: 'startTime', label: '按开播时间排序' }
       ],
       searchParams: {
         status: '',
