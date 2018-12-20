@@ -25,6 +25,7 @@ export function focusInput (querySelector, pQuerySelector) {
       let pBox = document.querySelectorAll(pQuerySelector)[0]
       let scrollHeith = window.$(input).offset().top - window.$(pBox).offset().top
       scrollHeith = scrollHeith > 100 ? scrollHeith - 50 : scrollHeith
+      pBox.scrollTop = 0
       window.$(pBox).animate({scrollTop: `${scrollHeith}px`}, 500)
     }
   }
