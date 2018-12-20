@@ -287,7 +287,7 @@
       min-height: 550px;
       .empty {
         text-align: center;
-        margin: 128px 0;
+        margin: 145px 0;
         .txt {
           padding-top: 20px;
           font-size: 16px;

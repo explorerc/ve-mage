@@ -381,6 +381,15 @@ export default {
   .com-input input {
     background-color: transparent;
   }
+  .el-select{
+    .el-input__inner {
+      border: none;
+      background-color: transparent;
+      text-align: right;
+      padding-right: 33px;
+    }
+  }
 }
+
 </style>
 
