@@ -215,9 +215,9 @@
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box" v-ComLoading="loading">
-        <button class="export-btn" @click="exportFile('chart')" v-if="chatDataList.length">导出</button>
+        <button class="export-btn" @click="exportFile('chart')" v-if="total">导出</button>
         <div class="table-box">
-          <el-table :data="chatDataList" style="width: 100%" v-if="chatDataList.length">
+          <el-table :data="chatDataList" style="width: 100%" v-if="total">
             <el-table-column label="序号" width="80px">
               <template slot-scope="scope">
                 {{ (page-1)*pageSize + scope.$index + 1}}
@@ -663,7 +663,7 @@
         }).then((res) => {
           if (res.code === 200 && res.data.length !== 0) {
             this.interactCountData = res.data
-            console.log(this.interactCountData, '999999999999')
+            // console.log(this.interactCountData, '999999999999')
           }
         })
       },
@@ -705,10 +705,10 @@
           if (res.code === 200 && res.data.length !== 0) {
             this.chatDataList = res.data.list
             this.total = res.data.total
-            if (this.chatDataList.length) {
-              this.isNoDataShow = true
-            } else {
+            if (this.total) {
               this.isNoDataShow = false
+            } else {
+              this.isNoDataShow = true
             }
           }
         })
@@ -908,7 +908,6 @@
         this.cardDataDetail = false
         this.redBagDataDetail = false
         this.goodsDataDetail = false
-        this.isNoDataShow = false
         setTimeout(() => {
           this.$nextTick(() => {
             this.preDataList = []
@@ -922,6 +921,7 @@
             this.page = 1
             this.pageSize = 10
             this.total = 0
+            this.isNoDataShow = false
           })
         }, 1000)
       },

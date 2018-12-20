@@ -83,14 +83,12 @@
         let childValue = ''
         let parents = []
         let parentValue = ''
-        console.log(this.selectValue.length)
         for (let i = 0; i < this.selectValue.length; i++) {
           if (this.selectValue[i].industryId === this.selectedOptions[0]) {
             parents = this.selectValue[i]
             parentValue = this.selectValue[i].name
           }
         }
-        console.log(parents.items)
 
         for (let j = 0; j < parents.items.length; j++) {
           if (parents.items[j].industryId === this.selectedOptions[1]) {
