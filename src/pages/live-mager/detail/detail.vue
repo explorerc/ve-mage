@@ -742,6 +742,19 @@
                 @click="redBagTips=false">知道了</button>
       </div>
     </message-box>
+    <!-- 直播时浏览器不支持 -->
+    <message-box v-if="browserHelpShow"
+                 type="prompt"
+                 width='500px'
+                 header='微吼知客'
+                 @handleClick="browserHelpShow=false">
+      <div class="browser-help">
+        <span>不支持使用该浏览器发起直播</span>
+        <img src="../../../assets/image/chrome_icon.png">
+        <span class="tip-info">为了您可以正常使用直播发起端功能，请使用<a href="javascript:window.open('https://chrome.en.softonic.com/')" title="下载">Google Chrome</a>浏览器</span>
+      </div>
+      <div slot="bottom"></div>
+    </message-box>
   </div>
 </template>
 
@@ -778,6 +791,7 @@ export default {
       isAppoint: false,
       overdue: false,
       redBagTips: false,
+      browserHelpShow: false,
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
@@ -882,10 +896,25 @@ export default {
         return false
       }
     },
+    getBrowserInfo () {
+      let Sys = {}
+      let ua = navigator.userAgent.toLowerCase()
+      let re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/
+      let m = ua.match(re)
+      Sys.browser = m[1].replace(/version/, '\'safari')
+      Sys.ver = m[2]
+      return Sys
+    },
     judgePublish () {
       if (this.isPublished) {
         this.inCountdown = false
-        window.open(`${this.PC_HOST}master/${this.activityId}`)
+        let bSys = this.getBrowserInfo()
+        if (bSys.browser !== 'chrome') {
+          this.browserHelpShow = true
+        } else {
+          const tempwindow = window.open('_blank') // 先打开页面
+          tempwindow.location = `${this.PC_HOST}master/${this.activityId}`// 后更改页面地址
+        }
       } else {
         this.inCountdown = false
         this.$messageBox({
@@ -1923,6 +1952,32 @@ export default {
     position: absolute;
     top: 100%;
     right: 0;
+  }
+}
+.browser-help{
+  text-align: center;
+  img{
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 10px auto 0 auto;
+  }
+  span{
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .tip-info{
+    a{
+      color: $color-blue;
+      text-decoration: underline;
+      &:hover{
+        color: $color-blue-hover;
+      }
+      &:active{
+        color: $color-blue-active;
+      }
+    }
   }
 }
 </style>
