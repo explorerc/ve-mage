@@ -64,7 +64,7 @@
                          :max-length="100"
                          :error-tips='errorData.msgError'></com-input>
                          <div class="href-box">
-                          <span class='add-href' @click='addHref(`https:${PC_HOST}site/${activitId}`)'>添加活动官网链接</span><span class='add-href' @click='addHref(`https:${PC_HOST}subscribe/${activitId}`)'>添加活动引导页链接</span>
+                          <span class='add-href' @click='addHref(`https:${PC_HOST}site/${activitId}?refer=2`)'>添加活动官网链接</span><span class='add-href' @click='addHref(`https:${PC_HOST}subscribe/${activitId}?refer=2`)'>添加活动引导页链接</span>
                          </div>
             </div>
           </div>

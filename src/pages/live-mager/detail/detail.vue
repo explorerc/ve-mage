@@ -1861,6 +1861,9 @@ export default {
       }
       &.isSwitch a .el-button {
         padding: 7px 35px;
+        text-align: center;
+        padding: 0;
+        width: 123px;
       }
     }
   }
@@ -2092,27 +2095,27 @@ export default {
     right: 0;
   }
 }
-.browser-help{
+.browser-help {
   text-align: center;
-  img{
+  img {
     display: block;
     width: 80px;
     height: 80px;
     margin: 10px auto 0 auto;
   }
-  span{
+  span {
     display: block;
     text-align: center;
     margin-top: 20px;
   }
-  .tip-info{
-    a{
+  .tip-info {
+    a {
       color: $color-blue;
       text-decoration: underline;
-      &:hover{
+      &:hover {
         color: $color-blue-hover;
       }
-      &:active{
+      &:active {
         color: $color-blue-active;
       }
     }

@@ -24,7 +24,7 @@
             <div class="from-title"><i class="star"></i>详情跳转：</div>
             <div class="from-content" >
                 <el-radio v-model="hrefSetting"  label="GUIDE">活动引导页</el-radio>
-                <el-radio v-model="hrefSetting"  label="WEB">活动官网</el-radio>
+                <el-radio v-model="hrefSetting"  label="WEB" v-show='siteOpen'>活动官网</el-radio>
                 <el-radio v-model="hrefSetting"  label="CUSTOM">自定义</el-radio>
                 <com-input v-if="hrefSetting === 'CUSTOM'" :value.sync="hrefValue" placeholder="请输入有效的链接以http://或https://开头"  class='href-box' :error-tips="errorData.hrefError" @focus="errorData.hrefError=''"></com-input>
             </div>
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import userService from 'src/api/user-service'
 import chooseGroup from '../com-chooseGroup'
@@ -180,7 +181,8 @@ export default {
       changed: 0,
       countBalance: 0,
       sendBalance: 0,
-      clicked: false
+      clicked: false,
+      siteOpen: false
     }
   },
   created () {
@@ -217,6 +219,7 @@ export default {
     }])
   },
   mounted () {
+    this.initSite()
     if (!this.accountInfo.businessUserId) {
       this.storeJoininfo().then(() => {
         this.initSdk()
@@ -505,6 +508,17 @@ export default {
     async storeJoininfo () {
       await this.$get(userService.GET_ACCOUNT).then((res) => {
         this.setAccountInfo(res.data)
+      })
+    },
+    initSite () {
+      this.$get(brandService.GET_SITE_DATA, {
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.siteOpen = true
+        } else {
+          this.siteOpen = false
+        }
       })
     }
   },
