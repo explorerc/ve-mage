@@ -63,7 +63,7 @@
                          placeholder="请输入短信内容"
                          :max-length="100"
                          :error-tips='errorData.msgError'></com-input>
-                         <div class="href-box">
+                         <div class="href-box" :class="{'siteClose':!siteOpen}">
                           <span class='add-href' @click='addHref(`https:${PC_HOST}site/${activitId}?refer=2`)'>添加活动官网链接</span><span class='add-href' @click='addHref(`https:${PC_HOST}subscribe/${activitId}?refer=2`)'>添加活动引导页链接</span>
                          </div>
             </div>
@@ -145,6 +145,7 @@
 </template>
 
 <script>
+import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
@@ -217,13 +218,15 @@ export default {
       changed: 0,
       countBalance: 0,
       sendBalance: 0,
-      clicked: false
+      clicked: false,
+      siteOpen: false
     }
   },
   created () {
     this.getLimit()
     this.queryGroupList()
     this.queryTagList()
+    this.initSite()
     EventBus.$emit('breads', [{
       title: '活动管理'
     }, {
@@ -461,6 +464,17 @@ export default {
         console.log(res)
         this.msgContent += ' ' + res.data.shortUrl + ' '
       })
+    },
+    initSite () {
+      this.$get(brandService.GET_SITE_DATA, {
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.siteOpen = true
+        } else {
+          this.siteOpen = false
+        }
+      })
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -582,6 +596,17 @@ export default {
     text-align: center;
     &:hover {
       color: #4b5afe;
+    }
+  }
+  .href-box.siteClose {
+    .add-href {
+      &:nth-of-type(1) {
+        display: none;
+      }
+      &:nth-of-type(2) {
+        width: 438px;
+        border-left: none;
+      }
     }
   }
   // min-height: 730px;
