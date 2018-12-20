@@ -7,9 +7,6 @@
         <button @click='close'><i class="iconfont icon-close"></i></button>
       </div>
       <div class="content" v-if='!importSuccess'>
-        <div class="item clearfix">
-          <p class='tips-box'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link> <ve-tips :tip="'导入用户数据时，手机号码为必填项， 如果单行用户数据未输入手机号码， 该行数据将被忽略。'" :tipType="'html'" :type="'left'"></ve-tips></p>
-        </div>
         <div class="item upload-box-item clearfix">
           <label class="label">选择模板:</label>
           <div class="upload-box" :class="{ 'error':fileEmpty }" @click='fileEmpty = false' >
@@ -73,7 +70,10 @@
             </div>
           </div>
         </div>
-        <el-button round class='primary-button confirm' @click="addHandler">导入</el-button>
+        <div class="item download">
+          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入1000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
+        </div>
+        <el-button round class='default-button confirm' @click="addHandler">导入</el-button>
       </div>
       <div class="content import-success" v-else>
         <dl>
@@ -431,8 +431,10 @@ export default {
       }
     }
     .tips-box {
-      float: right;
-      padding-right: 16px;
+      position: absolute;
+      top: 7px;
+      right: -300px;
+      width: 290px;
       a {
         cursor: pointer;
         &:hover {
@@ -441,6 +443,8 @@ export default {
       }
       .msg-tip-box span {
         display: none;
+        margin-top: -12px;
+        left: 28px;
       }
       .msg-tip-box i:hover + span {
         display: block;
@@ -505,6 +509,23 @@ export default {
         .error-msg {
           color: $color-error;
         }
+      }
+    }
+  }
+  .download {
+    position: absolute;
+    float: left;
+    bottom: 4px;
+    button {
+      padding: 0;
+      width: 100px;
+      height: 34px;
+      line-height: 34px;
+      border: 1px solid rgba(75, 90, 254, 1);
+      color: rgba(75, 90, 254, 1);
+      &:hover {
+        background: rgba(75, 90, 254, 1);
+        color: #fff;
       }
     }
   }

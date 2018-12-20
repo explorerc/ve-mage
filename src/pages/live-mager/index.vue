@@ -161,8 +161,7 @@
         if (event.type === 'play') { // 开播
           if (this.isOverdue(event.endTime)) {
             this.$toast({
-              content: '该活动已结束超过48小时，无法再次开启',
-              position: 'center'
+              content: '该活动已过期，无法再次发起直播'
             })
             return false
           }
@@ -343,109 +342,108 @@
 <style lang="scss" scoped src="./css/live.scss">
 </style>
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  .mager-box {
-    .empty-box {
-      text-align: center;
-      color: $color-font-sub;
-      min-height: 550px;
-      padding: 150px 0;
-      background-color: #fff;
-      .img {
-        width: 150px;
-        height: 150px;
-        margin: 0 auto;
-        border-radius: 500px;
-        // background:rgba(245,245,245,1);
-        box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
-        background: url('~assets/image/webinar_empty.png') no-repeat;
-        background-size: contain;
-      }
-      .title {
-        font-size: 18px;
-        color: $color-font;
-        padding-top: 13px;
-      }
-      .desc {
-        display: block;
-        width: 340px;
-        margin: 0 auto;
-        padding: 20px 0;
-      }
-      a {
-        display: block;
-        &:hover .el-button {
-          color: $color-font;
-        }
-      }
-      .el-button {
-        padding: 0;
-        width: 220px;
-        height: 40px;
-        text-align: center;
-        line-height: 40px;
-        margin-top: 20px;
-      }
-      &.empty-search {
-        .img {
-          background-image: url('~assets/image/search_empty.png');
-        }
-      }
-    }
-    /deep/ {
-      .live-item {
-        &:hover {
-          box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
-          transition: box-shadow .2s;
-        }
-      }
-
-    }
-  }
-
-  .in-countdown {
-    p {
-      text-align: center;
-      margin: 20px 0;
-      &:nth-of-type(3) {
-        color: #fc5659;
-        font-size: 20px;
-      }
-    }
-  }
-
-  .live-mager /deep/ {
-    .com-input input {
-      background-color: transparent;
-    }
-  }
-
-  .browser-help {
+.mager-box {
+  .empty-box {
     text-align: center;
-    img {
-      display: block;
-      width: 80px;
-      height: 80px;
-      margin: 10px auto 0 auto;
+    color: $color-font-sub;
+    min-height: 550px;
+    padding: 150px 0;
+    background-color: #fff;
+    .img {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      border-radius: 500px;
+      // background:rgba(245,245,245,1);
+      box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
+      background: url('~assets/image/webinar_empty.png') no-repeat;
+      background-size: contain;
     }
-    span {
+    .title {
+      font-size: 18px;
+      color: $color-font;
+      padding-top: 13px;
+    }
+    .desc {
       display: block;
+      width: 340px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    a {
+      display: block;
+      &:hover .el-button {
+        color: $color-font;
+      }
+    }
+    .el-button {
+      padding: 0;
+      width: 220px;
+      height: 40px;
       text-align: center;
+      line-height: 40px;
       margin-top: 20px;
     }
-    .tip-info {
-      a {
-        color: $color-blue;
-        text-decoration: underline;
-        &:hover {
-          color: $color-blue-hover;
-        }
-        &:active {
-          color: $color-blue-active;
-        }
+    &.empty-search {
+      .img {
+        background-image: url('~assets/image/search_empty.png');
       }
     }
   }
+  /deep/ {
+    .live-item {
+      &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        transition: box-shadow 0.2s;
+      }
+    }
+  }
+}
+
+.in-countdown {
+  p {
+    text-align: center;
+    margin: 20px 0;
+    &:nth-of-type(3) {
+      color: #fc5659;
+      font-size: 20px;
+    }
+  }
+}
+
+.live-mager /deep/ {
+  .com-input input {
+    background-color: transparent;
+  }
+}
+
+.browser-help {
+  text-align: center;
+  img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 10px auto 0 auto;
+  }
+  span {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .tip-info {
+    a {
+      color: $color-blue;
+      text-decoration: underline;
+      &:hover {
+        color: $color-blue-hover;
+      }
+      &:active {
+        color: $color-blue-active;
+      }
+    }
+  }
+}
 </style>
 

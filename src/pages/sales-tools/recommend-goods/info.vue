@@ -40,6 +40,7 @@
       </el-form-item>
       <el-form-item label="商品链接：" prop="url" class="url">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
+        <span class="tips" v-if="tipsShow">链接需要附带http://或https://头协议</span>
       </el-form-item>
       <el-form-item label="商品描述：" >
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
@@ -190,7 +191,17 @@
           return callback(new Error('请上传图片'))
         }
       }
+      let vailUrl = (rule, value, callback) => {
+        if (value.startsWith('http://') || value.startsWith('https://')) {
+          this.tipsShow = true
+          return callback()
+        } else {
+          this.tipsShow = false
+          return callback(new Error('请输入有效的链接以http://或https://开头'))
+        }
+      }
       return {
+        tipsShow: true,
         Breadcrumb: '',
         isShowMsgB: false,
         errTitle: '',
@@ -215,9 +226,12 @@
           preferential: [
             { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
+          // url: [
+          //   { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur', minlength: 0, maxlength: 300 },
+          //   { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
+          // ],
           url: [
-            { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur', minlength: 0, maxlength: 300 },
-            { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
+            { validator: vailUrl, trigger: 'blur' }
           ],
           imageList: [
             { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
@@ -339,9 +353,9 @@
   }
 </script>
 <style lang="scss">
-  .el-form-item__error{
-    top: 90%;
-  }
+.el-form-item__error {
+  top: 90%;
+}
 </style>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
@@ -349,6 +363,13 @@
   padding: 50px 100px;
   font-family: PingFangSC-Regular;
   /deep/ {
+    .el-form-item .tips {
+      display: block;
+      color: #606266;
+      height: 20px;
+      line-height: 20px;
+      font-size: 14px;
+    }
     header {
       height: 26px;
       font-size: 24px;
@@ -465,7 +486,7 @@
           .upload-file-box {
             width: 100%;
             .upload-icon {
-              margin: 10px auto 5px auto;
+              margin: 10px auto 0px auto;
             }
             span {
               display: inline-block;

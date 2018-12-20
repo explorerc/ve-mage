@@ -24,26 +24,31 @@ export default function () {
           list: [{
             text: '首页',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '大会简介',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '参会嘉宾',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '合作伙伴',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '联系我们',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           }
           ]
@@ -72,11 +77,11 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)',
             text: '立即了解',
             link: '',
-            hrefType: '_sub',
+            hrefType: '_define',
             enable: true,
             target: '_self'
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           target: '_self',
           link: ''
         }]
@@ -104,10 +109,10 @@ export default function () {
             text: '',
             bgColor: '',
             fontColor: '',
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           target: '_self',
           link: ''
         }]
@@ -183,7 +188,7 @@ export default function () {
         fontColor: 'RGBA(34, 34, 34, 1)',
         text: '立刻报名',
         link: '',
-        hrefType: '_sub',
+        hrefType: '_define',
         enable: true,
         target: '_self'
       }
@@ -210,11 +215,11 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo1.png'),
           btn: {
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
           link: '',
-          hrefType: '_sub',
+          hrefType: '_define',
           target: '_self'
         },
         {
@@ -222,10 +227,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo2.png'),
           btn: {
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -234,10 +239,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo3.png'),
           btn: {
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -246,10 +251,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo4.png'),
           btn: {
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -258,10 +263,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo5.png'),
           btn: {
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -270,10 +275,10 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo6.png'),
           btn: {
-            hrefType: '_sub',
+            hrefType: '_define',
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         }
@@ -300,7 +305,7 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '立即了解',
         link: '',
-        hrefType: '_sub',
+        hrefType: '_define',
         enable: true,
         target: '_self'
       }
@@ -329,7 +334,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -340,7 +345,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -351,7 +356,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -362,7 +367,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -373,7 +378,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -384,7 +389,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -395,7 +400,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         },
@@ -406,7 +411,7 @@ export default function () {
           btn: {
             link: ''
           },
-          hrefType: '_sub',
+          hrefType: '_define',
           link: '',
           target: '_self'
         }
