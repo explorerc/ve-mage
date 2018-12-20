@@ -17,14 +17,17 @@
       <!-- 开播 -->
       <span class="item" @click.stop="handleClick(action.play)" title="开播">
         <i class="iconfont icon-shipin"></i>
+        <span>开播</span>
       </span>
       <!-- 推广 -->
       <span class="item" @click.stop="handleClick(action.share)" title="推广">
         <i class="iconfont icon-fasong"></i>
+        <span>推广</span>
       </span>
       <!-- 详情 -->
       <span class="item" @click.stop="handleClick(action.info)" title="详情">
         <i class="iconfont icon-xiangqingjieshao"></i>
+        <span>详情</span>
       </span>
       <!-- 更多 -->
       <span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">
@@ -32,8 +35,8 @@
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众</span>
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">数据</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众列表</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">活动数据</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -202,10 +205,19 @@
       margin: 0 20px;
       text-align: center;
       cursor: pointer;
+      color: #555;
+      &:hover {
+        .iconfont {
+          color: $color-font-hover;
+        }
+        span{
+          color: $color-font-hover;
+        }
+      }
       .iconfont {
+        vertical-align: middle;
         color: $color-font-icon;
         &:hover {
-          color: $color-font-hover;
           span {
             color: $color-font;
           }
@@ -213,9 +225,14 @@
       }
       .icon-shipin {
         font-size: 24px;
+        vertical-align: -3px;
       }
       &:last-child {
         float: right;
+        margin: 0 16px;
+        span{
+          color: #555;
+        }
       }
       .live-more {
         position: absolute;
