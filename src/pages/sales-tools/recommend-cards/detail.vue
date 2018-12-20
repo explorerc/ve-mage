@@ -42,6 +42,7 @@
         <div class="from-title"><i class="star">*</i>按钮链接：</div>
         <div class="from-content">
           <com-input :value.sync="btnLink" placeholder="请输入按钮链接" :error-tips="btnLinkError" @focus="btnLinkError = ''" :max-length="300"></com-input>
+          <span class="tips" v-if="btnLinkError.length <= 0">链接需要附带http://或https://头协议</span>
         </div>
       </div>
       <div class="from-row">
@@ -282,6 +283,11 @@
     .from-content {
       position: relative;
       flex: 1;
+      .tips {
+        display: block;
+        padding-top: 5px;
+        color: #555;
+      }
       .error-msg {
         display: block;
         color: $color-red;
@@ -365,7 +371,7 @@
         border-radius: 4px;
         margin: 0 auto;
       }
-      .cov_img{
+      .cov_img {
         background: no-repeat center;
         background-size: cover;
       }

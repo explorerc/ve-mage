@@ -35,7 +35,7 @@
                 @mouseout="showLinkBox = false"><i></i>复制链接
             <ul v-show='showLinkBox'>
               <li :class="{'isSwitch':!dataBrand[0].switch}">
-                <i class='icon-site'></i>活动官网
+                <!-- <i class='icon-site'></i>-->活动官网
                 <router-link v-if="dataBrand[0].switch"
                              :to="`${this.PC_HOST}site/${activityId}`"
                              target="_blank">
@@ -50,25 +50,46 @@
                 <el-button v-if="dataBrand[0].switch"
                            size="mini"
                            round
-                           @click="copy('copyContent2')">复制</el-button>
+                           @click="copy('copyContent2')">复制链接</el-button>
                 <input type="text"
                        :value='`https:${this.PC_HOST}site/${activityId}`'
                        id="copyContent2"
                        style="position:absolute;opacity:0;">
               </li>
               <li>
-                <i class='icon-guide'></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`"
+                <!-- <i class='icon-guide'></i> -->活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`"
                              target="_blank">
                   <el-button size="mini"
                              round>查看</el-button>
                 </router-link>
                 <el-button size="mini"
                            round
-                           @click="copy('copyContent')">复制</el-button>
+                           @click="copy('copyContent')">复制链接</el-button>
                 <input type="text"
                        :value='`https:${this.PC_HOST}subscribe/${this.activityId}`'
                        id="copyContent"
                        style="position:absolute;opacity:0;">
+              </li>
+            </ul>
+            <i class="bar left"></i>
+            <i class="bar"></i>
+          </span>
+          <span v-if="isPublished"
+                class='link-box qrcode-box'
+                @mouseover="showQrcodeBox = true"
+                @mouseout="showQrcodeBox = false"><i></i>扫码观看
+            <ul v-show='showQrcodeBox'>
+              <li :class="{'isSwitch':!dataBrand[0].switch}">
+                <p>活动官网</p>
+                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}site/${activityId}`)}`">
+                <span>手机扫描二维码</span>
+                <a :href='`//aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}site/${activityId}`)}`' target="_blank" download='qr.png'>下载二维码</a>
+              </li>
+              <li class='sub'>
+                <p>活动引导页</p>
+                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}subscribe/${this.activityId}`)}`">
+                <span>手机扫描二维码</span>
+                <a :href='`//aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}subscribe/${this.activityId}`)}`' target="_blank" download='qr.png'>下载二维码</a>
               </li>
             </ul>
           </span>
@@ -742,6 +763,19 @@
                 @click="redBagTips=false">知道了</button>
       </div>
     </message-box>
+    <!-- 直播时浏览器不支持 -->
+    <message-box v-if="browserHelpShow"
+                 type="prompt"
+                 width='500px'
+                 header='微吼知客'
+                 @handleClick="browserHelpShow=false">
+      <div class="browser-help">
+        <span>不支持使用该浏览器发起直播</span>
+        <img src="../../../assets/image/chrome_icon.png">
+        <span class="tip-info">为了您可以正常使用直播发起端功能，请使用<a @click="downChrome('https://chrome.en.softonic.com/')" title="下载">Google Chrome</a>浏览器</span>
+      </div>
+      <div slot="bottom"></div>
+    </message-box>
   </div>
 </template>
 
@@ -768,6 +802,7 @@ export default {
       isPublished: false,
       hostOnline: false,
       showLinkBox: false,
+      showQrcodeBox: false,
       activityId: this.$route.params.id,
       imgHost: process.env.IMGHOST + '/',
       PC_HOST: process.env.PC_HOST,
@@ -778,6 +813,7 @@ export default {
       isAppoint: false,
       overdue: false,
       redBagTips: false,
+      browserHelpShow: false,
       dataPrepare: [],
       dataBrand: [],
       dataPromote: [],
@@ -882,10 +918,29 @@ export default {
         return false
       }
     },
+    getBrowserInfo () {
+      let Sys = {}
+      let ua = navigator.userAgent.toLowerCase()
+      let re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/
+      let m = ua.match(re)
+      Sys.browser = m[1].replace(/version/, '\'safari')
+      Sys.ver = m[2]
+      return Sys
+    },
+    downChrome (url) {
+      this.browserHelpShow = false
+      window.open(url)
+    },
     judgePublish () {
       if (this.isPublished) {
         this.inCountdown = false
-        window.open(`${this.PC_HOST}master/${this.activityId}`)
+        let bSys = this.getBrowserInfo()
+        if (bSys.browser !== 'chrome') {
+          this.browserHelpShow = true
+        } else {
+          const tempwindow = window.open('_blank') // 先打开页面
+          tempwindow.location = `${this.PC_HOST}master/${this.activityId}`// 后更改页面地址
+        }
       } else {
         this.inCountdown = false
         this.$messageBox({
@@ -1201,7 +1256,7 @@ export default {
   @media all and (max-width: 1600px) {
     width: 1019px;
     .right:before {
-      left: -26px;
+      left: -13px;
     }
     .process .top li {
       width: 140px;
@@ -1537,26 +1592,28 @@ export default {
       position: absolute;
       bottom: 0;
       padding: 0;
+      width: 500px;
       .link-box {
+        margin: 0 10px;
         padding: 20px 0px;
         position: relative;
         top: 1px;
         padding-left: 10px;
         cursor: pointer;
         i {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           display: inline-block;
-          background: url('~assets/image/detail/link.png') no-repeat center;
+          background: url('~assets/image/detail/link2.png') no-repeat center;
           background-size: contain;
           position: relative;
-          top: 5px;
+          top: 4px;
           margin-right: 5px;
         }
         &:hover {
           color: $color-blue;
           i {
-            background-image: url('~assets/image/detail/link_hover.png');
+            background-image: url('~assets/image/detail/link2_hover.png');
           }
           ul {
             color: #555;
@@ -1584,6 +1641,110 @@ export default {
               }
             }
           }
+          &:before {
+            position: absolute;
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: url('~assets/image/detail/arrow_blue.png') no-repeat;
+            right: -16px;
+            top: 50%;
+            margin-top: -5px;
+            background-size: contain;
+          }
+        }
+        &:before {
+          position: absolute;
+          content: '';
+          width: 10px;
+          height: 10px;
+          background: url('~assets/image/detail/arrow.png') no-repeat;
+          right: -16px;
+          top: 50%;
+          margin-top: -5px;
+          background-size: contain;
+        }
+        .bar {
+          position: absolute;
+          width: 1px;
+          height: 16px;
+          top: 50%;
+          right: -35px;
+          margin-top: -8px;
+          background: rgba(216, 216, 216, 1);
+          &.left {
+            right: auto;
+            left: -4px;
+          }
+        }
+      }
+      .qrcode-box {
+        left: 15px;
+        i {
+          background-image: url('~assets/image/detail/qrcode.png');
+        }
+        ul {
+          height: 263px;
+          width: max-content;
+          left: -36px;
+          li {
+            padding: 0;
+            margin: 0;
+            height: auto;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+            img {
+              display: block;
+              width: 100px;
+              height: 100px;
+              margin: 0 auto;
+            }
+            &:hover {
+              background: #fff;
+            }
+            p {
+              font-size: 16px;
+              color: #222;
+              padding: 0;
+            }
+            span {
+              color: #555;
+              font-size: 14px;
+            }
+            a {
+              cursor: pointer;
+              position: static;
+              margin: 0;
+              color: #222;
+              display: inline-block;
+              width: 120px;
+              height: 34px;
+              line-height: 34px;
+              background: rgba(255, 208, 33, 1);
+              border-radius: 20px;
+            }
+          }
+          li.sub {
+            position: relative;
+            &::before {
+              content: '';
+              top: 50%;
+              margin-top: -80px;
+              position: absolute;
+              width: 1px;
+              height: 160px;
+              background: rgba(226, 226, 226, 1);
+              border-radius: 1px;
+              left: -3px;
+            }
+          }
+        }
+        &:hover i {
+          background-image: url('~assets/image/detail/qrcode_hover.png');
+        }
+        &:hover ul li:hover {
+          color: inherit;
         }
       }
     }
@@ -1663,12 +1824,15 @@ export default {
       padding: 0 17px;
       a {
         position: absolute;
-        left: 125px;
+        left: 97px;
         top: 50%;
         margin-top: -26px;
         .el-button {
           position: static;
           padding: 7px 10px;
+          padding: 0;
+          width: 50px;
+          height: 24px;
         }
       }
       i {
@@ -1686,8 +1850,11 @@ export default {
         padding: 7px 10px;
         position: absolute;
         top: 50%;
-        margin-top: -14px;
+        margin-top: -12px;
         right: 17px;
+        padding: 0;
+        width: 70px;
+        height: 24px;
       }
       &:hover {
         background: rgba(233, 235, 255, 1);
@@ -1923,6 +2090,32 @@ export default {
     position: absolute;
     top: 100%;
     right: 0;
+  }
+}
+.browser-help{
+  text-align: center;
+  img{
+    display: block;
+    width: 80px;
+    height: 80px;
+    margin: 10px auto 0 auto;
+  }
+  span{
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .tip-info{
+    a{
+      color: $color-blue;
+      text-decoration: underline;
+      &:hover{
+        color: $color-blue-hover;
+      }
+      &:active{
+        color: $color-blue-active;
+      }
+    }
   }
 }
 </style>

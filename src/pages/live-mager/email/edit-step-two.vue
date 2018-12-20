@@ -38,7 +38,7 @@
                         @click="chooseGroup">选择分组
                 </button>
                 <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/{{countBalance}}</span>
-                <ve-msg-tips tip-type="html"
+                <ve-msg-tips :class='"msg-tips"' tip-type="html"
                              tip="1.每天最多可发送5000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
                 <span class="error-msg"
                       v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
@@ -542,6 +542,9 @@
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
   .edit-step-box {
+    .msg-tips {
+      top: 4px;
+    }
     background-color: #f5f5f5;
     .send-span {
       display: inline-block;

@@ -21,10 +21,16 @@ export function focusInput (querySelector, pQuerySelector) {
         }
       }
     }
-    if (input) {
+    let countHeight = function () {
       let pBox = document.querySelectorAll(pQuerySelector)[0]
       let scrollHeith = window.$(input).offset().top - window.$(pBox).offset().top
       scrollHeith = scrollHeith > 100 ? scrollHeith - 50 : scrollHeith
+      return scrollHeith
+    }
+    if (input) {
+      let pBox = document.querySelectorAll(pQuerySelector)[0]
+      pBox.scrollTop = 0
+      let scrollHeith = countHeight()
       window.$(pBox).animate({scrollTop: `${scrollHeith}px`}, 500)
     }
   }

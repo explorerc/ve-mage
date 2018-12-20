@@ -1,7 +1,7 @@
 <template>
   <div class="btn-container">
     <div ref="target" class="btn-content">
-      <a :target="value.target" :href="value.hrefType === '_sub' ? `${PC_HOST}subscribe/${id}` : value.link | voidLink"><com-button v-if="value.enable" :styles="styles">{{value.text}}</com-button></a>
+      <a :target="value.target" :href="value.hrefType === '_sub' ? `https:${PC_HOST}subscribe/${id}` : value.link | voidLink"><com-button v-if="value.enable" :styles="styles">{{value.text}}</com-button></a>
     </div>
     <com-edit ref="editTarget">
       <div class="nav-blank-title">按钮</div>
@@ -23,7 +23,7 @@
           <el-radio v-model="value.hrefType" label="_sub">活动引导页链接</el-radio>
           <el-radio v-model="value.hrefType" label="_define">自定义链接</el-radio>
         </div>
-        <com-input placeholder="跳转链接" :value="`${this.PC_HOST}subscribe/497371374`" :disabled="true" v-if="value.hrefType === '_sub'"></com-input>
+        <com-input placeholder="跳转链接" :value="`https:${this.PC_HOST}subscribe/${id}`" :disabled="true" v-if="value.hrefType === '_sub'"></com-input>
         <com-input placeholder="跳转链接" @focus="inpError = ''" @blur="inpBlur(value.link)" :error-tips="inpError" :value.sync="value.link" v-else></com-input>
         <span class='tips' :class="{'errorTips':inpError.length > 0 && value.hrefType === '_define'}">链接需要附带http头协议</span>
       </div>

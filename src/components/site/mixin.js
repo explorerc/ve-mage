@@ -59,7 +59,19 @@ export default {
       this.$refs.editTarget.show()
     },
     disable () {
-      this.value.enable = false
+      this.$messageBox({
+        header: '删除',
+        type: 'error',
+        width: '400px',
+        content: '是否确认删除该模块？删除后将无法还原。',
+        cancelText: '取消',
+        confirmText: '删除',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            this.value.enable = false
+          }
+        }
+      })
     }
   }
 }

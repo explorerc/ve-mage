@@ -238,7 +238,7 @@
       display: block;
       width: 60px;
       height: 60px;
-      margin: 20px auto 10px auto;
+      margin: 20px auto 0px auto;
       background-image: url('../assets/image/upload-image-icon@2x.png');
       background-size: cover;
     }
