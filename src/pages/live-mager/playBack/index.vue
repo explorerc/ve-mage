@@ -953,6 +953,7 @@ export default {
   display: inline-block;
   margin: 0 20px;
   font-size: 0;
+  vertical-align: super;
   span {
     position: relative;
     display: inline-block;
