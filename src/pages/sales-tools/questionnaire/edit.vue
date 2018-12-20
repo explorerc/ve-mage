@@ -805,7 +805,7 @@ export default {
           let st = setTimeout(() => {
             clearTimeout(st)
             this.isSaveDisabled = false
-          }, 3000)
+          }, 2000)
         })
       }
     },
