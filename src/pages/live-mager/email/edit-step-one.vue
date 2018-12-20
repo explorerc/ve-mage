@@ -11,13 +11,13 @@
     <div class="border-box">
       <div class="add-email-link">
         【进入活动】按钮链接：
-        <el-radio v-model="urlType" label="WEB">活动官网</el-radio>
+        <el-radio v-if="siteEnabled=='Y'" v-model="urlType" label="WEB">活动官网</el-radio>
         <el-radio v-model="urlType" label="GUIDE">活动引导页</el-radio>
         <div class="tip-box">
           <i>?</i>
           <div class="msg">
-            <p>1.为了更方便的向直播活动引流，每个模板都会有一个【进入活动】按钮作为跳转入口。您可以在这里设置收件人在点击【进入活动】按钮后跳转的页面，支持活动官网和活动引导页两个页面。</p>
-            <p>2.如果您没有开启活动官网功能，在此处只显示活动引导页选项。开启活动官网按钮或，将显示活动官网选项。</p>
+            <p>1.收件人在点击【进入活动】按钮后，可跳转至活动官网或活动引导页。实现向指定页面引流。</p>
+            <p>2.如果您没有开启活动官网功能，在此处只显示活动引导页选项。</p>
           </div>
         </div>
       </div>
@@ -116,6 +116,7 @@
         },
         isDisabled: false,
         canPass: true,
+        siteEnabled: false,
         PC_HOST: location.protocol + process.env.PC_HOST
       }
     },
@@ -181,6 +182,7 @@
         storeEmailInfo: types.EMAIL_INFO
       }),
       initPage () {
+        this.querySite()
         if (this.isHistory && this.emailInfo.content) {
           this.email = this.emailInfo
           return
@@ -209,6 +211,13 @@
           this.storeEmailInfo(this.email)
         }
         this.queryEmailTemp()
+      },
+      querySite () {
+        this.$post(activityService.GET_SITE_DATA, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          this.siteEnabled = res.data.enabled
+        })
       },
       clickSendTestEmail () {
         this.testEmailShow = true
@@ -461,30 +470,30 @@
         font-size: 14px;
         color: #606266;
         z-index: 1003;
-        .tip-box{
+        .tip-box {
           position: relative;
           display: inline-block;
           width: 20px;
           height: 20px;
           line-height: 20px;
           margin-left: 10px;
-          i{
+          i {
             display: inline-block;
             width: 20px;
             height: 20px;
             line-height: 20px;
             text-align: center;
-            border: solid 1px rgba(85,85,85,1);;
+            border: solid 1px rgba(85, 85, 85, 1);;
             border-radius: 50%;
             color: #555;
             font-style: normal;
             font-size: 12px;
-            &:hover{
+            &:hover {
               cursor: pointer;
               opacity: .8;
             }
           }
-          .msg{
+          .msg {
             position: absolute;
             display: none;
             width: 380px;
@@ -494,14 +503,14 @@
             padding: 6px 10px 4px 10px;
             border-radius: 3px;
             color: #fff;
-            word-wrap:break-word;
-            word-break:break-all;
+            word-wrap: break-word;
+            word-break: break-all;
             z-index: 10;
-            background-color: rgba(49,49,49,1);
-            box-shadow:0px 2px 6px 0px rgba(0,0,0,0.4);
+            background-color: rgba(49, 49, 49, 1);
+            box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.4);
             line-height: 20px;
             font-size: 10px;
-            &:after{
+            &:after {
               display: block;
               position: absolute;
               content: '';
@@ -517,7 +526,7 @@
             }
             z-index: 100;
           }
-          i:hover + .msg{
+          i:hover + .msg {
             display: block;
           }
         }

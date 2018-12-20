@@ -108,22 +108,25 @@
           template: fontTemplate,
           data () {
             return {
-              // nameList: [
-              //   'Microsoft YaHei',
-              //   'Helvetica Neue',
-              //   'Helvetica',
-              //   'Arial',
-              //   'sans-serif',
-              //   'Verdana',
-              //   'Georgia',
-              //   'Times New Roman',
-              //   'Trebuchet MS',
-              //   'Microsoft JhengHei',
-              //   'Courier New',
-              //   'Impact',
-              //   'Comic Sans MS',
-              //   'Consolas'
-              // ],
+              nameList: [
+                'Arial',
+                'sans-serif',
+                '微软雅黑体',
+                '黑体',
+                '新宋体',
+                '仿宋',
+                '楷体',
+                '仿宋_GB2312',
+                '楷体_GB2312',
+                '隶书',
+                '幼圆',
+                '华文细黑',
+                '华文楷体',
+                '华文仿宋',
+                '方正舒体',
+                '方正姚体',
+                '华文彩云', '华文琥珀', '华文隶书', '华文行楷', '华文新魏'
+              ],
               lineHeightList: [
                 '1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'
               ],
