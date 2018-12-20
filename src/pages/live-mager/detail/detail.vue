@@ -2119,7 +2119,8 @@
   img {
     display: block;
     width: 80px;
-    background-image: url('~assets/image/detail/playback.png');
+    // background-image: url('~assets/image/detail/playback.png');
+    margin: 10px auto;
   }
   span {
     display: block;
