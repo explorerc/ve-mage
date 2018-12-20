@@ -63,6 +63,9 @@
                          placeholder="请输入短信内容"
                          :max-length="100"
                          :error-tips='errorData.msgError'></com-input>
+                         <div class="href-box">
+                          <span class='add-href' @click='addHref(`https:${PC_HOST}site/${activitId}`)'>添加活动官网链接</span><span class='add-href' @click='addHref(`https:${PC_HOST}subscribe/${activitId}`)'>添加活动引导页链接</span>
+                         </div>
             </div>
           </div>
           <div class="from-row">
@@ -161,6 +164,7 @@ export default {
       titleValue: '',
       groupIdx: 0,
       tagIdx: 0,
+      PC_HOST: process.env.PC_HOST,
       tplOptions: [{
         value: 1,
         label: '活动邀请'
@@ -449,6 +453,14 @@ export default {
         this.isValided = false
         return false
       }
+    },
+    addHref (url) {
+      this.$post(noticeService.GET_SHOR_URL, {
+        url: url
+      }).then((res) => {
+        console.log(res)
+        this.msgContent += ' ' + res.data.shortUrl + ' '
+      })
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -545,8 +557,32 @@ export default {
 
 .edit-msg-page /deep/ {
   .com-input .limit.area {
-    bottom: 7px;
+    bottom: 37px;
     right: 7px;
+  }
+  .href-box {
+    position: absolute;
+    bottom: 4px;
+    left: 1px;
+  }
+  .add-href {
+    display: inline-block;
+    width: 219px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    background: rgba(249, 249, 249, 1);
+    border-radius: 0px 0px 4px 4px;
+    border: 1px solid rgba(226, 226, 226, 1);
+    border-right: none;
+    border-bottom: none;
+    &:nth-of-type(1) {
+      border-left: none;
+    }
+    text-align: center;
+    &:hover {
+      color: #4b5afe;
+    }
   }
   // min-height: 730px;
   position: relative;
@@ -673,7 +709,7 @@ export default {
   width: 440px;
 }
 .msg-content {
-  height: 90px;
+  height: 180px;
 }
 .modal-box {
   width: 700px;

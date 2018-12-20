@@ -60,11 +60,12 @@ export default {
     },
     disable () {
       this.$messageBox({
-        header: '',
+        header: '删除',
+        type: 'error',
         width: '400px',
         content: '是否确认删除该模块？删除后将无法还原。',
         cancelText: '取消',
-        confirmText: '确认删除',
+        confirmText: '删除',
         handleClick: (e) => {
           if (e.action === 'confirm') {
             this.value.enable = false

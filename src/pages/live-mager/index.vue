@@ -144,8 +144,7 @@ export default {
       if (event.type === 'play') { // 开播
         if (this.isOverdue(event.endTime)) {
           this.$toast({
-            content: '该活动已结束超过48小时，无法再次开启',
-            position: 'center'
+            content: '该活动已过期，无法再次发起直播'
           })
           return false
         }
