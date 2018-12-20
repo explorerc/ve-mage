@@ -751,7 +751,7 @@
       <div class="browser-help">
         <span>不支持使用该浏览器发起直播</span>
         <img src="../../../assets/image/chrome_icon.png">
-        <span class="tip-info">为了您可以正常使用直播发起端功能，请使用<a href="javascript:window.open('https://chrome.en.softonic.com/')" title="下载">Google Chrome</a>浏览器</span>
+        <span class="tip-info">为了您可以正常使用直播发起端功能，请使用<a @click="downChrome('https://chrome.en.softonic.com/')" title="下载">Google Chrome</a>浏览器</span>
       </div>
       <div slot="bottom"></div>
     </message-box>
@@ -904,6 +904,10 @@ export default {
       Sys.browser = m[1].replace(/version/, '\'safari')
       Sys.ver = m[2]
       return Sys
+    },
+    downChrome (url) {
+      this.browserHelpShow = false
+      window.open(url)
     },
     judgePublish () {
       if (this.isPublished) {

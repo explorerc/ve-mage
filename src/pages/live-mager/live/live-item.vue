@@ -13,7 +13,7 @@
       <span :title="liveData.title">{{liveData.title}}</span>
       <span class="time">{{liveData.startTime}}</span>
     </div>
-    <div class="live-bottom">
+    <div class="live-bottom" @click.stop="">
       <!-- 开播 -->
       <span class="item" @click.stop="handleClick(action.play)" title="开播">
         <i class="iconfont icon-shipin"></i>
