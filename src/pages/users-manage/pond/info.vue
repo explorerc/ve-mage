@@ -656,7 +656,7 @@ export default {
           font-size: 14px;
           .v-title {
             color: #888;
-            line-height: 20px;
+            line-height: 34px;
             display: inline-block;
             vertical-align: top;
           }
@@ -664,7 +664,7 @@ export default {
             color: #222;
             word-break: break-all;
             max-width: 165px;
-            line-height: 20px;
+            line-height: 34px;
             display: inline-block;
             vertical-align: top;
             &:hover {

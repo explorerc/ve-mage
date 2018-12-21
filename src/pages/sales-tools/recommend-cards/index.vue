@@ -4,14 +4,14 @@
       <span class="title">推荐卡片</span>
       <com-back :url="`/liveMager/detail/${activityId}`" :class='"back-btn"'></com-back>
       <div class="top-bar clearfix" v-if="tableData.length>0">
-        <el-button class='btn add-new primary-button' round :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片 {{tableData.length}}/20</router-link></el-button>
-        <el-button class='btn more' round :disabled="true" v-if="status == 'PREPARE'">查看活动数据</el-button>
-        <el-button class='btn more' round v-else><router-link :to="`/data/live/${activityId}#tools`">查看活动数据</router-link></el-button>
+        <el-button class='btn add-new primary-button' :disabled="tableData.length >=20" ><router-link :to="tableData.length >=20 ? `` : `/salesTools/recommendCardsDetails/${activityId}?cardId=new`">新建卡片（{{tableData.length}}/20）</router-link></el-button>
+        <el-button class='btn default-button' style="margin-right: 10px" :disabled="true" v-if="status == 'PREPARE'">查看数据</el-button>
+        <el-button class='btn default-button' style="margin-right: 10px" v-else><router-link :to="`/data/live/${activityId}#tools`">查看数据</router-link></el-button>
       </div>
     </div>
     <div class="content from-box">
       <template v-if="tableData.length>0">
-          <el-table :data="tableData" stripe style="width: 100%" :class="'table-box'">
+          <el-table :data="tableData" style="width: 100%" :class="'table-box'">
             <el-table-column  label="卡片图片" width="150">
               <template slot-scope="scope">
                 <div :class="'img'" class="cov_img" :style="{backgroundImage:`url(${$imgHost}/${scope.row.pic})`}"></div>
@@ -135,9 +135,9 @@
 @import './common.scss';
 
 .back-btn {
-  height: 34px !important;
-  line-height: 34px !important;
-  float: right;
+  /*height: 34px !important;*/
+  /*line-height: 34px !important;*/
+  /*float: right;*/
   /*width: 120px !important;*/
 }
 .card-list-page {
@@ -152,28 +152,26 @@
     transform: translateY(-50%);
     .btn {
       padding: 0;
-      width: 120px;
-      height: 34px;
-      line-height: 34px;
+      /*padding-left: 5px;*/
+      width: 130px;
+      height: 30px;
+      line-height: 30px;
       float: right;
+      border-radius: 20px;
+      &.add-new {
+        padding-left: 10px;
+      }
       &.add-new:hover span {
         color: $color-font;
       }
-      &.more {
-        margin-right: 10px;
-        border-color: $color-blue;
-        color: $color-blue;
-        background-color: transparent;
+      &:disabled {
+        border-color: #888888;
+        color: #555555;
         &:hover {
-          color: #fff;
-          border-color: #fff;
-          background: $color-blue;
+          border-color: #555555;
+          color: #555555;
+          background-color: transparent;
         }
-      }
-      &:disabled:hover {
-        border-color: #4b5afe;
-        color: #4b5afe;
-        background-color: transparent;
       }
     }
   }

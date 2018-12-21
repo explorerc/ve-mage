@@ -103,13 +103,13 @@ export default {
 .v-login-reg /deep/ {
   max-width: 230px;
   float: right;
-  margin-right: 20px;
-  text-align: left;
+  /*margin-right: 20px;*/
+  text-align: right;
   z-index: 2;
   cursor: pointer;
   .v-name {
     display: inline-block;
-    min-width: 60px;
+    /*min-width: 60px;*/
     max-width: 180px;
     overflow: hidden;
     text-overflow: ellipsis;

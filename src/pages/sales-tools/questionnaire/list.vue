@@ -2,8 +2,8 @@
   <div class="v-list">
     <div class="v-list-title clearfix">
       <span class="title">问卷</span>
-      <com-back :url="`/liveMager/detail/${activityId}`" style='line-height: 30px;'></com-back>
-      <template v-if="tableData.length">
+      <com-back :url="`/liveMager/detail/${activityId}`" ></com-back>
+      <div v-if="tableData.length" class="btn-box">
         <router-link class="v-add"
                      :class="{disabled: isAdd}"
                      :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
@@ -13,7 +13,7 @@
         <router-link class="v-view"
                      :class="{disabled: !hasData}"
                      :to="`/data/live/${this.activityId}#questions`">查看数据</router-link>
-      </template>
+      </div>
     </div>
     <div class="v-table">
       <template v-if="tableData.length">
@@ -321,21 +321,18 @@ export default {
     a {
       float: right;
       width: 120px;
-      height: 40px;
       border: 1px solid #4b5afe;
-      line-height: 38px;
+      line-height: 28px;
       border-radius: 20px;
       background-color: rgba(0, 0, 0, 0);
       font-size: 14px;
       color: #4b5afe;
       text-align: center;
-      margin-top: 10px;
       &.v-add {
         border-color: #ffd021;
         background-color: #ffd021;
         color: #222;
         margin-left: 10px;
-        margin-right: 100px;
         &.disabled {
           border-color: #ddd;
           background-color: #ddd;
@@ -368,12 +365,19 @@ export default {
         }
       }
     }
-    .default-button {
-      line-height: 40px;
-      &.back-btn-all {
-        height: 40px;
-      }
+    .btn-box {
+      position: absolute;
+      top: 50%;
+      right: 100px;
+      transform: translateY(-50%);
+
     }
+    /*.default-button {*/
+      /*line-height: 40px;*/
+      /*&.back-btn-all {*/
+        /*height: 40px;*/
+      /*}*/
+    /*}*/
   }
   .v-table {
     width: 100%;
@@ -383,6 +387,7 @@ export default {
     min-height: 550px;
     border-radius: 4px;
     overflow: hidden;
+    font-size: 14px;
     table {
       width: 100%;
       border-radius: 4px 4px 0 0;
@@ -472,9 +477,6 @@ export default {
   .pagination-box {
     text-align: center;
     margin-top: 70px;
-  }
-  .el-button.back-btn-all {
-    top: 49%;
   }
   .ve-message-box {
     .ve-message-box__header {
