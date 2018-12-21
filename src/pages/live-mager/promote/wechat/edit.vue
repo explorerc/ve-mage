@@ -77,7 +77,7 @@
           <div class="from-row" v-if='pickDate'>
             <div class="from-title">选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
+              <el-date-picker v-model="date" @focus='dateFocus()' :editable="false" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
             </div>
           </div>
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { formatDate } from 'src/assets/js/date'
 import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import userService from 'src/api/user-service'
@@ -154,7 +155,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7
         }
       },
-      defaultValue: new Date(new Date().getTime() + 1800000),
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm'),
       loading: false,
       searchPerson: '',
       groupList: [],
@@ -520,6 +521,9 @@ export default {
           this.siteOpen = false
         }
       })
+    },
+    dateFocus () {
+      this.date = this.defaultValue
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
