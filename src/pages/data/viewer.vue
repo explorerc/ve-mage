@@ -85,39 +85,39 @@
       <div class="chart-box">
         <p class="title">观众比例</p>
         <div class="chart-container">
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width:calc(50% - 10px);">
             <p class="title">新老观众占比</p>
             <div class="chart-item" id="chart01" style="height: 360px;"></div>
           </div>
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width:calc(50% - 10px);">
             <p class="title">各级别用户占比</p>
             <div class="chart-item" id="chart02" style="height: 360px;"></div>
           </div>
         </div>
         <div class="chart-container">
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width:calc(50% - 10px);">
             <p class="title">设备占比</p>
             <div class="chart-item" id="chart03" style="height: 360px;"></div>
           </div>
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width:calc(50% - 10px);">
             <p class="title">操作系统占比</p>
             <div class="chart-item" id="chart04" style="height: 360px;"></div>
           </div>
         </div>
         <div class="chart-container">
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width:calc(50% - 10px);">
             <p class="title">浏览器占比</p>
             <div class="chart-item" id="chart05" style="height: 360px;"></div>
           </div>
-          <div class="chart-box" style="width: 50%;">
+          <div class="chart-box" style="width:calc(50% - 10px);">
             <p class="title">性别占比</p>
             <div class="chart-item" id="chart06" style="height: 360px;"></div>
           </div>
         </div>
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;">
-            <p class="title" style="text-align: left;">地域</p>
-            <div class="chart-item" id="chart07" style="height: 500px;"></div>
+            <p class="title" style="text-align: left;margin-left: 0;margin-bottom: 0 !important;">地域</p>
+            <div class="chart-item" id="chart07" style="height: 500px;border: none;"></div>
           </div>
         </div>
       </div>
@@ -321,7 +321,11 @@
       .chart-box {
         .title {
           text-align: left;
-          margin-bottom: -35px !important;
+          margin-left: 20px;
+          margin-bottom: -36px !important;
+        }
+        .chart-item{
+          border: solid 1px #e2e2e2;
         }
 
       }
