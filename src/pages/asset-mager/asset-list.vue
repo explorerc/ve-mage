@@ -568,7 +568,6 @@
         margin: 0 20px;
       }
       .export-btn {
-        margin-top: 2px;
         height: 36px;
         line-height: 36px;
       }
