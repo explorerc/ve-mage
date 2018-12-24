@@ -678,7 +678,29 @@
     }
   }
   .money-box-wrap /deep/ {
-    border: 1px solid red;
+    // border: 1px solid red;
+    .pay-img-box {
+      text-align: center;
+      .payImg {
+        border: 1px solid #e2e2e2;
+        display: inline-block;
+        margin: 20px 0 0 57px;
+        vertical-align: auto;
+        height: 120px;
+        width: 120px;
+        overflow: hidden;
+        img {
+          width: 120px;
+          height: 120px;
+          display: block;
+        }
+      }
+    }
+    .pay-des {
+      margin: 0px 0 0 61px;
+      font-size: 14px;
+      color: #555555;
+    }
     .message-box-content {
       .from-box .from-row .from-content .com-input {
         width: 100% !important;
@@ -749,7 +771,6 @@
                 &.alipay {
                   border-radius: 4px 0px 0px 4px;
                   border-right: 0px;
-                  background-color: #ffd021;
                 }
                 &.weixin {
                   border-left: 0px;
@@ -774,27 +795,6 @@
                 font-weight: 400;
                 font-size: 14px;
               }
-            }
-            .pay-img-box {
-              .payImg {
-                border: 1px solid #e2e2e2;
-                display: inline-block;
-                margin: 20px 0 0 57px;
-                vertical-align: auto;
-                height: 120px;
-                width: 120px;
-                overflow: hidden;
-                img {
-                  width: 120px;
-                  height: 120px;
-                  display: block;
-                }
-              }
-            }
-            .pay-des {
-              margin: 0px 0 0 61px;
-              font-size: 14px;
-              color: #555555;
             }
           }
           .com-input {
