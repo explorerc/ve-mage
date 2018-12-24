@@ -20,6 +20,8 @@
           <p v-else>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
           <el-button class='primary-button fr'
                      @click='sendTest' :disabled="limitCount <= 0">立即发送</el-button>
+          <!--<el-button class='primary-button fr'-->
+                     <!--@click='sendTest'>立即发送</el-button>-->
         </div>
       </div>
       <div class='modal-box '
@@ -144,7 +146,7 @@ export default {
         this.limitCount -= 1
         this.$toast({
           content: '发送成功',
-          position: 'center'
+          position: 'top-90'
         })
       })
     },
@@ -215,6 +217,7 @@ export default {
     font-size: 16px;
     padding: 0 18px;
     background: $color-default;
+    font-weight: 400;
     .close {
       cursor: pointer;
       width: 10px;
@@ -296,6 +299,8 @@ export default {
         display: inline-block;
         height: 40px;
         line-height: 40px;
+        font-size: 14px;
+        font-weight: 400;
       }
       .limit-count {
         color: $color-blue;

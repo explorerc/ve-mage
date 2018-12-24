@@ -323,6 +323,7 @@
           text-align: left;
           margin-bottom: -35px !important;
         }
+
       }
     }
   }
