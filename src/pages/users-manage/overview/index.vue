@@ -325,7 +325,7 @@ export default {
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
     height: 60px;
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 5px;
     span.title {
       display: inline-block;

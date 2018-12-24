@@ -19,8 +19,8 @@
                id="copyId"
                style="position:absolute;opacity:0;">
         <p class='desc-label'>活动标签 : <span class="tag"
-                v-for="item in tagList">{{item.name}}</span></p>
-        <p class='desc-label'>开播时间 :  {{startTime}}</p>
+                                           v-for="item in tagList">{{item.name}}</span></p>
+        <p class='desc-label'>开播时间 : {{startTime}}</p>
         <p class="desc-label tool">活动状态 :
           <el-switch class='switch'
                      v-model="isPublished"
@@ -35,7 +35,7 @@
                 @mouseout="showLinkBox = false"><i></i>复制链接
             <ul v-show='showLinkBox'>
               <li :class="{'isSwitch':!dataBrand[0].switch}">
-                <i class='icon-site'></i>活动官网
+                <!-- <i class='icon-site'></i>-->活动官网
                 <router-link v-if="dataBrand[0].switch"
                              :to="`${this.PC_HOST}site/${activityId}`"
                              target="_blank">
@@ -50,28 +50,51 @@
                 <el-button v-if="dataBrand[0].switch"
                            size="mini"
                            round
-                           @click="copy('copyContent2')">复制</el-button>
+                           @click="copy('copyContent2')">复制链接</el-button>
                 <input type="text"
                        :value='`https:${this.PC_HOST}site/${activityId}`'
                        id="copyContent2"
                        style="position:absolute;opacity:0;">
               </li>
               <li>
-                <i class='icon-guide'></i>活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`"
-                             target="_blank">
+                <!-- <i class='icon-guide'></i> -->活动引导页 <router-link :to="`${this.PC_HOST}subscribe/${activityId}`"
+                                                                      target="_blank">
                   <el-button size="mini"
                              round>查看</el-button>
                 </router-link>
                 <el-button size="mini"
                            round
-                           @click="copy('copyContent')">复制</el-button>
+                           @click="copy('copyContent')">复制链接</el-button>
                 <input type="text"
                        :value='`https:${this.PC_HOST}subscribe/${this.activityId}`'
                        id="copyContent"
                        style="position:absolute;opacity:0;">
               </li>
             </ul>
+            <i class="bar left"></i>
+            <i class="bar"></i>
           </span>
+          <span v-if="isPublished"
+                class='link-box qrcode-box'
+                @mouseover="showQrcodeBox = true"
+                @mouseout="showQrcodeBox = false"><i></i>扫码观看
+            <ul v-show='showQrcodeBox'>
+              <li v-if='dataBrand[0].switch'>
+        <p>活动官网</p>
+        <img
+          :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}site/${activityId}`)}`">
+        <span>手机扫描二维码</span>
+        <a @click='downloadQrIamge(`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${PC_HOST}site/${activityId}`)}`, "活动官网")'>下载二维码</a>
+        </li>
+        <li class='sub'>
+          <p>活动引导页</p>
+          <img
+            :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}subscribe/${this.activityId}`)}`">
+          <span>手机扫描二维码</span>
+          <a @click='downloadQrIamge(`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${PC_HOST}subscribe/${activityId}`)}`, "引导页")'>下载二维码</a>
+        </li>
+        </ul>
+        </span>
         </p>
       </div>
       <div class="right">
@@ -155,7 +178,8 @@
           <!-- <span>准备</span> -->
           <ol>
             <li v-show="dataPrepare[0].switch"
-                @click="linkTo($event,'/liveMager/edit/')">基本信息</li>
+                @click="linkTo($event,'/liveMager/edit/')">基本信息
+            </li>
             <li v-show="dataPrepare[1].switch"
                 @click="linkTo($event,'/liveMager/prepare/limit-apply/', dataPrepare[1].switch)">活动报名
             </li>
@@ -169,11 +193,14 @@
           <!-- <span>品牌</span> -->
           <ol>
             <li v-show="dataBrand[0].switch"
-                @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网</li>
+                @click="linkTo($event,'/liveMager/site/', dataBrand[0].switch)">活动官网
+            </li>
             <li v-show="dataBrand[1].switch"
-                @click="linkTo($event,'/setLiveGuided/')">直播引导页</li>
+                @click="linkTo($event,'/setLiveGuided/')">直播引导页
+            </li>
             <li v-show="dataBrand[2].switch"
-                @click="linkTo($event,'/setLiveWatch/')">观看页</li>
+                @click="linkTo($event,'/setLiveWatch/')">观看页
+            </li>
           </ol>
         </div>
         <div>
@@ -183,11 +210,14 @@
                 @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知
             </li>
             <li v-show="dataPromote[1].switch"
-                @click="linkTo($event,'/liveMager/email/')">邮件邀约</li>
+                @click="linkTo($event,'/liveMager/email/')">邮件邀约
+            </li>
             <li v-show="dataPromote[2].switch"
-                @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知</li>
+                @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知
+            </li>
             <li v-show="dataPromote[3].switch"
-                @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知</li>
+                @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知
+            </li>
           </ol>
         </div>
         <div>
@@ -203,14 +233,16 @@
           <!-- <span>回放</span> -->
           <ol>
             <li v-show="dataRecord[0].switch"
-                @click="linkTo($event,'/liveMager/playBack/')">活动回放</li>
+                @click="linkTo($event,'/liveMager/playBack/')">活动回放
+            </li>
           </ol>
         </div>
         <div>
           <template v-if="staticTime == '统计中...'">
             <ol title='预告、直播中状态不能进入数据中心'>
               <li @click="linkTo($event,'/data/preview/')"
-                  :class="'disabled'">活动数据</li>
+                  :class="'disabled'">活动数据
+              </li>
               <li :class="'disabled'">观众列表</li>
             </ol>
           </template>
@@ -735,449 +767,489 @@
       <div slot="msgBox"
            class="red-bag-tip">
         <div class="red-bag-header"></div>
-        <div class="red-bag-content">红包雨为活动发起者在直播中推送的功能，无需在控制台设置。通过红包雨功能，活动主办方可以通过设置红包数量和金额，并设置参与条件，向达成参与条件的观众发放红包。</div>
+        <div class="red-bag-content">红包雨为活动发起者在直播中推送的功能，无需在控制台设置。通过红包雨功能，活动主办方可以通过设置红包数量和金额，并设置参与条件，向达成参与条件的观众发放红包。
+        </div>
         <button type="button"
                 class="primary-button"
                 style="padding: 0 60px;margin: 10px 0 30px 0;"
-                @click="redBagTips=false">知道了</button>
+                @click="redBagTips=false">知道了
+        </button>
       </div>
+    </message-box>
+    <!-- 直播时浏览器不支持 -->
+    <message-box v-if="browserHelpShow"
+                 type="prompt"
+                 width='500px'
+                 header='微吼知客'
+                 @handleClick="browserHelpShow=false">
+      <div class="browser-help">
+        <span>不支持使用该浏览器发起直播</span>
+        <img src="../../../assets/image/chrome_icon.png">
+        <span class="tip-info">为了您可以正常使用直播发起端功能，请使用<a @click="downChrome('https://chrome.en.softonic.com/')" title="下载">Google Chrome</a>浏览器</span>
+      </div>
+      <div slot="bottom"></div>
     </message-box>
   </div>
 </template>
 
 <script>
-// import http from 'src/api/activity-manger'
-import EventBus from 'src/utils/eventBus'
-import activityService from 'src/api/activity-service'
-import processCard from 'components/process-card'
-import comCountdown from 'components/com-countDown'
+  // import http from 'src/api/activity-manger'
+  import EventBus from 'src/utils/eventBus'
+  import { downloadIamge } from 'src/utils/dom-tool'
+  import activityService from 'src/api/activity-service'
+  import processCard from 'components/process-card'
+  import comCountdown from 'components/com-countDown'
 
-export default {
-  data () {
-    return {
-      title: '',
-      id: '',
-      poster: '',
-      tagList: [],
-      startTime: '',
-      statusClass: '',
-      status: '',
-      currStep: '',
-      cardData: {},
-      msgShow: false,
-      isPublished: false,
-      hostOnline: false,
-      showLinkBox: false,
-      activityId: this.$route.params.id,
-      imgHost: process.env.IMGHOST + '/',
-      PC_HOST: process.env.PC_HOST,
-      // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
-      countdownTime: '', // 倒计时 秒
-      countDownstatus: false,
-      inCountdown: false,
-      isAppoint: false,
-      overdue: false,
-      redBagTips: false,
-      dataPrepare: [],
-      dataBrand: [],
-      dataPromote: [],
-      dataRecord: []
-    }
-  },
-  created () {
-    EventBus.$emit('breads', [{
-      title: '活动管理'
-    }, {
-      title: '活动列表',
-      url: '/liveMager/list'
-    }, {
-      title: '活动详情'
-    }])
-  },
-  mounted () {
-    this.getDetails()
-    // 滚动到推广
-    if (window.location.href.search('tg') > -1) {
-      let timer = setInterval(() => {
-        document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
-        if (document.querySelector('.main-container').scrollTop >= 1150) {
-          clearInterval(timer)
-        }
-      }, 10)
-    }
-  },
-  methods: {
-    linkTo (e, link, status) {
-      console.log(e.target.className)
-      if (e.target.className.search('switch') > -1) {
-        // 直播状态直接 不跳转
-        if (this.status === '直播') {
-          return false
-        }
-        // 如果开着状态则不跳转
-        if (!status && e.target.className.search('input') > -1) {
+  export default {
+    data () {
+      return {
+        title: '',
+        id: '',
+        poster: '',
+        tagList: [],
+        startTime: '',
+        statusClass: '',
+        status: '',
+        currStep: '',
+        cardData: {},
+        msgShow: false,
+        isPublished: false,
+        hostOnline: false,
+        showLinkBox: false,
+        showQrcodeBox: false,
+        activityId: this.$route.params.id,
+        imgHost: process.env.IMGHOST + '/',
+        PC_HOST: process.env.PC_HOST,
+        // imgHost: 'http://dev-zhike.oss-cn-beijing.aliyuncs.com/',
+        countdownTime: '', // 倒计时 秒
+        countDownstatus: false,
+        inCountdown: false,
+        isAppoint: false,
+        overdue: false,
+        redBagTips: false,
+        browserHelpShow: false,
+        dataPrepare: [],
+        dataBrand: [],
+        dataPromote: [],
+        dataRecord: []
+      }
+    },
+    created () {
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情'
+      }])
+    },
+    mounted () {
+      this.getDetails()
+      // 滚动到推广
+      if (window.location.href.search('tg') > -1) {
+        let timer = setInterval(() => {
+          document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
+          if (document.querySelector('.main-container').scrollTop >= 1150) {
+            clearInterval(timer)
+          }
+        }, 10)
+      }
+    },
+    methods: {
+      downloadQrIamge (url, name) {
+        downloadIamge(url, name)
+      },
+      linkTo (e, link, status) {
+        console.log(e.target.className)
+        if (e.target.className.search('switch') > -1) {
+          // 直播状态直接 不跳转
+          if (this.status === '直播') {
+            return false
+          }
+          // 如果开着状态则不跳转
+          if (!status && e.target.className.search('input') > -1) {
+            if (link === '/data/viewer/') {
+              this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+            } else {
+              setTimeout(() => {
+                this.$router.push(link + this.activityId)
+              }, 500)
+            }
+          }
+        } else {
           if (link === '/data/viewer/') {
             this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
           } else {
-            setTimeout(() => {
-              this.$router.push(link + this.activityId)
-            }, 500)
+            this.$router.push(link + this.activityId)
           }
         }
-      } else {
-        if (link === '/data/viewer/') {
-          this.$router.push(`/data/viewerList/${this.activityId}?type=all`)
+      },
+      turnOn () {
+        let xmlHttp = new XMLHttpRequest()
+        const serverUrl = process.env.API_PATH
+        let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
+        xmlHttp.onreadystatechange = () => {
+          if (xmlHttp.readyState === 4) {
+            let responseText = xmlHttp.responseText
+            let data = JSON.parse(responseText)
+            if (data.code === 200) {
+              this.hostOnline = data.data.hostOnline
+              if (this.hostOnline) {
+                this.$toast({
+                  content: '暂不支持这种方式发起直播',
+                  position: 'center'
+                })
+                return false
+              }
+              if (this.isToday(this.startTime)) { // 在24小时之外
+                this.inCountdown = true
+                return false
+              }
+              this.judgePublish()
+            }
+          }
+        }
+        xmlHttp.open('GET', url, false) // 同步方式请求
+        xmlHttp.withCredentials = true
+        xmlHttp.send(null)
+      },
+      isToday (str) {
+        if (new Date(str).toDateString() === new Date().toDateString()) {
+          // 今天
+          console.log('当天')
+          return false
         } else {
-          this.$router.push(link + this.activityId)
+          // 之前
+          console.log('非当天')
+          return true
         }
-      }
-    },
-    turnOn () {
-      let xmlHttp = new XMLHttpRequest()
-      const serverUrl = process.env.API_PATH
-      let url = serverUrl + activityService.GET_HOSTING + '?activityId=' + this.activityId
-      xmlHttp.onreadystatechange = () => {
-        if (xmlHttp.readyState === 4) {
-          let responseText = xmlHttp.responseText
-          let data = JSON.parse(responseText)
-          if (data.code === 200) {
-            this.hostOnline = data.data.hostOnline
-            if (this.hostOnline) {
-              this.$toast({
-                content: '暂不支持这种方式发起直播',
-                position: 'center'
-              })
-              return false
-            }
-            if (this.isToday(this.startTime)) { // 在24小时之外
-              this.inCountdown = true
-              return false
-            }
-            this.judgePublish()
+      },
+      isOverdue (str) { // 是否超过48小时
+        if (str === null) {
+          return false
+        }
+        if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
+          return true
+        } else {
+          return false
+        }
+      },
+      getBrowserInfo () {
+        let Sys = {}
+        let ua = navigator.userAgent.toLowerCase()
+        let re = /(msie|firefox|chrome|opera|version).*?([\d.]+)/
+        let m = ua.match(re)
+        Sys.browser = m[1].replace(/version/, '\'safari')
+        Sys.ver = m[2]
+        return Sys
+      },
+      downChrome (url) {
+        this.browserHelpShow = false
+        window.open(url)
+      },
+      judgePublish () {
+        if (this.isPublished) {
+          this.inCountdown = false
+          let bSys = this.getBrowserInfo()
+          if (bSys.browser !== 'chrome') {
+            this.browserHelpShow = true
+          } else {
+            const tempwindow = window.open('_blank') // 先打开页面
+            tempwindow.location = `${this.PC_HOST}master/${this.activityId}`// 后更改页面地址
           }
+        } else {
+          this.inCountdown = false
+          this.$messageBox({
+            header: '提示',
+            width: '450px',
+            content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
+            cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
+            confirmText: '确认开播',
+            handleClick: (e) => {
+              console.log(e)
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+                this.publish()
+                window.open(`${this.PC_HOST}master/${this.activityId}`)
+                // this.status = 0
+              }
+            }
+          })
         }
-      }
-      xmlHttp.open('GET', url, false) // 同步方式请求
-      xmlHttp.withCredentials = true
-      xmlHttp.send(null)
-    },
-    isToday (str) {
-      if (new Date(str).toDateString() === new Date().toDateString()) {
-        // 今天
-        console.log('当天')
-        return false
-      } else {
-        // 之前
-        console.log('非当天')
-        return true
-      }
-    },
-    isOverdue (str) { // 是否超过48小时
-      if (str === null) {
-        return false
-      }
-      if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
-        return true
-      } else {
-        return false
-      }
-    },
-    judgePublish () {
-      if (this.isPublished) {
-        this.inCountdown = false
-        window.open(`${this.PC_HOST}master/${this.activityId}`)
-      } else {
-        this.inCountdown = false
+      },
+      inCountdownClick (e) {
+        console.log(e)
+        if (e.action === 'cancel') {
+          this.inCountdown = false
+        } else if (e.action === 'confirm') {
+          this.inCountdown = true
+          this.judgePublish()
+        }
+      },
+      isHosting () {
+        return new Promise((resolve, reject) => {
+
+        })
+      },
+      closeSite (type, dataType, url) {
         this.$messageBox({
           header: '提示',
-          width: '450px',
-          content: '进入直播后，您的活动官网和观看引导页将正式对外发布，是否继续执行？',
-          cancelText: '暂不开播', // 不传递cancelText将只有一个确定按钮
-          confirmText: '确认开播',
+          width: '200',
+          content: '活动官网已经发布，请确认是否关闭？',
+          cancelText: '暂不关闭', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认关闭',
           handleClick: (e) => {
             console.log(e)
             if (e.action === 'cancel') {
+              this[dataType].forEach(item => {
+                if (item.submodule === type) {
+                  item.switch = !status
+                }
+              })
             } else if (e.action === 'confirm') {
-              this.publish()
-              window.open(`${this.PC_HOST}master/${this.activityId}`)
-              // this.status = 0
+              this.$config({
+                handlers: true
+              }).$post(activityService.POST_DETAIL_SWITCH, {
+                activityId: this.activityId,
+                submodule: type,
+                enabled: 'N'
+              }).then((res) => {
+                console.log(res)
+                if (res.code === 200) {
+                  // this.$toast({
+                  //   'content': '设置成功'
+                  // })
+                  // setTimeout((res) => {
+                  //   this.$router.push(url + this.activityId)
+                  // }, 500)
+                }
+              }).catch((res) => {
+                if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
+                  console.log(type + ' ' + status)
+                  this.$messageBox({
+                    width: '450px',
+                    header: '提示',
+                    content: res.msg,
+                    autoClose: 10,
+                    confirmText: '知道了'
+                  })
+                  this[dataType].forEach(item => {
+                    if (item.submodule === type) {
+                      item.switch = !status
+                    }
+                  })
+                }
+              })
             }
           }
         })
-      }
-    },
-    inCountdownClick (e) {
-      console.log(e)
-      if (e.action === 'cancel') {
-        this.inCountdown = false
-      } else if (e.action === 'confirm') {
-        this.inCountdown = true
-        this.judgePublish()
-      }
-    },
-    isHosting () {
-      return new Promise((resolve, reject) => {
-
-      })
-    },
-    closeSite (type, dataType, url) {
-      this.$messageBox({
-        header: '提示',
-        width: '200',
-        content: '活动官网已经发布，请确认是否关闭？',
-        cancelText: '暂不关闭', // 不传递cancelText将只有一个确定按钮
-        confirmText: '确认关闭',
-        handleClick: (e) => {
-          console.log(e)
-          if (e.action === 'cancel') {
+      },
+      switchChange (type, status, dataType, url) {
+        const data = {
+          activityId: this.activityId,
+          submodule: type,
+          enabled: status ? 'Y' : 'N'
+        }
+        if (type === 'TEMPLATE' && !status && this.isPublished) { // 关闭官网 二次提示
+          this.closeSite(type, dataType, url)
+          return false
+        }
+        this.$config({
+          handlers: true
+        }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+          console.log(res)
+          // if (res.code === 200) {
+          //   this.$toast({
+          //     'content': '设置成功'
+          //   })
+          //   setTimeout((res) => {
+          //     this.$router.push(url + this.activityId)
+          //   }, 500)
+          // }
+        }).catch((res) => {
+          if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
+            console.log(type + ' ' + status)
+            this.$messageBox({
+              width: '450px',
+              header: '提示',
+              content: res.msg,
+              autoClose: 10,
+              confirmText: '知道了'
+            })
             this[dataType].forEach(item => {
               if (item.submodule === type) {
                 item.switch = !status
               }
             })
-          } else if (e.action === 'confirm') {
-            this.$config({
-              handlers: true
-            }).$post(activityService.POST_DETAIL_SWITCH, {
-              activityId: this.activityId,
-              submodule: type,
-              enabled: 'N'
-            }).then((res) => {
-              console.log(res)
-              if (res.code === 200) {
-                // this.$toast({
-                //   'content': '设置成功'
-                // })
-                // setTimeout((res) => {
-                //   this.$router.push(url + this.activityId)
-                // }, 500)
-              }
-            }).catch((res) => {
-              if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
-                console.log(type + ' ' + status)
-                this.$messageBox({
-                  width: '450px',
-                  header: '提示',
-                  content: res.msg,
-                  autoClose: 10,
-                  confirmText: '知道了'
-                })
-                this[dataType].forEach(item => {
-                  if (item.submodule === type) {
-                    item.switch = !status
-                  }
-                })
-              }
-            })
           }
-        }
-      })
-    },
-    switchChange (type, status, dataType, url) {
-      const data = {
-        activityId: this.activityId,
-        submodule: type,
-        enabled: status ? 'Y' : 'N'
-      }
-      if (type === 'TEMPLATE' && !status && this.isPublished) { // 关闭官网 二次提示
-        this.closeSite(type, dataType, url)
-        return false
-      }
-      this.$config({
-        handlers: true
-      }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
-        console.log(res)
-        // if (res.code === 200) {
-        //   this.$toast({
-        //     'content': '设置成功'
-        //   })
-        //   setTimeout((res) => {
-        //     this.$router.push(url + this.activityId)
-        //   }, 500)
-        // }
-      }).catch((res) => {
-        if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
-          console.log(type + ' ' + status)
-          this.$messageBox({
-            width: '450px',
-            header: '提示',
-            content: res.msg,
-            autoClose: 10,
-            confirmText: '知道了'
-          })
-          this[dataType].forEach(item => {
-            if (item.submodule === type) {
-              item.switch = !status
-            }
-          })
-        }
-      })
-    },
-    getDetails () {
-      this.$get(activityService.GET_DETAILS, {
-        activityId: this.activityId
-      }).then((res) => {
-        if (res.data.activity.countDown.toString() > 0) {
-          this.countDownstatus = false
-          this.countdownTime = res.data.activity.countDown.toString()
-        } else {
-          this.countDownstatus = true
-          this.countdownTime = '0'
-        }
-        this.title = res.data.activity.title
-        this.tagList = res.data.activity.tags
-        this.startTime = res.data.activity.startTime
-        this.poster = res.data.activity.imgUrl
-        this.dataPrepare = res.data.prepare
-        this.dataBrand = res.data.brand
-        this.dataPromote = res.data.promote
-        this.dataRecord = res.data.record
-        this.isPublished = res.data.activity.published === 'Y'
-        this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
-        this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
-        this.staticViewer = res.data.data.viewer
-        this.overdue = this.isOverdue(res.data.activity.endTime)
-        switch (res.data.activity.status) {
-          case ('LIVING'):
-            this.status = '直播'
-            this.statusClass = 'live'
-            break
-          case ('PLAYBACK'):
-            this.status = '回放'
-            this.statusClass = 'record'
-            break
-          case ('FINISH'):
-            this.status = '结束'
-            this.statusClass = 'ended'
-            break
-          case ('PREPARE'):
-            this.status = '预约'
-            this.statusClass = 'preview'
-            break
-        }
-        this.getStep() // 获取当前阶段
-      })
-    },
-    publishActive () { // 发布活动
-      this.$messageBox({
-        header: '提示',
-        content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
-        cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
-        confirmText: '确认发布',
-        handleClick: (e) => {
-          console.log(e)
-          if (e.action === 'cancel') {
-            this.isPublished = false
-          } else if (e.action === 'confirm') {
-            // this.status = 0
-            this.publish()
-          }
-        }
-      })
-    },
-    offlineActive () { // 下线活动
-      if (this.status === '直播') {
-        this.$toast({
-          content: '直播中无法下线活动',
-          position: 'center'
         })
-        this.isPublished = true
-        return false
-      }
-      this.$messageBox({
-        header: '提示',
-        content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
-        cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
-        confirmText: '确认下线',
-        handleClick: (e) => {
-          console.log(e)
-          if (e.action === 'cancel') {
-            this.isPublished = true
-          } else if (e.action === 'confirm') {
-            this.offline()
-          }
-        }
-      })
-    },
-    switchActive (res) {
-      if (res) {
-        this.publishActive()
-      } else {
-        this.offlineActive()
-      }
-    },
-    publish () {
-      this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.$toast({
-          content: '活动发布成功',
-          position: 'center'
-        })
-        this.isPublished = true
-        this.dataPromote[0].desc = 'PREPARE'
-        this.currStep = 'isPublish'
-      })
-    },
-    offline () {
-      this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
-        activityId: this.activityId
-      }).then((res) => {
-        this.$toast({
-          content: '活动下线成功',
-          position: 'center'
-        })
-        this.isPublished = false
-        if (this.currStep.search('live') === -1) {
-          this.currStep = 'notPublish'
-        }
-      })
-    },
-    getStep () { // 获取当前活动阶段
-      switch (this.status) {
-        case '预约':
-          if (this.isPublished) {
-            this.currStep = 'isPublish'
-            console.log('发布页面后，直播未开始')
+      },
+      getDetails () {
+        this.$get(activityService.GET_DETAILS, {
+          activityId: this.activityId
+        }).then((res) => {
+          if (res.data.activity.countDown.toString() > 0) {
+            this.countDownstatus = false
+            this.countdownTime = res.data.activity.countDown.toString()
           } else {
-            this.currStep = 'notPublish'
-            console.log('活动未发布')
+            this.countDownstatus = true
+            this.countdownTime = '0'
           }
-          break
-        case '直播':
-          this.currStep = 'isPublish live'
-          console.log('直播中')
-          break
-        case '结束':
-          this.currStep = 'isPublish live end'
-          console.log('直播结束，但未设置回放')
-          break
-        case '回放':
-          this.currStep = 'isPublish live end playback'
-          console.log('直播结束，已设置回放')
-          break
+          this.title = res.data.activity.title
+          this.tagList = res.data.activity.tags
+          this.startTime = res.data.activity.startTime
+          this.poster = res.data.activity.imgUrl
+          this.dataPrepare = res.data.prepare
+          this.dataBrand = res.data.brand
+          this.dataPromote = res.data.promote
+          this.dataRecord = res.data.record
+          this.isPublished = res.data.activity.published === 'Y'
+          this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
+          this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
+          this.staticViewer = res.data.data.viewer
+          this.overdue = this.isOverdue(res.data.activity.endTime)
+          switch (res.data.activity.status) {
+            case ('LIVING'):
+              this.status = '直播'
+              this.statusClass = 'live'
+              break
+            case ('PLAYBACK'):
+              this.status = '回放'
+              this.statusClass = 'record'
+              break
+            case ('FINISH'):
+              this.status = '结束'
+              this.statusClass = 'ended'
+              break
+            case ('PREPARE'):
+              this.status = '预约'
+              this.statusClass = 'preview'
+              break
+          }
+          this.getStep() // 获取当前阶段
+        })
+      },
+      publishActive () { // 发布活动
+        this.$messageBox({
+          header: '提示',
+          content: '活动发布后，活动官网、直播观看页和所有的营销工具页都将同时正式发布',
+          cancelText: '暂不发布', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认发布',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
+              this.isPublished = false
+            } else if (e.action === 'confirm') {
+              // this.status = 0
+              this.publish()
+            }
+          }
+        })
+      },
+      offlineActive () { // 下线活动
+        if (this.status === '直播') {
+          this.$toast({
+            content: '直播中无法下线活动',
+            position: 'center'
+          })
+          this.isPublished = true
+          return false
+        }
+        this.$messageBox({
+          header: '提示',
+          content: '活动下线后，活动官网、直播观看页和所有的营销工具页都将同时下线',
+          cancelText: '暂不下线', // 不传递cancelText将只有一个确定按钮
+          confirmText: '确认下线',
+          handleClick: (e) => {
+            console.log(e)
+            if (e.action === 'cancel') {
+              this.isPublished = true
+            } else if (e.action === 'confirm') {
+              this.offline()
+            }
+          }
+        })
+      },
+      switchActive (res) {
+        if (res) {
+          this.publishActive()
+        } else {
+          this.offlineActive()
+        }
+      },
+      publish () {
+        this.$config().$post(activityService.POST_PUBLISH_ACTIVITE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.$toast({
+            content: '活动发布成功',
+            position: 'center'
+          })
+          this.isPublished = true
+          this.dataPromote[0].desc = 'PREPARE'
+          this.currStep = 'isPublish'
+        })
+      },
+      offline () {
+        this.$config().$post(activityService.POST_OFFLINE_ACTIVITE, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.$toast({
+            content: '活动下线成功',
+            position: 'center'
+          })
+          this.isPublished = false
+          if (this.currStep.search('live') === -1) {
+            this.currStep = 'notPublish'
+          }
+        })
+      },
+      getStep () { // 获取当前活动阶段
+        switch (this.status) {
+          case '预约':
+            if (this.isPublished) {
+              this.currStep = 'isPublish'
+              console.log('发布页面后，直播未开始')
+            } else {
+              this.currStep = 'notPublish'
+              console.log('活动未发布')
+            }
+            break
+          case '直播':
+            this.currStep = 'isPublish live'
+            console.log('直播中')
+            break
+          case '结束':
+            this.currStep = 'isPublish live end'
+            console.log('直播结束，但未设置回放')
+            break
+          case '回放':
+            this.currStep = 'isPublish live end playback'
+            console.log('直播结束，已设置回放')
+            break
+        }
+      },
+      copy (dom) { // 复制功能
+        let inp = document.getElementById(dom)
+        inp.select()
+        document.execCommand('Copy')
+        this.$toast({
+          content: '复制成功',
+          position: 'center'
+        })
+      },
+      timeOut () {
+        console.log('倒计时结束')
+        this.countDownstatus = true
       }
     },
-    copy (dom) { // 复制功能
-      let inp = document.getElementById(dom)
-      inp.select()
-      document.execCommand('Copy')
-      this.$toast({
-        content: '复制成功',
-        position: 'center'
-      })
-    },
-    timeOut () {
-      console.log('倒计时结束')
-      this.countDownstatus = true
+    components: {
+      processCard,
+      comCountdown
     }
-  },
-  components: {
-    processCard,
-    comCountdown
-  }
 
-}
+  }
 </script>
 
 <style lang='scss' scoped>
@@ -1201,7 +1273,7 @@ export default {
   @media all and (max-width: 1600px) {
     width: 1019px;
     .right:before {
-      left: -26px;
+      left: -13px;
     }
     .process .top li {
       width: 140px;
@@ -1537,26 +1609,28 @@ export default {
       position: absolute;
       bottom: 0;
       padding: 0;
+      width: 500px;
       .link-box {
+        margin: 0 10px;
         padding: 20px 0px;
         position: relative;
         top: 1px;
         padding-left: 10px;
         cursor: pointer;
         i {
-          width: 20px;
-          height: 20px;
+          width: 16px;
+          height: 16px;
           display: inline-block;
-          background: url('~assets/image/detail/link.png') no-repeat center;
+          background: url('~assets/image/detail/link2.png') no-repeat center;
           background-size: contain;
           position: relative;
-          top: 5px;
+          top: 4px;
           margin-right: 5px;
         }
         &:hover {
           color: $color-blue;
           i {
-            background-image: url('~assets/image/detail/link_hover.png');
+            background-image: url('~assets/image/detail/link2_hover.png');
           }
           ul {
             color: #555;
@@ -1584,6 +1658,110 @@ export default {
               }
             }
           }
+          &:before {
+            position: absolute;
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: url('~assets/image/detail/arrow_blue.png') no-repeat;
+            right: -16px;
+            top: 50%;
+            margin-top: -5px;
+            background-size: contain;
+          }
+        }
+        &:before {
+          position: absolute;
+          content: '';
+          width: 10px;
+          height: 10px;
+          background: url('~assets/image/detail/arrow.png') no-repeat;
+          right: -16px;
+          top: 50%;
+          margin-top: -5px;
+          background-size: contain;
+        }
+        .bar {
+          position: absolute;
+          width: 1px;
+          height: 16px;
+          top: 50%;
+          right: -35px;
+          margin-top: -8px;
+          background: rgba(216, 216, 216, 1);
+          &.left {
+            right: auto;
+            left: -4px;
+          }
+        }
+      }
+      .qrcode-box {
+        left: 15px;
+        i {
+          background-image: url('~assets/image/detail/qrcode.png');
+        }
+        ul {
+          height: 263px;
+          width: max-content;
+          left: -36px;
+          li {
+            padding: 0;
+            margin: 0;
+            height: auto;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+            img {
+              display: block;
+              width: 100px;
+              height: 100px;
+              margin: 0 auto;
+            }
+            &:hover {
+              background: #fff;
+            }
+            p {
+              font-size: 16px;
+              color: #222;
+              padding: 0;
+            }
+            span {
+              color: #555;
+              font-size: 14px;
+            }
+            a {
+              cursor: pointer;
+              position: static;
+              margin: 0;
+              color: #222;
+              display: inline-block;
+              width: 120px;
+              height: 34px;
+              line-height: 34px;
+              background: rgba(255, 208, 33, 1);
+              border-radius: 20px;
+            }
+          }
+          li.sub {
+            position: relative;
+            &::before {
+              content: '';
+              top: 50%;
+              margin-top: -80px;
+              position: absolute;
+              width: 1px;
+              height: 160px;
+              background: rgba(226, 226, 226, 1);
+              border-radius: 1px;
+              left: -3px;
+            }
+          }
+        }
+        &:hover i {
+          background-image: url('~assets/image/detail/qrcode_hover.png');
+        }
+        &:hover ul li:hover {
+          color: inherit;
         }
       }
     }
@@ -1663,12 +1841,15 @@ export default {
       padding: 0 17px;
       a {
         position: absolute;
-        left: 125px;
+        left: 97px;
         top: 50%;
         margin-top: -26px;
         .el-button {
           position: static;
           padding: 7px 10px;
+          padding: 0;
+          width: 50px;
+          height: 24px;
         }
       }
       i {
@@ -1686,15 +1867,42 @@ export default {
         padding: 7px 10px;
         position: absolute;
         top: 50%;
-        margin-top: -14px;
+        margin-top: -12px;
         right: 17px;
+        padding: 0;
+        width: 70px;
+        height: 24px;
       }
       &:hover {
         background: rgba(233, 235, 255, 1);
       }
-      &.isSwitch a .el-button {
-        padding: 7px 35px;
-      }
+    }
+    i {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      background: url('~assets/image/detail/page.png') no-repeat center;
+      background-size: contain;
+      position: absolute;
+      left: 17px;
+      top: 50%;
+      margin-top: -10px;
+    }
+    .el-button {
+      padding: 7px 10px;
+      position: absolute;
+      top: 50%;
+      margin-top: -12px;
+      right: 17px;
+      padding: 0;
+      width: 70px;
+      height: 24px;
+    }
+    &.isSwitch a .el-button {
+      padding: 7px 35px;
+      text-align: center;
+      padding: 0;
+      width: 123px;
     }
   }
 }
@@ -1837,7 +2045,14 @@ export default {
     }
   }
 }
-
+.btm {
+  width: 100%;
+  height: 40px;
+  .switch {
+    float: right;
+    margin: 10px 0;
+  }
+}
 .item.base .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/base.png');
@@ -1884,45 +2099,45 @@ export default {
   width: 80px;
   background-image: url('~assets/image/detail/tools-survey.png');
 }
+
 .item.redpack .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/tools_redpack.png');
 }
+
 .item.goods .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/tools_good.png');
 }
+
 .item.cards .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/tools_cards.png');
 }
-.item.record .card .pic {
-  width: 80px;
-  background-image: url('~assets/image/detail/playback.png');
-}
-.item.statics .card .pic {
-  width: 80px;
-  background-image: url('~assets/image/detail/statics.png');
-}
-.item.aud .card .pic {
-  width: 80px;
-  background-image: url('~assets/image/detail/aud.png');
-}
-
-.btm {
-  width: 100%;
-  height: 40px;
-  .switch {
-    float: right;
-    margin: 10px 0px;
+.browser-help {
+  text-align: center;
+  img {
+    display: block;
+    width: 80px;
+    // background-image: url('~assets/image/detail/playback.png');
+    margin: 10px auto;
   }
-  .more {
-    position: relative;
+  span {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
   }
-  .show-more {
-    position: absolute;
-    top: 100%;
-    right: 0;
+  .tip-info {
+    a {
+      color: $color-blue;
+      text-decoration: underline;
+      &:hover {
+        color: $color-blue-hover;
+      }
+      &:active {
+        color: $color-blue-active;
+      }
+    }
   }
 }
 </style>

@@ -179,7 +179,7 @@
                  :header='messageBoxTitle'
                  :class="[messageBoxType === 'seeState' ? 'v-state' : '']">
       <div class="pop-phone"
-           v-if="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
+           v-show="messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone')">
         <p class="v-explain"
            :style="{color:fontColor}">
           <i class="iconfont icon-duihao"
@@ -202,7 +202,7 @@
                    :max-length="11"
                    :errorTips="errorTips.newPhone"
                    @focus="phoneFocus('newphone')"></com-input>
-        <div id="captcha"
+        <div id="captcha" style="height: 40px;" gg
              :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode"
                    placeholder="输入验证码"
@@ -391,7 +391,10 @@ export default {
       isContainNum: 0,
       isContainCount: 0,
       phoneCodeError: false, // 验证码错误是否显示
-      phoneCodeTip: '' // 验证码错误提示
+      phoneCodeTip: '', // 验证码错误提示
+      captchaHeight: {
+        height: '40px'
+      }
     }
   },
   mounted () {
@@ -696,10 +699,11 @@ export default {
       this.$get(userService.GET_INDUSTRIES, data).then((res) => {
         this.industry = res.data
         this.changeState[type] = true
+        // this.selectParentId = 40
         for (let i = 0; i < this.industry.length; i++) {
           for (let j = 0; j < this.industry[i].items.length; j++) {
-            if (this.industry[i].items[j].industryId === this.selectChildId) {
-              this.selectParentId = this.industry[i].items[j].industryPid
+            if (this.industry[i].items[j].industryId === this.selectChildId + '') {
+              this.selectParentId = parseInt(this.industry[i].items[j].industryPid)
             }
           }
         }
@@ -1091,7 +1095,7 @@ export default {
   .v-account-title {
     font-size: 24px;
     line-height: 60px;
-    margin-top: 12px;
+    margin-top: 32px;
     margin-bottom: 7px;
     color: #222;
   }
@@ -1274,8 +1278,8 @@ export default {
     }
     .v-error {
       position: absolute;
-      top: 266px;
-      left: 20px;
+      top: 283px;
+      left: 29px;
       color: #fc5659;
     }
     .phone-code-btn {
@@ -1369,9 +1373,6 @@ export default {
       border-radius: 4px;
       vertical-align: middle;
     }
-  }
-  #captcha {
-    height: 40px;
   }
 }
 </style>

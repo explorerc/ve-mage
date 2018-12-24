@@ -4,17 +4,34 @@ $color-ui-components:#4B5AFE;
   .el-input__inner {
     border: none;
     background-color: transparent;
+    padding-right: 33px;
   }
-  color: #555;
+  color: #222;
   input{
-    color: #555;
+    color: #222;
   }
+  .el-input .el-select__caret {
+    color: #222;
+    &.el-icon-arrow-up:before {
+      color: #555;
+      font-family: 'iconfont';
+      content: "\e610";
+    }
+  }
+}
+.el-select__caret.el-icon-arrow-up:before {
+  font-family: 'iconfont';
+  content: "\e610";
+}
+.el-icon-arrow-down:before {
+  font-family: 'iconfont';
+  content: "\e6b0";
 }
 .el-select-dropdown {
   z-index: 9999 !important;
 }
 .webinar-list-select {
-    top:126px !important;
+    top:146px !important;
 }
 .live-mager .el-select-dropdown{
   .popper__arrow{
@@ -86,6 +103,7 @@ $color-ui-components:#4B5AFE;
 }
 .el-button {
   font-weight: 400;
+  background-color: transparent;
 }
 .el-button--text:active {
   color:$color-default;
@@ -236,7 +254,15 @@ textarea::-webkit-input-placeholder {
 .el-pagination {
   text-align: center;
 }
-
+.el-checkbox__inner{
+ background-color: transparent;
+}
+.el-input__inner {
+  background-color: transparent;
+}
+.el-button.is-disabled {
+  background-color: transparent;
+}
 // 修改复选框的颜色
 .el-checkbox__input.is-checked .el-checkbox__inner {
   background-color: $color-blue-active;
@@ -246,10 +272,6 @@ textarea::-webkit-input-placeholder {
   border-color: $color-blue;
 }
 
-// 去掉搜索框的背景色
-.com-input input {
-  background-color: transparent !important;
-}
 // 去掉分页的文字加粗
 .el-pagination.is-background .el-pager li {
   font-weight: 400;

@@ -473,6 +473,8 @@ export default {
   }
   .pond-title {
     // border-bottom: 1px solid $color-bd;
+    margin-top: 30px;
+    margin-bottom: 5px;
     line-height: 60px;
     span.title {
       display: inline-block;

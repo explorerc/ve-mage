@@ -20,12 +20,21 @@
               <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入微信内容" :max-length="100" :error-tips="errorData.msgError" ></com-input>
             </div>
           </div>
+          <div class="from-row">
+            <div class="from-title"><i class="star"></i>详情跳转：</div>
+            <div class="from-content" >
+                <el-radio v-model="hrefSetting"  label="GUIDE">活动引导页</el-radio>
+                <el-radio v-model="hrefSetting"  label="WEB" v-show='siteOpen'>活动官网</el-radio>
+                <el-radio v-model="hrefSetting"  label="CUSTOM">自定义</el-radio>
+                <com-input v-if="hrefSetting === 'CUSTOM'" :value.sync="hrefValue" placeholder="请输入有效的链接以http://或https://开头"  class='href-box' :error-tips="errorData.hrefError" @focus="errorData.hrefError=''"></com-input>
+            </div>
+          </div>
           <div class="from-row" style='padding:4px 12px;'>
             <div class="from-title">收信人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
               <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
-              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
+              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -89,6 +98,7 @@
 </template>
 
 <script>
+import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import userService from 'src/api/user-service'
 import chooseGroup from '../com-chooseGroup'
@@ -112,6 +122,7 @@ export default {
       tabValue: 1,
       searchTitle: '',
       titleValue: '',
+      hrefValue: '',
       groupIdx: 0,
       tagIdx: 0,
       tplOptions: [{
@@ -133,6 +144,7 @@ export default {
       // }],
       // sendValue: '',
       sendSetting: 'SEND',
+      hrefSetting: 'GUIDE',
       wxContent: '',
       qrImgurl: '',
       pickDate: false,
@@ -153,6 +165,7 @@ export default {
       selectedTagListStr: '',
       selectPersonShow: false,
       errorData: {
+        hrefError: '',
         titleError: '',
         msgError: '',
         tagError: ''
@@ -168,7 +181,8 @@ export default {
       changed: 0,
       countBalance: 0,
       sendBalance: 0,
-      clicked: false
+      clicked: false,
+      siteOpen: false
     }
   },
   created () {
@@ -205,6 +219,7 @@ export default {
     }])
   },
   mounted () {
+    this.initSite()
     if (!this.accountInfo.businessUserId) {
       this.storeJoininfo().then(() => {
         this.initSdk()
@@ -250,7 +265,9 @@ export default {
         tagId: this.tagIdStr,
         status: this.sendSetting.toLowerCase(),
         desc: this.wxContent,
-        planTime: this.date
+        planTime: this.date,
+        urlType: this.hrefSetting,
+        customUrl: this.hrefSetting === 'CUSTOM' ? this.hrefValue : ''
       }
       if (!this.formValid()) {
         return false
@@ -415,9 +432,33 @@ export default {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
       // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
+      // if (this.hrefSetting === 'CUSTOM') {
+      //   this.errorData.hrefError = this.hrefValue.length ? '' : '请输入链接'
+      //   const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+      //   // reg.test(this.hrefValue) ? this.errorData.hrefError = '' : this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+      //   if (reg.test(this.hrefValue)) {
+      //     this.errorData.hrefError = ''
+      //   } else {
+      //     this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+      //   }
+      // }
       if (this.titleValue.length && this.wxContent.length) {
-        this.isValided = true
-        return true
+        if (this.hrefSetting === 'CUSTOM') {
+          const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+          // reg.test(this.hrefValue) ? this.errorData.hrefError = '' : this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+          if (reg.test(this.hrefValue)) {
+            this.errorData.hrefError = ''
+            this.isValided = true
+            return true
+          } else {
+            this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+            this.isValided = false
+            return false
+          }
+        } else {
+          this.isValided = true
+          return true
+        }
       } else {
         this.isValided = false
         return false
@@ -467,6 +508,17 @@ export default {
     async storeJoininfo () {
       await this.$get(userService.GET_ACCOUNT).then((res) => {
         this.setAccountInfo(res.data)
+      })
+    },
+    initSite () {
+      this.$get(brandService.GET_SITE_DATA, {
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.siteOpen = true
+        } else {
+          this.siteOpen = false
+        }
       })
     }
   },
@@ -536,6 +588,10 @@ export default {
     bottom: 7px;
     right: 7px;
   }
+  .msg-tips {
+    top: 4px;
+    left: 5px;
+  }
   // height: 730px;
   position: relative;
   .select-receiver {
@@ -600,6 +656,12 @@ export default {
         }
       }
     }
+  }
+  .href-box {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    width: 440px;
   }
 }
 

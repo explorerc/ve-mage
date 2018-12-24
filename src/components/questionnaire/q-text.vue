@@ -95,6 +95,7 @@ export default {
 <style scoped lang="scss">
 .q-edit-content {
   width: 90%;
+  position: relative;
   /deep/ {
     .com-input {
       &.code {
@@ -111,8 +112,8 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 15px;
-        right: 35px;
+        bottom: 0px;
+        right: 0px;
         height: 40px;
         line-height: 39px;
         border-color: #ffd021;

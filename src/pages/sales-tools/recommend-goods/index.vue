@@ -35,7 +35,7 @@
               </div>
             </td>
             <td>{{row.title}}</td>
-            <td></td>
+            <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
             <td>
               <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
               <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
@@ -208,7 +208,7 @@
       text-align: right;
       line-height: 60px;
       margin-bottom: 7px;
-      margin-top: 12px;
+      margin-top: 32px;
       p {
         float: left;
         height: 60px;
@@ -223,6 +223,7 @@
         height: 30px;
         line-height: 30px;
       }
+
       .btn-box {
         position: absolute;
         top: 50%;
@@ -262,10 +263,10 @@
             border-right-color: transparent !important;
             border-left-color: transparent !important;
             .btn-box {
-              position:relative;
+              position: relative;
             }
             &:nth-of-type(1) {
-              width: 5%;
+              width: 7%;
             }
             &:nth-of-type(2) {
               width: 10%;
@@ -278,7 +279,7 @@
               width: 10%;
             }
             &:nth-of-type(6) {
-              width:15%;
+              width: 15%;
             }
             &:nth-of-type(7) {
               width: 25%;
@@ -291,20 +292,20 @@
             }
             .move-btn {
               span {
-                position:absolute;
-                top:50%;
-                left:50%;
-                transform:translate(-50%,-50%);
-                display:inline-block;
-                width:32px;
-                height:32px;
-                color:transparent;
-                background:url('~assets/image/move-icon.svg') no-repeat center;
-                &:hover{
-                  opacity:0.8;
+                position: absolute;
+                top: 50%;
+                left: 140px;
+                transform: translate(-50%, -50%);
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                color: transparent;
+                background: url('~assets/image/move-icon.svg') no-repeat center;
+                background-size: contain;
+                &:hover {
+                  opacity: 0.8;
                 }
               }
-              
             }
             .cover_img {
               margin: 10px auto 10px 0;

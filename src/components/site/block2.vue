@@ -3,7 +3,7 @@
     <div ref="target" class="block2-content">
       <el-carousel trigger="click" :class="widthClass" :autoplay="autoplay" :height="height" :interval="value.loop">
         <el-carousel-item :class="item.type"  v-for="(item,index) in value.list" :key="'block2_item_'+index">
-          <a target="_black" :href="item.hrefType === '_sub' ? `${PC_HOST}subscribe/${id}` : value.link | voidLink" >
+          <a target="_black" :href="item.hrefType === '_sub' ? `https:${PC_HOST}subscribe/${id}` : value.link | voidLink" >
             <div v-if="item.bgColor" class="left-area" :style="{backgroundColor:item.bgColor}"></div>
             <img v-if="item.img" class="img" :src="item.img.indexOf('mp')===0?host+item.img:item.img">
             <div class="content"  >
@@ -60,7 +60,7 @@
                 <el-radio v-model="item.hrefType" label="_define">自定义链接</el-radio>
               </div>
               <com-input placeholder="跳转链接" v-model="item.link"></com-input>
-              <label class='tips'>链接需要附带http头协议</label>
+              <label class='tips' >链接需要附带http头协议</label>
             </div>
              <div class='clearfix show-btn'>
               <label class='normal'>是否显示按钮</label>
@@ -84,9 +84,9 @@
                   <el-radio v-model="item.btn.hrefType" label="_sub">活动引导页链接</el-radio>
                   <el-radio v-model="item.btn.hrefType" label="_define">自定义链接</el-radio>
                 </div>
-                <com-input placeholder="跳转链接" :value="`${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.btn.hrefType === '_sub'"></com-input>
+                <com-input placeholder="跳转链接" :value="`https:${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.btn.hrefType === '_sub'"></com-input>
                 <com-input placeholder="跳转链接" @focus="inpError = ''" @blur="inpBlur(item.btn.link)" :error-tips="inpError" :value.sync="item.btn.link" v-else></com-input>
-                <label class='tips'>链接需要附带http头协议</label>
+                <label class='tips' :class="{'errorTips':inpError.length > 0 && item.btn.hrefType === '_define'}">链接需要附带http头协议</label>
               </div>
               <div class='open-way clearfix'>
                 <label class='normal'>按钮打开方式</label>
@@ -293,6 +293,10 @@ export default {
         color: $color-gray;
         position: relative;
         bottom: 13px;
+        &.errorTips {
+          position: relative;
+          bottom: 0;
+        }
       }
       &.el-radio {
         margin-left: 4px;

@@ -69,6 +69,7 @@
           <div class="page-pagination" v-if="total > searchParams.pageSize">
             <ve-pagination :total="total"
                            :pageSize="searchParams.pageSize"
+                           v-if="iscurrentPage"
                            :currentPage="currentPage"
                            @changePage="changePage"/>
           </div>
@@ -244,7 +245,8 @@
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
         wxDisabled: false, // 微信按钮不禁用
-        dialogTitle: '充值'
+        dialogTitle: '充值',
+        iscurrentPage: true // 刷新分页组件
       }
     },
     filters: {
@@ -448,19 +450,30 @@
         this.modifyMoneyShow = true
         this.payway = '支付宝'
         this.payType = 'ALIPAY'
+      },
+      // 刷新分页组件
+      currentPageReset () {
+        this.iscurrentPage = false
+        this.$nextTick(() => {
+          this.iscurrentPage = true
+        })
       }
     },
     watch: {
-      searchParams: {
+      'searchParams.type': {
         handler (val, oldValue) {
-          if (val.type === 'RECHARGE') {
+          if (val === 'RECHARGE') {
             this.searchLabel = '很抱歉，没有搜索到账户充值的结果'
-          } else if (val.type === 'RED_PACK') {
+            this.currentPageReset()
+          } else if (val === 'RED_PACK') {
             this.searchLabel = '很抱歉，没有搜索到红包消费的结果'
-          } else if (val.type === 'RE_RED_PACK') {
+            this.currentPageReset()
+          } else if (val === 'RE_RED_PACK') {
             this.searchLabel = '很抱歉，没有搜索到红包返回的结果'
+            this.currentPageReset()
           } else {
             this.searchLabel = '暂无数据'
+            this.currentPageReset()
           }
         },
         deep: true

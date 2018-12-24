@@ -10,7 +10,8 @@ const liveMagerModules = {
       title: '',
       content: '',
       desc: '',
-      senderName: ''
+      senderName: '',
+      urlType: ''
     }
   },
   getters: {

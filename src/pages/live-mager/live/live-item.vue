@@ -13,27 +13,27 @@
       <span :title="liveData.title">{{liveData.title}}</span>
       <span class="time">{{liveData.startTime}}</span>
     </div>
-    <div class="live-bottom">
+    <div class="live-bottom" @click.stop="">
       <!-- 开播 -->
       <span class="item" @click.stop="handleClick(action.play)" title="开播">
-        <i class="iconfont icon-shipin"></i>
+        <i class="ico ico-kaibo"></i><span>开播</span>
       </span>
       <!-- 推广 -->
       <span class="item" @click.stop="handleClick(action.share)" title="推广">
-        <i class="iconfont icon-fasong"></i>
+        <i class="ico ico-tuiguang"></i><span>推广</span>
       </span>
       <!-- 详情 -->
       <span class="item" @click.stop="handleClick(action.info)" title="详情">
-        <i class="iconfont icon-xiangqingjieshao"></i>
+        <i class="ico ico-xiangqing"></i><span>详情</span>
       </span>
       <!-- 更多 -->
-      <span class="item" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">
-        <i class="iconfont icon-gengduo"></i>
+      <span class="item item-more" @mouseover.stop="showMore=true" @mouseout.stop="showMore=false">
+        <i class="ico ico-gengduo"></i>
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众</span>
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">数据</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众列表</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">活动数据</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -200,12 +200,14 @@
       display: inline-block;
       float: left;
       margin: 0 20px;
+      margin-right: 10px;
       text-align: center;
       cursor: pointer;
+      color: #555;
       .iconfont {
+        vertical-align: middle;
         color: $color-font-icon;
         &:hover {
-          color: $color-font-hover;
           span {
             color: $color-font;
           }
@@ -213,15 +215,17 @@
       }
       .icon-shipin {
         font-size: 24px;
+        vertical-align: -3px;
       }
       &:last-child {
         float: right;
+        margin-right: 15px;
       }
       .live-more {
         position: absolute;
         top: 33px;
         right: -1px;
-        width: 25%;
+        width: 130px;
         background-color: #fff;
         border: solid 1px #e5e5e5;
         box-sizing: content-box;
@@ -230,8 +234,56 @@
         span {
           display: block;
           text-align: center;
+          height: 40px;
+          line-height: 40px;
           &:hover {
             color: $color-font-hover;
+          }
+        }
+      }
+      .ico {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url('~assets/image/list/live.svg') no-repeat center;
+        background-size: contain;
+        & ~ span {
+          padding-left: 10px;
+          position: relative;
+          bottom: 4px;
+        }
+        &.ico-tuiguang {
+          background-image: url('~assets/image/list/fly.svg');
+        }
+        &.ico-xiangqing {
+          background-image: url('~assets/image/list/detail.svg');
+          width: 16px;
+          height: 18px;
+        }
+        &.ico-gengduo {
+          background-image: url('~assets/image/list/more.svg');
+        }
+      }
+      &:hover {
+        color: #4b5afe;
+        .ico {
+          background-image: url('~assets/image/list/live_blue.svg');
+        }
+        .ico-tuiguang {
+          background-image: url('~assets/image/list/fly_blue.svg');
+        }
+        .ico-xiangqing {
+          background-image: url('~assets/image/list/detail_blue.svg');
+        }
+        .ico-gengduo {
+          background-image: url('~assets/image/list/more_blue.svg');
+        }
+      }
+      &.item-more:hover {
+        span {
+          color: #555;
+          &:hover {
+            color: #4b5afe;
           }
         }
       }

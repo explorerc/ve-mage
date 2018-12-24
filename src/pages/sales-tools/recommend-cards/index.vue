@@ -134,12 +134,12 @@
 @import '~assets/css/mixin.scss';
 @import './common.scss';
 
-/*.back-btn {*/
-  /*height: 34px !important;*/
-  /*line-height: 34px !important;*/
-  /*float: right;*/
+.back-btn {
+  height: 34px !important;
+  line-height: 34px !important;
+  float: right;
   /*width: 120px !important;*/
-/*}*/
+}
 .card-list-page {
   .el-table thead {
     height: 36px;
@@ -148,7 +148,7 @@
   .top-bar {
     position: absolute;
     top: 50%;
-    right: 134px;
+    right: 99px;
     transform: translateY(-50%);
     .btn {
       padding: 0;

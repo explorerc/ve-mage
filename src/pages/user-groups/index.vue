@@ -54,20 +54,17 @@
           <template slot-scope="scope">
             <el-button class="btns"
                        type="text"
-                       size="mini"
                        @click="handleDetails(scope.row.group_id,scope.row.type)">详情
             </el-button>
             <el-button class="btns"
                        v-if="scope.row.type !== 1"
                        type="text"
-                       size="mini"
                        @click="handleEdit(scope.row.group_id,scope.row.title,scope.row.describe,scope.row.type,scope.row.rules)">
               编辑
             </el-button>
             <el-button class="btns"
                        v-if="scope.row.type !== 1"
                        type="text"
-                       size="mini"
                        @click="handleDelete(scope.row.group_id, scope.row.type,scope.$index)">删除
             </el-button>
           </template>
@@ -433,7 +430,7 @@
     }
     .operation {
       overflow: hidden;
-      margin-top: 25px;
+      margin-top: 45px;
       margin-bottom: 20px;
       h4 {
         display: inline-block;

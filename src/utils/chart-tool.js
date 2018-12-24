@@ -34,8 +34,8 @@ const lineColor = '#e2e2e2'
 const grid = {
   left: '2%',
   right: 30,
-  bottom: '1%',
-  top: 20
+  bottom: '36',
+  top: 10
 }
 const AxisValue = {
   type: 'value',
@@ -120,8 +120,8 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       }
     },
     legend: {
-      top: -2,
-      right: 10,
+      bottom: -5,
+      right: 'center',
       ...legendGrid,
       data: data.legendData
     },
@@ -208,8 +208,8 @@ export function lines (id, data, colorParam, gridData) {
     },
     legend: {
       data: legendData,
-      right: 10,
-      top: -2,
+      right: 'center',
+      bottom: -5,
       itemHeight: 10
     },
     grid: {
@@ -237,6 +237,9 @@ export function lines (id, data, colorParam, gridData) {
     },
     yAxis: {
       ...AxisValue,
+      max: (value) => {
+        return value.max || 100
+      },
       splitArea: {
         show: false
         // ,
@@ -659,8 +662,8 @@ export function barAndLine (id, data, gridData) {
       }
     },
     legend: {
-      top: -16,
-      right: 10,
+      right: 'center',
+      bottom: -5,
       data: legendData
     },
     grid: {
@@ -685,6 +688,9 @@ export function barAndLine (id, data, gridData) {
     }],
     yAxis: {
       ...AxisValue,
+      max: (value) => {
+        return value.max || 100
+      },
       splitArea: {
         show: false
         // , areaStyle: {

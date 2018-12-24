@@ -150,7 +150,7 @@
         </div>
       </div>
     </div>
-    <div class="bottom-fix">
+    <div class="bottom-fix" v-if='editStatus'>
       <div class="btn-group">
         <button @click="doReset" class='default-button' v-if="!isPreview&&!ptid&&cType==='tp'">重置</button>
         <button @click="doSave" class='primary-button' v-if="!isPreview&&!ptid&&cType==='tp'">下一步</button>
@@ -192,6 +192,7 @@ export default {
       keyWordsError: '',
       siteDes: '',
       icon: '',
+      editStatus: false,
       0: '',
       uploadErrorMsg: '',
       options: [
@@ -262,6 +263,11 @@ export default {
       this.isPreview = true
     }
     this.init()
+    setTimeout(() => {
+      if (document.getElementsByClassName('isEdit').length) {
+        this.editStatus = true
+      }
+    }, 1000)
   },
   methods: {
     copyLink () {

@@ -63,6 +63,9 @@
                          placeholder="请输入短信内容"
                          :max-length="100"
                          :error-tips='errorData.msgError'></com-input>
+                         <div class="href-box" :class="{'siteClose':!siteOpen}">
+                          <span class='add-href' @click='addHref(`https:${PC_HOST}site/${activitId}?refer=2`)'>添加活动官网链接</span><span class='add-href' @click='addHref(`https:${PC_HOST}subscribe/${activitId}?refer=2`)'>添加活动引导页链接</span>
+                         </div>
             </div>
           </div>
           <div class="from-row">
@@ -142,6 +145,7 @@
 </template>
 
 <script>
+import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
@@ -161,6 +165,7 @@ export default {
       titleValue: '',
       groupIdx: 0,
       tagIdx: 0,
+      PC_HOST: process.env.PC_HOST,
       tplOptions: [{
         value: 1,
         label: '活动邀请'
@@ -213,13 +218,15 @@ export default {
       changed: 0,
       countBalance: 0,
       sendBalance: 0,
-      clicked: false
+      clicked: false,
+      siteOpen: false
     }
   },
   created () {
     this.getLimit()
     this.queryGroupList()
     this.queryTagList()
+    this.initSite()
     EventBus.$emit('breads', [{
       title: '活动管理'
     }, {
@@ -449,6 +456,25 @@ export default {
         this.isValided = false
         return false
       }
+    },
+    addHref (url) {
+      this.$post(noticeService.GET_SHOR_URL, {
+        url: url
+      }).then((res) => {
+        console.log(res)
+        this.msgContent += ' ' + res.data.shortUrl + ' '
+      })
+    },
+    initSite () {
+      this.$get(brandService.GET_SITE_DATA, {
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.siteOpen = true
+        } else {
+          this.siteOpen = false
+        }
+      })
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -545,8 +571,43 @@ export default {
 
 .edit-msg-page /deep/ {
   .com-input .limit.area {
-    bottom: 7px;
+    bottom: 37px;
     right: 7px;
+  }
+  .href-box {
+    position: absolute;
+    bottom: 4px;
+    left: 1px;
+  }
+  .add-href {
+    display: inline-block;
+    width: 219px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    background: rgba(249, 249, 249, 1);
+    border-radius: 0px 0px 4px 4px;
+    border: 1px solid rgba(226, 226, 226, 1);
+    border-right: none;
+    border-bottom: none;
+    &:nth-of-type(1) {
+      border-left: none;
+    }
+    text-align: center;
+    &:hover {
+      color: #4b5afe;
+    }
+  }
+  .href-box.siteClose {
+    .add-href {
+      &:nth-of-type(1) {
+        display: none;
+      }
+      &:nth-of-type(2) {
+        width: 438px;
+        border-left: none;
+      }
+    }
   }
   // min-height: 730px;
   position: relative;
@@ -673,7 +734,7 @@ export default {
   width: 440px;
 }
 .msg-content {
-  height: 90px;
+  height: 180px;
 }
 .modal-box {
   width: 700px;

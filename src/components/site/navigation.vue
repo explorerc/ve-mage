@@ -3,7 +3,7 @@
     <div ref="target" class="navigation-content">
       <ul class="nav-group">
         <li class="nav-item" v-for="(item,index) in value.data.list" :key="index">
-          <a :style="{color:value.data.fontColor}" :target="item.type" :href="item.link | voidLink">{{item.text}}</a>
+          <a :style="{color:value.data.fontColor}" :target="item.type" :href="item.hrefType === '_sub' ? `https:${PC_HOST}subscribe/${id}` : item.link | voidLink" >{{item.text}}</a>
         </li>
       </ul>
     </div>
@@ -24,13 +24,20 @@
             </div>
             <div>
               <label>跳转链接</label>
-              <com-input placeholder="输入跳转链接" @focus="inpError = ''" @blur="inpBlur(item.link)" :error-tips="inpError" :value.sync="item.link"></com-input>
+              <div class="radio-box">
+                <el-radio v-model="item.hrefType" label="_sub">活动引导页链接</el-radio>
+                <el-radio v-model="item.hrefType" label="_define">自定义链接</el-radio>
+              </div>
+              <com-input placeholder="输入跳转链接" :value="`https:${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.hrefType === '_sub'"></com-input>
+              <com-input placeholder="输入跳转链接" @focus="inpError = ''" @blur="inpBlur(item.link)" :error-tips="inpError" :value.sync="item.link" v-else></com-input>
               <label class='tips ' :class="{'errorTips':inpError.length > 0}">链接需要附带http头协议</label>
             </div>
             <div>
               <span style="margin-right:20px;margin-left:5px;">打开方式</span>
-              <el-radio v-model="item.type" label="_blank">新窗口</el-radio>
-              <el-radio v-model="item.type" label="_self">当前窗口</el-radio>
+              <div class="radio-box" style='margin-top:10px;'>
+                <el-radio v-model="item.type" label="_blank">新窗口</el-radio>
+                <el-radio v-model="item.type" label="_self">当前窗口</el-radio>
+              </div>
             </div>
           </div>
         </li>
@@ -53,6 +60,8 @@ export default {
   },
   data () {
     return {
+      id: this.$route.params.id,
+      PC_HOST: process.env.PC_HOST,
       active: -1,
       inpError: ''
     }

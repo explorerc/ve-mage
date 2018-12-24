@@ -805,7 +805,7 @@ export default {
           let st = setTimeout(() => {
             clearTimeout(st)
             this.isSaveDisabled = false
-          }, 3000)
+          }, 2000)
         })
       }
     },
@@ -898,7 +898,7 @@ export default {
   .v-questionaire-title {
     position: relative;
     // border-bottom: 1px solid $color-bd;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
     line-height: 60px;
     span.title {
       display: inline-block;
@@ -954,7 +954,7 @@ export default {
   }
   .content {
     position: absolute;
-    top: 90px;
+    top: 70px;
     left: 0;
     right: 0;
     bottom: 80px;

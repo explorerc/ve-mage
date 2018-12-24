@@ -50,5 +50,7 @@ export default {
   // 自动化通知删除通知
   POST_DELETE_AUTO_TASK: '/expand/notice/delete-task',
   // 自动化通知发送测试短信
-  POST_AUTO_SEND_TEST: '/expand/notice/test-send'
+  POST_AUTO_SEND_TEST: '/expand/notice/test-send',
+  // 添加短链接
+  GET_SHOR_URL: '/common/wechat/short-url'
 }
