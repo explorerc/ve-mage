@@ -9,9 +9,10 @@
       <div class="asset-header-item">
         <span>可用金额（元）
           <div class="btn-box">
-            <!-- <span class="add-money fr" @click="addMoney()">充值</span> -->
-            <el-button round class='default-button mini' @click="addMoney()">充值</el-button>
-            <el-button round class='default-button mini' @click="showWithdraw = true">提现</el-button>
+            <span class="add-money fr" @click="addMoney()">充值</span>
+            <!-- <span class="add-money fr" @click="showWithdraw = true">提现</span> -->
+            <!-- <el-button round class='default-button mini' @click="addMoney()">充值</el-button>
+            <el-button round class='default-button mini' @click="showWithdraw = true">提现</el-button> -->
           </div>
         </span>
         <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
@@ -459,6 +460,7 @@
       margin: 10px auto;
     }
     .asset-header-item {
+      position: relative;
       display: inline-block;
       width: calc((100% - 40px) / 3);
       height: 100%;
@@ -508,7 +510,8 @@
         .add-money {
           display: inline-block;
           width: 70px;
-          margin: -6px 40px 0 0 !important;
+          margin-left: 10px;
+          // margin: -6px 40px 0 0 !important;
           border: 1px solid #4b5afe;
           text-align: center;
           height: 30px;
@@ -525,6 +528,17 @@
             background-color: $color-default-active;
             border: 1px solid $color-default-hover;
           }
+        }
+      }
+      .btn-box {
+        position: absolute;
+        top: 0px;
+        right: 20px;
+        button {
+          padding: 0;
+          width: 80px;
+          height: 30px;
+          line-height: 30px;
         }
       }
     }
