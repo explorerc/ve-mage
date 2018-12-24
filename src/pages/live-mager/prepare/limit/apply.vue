@@ -492,7 +492,7 @@
 .live-title {
   .right-box {
     float: right;
-    margin-right: 110px;
+    margin-right: 80px;
     i {
       color: $color-blue;
     }
@@ -501,16 +501,17 @@
       height: 30px;
       line-height: 30px;
       position: relative;
-      margin-right: 20px;
+      margin-right: 10px;
       color: $color-font-sub;
       bottom: -3px;
     }
     button {
       padding: 0;
-      width: 100px;
+      /*width: 100px;*/
       height: 30px;
       line-height: 30px;
       margin-top: 17px;
+      padding: 0 20px;
     }
   }
 }

@@ -842,9 +842,10 @@ export default {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    right: 110px;
+    right: 80px;
     height: 30px;
     line-height: 30px;
+    padding: 0 20px;
   }
 }
 .status-default {

@@ -231,11 +231,11 @@ export default {
 .live-title {
   .right-box {
     float: right;
-    margin-right: 110px;
+    margin-right: 80px;
     .btn {
       margin: 17px 0;
-      padding: 0;
-      width: 120px;
+      padding: 0 20px;
+      /*width: 120px;*/
       height: 30px;
       line-height: 30px;
     }

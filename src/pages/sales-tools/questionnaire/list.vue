@@ -86,7 +86,6 @@
       <template v-else>
         <div class="empty-box">
           <p class="img"></p>
-          <p class='title'>问卷</p>
           <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p>
           <router-link :to="{ name: 'questionnaire', params: { activityId: activityId }}">
             <el-button class='primary-button'>新建问卷</el-button>
@@ -320,7 +319,8 @@ export default {
     }
     a {
       float: right;
-      width: 120px;
+      /*width: 120px;*/
+      padding: 0 20px;
       border: 1px solid #4b5afe;
       line-height: 28px;
       border-radius: 20px;
@@ -368,7 +368,7 @@ export default {
     .btn-box {
       position: absolute;
       top: 50%;
-      right: 100px;
+      right: 80px;
       transform: translateY(-50%);
 
     }
@@ -440,7 +440,7 @@ export default {
       .img {
         width: 150px;
         height: 150px;
-        margin: 0 auto;
+        margin: 0 auto 20px;
         border-radius: 500px;
         // background:rgba(245,245,245,1);
         box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);

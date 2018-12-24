@@ -319,8 +319,9 @@ export default {
   .create-button {
     height: 30px;
     line-height: 30px;
-    margin-right: 110px;
+    margin-right: 80px;
     margin-top: 17px;
+    padding: 0 20px;
     /*<!--position: relative;-->*/
     /*<!--top: 50%;-->*/
     /*<!--right: 110px;-->*/
@@ -332,7 +333,7 @@ export default {
   color: #888;
   font-size: 14px;
   line-height: 63px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .cg-status {

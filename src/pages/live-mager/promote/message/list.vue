@@ -244,13 +244,13 @@ export default {
     float: right;
     height: 60px;
     .btn {
-      width: 120px;
       height: 30px;
       line-height: 30px;
       position: absolute;
       top: 50%;
-      right: 110px;
+      right: 80px;
       transform: translateY(-50%);
+      padding: 0 20px;
     }
   }
 }

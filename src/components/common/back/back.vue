@@ -47,6 +47,7 @@ export default {
     top: 50%;
     right: 0;
     transform: translateY(-50%);
+    padding: 0 20px;
   }
 }
 </style>
