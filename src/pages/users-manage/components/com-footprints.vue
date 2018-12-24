@@ -336,11 +336,27 @@ export default {
 <style lang='scss' scoped>
 .v-footprints {
   .v-footprint {
-    .iconfont {
-      color: #779fff;
+    &:nth-child(1) {
+      .iconfont {
+        color: #9E86E8;
+      }
+    }
+    &:nth-child(2) {
+      .iconfont {
+        color: #FA6C6F;
+      }
+    }
+    &:nth-child(3) {
+      .iconfont {
+        color: #779FFF;
+      }
     }
   }
 }
+
+
+
+
 .v-record /deep/ {
   .ve-message-box__container {
     max-height: 562px;
