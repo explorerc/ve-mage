@@ -91,7 +91,7 @@
             <div class="from-row input-box">
               <div class="from-title">当前余额</div>
               <div class="from-content">
-                <span style="line-height: 20px">¥ {{billInfo.balance}}</span>
+                <span style="line-height: 20px">¥ {{(billInfo.balance * 1).toFixed(2)}}</span>
               </div>
 
             </div>
