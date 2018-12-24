@@ -55,7 +55,7 @@
           </div>
           <div class="condition">
             <span class="label">来源</span>
-            <el-select v-model="filterCondition.source" placeholder="请选择">
+            <el-select v-model="filterCondition.source" placeholder="请选择" style="width:200px;">
               <el-option
                 v-for="item in sources"
                 :key="item.value"
@@ -66,8 +66,10 @@
           </div>
           <div class="condition">
             <span class="label">参与场次</span>
-            <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数"
-                       :type="'number'"></com-input>
+            <com-input :value.sync="filterCondition.join_count"
+                       placeholder="请输入至少参与活动的次数"
+                       type="mobile"
+                       ></com-input>
           </div>
         </div>
         <div class='filter-item'>
@@ -108,7 +110,7 @@
           </div>
           <div class="condition">
             <span class="label">性别</span>
-            <el-select v-model="filterCondition.sex" placeholder="请选择">
+            <el-select v-model="filterCondition.sex" placeholder="请选择" style="width: 200px">
               <el-option
                 v-for="item in sexs"
                 :key="item.value"
@@ -119,7 +121,7 @@
           </div>
           <div class="condition">
             <span class="label">所属行业</span>
-            <el-select v-model="filterCondition.industry" placeholder="请选择">
+            <el-select v-model="filterCondition.industry" placeholder="请选择" style="width: 200px">
               <el-option
                 v-for="item in industrys"
                 :key="item.value"
@@ -1005,7 +1007,7 @@
         }
         .condition {
           display: inline-block;
-          margin-right: 60px;
+          margin-right: 30px;
           &:nth-last-child(1) {
             margin-right: 0;
           }

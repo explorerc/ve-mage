@@ -315,11 +315,16 @@ export default {
   font-size: 14px;
 }
 .live-title {
+  position: relative;
   .create-button {
     height: 30px;
     line-height: 30px;
     margin-right: 110px;
     margin-top: 17px;
+    /*<!--position: relative;-->*/
+    /*<!--top: 50%;-->*/
+    /*<!--right: 110px;-->*/
+    /*<!--transform: translateY(-50%);-->*/
   }
 }
 .send-box {

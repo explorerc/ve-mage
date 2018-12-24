@@ -327,6 +327,7 @@
         .chart-item{
           border: solid 1px #e2e2e2;
         }
+
       }
     }
   }

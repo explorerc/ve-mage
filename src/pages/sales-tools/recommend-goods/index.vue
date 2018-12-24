@@ -4,7 +4,7 @@
       <p>商品推荐</p>
       <com-back :url="`/liveMager/detail/${activity_id}`"></com-back>
       <div v-if="tableData.length>=1" class='btn-box'>
-        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看活动数据</com-button>
+        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看数据</com-button>
         <com-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </com-button>
@@ -229,6 +229,12 @@
         top: 50%;
         transform: translateY(-50%);
         right: 97px;
+        .add-goods {
+          width: 130px;
+          padding-left: 10px;
+          margin: 0 5px;
+        }
+
       }
     }
     .table-box {

@@ -85,6 +85,11 @@ export default {
           ret.left = '20px'
           ret.top = `${this.verticalOffset}px`
           break
+        case 'top-90':
+          ret.left = '50%'
+          ret.top = '90px'
+          ret.marginLeft = `-${this.halfWidth}px`
+          break
         default:
           break
       }

@@ -6,7 +6,6 @@
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
       <com-back></com-back>
       <button class="primary-button fr add-btn"
-              style="margin-top: 17px;"
               @click="addVideoClickShow" >添加视频
       </button>
     </div>
@@ -840,9 +839,12 @@ export default {
 @import 'assets/css/variable.scss';
 .live-title /deep/ {
   .add-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 110px;
     height: 30px;
     line-height: 30px;
-    margin-right: 110px;
   }
 }
 .status-default {

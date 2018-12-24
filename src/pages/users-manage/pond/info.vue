@@ -180,7 +180,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at?user.first_visited_at.substring(0,11):'-'}}
+                    {{user.first_visited_at?user.first_visited_at.substring(0,11).replace(/-/g,'.'):'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -188,7 +188,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at?user.last_visited_at.substring(0,11):'-'}}
+                    {{user.last_visited_at?user.last_visited_at.substring(0,11).replace(/-/g,'.'):'-'}}
                   </p>
                   <p class="v-title">
                     最近参会
@@ -656,7 +656,7 @@ export default {
           font-size: 14px;
           .v-title {
             color: #888;
-            line-height: 20px;
+            line-height: 34px;
             display: inline-block;
             vertical-align: top;
           }
@@ -664,7 +664,7 @@ export default {
             color: #222;
             word-break: break-all;
             max-width: 165px;
-            line-height: 20px;
+            line-height: 34px;
             display: inline-block;
             vertical-align: top;
             &:hover {

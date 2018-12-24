@@ -20,7 +20,7 @@
                style="position:absolute;opacity:0;">
         <p class='desc-label'>活动标签 : <span class="tag"
                                            v-for="item in tagList">{{item.name}}</span></p>
-        <p class='desc-label'>开播时间 : {{startTime}}</p>
+        <p class='desc-label'>开播时间 : {{startTime}} <em class='overdue-tag' v-if='overdue'>已过期</em></p>
         <p class="desc-label tool">活动状态 :
           <el-switch class='switch'
                      v-model="isPublished"
@@ -1765,6 +1765,18 @@
         }
       }
     }
+    .overdue-tag {
+      margin-left:10px;
+      color:#555;
+      font-size: 12px;
+      text-align: center;
+      display: inline-block;
+      width: 51px;
+      height: 20px;
+      line-height:20px;
+      border-radius: 10px;
+      border: 1px solid rgba(151, 151, 151, 1);
+    }
   }
   // ol {
   //   margin-top: 30px;
@@ -2119,7 +2131,8 @@
   img {
     display: block;
     width: 80px;
-    background-image: url('~assets/image/detail/playback.png');
+    // background-image: url('~assets/image/detail/playback.png');
+    margin: 10px auto;
   }
   span {
     display: block;

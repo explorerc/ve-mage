@@ -116,7 +116,11 @@ export function barPile (id, data, gridData, legendGrid, xName) {
         fontSize: '12'
       },
       axisPointer: {
-        type: 'shadow'
+        type: 'shadow',
+        shadowStyle: { // 阴影指示器样式设置
+          width: 'auto', // 阴影大小
+          color: 'rgba(150,150,150,0)' // 阴影颜色
+        }
       }
     },
     legend: {
@@ -424,8 +428,8 @@ export function barRadius (id, data) {
       },
       axisLabel: {
         rotate: 45,
-        fontSize: 10,
-        color: '#333'
+        fontSize: 12,
+        color: '#888'
       },
       data: xAxisData
     },

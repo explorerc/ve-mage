@@ -239,15 +239,18 @@ export default {
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 .live-title {
+  position: relative;
   .right-box {
     float: right;
-    margin-right: 110px;
+    height: 60px;
     .btn {
-      margin: 17px 0;
-      padding: 0;
       width: 120px;
       height: 30px;
       line-height: 30px;
+      position: absolute;
+      top: 50%;
+      right: 110px;
+      transform: translateY(-50%);
     }
   }
 }
