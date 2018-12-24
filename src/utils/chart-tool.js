@@ -49,8 +49,8 @@ const AxisValue = {
   },
   axisLabel: {
     textStyle: {
-      color: '#333',
-      fontSize: 10
+      color: '#888',
+      fontSize: 12
     }
   },
   axisTick: {
@@ -70,8 +70,8 @@ const AxisCategory = {
   },
   axisLabel: {
     textStyle: {
-      color: '#333',
-      fontSize: 10
+      color: '#888',
+      fontSize: 12
     }
   },
   axisTick: {
@@ -152,7 +152,7 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       },
       axisLabel: {
         textStyle: {
-          color: '#333',
+          color: '#888',
           fontSize: 12
         }
       },
@@ -305,7 +305,7 @@ export function pie (id, data) {
       label: {
         normal: {
           formatter: '{b}\n\n{d}%',
-          color: '#333'
+          color: '#888'
         }
       },
       data: data
@@ -346,7 +346,7 @@ export function pieOne (id, percent) {
             formatter: '{d}',
             textStyle: {
               fontSize: 30,
-              color: '#333'
+              color: '#888'
             }
           }
         }
@@ -393,9 +393,6 @@ export function barRadius (id, data) {
   let option = {
     tooltip: {
       trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      },
       textStyle: {
         fontSize: 12
       },
