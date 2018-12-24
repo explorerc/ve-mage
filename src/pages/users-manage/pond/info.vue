@@ -180,7 +180,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at?user.first_visited_at.substring(0,11):'-'}}
+                    {{user.first_visited_at?user.first_visited_at.substring(0,11).replace(/-/g,'.'):'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -188,7 +188,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at?user.last_visited_at.substring(0,11):'-'}}
+                    {{user.last_visited_at?user.last_visited_at.substring(0,11).replace(/-/g,'.'):'-'}}
                   </p>
                   <p class="v-title">
                     最近参会

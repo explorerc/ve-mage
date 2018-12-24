@@ -97,14 +97,20 @@
 </script>
 
 <style lang="scss" scoped>
+  .data-container {
+    /* 设备宽度大于 1600 */
+    @media all and (min-width: 1600px) {
+      width: 1366px;
+    }
+    /* 设备宽度小于 1600px */
+    @media all and (max-width: 1600px) {
+      width: 1019px;
+    }
+  }
 .data-container {
   margin: 40px auto;
   max-width: 1366px;
   color: #222;
-  /* 设备宽度大于 1600 */
-  @media all and (min-width: 1600px) {
-    width: 1366px;
-  }
   .title {
     font-size: 24px;
     line-height: 40px;

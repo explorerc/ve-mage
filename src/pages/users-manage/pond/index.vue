@@ -55,7 +55,7 @@
           </div>
           <div class="condition">
             <span class="label">来源</span>
-            <el-select v-model="filterCondition.source" placeholder="请选择">
+            <el-select v-model="filterCondition.source" placeholder="请选择" style="width:200px;">
               <el-option
                 v-for="item in sources"
                 :key="item.value"
@@ -66,7 +66,8 @@
           </div>
           <div class="condition">
             <span class="label">参与场次</span>
-            <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数"
+            <com-input :value.sync="filterCondition.join_count"
+                       placeholder="请输入至少参与活动的次数"
                        :type="'number'"></com-input>
           </div>
         </div>
