@@ -5,7 +5,7 @@
         <span class="title">微信通知</span>
         <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
-          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信</button></router-link>
+          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信通知</button></router-link>
         </div>
       </div>
       <div class="content table">
@@ -57,7 +57,7 @@
           <div class="empty">
             <div class="img"></div>
             <div class="txt">您还没有添加微信通知，快去添加吧</div>
-            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信</el-button></router-link>
+            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信通知</el-button></router-link>
           </div>
         </template>
       </div>
@@ -139,8 +139,7 @@ export default {
         }).then((res) => {
           this.tableData.splice(this.delIdx, 1)
           this.$toast({
-            content: '删除成功',
-            position: 'center'
+            content: '删除成功'
           })
           this.delConfirm = false
         })

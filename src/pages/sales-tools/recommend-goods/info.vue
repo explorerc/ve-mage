@@ -289,8 +289,7 @@
               this.$post(_url, this.goodsData)
                 .then(res => {
                   this.$toast({
-                    content: '操作成功!',
-                    position: 'center'
+                    content: '操作成功!'
                   })
                   this.$router.go(-1)
                   this.isShowMsgB = false

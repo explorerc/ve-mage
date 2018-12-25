@@ -139,8 +139,7 @@ export default {
         inviteId: this.id
       }).then((res) => {
         this.$toast({
-          content: '发送成功',
-          position: 'center'
+          content: '发送成功'
         })
         this.status = 'SEND'
         this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')

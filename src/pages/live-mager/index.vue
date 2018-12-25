@@ -159,7 +159,7 @@
       handleClick (event) {
         console.log(event)
         if (event.type === 'play') { // 开播
-          if (this.isOverdue(event.endTime)) {
+          if (event.validStatus === 'N') {
             this.$toast({
               content: '该活动已过期，无法再次发起直播'
             })
@@ -276,8 +276,7 @@
         })
         if (this.hostOnline) {
           this.$toast({
-            content: '暂不支持这种方式发起直播',
-            position: 'center'
+            content: '暂不支持这种方式发起直播'
           })
           return false
         }
@@ -327,8 +326,7 @@
           activityId: id
         }).then((res) => {
           this.$toast({
-            content: '活动发布成功',
-            position: 'center'
+            content: '活动发布成功'
           })
         })
       },
@@ -417,7 +415,7 @@
   .com-input input {
     background-color: transparent;
   }
-  .el-select{
+  .el-select {
     .el-input__inner {
       border: none;
       background-color: transparent;

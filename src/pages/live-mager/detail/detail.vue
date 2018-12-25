@@ -1107,7 +1107,7 @@
           this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
           this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
           this.staticViewer = res.data.data.viewer
-          this.overdue = this.isOverdue(res.data.activity.endTime)
+          this.overdue = res.data.activity.validStatus === 'N'
           switch (res.data.activity.status) {
             case ('LIVING'):
               this.status = '直播'
@@ -1761,14 +1761,14 @@
       }
     }
     .overdue-tag {
-      margin-left:10px;
-      color:#555;
+      margin-left: 10px;
+      color: #555;
       font-size: 12px;
       text-align: center;
       display: inline-block;
       width: 51px;
       height: 20px;
-      line-height:20px;
+      line-height: 20px;
       border-radius: 10px;
       border: 1px solid rgba(151, 151, 151, 1);
     }

@@ -278,8 +278,7 @@
           handleClick: (e) => {
             if (e.action === 'cancel') {
               this.$toast({
-                content: '已取消删除',
-                position: 'center'
+                content: '已取消删除'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
@@ -289,8 +288,7 @@
                     this.onSearch()
                   }, 1000)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -452,7 +450,8 @@
             height: 34px;
             line-height: 34px;
             border-radius: 20px;
-            &:hover,&:focus {
+            &:hover,
+            &:focus {
               border-color: #888888;
             }
           }
@@ -463,8 +462,9 @@
           height: 34px;
           border-radius: 16px;
           border: 1px solid #888888;
-          &:hover,&:focus {
-            background-color:#ffd021 ;
+          &:hover,
+          &:focus {
+            background-color: #ffd021;
             border-color: #ffd021;
             color: black;
           }
@@ -474,15 +474,14 @@
     .table-box {
       margin-top: 22px;
       padding: 30px;
-      border: 1px solid #E2E2E2;
+      border: 1px solid #e2e2e2;
       background-color: white;
       border-radius: 4px;
-      .el-table /deep/{
+      .el-table /deep/ {
         tbody {
-          .el-table__row .cell{
-            color: #222222!important;
+          .el-table__row .cell {
+            color: #222222 !important;
           }
-
         }
         .btns {
           color: rgba(34, 34, 34, 1);
@@ -510,7 +509,7 @@
     }
   }
 }
-.massage-style{
+.massage-style {
   .el-form .el-form-item:first-child {
     margin-top: 14px;
   }

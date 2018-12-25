@@ -209,8 +209,7 @@
           handleClick: (e) => {
             if (e.action === 'cancel') {
               this.$toast({
-                content: '已取消删除!',
-                position: 'center'
+                content: '已取消删除!'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP_USER, {
@@ -223,8 +222,7 @@
                     this.onSearch()
                   }, 0)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -263,8 +261,9 @@
         border-radius: 16px;
         border: 1px solid #888888;
         margin-left: 20px;
-        &:hover,&:focus {
-          background-color:#ffd021 ;
+        &:hover,
+        &:focus {
+          background-color: #ffd021;
           border-color: #ffd021;
           color: black;
         }
@@ -312,7 +311,7 @@
         border: none;
       }
       tr {
-        span{
+        span {
           color: rgba(34, 34, 34, 1);
         }
       }
