@@ -206,8 +206,7 @@ export default {
     jumpEdit (isPublish, naireId) {
       if (isPublish === 'Y') {
         this.$toast({
-          content: '已推送问卷无法再次编辑',
-          position: 'center'
+          content: '已推送问卷无法再次编辑'
         })
       } else {
         this.$router.replace('/salesTools/questionnaire/edit/' + this.activityId + '/' + naireId)

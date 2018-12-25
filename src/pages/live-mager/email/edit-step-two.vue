@@ -304,8 +304,7 @@
       saveEmail () {
         if (this.totalCountStr > this.countBalance) {
           this.$toast({
-            content: '收件人数量超出限额',
-            position: 'center'
+            content: '收件人数量超出限额'
           })
           return false
         }
@@ -355,8 +354,7 @@
       send () {
         if (this.totalCountStr > this.countBalance) {
           this.$toast({
-            content: '收件人数量超出限额',
-            position: 'center'
+            content: '收件人数量超出限额'
           })
           return false
         }

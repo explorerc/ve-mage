@@ -132,8 +132,7 @@ export default {
       this.$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
         this.limitCount -= 1
         this.$toast({
-          content: '发送成功',
-          position: 'center'
+          content: '发送成功'
         })
       })
     },
@@ -145,8 +144,7 @@ export default {
       this.$post(noticeService.POST_AUTO_SEND_TEST, data).then((res) => {
         this.limitCount -= 1
         this.$toast({
-          content: '发送成功',
-          position: 'top-90'
+          content: '发送成功'
         })
       })
     },
@@ -160,15 +158,13 @@ export default {
       console.log(newVal)
       this.limitCount -= 1
       this.$toast({
-        content: '信息已发送',
-        position: 'center'
+        content: '信息已发送'
       })
     },
     deliverd (newVal) {
       this.limitCount -= 1
       this.$toast({
-        content: '信息已发送',
-        position: 'center'
+        content: '信息已发送'
       })
     }
   }
