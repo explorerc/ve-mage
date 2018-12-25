@@ -84,8 +84,8 @@
             <dt></dt>
             <dd>直播已{{successTxt}}，您可以</dd>
             <dd>
-              <span class='finish-button detail'  @click='toDetail'>活动详情</span>
-              <span class='finish-button list' @click='toList'>活动列表</span>
+              <span class='finish-button detail'  @click='toDetail'>更多活动设置</span>
+              <span class='finish-button list' @click='toList'>返回活动列表</span>
             </dd>
           </dl>
       </div>
