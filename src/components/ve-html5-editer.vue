@@ -376,6 +376,11 @@
 <style lang="scss">
   .html-editer {
     min-width: 480px;
+    .toolbar .dashboard input {
+      padding: 0 12px !important;
+      vertical-align: 1px;
+      height: 30px !important;
+    }
     i {
       font-style: italic;
       &.icon-close1 {
