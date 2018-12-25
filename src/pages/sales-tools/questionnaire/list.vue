@@ -342,11 +342,22 @@ export default {
             color: #999;
           }
         }
+        &:hover {
+          border-color: #FDD43F;
+          background-color: #FDD43F;
+        }
+        &:active {
+          border-color: #EEC11A;
+          background-color: #EEC11A;
+
+        }
       }
-      &:hover {
-        background-color: #fdd43f;
-        border-color: #fdd43f;
-        color: #222;
+      &.v-view{
+        &:hover {
+          background-color: #4B5AFE;
+          border-color: #4B5AFE;
+          color: #fff;
+        }
       }
       &:active {
         background-color: #eec11a;
@@ -355,7 +366,7 @@ export default {
       }
       &.disabled {
         border-color: #ddd;
-        background-color: #ddd;
+        /*background-color: #ddd;*/
         color: #999;
         &:hover {
           border-color: #ddd;
