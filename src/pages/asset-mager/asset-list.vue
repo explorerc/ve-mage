@@ -182,7 +182,7 @@
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{(amount *1 + billInfo.balance *1).toFixed(2)}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{( billInfo.balance *1).toFixed(2)}}</div>
         </div>
       </message-box>
     </div>
