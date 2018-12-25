@@ -128,7 +128,7 @@
             <div class="empty-box">
               <p class="img"></p>
               <template v-if="navIdx == 0">
-                <p class='title'>暂无回放</p>
+                <!--<p class='title'>暂无回放</p>-->
                 <p class='desc'>直播结束后系统会自动生成回放</p>
               </template>
               <template v-else>
@@ -908,7 +908,7 @@ export default {
     .img {
       width: 150px;
       height: 150px;
-      margin: 0 auto;
+      margin: 0 auto 23px;
       border-radius: 500px;
       // background:rgba(245,245,245,1);
       box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);

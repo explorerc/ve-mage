@@ -53,7 +53,6 @@
       <template v-if="tableData.length<=0 && notFirst">
         <div class="empty-box">
           <p class="img"></p>
-          <p class='title'>推荐卡片</p>
           <p class='desc'>自定卡片内容进行引流<br>推送二维码、店铺链接、微信公众号、图片海报等内容</p>
           <router-link :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=new`">
             <el-button class='primary-button'>创建卡片</el-button>
