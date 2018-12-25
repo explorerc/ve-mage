@@ -159,7 +159,7 @@
       handleClick (event) {
         console.log(event)
         if (event.type === 'play') { // 开播
-          if (this.isOverdue(event.endTime)) {
+          if (event.validStatus === 'N') {
             this.$toast({
               content: '该活动已过期，无法再次发起直播'
             })
