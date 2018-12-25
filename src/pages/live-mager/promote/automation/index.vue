@@ -986,7 +986,7 @@ export default {
     .time-line {
       position: relative;
       width: 40px;
-      height: 870px;
+      height: 920px;
       margin-right: 15px;
       &:before {
         content: '';

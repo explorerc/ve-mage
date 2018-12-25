@@ -1101,7 +1101,7 @@ export default {
   }
   .v-info {
     width: 100%;
-    margin: 0 auto 0;
+    margin: 0 auto 20px;
     border: 1px solid #e2e2e2;
     text-align: center;
     border-radius: 4px;
