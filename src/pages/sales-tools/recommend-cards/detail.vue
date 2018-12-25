@@ -171,8 +171,7 @@
       updateCard () {
         this.$post(cardService.POST_UPDATE_CARD, this.saveData).then((res) => {
           this.$toast({
-            content: '更新成功',
-            position: 'center'
+            content: '更新成功'
           })
           this.canPaas = true
           setTimeout(() => {

@@ -277,8 +277,7 @@ export default {
         this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
-            content: '保存成功',
-            position: 'center'
+            content: '保存成功'
           })
           this.canPass = true
           // 跳转到列表页面

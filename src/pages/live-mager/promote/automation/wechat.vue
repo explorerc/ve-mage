@@ -121,8 +121,7 @@ export default {
       }
       this.$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: '保存成功'
         })
         // 跳转到列表页面
         this.$router.push({ name: 'auto', params: { id: this.activityId } })

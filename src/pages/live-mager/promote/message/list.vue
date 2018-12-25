@@ -140,8 +140,7 @@ export default {
         }).then((res) => {
           this.tableData.splice(this.delIdx, 1)
           this.$toast({
-            content: '删除成功',
-            position: 'center'
+            content: '删除成功'
           })
           this.delConfirm = false
         })

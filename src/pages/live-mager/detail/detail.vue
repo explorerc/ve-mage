@@ -897,8 +897,7 @@
               this.hostOnline = data.data.hostOnline
               if (this.hostOnline) {
                 this.$toast({
-                  content: '暂不支持这种方式发起直播',
-                  position: 'center'
+                  content: '暂不支持这种方式发起直播'
                 })
                 return false
               }
@@ -1150,8 +1149,7 @@
       offlineActive () { // 下线活动
         if (this.status === '直播') {
           this.$toast({
-            content: '直播中无法下线活动',
-            position: 'center'
+            content: '直播中无法下线活动'
           })
           this.isPublished = true
           return false
@@ -1183,8 +1181,7 @@
           activityId: this.activityId
         }).then((res) => {
           this.$toast({
-            content: '活动发布成功',
-            position: 'center'
+            content: '活动发布成功'
           })
           this.isPublished = true
           this.dataPromote[0].desc = 'PREPARE'
@@ -1196,8 +1193,7 @@
           activityId: this.activityId
         }).then((res) => {
           this.$toast({
-            content: '活动下线成功',
-            position: 'center'
+            content: '活动下线成功'
           })
           this.isPublished = false
           if (this.currStep.search('live') === -1) {
@@ -1235,8 +1231,7 @@
         inp.select()
         document.execCommand('Copy')
         this.$toast({
-          content: '复制成功',
-          position: 'center'
+          content: '复制成功'
         })
       },
       timeOut () {

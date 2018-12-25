@@ -262,8 +262,7 @@ export default {
     checkoutParams () {
       if (this.progress !== 0 && this.progress !== 100) {
         this.$toast({
-          content: '请等待视频上传完成后保存',
-          position: 'center'
+          content: '请等待视频上传完成后保存'
         })
         let st = setTimeout(() => {
           clearTimeout(st)
@@ -273,8 +272,7 @@ export default {
       }
       if (!this.warm.recordId) {
         this.$toast({
-          content: '请上传暖场视频',
-          position: 'center'
+          content: '请上传暖场视频'
         })
         let st = setTimeout(() => {
           clearTimeout(st)

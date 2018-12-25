@@ -151,8 +151,7 @@
                 this.getList()
               }, 500)
               this.$toast({
-                content: '操作成功!',
-                position: 'center'
+                content: '操作成功!'
               })
             })
         }, 1000)
@@ -184,8 +183,7 @@
                     this.getList()
                   }, 1000)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }

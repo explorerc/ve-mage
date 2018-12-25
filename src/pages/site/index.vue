@@ -234,8 +234,7 @@ export default {
         this.data = temData
         this.$toast({
           content: '设置成功',
-          autoClose: 1000,
-          position: 'center'
+          autoClose: 1000
         })
       })
     }
@@ -244,7 +243,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 .live-mager {
   border-radius: 5px;
   overflow: hidden;
@@ -300,7 +299,7 @@ export default {
     position: relative;
     z-index: 199;
     &.close::before {
-      content: "";
+      content: '';
       width: 100%;
       height: 100%;
       position: absolute;
@@ -337,7 +336,7 @@ export default {
       margin-top: 25px;
       margin-bottom: 17px;
       &::before {
-        content: "";
+        content: '';
         display: inline-block;
         width: 2px;
         height: 18px;
@@ -436,7 +435,7 @@ export default {
       .img {
         width: 150px;
         height: 150px;
-        background: url("~assets/image/site/site_empty.png") no-repeat center;
+        background: url('~assets/image/site/site_empty.png') no-repeat center;
         background-size: contain;
         margin: 0 auto;
       }

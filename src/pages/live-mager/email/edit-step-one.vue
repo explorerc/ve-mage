@@ -294,8 +294,7 @@
         }).then((res) => {
           this.canPass = true
           this.$toast({
-            content: '发送成功，请稍后查收邮件',
-            position: 'center'
+            content: '发送成功，请稍后查收邮件'
           })
         })
         // LiveHttp.sendTestEmailInfo({
@@ -412,240 +411,240 @@
 </style>
 
 <style lang="scss" scoped>
-  @import 'assets/css/mixin.scss';
+@import 'assets/css/mixin.scss';
 
-  .edit-step-box {
-    min-width: 1366px;
+.edit-step-box {
+  min-width: 1366px;
+  background-color: #fff;
+  color: #222;
+  .email-header {
+    height: 60px;
+    line-height: 60px;
+    background-color: #ffd021;
+    .icon-jiantou {
+      font-size: 22px;
+      vertical-align: -2px;
+    }
+    .back-btn-email {
+      display: inline-block;
+      padding: 0 15px;
+      background-color: #ffda51;
+      line-height: 40px;
+      border-radius: 4px;
+      font-size: 18px;
+      text-align: center;
+      margin-left: 20px;
+      margin-right: 10px;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+        color: #4b5afe;
+      }
+    }
+  }
+  .email-bottom {
+    height: 60px;
+    line-height: 60px;
+    border-top: 1px solid #e2e2e2;
+    box-sizing: border-box;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
     background-color: #fff;
-    color: #222;
-    .email-header {
-      height: 60px;
-      line-height: 60px;
-      background-color: #ffd021;
-      .icon-jiantou {
-        font-size: 22px;
-        vertical-align: -2px;
-      }
-      .back-btn-email {
+    button {
+      margin-top: 10px;
+    }
+    .margin-fl {
+      margin-right: 10px;
+    }
+  }
+  .border-box /deep/ {
+    position: relative;
+    height: calc(100vh - 120px);
+    .add-email-link {
+      position: absolute;
+      top: 0;
+      right: 400px;
+      height: 38px;
+      line-height: 38px;
+      font-size: 14px;
+      color: #606266;
+      z-index: 1003;
+      .tip-box {
+        position: relative;
         display: inline-block;
-        padding: 0 15px;
-        background-color: #ffda51;
-        line-height: 40px;
-        border-radius: 4px;
-        font-size: 18px;
-        text-align: center;
-        margin-left: 20px;
-        margin-right: 10px;
-        &:hover {
-          cursor: pointer;
-          opacity: 0.9;
-          color: #4b5afe;
-        }
-      }
-    }
-    .email-bottom {
-      height: 60px;
-      line-height: 60px;
-      border-top: 1px solid #e2e2e2;
-      box-sizing: border-box;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-      padding: 0 20px;
-      background-color: #fff;
-      button {
-        margin-top: 10px;
-      }
-      .margin-fl {
-        margin-right: 10px;
-      }
-    }
-    .border-box /deep/ {
-      position: relative;
-      height: calc(100vh - 120px);
-      .add-email-link {
-        position: absolute;
-        top: 0;
-        right: 400px;
-        height: 38px;
-        line-height: 38px;
-        font-size: 14px;
-        color: #606266;
-        z-index: 1003;
-        .tip-box {
-          position: relative;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        margin-left: 10px;
+        i {
           display: inline-block;
           width: 20px;
           height: 20px;
           line-height: 20px;
-          margin-left: 10px;
-          i {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            text-align: center;
-            border: solid 1px rgba(85, 85, 85, 1);;
-            border-radius: 50%;
-            color: #555;
-            font-style: normal;
-            font-size: 12px;
-            &:hover {
-              cursor: pointer;
-              opacity: .8;
-            }
+          text-align: center;
+          border: solid 1px rgba(85, 85, 85, 1);
+          border-radius: 50%;
+          color: #555;
+          font-style: normal;
+          font-size: 12px;
+          &:hover {
+            cursor: pointer;
+            opacity: 0.8;
           }
-          .msg {
-            position: absolute;
-            display: none;
-            width: 380px;
-            top: 50%;
-            left: 26px;
-            transform: translateY(-50%);
-            padding: 6px 10px 4px 10px;
-            border-radius: 3px;
-            color: #fff;
-            word-wrap: break-word;
-            word-break: break-all;
-            z-index: 10;
-            background-color: rgba(49, 49, 49, 1);
-            box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.4);
-            line-height: 20px;
-            font-size: 10px;
-            &:after {
-              display: block;
-              position: absolute;
-              content: '';
-              height: 0px;
-              width: 0px;
-              top: 50%;
-              left: -4px;
-              -webkit-transform: translateY(-50%);
-              transform: translateY(-50%);
-              border-top: 4px solid transparent;
-              border-right: 4px solid #313131;
-              border-bottom: 5px solid transparent;
-            }
-            z-index: 100;
-          }
-          i:hover + .msg {
+        }
+        .msg {
+          position: absolute;
+          display: none;
+          width: 380px;
+          top: 50%;
+          left: 26px;
+          transform: translateY(-50%);
+          padding: 6px 10px 4px 10px;
+          border-radius: 3px;
+          color: #fff;
+          word-wrap: break-word;
+          word-break: break-all;
+          z-index: 10;
+          background-color: rgba(49, 49, 49, 1);
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.4);
+          line-height: 20px;
+          font-size: 10px;
+          &:after {
             display: block;
+            position: absolute;
+            content: '';
+            height: 0px;
+            width: 0px;
+            top: 50%;
+            left: -4px;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            border-top: 4px solid transparent;
+            border-right: 4px solid #313131;
+            border-bottom: 5px solid transparent;
           }
+          z-index: 100;
         }
-      }
-      .html-editer {
-        height: 100%;
-        .vue-html5-editor .content {
-          background-color: #f5f5f5;
+        i:hover + .msg {
+          display: block;
         }
       }
     }
-    .step-btns {
-      margin: 30px 30px 100px 30px;
-      .margin-fl {
-        margin: 0 20px;
-      }
-    }
-    .edit-content {
+    .html-editer {
       height: 100%;
-      margin: 0 0 20px 0;
-      .edit-content-temp {
-        height: calc(100% - 36px);
-        width: 356px;
-        margin-top: 36px;
-        padding: 0 1.8%;
-        box-sizing: border-box;
-        overflow-y: scroll;
-        .temp-title {
-          span {
-            line-height: 44px;
-            color: #555;
-          }
-        }
-        .temp-boxs {
-          margin-top: 20px;
-          .temp-item {
-            width: 124px;
-            margin: 10px 15px;
-            text-align: center;
-            &:nth-child(2n) {
-              margin-right: 0;
-            }
-            &:nth-child(2n + 1) {
-              margin-left: 0;
-            }
-            .temp-item-box {
-              height: 196px;
-              box-sizing: border-box;
-              border: solid 1px #e5e5e5;
-              border-radius: 4px;
-              background-size: cover;
-              &:hover {
-                cursor: pointer;
-                border-color: #4b5afe;
-                transition: border-color 0.2s;
-              }
-            }
-            .temp-item-title {
-              display: block;
-              padding-top: 5px;
-              font-size: 14px;
-              color: #555555;
-            }
-            &:nth-child(1) .temp-item-box {
-              background-image: url('../../../assets/image/email-01.jpg');
-            }
-            &:nth-child(2) .temp-item-box {
-              background-image: url('../../../assets/image/email-02.jpg');
-            }
-            &:nth-child(3) .temp-item-box {
-              background-image: url('../../../assets/image/email-03.jpg');
-            }
-            &:nth-child(4) .temp-item-box {
-              background-image: url('../../../assets/image/email-04.jpg');
-            }
-          }
-          .active {
-            .temp-item-box {
-              border-color: #4b5afe;
-            }
-          }
-        }
-      }
-      .edit-content-box /deep/ {
-        width: calc(100% - 356px);
-        height: 100%;
-        .vue-html5-editor {
-          height: 100%;
-          border: none;
-          border-right: solid 1px #e5e5e5;
-          border-radius: 0;
-          .content {
-            height: calc(100% - 37px);
-            max-height: calc(100% - 37px);
-            padding: 0;
-          }
-        }
-      }
-    }
-    .email-box {
-      width: 100%;
-      margin: 15px 10px;
-      .test-tip {
-        font-size: 14px;
-        color: #4b5afe;
-        line-height: 40px;
-      }
-      .com-input {
-        width: 390px;
-      }
-    }
-    .step-one-btns {
-      margin: 40px 10px -10px 10px;
-      span {
-        float: left;
-        line-height: 45px;
-        font-size: 14px;
-        color: #888;
+      .vue-html5-editor .content {
+        background-color: #f5f5f5;
       }
     }
   }
+  .step-btns {
+    margin: 30px 30px 100px 30px;
+    .margin-fl {
+      margin: 0 20px;
+    }
+  }
+  .edit-content {
+    height: 100%;
+    margin: 0 0 20px 0;
+    .edit-content-temp {
+      height: calc(100% - 36px);
+      width: 356px;
+      margin-top: 36px;
+      padding: 0 1.8%;
+      box-sizing: border-box;
+      overflow-y: scroll;
+      .temp-title {
+        span {
+          line-height: 44px;
+          color: #555;
+        }
+      }
+      .temp-boxs {
+        margin-top: 20px;
+        .temp-item {
+          width: 124px;
+          margin: 10px 15px;
+          text-align: center;
+          &:nth-child(2n) {
+            margin-right: 0;
+          }
+          &:nth-child(2n + 1) {
+            margin-left: 0;
+          }
+          .temp-item-box {
+            height: 196px;
+            box-sizing: border-box;
+            border: solid 1px #e5e5e5;
+            border-radius: 4px;
+            background-size: cover;
+            &:hover {
+              cursor: pointer;
+              border-color: #4b5afe;
+              transition: border-color 0.2s;
+            }
+          }
+          .temp-item-title {
+            display: block;
+            padding-top: 5px;
+            font-size: 14px;
+            color: #555555;
+          }
+          &:nth-child(1) .temp-item-box {
+            background-image: url('../../../assets/image/email-01.jpg');
+          }
+          &:nth-child(2) .temp-item-box {
+            background-image: url('../../../assets/image/email-02.jpg');
+          }
+          &:nth-child(3) .temp-item-box {
+            background-image: url('../../../assets/image/email-03.jpg');
+          }
+          &:nth-child(4) .temp-item-box {
+            background-image: url('../../../assets/image/email-04.jpg');
+          }
+        }
+        .active {
+          .temp-item-box {
+            border-color: #4b5afe;
+          }
+        }
+      }
+    }
+    .edit-content-box /deep/ {
+      width: calc(100% - 356px);
+      height: 100%;
+      .vue-html5-editor {
+        height: 100%;
+        border: none;
+        border-right: solid 1px #e5e5e5;
+        border-radius: 0;
+        .content {
+          height: calc(100% - 37px);
+          max-height: calc(100% - 37px);
+          padding: 0;
+        }
+      }
+    }
+  }
+  .email-box {
+    width: 100%;
+    margin: 15px 10px;
+    .test-tip {
+      font-size: 14px;
+      color: #4b5afe;
+      line-height: 40px;
+    }
+    .com-input {
+      width: 390px;
+    }
+  }
+  .step-one-btns {
+    margin: 40px 10px -10px 10px;
+    span {
+      float: left;
+      line-height: 45px;
+      font-size: 14px;
+      color: #888;
+    }
+  }
+}
 </style>

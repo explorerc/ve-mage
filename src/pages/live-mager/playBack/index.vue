@@ -553,8 +553,7 @@ export default {
       }).then((res) => {
         playBack.status = 'PROCESS'
         this.$toast({
-          content: '开始重新生成回放',
-          position: 'center'
+          content: '开始重新生成回放'
         })
       })
     },
