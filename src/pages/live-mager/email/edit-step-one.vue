@@ -23,7 +23,7 @@
       </div>
       <div class="edit-content clearfix">
         <div class="edit-content-box fl">
-          <ve-html5-editer v-model="email.content" :pull-msg="isPull"></ve-html5-editer>
+          <ve-html5-editer v-model="email.content" :img-edit="true" :pull-msg="isPull"></ve-html5-editer>
         </div>
         <div class="edit-content-temp fr">
           <div class="temp-title">
