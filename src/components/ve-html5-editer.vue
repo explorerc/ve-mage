@@ -271,8 +271,6 @@
     data () {
       return {
         imgEditShow: false,
-        inputType: 'h',
-        isDisabled: true,
         showModuleName: false,
         content: '',
         imgWidth: '0',
@@ -370,9 +368,6 @@
         this.tempImgDom.height = this.imgHeight
         let content = this.$refs.editor.$el.querySelectorAll('.content')[0].innerHTML
         this.updateData(content)
-      },
-      focusInput (type) {
-        this.inputType = type
       }
     }
   }
