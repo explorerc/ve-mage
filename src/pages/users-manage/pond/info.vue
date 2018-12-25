@@ -440,13 +440,11 @@ export default {
         this.user.group_list.push(addData)
         this.showAddgroup = false
         this.$toast({
-          'content': '导入成功',
-          'position': 'center'
+          'content': '导入成功'
         })
       }).catch(err => {
         this.$toast({
-          'content': err.msg,
-          'position': 'center'
+          'content': err.msg
         })
       })
     }
@@ -618,7 +616,7 @@ export default {
             &::after {
               display: block;
               position: absolute;
-              content: "";
+              content: '';
               height: 0px;
               width: 0px;
               top: -5px;
@@ -712,7 +710,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: "";
+                content: '';
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -727,7 +725,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #EFEFEF;
+            background-color: #efefef;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
@@ -769,7 +767,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: "";
+                content: '';
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -784,7 +782,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #F0F1FE;
+            background-color: #f0f1fe;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;

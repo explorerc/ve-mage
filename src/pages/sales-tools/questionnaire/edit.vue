@@ -371,8 +371,7 @@ export default {
       this.canPaas = false
       if ((this.dragData.length + this.phoneData.length) >= 100) {
         this.$toast({
-          content: '场问卷最多能设置100个题目',
-          position: 'center'
+          content: '场问卷最多能设置100个题目'
         })
         return false
       }
@@ -907,7 +906,7 @@ export default {
     .back-btn-all {
       border-radius: 20px;
       padding: 0px;
-      width:90px;
+      width: 90px;
     }
     // button {
     //   float: right;

@@ -791,8 +791,7 @@ export default {
       }
       this.$config({ handlers: true }).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
         this.$toast({
-          content: '设置成功',
-          position: 'center'
+          content: '设置成功'
         })
         if (type === 'hour') {
           this.hourValue = this.selhourValue

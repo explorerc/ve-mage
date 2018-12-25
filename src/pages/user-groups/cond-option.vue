@@ -1106,8 +1106,7 @@
               if (inItem.value === '') {
                 fulfil = false
                 this.$toast({
-                  content: '输入框不能为空',
-                  position: 'center'
+                  content: '输入框不能为空'
                 })
                 return false
               } else {
@@ -1212,84 +1211,83 @@
 </script>
 
 <style lang="scss" scoped>
-  #cond-option {
-    overflow: auto;
-    max-height: 400px;
-    /deep/ {
-      ul {
-        li {
-          .option-box {
-            background-color: #eeeeee;
-            padding: 10px;
-            border-radius: 4px;
-            >div{
-              height: 42px;
-            }
-            .option_title {
-              color: rgba(34, 34, 34, 1);
-              height: 26px;
-              line-height: 26px;
-            }
-            div {
-              margin-bottom: 10px;
-              .el-cascader,
-              .el-select {
-                width: 130px;
-                height: 40px;
-              }
-              .el-select .el-input__inner {
-                background-color: white;
-              }
-              .option-value {
-                display: inline-block;
-                .el-input,
-                .el-select,
-                .el-input-number {
-                  width: 150px;
-                  .el-input__inner {
-                    text-align: left;
-                  }
-                }
-                i.el-input__icon {
-                  height: 40px;
-                  line-height: 40px;
-                }
-              }
-              i.el-icon-delete {
-                float: right;
-                font-size: 16px;
-                transform: translate(-4px, 12px);
-                &:hover {
-                  color: #FC6769;
-                }
-              }
-            }
+#cond-option {
+  overflow: auto;
+  max-height: 400px;
+  /deep/ {
+    ul {
+      li {
+        .option-box {
+          background-color: #eeeeee;
+          padding: 10px;
+          border-radius: 4px;
+          > div {
+            height: 42px;
           }
-          .orBtn {
-            text-align: center;
-            height: 48px;
-            line-height: 48px;
+          .option_title {
+            color: rgba(34, 34, 34, 1);
+            height: 26px;
+            line-height: 26px;
           }
-          .add-brn{
-            &:after{
-              content: '+';
-              border: 1px solid #cccccc;
-              color: #cccccc;
-              border-radius: 50%;
-              width: 18px;
-              height: 18px;
-              font-size: 18px;
+          div {
+            margin-bottom: 10px;
+            .el-cascader,
+            .el-select {
+              width: 130px;
+              height: 40px;
+            }
+            .el-select .el-input__inner {
+              background-color: white;
+            }
+            .option-value {
               display: inline-block;
-              text-align: center;
-              line-height: 16px;
+              .el-input,
+              .el-select,
+              .el-input-number {
+                width: 150px;
+                .el-input__inner {
+                  text-align: left;
+                }
+              }
+              i.el-input__icon {
+                height: 40px;
+                line-height: 40px;
+              }
             }
-            &:hover {
-              background-color: #FDD43F;
+            i.el-icon-delete {
+              float: right;
+              font-size: 16px;
+              transform: translate(-4px, 12px);
+              &:hover {
+                color: #fc6769;
+              }
             }
           }
-
+        }
+        .orBtn {
+          text-align: center;
+          height: 48px;
+          line-height: 48px;
+        }
+        .add-brn {
+          &:after {
+            content: '+';
+            border: 1px solid #cccccc;
+            color: #cccccc;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 18px;
+            display: inline-block;
+            text-align: center;
+            line-height: 16px;
+          }
+          &:hover {
+            background-color: #fdd43f;
+          }
         }
       }
     }
   }
+}
 </style>

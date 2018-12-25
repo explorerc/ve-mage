@@ -298,8 +298,7 @@ export default {
       this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: '保存成功'
         })
         // 跳转到列表页面
         this.canPass = true

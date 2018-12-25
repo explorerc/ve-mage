@@ -630,8 +630,7 @@
         this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
           this.showAddgroup = false
           this.$toast({
-            'content': '导入成功',
-            'position': 'center'
+            'content': '导入成功'
           })
           this.checkedArr = []
           this.$refs.multipleTable.clearSelection()
@@ -654,8 +653,7 @@
         this.usersListData = tempArr
         this.$post(userManage.POST_DEL_USERS, data).then((res) => {
           this.$toast({
-            'content': '删除成功',
-            'position': 'center'
+            'content': '删除成功'
           })
           setTimeout((res) => {
             this.queryTotal(this.filterCondition)
@@ -871,368 +869,367 @@
 </script>
 
 <style lang='scss' scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  .pond-page {
-    border-radius: 5px;
-    overflow: hidden;
-    padding-bottom: 30px;
-    margin: 0 auto;
-    color: #222;
-    .total {
-      float: left;
-      height: 30px;
-      line-height: 30px;
-      margin-top: 20px;
-      padding-left: 15px;
-      span {
-        color: $color-error;
-      }
-    }
-    /* 设备宽度大于 1600 */
-    @media all and (min-width: 1600px) {
-      width: 1366px;
-    }
-    /* 设备宽度小于 1600px */
-    @media all and (max-width: 1600px) {
-      width: 1019px;
-      .content .handle-filter .selected {
-        max-width: 880px !important;
-      }
-    }
-    .pond-title {
-      // border-bottom: 1px solid $color-bd;
-      line-height: 60px;
-      margin-top: 30px;
-      margin-bottom: 5px;
-      span.title {
-        display: inline-block;
-        font-size: 24px;
-        /*padding-top: 32px;*/
-      }
-    }
-    .content /deep/ {
-      font-size: 14px;
-      width: 100%;
-      // padding: 40px 80px;
-      // background: rgba(255, 255, 255, 1);
-      // border-radius: 4px;
-      // border: 1px solid rgba(226, 226, 226, 1);
-      .handle-bar {
-        .left {
-          display: inline-block;
-          .el-dropdown {
-            margin-right: 10px;
-          }
-        }
-        .right {
-          float: right;
-          .com-input {
-            margin-right: 10px;
-            width: 206px;
-          }
-          .com-input input {
-            padding-right: 10px;
-            padding-left: 15px;
-            border-radius: 17px;
-            background-color: transparent;
-          }
-          span {
-            cursor: pointer;
-            position: relative;
-            color: $color-blue;
-            padding-right: 18px;
-            .el-submenu__icon-arrow {
-              right: 0px;
-              margin-top: -6px;
-              -webkit-transition: -webkit-transform 0.3s;
-              transition: -webkit-transform 0.3s;
-              transition: transform 0.3s;
-              transition: transform 0.3s, -webkit-transform 0.3s;
-              font-size: 12px;
-              &.is-open {
-                -webkit-transform: rotateZ(180deg);
-                transform: rotateZ(180deg);
-              }
-            }
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-      }
-      .page-bg {
-        padding: 30px;
-        background: rgba(255, 255, 255, 1);
-        border-radius: 4px;
-        border: 1px solid rgba(226, 226, 226, 1);
-        margin-top: 20px;
-        padding-bottom: 30px;
-        &.has-page {
-          padding-bottom: 30px;
-        }
-        .empty {
-          text-align: center;
-          margin: 29px 0;
-          .txt {
-            padding-top: 20px;
-            font-size: 16px;
-            color: #8E9198;
-          }
-          .img {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-            background: url('~assets/image/nodata@2x.png') no-repeat center;
-            background-size: contain;
-          }
-        }
-      }
-      .handle-filter {
-        .label {
-          color: $color-font-sub;
-          padding-right: 10px;
-          float: left;
-          height: 34px;
-          line-height: 34px;
-        }
-        .filter-item {
-          margin-bottom: 20px;
-          .el-button {
-            border: 1px dotted #dcdfe6;
-          }
-        }
-        .filter-confirm {
-          text-align: center;
-        }
-        .condition {
-          display: inline-block;
-          margin-right: 30px;
-          &:nth-last-child(1) {
-            margin-right: 0;
-          }
-        }
-        .selected {
-          display: inline-block;
-          max-width: 1200px;
-          .added {
-            cursor: pointer;
-            display: inline-block;
-            border-radius: 100px;
-            width: 19px;
-            height: 19px;
-            padding: 0;
-            margin: 0;
-            border: 1px solid rgba(136, 136, 136, 1);
-            background: url('~assets/image/add_icon.svg') no-repeat;
-            background-position: center;
-            background-size: contain;
-            position: relative;
-            top: 4px;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-        .tag-box {
-          display: inline-block;
-          li {
-            display: inline-block;
-            padding: 6px 12px;
-            background: rgba(240, 241, 254, 1);
-            border-radius: 20px;
-            border: 1px solid rgba(240, 241, 254, 1);
-            margin-right: 10px;
-            margin-bottom: 10px;
-            .close {
-              cursor: pointer;
-              display: inline-block;
-              position: relative;
-              top: 2px;
-              background: url('~assets/image/close.svg') no-repeat;
-              background-position: center;
-              background-size: 6px;
-              width: 14px;
-              height: 14px;
-              line-height: 14px;
-              border-radius: 100px;
-              color: $color-blue;
-              border: 1px solid $color-blue;
-              &:hover {
-                opacity: 0.8;
-              }
-            }
-          }
-        }
-        .condition.area .el-select {
-          width: 99px;
-        }
-      }
-      .users-list {
-        overflow: hidden;
-        .el-table {
-          .users-info {
-            width: 170px;
-            .img {
-              display: inline-block;
-              width: 32px;
-              height: 32px;
-              border-radius: 500px;
-            }
-            dt {
-              float: left;
-              margin-right: 10px;
-              margin-top: 7px;
-              &.avatar-empty .img {
-                background: url('~assets/image/avatar@2x.png') no-repeat;
-                background-size: contain;
-              }
-            }
-            dd {
-              float: left;
-              &:nth-of-type(1) {
-                color: $color-font;
-                height: 23px;
-              }
-              &:nth-of-type(2) {
-                color: $color-gray;
-                &.protential {
-                  color: $color-red;
-                }
-                &.common {
-                  color: $color-default;
-                }
-                &.good {
-                  color: $color-success;
-                }
-                &.high {
-                  color: #714cea;
-                }
-              }
-              span {
-                overflow: hidden;
-                display: inline-block;
-                min-width: 37px;
-              }
-              .name {
-                // width: 50px;
-                // text-overflow: ellipsis;
-                // white-space: nowrap;
-              }
-            }
-          }
-          .detail {
-            color: #4b5afe;
-          }
-        }
-        .pagination-box {
-          text-align: center;
-          margin-top: 20px;
-        }
-      }
-      /* reset element ui */
-      .el-select {
-        // border: 1px solid RGBA(226, 226, 226, 1);
-        .el-input__inner {
-          padding: 0 15px;
-          height: 34px;
-          line-height: 34px;
-          text-overflow: ellipsis;
-          color: #222222;
-        }
-        .el-icon-arrow-up:before {
-          color: #222222;
-        }
-        .el-input.is-focus .el-input__inner {
-          border-color: $color-gray;
-        }
-        &:hover .el-input__inner {
-          border-color: $color-gray;
-        }
-      }
-      .el-cascader {
-        width: 202px;
-        height: 34px;
-        line-height: 34px;
-        .el-input__suffix {
-          top: -2px;
-        }
-        &.is-opened .el-input__suffix {
-          top: 2px;
-        }
-        .el-input__inner {
-          height: 34px;
-          line-height: 34px;
-        }
-      }
-      .el-date-editor {
-        .el-range-input {
-          height: 60%;
-          width: 45%;
-          font-size: 14px;
-          position: relative;
-          bottom: 1px;
-        }
-        .el-range__close-icon {
-          display: none;
-        }
-        &.el-input__inner {
-          height: 34px;
-          line-height: 34px;
-          padding: 0 8px;
-          width: 310px;
-        }
-        .el-range__icon {
-          display: none;
-        }
-        .el-range-separator {
-          width: 10%;
-        }
-      }
-      .com-input input {
-        height: 34px;
-        line-height: 34px;
-        // border-radius: 17px;
-      }
-      .el-table tr {
-        height: 70px;
-      }
-      .el-table .cell {
-        color: $color-font;
-      }
+.pond-page {
+  border-radius: 5px;
+  overflow: hidden;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  color: #222;
+  .total {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+    padding-left: 15px;
+    span {
+      color: $color-error;
     }
   }
-
-  .el-date-range-picker__editors-wrap /deep/ {
-    background: red;
-    .el-date-range-picker__time-picker-wrap {
-      width: 100%;
-      &:nth-of-type(2) {
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+    .content .handle-filter .selected {
+      max-width: 880px !important;
+    }
+  }
+  .pond-title {
+    // border-bottom: 1px solid $color-bd;
+    line-height: 60px;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    span.title {
+      display: inline-block;
+      font-size: 24px;
+      /*padding-top: 32px;*/
+    }
+  }
+  .content /deep/ {
+    font-size: 14px;
+    width: 100%;
+    // padding: 40px 80px;
+    // background: rgba(255, 255, 255, 1);
+    // border-radius: 4px;
+    // border: 1px solid rgba(226, 226, 226, 1);
+    .handle-bar {
+      .left {
+        display: inline-block;
+        .el-dropdown {
+          margin-right: 10px;
+        }
+      }
+      .right {
+        float: right;
+        .com-input {
+          margin-right: 10px;
+          width: 206px;
+        }
+        .com-input input {
+          padding-right: 10px;
+          padding-left: 15px;
+          border-radius: 17px;
+          background-color: transparent;
+        }
+        span {
+          cursor: pointer;
+          position: relative;
+          color: $color-blue;
+          padding-right: 18px;
+          .el-submenu__icon-arrow {
+            right: 0px;
+            margin-top: -6px;
+            -webkit-transition: -webkit-transform 0.3s;
+            transition: -webkit-transform 0.3s;
+            transition: transform 0.3s;
+            transition: transform 0.3s, -webkit-transform 0.3s;
+            font-size: 12px;
+            &.is-open {
+              -webkit-transform: rotateZ(180deg);
+              transform: rotateZ(180deg);
+            }
+          }
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+    .page-bg {
+      padding: 30px;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 4px;
+      border: 1px solid rgba(226, 226, 226, 1);
+      margin-top: 20px;
+      padding-bottom: 30px;
+      &.has-page {
+        padding-bottom: 30px;
+      }
+      .empty {
+        text-align: center;
+        margin: 29px 0;
+        .txt {
+          padding-top: 20px;
+          font-size: 16px;
+          color: #8e9198;
+        }
+        .img {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+          background: url('~assets/image/nodata@2x.png') no-repeat center;
+          background-size: contain;
+        }
+      }
+    }
+    .handle-filter {
+      .label {
+        color: $color-font-sub;
+        padding-right: 10px;
+        float: left;
+        height: 34px;
+        line-height: 34px;
+      }
+      .filter-item {
+        margin-bottom: 20px;
+        .el-button {
+          border: 1px dotted #dcdfe6;
+        }
+      }
+      .filter-confirm {
+        text-align: center;
+      }
+      .condition {
+        display: inline-block;
+        margin-right: 60px;
+        &:nth-last-child(1) {
+          margin-right: 0;
+        }
+      }
+      .selected {
+        display: inline-block;
+        max-width: 1200px;
+        .added {
+          cursor: pointer;
+          display: inline-block;
+          border-radius: 100px;
+          width: 19px;
+          height: 19px;
+          padding: 0;
+          margin: 0;
+          border: 1px solid rgba(136, 136, 136, 1);
+          background: url('~assets/image/add_icon.svg') no-repeat;
+          background-position: center;
+          background-size: contain;
+          position: relative;
+          top: 4px;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+      .tag-box {
+        display: inline-block;
+        li {
+          display: inline-block;
+          padding: 6px 12px;
+          background: rgba(240, 241, 254, 1);
+          border-radius: 20px;
+          border: 1px solid rgba(240, 241, 254, 1);
+          margin-right: 10px;
+          margin-bottom: 10px;
+          .close {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+            background: url('~assets/image/close.svg') no-repeat;
+            background-position: center;
+            background-size: 6px;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            border-radius: 100px;
+            color: $color-blue;
+            border: 1px solid $color-blue;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+      .condition.area .el-select {
+        width: 99px;
+      }
+    }
+    .users-list {
+      overflow: hidden;
+      .el-table {
+        .users-info {
+          width: 170px;
+          .img {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 500px;
+          }
+          dt {
+            float: left;
+            margin-right: 10px;
+            margin-top: 7px;
+            &.avatar-empty .img {
+              background: url('~assets/image/avatar@2x.png') no-repeat;
+              background-size: contain;
+            }
+          }
+          dd {
+            float: left;
+            &:nth-of-type(1) {
+              color: $color-font;
+              height: 23px;
+            }
+            &:nth-of-type(2) {
+              color: $color-gray;
+              &.protential {
+                color: $color-red;
+              }
+              &.common {
+                color: $color-default;
+              }
+              &.good {
+                color: $color-success;
+              }
+              &.high {
+                color: #714cea;
+              }
+            }
+            span {
+              overflow: hidden;
+              display: inline-block;
+              min-width: 37px;
+            }
+            .name {
+              // width: 50px;
+              // text-overflow: ellipsis;
+              // white-space: nowrap;
+            }
+          }
+        }
+        .detail {
+          color: #4b5afe;
+        }
+      }
+      .pagination-box {
+        text-align: center;
+        margin-top: 20px;
+      }
+    }
+    /* reset element ui */
+    .el-select {
+      // border: 1px solid RGBA(226, 226, 226, 1);
+      .el-input__inner {
+        padding: 0 15px;
+        height: 34px;
+        line-height: 34px;
+        text-overflow: ellipsis;
+        color: #222222;
+      }
+      .el-icon-arrow-up:before {
+        color: #222222;
+      }
+      .el-input.is-focus .el-input__inner {
+        border-color: $color-gray;
+      }
+      &:hover .el-input__inner {
+        border-color: $color-gray;
+      }
+    }
+    .el-cascader {
+      width: 202px;
+      height: 34px;
+      line-height: 34px;
+      .el-input__suffix {
+        top: -2px;
+      }
+      &.is-opened .el-input__suffix {
+        top: 2px;
+      }
+      .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+      }
+    }
+    .el-date-editor {
+      .el-range-input {
+        height: 60%;
+        width: 45%;
+        font-size: 14px;
+        position: relative;
+        bottom: 1px;
+      }
+      .el-range__close-icon {
         display: none;
       }
+      &.el-input__inner {
+        height: 34px;
+        line-height: 34px;
+        padding: 0 8px;
+        width: 310px;
+      }
+      .el-range__icon {
+        display: none;
+      }
+      .el-range-separator {
+        width: 10%;
+      }
+    }
+    .com-input input {
+      height: 34px;
+      line-height: 34px;
+      // border-radius: 17px;
+    }
+    .el-table tr {
+      height: 70px;
+    }
+    .el-table .cell {
+      color: $color-font;
     }
   }
+}
 
-  .mail-tooltips {
-    width: 280px;
-    padding: 10px 13px;
-    span:nth-of-type(2) {
-      float: right;
-      width: 60px;
-      text-align: left;
+.el-date-range-picker__editors-wrap /deep/ {
+  background: red;
+  .el-date-range-picker__time-picker-wrap {
+    width: 100%;
+    &:nth-of-type(2) {
+      display: none;
     }
   }
-  /*/deep/ {*/
-    /*.el-button {*/
-      /*background-color: transparent;*/
-    /*}*/
-    /*.com-input input {*/
-      /*background-color: transparent;*/
-    /*}*/
-    /*// 去掉复选框背景色*/
-    /*.el-checkbox__inner {*/
-      /*background-color: transparent;*/
-    /*}*/
-  /*}*/
+}
 
+.mail-tooltips {
+  width: 280px;
+  padding: 10px 13px;
+  span:nth-of-type(2) {
+    float: right;
+    width: 60px;
+    text-align: left;
+  }
+}
+/*/deep/ {*/
+/*.el-button {*/
+/*background-color: transparent;*/
+/*}*/
+/*.com-input input {*/
+/*background-color: transparent;*/
+/*}*/
+/*// 去掉复选框背景色*/
+/*.el-checkbox__inner {*/
+/*background-color: transparent;*/
+/*}*/
+/*}*/
 </style>
