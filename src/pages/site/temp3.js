@@ -10,12 +10,14 @@ export default function () {
         img: '',
         link: '',
         color: 'rgba(255, 255, 255, 1)',
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500'
       },
       logo: {
         url: require('assets/image/tp_logo.png'),
         link: '',
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
       },
       nav: {
         enable: true,
@@ -63,7 +65,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(30,101,231,1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       block1: {
         enable: true,
@@ -83,7 +86,8 @@ export default function () {
           },
           hrefType: '_define',
           target: '_self',
-          link: ''
+          link: '',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500'
         }]
       }
     },
@@ -95,7 +99,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(239,239,239,1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       block1: {
         enable: true,
@@ -114,7 +119,8 @@ export default function () {
           },
           hrefType: '_define',
           target: '_self',
-          link: ''
+          link: '',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500'
         }]
       }
     },
@@ -134,7 +140,8 @@ export default function () {
               enable: true,
               content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 14px;">Photography我的第一堂摄影课</span></div>`
             }
-          }
+          },
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸394*222'
         },
         {
           video: {
@@ -147,7 +154,8 @@ export default function () {
               enable: true,
               content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 14px;">Photography我的第一堂摄影课</span></div>`
             }
-          }
+          },
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸394*222'
         },
         {
           video: {
@@ -159,7 +167,8 @@ export default function () {
               enable: true,
               content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 14px;">Photography我的第一堂摄影课</span></div>`
             }
-          }
+          },
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸394*222'
         }
       ]
       // video: {
@@ -177,7 +186,8 @@ export default function () {
         videoType: 'upload',
         color: 'RGBA(0, 157, 181, 1)',
         link: '',
-        img: require('assets/image/tp_bg5.jpg')
+        img: require('assets/image/tp_bg5.jpg'),
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*330'
       },
       font: {
         enable: true,
@@ -201,7 +211,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,
@@ -220,7 +231,8 @@ export default function () {
           },
           link: '',
           hrefType: '_define',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200'
         },
         {
           type: 'top',
@@ -232,7 +244,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200'
         },
         {
           type: 'top',
@@ -244,7 +257,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200'
         },
         {
           type: 'top',
@@ -256,7 +270,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200'
         },
         {
           type: 'top',
@@ -268,7 +283,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200'
         },
         {
           type: 'top',
@@ -280,7 +296,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200'
         }
         ]
       }
@@ -293,7 +310,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(19,16,49,1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*300'
       },
       font: {
         enable: true,
@@ -318,7 +336,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,
@@ -336,7 +355,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -347,7 +367,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -358,7 +379,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -369,7 +391,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -380,7 +403,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -391,7 +415,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -402,7 +427,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         },
         {
           type: 'bottom',
@@ -413,7 +439,8 @@ export default function () {
           },
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120'
         }
         ]
       }

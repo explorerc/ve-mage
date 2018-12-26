@@ -10,12 +10,14 @@ export default function () {
         link: '',
         color: 'rgba(255, 255, 255, 1)',
         hideVideo: false,
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       logo: {
         url: require('assets/image/tp_logo.png'),
         link: '',
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
       },
       nav: {
         enable: true,
@@ -57,7 +59,8 @@ export default function () {
         color: 'rgba(0, 0, 0, 1)',
         link: '',
         hideVideo: false,
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,
@@ -86,7 +89,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         link: '',
-        color: 'rgba(255, 255, 255, 1)'
+        color: 'rgba(255, 255, 255, 1)',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,
@@ -101,7 +105,8 @@ export default function () {
           img: require('assets/image/tp_section3_1.jpg'),
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸 两栏540*300 三栏364*192'
         },
         {
           type: 'bottom',
@@ -109,7 +114,8 @@ export default function () {
           img: require('assets/image/tp_section3_2.jpg'),
           hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸 两栏540*300 三栏364*192'
         }
         ]
       }
@@ -122,7 +128,8 @@ export default function () {
         videoType: 'upload',
         link: '',
         img: '',
-        color: 'rgba(247,247,247,1);'
+        color: 'rgba(247,247,247,1);',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,
@@ -160,7 +167,8 @@ export default function () {
         link: '',
         img: '',
         videoType: 'upload',
-        color: 'rgba(255, 255, 255, 1)'
+        color: 'rgba(255, 255, 255, 1)',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,
@@ -173,20 +181,23 @@ export default function () {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">Photography我的第一堂摄影课 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_1.png'),
-          hideLink: true
+          hideLink: true,
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸 346*200'
 
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">After Effects玩转创意视频 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_2.png'),
-          hideLink: true
+          hideLink: true,
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸 346*200'
         },
         {
           type: 'bottom',
           content: `<div style="text-align: center;"><br></div><div style="text-align: center;"><span style="font-size: 18px; font-family: &quot;PingFang SC&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Hiragino Sans GB&quot;, &quot;Source Han Sans&quot;, &quot;Noto Sans CJK Sc&quot;, &quot;Microsoft YaHei&quot;, &quot;Microsoft Jhenghei&quot;, sans-serif;"><font color="#003399"><a href="http://www.baidu.com">影视工坊视频特效设计 &gt;</a></font></span></div>`,
           img: require('assets/image/tp_section5_3.png'),
-          hideLink: true
+          hideLink: true,
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸 346*200'
         }
         ]
       }
@@ -200,7 +211,8 @@ export default function () {
         link: '',
         img: '',
         videoType: 'upload',
-        color: 'rgba(255, 255, 255, 1)'
+        color: 'rgba(255, 255, 255, 1)',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       share: {
         enable: true,
@@ -220,7 +232,8 @@ export default function () {
         videoType: 'upload',
         link: '',
         img: '',
-        color: 'rgba(19,16,49,1)'
+        color: 'rgba(19,16,49,1)',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
       },
       font: {
         enable: true,

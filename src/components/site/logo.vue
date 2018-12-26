@@ -18,8 +18,8 @@
       <div class='img-upload-box'>
         <label class='normal'>上传图片</label>
         <ve-upload
-        title="图片支持jpg、png、bmp格式 大小不超过2M"
-        accept="png|jpg|bmp"
+        :title="value.imgDesc"
+        accept="png|jpg|bmp|gif"
         :fileSize="2048"
         :errorMsg="uploadImgErrorMsg"
         :defaultImg="value.url.indexOf('mp')===0?host+value.url:value.url"
