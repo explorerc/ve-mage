@@ -30,14 +30,15 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg"
+                           accept="png|jpg|jpeg|gif"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
+                           bg-size="contain"
                            :errorMsg="uploadLogoErrorMsg"
                            @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
                 <p class="v-notes">
-                  注：logo图片，只对PC页面生效
+                  注：背景图片，只对电脑页面生效
                 </p>
               </div>
             </div>
@@ -423,190 +424,197 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  .set-live-watch-container /deep/ {
-    /* 设备宽度大于 1600 */
-    @media all and (min-width: 1600px) {
-      width: 1366px;
-    }
-    /* 设备宽度小于 1600px */
-    @media all and (max-width: 1600px) {
-      width: 1019px;
-    }
-    margin: 0 auto;
-    .v-title {
-      position: relative;
-      line-height: 60px;
-      margin: 32px 0 7px;
-      font-size: 24px;
-      color: #222;
-    }
-    .v-content {
-      /*margin-top: 26px;*/
-      width: 100%;
-      min-height: 835px;
-      background-color: #fff;
-      border: 1px solid #e2e2e2;
-      border-radius: 4px;
-      .tab-header-wrap {
-        border-bottom: 1px solid #e2e2e2;
-        .tab-item {
-          height: 60px;
-          line-height: 60px;
-          border-radius: 1.5px;
-          border-bottom: 2px solid rgba(0, 0, 0, 0);
-          margin: 0 22px;
-          font-size: 18px;
+.set-live-watch-container /deep/ {
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
+  margin: 0 auto;
+  .v-title {
+    position: relative;
+    line-height: 60px;
+    margin: 32px 0 7px;
+    font-size: 24px;
+    color: #222;
+  }
+  .v-content {
+    /*margin-top: 26px;*/
+    width: 100%;
+    min-height: 835px;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    .tab-header-wrap {
+      border-bottom: 1px solid #e2e2e2;
+      .tab-item {
+        height: 60px;
+        line-height: 60px;
+        border-radius: 1.5px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0);
+        margin: 0 22px;
+        font-size: 18px;
+        color: #555;
+        &.active {
+          border-color: #4b5afe;
           color: #555;
-          &.active {
-            border-color: #4b5afe;
-            color: #555;
-          }
         }
-      }
-      .v-set {
-        .input-form {
-          position: relative;
-          margin-bottom: 30px;
-          .v-info-label {
-            font-size: 14px;
-            color: #555;
-            width: 100px;
-            padding-top: 6px;
-            margin-right: 17px;
-          }
-          .v-notes {
-            font-size: 12px;
-            color: #888888;
-            padding-left: 215px;
-            margin: 10px auto 0;
-          }
-        }
-      }
-      .v-brand {
-        width: 920px;
-        margin: 60px auto 0;
-        .input-form {
-          .v-info-label {
-            width: 70px;
-          }
-          .v-notes {
-            font-size: 14px;
-            color: #888888;
-            padding-left: 87px;
-            margin: 10px auto 0;
-          }
-        }
-      }
-      .ve-upload-box {
-        width: 330px;
-        height: 160px;
-        .upload-file-box {
-          width: 290px;
-          span {
-            line-height: 14px;
-          }
-        }
-      }
-      .primary-button {
-        width: 200px;
-        display: block;
-        margin: 80px auto 40px;
       }
     }
-    .pull-left {
-      float: left;
-    }
-    .pull-right {
-      float: right;
-      &.phone-mode {
+    .v-set {
+      .input-form {
         position: relative;
-        width: 250px;
-        height: 499px;
-        background: url('~assets/image/phone-wechat.png');
-        background-size: cover;
-        background-position: center center;
-        margin-right: 70px;
-        .h5-header {
-          position: absolute;
-          top: 64px;
-          left: 20px;
-          height: 30px;
-          width: 214px;
-          img.h5-logo {
-            height: 24px;
-            max-width: 100px;
-          }
-          .h5-header-content {
-            display: inline-block;
-            width: 60%;
-            font-size: 14px;
-            transform: scale(0.5) translateX(-60px);
-            p:nth-child(1) {
-              font-weight: bold;
-              width: 120px;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-            p:nth-child(2) {
-              span:nth-child(1) {
-                display: inline-block;
-                padding: 4px 10px;
-                margin-right: 10px;
-                border-radius: 16px;
-                color: #fff;
-                font-size: 12px;
-                background-color: rgba(0, 0, 0, .7);
-                line-height: 18px;
-              }
-              span:nth-child(2) {
-                color: #666;
-                font-size: 12px;
-              }
-            }
-          }
+        margin-bottom: 30px;
+        .v-info-label {
+          font-size: 14px;
+          color: #555;
+          width: 100px;
+          padding-top: 6px;
+          margin-right: 17px;
         }
-        .h5-logo-img {
-          width: 229px;
-          height: 410px;
-          margin-top: 14px;
-          margin-left: 12px;
-          background-image: url('~assets/image/h5-logo@2x.jpg');
-          background-repeat: no-repeat;
-          background-size: cover;
-          background-position: center;
+        .v-notes {
+          font-size: 12px;
+          color: #888888;
+          padding-left: 215px;
+          margin: 10px auto 0;
         }
       }
     }
-    .pull-right-menu {
-      float: left;
-      width: 40%;
-      margin-left: 40px;
-      margin-bottom: 20px;
-      span {
-        display: inline-block;
-        line-height: 30px;
-        padding: 0 20px;
-        font-size: 14px;
-        &:hover, &.active {
-          cursor: pointer;
-          color: #2878FF;
+    .v-brand {
+      width: 920px;
+      margin: 60px auto 0;
+      .input-form {
+        .v-info-label {
+          width: 70px;
+        }
+        .v-notes {
+          font-size: 14px;
+          color: #888888;
+          padding-left: 87px;
+          margin: 10px auto 0;
         }
       }
     }
-    .v-show {
-      width: 462px;
-      height: 349px;
-      padding-top: 32px;
-      background: url('~assets/image/mac_bg@2x.png');
-      background-position: center center;
+    .ve-upload-box {
+      width: 330px;
+      height: 160px;
+      .upload-file-box {
+        width: 290px;
+        span {
+          line-height: 14px;
+        }
+      }
+    }
+    .primary-button {
+      width: 200px;
+      display: block;
+      margin: 80px auto 40px;
+    }
+  }
+  .pull-left {
+    float: left;
+  }
+  .pull-right {
+    float: right;
+    &.phone-mode {
+      position: relative;
+      width: 250px;
+      height: 499px;
+      background: url('~assets/image/phone-wechat.png');
       background-size: cover;
+      background-position: center center;
+      margin-right: 70px;
+      .h5-header {
+        position: absolute;
+        top: 64px;
+        left: 20px;
+        height: 30px;
+        width: 214px;
+        img.h5-logo {
+          height: 24px;
+          max-width: 100px;
+        }
+        .h5-header-content {
+          display: inline-block;
+          width: 60%;
+          font-size: 14px;
+          transform: scale(0.5) translateX(-60px);
+          p:nth-child(1) {
+            font-weight: bold;
+            width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          p:nth-child(2) {
+            span:nth-child(1) {
+              display: inline-block;
+              padding: 4px 10px;
+              margin-right: 10px;
+              border-radius: 16px;
+              color: #fff;
+              font-size: 12px;
+              background-color: rgba(0, 0, 0, 0.7);
+              line-height: 18px;
+            }
+            span:nth-child(2) {
+              color: #666;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      .h5-logo-img {
+        width: 229px;
+        height: 410px;
+        margin-top: 14px;
+        margin-left: 12px;
+        background-image: url('~assets/image/h5-logo@2x.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+    }
+  }
+  .pull-right-menu {
+    float: left;
+    width: 40%;
+    margin-left: 40px;
+    margin-bottom: 20px;
+    span {
+      display: inline-block;
+      line-height: 30px;
+      padding: 0 20px;
+      font-size: 14px;
+      &:hover,
+      &.active {
+        cursor: pointer;
+        color: #2878ff;
+      }
+    }
+  }
+  .v-show {
+    width: 462px;
+    height: 349px;
+    padding-top: 32px;
+    background: url('~assets/image/mac_bg@2x.png');
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    .v-logo {
+      display: block;
+      width: 27px;
+      height: 13px;
+      margin-right: 6px;
       position: relative;
       .v-logo {
         display: block;
-        width: 27px;
+        max-width: 40px;
         height: 13px;
         margin-right: 6px;
         position: relative;
@@ -631,143 +639,135 @@
         height: 250px;
         background-position: center;
         background-size: cover;
-        padding-top: 10px;
-        margin-left: 12px;
-        .v-show-content {
-          width: 376px;
-          height: 199px;
-          margin: 6px auto 0;
-          background: url('~assets/image/viewarea@2x.jpg');
-          background-size: cover;
-          position: relative;
-        }
-      }
-      .v-preview {
-        font-size: 18px;
-        color: #555;
-        padding: 83px 0 0 0px;
-        text-align: center;
-      }
-    }
-    .v-share {
-      width: 850px;
-      margin: 60px auto;
-      .com-input {
-        width: 440px;
-      }
-      .error-msg {
-        font-size: 12px;
-      }
-      .el-textarea {
-        width: 440px;
-      }
-      .v-notes {
-        position: absolute;
-        top: 42px;
-        left: 0;
-        margin: 0;
-      }
-      .v-shareIntroduction {
-        textarea {
-          padding-right: 45px;
-          height: 110px;
-        }
-        .limit {
-          right: 8px;
-          bottom: 8px;
-        }
-      }
-      .v-show {
-        width: 250px;
-        height: 499px;
-        background: url('~assets/image/phone-wechat.png');
-        background-size: cover;
-        background-position: center center;
-        margin-left: 33px;
         position: relative;
-        .v-share-friend {
-          width: 173px;
-          height: 100px;
-          border: 1px solid #dadada;
-          border-radius: 3px 3px 1px 1px;
-          background-color: #fff;
-          margin: 65px 3px 0 25px;
-          .v-share-title {
-            text-align: left;
-            width: 302px;
-            font-size: 22px;
-            min-height: 32px;
-            transform: scale(0.5);
-            -webkit-transform-origin: top left;
-            margin: 5px 0 0 5px;
-            word-break: break-all;
-            line-height: 22px;
-          }
-          .v-show-content {
-            position: relative;
-            .v-show-img {
-              display: inline-block;
-              width: 30px;
-              height: 30px;
-              position: absolute;
-              top: 0px;
-              right: 5px;
-            }
-            .v-introduction {
-              width: 228px;
-              margin: -15px 0 0 6px;
-              max-height: 63px;
-              word-break: break-all;
-              font-size: 16px;
-              color: #555;
-              transform: scale(0.5);
-              overflow: hidden;
-              text-overflow: ellipsis;
-              display: -webkit-box;
-              -webkit-line-clamp: 3;
-              -webkit-transform-origin: top left;
-              -webkit-box-orient: vertical;
-            }
-          }
-        }
-        .v-avatar {
-          display: inline-block;
-          width: 22px;
-          height: 22px;
-          border: 1px solid #666;
-          border-radius: 1px;
-          margin: 65px 25px 0 0px;
-        }
-      }
-      .v-preview {
-        font-size: 18px;
-        color: #555;
-        text-align: center;
-        position: absolute;
-        bottom: -40px;
-        left: 0;
-        right: 0;
-        padding: 0;
       }
     }
-    .v-share-button {
-      margin-top: 134px;
-    }
-    .btn-upload {
-      display: block;
-      width: 175px;
-      height: 35px;
+    .v-preview {
+      font-size: 18px;
+      color: #555;
+      padding: 83px 0 0 0px;
       text-align: center;
-      line-height: 35px;
-      background-color: #666;
-      color: #fff;
-      margin-left: 80px;
-    }
-    .v-red {
-      color: #fc5659;
-      padding: 4px 10px 0 0;
-      vertical-align: middle;
     }
   }
+  .v-share {
+    width: 850px;
+    margin: 60px auto;
+    .com-input {
+      width: 440px;
+    }
+    .error-msg {
+      font-size: 12px;
+    }
+    .el-textarea {
+      width: 440px;
+    }
+    .v-notes {
+      position: absolute;
+      top: 42px;
+      left: 0;
+      margin: 0;
+    }
+    .v-shareIntroduction {
+      textarea {
+        padding-right: 45px;
+        height: 110px;
+      }
+      .limit {
+        right: 8px;
+        bottom: 8px;
+      }
+    }
+    .v-show {
+      width: 250px;
+      height: 499px;
+      background: url('~assets/image/phone-wechat.png');
+      background-size: cover;
+      background-position: center center;
+      margin-left: 33px;
+      position: relative;
+      .v-share-friend {
+        width: 173px;
+        height: 100px;
+        border: 1px solid #dadada;
+        border-radius: 3px 3px 1px 1px;
+        background-color: #fff;
+        margin: 65px 3px 0 25px;
+        .v-share-title {
+          text-align: left;
+          width: 302px;
+          font-size: 22px;
+          min-height: 32px;
+          transform: scale(0.5);
+          -webkit-transform-origin: top left;
+          margin: 5px 0 0 5px;
+          word-break: break-all;
+          line-height: 22px;
+        }
+        .v-show-content {
+          position: relative;
+          .v-show-img {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            top: 0px;
+            right: 5px;
+          }
+          .v-introduction {
+            width: 228px;
+            margin: -15px 0 0 6px;
+            max-height: 63px;
+            word-break: break-all;
+            font-size: 16px;
+            color: #555;
+            transform: scale(0.5);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-transform-origin: top left;
+            -webkit-box-orient: vertical;
+          }
+        }
+      }
+      .v-avatar {
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        border: 1px solid #666;
+        border-radius: 1px;
+        margin: 65px 25px 0 0px;
+      }
+    }
+    .v-preview {
+      font-size: 18px;
+      color: #555;
+      text-align: center;
+      position: absolute;
+      bottom: -40px;
+      left: 0;
+      right: 0;
+      padding: 0;
+    }
+  }
+  .v-share-button {
+    margin-top: 134px;
+  }
+  .btn-upload {
+    display: block;
+    width: 175px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    background-color: #666;
+    color: #fff;
+    margin-left: 80px;
+  }
+  .v-red {
+    color: #fc5659;
+    padding: 4px 10px 0 0;
+    vertical-align: middle;
+  }
+}
 </style>
 
