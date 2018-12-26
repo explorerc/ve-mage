@@ -120,7 +120,7 @@
                    type="prompt"
                    :header="dialogTitle"
                    @handleClick="paidMoney"
-                   header="">
+                   header="充值">
         <div class="mager-box message-box-content">
           <div class="from-box">
             <div class="from-row input-box">
