@@ -706,7 +706,7 @@
             })
           })
           this.usersListData = arr
-          if (this.usersListData.length) {
+          if (!this.usersListData.length) {
             this.isNoDataShow = true
           } else {
             this.isNoDataShow = false

@@ -334,9 +334,9 @@ export default {
       text-align: center;
       margin: 100px 0;
       .txt {
-        padding-top: 20px;
-        font-size: 16px;
-        color: $color-font;
+        padding-top: 40px;
+        font-size: 14px;
+        color: $color-font-sub;
       }
       .img {
         width: 150px;
@@ -351,7 +351,7 @@ export default {
         height: 40px;
         text-align: center;
         line-height: 40px;
-        margin-top: 20px;
+        margin-top: 30px;
       }
     }
   }
