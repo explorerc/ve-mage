@@ -82,7 +82,7 @@
                    class="add-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
+                   header="充值"
                    confirmText="下一步"
                    @handleClick="payMoney">
 
@@ -118,9 +118,8 @@
                    class="pay-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
                    @handleClick="paidMoney"
-                   header="充值">
+                   header="支付">
         <div class="mager-box message-box-content">
           <div class="from-box">
             <div class="from-row input-box">
