@@ -30,9 +30,10 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg"
+                           accept="png|jpg|jpeg|gif"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
+                           bg-size="contain"
                            :errorMsg="uploadLogoErrorMsg"
                            @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
@@ -606,7 +607,7 @@
       position: relative;
       .v-logo {
         display: block;
-        width: 27px;
+        max-width: 40px;
         height: 13px;
         margin-right: 6px;
         position: relative;

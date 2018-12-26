@@ -3,9 +3,9 @@
     <div class="upload-img-box" v-if="fileSrc||(!fileSrc && coverImg)">
       <transition name="fade">
         <div class="temp-img" v-if="fileSrc"
-             :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
+             :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')', backgroundSize:`${bgSize}`}"></div>
         <div class="temp-img" v-if="!fileSrc && coverImg"
-             :style="{backgroundImage:'url('+coverImg+')'}"></div>
+             :style="{backgroundImage:'url('+coverImg+')', backgroundSize:`${bgSize}`}"></div>
       </transition>
       <div class="over-upload">
         <span @click.stop="deleteImage">
@@ -77,6 +77,10 @@
       nowIndex: {
         type: Number,
         default: 0
+      },
+      bgSize: {
+        type: String,
+        default: 'cover'
       }
     },
     watch: {
@@ -216,6 +220,7 @@
       height: 100%;
       background-position: center center;
       background-size: cover;
+      background-repeat: no-repeat;
     }
     &:hover .over-upload {
       transition: top 0.3s;
