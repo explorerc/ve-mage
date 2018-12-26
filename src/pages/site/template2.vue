@@ -127,7 +127,7 @@ export default {
       width: 28px;
       height: 28px;
       background-image: url('~assets/image/site/edit.svg');
-      background-size: 32px;
+      background-size: 28px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
@@ -357,6 +357,7 @@ export default {
       min-height: 85px;
     }
     .block1-group {
+      height: 340px;
       .block1-item {
         border: 1px solid rgba(226, 226, 226, 1);
         width: 250px;
