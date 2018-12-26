@@ -16,8 +16,9 @@
         <com-input v-if="edit"
                    class="q-subject"
                    @focus="focusTitle"
+                   @blur="blurTitle"
                    :class="{error:value.error}"
-                   v-model="value.title"
+                   v-model.async="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
              class="q-subject">{{value.title}}<span v-if="value._required"
@@ -121,9 +122,17 @@ export default {
       return this.$refs.content.check()
     },
     focusTitle () {
+      if (this.value.title === this.value.ext.name) {
+        this.value.title = ''
+      }
       if (this.value.error) {
         this.value.error = false
         this.value.title = ''
+      }
+    },
+    blurTitle () {
+      if (!this.value.title) {
+        this.value.title = this.value.ext.name
       }
     },
     addItem () {
@@ -239,6 +248,7 @@ export default {
         .q-subject {
           margin-bottom: 14px;
           word-break: break-all;
+          font-size: 14px;
           &.error {
             input {
               border-color: #fc5659;

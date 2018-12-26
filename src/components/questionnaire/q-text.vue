@@ -119,6 +119,7 @@ export default {
         border-color: #ffd021;
         background-color: #ffd021;
         padding: 0;
+        color: #222;
       }
     }
     .error-msg {

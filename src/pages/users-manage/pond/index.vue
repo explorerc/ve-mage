@@ -16,16 +16,20 @@
               <el-dropdown-item command='checkAll'>列表所有数据</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown> -->
-          <el-dropdown @command="handleCommandk">
+          <div class="fl">
+            <el-button round disabled v-if="!multipleSelection.length" style="margin-right: 10px">批量操作</el-button>
+            <el-dropdown @command="handleCommandk" v-else>
             <span class="el-dropdown-link">
-              <el-button round :disabled="multipleSelection.length <= 0">批量操作</el-button>
+              <el-button round>批量操作</el-button>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <!-- <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item> -->
-              <el-dropdown-item command='addGroup' :disabled="multipleSelection.length <= 0">添加到群组</el-dropdown-item>
-              <el-dropdown-item command='del' :disabled="multipleSelection.length <= 0">删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+              <el-dropdown-menu slot="dropdown">
+                <!-- <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item> -->
+                <el-dropdown-item command='addGroup'>添加到群组</el-dropdown-item>
+                <el-dropdown-item command='del'>删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+
           <el-button round @click='exportAll()'>全部导出</el-button>
           <!-- <el-button round @click='addGroupAll()'>全部添加到群组</el-button> -->
           <el-button round @click='showImport = true'>批量导入</el-button>
@@ -287,7 +291,7 @@
           </el-table>
           <div class="total">共 <span>{{total}}</span> 条数据</div>
         </template>
-        <template v-else>
+        <template v-if="isNoDataShow">
           <div class="empty">
             <div class="img"></div>
             <div class="txt">暂无数据</div>
@@ -514,7 +518,9 @@
           page_size: 100 // 每页显示条数 默认不传为每页显示10条
         },
         exportStr: '', // 导出数据的拼接str
-        imgHost: process.env.IMGHOST + '/'
+        imgHost: process.env.IMGHOST + '/',
+        isNoDataShow: false, // 空白页的展示，并防止先加载空白页
+        isElDropwnShow: true // 批量操作按钮禁用，下拉菜单不显示
       }
     },
     created () {
@@ -700,6 +706,11 @@
             })
           })
           this.usersListData = arr
+          if (!this.usersListData.length) {
+            this.isNoDataShow = true
+          } else {
+            this.isNoDataShow = false
+          }
         })
       },
       queryTotal (data) {

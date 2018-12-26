@@ -30,9 +30,10 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg"
+                           accept="png|jpg|jpeg|gif"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
+                           bg-size="contain"
                            :errorMsg="uploadLogoErrorMsg"
                            @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
@@ -611,34 +612,32 @@
       height: 13px;
       margin-right: 6px;
       position: relative;
-      top: -50%;
-      left: 0;
-      transform: translateY(50%);
-    }
-    .v-live-title {
-      font-size: 16px;
-      transform: scale(0.5);
-      transform-origin: top left;
-      color: #333;
-      max-height: 12px;
-      width: 247px;
-    }
-    .v-pc-icon {
-      display: block;
-      width: 87px;
-    }
-    .v-pc {
-      width: 438px;
-      height: 250px;
-      background-position: center;
-      background-size: cover;
-      padding-top: 10px;
-      margin-left: 12px;
-      .v-show-content {
-        width: 376px;
-        height: 199px;
-        margin: 6px auto 0;
-        background: url('~assets/image/viewarea@2x.jpg');
+      .v-logo {
+        display: block;
+        max-width: 40px;
+        height: 13px;
+        margin-right: 6px;
+        position: relative;
+        top: -50%;
+        left: 0;
+        transform: translateY(50%);
+      }
+      .v-live-title {
+        font-size: 16px;
+        transform: scale(0.5);
+        transform-origin: top left;
+        color: #333;
+        max-height: 12px;
+        width: 247px;
+      }
+      .v-pc-icon {
+        display: block;
+        width: 87px;
+      }
+      .v-pc {
+        width: 438px;
+        height: 250px;
+        background-position: center;
         background-size: cover;
         position: relative;
       }

@@ -342,11 +342,22 @@ export default {
             color: #999;
           }
         }
+        &:hover {
+          border-color: #FDD43F;
+          background-color: #FDD43F;
+        }
+        &:active {
+          border-color: #EEC11A;
+          background-color: #EEC11A;
+
+        }
       }
-      &:hover {
-        background-color: #fdd43f;
-        border-color: #fdd43f;
-        color: #222;
+      &.v-view{
+        &:hover {
+          background-color: #4B5AFE;
+          border-color: #4B5AFE;
+          color: #fff;
+        }
       }
       &:active {
         background-color: #eec11a;
@@ -355,7 +366,7 @@ export default {
       }
       &.disabled {
         border-color: #ddd;
-        background-color: #ddd;
+        /*background-color: #ddd;*/
         color: #999;
         &:hover {
           border-color: #ddd;
@@ -439,7 +450,7 @@ export default {
       .img {
         width: 150px;
         height: 150px;
-        margin: 0 auto 20px;
+        margin: 0 auto 17px;
         border-radius: 500px;
         // background:rgba(245,245,245,1);
         box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
@@ -469,7 +480,7 @@ export default {
         height: 40px;
         text-align: center;
         line-height: 40px;
-        margin-top: 20px;
+        margin-top: 10px;
       }
     }
   }

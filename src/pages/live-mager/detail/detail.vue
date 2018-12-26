@@ -2060,6 +2060,7 @@
     margin: 10px 0;
   }
 }
+
 .item.base .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/base.png');
@@ -2121,6 +2122,19 @@
   width: 80px;
   background-image: url('~assets/image/detail/tools_cards.png');
 }
+.item.record .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/playback.png');
+}
+.item .item.aud .card .pic{
+  width: 80px;
+  background-image: url('~assets/image/detail/aud.png');
+}
+.item .item.statics .card .pic{
+  width: 80px;
+  background-image: url('~assets/image/detail/statics.png');
+}
+
 .browser-help {
   text-align: center;
   img {

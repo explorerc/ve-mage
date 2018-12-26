@@ -441,7 +441,7 @@ export default {
     }
     .v-login {
       font-size: 16px;
-      color: #666;
+      color: #999;
       margin-top: 15px;
       display: block;
     }

@@ -362,7 +362,7 @@
       img {
         width: 150px;
         height: 150px;
-        margin: 84px auto 30px auto;
+        margin: 84px auto 27px auto;
       }
 
       p {
