@@ -82,7 +82,7 @@
                    class="add-money-msg"
                    width="464px"
                    type="prompt"
-                   header="充值"
+                   header=""
                    confirmText="下一步"
                    @handleClick="payMoney">
 
@@ -119,7 +119,7 @@
                    width="464px"
                    type="prompt"
                    @handleClick="paidMoney"
-                   header="支付">
+                   header="">
         <div class="mager-box message-box-content">
           <div class="from-box">
             <div class="from-row input-box">
@@ -173,7 +173,7 @@
                    class="paid-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
+                   header=""
                    @handleClick="finishMoney"
                    header="">
         <div class="message-box-content">
@@ -235,8 +235,7 @@
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
         wxDisabled: false, // 微信按钮不禁用
-        showWithdraw: false,
-        dialogTitle: '充值'
+        showWithdraw: false
       }
     },
     filters: {
