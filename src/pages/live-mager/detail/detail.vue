@@ -1492,8 +1492,14 @@
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background-color: #ffd021;
-        border-color: #ffd021;
+        /*background-color: #ffd021;*/
+        /*border-color: #ffd021;*/
+        background-color: #ffd43f;
+        border-color: #ffd43f;
+      }
+      &:active {
+        background-color: #EEC11A;
+        border-color: #EEC11A;
       }
     }
   }

@@ -933,6 +933,21 @@
         .el-dropdown {
           margin-right: 10px;
         }
+        .el-button {
+          border-color: #888;
+          color: #555;
+          &:focus,
+          &:hover {
+            background-color: #FDD43F;
+            border-color: #FDD43F;
+            color: #222;
+          }
+          &:active {
+            background-color: #EEC11A;
+            border-color: #EEC11A;
+            color: #222;
+          }
+        }
       }
       .right {
         float: right;
