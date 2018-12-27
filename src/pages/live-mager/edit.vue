@@ -101,7 +101,6 @@ import { formatDate } from 'src/assets/js/date'
 import VeUpload from 'src/components/ve-upload-image'
 import VeEditer from 'src/components/ve-html5-editer'
 // import http from 'src/api/activity-manger'
-
 import activityService from 'src/api/activity-service'
 import comChoose from 'src/pages/users-manage/components/com-choose'
 import EventBus from 'src/utils/eventBus'
