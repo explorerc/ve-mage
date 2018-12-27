@@ -151,10 +151,10 @@ export default {
   height: 100%;
   opacity: 0.7;
   background: #000;
-  z-index: 2001;
+  z-index: 1000;
 }
 .com-addGroup-box /deep/ {
-  z-index: 2002;
+  z-index: 1000;
   position: absolute;
   top: 50%;
   left: 50%;
