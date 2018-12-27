@@ -1,6 +1,8 @@
 <!--新建/编辑活动-->
 <template>
-  <div @keydown="canPaas = false">
+  <div @keydown="canPaas = false"
+       v-ComLoading="loading"
+       com-loading-text="加载中">
     <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)">
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
@@ -70,7 +72,8 @@
         <div class="from-row" v-if="status === 'PREPARE' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
-            <button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">
+            <!--<button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">-->
+            <button @click='comfirm' class='create-btn'>
               <template v-if="activityId">保存</template>
               <template v-else>创建</template>
             </button>
@@ -98,6 +101,7 @@ import { formatDate } from 'src/assets/js/date'
 import VeUpload from 'src/components/ve-upload-image'
 import VeEditer from 'src/components/ve-html5-editer'
 // import http from 'src/api/activity-manger'
+
 import activityService from 'src/api/activity-service'
 import comChoose from 'src/pages/users-manage/components/com-choose'
 import EventBus from 'src/utils/eventBus'
@@ -137,7 +141,8 @@ export default {
       },
       successTxt: '',
       canPaas: true,
-      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm')
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm'),
+      loading: false
     }
   },
   created () {
@@ -288,9 +293,11 @@ export default {
       })
     },
     updateWebinfo (isNew, data) { // 新建 创建活动
+      this.loading = true
       if (isNew) {
         this.$config({ 'handlers': [2001] }).$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
           this.createdSuccess = true
+          this.loading = false
           this.canPaas = true
           this.successTxt = '创建成功'
           res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
@@ -539,6 +546,10 @@ export default {
       margin: 0 auto;
       @include primary-button;
       width: 200px;
+      /*&:disabled {*/
+        /*opacity: 1;*/
+        /*cursor: pointer;*/
+      /*}*/
     }
     .add-tag {
       cursor: pointer;

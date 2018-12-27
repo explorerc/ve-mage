@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 .com-notification /deep/ {
   position: fixed;
-  z-index: 1000;
+  z-index: 1100;
   top: 0;
   bottom: 0;
   left: 0;
