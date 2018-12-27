@@ -10,10 +10,10 @@
         @change='openSwitch'>
       </el-switch>
       <com-back ></com-back>
-      <div class="right-box">
+      <!-- <div class="right-box">
         <span>最多可添加 <i>5</i> 条信息</span>
         <button class="default-button fr" @click='addNew' :disabled="quesData.length === 5 || !isOpen ? true : false">添加信息</button>
-      </div>
+      </div> -->
     </div>
     <div class="mager-box border-box">
       <div class="from-box">
@@ -61,20 +61,20 @@
             <div>
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
             </div>
-            <div>
-              <com-input class='inp'
-                         :value.sync="item.placeholder === null ? '' : item.placeholder"
-                         :max-length="8"
-                         :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
+            <div v-if="item.ext==='select'">
+              <el-button class='default-button set-select'  @click='setSelect(item.detail.list,idx)'>设置下拉选项</el-button>
+            </div>
+            <div v-else>
+              <com-input class='inp' :value.sync="item.placeholder === null ? '' : item.placeholder" :max-length="8" :placeholder="item.place ? item.place : '请输入描述信息'"></com-input>
             </div>
             <div v-if="item.ext === 'phone'" class='del-box tips'>
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
-              <span class='require'><el-checkbox v-model="item.required ==='Y'">必填</el-checkbox></span>
+              <span class='require'><el-checkbox v-model="item.required">必填</el-checkbox></span>
               <span @click='removeItem(idx)' class='del'></span>
             </div>
-            <section class='select-item clearfix' v-if="item.ext === 'select'">
+            <!-- <section class='select-item clearfix' v-if="item.ext === 'select'">
               <ol>
                 <span class='add-item' @click='addItem(idx)' v-if="item.detail.list.length < 10 ? true : false"><i>＋</i>添加选项</span>
                 <li v-for="(option,count) in item.detail.list" :key='count'>
@@ -82,18 +82,47 @@
                   <span @click='delItem(idx,count)' class='del'>删除</span>
                 </li>
               </ol>
-            </section>
+            </section> -->
           </li>
         </ol>
+        <div class="add-item-box">
+          <span class='add-item'  @click='addNew' :class='{"disabled":quesData.length === 5 || !isOpen ? true : false}' ><i></i>添加信息</span>
+          <span>最多可添加<em> 5 </em>条信息</span>
+        </div>
         <el-button class='primary-button' @click='saveLimit' :disabled="!isOpen">保存</el-button>
       </div>
     </div>
-  </div>
+    </div>
+    <transition name="fade">
+      <div class="setSelect-modal-cover" v-if='setSelectModal'>
+        <div class="setSelect-modal" >
+          <div class="header">设置下拉选项<i @click='setSelectModal = false'></i></div>
+          <div class="body">
+            <draggable element="ul" v-model="selectOption" :options="{handle:'.drag'}">
+              <li v-for="(item,idx) in selectOption" :key='idx'>
+                <span class='count'>选项 {{idx + 1}}</span>
+                <com-input :value.sync="item.value" :max-length="8" placeholder="请输入选项"></com-input>
+                <em class="drag" title='移动拖拽'></em>
+                <em class="del" @click='delItem(idx)'></em>
+              </li>
+            </draggable>
+            <div class="add-item-box" style='margin-top: 20px;'>
+              <span class='add-item' @click='addItem()' :class='{"disabled":selectOption.length >= 10}' ><i></i>添加信息</span>
+              <span>最多可添加<em> 10 </em>条信息</span>
+            </div>
+            <div class="btn-box clearfix">
+              <el-button class='primary-button' @click='seletItemConfirm'>确定</el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 
 </template>
 
 <script>
+  import draggable from 'vuedraggable'
   // import prepareHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
   import veTips from 'src/components/ve-msg-tips'
@@ -126,7 +155,10 @@
         canSave: true,
         saveData: {},
         hasEmail: false,
-        hasName: false
+        hasName: false,
+        setSelectModal: false,
+        itemCount: 0,
+        selectOption: []
       }
     },
     created () {
@@ -219,17 +251,17 @@
             break
         }
       },
-      addItem (idx) {
+      addItem () {
         this.canPaas = false
-        console.log(idx)
-        this.quesData[idx]['detail']['list'].push({
+        console.log(this.itemCount)
+        this.quesData[this.itemCount]['detail']['list'].push({
           value: ''
           // key: this.quesData[idx]['list'].length === 0 ? 0 : this.quesData[idx]['list'].length
         })
       },
-      delItem (idx, count) {
+      delItem (count) {
         this.canPaas = false
-        this.quesData[idx]['detail']['list'].splice(count, 1)
+        this.quesData[this.itemCount]['detail']['list'].splice(count, 1)
       },
       addNew () {
         this.canPaas = false
@@ -240,6 +272,7 @@
           label: '文本',
           type: 'text',
           ext: 'text',
+          required: false,
           detail: {
             format: '',
             list: []
@@ -255,7 +288,14 @@
           if (res.data.detail !== null) { // 是否有报名表单数据
             this.isOpen = true
             this.queryData = res.data.detail
-            this.quesData = res.data.detail.questionList
+            res.data.detail.questionList.forEach((item, idx) => {
+              if (item.required === 'Y') {
+                item.required = true
+              } else {
+                item.required = false
+              }
+              this.quesData.push(item)
+            })
             if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
               this.queryData.finishTime = ''
             }
@@ -278,6 +318,11 @@
           }
         }
         this.saveData.detail.questionList.forEach(item => {
+          if (item.required) {
+            item.required = 'Y'
+          } else {
+            item.required = 'N'
+          }
           if (item.ext === 'phone') {
             item.required = 'Y'
             item.verification = 'Y'
@@ -400,6 +445,14 @@
           this.quesData = []
         }
         // }
+      },
+      setSelect (res, idx) {
+        this.itemCount = idx
+        this.selectOption = res
+        this.setSelectModal = true
+      },
+      seletItemConfirm () {
+        this.setSelectModal = false
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
@@ -465,7 +518,7 @@
       }
     },
     components: {
-      veTips
+      veTips, draggable
     }
   }
 </script>
@@ -556,6 +609,17 @@
       margin: 20px 32px 32px 32px;
     }
   }
+  .set-select {
+    padding: 0;
+    width: 120px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    border-color: #cecece;
+    &:hover {
+      border-color: #fff;
+    }
+  }
 }
 .set-content {
   // width: 800px;
@@ -591,11 +655,11 @@
       margin: 20px 0;
       & > div {
         display: inline-block;
-        width: 280px;
+        width: 350px;
         text-align: left;
-        margin-right: 90px;
+        margin-right: 20px;
         &.spe {
-          width: 180px;
+          width: 250px;
           position: relative;
           .star {
             color: #fc5659;
@@ -734,6 +798,37 @@
   }
 }
 
+.add-item-box {
+  color: #888;
+  font-size: 14px;
+  position: relative;
+  i {
+    position: absolute;
+    top: 50%;
+    margin-top: -10.5px;
+    left: 0;
+    width: 21px;
+    height: 21px;
+    display: inline-block;
+    background: url('~assets/image/add_icon_blue_circle.svg') no-repeat center;
+    background-size: contain;
+  }
+  .add-item {
+    color: #4b5afe;
+    cursor: pointer;
+    padding-left: 30px;
+    padding-right: 10px;
+    &:hover {
+      opacity: 0.8;
+    }
+    &.disabled {
+      cursor: not-allowed;
+    }
+  }
+  em {
+    color: #4b5afe;
+  }
+}
 .primary-button {
   padding: 0px;
   width: 200px;
@@ -748,13 +843,13 @@
   .set-content .table-title li.spe,
   .set-content .table-content .el-select,
   .set-content .table-content > li > div.spe {
-    width: 120px;
+    width: 200px;
   }
   .set-content .table-title li,
   .set-content .table-content .inp,
   .set-content .table-content > li > div {
     width: 240px;
-    margin-right: 40px;
+    margin-right: 20px;
   }
   .set-content .table-title li:nth-of-type(2) {
     padding-left: 10px;
@@ -767,5 +862,107 @@
 .el-switch {
   position: relative;
   bottom: 6px;
+}
+.setSelect-modal-cover {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+.setSelect-modal {
+  width: 460px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .header {
+    height: 40px;
+    line-height: 40px;
+    background: #ffd021;
+    color: #222;
+    font-size: 16px;
+    text-align: left;
+    padding-left: 18px;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    i {
+      cursor: pointer;
+      width: 14px;
+      height: 14px;
+      position: absolute;
+      top: 50%;
+      margin-top: -7px;
+      right: 18px;
+      background: url('~assets/image/close.svg') no-repeat center;
+      background-size: contain;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+  .body {
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+    padding: 30px;
+    li {
+      margin: 7px 0;
+      font-size: 14px;
+      position: relative;
+      .count {
+        display: inline-block;
+        width: 50px;
+      }
+    }
+    .com-input {
+      margin: 0 20px;
+      width: 260px;
+    }
+    em.del {
+      position: absolute;
+      top: 50%;
+      right: 0px;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      background: url('~assets/image/del.png') no-repeat center;
+      background-size: contain;
+      &:hover {
+        background-image: url('~assets/image/del_hover.png');
+      }
+    }
+    em.drag {
+      position: absolute;
+      top: 50%;
+      right: 30px;
+      transform: translate(-50%, -50%);
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      color: transparent;
+      background: url('~assets/image/move-icon.svg') no-repeat center;
+      background-size: contain;
+      &:hover {
+        opacity: 0.8;
+        background-image: url('~assets/image/move-icon_hover.svg');
+      }
+    }
+    .btn-box {
+      margin-top: 30px;
+      button {
+        float: right;
+        padding: 0;
+        width: 140px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        margin: 0;
+      }
+    }
+  }
 }
 </style>
