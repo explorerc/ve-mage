@@ -385,6 +385,7 @@
           console.log(msg)
           this.payMoneyShow = false
           this.successMoneyShow = true
+          this.queryAccountInfo()
         })
       },
       // 获取订单号
@@ -432,6 +433,11 @@
       finishMoney () {
         this.queryAccountInfo()
         this.successMoneyShow = false
+        this.amount = ''
+        this.oldAmount = ''
+        this.modifyMoneyShow = true
+        this.payway = '支付宝'
+        this.payType = 'ALIPAY'
       }
       // withdrawClose (res) {
       //   debugger
