@@ -544,6 +544,9 @@
         height: 100%;
         .vue-html5-editor .content {
           background-color: #f5f5f5;
+          img{
+            max-width: 100%;
+          }
         }
       }
     }
@@ -560,7 +563,7 @@
         height: calc(100% - 36px);
         width: 356px;
         margin-top: 36px;
-        padding: 0 1.8%;
+        padding: 0 36px;
         box-sizing: border-box;
         overflow-y: scroll;
         .temp-title {

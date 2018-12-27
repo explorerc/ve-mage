@@ -8,21 +8,19 @@
             @change="updateData"></editor>
     <!-- 编辑图片尺寸 -->
     <message-box v-show="imgEditShow"
-                 width="400px"
+                 width="450px"
                  type="prompt"
-                 header="编辑图片尺寸"
+                 header="设置图片大小"
                  confirmText='确定'
                  @handleClick="editImgHandle">
       <div class="img-emit-box">
         <div class="fl">
-          <span>图片宽度：</span>
-          <com-input type="mobile" @keyup.enter.native="changeImg" :value.sync="imgWidth"></com-input>
-          <span>px</span>
+          <span>高：</span>
+          <com-input placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" :value.sync="imgHeight"></com-input>
         </div>
         <div class="fr">
-          <span>图片高度：</span>
-          <com-input type="mobile" @keyup.enter.native="changeImg" :value.sync="imgHeight"></com-input>
-          <span>px</span>
+          <span>宽：</span>
+          <com-input  placeholder="输入图片宽度" type="mobile" @keyup.enter.native="changeImg" :value.sync="imgWidth"></com-input>
         </div>
       </div>
     </message-box>
@@ -323,7 +321,7 @@
           if (this.imgWidth) {
             this.imgHeight = (parseInt(this.imgWidth) / this.whRatio).toFixed()
           }
-        }, 500)
+        }, 800)
       },
       imgHeight () {
         if (this.stH) return
@@ -409,14 +407,17 @@
       overflow: hidden;
       div {
         width: calc(50% - 10px);
-        input {
-          width: 100%;
-          height: 32px;
-          margin: 5px 0;
-          padding: 0 10px;
-          outline: none;
-          border: solid 1px #e2e2e2;
-          border-radius: 4px;
+        .com-input{
+          width: 160px;
+          input {
+            width: 100%;
+            height: 32px;
+            margin: 5px 0;
+            padding: 0 10px;
+            outline: none;
+            border: solid 1px #e2e2e2;
+            border-radius: 4px;
+          }
         }
       }
     }
