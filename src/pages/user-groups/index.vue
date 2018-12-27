@@ -445,7 +445,7 @@
           float: left;
           width: 220px;
           height: 34px;
-          margin-right: 20px;
+          margin-right: 10px;
           .el-input__inner {
             height: 34px;
             line-height: 34px;
@@ -458,15 +458,24 @@
         }
         .el-button {
           color: #555555;
-          width: 120px;
+          /*width: 120px;*/
           height: 34px;
+          padding: 0 20px;
           border-radius: 16px;
           border: 1px solid #888888;
           &:hover,
           &:focus {
-            background-color: #ffd021;
-            border-color: #ffd021;
-            color: black;
+            background-color: #ffd43f;
+            border-color: #ffd43f;
+            color: #222;
+          }
+          &:active {
+            background-color: #EEC11A;
+            border-color: #EEC11A;
+            color: #222;
+          }
+          &:last-child {
+            margin-left: 5px;
           }
         }
       }

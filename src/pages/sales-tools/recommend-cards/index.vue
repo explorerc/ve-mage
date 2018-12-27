@@ -174,7 +174,7 @@
           border-color: #888888;
           color: #555555;
           &:hover {
-            border-color: #555555;
+            border-color: #888888;
             color: #555555;
             background-color: transparent;
           }

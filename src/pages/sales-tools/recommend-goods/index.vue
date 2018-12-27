@@ -43,10 +43,10 @@
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td>
               <div class='btn-box'>
-                <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
+                <el-button type="text" @click="handleEdit(row,ind)">编辑</el-button>
+                <el-button type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
                 <el-button class="item move-btn" size="mini" type="text" title='拖拽可调整商品排序'>移动</el-button>
               </div>
             </td>
