@@ -20,8 +20,9 @@
         <div class="from-row">
           <div class="from-title">报名结束时间：</div>
           <div class="from-content">
-            <el-radio v-model="radioTime" label="1">与直播同步关闭</el-radio>
+            <el-radio v-model="radioTime" label="1">不设结束时间</el-radio>
             <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
+            <ve-tips class='msg-tips-box-radio' :tip="'不设结束时间：本次直播活动的报名功能可一直开放，观众随时可以报名。<br>指定结束时间：设置报名功能的关闭时间，在时间过期后，观众将无法报名该活动。'" :tipType="'html'"></ve-tips>
             <div class="set-time" v-if="pickDate">
               <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :editable="false" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
@@ -38,7 +39,7 @@
       <div class="set-content">
         <ul class='table-title clearfix'>
           <li class='spe'>信息类型</li>
-          <!-- <li>信息标题</li> -->
+          <li>信息标题</li>
           <li>信息描述</li>
           <li class='handle'>操作</li>
         </ul>
@@ -57,9 +58,9 @@
                 </el-option>
               </el-select>
             </div>
-            <!-- <div>
+            <div>
               <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
-            </div> -->
+            </div>
             <div>
               <com-input class='inp'
                          :value.sync="item.placeholder === null ? '' : item.placeholder"
@@ -70,7 +71,8 @@
               <ve-tips :tip="'1.手机号验证时，暂只支持国内手机号验证，不支持国际手机号<br>2.为了保证手机号的真实性，观众在填写手机号之后，须进行手机号验证'" :tipType="'html'"></ve-tips>
             </div>
             <div v-else class='del-box'>
-              <span @click='removeItem(idx)' class='del'>删除</span>
+              <span class='require'><el-checkbox v-model="item.required ==='Y'">必填</el-checkbox></span>
+              <span @click='removeItem(idx)' class='del'></span>
             </div>
             <section class='select-item clearfix' v-if="item.ext === 'select'">
               <ol>
@@ -516,6 +518,25 @@
   }
 }
 .live-mager /deep/ {
+  .com-input input {
+    height: 40px;
+    line-height: 40px;
+  }
+  .el-input__inner {
+    height: 40px;
+    line-height: 40px;
+  }
+  .msg-tip-box {
+    top: 9px;
+    span {
+      max-width: 470px;
+    }
+    &.msg-tips-box-radio {
+      position: absolute;
+      left: 263px;
+      top: -2px;
+    }
+  }
   .mager-box {
     .set-time {
       margin: 20px 0px 0 0;
@@ -545,13 +566,13 @@
     color: $color-font;
     li {
       float: left;
-      width: 470px;
+      width: 332px;
       text-align: left;
       margin: 20px 0px;
       padding-left: 16px;
       margin-right: 20px;
       &.spe {
-        width: 450px;
+        width: 250px;
       }
       &.handle {
         width: 100px;
@@ -560,6 +581,7 @@
         padding-left: 12px;
       }
       &:nth-of-type(3) {
+        width: 406px;
         padding-left: 35px;
       }
     }
@@ -568,12 +590,12 @@
     & > li {
       margin: 20px 0;
       & > div {
-        float: left;
-        width: 400px;
+        display: inline-block;
+        width: 280px;
         text-align: left;
         margin-right: 90px;
         &.spe {
-          width: 380px;
+          width: 180px;
           position: relative;
           .star {
             color: #fc5659;
@@ -585,7 +607,8 @@
         }
         &.del-box /deep/ {
           line-height: 40px;
-          width: 100px;
+          width: 200px;
+          margin-right: 0;
           .msg-tip-box span {
             position: absolute;
             max-width: 500px;
@@ -593,13 +616,48 @@
             top: 10px;
             left: 30px;
           }
+          .require {
+            margin-right: 25px;
+            .el-checkbox__input .el-checkbox__inner {
+              background-color: #fff;
+              border-color: #222;
+              &:after {
+                box-sizing: content-box;
+                content: '';
+                border: 1px solid #222;
+                border-left: 0;
+                border-top: 0;
+                height: 7px;
+                left: 4px;
+                position: absolute;
+                top: 1px;
+                transition: -webkit-transform 0.15s ease-in 0.05s;
+                transition: transform 0.15s ease-in 0.05s;
+                transition: transform 0.15s ease-in 0.05s,
+                  -webkit-transform 0.15s ease-in 0.05s;
+                transform-origin: center;
+              }
+            }
+            .el-checkbox__input.is-checked + .el-checkbox__label {
+              color: #222;
+            }
+            &:hover .el-checkbox__input + .el-checkbox__label {
+              color: #222;
+            }
+          }
         }
       }
       .del {
-        color: $color-font-sub;
         cursor: pointer;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        background: url('~assets/image/del.png') no-repeat center;
+        background-size: contain;
+        position: relative;
+        top: 5px;
         &:hover {
-          color: $color-red-hover;
+          background-image: url('~assets/image/del_hover.png');
         }
       }
       .del-box {
@@ -690,19 +748,20 @@
   .set-content .table-title li.spe,
   .set-content .table-content .el-select,
   .set-content .table-content > li > div.spe {
-    width: 130px;
+    width: 120px;
   }
   .set-content .table-title li,
   .set-content .table-content .inp,
   .set-content .table-content > li > div {
     width: 240px;
+    margin-right: 40px;
   }
   .set-content .table-title li:nth-of-type(2) {
-    padding-left: 81px;
+    padding-left: 10px;
   }
   .set-content .table-title li:nth-of-type(3) {
     width: 260px;
-    padding-left: 179px;
+    padding-left: 010px;
   }
 }
 .el-switch {

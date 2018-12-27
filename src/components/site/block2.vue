@@ -163,7 +163,8 @@ export default {
           img: '',
           link: '',
           type: 'top',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
         }
         this.value.list.push(obj)
         this.active = len
