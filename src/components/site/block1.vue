@@ -173,7 +173,8 @@ export default {
             hrefType: '_sub'
           },
           hrefType: '_sub',
-          target: '_self'
+          target: '_self',
+          imgDesc: ''
         })
         this.active = len
       }

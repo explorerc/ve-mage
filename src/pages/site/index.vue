@@ -361,14 +361,17 @@ export default {
     }
     .template-block {
       display: inline-block;
-      width: 227px;
-      height: 282px;
+      width: 206px;
+      height: 250px;
       border: 1px solid #dadada;
-      margin-right: 40px;
+      margin-right: 30px;
       font-size: 14px;
       position: relative;
       // overflow: hidden;
       border-radius: 4px;
+      &:last-child{
+        margin-right: 0;
+      }
       img {
         width: 100%;
         height: 100%;
@@ -425,16 +428,16 @@ export default {
     }
     .empty {
       display: inline-block;
-      width: 225px;
-      height: 280px;
+      width: 206px;
+      height: 250px;
       text-align: center;
       padding: 20px;
       border: 1px dashed #dadada;
       margin-bottom: 15px;
       border-radius: 4px;
       .img {
-        width: 150px;
-        height: 150px;
+        width: 130px;
+        height: 130px;
         background: url('~assets/image/site/site_empty.png') no-repeat center;
         background-size: contain;
         margin: 0 auto;
