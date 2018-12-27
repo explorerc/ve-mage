@@ -54,26 +54,35 @@
         </div>
       </div>
       <div class="asset-list-table">
-        <el-table :data="viewerList" style="width: 100%">
-          <el-table-column prop="billNumber" label="流水ID"></el-table-column>
-          <el-table-column label="流水类型">
-            <template slot-scope="scope">
-              {{scope.row.type|fmtType}}
-            </template>
-          </el-table-column>
-          <el-table-column prop="amount" label="金额"></el-table-column>
-          <el-table-column prop="createdAt" label="时间"></el-table-column>
-          <el-table-column label="状态" width="160">
-            <template slot-scope="scope">
-              <span :class="{status:true,success:scope.row.status==='SUCCESS'}">{{scope.row.status|fmtStatus}}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="page-pagination" v-if="total>searchParams.pageSize">
-          <ve-pagination :total="total"
-                         :pageSize="searchParams.pageSize"
-                         @changePage="changePage"/>
-        </div>
+        <template v-if="viewerList.length">
+          <el-table :data="viewerList" style="width: 100%">
+            <el-table-column prop="billNumber" label="流水ID"></el-table-column>
+            <el-table-column label="流水类型">
+              <template slot-scope="scope">
+                {{scope.row.type|fmtType}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" label="金额"></el-table-column>
+            <el-table-column prop="createdAt" label="时间"></el-table-column>
+            <el-table-column label="状态" width="160">
+              <template slot-scope="scope">
+                <span :class="{status:true,success:scope.row.status==='SUCCESS'}">{{scope.row.status|fmtStatus}}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="page-pagination" v-if="total>searchParams.pageSize">
+            <ve-pagination :total="total"
+                          :pageSize="searchParams.pageSize"
+                          @changePage="changePage"/>
+          </div>
+        </template>
+        <template v-else>
+          <div class="empty">
+            <div class="img"></div>
+            <div class="txt" v-if="searchLabel">{{searchLabel}}</div>
+            <div class="txt" v-else>暂无数据</div>
+          </div>
+        </template>
       </div>
     </div>
     <div class="money-box-wrap">
@@ -235,7 +244,8 @@
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
         wxDisabled: false, // 微信按钮不禁用
-        showWithdraw: false
+        showWithdraw: false,
+        searchLabel: false
       }
     },
     filters: {
@@ -428,18 +438,24 @@
       // }
     },
     watch: {
-      // amount: {
-      //   handler () {
-      //     if (this.stout) return
-      //     this.stout = setTimeout(() => {
-      //       clearTimeout(this.stout)
-      //       this.stout = null
-      //       if (!this.checkAmount()) {
-      //         return true
-      //       }
-      //     }, 200)
-      //   }
-      // }
+      'searchParams.type': {
+        handler (val, oldValue) {
+          if (val === 'RECHARGE') {
+            this.searchLabel = '很抱歉，没有搜索到账户充值的结果'
+            this.currentPageReset()
+          } else if (val === 'RED_PACK') {
+            this.searchLabel = '很抱歉，没有搜索到红包消费的结果'
+            this.currentPageReset()
+          } else if (val === 'RE_RED_PACK') {
+            this.searchLabel = '很抱歉，没有搜索到红包返回的结果'
+            this.currentPageReset()
+          } else {
+            this.searchLabel = '暂无数据'
+            this.currentPageReset()
+          }
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -576,6 +592,22 @@
   .asset-list-table {
     padding: 20px;
     background-color: #fff;
+    .empty {
+      text-align: center;
+      margin: 35px 0;
+      .txt {
+        padding-top: 20px;
+        font-size: 16px;
+        color: #8e9198;
+      }
+      .img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+        background: url('~assets/image/search_empty.png') no-repeat center;
+        background-size: contain;
+      }
+    }
     .page-pagination {
       margin-top: 30px;
       text-align: right;
