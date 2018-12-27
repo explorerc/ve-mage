@@ -622,25 +622,36 @@
         left: 0;
         transform: translateY(50%);
       }
-      .v-live-title {
-        font-size: 16px;
-        transform: scale(0.5);
-        transform-origin: top left;
-        color: #333;
-        max-height: 12px;
-        width: 247px;
-      }
-      .v-pc-icon {
-        display: block;
-        width: 87px;
-      }
-      .v-pc {
-        width: 438px;
-        height: 250px;
-        background-position: center;
+
+    }
+    .v-live-title {
+      font-size: 16px;
+      transform: scale(0.5);
+      transform-origin: top left;
+      color: #333;
+      max-height: 12px;
+      width: 247px;
+    }
+    .v-pc-icon {
+      display: block;
+      width: 87px;
+    }
+    .v-pc {
+      width: 438px;
+      height: 250px;
+      background-position: 50%;
+      background-size: cover;
+      padding-top: 10px;
+      margin-left: 12px;
+      .v-show-content {
+        width: 376px;
+        height: 199px;
+        margin: 6px auto 0;
+        background: url('~assets/image/viewarea@2x.jpg');
         background-size: cover;
         position: relative;
       }
+
     }
     .v-preview {
       font-size: 18px;
