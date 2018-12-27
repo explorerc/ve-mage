@@ -335,7 +335,7 @@
       // 检查输入的金额
       checkAmount () {
         const newAmount = this.amount
-        if (newAmount === '' || newAmount < 0 || newAmount > 20000) {
+        if (newAmount === '' || newAmount < 10 || newAmount > 20000) {
           this.amountError = '请输入10～20000之间的数字'
           return false
         } else {
@@ -472,7 +472,7 @@
       span {
         display: block;
         width: 100%;
-        font-size: 16px;
+        font-size: 18px;
         text-align: center;
         vertical-align: middle;
 
@@ -489,7 +489,7 @@
         }
         &:nth-child(3) {
           font-size: 14px;
-          color: #888;
+          color: #555;
         }
         &.mid {
           font-size: 24px;
@@ -519,12 +519,14 @@
           color: #4b5afe;
           cursor: pointer;
           &:hover {
-            background-color: $color-default-hover;
-            border: 1px solid $color-default-hover;
+            background-color: #4b5afe;
+            border: 1px solid #4b5afe;
+            color: #fff;
           }
           &:active {
-            background-color: $color-default-active;
-            border: 1px solid $color-default-hover;
+            background-color: #4b5afe;
+            border: 1px solid #4b5afe;
+            color: #fff;
           }
         }
       }
@@ -814,7 +816,7 @@
       text-align: center;
       font-size: 24px;
       color: #222222;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
     .paid-balance {
       text-align: center;
