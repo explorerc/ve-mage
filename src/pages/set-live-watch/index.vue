@@ -531,7 +531,7 @@
       margin-right: 70px;
       .h5-header {
         position: absolute;
-        top: 64px;
+        top: 66px;
         left: 20px;
         height: 30px;
         width: 214px;
@@ -571,13 +571,14 @@
       }
       .h5-logo-img {
         width: 229px;
-        height: 410px;
+        height: 409px;
         margin-top: 14px;
         margin-left: 12px;
-        background-image: url('~assets/image/h5-logo@2x.jpg');
+        background-image: url('~assets/image/h5-logo1@2x.jpg');
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100% 100%;
         background-position: center;
+        border-radius: 8px;
       }
     }
   }
@@ -608,21 +609,13 @@
     position: relative;
     .v-logo {
       display: block;
-      width: 27px;
+      max-width: 40px;
       height: 13px;
       margin-right: 6px;
       position: relative;
-      .v-logo {
-        display: block;
-        max-width: 40px;
-        height: 13px;
-        margin-right: 6px;
-        position: relative;
-        top: -50%;
-        left: 0;
-        transform: translateY(50%);
-      }
-
+      top: -50%;
+      left: 0;
+      transform: translateY(50%);
     }
     .v-live-title {
       font-size: 16px;
@@ -647,8 +640,8 @@
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
-        background: url('~assets/image/viewarea@2x.jpg');
-        background-size: cover;
+        background-image: url('~assets/image/viewarea1@2x.png');
+        background-size: 100% 100%;
         position: relative;
       }
 

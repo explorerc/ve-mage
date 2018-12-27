@@ -846,20 +846,9 @@
         title: '活动详情'
       }])
     },
-    // beforeDestroy () {
-    //   document.querySelector('.main-container').scrollTop = 0
-    // },
     mounted () {
       this.getDetails()
       // 滚动到推广
-      // if (window.location.href.search('tg') > -1) {
-      //   let timer = setInterval(() => {
-      //     document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
-      //     if (document.querySelector('.main-container').scrollTop >= 1150) {
-      //       clearInterval(timer)
-      //     }
-      //   }, 10)
-      // }
       this.detailLoad()
     },
     methods: {
@@ -1985,6 +1974,12 @@
       height: 40px;
       line-height: 40px;
       text-align: center;
+      &:disabled {
+        &:hover {
+          background-color: #ffd021;
+          color: #222;
+        }
+      }
     }
   }
 
