@@ -936,7 +936,11 @@
         .el-button {
           border-color: #888;
           color: #555;
-          &:focus,
+          &:focus {
+            border-color: #888;
+            color: #555;
+            background-color: transparent;
+          }
           &:hover {
             background-color: #FDD43F;
             border-color: #FDD43F;
@@ -947,6 +951,19 @@
             border-color: #EEC11A;
             color: #222;
           }
+          &:disabled {
+            &:hover,
+            &:focus,
+            &:active {
+              opacity: 0.5;
+              background-color: transparent;
+              border-color: #888;
+              color: #555;
+            }
+          }
+        }
+        .el-button:nth-child(3) {
+          margin-left: 6px;
         }
       }
       .right {
