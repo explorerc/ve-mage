@@ -40,10 +40,10 @@
             </el-date-picker>
           </div>
           <div class="search-item fr">
-            <span class="search-title">渠道来源</span>
+            <span class="search-title">流水类型</span>
             <el-select v-model="searchParams.type"
                        @change="queryList"
-                       placeholder="渠道来源">
+                       placeholder="流水类型">
               <el-option v-for="item in liuTypeList"
                          :key="item.value"
                          :label="item.label"
@@ -385,6 +385,7 @@
           console.log(msg)
           this.payMoneyShow = false
           this.successMoneyShow = true
+          this.queryAccountInfo()
         })
       },
       // 获取订单号
@@ -432,6 +433,11 @@
       finishMoney () {
         this.queryAccountInfo()
         this.successMoneyShow = false
+        this.amount = ''
+        this.oldAmount = ''
+        this.modifyMoneyShow = true
+        this.payway = '支付宝'
+        this.payType = 'ALIPAY'
       }
       // withdrawClose (res) {
       //   debugger
