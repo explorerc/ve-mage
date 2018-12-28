@@ -16,7 +16,8 @@
       <div class="img-emit-box">
         <div class="fl">
           <span>高：</span>
-          <com-input placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" @change="changeHeight"
+          <com-input ref="refWidthInput" placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" @change="changeHeight"
+                     :error-tips="errorMsg"
                      :value.sync="imgHeight"></com-input>
         </div>
         <div class="fr">
@@ -275,7 +276,8 @@
         content: '',
         imgWidth: '0',
         imgHeight: '0',
-        whRatio: 1
+        whRatio: 1,
+        errorMsg: ''
       }
     },
     props: {
@@ -314,27 +316,14 @@
       pullMsg () {
         let content = this.$refs.editor.$el.querySelectorAll('.content')[0].innerHTML
         this.updateData(content)
+      },
+      imgWidth () {
+        if (this.imgWidth && parseInt(this.imgWidth) > 750) {
+          this.errorMsg = '图片宽度不能大于750'
+        } else {
+          this.errorMsg = ''
+        }
       }
-      // imgWidth () {
-      //   if (this.stW) return
-      //   this.stW = setTimeout(() => {
-      //     clearTimeout(this.stW)
-      //     this.stW = null
-      //     if (this.imgWidth) {
-      //       this.imgHeight = (parseInt(this.imgWidth) / this.whRatio).toFixed()
-      //     }
-      //   }, 800)
-      // },
-      // imgHeight () {
-      //   if (this.stH) return
-      //   this.stH = setTimeout(() => {
-      //     clearTimeout(this.stH)
-      //     this.stH = null
-      //     if (this.imgHeight) {
-      //       this.imgWidth = (parseInt(this.imgHeight) * this.whRatio).toFixed()
-      //     }
-      //   }, 500)
-      // }
     },
     mounted () {
       if (!this.imgEdit) return
