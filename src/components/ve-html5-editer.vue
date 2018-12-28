@@ -16,11 +16,13 @@
       <div class="img-emit-box">
         <div class="fl">
           <span>高：</span>
-          <com-input placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" :value.sync="imgHeight"></com-input>
+          <com-input placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" @change="changeHeight"
+                     :value.sync="imgHeight"></com-input>
         </div>
         <div class="fr">
           <span>宽：</span>
-          <com-input  placeholder="输入图片宽度" type="mobile" @keyup.enter.native="changeImg" :value.sync="imgWidth"></com-input>
+          <com-input placeholder="输入图片宽度" type="mobile" @keyup.enter.native="changeImg" @change="changeWidth"
+                     :value.sync="imgWidth"></com-input>
         </div>
       </div>
     </message-box>
@@ -312,27 +314,27 @@
       pullMsg () {
         let content = this.$refs.editor.$el.querySelectorAll('.content')[0].innerHTML
         this.updateData(content)
-      },
-      imgWidth () {
-        if (this.stW) return
-        this.stW = setTimeout(() => {
-          clearTimeout(this.stW)
-          this.stW = null
-          if (this.imgWidth) {
-            this.imgHeight = (parseInt(this.imgWidth) / this.whRatio).toFixed()
-          }
-        }, 800)
-      },
-      imgHeight () {
-        if (this.stH) return
-        this.stH = setTimeout(() => {
-          clearTimeout(this.stH)
-          this.stH = null
-          if (this.imgHeight) {
-            this.imgWidth = (parseInt(this.imgHeight) * this.whRatio).toFixed()
-          }
-        }, 500)
       }
+      // imgWidth () {
+      //   if (this.stW) return
+      //   this.stW = setTimeout(() => {
+      //     clearTimeout(this.stW)
+      //     this.stW = null
+      //     if (this.imgWidth) {
+      //       this.imgHeight = (parseInt(this.imgWidth) / this.whRatio).toFixed()
+      //     }
+      //   }, 800)
+      // },
+      // imgHeight () {
+      //   if (this.stH) return
+      //   this.stH = setTimeout(() => {
+      //     clearTimeout(this.stH)
+      //     this.stH = null
+      //     if (this.imgHeight) {
+      //       this.imgWidth = (parseInt(this.imgHeight) * this.whRatio).toFixed()
+      //     }
+      //   }, 500)
+      // }
     },
     mounted () {
       if (!this.imgEdit) return
@@ -350,6 +352,16 @@
       })
     },
     methods: {
+      changeWidth () {
+        if (this.imgWidth) {
+          this.imgHeight = (parseInt(this.imgWidth) / this.whRatio).toFixed()
+        }
+      },
+      changeHeight () {
+        if (this.imgHeight) {
+          this.imgWidth = (parseInt(this.imgHeight) * this.whRatio).toFixed()
+        }
+      },
       updateData (res) {
         this.$emit('input', res)
         this.$emit('change', res)
@@ -407,7 +419,7 @@
       overflow: hidden;
       div {
         width: calc(50% - 10px);
-        .com-input{
+        .com-input {
           width: 160px;
           input {
             width: 100%;
