@@ -17,7 +17,6 @@
         <div class="fl">
           <span>高：</span>
           <com-input ref="refWidthInput" placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" @change="changeHeight"
-                     :error-tips="errorMsg"
                      :value.sync="imgHeight"></com-input>
         </div>
         <div class="fr">
@@ -276,8 +275,7 @@
         content: '',
         imgWidth: '0',
         imgHeight: '0',
-        whRatio: 1,
-        errorMsg: ''
+        whRatio: 1
       }
     },
     props: {
@@ -316,13 +314,6 @@
       pullMsg () {
         let content = this.$refs.editor.$el.querySelectorAll('.content')[0].innerHTML
         this.updateData(content)
-      },
-      imgWidth () {
-        if (this.imgWidth && parseInt(this.imgWidth) > 750) {
-          this.errorMsg = '图片宽度不能大于750'
-        } else {
-          this.errorMsg = ''
-        }
       }
     },
     mounted () {
