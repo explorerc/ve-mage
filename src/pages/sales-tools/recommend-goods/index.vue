@@ -123,7 +123,6 @@
       },
       sortGoods () {
         let goods = this.tableData.map((ite, ind) => {
-          debugger
           return ite.goods_id
         })
         this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })

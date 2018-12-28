@@ -544,9 +544,6 @@
         height: 100%;
         .vue-html5-editor .content {
           background-color: #f5f5f5;
-          img{
-            max-width: 100%;
-          }
         }
       }
     }
