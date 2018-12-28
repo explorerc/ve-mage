@@ -11,12 +11,13 @@
           <!--<span class="add-money fr" @click="addMoney()">充值</span>-->
         </span>
         <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
-        <span class="mid">{{billInfo.balance}}</span>
+        <span class="mid" v-if="billInfo.balance" style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
+        <span class="mid" v-else>{{parseFloat(billInfo.balance).toFixed(2)}}</span>
       </div>
       <div class="asset-header-item">
         <span>今日支出（元）</span>
         <img width="100" height="60" src="../../assets/image/qianbao@2x.png">
-        <span class="mid-zhichu">{{billInfo.payToday}}</span>
+        <span class="mid-zhichu">{{parseFloat(billInfo.payToday).toFixed(2)}}</span>
       </div>
     </div>
     <div class="asset-list-box">
