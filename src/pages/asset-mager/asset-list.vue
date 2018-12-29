@@ -11,7 +11,8 @@
           <!--<span class="add-money fr" @click="addMoney()">充值</span>-->
         </span>
         <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
-        <span class="mid" v-if="billInfo.balance" style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
+        <span class="mid" v-if="billInfo.balance"
+              style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
         <span class="mid" v-else>{{parseFloat(billInfo.balance).toFixed(2)}}</span>
       </div>
       <div class="asset-header-item">
@@ -75,13 +76,11 @@
                            @changePage="changePage"/>
           </div>
         </template>
-        <template v-else>
-          <div class="empty">
-            <div class="img"></div>
-            <div class="txt" v-if="searchLabel">{{searchLabel}}</div>
-            <div class="txt" v-else>暂无数据</div>
-          </div>
-        </template>
+        <div class="empty" v-if="isNoDataShow">
+          <div class="img"></div>
+          <div class="txt" v-if="searchLabel">{{searchLabel}}</div>
+          <div class="txt" v-else>暂无数据</div>
+        </div>
       </div>
     </div>
     <div class="money-box-wrap">
@@ -247,7 +246,8 @@
         alDisabled: false, // 支付宝按钮不禁用
         wxDisabled: false, // 微信按钮不禁用
         dialogTitle: '充值',
-        iscurrentPage: true // 刷新分页组件
+        iscurrentPage: true, // 刷新分页组件
+        isNoDataShow: false
       }
     },
     filters: {
@@ -292,6 +292,12 @@
             if (res.code === 200) {
               this.total = res.data.total
               this.viewerList = res.data.list
+              console.log(this.viewerList.length)
+              if (this.viewerList.length) {
+                this.isNoDataShow = false
+              } else {
+                this.isNoDataShow = true
+              }
             }
           })
         })
