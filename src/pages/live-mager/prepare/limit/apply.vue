@@ -59,7 +59,7 @@
               </el-select>
             </div>
             <div>
-              <com-input class='inp' :value.sync="item.title"  :max-length="8" placeholder="请输入信息标题" :aa='item.errorMsg' :error-tips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
+              <com-input class='inp' :value.sync="item.title"  :max-length="6" placeholder="请输入信息标题" :aa='item.errorMsg' :error-tips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
             </div>
             <div v-if="item.ext==='select'">
               <el-button class='default-button set-select'  @click='setSelect(item.detail.list,idx)'>设置下拉选项</el-button>
