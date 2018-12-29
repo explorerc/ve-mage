@@ -142,11 +142,15 @@ export default {
     return {
       inpError: '',
       active: -1,
+      newDesc: '',
       id: this.$route.params.id,
       PC_HOST: process.env.PC_HOST,
       uploadImgErrorMsg: '', // 上传图片错误提示
       host: process.env.IMGHOST + '/'
     }
+  },
+  mounted () {
+    this.newDesc = this.value.list[0].imgDesc
   },
   methods: {
     inpBlur (val) {
@@ -174,7 +178,7 @@ export default {
           },
           hrefType: '_sub',
           target: '_self',
-          imgDesc: ''
+          imgDesc: this.newDesc
         })
         this.active = len
       }
