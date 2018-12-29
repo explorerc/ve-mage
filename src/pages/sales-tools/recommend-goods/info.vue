@@ -28,7 +28,7 @@
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
-                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
+                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 800"
                        accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
                        :fileSize="2048"
                        :errorMsg="ite.errMsg"
@@ -288,9 +288,9 @@
               this.goodsData.image = JSON.stringify(imgList)
               this.$post(_url, this.goodsData)
                 .then(res => {
-                  this.$toast({
-                    content: '操作成功!'
-                  })
+                  // this.$toast({
+                  //   content: '操作成功!'
+                  // })
                   this.$router.go(-1)
                   this.isShowMsgB = false
                 })
