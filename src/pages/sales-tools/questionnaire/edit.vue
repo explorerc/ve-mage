@@ -847,6 +847,10 @@ export default {
     .icon-shanchuxuanxiang {
       font-size: 20px;
     }
+    .com-input input {
+      color: #222;
+    }
+
   }
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
@@ -881,16 +885,26 @@ export default {
         background-color: #ffd021;
         color: #222;
         margin: 10px 30px 0 10px;
+        &:hover {
+          background-color: #fdd43f;
+          border-color: #fdd43f;
+          color: #222;
+        }
+        &:active {
+          background-color: #eec11a;
+          border-color: #eec11a;
+          color: #222;
+        }
       }
       &:hover {
-        background-color: #fdd43f;
-        border-color: #fdd43f;
-        color: #222;
+        background-color: #4B5AFE;
+        border-color: #4B5AFE;
+        color: #fff;
       }
       &:active {
-        background-color: #eec11a;
-        border-color: #eec11a;
-        color: #222;
+        background-color: #4350E4;
+        border-color: #4350E4;
+        color: #fff;
       }
     }
   }
@@ -1032,8 +1046,10 @@ export default {
       bottom: 0;
       top: 0;
       overflow: auto;
+      border: 1px solid #e2e2e2;
       .ru {
         border: 1px solid #e2e2e2;
+        border-top: none;
         background-color: #fff;
         border-radius: 4px;
         overflow: hidden;
