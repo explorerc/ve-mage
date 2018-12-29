@@ -67,7 +67,7 @@
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
           </div>
         </div>
-        <div class="from-row" v-if="status === 'PREPARE' || !activityId">
+        <div class="from-row" v-if="validStatus === 'Y' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
             <!--<button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">-->
@@ -138,6 +138,7 @@ export default {
       },
       successTxt: '',
       canPaas: true,
+      validStatus: '',
       defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm')
     }
   },
@@ -215,6 +216,7 @@ export default {
         this.editorContent = res.data.description
         this.tagArray = res.data.tags
         this.status = res.data.status
+        this.validStatus = res.data.validStatus
         this.restoreTag(this.tagArray)
       })
     },
