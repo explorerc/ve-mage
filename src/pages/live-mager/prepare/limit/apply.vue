@@ -59,7 +59,7 @@
               </el-select>
             </div>
             <div>
-              <com-input class='inp' :value.sync="item.title"  :max-length="8" placeholder="请输入信息标题" :aa='item.errorMsg' :error-tips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
+              <com-input class='inp' :value.sync="item.title"  :max-length="6" placeholder="请输入信息标题" :aa='item.errorMsg' :error-tips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
             </div>
             <div v-if="item.ext==='select'">
               <el-button class='default-button set-select'  @click='setSelect(item.detail.list,idx)'>设置下拉选项</el-button>
@@ -417,7 +417,7 @@
           'submodule': 'APPOINT',
           'enabled': ref ? 'Y' : 'N'
         }
-        this.$config({ handlers: [60706] }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
+        this.$config({ handlers: [60706, 60701] }).$post(activityService.POST_DETAIL_SWITCH, data).then((res) => {
           if (res.code === 200) {
             if (ref) {
               let obj = {
@@ -440,15 +440,15 @@
             }
           }
         }).catch((res) => {
-          if (res.code === 60706) { // 该状态下的活动不可以开启或关闭子模块
+          if (res.code === 60706 || res.code === 60701) { // 该状态下的活动不可以开启或关闭子模块
             this.$messageBox({
               header: '提示',
               content: res.msg,
               autoClose: 10,
               confirmText: '知道了'
             })
-            this.isOpen = !this.isOpen
           }
+          this.isOpen = !this.isOpen
         })
         if (!ref) {
           this.quesData = []

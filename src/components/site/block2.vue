@@ -137,12 +137,16 @@ export default {
     return {
       inpError: '',
       active: -1,
+      newDesc: '',
       id: this.$route.params.id,
       PC_HOST: process.env.PC_HOST,
       host: process.env.IMGHOST + '/',
       uploadImgErrorMsg: '', // 上传图片错误提示
       autoplay: false
     }
+  },
+  mounted () {
+    this.newDesc = this.value.list[0].imgDesc
   },
   methods: {
     inpBlur (val) {
@@ -164,7 +168,7 @@ export default {
           link: '',
           type: 'top',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+          imgDesc: this.newDesc
         }
         this.value.list.push(obj)
         this.active = len

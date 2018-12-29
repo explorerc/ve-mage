@@ -1,9 +1,7 @@
 <!--新建/编辑活动-->
 <template>
-  <div @keydown="canPaas = false"
-       v-ComLoading="loading"
-       com-loading-text="加载中">
-    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)">
+  <div>
+    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)"  @keydown="canPaas = false">
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
@@ -69,7 +67,7 @@
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
           </div>
         </div>
-        <div class="from-row" v-if="status === 'PREPARE' || !activityId">
+        <div class="from-row" v-if="validStatus === 'Y' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
             <!--<button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">-->
@@ -140,8 +138,8 @@ export default {
       },
       successTxt: '',
       canPaas: true,
-      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm'),
-      loading: false
+      validStatus: '',
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm')
     }
   },
   created () {
@@ -218,6 +216,7 @@ export default {
         this.editorContent = res.data.description
         this.tagArray = res.data.tags
         this.status = res.data.status
+        this.validStatus = res.data.validStatus
         this.restoreTag(this.tagArray)
       })
     },
@@ -292,11 +291,9 @@ export default {
       })
     },
     updateWebinfo (isNew, data) { // 新建 创建活动
-      this.loading = true
       if (isNew) {
         this.$config({ 'handlers': [2001] }).$post(activityService.POST_CREATE_WEBINAR, data).then((res) => {
           this.createdSuccess = true
-          this.loading = false
           this.canPaas = true
           this.successTxt = '创建成功'
           res.data.id ? this.finishId = res.data.id : this.finishId = this.activityId
@@ -546,8 +543,8 @@ export default {
       @include primary-button;
       width: 200px;
       /*&:disabled {*/
-        /*opacity: 1;*/
-        /*cursor: pointer;*/
+      /*opacity: 1;*/
+      /*cursor: pointer;*/
       /*}*/
     }
     .add-tag {
