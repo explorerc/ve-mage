@@ -24,7 +24,7 @@
             <el-radio v-model="radioTime" label="2">指定结束时间</el-radio>
             <ve-tips class='msg-tips-box-radio' :tip="'不设结束时间：本次直播活动的报名功能可一直开放，观众随时可以报名。<br>指定结束时间：设置报名功能的关闭时间，在时间过期后，观众将无法报名该活动。'" :tipType="'html'"></ve-tips>
             <div class="set-time" v-if="pickDate">
-              <el-date-picker v-model="queryData.finishTime" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :editable="false" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
+              <el-date-picker v-model="queryData.finishTime" @focus="dateFocus()" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :editable="false" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
             </div>
           </div>
@@ -59,7 +59,7 @@
               </el-select>
             </div>
             <div>
-              <com-input class='inp' :value.sync="item.title"  :max-length="16" placeholder="请输入信息标题"></com-input>
+              <com-input class='inp' :value.sync="item.title"  :max-length="8" placeholder="请输入信息标题" :aa='item.errorMsg' :error-tips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
             </div>
             <div v-if="item.ext==='select'">
               <el-button class='default-button set-select'  @click='setSelect(item.detail.list,idx)'>设置下拉选项</el-button>
@@ -85,7 +85,7 @@
             </section> -->
           </li>
         </ol>
-        <div class="add-item-box">
+        <div class="add-item-box" v-show='quesData.length'>
           <span class='add-item'  @click='addNew' :class='{"disabled":quesData.length === 5 || !isOpen ? true : false}' ><i></i>添加信息</span>
           <span>最多可添加<em> 5 </em>条信息</span>
         </div>
@@ -101,9 +101,9 @@
             <draggable element="ul" v-model="selectOption" :options="{handle:'.drag'}">
               <li v-for="(item,idx) in selectOption" :key='idx'>
                 <span class='count'>选项 {{idx + 1}}</span>
-                <com-input :value.sync="item.value" :max-length="8" placeholder="请输入选项"></com-input>
+                <com-input :value.sync="item.value" :max-length="15" placeholder="请输入选项" :errorTips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
                 <em class="drag" title='移动拖拽'></em>
-                <em class="del" @click='delItem(idx)'></em>
+                <em class="del" :class="{'disabled':selectOption.length <=2}" @click='delItem(idx)'></em>
               </li>
             </draggable>
             <div class="add-item-box" style='margin-top: 20px;'>
@@ -122,6 +122,7 @@
 </template>
 
 <script>
+  import { formatDate } from 'src/assets/js/date'
   import draggable from 'vuedraggable'
   // import prepareHttp from 'src/api/activity-manger'
   import activityService from 'src/api/activity-service'
@@ -158,13 +159,16 @@
         hasName: false,
         setSelectModal: false,
         itemCount: 0,
-        selectOption: []
+        selectOption: [],
+        startTime: '', // 开播时间
+        closeCount: 0 // 关闭计数
       }
     },
     created () {
       this.questionId = 1
       this.activityId = this.$route.params.id
       this.getLimit()
+      this.getStartTime()
       this.options = [{
         value: 'text',
         txt: '文本'
@@ -219,35 +223,40 @@
         switch (res) {
           case 'select':
             if (this.quesData[idx]['detail']['list']) {
-              this.quesData[idx]['detail']['list'].push({value: ''})
+              this.quesData[idx]['detail']['list'].push({value: '', errorMsg: ''})
             } else {
               Object.assign(this.quesData[idx]['detail'], {'list': [
-                {value: ''}
+                {value: '', errorMsg: ''}
               ]})
             }
             this.quesData[idx]['title'] = '下拉选择'
             this.quesData[idx]['type'] = 'select'
             this.quesData[idx]['placeholder'] = '请选择下拉选项'
+            this.quesData[idx]['errorMsg'] = ''
             break
           case 'integer':
             this.quesData[idx]['detail']['format'] = 'integer'
             this.quesData[idx]['title'] = '数字'
             this.quesData[idx]['placeholder'] = '请输入数字'
+            this.quesData[idx]['errorMsg'] = ''
             break
           case 'email':
             this.quesData[idx]['detail']['format'] = 'email'
             this.quesData[idx]['title'] = '邮箱'
             this.quesData[idx]['placeholder'] = '请输入邮箱'
+            this.quesData[idx]['errorMsg'] = ''
             break
           case 'text':
             this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '文本'
             this.quesData[idx]['placeholder'] = '请输入文本'
+            this.quesData[idx]['errorMsg'] = ''
             break
           case 'name':
             this.quesData[idx]['detail']['format'] = ''
             this.quesData[idx]['title'] = '姓名'
             this.quesData[idx]['placeholder'] = '请输入姓名'
+            this.quesData[idx]['errorMsg'] = ''
             break
         }
       },
@@ -255,9 +264,15 @@
         this.canPaas = false
         console.log(this.itemCount)
         this.quesData[this.itemCount]['detail']['list'].push({
-          value: ''
+          value: '',
+          errorMsg: ''
           // key: this.quesData[idx]['list'].length === 0 ? 0 : this.quesData[idx]['list'].length
         })
+        // debugger
+        // this.selectOption.push({
+        //   value: '',
+        //   errorMsg: ''
+        // })
       },
       delItem (count) {
         this.canPaas = false
@@ -273,6 +288,7 @@
           type: 'text',
           ext: 'text',
           required: false,
+          errorMsg: '',
           detail: {
             format: '',
             list: []
@@ -288,14 +304,16 @@
           if (res.data.detail !== null) { // 是否有报名表单数据
             this.isOpen = true
             this.queryData = res.data.detail
+            let quesDataTemp = []
             res.data.detail.questionList.forEach((item, idx) => {
               if (item.required === 'Y') {
                 item.required = true
               } else {
                 item.required = false
               }
-              this.quesData.push(item)
+              quesDataTemp.push(Object.assign(item, {'errorMsg': ''}))
             })
+            this.quesData = quesDataTemp
             if (res.data.detail.finishTime && res.data.detail.finishTime.search('0000') > -1) { // 是否有时间数据 没有则默认与直播同步关闭
               this.queryData.finishTime = ''
             }
@@ -350,7 +368,7 @@
               if (!this.canSave) {
                 this.$messageBox({
                   header: '提示',
-                  content: '下拉选项不能为空',
+                  content: '请设置下拉选项',
                   autoClose: 10,
                   confirmText: '知道了'
                 })
@@ -360,6 +378,15 @@
         })
         console.log(this.saveData.detail.questionList = JSON.stringify(this.saveData.detail.questionList))
         this.$nextTick(() => {
+          let dataList = []
+          this.quesData.forEach((item, idx) => {
+            if (item.title === '') {
+              item.errorMsg = '信息标题不能为空'
+              this.canSave = false
+            }
+            dataList.push(item)
+          })
+          this.quesData = dataList
           if (this.canSave) {
             this.saveLimitfn(this.saveData)
           }
@@ -384,25 +411,6 @@
         })
       },
       openSwitch (ref) {
-        // if (ref) {
-        //   let obj = {
-        //     title: '手机号码',
-        //     placeholder: '请输入手机号码',
-        //     label: '手机号码',
-        //     type: 'mobile',
-        //     detail: []
-        //   }
-        //   this.quesData.push(obj)
-        // } else { // 直接调用接口设置为观看条件为none
-        // const data = {
-        //   'activityId': this.activityId,
-        //   'viewCondition': 'NONE',
-        //   'detail': {
-        //     'finishTime': this.radioTime === '2' ? this.queryData.finishTime : '',
-        //     'questionList': this.quesData
-        //   }
-        // }
-        // this.saveLimitfn(data)
         this.canPaas = false
         const data = {
           'activityId': this.activityId,
@@ -419,6 +427,7 @@
                 label: '手机号码',
                 type: 'text',
                 ext: 'phone',
+                errorMsg: '',
                 detail: {
                   format: 'phone'
                 }
@@ -452,7 +461,38 @@
         this.setSelectModal = true
       },
       seletItemConfirm () {
-        this.setSelectModal = false
+        this.closeCount = 0
+        // 验证选项是否为空
+        // let dataListParent = []
+        // let dataList = []
+        this.quesData.forEach(item => {
+          if (item.ext === 'select') {
+            item.detail['list'].forEach((ele, idx) => {
+              if (!ele.value.length) {
+                this.closeCount += 1
+                ele.errorMsg = '下拉选项不能为空'
+              }
+              // dataList.push(ele)
+            })
+            // item.detail['list'] = dataList
+          }
+          // dataListParent.push(item)
+        })
+        // this.quesData = dataListParent
+        if (this.closeCount === 0) {
+          this.setSelectModal = false
+        }
+      },
+      getStartTime () {
+        this.$get(activityService.GET_DETAILS, {
+          activityId: this.activityId
+        }).then((res) => {
+          this.startTime = res.data.activity.startTime
+          this.defaultValue = this.startTime
+        })
+      },
+      dateFocus () {
+        this.queryData.finishTime = formatDate(new Date(this.startTime), 'yyyy-MM-dd hh:mm')
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
@@ -514,6 +554,12 @@
         handler (newValue) {
           newValue === '2' ? this.pickDate = true : this.pickDate = false
           this.canPaas = false
+        }
+      },
+      startTime: {
+        handler (newVal) {
+          if (!isNaN(newVal)) return
+          this.startTime = new Date(newVal.replace(/-/g, '/')).getTime() + 3600000 * 48 // 当前时间+48小时
         }
       }
     },
@@ -906,9 +952,9 @@
   .body {
     background: #fff;
     border-radius: 0 0 4px 4px;
-    padding: 30px;
+    padding: 10px 30px 30px 30px;
     li {
-      margin: 7px 0;
+      margin: 21px 0;
       font-size: 14px;
       position: relative;
       .count {

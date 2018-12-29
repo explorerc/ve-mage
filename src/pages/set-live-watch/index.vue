@@ -37,9 +37,9 @@
                            :errorMsg="uploadLogoErrorMsg"
                            @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
-                <p class="v-notes">
+                <!-- <p class="v-notes">
                   注：背景图片，只对电脑页面生效
-                </p>
+                </p> -->
               </div>
             </div>
             <div class="pull-right-menu">
@@ -644,7 +644,6 @@
         background-size: 100% 100%;
         position: relative;
       }
-
     }
     .v-preview {
       font-size: 18px;
