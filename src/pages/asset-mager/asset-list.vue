@@ -7,65 +7,53 @@
         <span>有效期 {{billInfo.serviceStartTime}} ~ {{billInfo.serviceExpireTime}}</span>
       </div>
       <div class="asset-header-item">
-        <span>可用金额（元）
-          <!--<span class="add-money fr" @click="addMoney()">充值</span>-->
-        </span>
-        <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
-        <span class="mid" v-if="billInfo.balance"
-              style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
-        <span class="mid" v-else>{{parseFloat(billInfo.balance).toFixed(2)}}</span>
-      </div>
-      <div class="asset-header-item">
-        <span>今日支出（元）</span>
-        <img width="100" height="60" src="../../assets/image/qianbao@2x.png">
-        <span class="mid-zhichu">{{parseFloat(billInfo.payToday).toFixed(2)}}</span>
-      </div>
+      <span>可用金额（元）
+        <span class="add-money fr" @click="addMoney()">充值</span>
+      </span>
+      <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
+      <span class="mid" v-if="!billInfo.balance" style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
+      <span class="mid" v-else>{{parseFloat(billInfo.balance).toFixed(2)}}</span>
     </div>
-    <div class="asset-list-box">
-      <div class="asset-list">
-        <div class="search-asset">
-          <span class="asset-title">账户流水</span>
-          <button class="default-button export-btn fr" @click="exportTable">导出</button>
-          <div class="search-item flm fr">
-            <span class="search-title">时间</span>
-            <el-date-picker
-              v-model="searchParams.date"
-              @change="queryList"
-              type="date"
-              value-format="yyyy-MM-dd"
-              placeholder="选择日期">
-            </el-date-picker>
-          </div>
-          <div class="search-item fr">
-            <span class="search-title">流水类型</span>
-            <el-select v-model="searchParams.type"
-                       @change="queryListType"
-                       ref="search"
-                       placeholder="渠道来源">
-              <el-option v-for="item in liuTypeList"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
+    <div class="asset-header-item">
+      <span>今日支出（元）</span>
+      <img width="100" height="60" src="../../assets/image/qianbao@2x.png">
+      <span class="mid-zhichu">{{parseFloat(billInfo.payToday).toFixed(2)}}</span>
+    </div>
+  </div>
+  <div class="asset-list-box">
+    <div class="asset-list">
+      <div class="search-asset">
+        <span class="asset-title">账户流水</span>
+        <button class="default-button export-btn fr" @click="exportTable">导出</button>
+        <div class="search-item flm fr">
+          <span class="search-title">时间</span>
+          <el-date-picker v-model="searchParams.date" @change="queryList" type="date" value-format="yyyy-MM-dd" placeholder="选择日期">
+          </el-date-picker>
+        </div>
+        <div class="search-item fr">
+          <span class="search-title">流水类型</span>
+          <el-select v-model="searchParams.type" @change="queryListType" ref="search" placeholder="流水类型">
+            <el-option v-for="item in liuTypeList" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
         </div>
       </div>
-      <div class="asset-list-table">
-        <template v-if="viewerList.length">
-          <el-table :data="viewerList" style="width: 100%">
-            <el-table-column prop="billNumber" label="流水ID"></el-table-column>
-            <el-table-column label="流水类型">
-              <template slot-scope="scope">
-                {{scope.row.type|fmtType}}
-              </template>
+    </div>
+    <div class="asset-list-table">
+      <template v-if="viewerList.length">
+            <el-table :data="viewerList" style="width: 100%">
+              <el-table-column prop="billNumber" label="流水ID"></el-table-column>
+              <el-table-column label="流水类型">
+                <template slot-scope="scope">
+                  {{scope.row.type|fmtType}}
+</template>
             </el-table-column>
             <el-table-column prop="amount" label="金额"></el-table-column>
             <el-table-column prop="createdAt" label="时间"></el-table-column>
             <el-table-column label="状态" width="160">
-              <template slot-scope="scope">
-                <span :class="{status:true,success:scope.row.status==='SUCCESS'}">{{scope.row.status|fmtStatus}}</span>
-              </template>
+<template slot-scope="scope">
+  <span :class="{status:true,success:scope.row.status==='SUCCESS'}">{{scope.row.status|fmtStatus}}</span>
+</template>
             </el-table-column>
           </el-table>
           <div class="page-pagination" v-if="total > searchParams.pageSize">
@@ -89,7 +77,7 @@
                    class="add-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
+                   header="充值"
                    confirmText="下一步"
                    @handleClick="payMoney">
 
@@ -98,7 +86,7 @@
             <div class="from-row input-box">
               <div class="from-title">当前余额</div>
               <div class="from-content">
-                <span style="line-height: 20px">¥ {{billInfo.balance}}</span>
+                <span style="line-height: 20px">¥ {{(billInfo.balance * 1).toFixed(2)}}</span>
               </div>
 
             </div>
@@ -107,7 +95,7 @@
               <div class="from-content">
                 <div class="black-box">
                   <com-input style=""
-                             type="mobile"
+                             type="float"
                              v-model="amount"
                              placeholder="10～20000"
                              :value.sync="amount"
@@ -125,9 +113,8 @@
                    class="pay-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
                    @handleClick="paidMoney"
-                   header="">
+                   header="充值">
         <div class="mager-box message-box-content">
           <div class="from-box">
             <div class="from-row input-box">
@@ -139,7 +126,7 @@
               <div class="from-content" v-else>
                 <div class="black-box" style="margin-top: 0px;">
                   <com-input style=""
-                             type="mobile"
+                             type="float"
                              :value.sync="amount"
                              :errorTips="amountError"
                   ></com-input>
@@ -181,15 +168,14 @@
                    class="paid-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
-                   @handleClick="finishMoney"
-                   header="">
+                   header="充值"
+                   @handleClick="finishMoney">
         <div class="message-box-content">
           <div class="success-img">
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{billInfo.balance}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{( billInfo.balance *1).toFixed(2)}}</div>
         </div>
       </message-box>
     </div>
@@ -200,21 +186,37 @@
 <script>
   import assetService from 'src/api/asset-service'
   import VePagination from 'src/components/ve-pagination'
-  import {mapState} from 'vuex'
+  import {
+    mapState
+  } from 'vuex'
   import ChatService from '../../components/chat/ChatService'
   import ChatConfig from 'src/api/chat-config'
-
+  import comWithdraw from './components/com-withdraw'
   export default {
     name: 'asset-list',
-    components: {VePagination},
+    components: {
+      VePagination,
+      comWithdraw
+    },
     data () {
       return {
         total: 0,
-        liuTypeList: [
-          {value: '', label: '全部'},
-          {value: 'RECHARGE', label: '账户充值'},
-          {value: 'RED_PACK', label: '红包消费'},
-          {value: 'RE_RED_PACK', label: '红包返回'}
+        liuTypeList: [{
+          value: '',
+          label: '全部'
+        },
+        {
+          value: 'RECHARGE',
+          label: '账户充值'
+        },
+        {
+          value: 'RED_PACK',
+          label: '红包消费'
+        },
+        {
+          value: 'RE_RED_PACK',
+          label: '红包返回'
+        }
         ],
         viewerList: [],
         billInfo: {
@@ -247,7 +249,8 @@
         wxDisabled: false, // 微信按钮不禁用
         dialogTitle: '充值',
         iscurrentPage: true, // 刷新分页组件
-        isNoDataShow: false
+        isNoDataShow: false,
+        showWithdraw: false
       }
     },
     filters: {
@@ -311,7 +314,7 @@
         if (!this.searchParams.date) {
           this.searchParams.date = ''
         }
-        let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
+        let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date ? this.searchParams.date : ''}`
         const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
         window.open(encodeURI(encodeURI(url)))
       },
@@ -362,7 +365,7 @@
       // 检查输入的金额
       checkAmount () {
         const newAmount = this.amount
-        if (newAmount < 10 || newAmount > 20000) {
+        if (newAmount === '' || newAmount < 10 || newAmount > 20000) {
           this.amountError = '请输入10～20000之间的数字'
           return false
         } else {
@@ -468,6 +471,9 @@
           this.iscurrentPage = true
         })
       }
+      // withdrawClose (res) {
+      //   debugger
+      // }
     },
     watch: {
       'searchParams.type': {
@@ -493,376 +499,372 @@
 </script>
 
 <style lang="scss" scoped>
-  @import 'assets/css/mixin.scss';
-
-  .asset-box {
-    margin: 30px;
-    .asset-header {
-      font-size: 0;
-      height: 170px;
-      margin-top: 20px;
-      img {
-        display: block;
-        margin: 10px auto;
-      }
-      .asset-header-item {
-        display: inline-block;
-        width: calc((100% - 40px) / 3);
-        height: 100%;
-        border-radius: 3px;
-        background-color: #fff;
-        vertical-align: middle;
-        border: solid 1px $color-bd;
-        &:nth-child(2) {
-          margin: 0 20px;
-        }
-        span {
-          display: block;
-          width: 100%;
-          font-size: 18px;
-          text-align: center;
-          vertical-align: middle;
-
-          &:nth-child(1) {
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: left;
-            margin-left: 20px;
-            color: #888;
-          }
-          &:nth-child(2),
-          &:nth-child(3) {
-            margin-top: 20px;
-          }
-          &:nth-child(3) {
-            font-size: 14px;
-            color: #555;
-          }
-          &.mid {
-            font-size: 24px;
-            margin-top: 0;
-            font-weight: bold;
-            color: $color-red;
-          }
-          &.mid-zhichu {
-            font-size: 24px;
-            margin-top: 3px;
-            font-weight: bold;
-          }
-          .zhichu-img {
-            margin: 16px auto;
-          }
-          .add-money {
-            display: inline-block;
-            width: 70px;
-            margin: -6px 40px 0 0 !important;
-            border: 1px solid #4b5afe;
-            text-align: center;
-            height: 30px;
-            border-radius: 20px;
-            line-height: 30px;
-            font-size: 14px;
-            color: #4b5afe;
-            cursor: pointer;
-            &:hover {
-              background-color: $color-blue-hover;
-              border: 1px solid $color-blue-hover;
-              color: #fff;
-            }
-            &:active {
-              background-color: $color-blue-active;
-              border: 1px solid $color-blue-active;
-              color: #fff;
-            }
-          }
-        }
-      }
+@import 'assets/css/mixin.scss';
+.asset-box {
+  margin: 30px;
+  .asset-header {
+    font-size: 0;
+    height: 170px;
+    margin-top: 20px;
+    img {
+      display: block;
+      margin: 10px auto;
     }
-    .asset-list-box {
-      margin-top: 20px;
-      border: solid 1px $color-bd;
+    .asset-header-item {
+      display: inline-block;
+      width: calc((100% - 40px) / 3);
+      height: 100%;
       border-radius: 3px;
-      overflow: hidden;
-    }
-    .asset-list {
-      padding: 20px;
       background-color: #fff;
-      .search-asset {
-        margin-top: 30px;
-        .asset-title {
-          font-size: 20px;
-        }
-        .search-item {
-          display: inline-block;
-          font-size: 14px;
-          .search-title {
-            margin-right: 10px;
-          }
-        }
-        .flm {
-          margin: 0 20px;
-        }
-        .export-btn {
-          margin-top: -2px;
-          height: 36px;
-          line-height: 36px;
-        }
+      vertical-align: middle;
+      border: solid 1px $color-bd;
+      &:nth-child(2) {
+        margin: 0 20px;
       }
-    }
-    .asset-list-table {
-      padding: 20px;
-      background-color: #fff;
-      .empty {
-        text-align: center;
-        margin: 35px 0;
-        .txt {
-          padding-top: 20px;
-          font-size: 16px;
-          color: #8E9198;
-        }
-        .img {
-          width: 150px;
-          height: 150px;
-          margin: 0 auto;
-          background: url('~assets/image/search_empty.png') no-repeat center;
-          background-size: contain;
-        }
-      }
-      .page-pagination {
-        margin-top: 30px;
-        text-align: right;
-      }
-      .status {
-        color: #fc5659;
-      }
-      .success {
-        color: #43d2c2;
-      }
-    }
-    /*三个盒子的统一样式*/
-    .message-box-content {
-      position: relative;
-      font-size: 14px;
-      .tip-title {
+      span {
         display: block;
-        margin-top: 10px;
-        font-size: 16px;
-        padding: 16px 0 22px 0;
-        border-bottom: solid 1px $color-bd;
-      }
-      .from-box {
-        .input-box {
-          padding: 15px 0px 15px 0 !important;
-          .from-title {
-            padding-right: 30px !important;
-          }
-          .black-box {
-            margin-top: -10px;
-            .money-sign {
-              position: absolute;
-              top: 0;
-              right: 10px;
-              color: #555;
-            }
-            .pay-money-sign {
-              position: absolute;
-              top: 2px;
-              right: 140px;
-              color: #555;
-            }
-          }
-        }
-        .from-row {
-          position: relative;
-          display: flex;
-          padding: 12px;
-          .from-title {
-            width: 100px;
-            text-align: right;
-            padding-right: 20px;
-            color: #555;
-            font-size: 14px;
-          }
-          .error /deep/ {
-            .el-input__inner {
-              border: 1px solid $color-red;
-            }
-
-            .default-button {
-              border: 1px solid $color-red;
-            }
-          }
-          .from-content {
-            position: relative;
-            flex: 1;
-            span {
-              color: #222;
-              font-weight: 400;
-              font-size: 20px;
-            }
-            .error-msg {
-              display: block;
-              color: $color-red;
-              margin-left: 10px;
-              text-align: left;
-            }
-            .input-box {
-              width: 400px;
-            }
-            .from-msg-tip {
-              position: absolute;
-              top: -2px;
-              width: 100%;
-              left: 200px;
-            }
-            .com-input {
-              margin-right: 6px;
-            }
-            .modifiyMoney-btn {
-              margin-left: 30px;
-              cursor: pointer;
-              color: #4b5afe;
-            }
-          }
-        }
-      }
-    }
-    .money-box-wrap /deep/ {
-      /*border: 1px solid red;*/
-      .message-box-content {
-        .from-box .from-row .from-content .com-input {
-          width: 100% !important;
-        }
-      }
-      .ve-message-box__wrapper .ve-message-box {
-        padding-bottom: 0;
-        .ve-message-box__btns {
-          margin-top: 91px;
-          .button--primary {
-          }
-        }
-      }
-    }
-    .pay-money-msg /deep/ {
-      .ve-message-box__btns {
-        border: 1px solid green;
-        display: none !important;
-      }
-    }
-    .paid-money-msg /deep/ {
-      .ve-message-box__btns {
-        border: 1px solid green;
-        display: none !important;
-      }
-    }
-    /* paymoney 盒子的样式*/
-    .pay-money-msg {
-      .message-box-content {
-        .from-box {
-          .from-row {
-            line-height: 30px;
-            .from-content {
-              &.modify-box {
-                height: 34px;
-                line-height: 30px;
-              }
-              .title {
-                font-size: 0;
-                margin-top: 10px;
-                .payway {
-                  display: inline-block;
-                  width: 160px;
-                  height: 34px;
-                  font-size: 14px;
-                  cursor: pointer;
-                  border: none;
-                  background: #fff;
-                  border: 1px solid #e2e2e2;
-                  &.alipay {
-                    border-radius: 4px 0px 0px 4px;
-                    border-right: 0px;
-                    &.active {
-                      border-right: 0px;
-                    }
-                  }
-                  &.weixin {
-                    border-left: 0px;
-                    border-radius: 0px 4px 4px 0px;
-                    &.active {
-                      border-left: 0px;
-                    }
-                  }
-                  &.active {
-                    background-color: #ffd021;
-                    border: 1px solid #ffd021;
-                  }
-                }
-              }
-              .black-box {
-                /*position: relative;*/
-                .com-input {
-                  width: 60% !important;
-                }
-                .save-money,
-                .concel-money {
-                  cursor: pointer;
-                  margin-left: 10px;
-                  color: #4b5afe;
-                  font-size: 14px;
-                }
-              }
-            }
-            .com-input {
-              margin-right: 6px;
-            }
-          }
-          .pay-img-box {
-            text-align: center;
-            .payImg {
-              border: 1px solid #e2e2e2;
-              display: inline-block;
-              /*margin: 20px 0 0 57px;*/
-              vertical-align: auto;
-              height: 120px;
-              width: 120px;
-              overflow: hidden;
-              img {
-                width: 120px;
-                height: 120px;
-                display: block;
-              }
-            }
-            .pay-des {
-              font-size: 14px;
-              color: #555555;
-            }
-          }
-
-        }
-      }
-    }
-    .paid-money-msg {
-      .success-img {
+        width: 100%;
+        font-size: 18px;
         text-align: center;
-        height: 89px;
-        margin-top: 20px;
-        img {
-          width: 120px;
+        vertical-align: middle;
+        &:nth-child(1) {
+          margin-top: 20px;
+          font-size: 14px;
+          text-align: left;
+          margin-left: 20px;
+          color: #888;
         }
-      }
-      .paid-success-text {
-        text-align: center;
-        font-size: 24px;
-        color: #222222;
-        margin-top: 12px;
-        margin-bottom: 5px;
-      }
-      .paid-balance {
-        text-align: center;
-        font-size: 14px;
-        color: #222222;
-        margin-bottom: 48px;
+        &:nth-child(2),
+        &:nth-child(3) {
+          margin-top: 20px;
+        }
+        &:nth-child(3) {
+          font-size: 14px;
+          color: #555;
+        }
+        &.mid {
+          font-size: 24px;
+          margin-top: 0;
+          font-weight: bold;
+          color: $color-red;
+        }
+        &.mid-zhichu {
+          font-size: 24px;
+          margin-top: 3px;
+          font-weight: bold;
+        }
+        .zhichu-img {
+          margin: 16px auto;
+        }
+        .add-money {
+          display: inline-block;
+          width: 70px;
+          margin: -6px 40px 0 0 !important;
+          border: 1px solid #4b5afe;
+          text-align: center;
+          height: 30px;
+          border-radius: 20px;
+          line-height: 30px;
+          font-size: 14px;
+          color: #4b5afe;
+          cursor: pointer;
+          &:hover {
+            background-color: $color-blue-hover;
+            border: 1px solid $color-blue-hover;
+            color: #fff;
+          }
+          &:active {
+            background-color: $color-blue-active;
+            border: 1px solid $color-blue-active;
+            color: #fff;
+          }
+        }
       }
     }
   }
+  .asset-list-box {
+    margin-top: 20px;
+    border: solid 1px $color-bd;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .asset-list {
+    padding: 20px;
+    background-color: #fff;
+    .search-asset {
+      margin-top: 30px;
+      .asset-title {
+        font-size: 20px;
+      }
+      .search-item {
+        display: inline-block;
+        font-size: 14px;
+        .search-title {
+          margin-right: 10px;
+        }
+      }
+      .flm {
+        margin: 0 20px;
+      }
+      .export-btn {
+        margin-top: -2px;
+        height: 36px;
+        line-height: 36px;
+      }
+    }
+  }
+  .asset-list-table {
+    padding: 20px;
+    background-color: #fff;
+    .empty {
+      text-align: center;
+      margin: 35px 0;
+      .txt {
+        padding-top: 20px;
+        font-size: 16px;
+        color: #8e9198;
+      }
+      .img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+        background: url('~assets/image/search_empty.png') no-repeat center;
+        background-size: contain;
+      }
+    }
+    .page-pagination {
+      margin-top: 30px;
+      text-align: right;
+    }
+    .status {
+      color: #fc5659;
+    }
+    .success {
+      color: #43d2c2;
+    }
+  }
+  /*三个盒⼦的统⼀样式*/
+  .message-box-content {
+    position: relative;
+    font-size: 14px;
+    .tip-title {
+      display: block;
+      margin-top: 10px;
+      font-size: 16px;
+      padding: 16px 0 22px 0;
+      border-bottom: solid 1px $color-bd;
+    }
+    .from-box {
+      .input-box {
+        padding: 15px 0px 15px 0 !important;
+        .from-title {
+          padding-right: 30px !important;
+        }
+        .black-box {
+          margin-top: -10px;
+          .money-sign {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            color: #555;
+          }
+          .pay-money-sign {
+            position: absolute;
+            top: 2px;
+            right: 140px;
+            color: #555;
+          }
+        }
+      }
+      .from-row {
+        position: relative;
+        display: flex;
+        padding: 12px;
+        .from-title {
+          width: 100px;
+          text-align: right;
+          padding-right: 20px;
+          color: #555;
+          font-size: 14px;
+        }
+        .error /deep/ {
+          .el-input__inner {
+            border: 1px solid $color-red;
+          }
+          .default-button {
+            border: 1px solid $color-red;
+          }
+        }
+        .from-content {
+          position: relative;
+          flex: 1;
+          span {
+            color: #222;
+            font-weight: 400;
+            font-size: 20px;
+          }
+          .error-msg {
+            display: block;
+            color: $color-red;
+            margin-left: 10px;
+            text-align: left;
+          }
+          .input-box {
+            width: 400px;
+          }
+          .from-msg-tip {
+            position: absolute;
+            top: -2px;
+            width: 100%;
+            left: 200px;
+          }
+          .com-input {
+            margin-right: 6px;
+          }
+          .modifiyMoney-btn {
+            margin-left: 30px;
+            cursor: pointer;
+            color: #4b5afe;
+          }
+        }
+      }
+    }
+  }
+  .money-box-wrap /deep/ {
+    /*border: 1px solid red;*/
+    .message-box-content {
+      .from-box .from-row .from-content .com-input {
+        width: 100% !important;
+      }
+    }
+    .ve-message-box__wrapper .ve-messagebox {
+      padding-bottom: 0;
+      .ve-message-box__btns {
+        margin-top: 91px;
+        .button--primary {
+        }
+      }
+    }
+  }
+  .pay-money-msg /deep/ {
+    .ve-message-box__btns {
+      border: 1px solid green;
+      display: none !important;
+    }
+  }
+  .paid-money-msg /deep/ {
+    .ve-message-box__btns {
+      border: 1px solid green;
+      display: none !important;
+    }
+  }
+  /* paymoney 盒⼦的样式*/
+  .pay-money-msg {
+    .message-box-content {
+      .from-box {
+        .from-row {
+          line-height: 30px;
+          .from-content {
+            &.modify-box {
+              height: 34px;
+              line-height: 30px;
+            }
+            .title {
+              font-size: 0;
+              margin-top: 10px;
+              .payway {
+                display: inline-block;
+                width: 160px;
+                height: 34px;
+                font-size: 14px;
+                cursor: pointer;
+                border: none;
+                background: #fff;
+                border: 1px solid #e2e2e2;
+                &.alipay {
+                  border-radius: 4px 0px 0px 4px;
+                  border-right: 0px;
+                  &.active {
+                    border-right: 0px;
+                  }
+                }
+                &.weixin {
+                  border-left: 0px;
+                  border-radius: 0px 4px 4px 0px;
+                  &.active {
+                    border-left: 0px;
+                  }
+                }
+                &.active {
+                  background-color: #ffd021;
+                  border: 1px solid #ffd021;
+                }
+              }
+            }
+            .black-box {
+              /*position: relative;*/
+              .com-input {
+                width: 60% !important;
+              }
+              .save-money,
+              .concel-money {
+                cursor: pointer;
+                margin-left: 10px;
+                color: #4b5afe;
+                font-size: 14px;
+              }
+            }
+          }
+          .com-input {
+            margin-right: 6px;
+          }
+        }
+        .pay-img-box {
+          text-align: center;
+          .payImg {
+            border: 1px solid #e2e2e2;
+            display: inline-block;
+            /*margin: 20px 0 0 57px;*/
+            vertical-align: auto;
+            height: 120px;
+            width: 120px;
+            overflow: hidden;
+            img {
+              width: 120px;
+              height: 120px;
+              display: block;
+            }
+          }
+          .pay-des {
+            font-size: 14px;
+            color: #555555;
+          }
+        }
+      }
+    }
+  }
+  .paid-money-msg {
+    .success-img {
+      text-align: center;
+      height: 89px;
+      margin-top: 20px;
+      img {
+        width: 120px;
+      }
+    }
+    .paid-success-text {
+      text-align: center;
+      font-size: 24px;
+      color: #222222;
+      margin-top: 12px;
+      margin-bottom: 5px;
+    }
+    .paid-balance {
+      text-align: center;
+      font-size: 14px;
+      color: #222222;
+      margin-bottom: 48px;
+    }
+  }
+}
 </style>
