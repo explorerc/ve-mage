@@ -71,7 +71,7 @@
           <div class="page-pagination" v-if="total > searchParams.pageSize">
             <ve-pagination :total="total"
                            :pageSize="searchParams.pageSize"
-                           v-if="iscurrentPage"
+                           v-if="isCurrentPage"
                            :currentPage="currentPage"
                            @changePage="changePage"/>
           </div>
@@ -246,7 +246,7 @@
         alDisabled: false, // 支付宝按钮不禁用
         wxDisabled: false, // 微信按钮不禁用
         dialogTitle: '充值',
-        iscurrentPage: true, // 刷新分页组件
+        isCurrentPage: true, // 刷新分页组件
         isNoDataShow: false
       }
     },
@@ -463,9 +463,9 @@
       },
       // 刷新分页组件
       currentPageReset () {
-        this.iscurrentPage = false
+        this.isCurrentPage = false
         this.$nextTick(() => {
-          this.iscurrentPage = true
+          this.isCurrentPage = true
         })
       }
     },
