@@ -623,7 +623,8 @@
       transform-origin: top left;
       color: #333;
       max-height: 12px;
-      width: 200%;
+      width: 300px;
+      white-space: nowrap;
     }
     .v-pc-icon {
       display: block;

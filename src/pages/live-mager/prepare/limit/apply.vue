@@ -102,7 +102,7 @@
               <li v-for="(item,idx) in selectOption" :key='idx'>
                 <span class='count'>选项 {{idx + 1}}</span>
                 <com-input :value.sync="item.value" :max-length="15" placeholder="请输入选项" :errorTips="item.errorMsg" @focus="item.errorMsg=''"></com-input>
-                <em class="drag" title='移动拖拽'></em>
+                <em class="drag" title='拖拽排序'></em>
                 <em class="del" :class="{'disabled':selectOption.length <=2}" @click='delItem(idx)'></em>
               </li>
             </draggable>
@@ -466,20 +466,25 @@
         // 验证选项是否为空
         // let dataListParent = []
         // let dataList = []
-        this.quesData.forEach(item => {
-          if (item.ext === 'select') {
-            item.detail['list'].forEach((ele, idx) => {
-              if (!ele.value.length) {
-                this.closeCount += 1
-                ele.errorMsg = '下拉选项不能为空'
-              }
-              // dataList.push(ele)
-            })
-            // item.detail['list'] = dataList
+        // this.quesData.forEach(item => {
+        //   if (item.ext === 'select') {
+        //     item.detail['list'].forEach((ele, idx) => {
+        //       if (!ele.value.length) {
+        //         this.closeCount += 1
+        //         ele.errorMsg = '下拉选项不能为空'
+        //       }
+        //       // dataList.push(ele)
+        //     })
+        //     // item.detail['list'] = dataList
+        //   }
+        //   // dataListParent.push(item)
+        // })
+        this.quesData[this.itemCount]['detail']['list'].forEach((ele, idx) => {
+          if (!ele.value.length) {
+            this.closeCount += 1
+            ele.errorMsg = '下拉选项不能为空'
           }
-          // dataListParent.push(item)
         })
-        // this.quesData = dataListParent
         if (this.closeCount === 0) {
           this.setSelectModal = false
         }
