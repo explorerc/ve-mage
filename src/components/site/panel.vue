@@ -33,7 +33,7 @@
             </com-upload> -->
             <ve-upload
             :title="value.imgDesc"
-             accept="png|jpg|bmp"
+             accept="png|jpg|bmp|gif"
             :fileSize="2048"
             :defaultImg="value.img.indexOf('mp')===0?host+value.img:value.img"
             :errorMsg="uploadImgErrorMsg"
