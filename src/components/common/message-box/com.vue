@@ -153,7 +153,7 @@
       border-radius: 4px;
       font-size: 16px;
       overflow: hidden;
-      min-width: 400px;
+      min-width: 404px;
       z-index: 1006;
       &:before {
         display: block;

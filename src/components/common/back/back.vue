@@ -42,7 +42,7 @@ export default {
       color: #222 !important;
     }
     height: 30px;
-    line-height: 30px;
+    line-height: 28px;
     position: absolute;
     top: 50%;
     right: 0;

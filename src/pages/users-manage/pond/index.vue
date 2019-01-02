@@ -936,6 +936,9 @@
         .el-button {
           border-color: #888;
           color: #555;
+          height: 30px;
+          padding: 0 20px;
+          line-height: 28px;
           &:focus {
             border-color: #888;
             color: #555;
@@ -976,6 +979,7 @@
           padding-right: 10px;
           padding-left: 15px;
           border-radius: 17px;
+          height: 30px;
           background-color: transparent;
         }
         span {

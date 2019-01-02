@@ -11,7 +11,7 @@
         <span class="add-money fr" @click="addMoney()">充值</span>
       </span>
       <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
-      <span class="mid" v-if="!billInfo.balance" style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
+      <span class="mid" v-if="billInfo.balance === '0.00' || !billInfo.balance" style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
       <span class="mid" v-else>{{parseFloat(billInfo.balance).toFixed(2)}}</span>
     </div>
     <div class="asset-header-item">
@@ -564,7 +564,7 @@
           text-align: center;
           height: 30px;
           border-radius: 20px;
-          line-height: 30px;
+          line-height: 28px;
           font-size: 14px;
           color: #4b5afe;
           cursor: pointer;
@@ -656,7 +656,7 @@
     }
     .from-box {
       .input-box {
-        padding: 15px 0px 15px 0 !important;
+        padding: 15px 0px 5px 0 !important;
         .from-title {
           padding-right: 30px !important;
         }
@@ -821,13 +821,14 @@
         }
         .pay-img-box {
           text-align: center;
+          margin-top: 15px;
           .payImg {
             border: 1px solid #e2e2e2;
             display: inline-block;
             /*margin: 20px 0 0 57px;*/
             vertical-align: auto;
             height: 120px;
-            width: 120px;
+            width: 122px;
             overflow: hidden;
             img {
               width: 120px;
@@ -836,6 +837,7 @@
             }
           }
           .pay-des {
+            margin-top: 10px;
             font-size: 14px;
             color: #555555;
           }

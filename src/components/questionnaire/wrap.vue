@@ -263,18 +263,49 @@ export default {
       .v-tips {
         display: inline-block;
         margin-left: 8px;
+        position: relative;
         i {
           vertical-align: middle;
           margin-right: 3px;
           &:hover {
             & + span {
-              display: inline-block;
+              opacity: 1;
             }
           }
         }
         span {
-          display: none;
-          color: #555;
+          /*position: absolute;*/
+          display: inline-block;
+          /*max-width: 400px;*/
+          /*top: 50%;
+          left: 26px;
+          transform: translateY(-50%);*/
+          position: relative;
+          padding: 6px 10px 4px 10px;
+          border-radius: 3px;
+          color: #fff;
+          opacity: 0;
+          word-wrap: break-word;
+          word-break: break-all;
+          z-index: 10;
+          background-color: #313131;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, .4);
+          line-height: 20px;
+          font-size: 10px;
+          margin-left: 4px;
+          &:after {
+            display: block;
+            position: absolute;
+            content: '';
+            height: 0px;
+            width: 0px;
+            top: 50%;
+            left: -4px;
+            transform: translateY(-50%);
+            border-top: 4px solid transparent;
+            border-right: 4px solid #313131;
+            border-bottom: 5px solid transparent;
+          }
         }
       }
       .q-operate {
