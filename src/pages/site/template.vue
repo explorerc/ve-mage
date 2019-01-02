@@ -841,6 +841,9 @@ export default {
     background-color: #fff;
     .btn-group {
       float: right;
+      button{
+        vertical-align: middle;
+      }
     }
   }
 }
