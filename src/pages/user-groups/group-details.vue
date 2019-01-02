@@ -253,6 +253,12 @@
       overflow: hidden;
       .opBtns {
         float: left;
+        button {
+          margin-right: 5px;
+          &:last-child {
+            margin-left: 0px;
+          }
+        }
       }
       /*.el-button {*/
         /*color: #555555;*/
@@ -286,6 +292,8 @@
       .el-button {
         border-color: #888;
         color: #555;
+        height: 30px;
+        padding: 0 20px;
         &:focus,
         &:hover {
           background-color: #FDD43F;
@@ -310,6 +318,7 @@
         .el-input__inner {
           border-radius: 20px;
           border-color: rgba(136, 136, 136, 1);
+          height: 30px;
         }
       }
     }

@@ -564,7 +564,7 @@
           text-align: center;
           height: 30px;
           border-radius: 20px;
-          line-height: 30px;
+          line-height: 28px;
           font-size: 14px;
           color: #4b5afe;
           cursor: pointer;
