@@ -157,6 +157,8 @@ export default {
     color: #4b5afe;
     &.v-cancle {
       color: #555;
+      display: inline-block;
+      margin-left: 10px;
     }
     span {
       font-size: 14px;

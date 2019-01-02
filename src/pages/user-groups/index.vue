@@ -309,9 +309,9 @@
         this.errTitle = ''
         this.errDes = ''
         if (type === 2) {
-          this.dialogTitle = '创建固定群组'
+          this.dialogTitle = '新建固定群组'
         } else {
-          this.dialogTitle = '创建智能群组'
+          this.dialogTitle = '新建智能群组'
         }
         // console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },

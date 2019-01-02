@@ -1483,9 +1483,6 @@
         }
       }
     }
-    .bottom {
-      margin-top: -1px;
-    }
     .bottom > div {
       margin: 10px 33px;
       // margin: 10px 55px;
@@ -1495,7 +1492,7 @@
         width: 100%;
         height: 36px;
         text-align: center;
-        line-height: 36px;
+        line-height: 34px;
         margin-top: 14px;
         background: rgba(239, 239, 239, 0.7);
         border-radius: 18px;
