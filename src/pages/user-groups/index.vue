@@ -434,7 +434,7 @@
         display: inline-block;
         height: 26px;
         color: rgba(34, 34, 34, 1);
-        line-height: 34px;
+        line-height: 30px;
         font-size: 24px;
         float: left;
         font-weight: 400;
@@ -444,11 +444,11 @@
         .el-input {
           float: left;
           width: 220px;
-          height: 34px;
+          height: 30px;
           margin-right: 10px;
           .el-input__inner {
-            height: 34px;
-            line-height: 34px;
+            height: 30px;
+            line-height: 30px;
             border-radius: 20px;
             &:hover,
             &:focus {
@@ -459,7 +459,7 @@
         .el-button {
           color: #555555;
           /*width: 120px;*/
-          height: 34px;
+          height: 30px;
           padding: 0 20px;
           border-radius: 16px;
           border: 1px solid #888888;
