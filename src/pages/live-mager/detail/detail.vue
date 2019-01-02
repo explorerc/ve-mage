@@ -1486,6 +1486,8 @@
       &.statics {
         dt i {
           background-image: url('~assets/image/detail/detail_static_hover.png');
+        }
+      }
     }
     .bottom > div {
       margin: 10px 33px;
