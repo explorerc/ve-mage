@@ -51,7 +51,7 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.business_consumer_uid)">详情
+            <el-button class="btns" type="text" @click="handleDetails(scope.row.business_consumer_uid)">详情
             </el-button>
             <el-button v-if="type == 2 " class="btns" type="text" size="mini"
                        @click="handleDelete(scope.row.business_consumer_uid ,scope.$index)">删除

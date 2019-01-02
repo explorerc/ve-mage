@@ -1487,6 +1487,29 @@
         dt i {
           background-image: url('~assets/image/detail/detail_static_hover.png');
         }
+      }
+    }
+    .bottom > div {
+      margin: 10px 33px;
+      // margin: 10px 55px;
+      width: 160px;
+      float: left;
+      ol > li {
+        width: 100%;
+        height: 36px;
+        text-align: center;
+        line-height: 34px;
+        margin-top: 14px;
+        background: rgba(239, 239, 239, 0.7);
+        border-radius: 18px;
+        border: 1px solid rgba(177, 177, 177, 1);
+        cursor: pointer;
+        &:hover {
+          /*background-color: #ffd021;*/
+          /*border-color: #ffd021;*/
+          background-color: #ffd43f;
+          border-color: #ffd43f;
+        }
         &.highlight dt i {
           background-image: url('~assets/image/detail/detail_static.png');
         }
