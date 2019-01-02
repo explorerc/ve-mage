@@ -115,6 +115,9 @@
             })
             this.tableData = res.data
             console.log(this.tableData)
+            setTimeout(() => {
+              this.isInit = true
+            }, 500)
           })
           .catch(() => {
             this.tableData = []
@@ -128,9 +131,7 @@
         let goods = this.tableData.map((ite, ind) => {
           return ite.goods_id
         })
-        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() }).then(() => {
-          this.isInit = true
-        })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() }).then()
       },
       check () {
         if (this.isShowlive) {
