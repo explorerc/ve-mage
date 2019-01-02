@@ -847,6 +847,7 @@
 </script>
 
 <style lang='scss' scoped>
+  @import '~assets/css/mixin.scss';
   .v-questionaire {
     overflow: hidden;
     padding-bottom: 30px;
@@ -934,9 +935,9 @@
         font-size: 24px;
       }
       .back-btn-all {
-        border-radius: 20px;
-        padding: 0px;
-        width: 90px;
+        /*border-radius: 20px;*/
+        /*padding: 0px;*/
+        /*width: 90px;*/
       }
       // button {
       //   float: right;

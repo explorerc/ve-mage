@@ -261,7 +261,7 @@
               <el-radio v-model="outLineMode"
                         label="1">指定下线时间
               </el-radio>
-              <ve-msg-tips class='playback-msg-tips'  tip-type="html" tip='1.可指定回放视频的下线时间，下线后回放将无法观看。活动状态变为【已结束】<br>2.不设下线时间：没有下线日期，回放视频可永久进行观看<br>3.指定下线时间：时间到期后，回放视频将被下线，无法在观看'></ve-msg-tips>
+              <ve-msg-tips class='playback-msg-tips'  tip-type="html" tip='1.可指定回放视频的下线时间，下线后回放将无法观看。活动状态变为【已结束】<br>2.不设下线时间：没有下线日期，回放视频可永久进行观看<br>3.指定下线时间：时间到期后，回放视频将被下线，无法再观看'></ve-msg-tips>
             </div>
           </div>
           <transition name="left-right">
