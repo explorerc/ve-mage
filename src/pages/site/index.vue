@@ -108,6 +108,7 @@ export default {
       isPublish: false,
       switchDisabled: false,
       data: {},
+      isOverdue: false,
       tplData: defaultData,
       t0478320: require('assets/image/site_tp2.png'),
       t0478321: require('assets/image/site_tp1.png'),
@@ -148,6 +149,7 @@ export default {
         id: this.$route.params.id
       }).then((res) => {
         this.isPublish = res.data.published === 'Y'
+        this.isOverdue = res.data.validStatus === 'N'
       })
     },
     goEdit () {
@@ -163,6 +165,16 @@ export default {
       }
     },
     confirmState (res) {
+      if (this.isOverdue) {
+        this.$messageBox({
+          header: '提示',
+          autoClose: 10,
+          confirmText: '知道了',
+          content: '活动已过期，无法对活动进行编辑'
+        })
+        this.enable = !this.enable
+        return false
+      }
       // this.switchDisabled = true
       if (this.isPublish && !res) {
         this.$messageBox({
@@ -201,16 +213,7 @@ export default {
           this.switchDisabled = false
         }, 2000)
       }).catch((res) => {
-        if (res.code === 60706) {
-          this.$messageBox({
-            header: '提示',
-            content: res.msg,
-            autoClose: 10,
-            confirmText: '知道了'
-          })
-          this.enable = !this.enable
-          this.switchDisabled = false
-        } else if (res.code === 60701) {
+        if (res.code === 60706 || res.code === 60701) {
           this.$messageBox({
             header: '提示',
             content: res.msg,
@@ -369,7 +372,7 @@ export default {
       position: relative;
       // overflow: hidden;
       border-radius: 4px;
-      &:last-child{
+      &:last-child {
         margin-right: 0;
       }
       img {

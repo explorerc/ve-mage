@@ -89,6 +89,7 @@
       return {
         activity_id: this.$route.params.activity_id,
         tableData: [],
+        isInit: false,
         timerShelf: null,
         isShowlive: null
       }
@@ -97,7 +98,9 @@
       tableData: {
         handler (val, oldVal) {
           if (val.length >= 1) {
-            this.sortGoods()
+            if (this.isInit) {
+              this.sortGoods()
+            }
           }
         },
         deep: true
@@ -125,7 +128,9 @@
         let goods = this.tableData.map((ite, ind) => {
           return ite.goods_id
         })
-        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() }).then(() => {
+          this.isInit = true
+        })
       },
       check () {
         if (this.isShowlive) {
@@ -235,7 +240,6 @@
           margin-left: 6px;
           padding-right: 10px;
         }
-
       }
     }
     .table-box {

@@ -38,7 +38,7 @@
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
       </el-form-item>
-      <el-form-item label="商品链接：" prop="url" class="url">
+      <el-form-item label="商品链接：" prop="url" class="url is-required">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
         <span class="tips" v-if="tipsShow">链接需要附带http://或https://头协议</span>
       </el-form-item>

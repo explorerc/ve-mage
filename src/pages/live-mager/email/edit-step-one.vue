@@ -185,7 +185,13 @@
       initPage () {
         this.querySite()
         if (this.isHistory && this.emailInfo.content) {
-          this.email = this.emailInfo
+          // 异步执行，触发组件props更新
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.email = {
+              ...this.emailInfo
+            }
+          }, 0)
           return
         }
         const queryId = this.$route.params.id
