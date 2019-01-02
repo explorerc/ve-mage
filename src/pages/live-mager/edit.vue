@@ -818,7 +818,8 @@ export default {
     }
     &.is-checked span.el-checkbox-button__inner,
     &.is-focus span.el-checkbox-button__inner {
-      border-left: 1px solid #409eff;
+      border-left: 1px solid #4b5afe;
+      background-color: #4b5afe;
     }
   }
 }

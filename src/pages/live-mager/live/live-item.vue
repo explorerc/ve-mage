@@ -233,6 +233,7 @@
         box-sizing: content-box;
         z-index: 2;
         line-height: 30px;
+        border-radius: 4px;
         span {
           display: block;
           text-align: center;
