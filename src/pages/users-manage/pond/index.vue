@@ -1094,15 +1094,12 @@
             display: inline-block;
             position: relative;
             top: 2px;
-            background: url('~assets/image/close.svg') no-repeat;
+            background: url('~assets/image/close1.svg') no-repeat;
             background-position: center;
-            background-size: 6px;
+            background-size: cover;
             width: 14px;
             height: 14px;
-            line-height: 14px;
-            border-radius: 100px;
-            color: $color-blue;
-            border: 1px solid $color-blue;
+            line-height: 26px;
             &:hover {
               opacity: 0.8;
             }
