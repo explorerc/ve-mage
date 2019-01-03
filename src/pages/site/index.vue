@@ -110,8 +110,8 @@ export default {
       data: {},
       isOverdue: false,
       tplData: defaultData,
-      t0478320: require('assets/image/site_tp2.png'),
-      t0478321: require('assets/image/site_tp1.png'),
+      t0478320: require('assets/image/site_tp1.png'),
+      t0478321: require('assets/image/site_tp2.png'),
       t0478322: require('assets/image/site_tp3.png'),
       t0478323: require('assets/image/site_tp4.png')
     }
