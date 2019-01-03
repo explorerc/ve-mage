@@ -673,6 +673,9 @@
         }).then((res) => {
           if (res.code === 200 && res.data.length !== 0) {
             this.watcherLineData = res.data
+            // this.watcherLineData.live.xAxis.map(item => {
+            //   return item.length >= 16 ? item.substring(0, 10) + '\n' + item.substring(10, item.length) : item
+            // })
             this.$nextTick(() => {
               // 观众趋势图（PV、UV）
               this.watcherChart = lines('chart01', {
@@ -848,7 +851,7 @@
             left: 70,
             right: 10,
             top: 10,
-            bottom: 10
+            bottom: 20
           })
         })
       },
