@@ -30,15 +30,16 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg"
+                           accept="png|jpg|jpeg|gif"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
+                           bg-size="contain"
                            :errorMsg="uploadLogoErrorMsg"
                            @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
-                <p class="v-notes">
-                  注：logo图片，只对PC页面生效
-                </p>
+                <!-- <p class="v-notes">
+                  注：背景图片，只对电脑页面生效
+                </p> -->
               </div>
             </div>
             <div class="pull-right-menu">
@@ -46,32 +47,32 @@
               <span :class="{active:!isPc}" @click="isPc=false">手机预览</span>
             </div>
             <div class="v-show pull-right" v-if="isPc">
-                <div class="v-pc"
-                     :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
-                  <div class="clearfix"
-                       style="padding-left: 30px;position:relative;">
-                    <template v-if="defaultLogoImg">
-                      <img :src="defaultLogoImg"
-                           alt="logo"
-                           class="v-logo pull-left">
-                    </template>
-                    <div class="pull-left">
-                      <p class="v-live-title">
-                        {{activityTitle}}
-                      </p>
-                      <img src="../../assets/image/mac-icon@2x.png"
-                           alt=""
-                           class="v-pc-icon">
-                    </div>
-                  </div>
-                  <div class="v-show-content">
+              <div class="v-pc"
+                   :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
+                <div class="clearfix"
+                     style="padding-left: 30px;position:relative;">
+                  <template v-if="defaultLogoImg">
+                    <img :src="defaultLogoImg"
+                         alt="logo"
+                         class="v-logo pull-left">
+                  </template>
+                  <div class="pull-left">
+                    <p class="v-live-title">
+                      {{activityTitle}}
+                    </p>
+                    <img src="../../assets/image/mac-icon@2x.png"
+                         alt=""
+                         class="v-pc-icon">
                   </div>
                 </div>
-                <p class="v-preview">品牌预览</p>
+                <div class="v-show-content">
+                </div>
+              </div>
+              <p class="v-preview">品牌预览</p>
             </div>
             <div class="v-show pull-right phone-mode" v-else>
               <div class="h5-header">
-                <img v-if="defaultLogoImg" :src="defaultLogoImg" class="h5-logo">
+                <img :src="defaultLogoImg" class="h5-logo" v-if="defaultLogoImg">
                 <div class="h5-header-content">
                   <p>{{activityTitle}}</p>
                   <p>
@@ -191,240 +192,240 @@
   </div>
 </template>
 <script>
-import brandService from 'src/api/brand-service'
-import VeUpload from 'src/components/ve-upload-image'
-import userService from 'src/api/user-service'
-import activityService from 'src/api/activity-service'
-import { mapMutations, mapState } from 'vuex'
-import * as types from 'src/store/mutation-types'
-import EventBus from 'src/utils/eventBus'
+  import brandService from 'src/api/brand-service'
+  import VeUpload from 'src/components/ve-upload-image'
+  import userService from 'src/api/user-service'
+  import activityService from 'src/api/activity-service'
+  import {mapMutations, mapState} from 'vuex'
+  import * as types from 'src/store/mutation-types'
+  import EventBus from 'src/utils/eventBus'
 
-export default {
-  data () {
-    return {
-      activityId: 0,
-      tabValue: 1, // 页签选择
-      bgImgUrl: '', // 背景图片
-      logoImgUrl: '', // logo图片
-      shareImgUrl: '', // 分享图标
-      shareTitle: '', // 分享标题
-      shareIntroduction: '', // 分享简介
-      isShowWatch: true, // 是否在直播观看页显示
-      isShowOfficialWebsite: true, // 是否在活动官网显示
-      isShowGuided: true, // 是否在直播引导页显示
-      uploadBgErrorMsg: '', // 上传图片错误提示
-      uploadLogoErrorMsg: '', // 上传图片错误提示
-      uploadShareErrorMsg: '', // 上传图片错误提示
-      avatar: '',
-      status: '', // 直播状态,
-      canPass: true,
-      activityTitle: '', // 活动标题
-      errorTips: '', // 错误提示
-      isPc: true
-    }
-  },
-  components: {
-    VeUpload
-  },
-  created () {
-    this.activityId = this.$route.params.id
-    EventBus.$emit('breads', [{
-      title: '活动管理'
-    }, {
-      title: '活动列表',
-      url: '/liveMager/list'
-    }, {
-      title: '活动详情',
-      url: `/liveMager/detail/${this.activityId}`
-    }, {
-      title: '观看页'
-    }])
-    let data = {
-      'activityId': this.activityId
-    }
-    if (!this.activityId) {
-      this.$router.go(-1)
-      return
-    }
-    if (this.accountInfo && this.accountInfo.userName) {
-      this.name = this.accountInfo.name
-      this.avatar = this.accountInfo.avatar
-    } else {
-      this.$get(userService.GET_ACCOUNT).then((res) => {
-        this.name = res.data.name
-        this.avatar = res.data.avatar
-        this.setAccountInfo(res.data)
+  export default {
+    data () {
+      return {
+        activityId: 0,
+        tabValue: 1, // 页签选择
+        bgImgUrl: '', // 背景图片
+        logoImgUrl: '', // logo图片
+        shareImgUrl: '', // 分享图标
+        shareTitle: '', // 分享标题
+        shareIntroduction: '', // 分享简介
+        isShowWatch: true, // 是否在直播观看页显示
+        isShowOfficialWebsite: true, // 是否在活动官网显示
+        isShowGuided: true, // 是否在直播引导页显示
+        uploadBgErrorMsg: '', // 上传图片错误提示
+        uploadLogoErrorMsg: '', // 上传图片错误提示
+        uploadShareErrorMsg: '', // 上传图片错误提示
+        avatar: '',
+        status: '', // 直播状态,
+        canPass: true,
+        activityTitle: '', // 活动标题
+        errorTips: '', // 错误提示
+        isPc: true
+      }
+    },
+    components: {
+      VeUpload
+    },
+    created () {
+      this.activityId = this.$route.params.id
+      EventBus.$emit('breads', [{
+        title: '活动管理'
+      }, {
+        title: '活动列表',
+        url: '/liveMager/list'
+      }, {
+        title: '活动详情',
+        url: `/liveMager/detail/${this.activityId}`
+      }, {
+        title: '观看页'
+      }])
+      let data = {
+        'activityId': this.activityId
+      }
+      if (!this.activityId) {
+        this.$router.go(-1)
+        return
+      }
+      if (this.accountInfo && this.accountInfo.userName) {
+        this.name = this.accountInfo.name
+        this.avatar = this.accountInfo.avatar
+      } else {
+        this.$get(userService.GET_ACCOUNT).then((res) => {
+          this.name = res.data.name
+          this.avatar = res.data.avatar
+          this.setAccountInfo(res.data)
+        })
+      }
+      this.$get(activityService.GET_WEBINAR_INFO, {
+        id: this.activityId
+      }).then((res) => {
+        this.status = res.data.status
+        this.activityTitle = res.data.title ? res.data.title : ''
       })
-    }
-    this.$get(activityService.GET_WEBINAR_INFO, {
-      id: this.activityId
-    }).then((res) => {
-      this.status = res.data.status
-      this.activityTitle = res.data.title ? res.data.title : ''
-    })
-    this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
-      if (res.data) {
-        this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
-        this.shareTitle = res.data.title ? res.data.title : ''
-        this.shareIntroduction = res.data.description ? res.data.description : ''
-        this.isShowWatch = res.data.page.indexOf('live_route') > -1
-        this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
-        this.isShowGuided = res.data.page.indexOf('guide_route') > -1
-        this.tabValue = 1
-      }
-    })
-    this.$get(brandService.GET_LIVE_BRAND, data).then(res => {
-      if (res.data) {
-        this.bgImgUrl = res.data.backgroundUrl ? res.data.backgroundUrl : ''
-        this.logoImgUrl = res.data.logoUrl ? res.data.logoUrl : ''
-        this.tabValue = 1
-      }
-    })
-  },
-  computed: {
-    ...mapState('login', {
-      accountInfo: state => state.accountInfo
-    }),
-    defaultBgImg () {
-      return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
-    },
-    defaultLogoImg () {
-      return this.logoImgUrl ? this.$imgHost + '/' + this.logoImgUrl : ''
-    },
-    defaultShareImg () {
-      return this.shareImgUrl ? this.$imgHost + '/' + this.shareImgUrl : ''
-    },
-    avatarImg: function () {
-      return this.avatar ? this.$imgHost + '/' + this.avatar : require('assets/image/avatar@2x.png')
-    }
-  },
-  mounted () {
-  },
-  watch: {
-  },
-  /* 路由守卫，离开当前页面之前被调用 */
-  beforeRouteLeave (to, from, next) {
-    if (this.canPass) {
-      next(true)
-      return
-    }
-    this.$messageBox({
-      header: '提示',
-      width: '400px',
-      content: '是否放弃当前编辑？',
-      cancelText: '否',
-      confirmText: '是',
-      handleClick: (e) => {
-        if (e.action === 'confirm') {
-          next(true)
-        } else {
-          next(false)
+      this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
+        if (res.data) {
+          this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+          this.shareTitle = res.data.title ? res.data.title : ''
+          this.shareIntroduction = res.data.description ? res.data.description : ''
+          this.isShowWatch = res.data.page.indexOf('live_route') > -1
+          this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
+          this.isShowGuided = res.data.page.indexOf('guide_route') > -1
+          this.tabValue = 1
         }
-      }
-    })
-  },
-  methods: {
-    ...mapMutations('login', {
-      setAccountInfo: types.ACCOUNT_INFO
-    }),
-    uploadBgSuccess (data) {
-      this.canPass = false
-      this.bgImgUrl = data.name
-    },
-    uploadBgError (data) {
-      this.uploadBgErrorMsg = data.msg
-      this.bgImgUrl = ''
-    },
-    uploadLogoSuccess (data) {
-      this.canPass = false
-      this.logoImgUrl = data.name
-    },
-    uploadLogoError (data) {
-      this.uploadLogoErrorMsg = data.msg
-      this.logoImgUrl = ''
-    },
-    uploadShareSuccess (data) {
-      this.canPass = false
-      this.shareImgUrl = data.name
-    },
-    uploadShareError (data) {
-      this.uploadShareErrorMsg = data.msg
-      this.shareImgUrl = ''
-    },
-    brandClick () { // 品牌设置保存
-      let data = {
-        'activityId': this.activityId,
-        'backgroundUrl': this.bgImgUrl,
-        'logoUrl': this.logoImgUrl
-      }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
-        this.canPass = true
-        // this.$toast({
-        //   content: '保存成功',
-        //   position: 'center'
-        // })
-        this.$router.push(`/liveMager/detail/${this.activityId}`)
-      }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-            }
-          }
-        })
+      })
+      this.$get(brandService.GET_LIVE_BRAND, data).then(res => {
+        if (res.data) {
+          this.bgImgUrl = res.data.backgroundUrl ? res.data.backgroundUrl : ''
+          this.logoImgUrl = res.data.logoUrl ? res.data.logoUrl : ''
+          this.tabValue = 1
+        }
       })
     },
-    shareClick () { // 分享设置保存
-      if (!this.shareTitle) {
-        this.errorTips = '请填写标题'
-        return false
+    computed: {
+      ...mapState('login', {
+        accountInfo: state => state.accountInfo
+      }),
+      defaultBgImg () {
+        return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
+      },
+      defaultLogoImg () {
+        return this.logoImgUrl ? this.$imgHost + '/' + this.logoImgUrl : ''
+      },
+      defaultShareImg () {
+        return this.shareImgUrl ? this.$imgHost + '/' + this.shareImgUrl : ''
+      },
+      avatarImg: function () {
+        return this.avatar ? this.$imgHost + '/' + this.avatar : require('assets/image/avatar@2x.png')
       }
-      let data = {
-        'activityId': this.activityId,
-        'title': this.shareTitle,
-        'description': this.shareIntroduction,
-        'imgUrl': this.shareImgUrl,
-        'page': []
+    },
+    mounted () {
+    },
+    watch: {},
+    /* 路由守卫，离开当前页面之前被调用 */
+    beforeRouteLeave (to, from, next) {
+      if (this.canPass) {
+        next(true)
+        return
       }
-      if (this.isShowWatch) {
-        data.page.push('live_route')
-      }
-      if (this.isShowOfficialWebsite) {
-        data.page.push('officia_route')
-      }
-      if (this.isShowGuided) {
-        data.page.push('guide_route')
-      }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
-        this.canPass = true
-        this.$toast({
-          content: '保存成功'
-        })
-      }).catch((err) => {
-        this.$messageBox({
-          header: '提示',
-          content: err.msg,
-          confirmText: '确定',
-          handleClick: (e) => {
-            if (e.action === 'cancel') {
-            } else if (e.action === 'confirm') {
-            }
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
           }
-        })
+        }
       })
     },
-    shareTitleFocus () {
-      this.canPass = false
-      this.errorTips = ''
+    methods: {
+      ...mapMutations('login', {
+        setAccountInfo: types.ACCOUNT_INFO
+      }),
+      uploadBgSuccess (data) {
+        this.canPass = false
+        this.bgImgUrl = data.name
+      },
+      uploadBgError (data) {
+        this.uploadBgErrorMsg = data.msg
+        this.bgImgUrl = ''
+      },
+      uploadLogoSuccess (data) {
+        this.canPass = false
+        this.logoImgUrl = data.name
+      },
+      uploadLogoError (data) {
+        this.uploadLogoErrorMsg = data.msg
+        this.logoImgUrl = ''
+      },
+      uploadShareSuccess (data) {
+        this.canPass = false
+        this.shareImgUrl = data.name
+      },
+      uploadShareError (data) {
+        this.uploadShareErrorMsg = data.msg
+        this.shareImgUrl = ''
+      },
+      brandClick () { // 品牌设置保存
+        let data = {
+          'activityId': this.activityId,
+          'backgroundUrl': this.bgImgUrl,
+          'logoUrl': this.logoImgUrl
+        }
+        this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+          this.canPass = true
+          // this.$toast({
+          //   content: '保存成功',
+          //   position: 'center'
+          // })
+          this.$router.push(`/liveMager/detail/${this.activityId}`)
+        }).catch((err) => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
+        })
+      },
+      shareClick () { // 分享设置保存
+        if (!this.shareTitle) {
+          this.errorTips = '请填写标题'
+          return false
+        }
+        let data = {
+          'activityId': this.activityId,
+          'title': this.shareTitle,
+          'description': this.shareIntroduction,
+          'imgUrl': this.shareImgUrl,
+          'page': []
+        }
+        if (this.isShowWatch) {
+          data.page.push('live_route')
+        }
+        if (this.isShowOfficialWebsite) {
+          data.page.push('officia_route')
+        }
+        if (this.isShowGuided) {
+          data.page.push('guide_route')
+        }
+        this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+          this.canPass = true
+          this.$toast({
+            content: '保存成功'
+          })
+        }).catch((err) => {
+          this.$messageBox({
+            header: '提示',
+            content: err.msg,
+            confirmText: '确定',
+            handleClick: (e) => {
+              if (e.action === 'cancel') {
+              } else if (e.action === 'confirm') {
+              }
+            }
+          })
+        })
+      },
+      shareTitleFocus () {
+        this.canPass = false
+        this.errorTips = ''
+      }
     }
   }
-}
 </script>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
+
 .set-live-watch-container /deep/ {
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
@@ -520,7 +521,7 @@ export default {
   }
   .pull-right {
     float: right;
-    &.phone-mode{
+    &.phone-mode {
       position: relative;
       width: 250px;
       height: 499px;
@@ -528,67 +529,73 @@ export default {
       background-size: cover;
       background-position: center center;
       margin-right: 70px;
-      .h5-header{
+      .h5-header {
         position: absolute;
-        top: 64px;
+        top: 66px;
         left: 20px;
         height: 30px;
         width: 214px;
-        img.h5-logo{
+        img.h5-logo {
           height: 24px;
           max-width: 100px;
         }
-        .h5-header-content{
+        .h5-header-content {
           display: inline-block;
           width: 60%;
           font-size: 14px;
           transform: scale(0.5) translateX(-60px);
-          p:nth-child(1){
+          p:nth-child(1) {
             font-weight: bold;
+            width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          p:nth-child(2){
-            span:nth-child(1){
+          p:nth-child(2) {
+            span:nth-child(1) {
               display: inline-block;
               padding: 4px 10px;
               margin-right: 10px;
               border-radius: 16px;
               color: #fff;
               font-size: 12px;
-              background-color: rgba(0, 0, 0, .7);
+              background-color: rgba(0, 0, 0, 0.7);
               line-height: 18px;
             }
-            span:nth-child(2){
+            span:nth-child(2) {
               color: #666;
               font-size: 12px;
             }
           }
         }
       }
-      .h5-logo-img{
+      .h5-logo-img {
         width: 229px;
-        height: 410px;
+        height: 409px;
         margin-top: 14px;
         margin-left: 12px;
-        background-image: url('~assets/image/h5-logo@2x.jpg');
+        background-image: url('~assets/image/h5-logo1@2x.jpg');
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100% 100%;
         background-position: center;
+        border-radius: 8px;
       }
     }
   }
-  .pull-right-menu{
+  .pull-right-menu {
     float: left;
     width: 40%;
     margin-left: 40px;
     margin-bottom: 20px;
-    span{
+    span {
       display: inline-block;
       line-height: 30px;
       padding: 0 20px;
       font-size: 14px;
-      &:hover,&.active{
+      &:hover,
+      &.active {
         cursor: pointer;
-        color: #2878FF;
+        color: #2878ff;
       }
     }
   }
@@ -602,7 +609,7 @@ export default {
     position: relative;
     .v-logo {
       display: block;
-      width: 27px;
+      max-width: 40px;
       height: 13px;
       margin-right: 6px;
       position: relative;
@@ -616,7 +623,8 @@ export default {
       transform-origin: top left;
       color: #333;
       max-height: 12px;
-      width: 247px;
+      width: 300px;
+      white-space: nowrap;
     }
     .v-pc-icon {
       display: block;
@@ -625,7 +633,7 @@ export default {
     .v-pc {
       width: 438px;
       height: 250px;
-      background-position: center;
+      background-position: 50%;
       background-size: cover;
       padding-top: 10px;
       margin-left: 12px;
@@ -633,8 +641,8 @@ export default {
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
-        background: url('~assets/image/viewarea@2x.jpg');
-        background-size: cover;
+        background-image: url('~assets/image/viewarea1@2x.png');
+        background-size: 100% 100%;
         position: relative;
       }
     }

@@ -315,11 +315,17 @@ export default {
   font-size: 14px;
 }
 .live-title {
+  position: relative;
   .create-button {
     height: 30px;
     line-height: 30px;
-    margin-right: 110px;
+    margin-right: 80px;
     margin-top: 17px;
+    padding: 0 20px;
+    /*<!--position: relative;-->*/
+    /*<!--top: 50%;-->*/
+    /*<!--right: 110px;-->*/
+    /*<!--transform: translateY(-50%);-->*/
   }
 }
 .send-box {
@@ -327,7 +333,7 @@ export default {
   color: #888;
   font-size: 14px;
   line-height: 63px;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .cg-status {
@@ -354,9 +360,9 @@ export default {
     text-align: center;
     margin: 100px 0;
     .txt {
-      padding-top: 20px;
-      font-size: 16px;
-      color: $color-font;
+      padding-top: 40px;
+      font-size: 14px;
+      color: $color-font-sub;
     }
     .img {
       width: 150px;
@@ -371,7 +377,7 @@ export default {
       height: 40px;
       text-align: center;
       line-height: 40px;
-      margin-top: 20px;
+      margin-top: 30px;
     }
   }
 }

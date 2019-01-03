@@ -4,7 +4,7 @@
       <p>商品推荐</p>
       <com-back :url="`/liveMager/detail/${activity_id}`"></com-back>
       <div v-if="tableData.length>=1" class='btn-box'>
-        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看活动数据</com-button>
+        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看数据</com-button>
         <com-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </com-button>
@@ -43,10 +43,10 @@
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td>
               <div class='btn-box'>
-                <el-button size="mini" type="text" @click="handleEdit(row,ind)">编辑</el-button>
-                <el-button size="mini" type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
+                <el-button type="text" @click="handleEdit(row,ind)">编辑</el-button>
+                <el-button type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button size="mini" type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
                 <el-button class="item move-btn" size="mini" type="text" title='拖拽可调整商品排序'>移动</el-button>
               </div>
             </td>
@@ -56,7 +56,6 @@
     </div>
     <div class="no-goods" v-else>
       <img :src="require('assets/image/not-goodlist.png')" alt="">
-      <p>暂时没有商品哦~</p>
       <p>全新直播购物模式，通过实时直播带动粉丝经济，<br>你甚至可以联合品牌商一起策划品牌内容，提升观众信任感</p>
       <el-button class="add-goods primary-button" @click="createGoods" round>添加商品</el-button>
     </div>
@@ -90,6 +89,7 @@
       return {
         activity_id: this.$route.params.activity_id,
         tableData: [],
+        isInit: false,
         timerShelf: null,
         isShowlive: null
       }
@@ -98,7 +98,9 @@
       tableData: {
         handler (val, oldVal) {
           if (val.length >= 1) {
-            this.sortGoods()
+            if (this.isInit) {
+              this.sortGoods()
+            }
           }
         },
         deep: true
@@ -113,6 +115,9 @@
             })
             this.tableData = res.data
             console.log(this.tableData)
+            setTimeout(() => {
+              this.isInit = true
+            }, 500)
           })
           .catch(() => {
             this.tableData = []
@@ -126,7 +131,7 @@
         let goods = this.tableData.map((ite, ind) => {
           return ite.goods_id
         })
-        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() }).then()
       },
       check () {
         if (this.isShowlive) {
@@ -151,8 +156,7 @@
                 this.getList()
               }, 500)
               this.$toast({
-                content: '操作成功!',
-                position: 'center'
+                content: '操作成功!'
               })
             })
         }, 1000)
@@ -184,8 +188,7 @@
                     this.getList()
                   }, 1000)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -228,7 +231,16 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        right: 97px;
+        right: 80px;
+        .com-button {
+          padding: 0 20px;
+        }
+        .add-goods {
+          /*width: 130px;*/
+          padding-left: 20px;
+          margin-left: 6px;
+          padding-right: 10px;
+        }
       }
     }
     .table-box {
@@ -237,7 +249,7 @@
       border: 1px solid #e2e2e2;
       border-radius: 4px;
       background-color: white;
-      min-height: 550px;
+      min-height: 520px;
       table thead tr th,
       table tbody tr td {
         border-color: #ebeef5;
@@ -330,6 +342,11 @@
           tr:hover {
             background-color: #f5f7fa;
           }
+          tr:last-child {
+            td {
+              border: none;
+            }
+          }
         }
         /* thead {
             width: calc(100% - 100px);
@@ -350,19 +367,14 @@
       img {
         width: 150px;
         height: 150px;
-        margin: 84px auto 40px auto;
+        margin: 84px auto 27px auto;
       }
-      p:nth-of-type(1) {
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 22px;
-      }
-      p:nth-of-type(2) {
+
+      p {
         font-size: 14px;
         font-weight: 400;
         color: rgba(85, 85, 85, 1);
-        margin: 10px auto 30px auto;
+        margin: 0 auto 30px;
       }
       button {
         margin-bottom: 90px;

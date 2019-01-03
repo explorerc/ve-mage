@@ -39,8 +39,8 @@
               <div class="img-upload-box">
                 <label class='normal'>上传图片</label>
                 <ve-upload
-                title="图片支持jpg、png、bmp格式 大小不超过2M"
-                accept="png|jpg|bmp"
+                :title="item.imgDesc"
+                accept="png|jpg|bmp|gif"
                 :fileSize="2048"
                 :errorMsg="uploadImgErrorMsg"
                 :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
@@ -137,12 +137,16 @@ export default {
     return {
       inpError: '',
       active: -1,
+      newDesc: '',
       id: this.$route.params.id,
       PC_HOST: process.env.PC_HOST,
       host: process.env.IMGHOST + '/',
       uploadImgErrorMsg: '', // 上传图片错误提示
       autoplay: false
     }
+  },
+  mounted () {
+    this.newDesc = this.value.list[0].imgDesc
   },
   methods: {
     inpBlur (val) {
@@ -163,7 +167,8 @@ export default {
           img: '',
           link: '',
           type: 'top',
-          target: '_self'
+          target: '_self',
+          imgDesc: this.newDesc
         }
         this.value.list.push(obj)
         this.active = len

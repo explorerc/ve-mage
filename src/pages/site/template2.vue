@@ -124,10 +124,10 @@ export default {
       cursor: pointer;
       display: inline-block;
       background-color: #ffd021;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background-image: url('~assets/image/site/edit.svg');
-      background-size: 32px;
+      background-size: 28px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
@@ -357,14 +357,22 @@ export default {
       min-height: 85px;
     }
     .block1-group {
+      height: 340px;
       .block1-item {
         border: 1px solid rgba(226, 226, 226, 1);
         width: 250px;
-        height: 340px;
+        height: 320px;
         img {
           width: 100%;
           height: 160px;
         }
+      }
+    }
+    .btn-container {
+      position: relative;
+      .com-button {
+        width: 120px;
+        /*margin-top: 20px;*/
       }
     }
   }

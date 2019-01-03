@@ -107,7 +107,8 @@
                               type="datetime"
                               placeholder="选择日期时间"
                               :default-value="defaultValue"
-                              :picker-options="pickerOptions">
+                              :picker-options="pickerOptions"
+                              @focus='dateFocus()'>
               </el-date-picker>
             </div>
           </div>
@@ -145,6 +146,7 @@
 </template>
 
 <script>
+import { formatDate } from 'src/assets/js/date'
 import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
@@ -194,7 +196,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7
         }
       },
-      defaultValue: new Date(new Date().getTime() + 1800000),
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm'),
       loading: false,
       searchPerson: '',
       groupList: [],
@@ -296,8 +298,7 @@ export default {
       this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: '保存成功'
         })
         // 跳转到列表页面
         this.canPass = true
@@ -475,6 +476,9 @@ export default {
           this.siteOpen = false
         }
       })
+    },
+    dateFocus () {
+      this.date = this.defaultValue
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */

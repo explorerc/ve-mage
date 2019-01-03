@@ -6,6 +6,26 @@
             :show-module-name="showModuleName"
             ref="editor"
             @change="updateData"></editor>
+    <!-- 编辑图片尺寸 -->
+    <message-box v-show="imgEditShow"
+                 width="450px"
+                 type="prompt"
+                 header="设置图片大小"
+                 confirmText='确定'
+                 @handleClick="editImgHandle">
+      <div class="img-emit-box">
+        <div class="fl">
+          <span>高：</span>
+          <com-input ref="refWidthInput" placeholder="输入图片高度" type="mobile" @keyup.enter.native="changeImg" @change="changeHeight"
+                     :value.sync="imgHeight"></com-input>
+        </div>
+        <div class="fr">
+          <span>宽：</span>
+          <com-input placeholder="输入图片宽度" type="mobile" @keyup.enter.native="changeImg" @change="changeWidth"
+                     :value.sync="imgWidth"></com-input>
+        </div>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -250,8 +270,12 @@
     components: {editor},
     data () {
       return {
+        imgEditShow: false,
         showModuleName: false,
-        content: ''
+        content: '',
+        imgWidth: '0',
+        imgHeight: '0',
+        whRatio: 1
       }
     },
     props: {
@@ -267,6 +291,10 @@
         default: '/api/upload/image'
       },
       pullMsg: {
+        type: Boolean,
+        default: false
+      },
+      imgEdit: {
         type: Boolean,
         default: false
       }
@@ -288,10 +316,48 @@
         this.updateData(content)
       }
     },
+    mounted () {
+      if (!this.imgEdit) return
+      this.$refs.editor.$el.addEventListener('dblclick', (e) => {
+        let imgDom = e.target
+        if (imgDom.nodeName.toLowerCase() === 'img') {
+          let w = imgDom.width
+          let h = imgDom.height
+          this.imgHeight = h.toString()
+          this.imgWidth = w.toString()
+          this.whRatio = w / h
+          this.tempImgDom = imgDom
+          this.imgEditShow = true
+        }
+      })
+    },
     methods: {
+      changeWidth () {
+        if (this.imgWidth) {
+          this.imgHeight = (parseInt(this.imgWidth) / this.whRatio).toFixed()
+        }
+      },
+      changeHeight () {
+        if (this.imgHeight) {
+          this.imgWidth = (parseInt(this.imgHeight) * this.whRatio).toFixed()
+        }
+      },
       updateData (res) {
         this.$emit('input', res)
         this.$emit('change', res)
+      },
+      editImgHandle (e) {
+        this.imgEditShow = false
+        if (e.action === 'confirm') {
+          this.changeImg()
+        }
+      },
+      changeImg () {
+        this.imgEditShow = false
+        this.tempImgDom.width = this.imgWidth
+        this.tempImgDom.height = this.imgHeight
+        let content = this.$refs.editor.$el.querySelectorAll('.content')[0].innerHTML
+        this.updateData(content)
       }
     }
   }
@@ -300,8 +366,16 @@
 <style lang="scss">
   .html-editer {
     min-width: 480px;
+    .toolbar .dashboard input {
+      padding: 0 12px !important;
+      vertical-align: 1px;
+      height: 30px !important;
+    }
     i {
       font-style: italic;
+      &.icon-close1 {
+        font-style: normal;
+      }
     }
     .content {
       max-height: 560px;
@@ -319,6 +393,25 @@
       font-size: 18px;
       width: auto !important;
       height: auto !important;
+    }
+    .img-emit-box {
+      padding: 20px 0;
+      overflow: hidden;
+      div {
+        width: calc(50% - 10px);
+        .com-input {
+          width: 160px;
+          input {
+            width: 100%;
+            height: 32px;
+            margin: 5px 0;
+            padding: 0 10px;
+            outline: none;
+            border: solid 1px #e2e2e2;
+            border-radius: 4px;
+          }
+        }
+      }
     }
   }
 </style>

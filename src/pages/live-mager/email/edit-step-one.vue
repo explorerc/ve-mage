@@ -23,7 +23,7 @@
       </div>
       <div class="edit-content clearfix">
         <div class="edit-content-box fl">
-          <ve-html5-editer v-model="email.content" :pull-msg="isPull"></ve-html5-editer>
+          <ve-html5-editer v-model="email.content" :img-edit="true" :pull-msg="isPull"></ve-html5-editer>
         </div>
         <div class="edit-content-temp fr">
           <div class="temp-title">
@@ -85,6 +85,7 @@
   import veMsgTips from 'src/components/ve-msg-tips'
   import activityService from 'src/api/activity-service'
   import VeHtml5Editer from 'src/components/ve-html5-editer'
+  import emailTempList from './email-template/email-temp-list'
   import {
     mapState,
     mapMutations
@@ -184,7 +185,13 @@
       initPage () {
         this.querySite()
         if (this.isHistory && this.emailInfo.content) {
-          this.email = this.emailInfo
+          // 异步执行，触发组件props更新
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.email = {
+              ...this.emailInfo
+            }
+          }, 0)
           return
         }
         const queryId = this.$route.params.id
@@ -256,9 +263,18 @@
         })
       },
       queryEmailTemp () {
-        this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
-          if (!res.data.list) return
-          this.emailList = res.data.list
+        // this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
+        //   if (!res.data.list) return
+        //   this.emailList = res.data.list
+        //   if (!this.email.emailInviteId) { // 如果不是编辑
+        //     // this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+        //     this.email.content = this.emailList[0].content
+        //     this.dealWithEmailUrl()
+        //   }
+        // })
+        // 增加$nextTick异步，防止vue报错
+        this.$nextTick(() => {
+          this.emailList = emailTempList
           if (!this.email.emailInviteId) { // 如果不是编辑
             // this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
             this.email.content = this.emailList[0].content
@@ -294,8 +310,7 @@
         }).then((res) => {
           this.canPass = true
           this.$toast({
-            content: '发送成功，请稍后查收邮件',
-            position: 'center'
+            content: '发送成功，请稍后查收邮件'
           })
         })
         // LiveHttp.sendTestEmailInfo({
@@ -483,14 +498,14 @@
             height: 20px;
             line-height: 20px;
             text-align: center;
-            border: solid 1px rgba(85, 85, 85, 1);;
+            border: solid 1px rgba(85, 85, 85, 1);
             border-radius: 50%;
             color: #555;
             font-style: normal;
             font-size: 12px;
             &:hover {
               cursor: pointer;
-              opacity: .8;
+              opacity: 0.8;
             }
           }
           .msg {
@@ -551,7 +566,7 @@
         height: calc(100% - 36px);
         width: 356px;
         margin-top: 36px;
-        padding: 0 1.8%;
+        padding: 0 36px;
         box-sizing: border-box;
         overflow-y: scroll;
         .temp-title {

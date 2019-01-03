@@ -163,6 +163,8 @@
     .img {
       width: 100%;
       height: 100%;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
       background: url('~assets/image/webinar_cover_empty.png') no-repeat center;
       background-size: cover;
     }
@@ -231,6 +233,7 @@
         box-sizing: content-box;
         z-index: 2;
         line-height: 30px;
+        border-radius: 4px;
         span {
           display: block;
           text-align: center;

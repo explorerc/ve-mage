@@ -383,20 +383,21 @@ export default {
       background-color: #fff;
       z-index: 1;
       li {
-        width: 80px;
+        width: 97px;
         height: 30px;
         line-height: 28px;
         border: 1px solid #bbb;
         float: left;
         text-align: center;
-        color: #888;
+        color: #222;
         &.active {
           color: #222;
-          background-color: #ffd021;
-          border-color: #ffd021;
+          background-color: #FDD43F;
+          border: 1px solid #bbb;
         }
         &:hover {
           color: #222;
+          background-color: #FDD43F;
         }
         &:not(:first-child) {
           border-left: none;

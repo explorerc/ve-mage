@@ -1,5 +1,4 @@
 @import "assets/css/mixin.scss";
-
 .data-box {
   .pad {
     padding: 0 30px;
@@ -253,8 +252,8 @@
       margin: 29px 0;
       .txt {
         padding-top: 20px;
-        font-size: 16px;
-        color: #8E9198;
+        font-size: 14px;
+        color: #555;
       }
       .img {
         width: 150px;
@@ -274,14 +273,14 @@
 
   .none-chart {
     text-align: center;
-    color: #8E9198;
+    color: #555;
     user-select: none;
 
     img {
       display: block;
       width: 150px;
       height: 150px;
-      margin: 200px auto 50px;
+      margin: 200px auto 40px;
     }
   }
 }

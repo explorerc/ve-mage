@@ -20,7 +20,7 @@
                style="position:absolute;opacity:0;">
         <p class='desc-label'>活动标签 : <span class="tag"
                                            v-for="item in tagList">{{item.name}}</span></p>
-        <p class='desc-label'>开播时间 : {{startTime}}</p>
+        <p class='desc-label'>开播时间 : {{startTime}} <em class='overdue-tag' v-if='overdue'>已过期</em></p>
         <p class="desc-label tool">活动状态 :
           <el-switch class='switch'
                      v-model="isPublished"
@@ -84,14 +84,16 @@
         <img
           :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}site/${activityId}`)}`">
         <span>手机扫描二维码</span>
-        <a @click='downloadQrIamge(`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${PC_HOST}site/${activityId}`)}`, "活动官网")'>下载二维码</a>
+        <a
+          @click='downloadQrIamge(`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${PC_HOST}site/${activityId}`)}`, "活动官网")'>下载二维码</a>
         </li>
         <li class='sub'>
           <p>活动引导页</p>
           <img
             :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}subscribe/${this.activityId}`)}`">
           <span>手机扫描二维码</span>
-          <a @click='downloadQrIamge(`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${PC_HOST}subscribe/${activityId}`)}`, "引导页")'>下载二维码</a>
+          <a
+            @click='downloadQrIamge(`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${PC_HOST}subscribe/${activityId}`)}`, "引导页")'>下载二维码</a>
         </li>
         </ul>
         </span>
@@ -314,7 +316,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare', '/liveMager/prepare/limit-apply/')"></el-switch>
+                         @change="switchChange('APPOINT', dataPrepare[1].switch, 'dataPrepare', '/liveMager/prepare/limit-apply/', 1)"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -353,7 +355,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare', '/liveMager/warmField/')"></el-switch>
+                         @change="switchChange('WARMUP',dataPrepare[2].switch, 'dataPrepare', '/liveMager/warmField/', 2)"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -390,7 +392,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand', '/liveMager/site/')"></el-switch>
+                         @change="switchChange('TEMPLATE', dataBrand[0].switch, 'dataBrand', '/liveMager/site/', 0)"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -494,7 +496,7 @@
                          inactive-color="#DEE1FF"
                          :width="32"
                          active-color="#FFD021"
-                         @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote', '/liveMager/promote/auto/preview/')"></el-switch>
+                         @change="switchChange('EXPAND_NOTICE', dataPromote[0].switch, 'dataPromote', '/liveMager/promote/auto/preview/', 0)"></el-switch>
               <!-- <span class='set'>设置</span> -->
             </div>
           </div>
@@ -795,7 +797,7 @@
 <script>
   // import http from 'src/api/activity-manger'
   import EventBus from 'src/utils/eventBus'
-  import { downloadIamge } from 'src/utils/dom-tool'
+  import {downloadIamge} from 'src/utils/dom-tool'
   import activityService from 'src/api/activity-service'
   import processCard from 'components/process-card'
   import comCountdown from 'components/com-countDown'
@@ -825,7 +827,7 @@
         countDownstatus: false,
         inCountdown: false,
         isAppoint: false,
-        overdue: false,
+        overdue: false, // 是否已过期
         redBagTips: false,
         browserHelpShow: false,
         dataPrepare: [],
@@ -847,18 +849,26 @@
     mounted () {
       this.getDetails()
       // 滚动到推广
-      if (window.location.href.search('tg') > -1) {
-        let timer = setInterval(() => {
-          document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
-          if (document.querySelector('.main-container').scrollTop >= 1150) {
-            clearInterval(timer)
-          }
-        }, 10)
-      }
+      this.detailLoad()
     },
     methods: {
       downloadQrIamge (url, name) {
         downloadIamge(url, name)
+      },
+      detailLoad () {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            document.querySelector('.main-container').scrollTop = 0
+            if (window.location.href.search('tg') > -1) {
+              let timer = setInterval(() => {
+                document.querySelector('.main-container').scrollTop = document.querySelector('.main-container').scrollTop + 50
+                if (document.querySelector('.main-container').scrollTop >= 1150) {
+                  clearInterval(timer)
+                }
+              }, 20)
+            }
+          }, 500)
+        })
       },
       linkTo (e, link, status) {
         console.log(e.target.className)
@@ -897,8 +907,7 @@
               this.hostOnline = data.data.hostOnline
               if (this.hostOnline) {
                 this.$toast({
-                  content: '暂不支持这种方式发起直播',
-                  position: 'center'
+                  content: '暂不支持这种方式发起直播'
                 })
                 return false
               }
@@ -925,16 +934,16 @@
           return true
         }
       },
-      isOverdue (str) { // 是否超过48小时
-        if (str === null) {
-          return false
-        }
-        if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
-          return true
-        } else {
-          return false
-        }
-      },
+      // isOverdue (str) { // 是否超过48小时
+      //   if (str === null) {
+      //     return false
+      //   }
+      //   if (new Date().getTime() - new Date(str).getTime() > 3600 * 24 * 2 * 1000) {
+      //     return true
+      //   } else {
+      //     return false
+      //   }
+      // },
       getBrowserInfo () {
         let Sys = {}
         let ua = navigator.userAgent.toLowerCase()
@@ -1045,7 +1054,17 @@
           }
         })
       },
-      switchChange (type, status, dataType, url) {
+      switchChange (type, status, dataType, url, idx) {
+        if (this.overdue) {
+          this.$messageBox({
+            header: '提示',
+            autoClose: 10,
+            confirmText: '知道了',
+            content: '活动已过期，无法对活动进行编辑'
+          })
+          this[dataType][idx]['switch'] = !status
+          return false
+        }
         const data = {
           activityId: this.activityId,
           submodule: type,
@@ -1108,7 +1127,7 @@
           this.isAppoint = res.data.activity.viewCondition === 'APPOINT'
           this.staticTime = res.data.data.time ? res.data.data.time : '统计中...'
           this.staticViewer = res.data.data.viewer
-          this.overdue = this.isOverdue(res.data.activity.endTime)
+          this.overdue = res.data.activity.validStatus === 'N'
           switch (res.data.activity.status) {
             case ('LIVING'):
               this.status = '直播'
@@ -1150,8 +1169,7 @@
       offlineActive () { // 下线活动
         if (this.status === '直播') {
           this.$toast({
-            content: '直播中无法下线活动',
-            position: 'center'
+            content: '直播中无法下线活动'
           })
           this.isPublished = true
           return false
@@ -1183,8 +1201,7 @@
           activityId: this.activityId
         }).then((res) => {
           this.$toast({
-            content: '活动发布成功',
-            position: 'center'
+            content: '活动发布成功'
           })
           this.isPublished = true
           this.dataPromote[0].desc = 'PREPARE'
@@ -1196,8 +1213,7 @@
           activityId: this.activityId
         }).then((res) => {
           this.$toast({
-            content: '活动下线成功',
-            position: 'center'
+            content: '活动下线成功'
           })
           this.isPublished = false
           if (this.currStep.search('live') === -1) {
@@ -1235,8 +1251,7 @@
         inp.select()
         document.execCommand('Copy')
         this.$toast({
-          content: '复制成功',
-          position: 'center'
+          content: '复制成功'
         })
       },
       timeOut () {
@@ -1472,6 +1487,29 @@
         dt i {
           background-image: url('~assets/image/detail/detail_static_hover.png');
         }
+      }
+    }
+    .bottom > div {
+      margin: 10px 33px;
+      // margin: 10px 55px;
+      width: 160px;
+      float: left;
+      ol > li {
+        width: 100%;
+        height: 36px;
+        text-align: center;
+        line-height: 34px;
+        margin-top: 14px;
+        background: rgba(239, 239, 239, 0.7);
+        border-radius: 18px;
+        border: 1px solid rgba(177, 177, 177, 1);
+        cursor: pointer;
+        &:hover {
+          /*background-color: #ffd021;*/
+          /*border-color: #ffd021;*/
+          background-color: #ffd43f;
+          border-color: #ffd43f;
+        }
         &.highlight dt i {
           background-image: url('~assets/image/detail/detail_static.png');
         }
@@ -1497,8 +1535,14 @@
       border: 1px solid rgba(177, 177, 177, 1);
       cursor: pointer;
       &:hover {
-        background-color: #ffd021;
-        border-color: #ffd021;
+        /*background-color: #ffd021;*/
+        /*border-color: #ffd021;*/
+        background-color: #ffd43f;
+        border-color: #ffd43f;
+      }
+      &:active {
+        background-color: #eec11a;
+        border-color: #eec11a;
       }
     }
   }
@@ -1765,6 +1809,18 @@
         }
       }
     }
+    .overdue-tag {
+      margin-left: 10px;
+      color: #555;
+      font-size: 12px;
+      text-align: center;
+      display: inline-block;
+      width: 51px;
+      height: 20px;
+      line-height: 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(151, 151, 151, 1);
+    }
   }
   // ol {
   //   margin-top: 30px;
@@ -1951,6 +2007,12 @@
     height: 40px;
     line-height: 40px;
     text-align: center;
+    &:disabled {
+      &:hover {
+        background-color: #ffd021;
+        color: #222;
+      }
+    }
   }
 }
 
@@ -2045,6 +2107,7 @@
     }
   }
 }
+
 .btm {
   width: 100%;
   height: 40px;
@@ -2053,6 +2116,7 @@
     margin: 10px 0;
   }
 }
+
 .item.base .card .pic {
   width: 80px;
   background-image: url('~assets/image/detail/base.png');
@@ -2114,6 +2178,22 @@
   width: 80px;
   background-image: url('~assets/image/detail/tools_cards.png');
 }
+
+.item.record .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/playback.png');
+}
+
+.item .item.aud .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/aud.png');
+}
+
+.item .item.statics .card .pic {
+  width: 80px;
+  background-image: url('~assets/image/detail/statics.png');
+}
+
 .browser-help {
   text-align: center;
   img {

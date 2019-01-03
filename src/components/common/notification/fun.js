@@ -4,7 +4,7 @@ import Extend from './extend'
 const ComConstructor = Vue.extend(Extend)
 const instances = []
 const queue = []
-const spacing = 16
+const spacing = 20
 let id = 1
 let workState = false
 
@@ -54,7 +54,6 @@ export default (options) => {
   instance.vm = instance.$mount()
   document.body.appendChild(instance.vm.$el)
   instance.vm.visible = true
-
   let verticalOffset = 0
   instances.map((item) => {
     verticalOffset += item.$el.offsetHeight + spacing

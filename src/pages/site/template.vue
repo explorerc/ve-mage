@@ -42,10 +42,13 @@
             </div>
             <div class="right">
               <span>微信扫码分享：</span>
-              <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+              <div class="img-bg">
+                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+              </div>
+
             </div>
               <div class="bottom">
-                <div class="label">页面地址:</div>
+                <div class="label">观看地址</div>
                 <com-input class="page-url"
                            :value="`${this.protocol+this.pcHOST}site/${this.tid}`"
                            disabled></com-input>
@@ -242,20 +245,24 @@ export default {
       next(true)
       return false
     }
-    this.$messageBox({
-      header: '提示',
-      width: '400px',
-      content: '是否放弃当前编辑？',
-      cancelText: '否',
-      confirmText: '是',
-      handleClick: (e) => {
-        if (e.action === 'confirm') {
-          next(true)
-        } else {
-          next(false)
+    if (!this.isPreview) {
+      this.$messageBox({
+        header: '提示',
+        width: '400px',
+        content: '是否放弃当前编辑？',
+        cancelText: '否',
+        confirmText: '是',
+        handleClick: (e) => {
+          if (e.action === 'confirm') {
+            next(true)
+          } else {
+            next(false)
+          }
         }
-      }
-    })
+      })
+    } else {
+      next(true)
+    }
   },
   mounted () {
     this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
@@ -659,8 +666,8 @@ export default {
       // border-left: 1px solid #999;
 
       .share-box {
-        width: 446px;
-        height: 290px;
+        /*width: 446px;*/
+        /*height: 290px;*/
         position: absolute;
         right: 0;
         top: 60px;
@@ -677,13 +684,14 @@ export default {
         }
         .share-content {
           padding: 0 25px 25px;
-          height: 250px;
+          /*height: 250px;*/
+          /*width: 520px;*/
           text-align: left;
           font-size: 14px;
           line-height: normal;
           .left {
             float: left;
-            width: 240px;
+            /*width: 302px;*/
             span {
               display: inline-block;
               margin-bottom: 10px;
@@ -694,42 +702,81 @@ export default {
               height: 56px;
               background-repeat: no-repeat;
               background-position: center center;
-              background-size: 48px 48px;
+              background-size: 50px 50px;
               text-align: center;
               line-height: 130px;
               cursor: pointer;
             }
             .share-sina {
               background-image: url('~assets/image/sina.png');
+              margin-right: 30px;
             }
             .share-qq {
               background-image: url('~assets/image/qq.png');
+              margin-right: 30px;
             }
             .share-qq-space {
               background-image: url('~assets/image/qq_space.png');
+              margin-right: 50px;
             }
           }
           .right {
-            margin-left: 240px;
+            margin-left: 286px;
             margin-bottom: 20px;
             span {
               display: inline-block;
               margin-bottom: 10px;
             }
+            .img-bg {
+              width: 160px;
+              height: 160px;
+              padding: 8px;
+              background-color: #F5F5F5;
+            }
             img {
               display: block;
-              width: 100px;
-              height: 100px;
+              width: 144px;
+              height: 144px;
             }
           }
           .bottom {
             text-align: left;
+            font-size: 0;
             .label {
+              display: inline-block;
               margin-bottom: 10px;
+              margin-right: 10px;
+              font-size: 14px;
             }
             .page-url {
-              width: 290px;
-              margin-right: 10px;
+              width: 310px;
+              font-size: 14px;
+              /deep/ {
+                input {
+                  height: 38px;
+                  border-right: none;
+                  background-color: transparent;
+                  padding-right: 20px;
+                  border-radius: 4px 0 0 4px;
+                  border-right: none;
+                }
+              }
+
+            }
+            .com-button {
+              border: none;
+              background-color: #FFD021;
+              opacity: 1;
+              color: #222;
+              z-index: 2;
+              border-radius: 0 4px 4px 0;
+              font-size: 14px;
+              &:hover {
+                background-color: #FDD43F;
+              }
+              &:active {
+                background-color: #EEC11A;
+              }
             }
           }
         }
@@ -794,6 +841,9 @@ export default {
     background-color: #fff;
     .btn-group {
       float: right;
+      button{
+        vertical-align: middle;
+      }
     }
   }
 }

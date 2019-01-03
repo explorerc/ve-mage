@@ -8,6 +8,7 @@
                    class="search-com"
                    :value.sync="searchParams.keyword"
                    :maxLength="30"
+                   @focus="isHigh=false"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入姓名/手机号/邮箱"></com-input>
         <span class="data-link" style="font-size: 14px;margin-left: 6px;" @click="isHigh=!isHigh">高级筛选

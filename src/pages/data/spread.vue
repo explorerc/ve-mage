@@ -506,6 +506,14 @@
       .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
         display: none;
       }
+      #chart01 {
+        div {
+          &:nth-child(2) {
+            /*background-color: transparent;*/
+          }
+        }
+      }
     }
+
   }
 </style>

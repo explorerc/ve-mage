@@ -5,7 +5,7 @@
         <span class="title">短信通知</span>
         <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
-          <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信</button></router-link>
+          <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信通知</button></router-link>
         </div>
       </div>
       <div class="content table">
@@ -57,7 +57,7 @@
           <div class="empty">
             <div class="img"></div>
             <div class="txt">您还没有添加短信通知，快去添加吧</div>
-            <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建短信</el-button></router-link>
+            <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建短信通知</el-button></router-link>
           </div>
         </template>
       </div>
@@ -140,8 +140,7 @@ export default {
         }).then((res) => {
           this.tableData.splice(this.delIdx, 1)
           this.$toast({
-            content: '删除成功',
-            position: 'center'
+            content: '删除成功'
           })
           this.delConfirm = false
         })
@@ -239,15 +238,18 @@ export default {
 <style lang='scss' scoped>
 @import '~assets/css/mixin.scss';
 .live-title {
+  position: relative;
   .right-box {
     float: right;
-    margin-right: 110px;
+    height: 60px;
     .btn {
-      margin: 17px 0;
-      padding: 0;
-      width: 120px;
       height: 30px;
       line-height: 30px;
+      position: absolute;
+      top: 50%;
+      right: 80px;
+      transform: translateY(-50%);
+      padding: 0 20px;
     }
   }
 }
@@ -332,9 +334,9 @@ export default {
       text-align: center;
       margin: 100px 0;
       .txt {
-        padding-top: 20px;
-        font-size: 16px;
-        color: $color-font;
+        padding-top: 40px;
+        font-size: 14px;
+        color: $color-font-sub;
       }
       .img {
         width: 150px;
@@ -349,7 +351,7 @@ export default {
         height: 40px;
         text-align: center;
         line-height: 40px;
-        margin-top: 20px;
+        margin-top: 30px;
       }
     }
   }

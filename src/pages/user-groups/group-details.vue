@@ -51,7 +51,7 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.business_consumer_uid)">详情
+            <el-button class="btns" type="text" @click="handleDetails(scope.row.business_consumer_uid)">详情
             </el-button>
             <el-button v-if="type == 2 " class="btns" type="text" size="mini"
                        @click="handleDelete(scope.row.business_consumer_uid ,scope.$index)">删除
@@ -209,8 +209,7 @@
           handleClick: (e) => {
             if (e.action === 'cancel') {
               this.$toast({
-                content: '已取消删除!',
-                position: 'center'
+                content: '已取消删除!'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP_USER, {
@@ -223,8 +222,7 @@
                     this.onSearch()
                   }, 0)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -255,27 +253,72 @@
       overflow: hidden;
       .opBtns {
         float: left;
+        button {
+          margin-right: 5px;
+          &:last-child {
+            margin-left: 0px;
+          }
+        }
       }
+      /*.el-button {*/
+      /*color: #555555;*/
+      /*width: 120px;*/
+      /*height: 34px;*/
+      /*border-radius: 16px;*/
+      /*border: 1px solid #888888;*/
+      /*margin-left: 20px;*/
+      /*&:hover,*/
+      /*&:focus {*/
+      /*background-color: #FDD43F;*/
+      /*border-color: #FDD43F;*/
+      /*color: #222;*/
+      /*}*/
+      /*&:active {*/
+      /*background-color: #EEC11A;*/
+      /*border-color: #EEC11A;*/
+      /*color: #222;*/
+      /*}*/
+      /*&:disabled {*/
+      /*color: #555;*/
+      /*border:1px solid #e2e2e2;*/
+      /*&:hover,*/
+      /*&:focus,*/
+      /*&:active {*/
+      /*background-color: transparent;*/
+      /*border-color: #888;*/
+      /*}*/
+      /*}*/
+      /*}*/
       .el-button {
-        color: #555555;
-        width: 120px;
-        height: 34px;
-        border-radius: 16px;
-        border: 1px solid #888888;
-        margin-left: 20px;
-        &:hover,&:focus {
-          background-color:#ffd021 ;
-          border-color: #ffd021;
-          color: black;
+        border-color: #888;
+        color: #555;
+        height: 30px;
+        padding: 0 20px;
+        &:focus,
+        &:hover {
+          background-color: #fdd43f;
+          border-color: #fdd43f;
+          color: #222;
+        }
+        &:active {
+          background-color: #eec11a;
+          border-color: #eec11a;
+          color: #222;
+        }
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
         }
       }
       .search {
         float: right;
         display: inline-block;
         width: 220px;
+        margin-right: 10px;
         .el-input__inner {
           border-radius: 20px;
           border-color: rgba(136, 136, 136, 1);
+          height: 30px;
         }
       }
     }
@@ -290,8 +333,8 @@
         margin: 145px 0;
         .txt {
           padding-top: 20px;
-          font-size: 16px;
-          color: #222;
+          font-size: 14px;
+          color: #555;
         }
         .img {
           width: 150px;
@@ -312,7 +355,7 @@
         border: none;
       }
       tr {
-        span{
+        span {
           color: rgba(34, 34, 34, 1);
         }
       }

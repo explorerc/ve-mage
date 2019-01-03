@@ -1,7 +1,7 @@
 <!--新建/编辑活动-->
 <template>
-  <div @keydown="canPaas = false">
-    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)">
+  <div>
+    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)"  @keydown="canPaas = false">
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
@@ -67,10 +67,11 @@
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
           </div>
         </div>
-        <div class="from-row" v-if="status === 'PREPARE' || !activityId">
+        <div class="from-row" v-if="validStatus === 'Y' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
-            <button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">
+            <!--<button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">-->
+            <button @click='comfirm' class='create-btn'>
               <template v-if="activityId">保存</template>
               <template v-else>创建</template>
             </button>
@@ -84,8 +85,8 @@
             <dt></dt>
             <dd>直播已{{successTxt}}，您可以</dd>
             <dd>
-              <span class='finish-button detail'  @click='toDetail'>活动详情</span>
-              <span class='finish-button list' @click='toList'>活动列表</span>
+              <span class='finish-button detail'  @click='toDetail'>更多活动设置</span>
+              <span class='finish-button list' @click='toList'>返回活动列表</span>
             </dd>
           </dl>
       </div>
@@ -137,6 +138,7 @@ export default {
       },
       successTxt: '',
       canPaas: true,
+      validStatus: '',
       defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm')
     }
   },
@@ -214,6 +216,7 @@ export default {
         this.editorContent = res.data.description
         this.tagArray = res.data.tags
         this.status = res.data.status
+        this.validStatus = res.data.validStatus
         this.restoreTag(this.tagArray)
       })
     },
@@ -539,6 +542,10 @@ export default {
       margin: 0 auto;
       @include primary-button;
       width: 200px;
+      /*&:disabled {*/
+      /*opacity: 1;*/
+      /*cursor: pointer;*/
+      /*}*/
     }
     .add-tag {
       cursor: pointer;
@@ -811,7 +818,8 @@ export default {
     }
     &.is-checked span.el-checkbox-button__inner,
     &.is-focus span.el-checkbox-button__inner {
-      border-left: 1px solid #409eff;
+      border-left: 1px solid #4b5afe;
+      background-color: #4b5afe;
     }
   }
 }

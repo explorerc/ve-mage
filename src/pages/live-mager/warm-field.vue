@@ -109,7 +109,8 @@ export default {
       uploadVideoErrorMsg: '', // 视频上传错误信息
       playMsg: '',
       canPass: true,
-      progress: 0
+      progress: 0,
+      isOverdue: false
     }
   },
   computed: {
@@ -177,6 +178,11 @@ export default {
       })
     },
     initPage () {
+      this.$get(activityService.GET_WEBINAR_INFO, {
+        id: this.$route.params.id
+      }).then((res) => {
+        this.isOverdue = res.data.validStatus === 'N'
+      })
       this.$get(activityService.GET_WRAM_INFO, {
         activityId: this.$route.params.id
       }).then((res) => {
@@ -262,8 +268,7 @@ export default {
     checkoutParams () {
       if (this.progress !== 0 && this.progress !== 100) {
         this.$toast({
-          content: '请等待视频上传完成后保存',
-          position: 'center'
+          content: '请等待视频上传完成后保存'
         })
         let st = setTimeout(() => {
           clearTimeout(st)
@@ -273,8 +278,7 @@ export default {
       }
       if (!this.warm.recordId) {
         this.$toast({
-          content: '请上传暖场视频',
-          position: 'center'
+          content: '请上传暖场视频'
         })
         let st = setTimeout(() => {
           clearTimeout(st)
@@ -380,6 +384,16 @@ export default {
       this.warm.playCover = ''
     },
     openSwitch (type) {
+      if (this.isOverdue) {
+        this.$messageBox({
+          header: '提示',
+          autoClose: 10,
+          confirmText: '知道了',
+          content: '活动已过期，无法对活动进行编辑'
+        })
+        this.isSwitch = !this.isSwitch
+        return false
+      }
       const data = {
         activityId: this.$route.params.id,
         submodule: 'WARMUP',

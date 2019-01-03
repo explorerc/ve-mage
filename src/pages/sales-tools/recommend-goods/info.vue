@@ -28,7 +28,7 @@
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
-                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
+                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 800"
                        accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
                        :fileSize="2048"
                        :errorMsg="ite.errMsg"
@@ -38,7 +38,7 @@
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
       </el-form-item>
-      <el-form-item label="商品链接：" prop="url" class="url">
+      <el-form-item label="商品链接：" prop="url" class="url is-required">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
         <span class="tips" v-if="tipsShow">链接需要附带http://或https://头协议</span>
       </el-form-item>
@@ -288,10 +288,9 @@
               this.goodsData.image = JSON.stringify(imgList)
               this.$post(_url, this.goodsData)
                 .then(res => {
-                  this.$toast({
-                    content: '操作成功!',
-                    position: 'center'
-                  })
+                  // this.$toast({
+                  //   content: '操作成功!'
+                  // })
                   this.$router.go(-1)
                   this.isShowMsgB = false
                 })

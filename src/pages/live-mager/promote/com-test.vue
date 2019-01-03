@@ -20,6 +20,8 @@
           <p v-else>短信限额：<span class='limit-count'>{{limitCount}}</span></p>
           <el-button class='primary-button fr'
                      @click='sendTest' :disabled="limitCount <= 0">立即发送</el-button>
+          <!--<el-button class='primary-button fr'-->
+                     <!--@click='sendTest'>立即发送</el-button>-->
         </div>
       </div>
       <div class='modal-box '
@@ -130,8 +132,7 @@ export default {
       this.$post(noticeService.POST_SEND_TEST_MSG, data).then((res) => {
         this.limitCount -= 1
         this.$toast({
-          content: '发送成功',
-          position: 'center'
+          content: '发送成功'
         })
       })
     },
@@ -143,8 +144,7 @@ export default {
       this.$post(noticeService.POST_AUTO_SEND_TEST, data).then((res) => {
         this.limitCount -= 1
         this.$toast({
-          content: '发送成功',
-          position: 'center'
+          content: '发送成功'
         })
       })
     },
@@ -158,15 +158,13 @@ export default {
       console.log(newVal)
       this.limitCount -= 1
       this.$toast({
-        content: '信息已发送',
-        position: 'center'
+        content: '信息已发送'
       })
     },
     deliverd (newVal) {
       this.limitCount -= 1
       this.$toast({
-        content: '信息已发送',
-        position: 'center'
+        content: '信息已发送'
       })
     }
   }
@@ -215,6 +213,7 @@ export default {
     font-size: 16px;
     padding: 0 18px;
     background: $color-default;
+    font-weight: 400;
     .close {
       cursor: pointer;
       width: 10px;
@@ -296,6 +295,8 @@ export default {
         display: inline-block;
         height: 40px;
         line-height: 40px;
+        font-size: 14px;
+        font-weight: 400;
       }
       .limit-count {
         color: $color-blue;

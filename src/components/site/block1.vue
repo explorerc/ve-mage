@@ -44,8 +44,8 @@
       </com-upload> -->
            <label class='normal'>上传图片</label>
             <ve-upload
-            title="请上传图片"
-            accept="png|jpg|bmp"
+            :title="item.imgDesc"
+            accept="png|jpg|bmp|gif"
             :fileSize="2048"
             :errorMsg="item.uploadImgErrorMsg"
             :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
@@ -53,7 +53,7 @@
              @success="uploadImgSuccess($event,index)">
              </ve-upload>
             </div>
-            <span class="img-tips">图片支持jpg、png、bmp格式 大小不超过2M</span>
+            <!-- <span class="img-tips" v-html="item.imgDesc"></span> -->
             <label class='normal'>文字内容</label>
             <div>
                <com-editer class="font-editer" v-model="item.content" ></com-editer>
@@ -142,11 +142,15 @@ export default {
     return {
       inpError: '',
       active: -1,
+      newDesc: '',
       id: this.$route.params.id,
       PC_HOST: process.env.PC_HOST,
       uploadImgErrorMsg: '', // 上传图片错误提示
       host: process.env.IMGHOST + '/'
     }
+  },
+  mounted () {
+    this.newDesc = this.value.list[0].imgDesc
   },
   methods: {
     inpBlur (val) {
@@ -173,7 +177,8 @@ export default {
             hrefType: '_sub'
           },
           hrefType: '_sub',
-          target: '_self'
+          target: '_self',
+          imgDesc: this.newDesc
         })
         this.active = len
       }

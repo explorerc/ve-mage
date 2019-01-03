@@ -6,7 +6,6 @@
       <!--<span class="msg-tip">所有回放的设置都在本页配置，发起页前端不再有任何回放的设置项。</span>-->
       <com-back></com-back>
       <button class="primary-button fr add-btn"
-              style="margin-top: 17px;"
               @click="addVideoClickShow" >添加视频
       </button>
     </div>
@@ -129,7 +128,7 @@
             <div class="empty-box">
               <p class="img"></p>
               <template v-if="navIdx == 0">
-                <p class='title'>暂无回放</p>
+                <!--<p class='title'>暂无回放</p>-->
                 <p class='desc'>直播结束后系统会自动生成回放</p>
               </template>
               <template v-else>
@@ -257,11 +256,12 @@
             </div>
             <div class="from-content">
               <el-radio v-model="outLineMode"
-                        label="0">与活动同步下线
+                        label="0">不设下线时间
               </el-radio>
               <el-radio v-model="outLineMode"
                         label="1">指定下线时间
               </el-radio>
+              <ve-msg-tips class='playback-msg-tips'  tip-type="html" tip='1.可指定回放视频的下线时间，下线后回放将无法观看。活动状态变为【已结束】<br>2.不设下线时间：没有下线日期，回放视频可永久进行观看<br>3.指定下线时间：时间到期后，回放视频将被下线，无法再观看'></ve-msg-tips>
             </div>
           </div>
           <transition name="left-right">
@@ -553,8 +553,7 @@ export default {
       }).then((res) => {
         playBack.status = 'PROCESS'
         this.$toast({
-          content: '开始重新生成回放',
-          position: 'center'
+          content: '开始重新生成回放'
         })
       })
     },
@@ -840,9 +839,13 @@ export default {
 @import 'assets/css/variable.scss';
 .live-title /deep/ {
   .add-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 80px;
     height: 30px;
     line-height: 30px;
-    margin-right: 110px;
+    padding: 0 20px;
   }
 }
 .status-default {
@@ -905,7 +908,7 @@ export default {
     .img {
       width: 150px;
       height: 150px;
-      margin: 0 auto;
+      margin: 0 auto 20px;
       border-radius: 500px;
       // background:rgba(245,245,245,1);
       box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
@@ -1075,6 +1078,16 @@ export default {
 .play-back /deep/ {
   .ve-message-box__wrapper .ve-message-box {
     overflow: visible;
+  }
+  .playback-msg-tips {
+    position: absolute;
+    top: -2px;
+    left: 259px;
+    span {
+      width: 360px;
+      margin-top: -11px;
+      left: 34px;
+    }
   }
 }
 </style>

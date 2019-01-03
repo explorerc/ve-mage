@@ -32,8 +32,8 @@
             >
             </com-upload> -->
             <ve-upload
-            title="图片支持jpg、png、bmp格式 大小不超过2M"
-            accept="png|jpg|bmp"
+            :title="value.imgDesc"
+             accept="png|jpg|bmp|gif"
             :fileSize="2048"
             :defaultImg="value.img.indexOf('mp')===0?host+value.img:value.img"
             :errorMsg="uploadImgErrorMsg"

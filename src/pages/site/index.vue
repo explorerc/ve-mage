@@ -108,9 +108,10 @@ export default {
       isPublish: false,
       switchDisabled: false,
       data: {},
+      isOverdue: false,
       tplData: defaultData,
-      t0478320: require('assets/image/site_tp2.png'),
-      t0478321: require('assets/image/site_tp1.png'),
+      t0478320: require('assets/image/site_tp1.png'),
+      t0478321: require('assets/image/site_tp2.png'),
       t0478322: require('assets/image/site_tp3.png'),
       t0478323: require('assets/image/site_tp4.png')
     }
@@ -148,6 +149,7 @@ export default {
         id: this.$route.params.id
       }).then((res) => {
         this.isPublish = res.data.published === 'Y'
+        this.isOverdue = res.data.validStatus === 'N'
       })
     },
     goEdit () {
@@ -163,6 +165,16 @@ export default {
       }
     },
     confirmState (res) {
+      if (this.isOverdue) {
+        this.$messageBox({
+          header: '提示',
+          autoClose: 10,
+          confirmText: '知道了',
+          content: '活动已过期，无法对活动进行编辑'
+        })
+        this.enable = !this.enable
+        return false
+      }
       // this.switchDisabled = true
       if (this.isPublish && !res) {
         this.$messageBox({
@@ -201,16 +213,7 @@ export default {
           this.switchDisabled = false
         }, 2000)
       }).catch((res) => {
-        if (res.code === 60706) {
-          this.$messageBox({
-            header: '提示',
-            content: res.msg,
-            autoClose: 10,
-            confirmText: '知道了'
-          })
-          this.enable = !this.enable
-          this.switchDisabled = false
-        } else if (res.code === 60701) {
+        if (res.code === 60706 || res.code === 60701) {
           this.$messageBox({
             header: '提示',
             content: res.msg,
@@ -234,8 +237,7 @@ export default {
         this.data = temData
         this.$toast({
           content: '设置成功',
-          autoClose: 1000,
-          position: 'center'
+          autoClose: 1000
         })
       })
     }
@@ -244,7 +246,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "assets/css/mixin.scss";
+@import 'assets/css/mixin.scss';
 .live-mager {
   border-radius: 5px;
   overflow: hidden;
@@ -300,7 +302,7 @@ export default {
     position: relative;
     z-index: 199;
     &.close::before {
-      content: "";
+      content: '';
       width: 100%;
       height: 100%;
       position: absolute;
@@ -337,7 +339,7 @@ export default {
       margin-top: 25px;
       margin-bottom: 17px;
       &::before {
-        content: "";
+        content: '';
         display: inline-block;
         width: 2px;
         height: 18px;
@@ -362,14 +364,17 @@ export default {
     }
     .template-block {
       display: inline-block;
-      width: 227px;
-      height: 282px;
+      width: 206px;
+      height: 250px;
       border: 1px solid #dadada;
-      margin-right: 40px;
+      margin-right: 30px;
       font-size: 14px;
       position: relative;
       // overflow: hidden;
       border-radius: 4px;
+      &:last-child {
+        margin-right: 0;
+      }
       img {
         width: 100%;
         height: 100%;
@@ -426,17 +431,17 @@ export default {
     }
     .empty {
       display: inline-block;
-      width: 225px;
-      height: 280px;
+      width: 206px;
+      height: 250px;
       text-align: center;
       padding: 20px;
       border: 1px dashed #dadada;
       margin-bottom: 15px;
       border-radius: 4px;
       .img {
-        width: 150px;
-        height: 150px;
-        background: url("~assets/image/site/site_empty.png") no-repeat center;
+        width: 130px;
+        height: 130px;
+        background: url('~assets/image/site/site_empty.png') no-repeat center;
         background-size: contain;
         margin: 0 auto;
       }

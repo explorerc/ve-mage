@@ -278,8 +278,7 @@
           handleClick: (e) => {
             if (e.action === 'cancel') {
               this.$toast({
-                content: '已取消删除',
-                position: 'center'
+                content: '已取消删除'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
@@ -289,8 +288,7 @@
                     this.onSearch()
                   }, 1000)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -311,9 +309,9 @@
         this.errTitle = ''
         this.errDes = ''
         if (type === 2) {
-          this.dialogTitle = '创建固定群组'
+          this.dialogTitle = '新建固定群组'
         } else {
-          this.dialogTitle = '创建智能群组'
+          this.dialogTitle = '新建智能群组'
         }
         // console.log('此刻点击新建，数据是：' + JSON.stringify(this.Group))
       },
@@ -436,7 +434,7 @@
         display: inline-block;
         height: 26px;
         color: rgba(34, 34, 34, 1);
-        line-height: 34px;
+        line-height: 30px;
         font-size: 24px;
         float: left;
         font-weight: 400;
@@ -446,27 +444,38 @@
         .el-input {
           float: left;
           width: 220px;
-          height: 34px;
-          margin-right: 20px;
+          height: 30px;
+          margin-right: 10px;
           .el-input__inner {
-            height: 34px;
-            line-height: 34px;
+            height: 30px;
+            line-height: 30px;
             border-radius: 20px;
-            &:hover,&:focus {
+            &:hover,
+            &:focus {
               border-color: #888888;
             }
           }
         }
         .el-button {
           color: #555555;
-          width: 120px;
-          height: 34px;
+          /*width: 120px;*/
+          height: 30px;
+          padding: 0 20px;
           border-radius: 16px;
           border: 1px solid #888888;
-          &:hover,&:focus {
-            background-color:#ffd021 ;
-            border-color: #ffd021;
-            color: black;
+          &:hover,
+          &:focus {
+            background-color: #ffd43f;
+            border-color: #ffd43f;
+            color: #222;
+          }
+          &:active {
+            background-color: #EEC11A;
+            border-color: #EEC11A;
+            color: #222;
+          }
+          &:last-child {
+            margin-left: 5px;
           }
         }
       }
@@ -474,15 +483,14 @@
     .table-box {
       margin-top: 22px;
       padding: 30px;
-      border: 1px solid #E2E2E2;
+      border: 1px solid #e2e2e2;
       background-color: white;
       border-radius: 4px;
-      .el-table /deep/{
+      .el-table /deep/ {
         tbody {
-          .el-table__row .cell{
-            color: #222222!important;
+          .el-table__row .cell {
+            color: #222222 !important;
           }
-
         }
         .btns {
           color: rgba(34, 34, 34, 1);
@@ -510,7 +518,7 @@
     }
   }
 }
-.massage-style{
+.massage-style {
   .el-form .el-form-item:first-child {
     margin-top: 14px;
   }
