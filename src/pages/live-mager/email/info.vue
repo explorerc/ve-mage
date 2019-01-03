@@ -345,18 +345,20 @@ export default {
   }
   .receiver {
     position: relative;
+    width: 710px;
+    flex: inherit !important;
     .el-button {
-      position: absolute;
-      top: -10px;
-      margin-left: 10px;
+      // position: absolute;
+      // top: -10px;
+      // margin-left: 10px;
     }
     div {
       display: inline-block;
-
       span {
         display: inline-block;
         padding: 0 5px 10px 5px;
         padding-bottom: 0px;
+        margin-bottom: 10px;
       }
     }
   }

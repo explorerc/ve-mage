@@ -515,7 +515,7 @@
           tags: '', // 标签ID，多个标签ID用英文逗号","分割
           groups: '', // 所属群组ID，多个群组ID用英文逗号","分割
           page: 1, // 分页页码 默认不传为第一页
-          page_size: 100 // 每页显示条数 默认不传为每页显示10条
+          page_size: 10 // 每页显示条数 默认不传为每页显示10条
         },
         exportStr: '', // 导出数据的拼接str
         imgHost: process.env.IMGHOST + '/',
@@ -647,22 +647,23 @@
       // },
       delUsers () {
         const data = {}
-        const tempArr = []
+        // const tempArr = []
         Object.assign(data, {
           'business_consumer_uids': this.checkedArr.toString()
         })
-        this.usersListData.forEach((item, idx) => {
-          if (this.checkedArr.indexOf(item.business_consumer_uid) === -1) {
-            tempArr.push(item)
-          }
-        })
-        this.usersListData = tempArr
+        // this.usersListData.forEach((item, idx) => {
+        //   if (this.checkedArr.indexOf(item.business_consumer_uid) === -1) {
+        //     tempArr.push(item)
+        //   }
+        // })
+        // this.usersListData = tempArr
         this.$post(userManage.POST_DEL_USERS, data).then((res) => {
           this.$toast({
             'content': '删除成功'
           })
           setTimeout((res) => {
-            this.queryTotal(this.filterCondition)
+            // this.queryTotal(this.filterCondition)
+            this.queryUserPool(this.filterCondition)
           }, 1000)
         })
       },
@@ -734,6 +735,7 @@
         }
         this.$get(userManage.GET_USERS_POOL, data).then((res) => {
           this.total = res.data.count
+          // this.usersListData
         })
       },
       doFilter () {
@@ -945,13 +947,13 @@
             background-color: transparent;
           }
           &:hover {
-            background-color: #FDD43F;
-            border-color: #FDD43F;
+            background-color: #fdd43f;
+            border-color: #fdd43f;
             color: #222;
           }
           &:active {
-            background-color: #EEC11A;
-            border-color: #EEC11A;
+            background-color: #eec11a;
+            border-color: #eec11a;
             color: #222;
           }
           &:disabled {

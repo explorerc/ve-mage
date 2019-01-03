@@ -17,7 +17,7 @@
           </div>
           <div class="from-row">
             <div class="from-title">收件人：</div>
-            <div class="from-content">
+            <div class="from-content spe">
               <template v-for="(item,idx) in selectedGroupList">{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
               <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template> （合计{{expectNum}}人）
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
@@ -268,6 +268,11 @@ export default {
         top: 3px;
         margin-right: 5px;
       }
+    }
+    &.spe {
+      width: 500px;
+      flex: inherit !important;
+      text-align: justify;
     }
   }
   .btn-group {
