@@ -515,7 +515,7 @@
           tags: '', // 标签ID，多个标签ID用英文逗号","分割
           groups: '', // 所属群组ID，多个群组ID用英文逗号","分割
           page: 1, // 分页页码 默认不传为第一页
-          page_size: 10 // 每页显示条数 默认不传为每页显示10条
+          page_size: 100 // 每页显示条数 默认不传为每页显示10条
         },
         exportStr: '', // 导出数据的拼接str
         imgHost: process.env.IMGHOST + '/',

@@ -261,33 +261,33 @@
         }
       }
       /*.el-button {*/
-        /*color: #555555;*/
-        /*width: 120px;*/
-        /*height: 34px;*/
-        /*border-radius: 16px;*/
-        /*border: 1px solid #888888;*/
-        /*margin-left: 20px;*/
-        /*&:hover,*/
-        /*&:focus {*/
-          /*background-color: #FDD43F;*/
-          /*border-color: #FDD43F;*/
-          /*color: #222;*/
-        /*}*/
-        /*&:active {*/
-          /*background-color: #EEC11A;*/
-          /*border-color: #EEC11A;*/
-          /*color: #222;*/
-        /*}*/
-        /*&:disabled {*/
-          /*color: #555;*/
-          /*border:1px solid #e2e2e2;*/
-          /*&:hover,*/
-          /*&:focus,*/
-          /*&:active {*/
-            /*background-color: transparent;*/
-            /*border-color: #888;*/
-          /*}*/
-        /*}*/
+      /*color: #555555;*/
+      /*width: 120px;*/
+      /*height: 34px;*/
+      /*border-radius: 16px;*/
+      /*border: 1px solid #888888;*/
+      /*margin-left: 20px;*/
+      /*&:hover,*/
+      /*&:focus {*/
+      /*background-color: #FDD43F;*/
+      /*border-color: #FDD43F;*/
+      /*color: #222;*/
+      /*}*/
+      /*&:active {*/
+      /*background-color: #EEC11A;*/
+      /*border-color: #EEC11A;*/
+      /*color: #222;*/
+      /*}*/
+      /*&:disabled {*/
+      /*color: #555;*/
+      /*border:1px solid #e2e2e2;*/
+      /*&:hover,*/
+      /*&:focus,*/
+      /*&:active {*/
+      /*background-color: transparent;*/
+      /*border-color: #888;*/
+      /*}*/
+      /*}*/
       /*}*/
       .el-button {
         border-color: #888;
@@ -296,13 +296,13 @@
         padding: 0 20px;
         &:focus,
         &:hover {
-          background-color: #FDD43F;
-          border-color: #FDD43F;
+          background-color: #fdd43f;
+          border-color: #fdd43f;
           color: #222;
         }
         &:active {
-          background-color: #EEC11A;
-          border-color: #EEC11A;
+          background-color: #eec11a;
+          border-color: #eec11a;
           color: #222;
         }
         &:disabled {

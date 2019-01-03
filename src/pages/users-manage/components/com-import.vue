@@ -73,7 +73,7 @@
         <div class="item download">
           <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入1000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
         </div>
-        <el-button round class='default-button confirm' @click="addHandler">导入</el-button>
+        <el-button round class='default-button confirm' @click="addHandler" style='height:34px;line-height:34px;'>导入</el-button>
       </div>
       <div class="content import-success" v-else>
         <dl>
@@ -519,8 +519,8 @@ export default {
     button {
       padding: 0;
       width: 100px;
-      height: 34px;
-      line-height: 34px;
+      height: 34px !important;
+      line-height: 34px !important;
       border: 1px solid rgba(75, 90, 254, 1);
       color: rgba(75, 90, 254, 1);
       &:hover {
