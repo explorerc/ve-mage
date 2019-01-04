@@ -218,7 +218,7 @@ export default function () {
         showBtn: true,
         list: [{
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head1.png'),
           btn: {
             enable: true,
@@ -234,7 +234,7 @@ export default function () {
         },
         {
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head2.png'),
           btn: {
             enable: true,
@@ -250,7 +250,7 @@ export default function () {
         },
         {
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head3.png'),
           btn: {
             enable: true,
@@ -266,7 +266,7 @@ export default function () {
         },
         {
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head4.png'),
           btn: {
             enable: true,
