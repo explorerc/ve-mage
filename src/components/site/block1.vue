@@ -18,7 +18,7 @@
       <div class="nav-blank-title">图组</div>
       <div class="add-nav-box">
         <span class='add-nav' @click="addBlock"><i class='iconfont icon-jiahao'></i>添加图组</span>
-        <span class='tips'>最多可添加{{max}}个图组</span>
+        <span class='tips' :class="{'error':outlen}">最多可添加{{max}}个图组</span>
       </div>
       <ul class="block1-edit-group">
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
@@ -140,6 +140,7 @@ export default {
   },
   data () {
     return {
+      outlen: false,
       inpError: '',
       active: -1,
       newDesc: '',
@@ -181,6 +182,8 @@ export default {
           imgDesc: this.newDesc
         })
         this.active = len
+      } else {
+        this.outlen = true
       }
     },
     titleClick (index) {
@@ -192,6 +195,7 @@ export default {
     },
     removeClick (index) {
       if (this.value.list.length > this.min) {
+        this.outlen = false
         this.value.list.splice(index, 1)
       }
     },
@@ -202,7 +206,6 @@ export default {
       }
     },
     uploadImgSuccess (data, index) {
-      // debugger
       // let ret = JSON.parse(data.data)
       this.value.list[index].img = `${data.name}`
       // let ret = JSON.parse(data.data)
@@ -457,6 +460,9 @@ export default {
       padding-top: 8px;
       color: $color-gray;
       font-size: 14px;
+      &.error {
+        color:$color-error;
+      }
     }
     .add-nav {
       display: block;

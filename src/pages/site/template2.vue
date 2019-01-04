@@ -482,10 +482,11 @@ export default {
   }
   .section9 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
       padding-top: 70px;
+      padding-bottom: 40px;
     }
     .font-content {
       text-align: left;

@@ -147,6 +147,7 @@ export default {
       } else if ((data.bgType === 'img' && data.img) || data.delete) {
         this.$refs.target.style.cssText = `background-image:url(${data.img.indexOf('mp') === 0 ? this.host + data.img : data.img})`
       } else if (data.bgType === 'video' && data.video) {
+        this.$refs.target.style.cssText = ''
         if (data.videoType === 'upload') {
           if (!(/^(http|https|<iframe):\/\//.test(data.video))) {
             this.$refs.target.querySelector('.media-container video').setAttribute('src', `${data.video.indexOf('mp') === 0 ? this.host + data.video : data.video}`)

@@ -140,20 +140,6 @@ export default {
     }
   },
   created () {
-    EventBus.$emit('breads', [{
-      title: '活动管理'
-    }, {
-      title: '活动列表',
-      url: '/liveMager/list'
-    }, {
-      title: '活动详情',
-      url: `/liveMager/detail/${this.email.activityId}`
-    }, {
-      title: '邮件邀约',
-      url: `/liveMager/email/${this.email.activityId}`
-    }, {
-      title: '预览'
-    }])
     // 如果vuex可以取到值就return
     // if (this.email.emailInviteId) {
     //   debugger
@@ -175,6 +161,22 @@ export default {
     }
     this.email.emailInviteId = this.$route.query.email
     this.queryTagList().then(this.queryGroupList()).then(this.queryEmailInfo())
+  },
+  mounted () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '邮件邀约',
+      url: `/liveMager/email/${this.$route.params.id}`
+    }, {
+      title: '预览'
+    }])
   },
   methods: {
     ...mapMutations('liveMager', {
