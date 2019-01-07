@@ -97,6 +97,8 @@ const questionList = () => import('src/pages/sales-tools/questionnaire/list')
 
 /* 资产管理 */
 const AssetList = () => import('src/pages/asset-mager/asset-list')
+/* 微信服务号 */
+const WxServe = () => import('src/pages/wx-server/wx-serve')
 
 export default [{
   path: '/test',
@@ -369,6 +371,11 @@ export default [{
     path: '/assetMager/assetList',
     name: 'assetList',
     component: AssetList
+  },
+  {
+    path: '/wxserver/wxserve',
+    name: 'wxserve',
+    component: WxServe
   },
   {
     path: '/data',
