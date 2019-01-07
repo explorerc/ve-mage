@@ -59,6 +59,11 @@
       .item-title {
         display: block;
         font-size: 18px;
+        /deep/ {
+          .ve-tip-box i {
+            color: #888;
+          }
+        }
       }
 
       .item-mid {
@@ -216,8 +221,10 @@
 
   .msg-table-box {
     position: relative;
-    padding: 40px 0 10px 0;
-
+    padding: 0 0 10px 0;
+    &.msg-export-box {
+      padding: 40px 0 10px 0;
+    }
     .table-box {
       min-height: 100px;
       max-height: 384px;

@@ -173,6 +173,7 @@
         .ve-message-box__header {
           height: 40px;
           line-height: 40px;
+          border-radius: 4px 4px 0 0;
           background-color: $color-default;
           button {
             color: #555;

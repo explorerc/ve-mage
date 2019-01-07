@@ -123,7 +123,7 @@
   .nav-menu-box{
     display: inline-block;
     float: right;
-    margin-top: -20px;
+    margin-top: -16px;
     text-align: right;
   }
 }

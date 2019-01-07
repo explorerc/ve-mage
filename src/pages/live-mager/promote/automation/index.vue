@@ -1146,6 +1146,7 @@ export default {
       height: 40px;
       line-height: 40px;
       padding: 0px 18px;
+      border-radius: 4px 4px 0 0;
       background-color: $color-default;
       position: relative;
       .close {
