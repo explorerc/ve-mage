@@ -96,6 +96,7 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-cascader
+          expand-trigger="hover"
           v-model="citySelect"
           :options="options"
           @change="handleAreaChange">

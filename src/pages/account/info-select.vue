@@ -4,6 +4,7 @@
     <span class="v-info-label" v-if="!isEdit" :title="displayValue">{{displayValue===''?'无':displayValue}}</span>
     <template v-else-if="type !== 'readOnly'">
       <el-cascader
+        expand-trigger="hover"
         :options="selectValue"
         v-model="selectedOptions"
         :props="format"
@@ -152,6 +153,7 @@
       color: #4b5afe;
       &.v-cancle {
         color: #555;
+        margin-left: 9px;
       }
       span {
         font-size: 14px;

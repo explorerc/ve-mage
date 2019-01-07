@@ -1079,7 +1079,7 @@ export default {
   @media all and (max-width: 1600px) {
     width: 1019px;
     .v-info .v-editor {
-      width: 375px;
+      width: 380px;
     }
   }
   .pop-password {

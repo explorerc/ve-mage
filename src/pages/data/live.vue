@@ -210,7 +210,7 @@
     <!-- 聊天 -->
     <message-box
       v-show="chatDataDetail"
-      width="60%"
+      width="50%"
       type="prompt"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
