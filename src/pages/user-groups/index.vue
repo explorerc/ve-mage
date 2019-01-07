@@ -493,9 +493,9 @@
           }
         }
         .btns {
-          color: rgba(34, 34, 34, 1);
+          color: #222;
           &:hover {
-            color: rgba(75, 90, 254, 1);
+            color: #5D6AFE;
           }
         }
         .default:after {

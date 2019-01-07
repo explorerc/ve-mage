@@ -1166,7 +1166,10 @@
           }
         }
         .detail {
-          color: #4b5afe;
+          color: #222;
+          &:hover {
+            color: $color-blue-hover
+          }
         }
       }
       .pagination-box {

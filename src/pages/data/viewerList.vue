@@ -478,7 +478,7 @@
     .search-total {
       height: 34px;
       line-height: 34px;
-      margin: 30px 0;
+      margin: 20px 0;
     }
     .search-item /deep/ {
       display: inline-block;
