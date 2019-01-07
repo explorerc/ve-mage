@@ -305,6 +305,7 @@ import userService from 'src/api/user-service'
 import VeUploadTx from 'src/components/ve-upload-tx'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 // import EventBus from 'src/utils/eventBus'
 export default {
   data () {
@@ -448,6 +449,11 @@ export default {
     've-upload-tx': VeUploadTx
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '账户管理'
+    }, {
+      title: '账户设置'
+    }])
   },
   destroyed () {
     clearInterval(this.timerr)
