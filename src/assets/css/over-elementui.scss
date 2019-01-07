@@ -276,3 +276,10 @@ textarea::-webkit-input-placeholder {
 .el-pagination.is-background .el-pager li {
   font-weight: 400;
 }
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: $color-blue;
+  border-color: $color-blue;
+}
+.el-cascader-menu__item--extensible:after {
+  display: none;
+}

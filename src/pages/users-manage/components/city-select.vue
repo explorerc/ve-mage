@@ -4,7 +4,7 @@
       {{title}}：
     </span>
     <template v-if="isEdit">
-      <el-cascader
+      <el-cascader expand-trigger="hover"
       :options="areas"
     v-model="selectedOptions"
     @change="handleChange">

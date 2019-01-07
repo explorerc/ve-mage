@@ -8,6 +8,7 @@
             <el-cascader v-model="m.keys"
                          :options="options"
                          :props="props"
+                         expand-trigger="hover"
                          :show-all-levels="false"
                          @change="handleItemChange(m,ind,mind)"></el-cascader>
             <el-select v-if="m.keys"
@@ -60,18 +61,14 @@
                @click="del(ind,mind)"
                v-show="disDel"></i>
           </div>
-          <el-button size="mini"
-                     class="add-brn"
-                     @click="and(ind)"
-                     v-show="shadowOutD[ind].length<10">AND
-          </el-button>
+          <div class="add-brn" v-show="shadowOutD[ind].length<10">
+            <span class="add-brn-btn">AND</span>
+            <i @click="and(ind)" class="iconfont icon-tianjia"></i>
+          </div>
         </div>
-        <div class="orBtn">
-          <el-button size="mini"
-                     class="add-brn"
-                     @click="or"
-                     v-show="shadowOutD.length<10">OR
-          </el-button>
+        <div class="add-brn orBtn" v-show="shadowOutD.length<10">
+          <span class="add-brn-btn">OR</span>
+          <i @click="or" class="iconfont icon-tianjia"></i>
         </div>
       </li>
     </ul>
@@ -1218,9 +1215,15 @@
     ul {
       li {
         .option-box {
-          background-color: #eeeeee;
+          border: solid 1px #e2e2e2;
+          background-color: rgba(245,245,245,.9);
           padding: 10px;
           border-radius: 4px;
+          /deep/{
+            input{
+              background-color: #fff;
+            }
+          }
           > div {
             height: 42px;
           }
@@ -1233,7 +1236,7 @@
             margin-bottom: 10px;
             .el-cascader,
             .el-select {
-              width: 130px;
+              width: 150px;
               height: 40px;
             }
             .el-select .el-input__inner {
@@ -1244,7 +1247,7 @@
               .el-input,
               .el-select,
               .el-input-number {
-                width: 150px;
+                width: 120px;
                 .el-input__inner {
                   text-align: left;
                 }
@@ -1264,26 +1267,62 @@
             }
           }
         }
-        .orBtn {
-          text-align: center;
-          height: 48px;
-          line-height: 48px;
-        }
         .add-brn {
-          &:after {
-            content: '+';
-            border: 1px solid #cccccc;
-            color: #cccccc;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            font-size: 18px;
+          position: relative;
+          display: inline-block;
+          .add-brn-btn{
             display: inline-block;
+            width: 40px;
+            padding: 2px 0;
+            border-radius: 3px;
+            background-color: #fff;
+            border: solid 1px #e2e2e2;
+            color: #888;
             text-align: center;
-            line-height: 16px;
           }
-          &:hover {
-            background-color: #fdd43f;
+          .iconfont{
+            display: inline-block;
+            color: #555;
+            font-size: 22px;
+            vertical-align: middle;
+            margin-left: 15px;
+            &:hover{
+              opacity: .8;
+              cursor: pointer;
+            }
+          }
+          &:before{
+            content: '';
+            display: block;
+            position: absolute;
+            top: 33%;
+            right: 22px;
+            width: 20px;
+            height: 1px;
+            border-top: 1px #D2D2D2 dashed;
+          }
+          &.orBtn {
+            display: block;
+            width: 50px;
+            margin: 0 auto;
+            text-align: center;
+            .iconfont{
+              margin-left: 0;
+              margin-top: -2px;
+            }
+            .add-brn-btn{
+              position: relative;
+              z-index: 2;
+              margin: 16px 0;
+            }
+            &:before{
+              top: 0;
+              right: 23px;
+              width: 1px;
+              height: 56px;
+              border-left: 1px #D2D2D2 dashed;
+              z-index: 1;
+            }
           }
         }
       }
