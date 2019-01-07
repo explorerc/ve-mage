@@ -283,3 +283,12 @@ textarea::-webkit-input-placeholder {
 .el-cascader-menu__item--extensible:after {
   display: none;
 }
+.el-table .descending .sort-caret.descending {
+  border-top-color: #4B5AFE;
+}
+.el-table .ascending .sort-caret.ascending {
+  border-bottom-color: #4B5AFE;
+}
+.el-range-editor.is-active, .el-range-editor.is-active:hover {
+  border-color: $color-blue-hover;
+}

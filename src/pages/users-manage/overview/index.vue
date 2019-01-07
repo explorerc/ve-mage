@@ -421,6 +421,7 @@ export default {
     border-radius: 4px;
     padding: 30px 32px;
     margin-top: 20px;
+    font-size: 14px;
     .v-title {
       font-size: 20px;
       margin-bottom: 20px;

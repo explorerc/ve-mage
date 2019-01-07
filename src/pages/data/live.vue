@@ -183,7 +183,7 @@
       type="prompt"
       header="预约数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box">
+      <div class="msg-table-box msg-export-box">
         <button class="primary-button export-btn fr">导出</button>
         <div class="table-box">
           <el-table :data="preDataList" style="width: 100%" v-if="preDataList.length">
@@ -214,7 +214,7 @@
       type="prompt"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" v-ComLoading="loading">
+      <div class="msg-table-box msg-export-box" v-ComLoading="loading">
         <button class="export-btn" @click="exportFile('chart')" v-if="total">导出</button>
         <div class="table-box">
           <el-table :data="chatDataList" style="width: 100%" v-if="total">
@@ -247,7 +247,7 @@
       type="prompt"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
           <el-table :data="prizeDataList" style="width: 100%" v-if="prizeDataList.length">
             <el-table-column label="序号">
@@ -281,7 +281,7 @@
       type="prompt"
       header="问卷数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
 
           <el-table :data="pagerDataList" style="width: 100%" v-if="pagerDataList.length">
@@ -316,7 +316,7 @@
       type="prompt"
       header="卡片数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
           <el-table :data="cardDataList" style="width: 100%" v-if="cardDataList.length">
             <el-table-column label="序号" type="index" width="60pz">
@@ -355,12 +355,12 @@
       <div class="msg-table-box">
         <div class="table-box">
           <el-table :data="redBagDataList" style="width: 100%" v-if="redBagDataList.length">
-            <el-table-column width="50" label="序号">
+            <el-table-column width="58" label="序号">
               <template slot-scope="scope">
                 {{ (page-1)*pageSize + scope.$index + 1}}
               </template>
             </el-table-column>
-            <el-table-column prop="start_time" label="推送时间" width="140"></el-table-column>
+            <el-table-column prop="start_time" label="推送时间" width="138"></el-table-column>
             <el-table-column label="参与条件">
               <template slot-scope="scope">
                 <span v-if="scope.row.condition==0">无限制参与</span>
@@ -375,7 +375,7 @@
             <el-table-column prop="joined_user_count" label="参与人数"></el-table-column>
             <el-table-column prop="get_user_count" label="领取人数"></el-table-column>
             <el-table-column prop="get_amount" label="领取金额"></el-table-column>
-            <el-table-column label="领取明细" width="80">
+            <el-table-column label="领取明细" width="90">
               <template slot-scope="scope">
                 <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
               </template>
@@ -403,7 +403,7 @@
       type="prompt"
       header="商品数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
           <el-table :data="goodsDataList" style="width: 100%" v-if="goodsDataList.length">
             <el-table-column type="index" label="序号" width="60"></el-table-column>

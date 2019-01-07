@@ -459,8 +459,8 @@
 <style lang="scss" scoped>
   .data-box {
     .export-btn {
-      height: 34px;
-      line-height: 34px;
+      height: 30px;
+      line-height: 28px;
       padding: 0 20px;
     }
     .data-pad {
@@ -486,6 +486,10 @@
       line-height: 34px;
       .el-select {
         display: inline-block;
+      }
+      .com-input input {
+        height: 30px;
+        line-height: 28px;
       }
       .search-title {
         margin-right: 5px;
