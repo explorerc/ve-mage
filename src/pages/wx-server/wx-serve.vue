@@ -3,10 +3,8 @@
     <span class="title">微信服务号</span>
     <div class="wx-setting-content">
       <div class="setting-box">
-        <img src="../../assets/image/wx-phone.jpg">
-        <p>开启微信服务号，可以让观众在活动报名时关注微信服务号，观众关注后可在活动开始前收到开播提醒</p>
-        <br/>
-        <p>主办方还可以针对关注服务号的观众，推送微信模板消息</p>
+        <img src="../../assets/image/wx-phone@2x.png">
+        <p>开启微信服务号，可以让观众在活动报名时关注微信服务号，观众关注后可在活动开始前收到开播提醒主办方还可以针对关注服务号的观众，推送微信模板消息</p>
         <div class="switch-box">
           <el-switch
             v-model="wxSwitch"
@@ -89,20 +87,30 @@
       height: 557px;
       background-color: #fff;
       border-radius: 5px;
+      border: solid 1px #e2e2e2;
       .setting-box {
-        width: 500px;
+        width: 60%;
+        max-width: 720px;
         margin: 0 auto;
-        padding-top: 80px;
+        padding-top: 100px;
+        text-align: center;
+        color: #555;
+        font-size: 14px;
         img {
           display: block;
-          margin: 0 auto 60px auto;
+          width: 150px;
+          margin: 0 auto 30px auto;
         }
         .switch-box {
           user-select: none;
-          margin-top: 50px;
+          margin-top: 40px;
+          text-align: center;
           .switch-title {
+            display: block;
+            margin-top: 10px;
             margin-left: 10px;
             vertical-align: middle;
+            color: #222;
           }
         }
       }
