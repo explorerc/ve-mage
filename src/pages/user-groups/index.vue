@@ -131,7 +131,7 @@
 
   export default {
     name: 'index',
-    components: { VePagination, condOption },
+    components: {VePagination, condOption},
     created () {
       this.onSearch()
       EventBus.$emit('breads', [{
@@ -210,10 +210,10 @@
         tableData: [],
         rules: {
           title: [
-            { validator: valiRepeatName, trigger: 'blur' }
+            {validator: valiRepeatName, trigger: 'blur'}
           ],
           describe: [
-            { required: true, message: '群组描述不能为空', trigger: 'blur' }
+            {required: true, message: '群组描述不能为空', trigger: 'blur'}
           ]
         },
         timer: null
@@ -245,7 +245,7 @@
           })
       },
       repeatTitle (par) {
-        return this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
+        return this.$config({handlers: true}).$post(groupService.VALI_TITLE, par)
       },
       handleDetails (id, type) { // 详情
         this.$router.push(`/userManage/userGroupsDetails/${id}/${type}`)
@@ -281,7 +281,7 @@
                 content: '已取消删除'
               })
             } else if (e.action === 'confirm') {
-              this.$post(groupService.DEL_GROUP, { group_id: id, type: type })
+              this.$post(groupService.DEL_GROUP, {group_id: id, type: type})
                 .then(res => {
                   this.tableData.splice(index, 1)
                   setTimeout(() => {
@@ -328,7 +328,7 @@
             if (this.isAddOrEdit === 'edit') { // 编辑不用检查自身是否重复
               this.$set(par, 'group_id', this.Group.group_id)
             }
-            this.$config({ handlers: true }).$post(groupService.VALI_TITLE, par)
+            this.$config({handlers: true}).$post(groupService.VALI_TITLE, par)
               .then((res) => {
                 if (res.code === 200) {
                   this.errTitle = ''
@@ -405,134 +405,151 @@
 </script>
 
 <style lang="scss">
-#userGroups {
-  font-family: PingFangSC-Regular;
-  /*padding: 40px 100px;*/
-  margin: 0px auto 50px;
-  /* 设备宽度大于 1600 */
-  @media all and (min-width: 1600px) {
-    width: 1366px;
-  }
-  /* 设备宽度小于 1600px */
-  @media all and (max-width: 1600px) {
-    width: 1019px;
-  }
-  /deep/ {
-    header {
-      height: 40px;
-      width: 100%;
-      line-height: 40px;
-      padding-left: 20px;
-      display: inline-block;
-      background: #cccccc;
+  #userGroups {
+    font-family: PingFangSC-Regular;
+    /*padding: 40px 100px;*/
+    margin: 0px auto 50px;
+    /* 设备宽度大于 1600 */
+    @media all and (min-width: 1600px) {
+      width: 1366px;
     }
-    .operation {
-      overflow: hidden;
-      margin-top: 45px;
-      margin-bottom: 20px;
-      h4 {
+    /* 设备宽度小于 1600px */
+    @media all and (max-width: 1600px) {
+      width: 1019px;
+    }
+    /deep/ {
+      header {
+        height: 40px;
+        width: 100%;
+        line-height: 40px;
+        padding-left: 20px;
         display: inline-block;
-        height: 26px;
-        color: rgba(34, 34, 34, 1);
-        line-height: 30px;
-        font-size: 24px;
-        float: left;
-        font-weight: 400;
+        background: #cccccc;
       }
-      div {
-        float: right;
-        .el-input {
+      .operation {
+        overflow: hidden;
+        margin-top: 45px;
+        margin-bottom: 20px;
+        h4 {
+          display: inline-block;
+          height: 26px;
+          color: rgba(34, 34, 34, 1);
+          line-height: 30px;
+          font-size: 24px;
           float: left;
-          width: 220px;
-          height: 30px;
-          margin-right: 10px;
-          .el-input__inner {
+          font-weight: 400;
+        }
+        div {
+          float: right;
+          .el-input {
+            float: left;
+            width: 220px;
             height: 30px;
-            line-height: 30px;
-            border-radius: 20px;
+            margin-right: 10px;
+            .el-input__inner {
+              height: 30px;
+              line-height: 30px;
+              border-radius: 20px;
+              &:hover,
+              &:focus {
+                border-color: #888888;
+              }
+            }
+          }
+          .el-button {
+            color: #555555;
+            /*width: 120px;*/
+            height: 30px;
+            padding: 0 20px;
+            border-radius: 16px;
+            border: 1px solid #888888;
             &:hover,
             &:focus {
-              border-color: #888888;
+              background-color: #ffd43f;
+              border-color: #ffd43f;
+              color: #222;
+            }
+            &:active {
+              background-color: #EEC11A;
+              border-color: #EEC11A;
+              color: #222;
+            }
+            &:last-child {
+              margin-left: 5px;
             }
           }
         }
-        .el-button {
-          color: #555555;
-          /*width: 120px;*/
-          height: 30px;
-          padding: 0 20px;
-          border-radius: 16px;
-          border: 1px solid #888888;
-          &:hover,
-          &:focus {
-            background-color: #ffd43f;
-            border-color: #ffd43f;
+      }
+      .table-box {
+        margin-top: 22px;
+        padding: 30px;
+        border: 1px solid #e2e2e2;
+        background-color: white;
+        border-radius: 4px;
+        .el-table /deep/ {
+          tbody {
+            .el-table__row .cell {
+              color: #222222 !important;
+            }
+          }
+          .btns {
             color: #222;
+            &:hover {
+              color: #5D6AFE;
+            }
           }
-          &:active {
-            background-color: #EEC11A;
-            border-color: #EEC11A;
-            color: #222;
+          .default:after {
+            content: '默认';
+            color: #4b5afe;
+            height: 17px;
+            font-size: 10px;
+            padding: 0 3px;
+            border-radius: 2px;
+            border: 1px solid #4b5afe;
           }
-          &:last-child {
-            margin-left: 5px;
-          }
+        }
+        .VePagination {
+          text-align: center;
+          margin-top: 20px;
         }
       }
-    }
-    .table-box {
-      margin-top: 22px;
-      padding: 30px;
-      border: 1px solid #e2e2e2;
-      background-color: white;
-      border-radius: 4px;
-      .el-table /deep/ {
-        tbody {
-          .el-table__row .cell {
-            color: #222222 !important;
-          }
-        }
-        .btns {
-          color: #222;
-          &:hover {
-            color: #5D6AFE;
-          }
-        }
-        .default:after {
-          content: '默认';
-          color: #4b5afe;
-          height: 17px;
-          font-size: 10px;
-          padding: 0 3px;
-          border-radius: 2px;
-          border: 1px solid #4b5afe;
+      .input_s {
+        width: 100%;
+        height: 40px;
+        input {
+          height: 40px;
         }
       }
-      .VePagination {
-        text-align: center;
-        margin-top: 20px;
+      .ve-message-box__wrapper .ve-message-box {
+        padding-bottom: 0;
       }
-    }
-    .input_s {
-      width: 100%;
-    }
-  }
-}
-.massage-style {
-  .el-form .el-form-item:first-child {
-    margin-top: 14px;
-  }
-}
 
-.userGroupDelConfirm {
-  border: none;
-  .el-message-box__header {
-    border-top: 6px solid #fc5659;
+    }
+    .screen {
+      margin-top: 30px;
+    }
   }
-  .userGroupDelConfirmBtn {
-    width: 120px;
-    background-color: #fc5659;
-    color: #222;
+
+  .massage-style {
+    .el-form .el-form-item:first-child {
+      margin-top: 14px;
+      margin-bottom: 30px;
+    }
+    .el-form .el-form-item:nth-child(2) {
+      margin-bottom: 20px;
+    }
   }
-}
+
+  .userGroupDelConfirm {
+    border: none;
+    .el-message-box__header {
+      border-top: 6px solid #fc5659;
+    }
+    .userGroupDelConfirmBtn {
+      width: 120px;
+      background-color: #fc5659;
+      color: #222;
+    }
+  }
+
 </style>

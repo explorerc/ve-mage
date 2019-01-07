@@ -26,6 +26,7 @@
   import {mapMutations, mapState} from 'vuex'
   import * as types from 'src/store/mutation-types'
   import userService from 'src/api/user-service'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'wx-serve',
@@ -41,6 +42,11 @@
     },
     created () {
       this.wxSwitch = this.accountInfo.openWechatSubscribe === 'Y'
+      EventBus.$emit('breads', [{
+        title: '账户管理'
+      }, {
+        title: '微信服务号'
+      }])
     },
     methods: {
       ...mapMutations('login', {
