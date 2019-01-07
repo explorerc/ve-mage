@@ -32,8 +32,8 @@
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
+                        <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">活动数据</span>
             <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众列表</span>
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">活动数据</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
