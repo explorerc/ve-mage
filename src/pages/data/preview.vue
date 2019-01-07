@@ -16,11 +16,13 @@
           <div class="item-bottom fzc">
             <span>环比
               <i class="down" v-if="vhallRateData.ratio < 0">▼</i>
+              <i v-else-if="vhallRateData.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(vhallRateData.ratio)}}%
             </span>
             <span>平均
               <i class="down" v-if="vhallRateData.average < 0">▼</i>
+              <i v-else-if="vhallRateData.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(vhallRateData.average)}}%
             </span>
@@ -76,11 +78,13 @@
             <div class="item-bottom">
             <span>环比
               <i class="down" v-if="watcherCountData.watch.ratio < 0">▼</i>
+              <i v-else-if="watcherCountData.watch.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.watch.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watcherCountData.watch.average < 0">▼</i>
+              <i v-else-if="watcherCountData.watch.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.watch.average)}}%
             </span>
@@ -94,11 +98,13 @@
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watcherCountData.viewer.ratio < 0">▼</i>
+              <i v-else-if="watcherCountData.viewer.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.viewer.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watcherCountData.viewer.average < 0">▼</i>
+              <i v-else-if="watcherCountData.viewer.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.viewer.average)}}%
             </span>
@@ -112,11 +118,13 @@
             <div class="item-bottom">
             <span>环比
               <i class="down" v-if="watcherCountData.newUser.ratio < 0">▼</i>
+              <i v-else-if="watcherCountData.newUser.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.newUser.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watcherCountData.newUser.average < 0">▼</i>
+              <i v-else="watcherCountData.newUser.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.newUser.average)}}%
             </span>
@@ -130,11 +138,13 @@
             <div class="item-bottom">
             <span>环比
               <i class="down" v-if="watcherCountData.newGoodUser.ratio < 0">▼</i>
+              <i v-else-if="watcherCountData.newGoodUser.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.newGoodUser.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watcherCountData.newUser.average < 0">▼</i>
+              <i v-if="watcherCountData.newUser.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watcherCountData.newGoodUser.average)}}%
             </span>
@@ -152,11 +162,13 @@
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watchCoefficientData.watchTime.ratio < 0">▼</i>
+              <i v-else-if="watchCoefficientData.watchTime.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.watchTime.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watchCoefficientData.watchTime.average < 0">▼</i>
+              <i v-else-if="watchCoefficientData.watchTime.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.watchTime.average)}}%
             </span>
@@ -170,11 +182,13 @@
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watchCoefficientData.extension.ratio < 0">▼</i>
+              <i v-else-if="watchCoefficientData.extension.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.extension.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watchCoefficientData.extension.average < 0">▼</i>
+              <i v-else-if="watchCoefficientData.extension.average < 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.extension.average)}}%
             </span>
@@ -188,11 +202,13 @@
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watchCoefficientData.spread.ratio < 0">▼</i>
+              <i v-else-if="watchCoefficientData.spread.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.spread.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watchCoefficientData.spread.average < 0">▼</i>
+              <i v-else-if="watchCoefficientData.spread.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.spread.average)}}%
             </span>
@@ -206,11 +222,13 @@
             <div class="item-bottom">
            <span>环比
               <i class="down" v-if="watchCoefficientData.interactint.ratio < 0">▼</i>
+              <i v-else-if="watchCoefficientData.interactint.ratio === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.interactint.ratio)}}%
             </span>
               <span>平均
               <i class="down" v-if="watchCoefficientData.interactint.average < 0">▼</i>
+              <i v-else-if="watchCoefficientData.interactint.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.interactint.average)}}%
             </span>
