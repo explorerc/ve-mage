@@ -1286,18 +1286,17 @@ export default {
       background-color: #ffd021;
       display: block;
       width: 115px;
-      height: 38px;
-      line-height: 38px;
+      height: 34px;
+      line-height: 34px;
       text-align: center;
       font-size: 13px;
       color: #222;
       position: absolute;
-      bottom: 0;
-      right: 0;
+      top: 240px;
+      right: 33px;
       border-radius: 2px;
       text-decoration: none;
-      top: 238px;
-      right: 30px;
+
       &.prohibit {
         background-color: #e2e2e2;
         opacity: 0.8;
