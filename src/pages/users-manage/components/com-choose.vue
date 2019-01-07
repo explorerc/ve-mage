@@ -12,12 +12,12 @@
         </div>
         <el-checkbox-group v-model="restoreData.id" :max="max" :class='"data-list"'>
 
-          <template v-if="dataList.length">
+          <template v-if="!dataList.length">
             <el-checkbox v-for="(item,idx) in dataList" :label="item.id" :key="idx" :checked="item.checked"
                          @change='selectCheck($event,item.id)'>{{item.name}}
             </el-checkbox>
           </template>
-          <div class="empty" v-if="isNoDataShow">
+          <div class="empty" v-if="!isNoDataShow">
             <div class="img"></div>
             <div class="txt">暂无数据</div>
           </div>
@@ -278,7 +278,7 @@
     margin-top: -222.5px;
     margin-left: -300px;
     width: 600px;
-    height: 445px;
+    height: 455px;
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
@@ -311,12 +311,12 @@
       }
     }
     .content {
-      padding: 30px;
+      padding: 30px 30px 20px;
       font-size: 14px;
       .data-list {
         margin: 20px 0 20px 0;
         height: 250px;
-        overflow-y: scroll;
+        overflow-y: auto;
         /*.loading {
           display: block;
           width: 100%;
@@ -379,7 +379,7 @@
       }
       .empty {
         text-align: center;
-        margin: 20px 0;
+        margin: 45px 0;
         .txt {
           padding-top: 15px;
           font-size: 16px;
