@@ -112,9 +112,9 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 0px;
-        right: 0px;
-        height: 40px;
+        bottom: 2px;
+        right: 2px;
+        height: 36px;
         line-height: 39px;
         border-color: #ffd021;
         background-color: #ffd021;
