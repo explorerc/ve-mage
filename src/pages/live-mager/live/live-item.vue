@@ -226,7 +226,7 @@
         position: absolute;
         top: 33px;
         right: -1px;
-        width: 130px;
+        width: 110px;
         background-color: #fff;
         border: solid 1px #e5e5e5;
         box-sizing: content-box;
@@ -235,7 +235,8 @@
         border-radius: 6px;
         span {
           display: block;
-          text-align: center;
+          text-align: left;
+          padding-left: 20px;
           height: 40px;
           line-height: 40px;
           &:hover {
