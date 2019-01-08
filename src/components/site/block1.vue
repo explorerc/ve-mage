@@ -32,26 +32,16 @@
               <el-radio v-model="item.type" label="left">图片左</el-radio>
             </div>
             <div class='img-upload-box'>
-              <!-- <com-upload
-      accept="png|jpg|jpeg|bmp|gif"
-      uploadTxt="上传"
-      actionUrl="/api/upload/image"
-      inputName="file"
-      :fileSize="2048"
-      :exParams="{}"
-      @load="uploadLoad($event,index)"
-      >
-      </com-upload> -->
-           <label class='normal'>上传图片</label>
-            <ve-upload
-            :title="item.imgDesc"
-            accept="png|jpg|bmp|gif"
-            :fileSize="2048"
-            :errorMsg="item.uploadImgErrorMsg"
-            :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
-             @error="uploadError($event,index)"
-             @success="uploadImgSuccess($event,index)">
-             </ve-upload>
+              <label class='normal'>上传图片</label>
+              <ve-upload
+              :title="item.imgDesc"
+              accept="png|jpg|bmp|gif"
+              :fileSize="2048"
+              :errorMsg="item.uploadImgErrorMsg"
+              :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
+              @error="uploadError($event,index)"
+              @success="uploadImgSuccess($event,index)">
+              </ve-upload>
             </div>
             <!-- <span class="img-tips" v-html="item.imgDesc"></span> -->
             <label class='normal'>文字内容</label>
