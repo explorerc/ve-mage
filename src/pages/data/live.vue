@@ -68,7 +68,7 @@
             <p class="title">
               <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图"></ve-title>
             </p>
-            <div class="chart-item" id="chart03" style="height: 360px;"></div>
+            <div class="chart-item" id="chart03" style="height: 400px;margin-top: -40px;"></div>
           </div>
         </div>
       </div>
@@ -831,9 +831,9 @@
             if (!res.data.list) return
             let xAxis = []
             let sDatas = []
-            res.data.list.forEach(item => {
+            res.data.list.forEach((item, idx) => {
               xAxis.push(item.time)
-              sDatas.push([item.time, item.week, item.value])
+              sDatas.push([idx, parseInt(item.week), item.value])
             })
             serveDatas = {
               yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
@@ -849,8 +849,8 @@
           }
           this.playBackTimeChart = scatter('chart03', serveDatas, {
             left: 70,
-            right: 10,
-            top: 10,
+            right: 30,
+            top: 60,
             bottom: 20
           })
         })
