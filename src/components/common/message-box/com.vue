@@ -275,7 +275,7 @@
         .button--cancel {
           padding: 0;
           &:hover {
-            color: $color-default;
+            color: #555;
             &[type='error'] {
               color: $color-red;
             }
