@@ -30,7 +30,7 @@
             </el-dropdown>
           </div>
 
-          <el-button round @click='exportAll()'>全部导出</el-button>
+          <el-button round @click='exportAll()' :disabled='!usersListData.length'>全部导出</el-button>
           <!-- <el-button round @click='addGroupAll()'>全部添加到群组</el-button> -->
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
@@ -1168,7 +1168,7 @@
         .detail {
           color: #222;
           &:hover {
-            color: $color-blue-hover
+            color: $color-blue-hover;
           }
         }
       }

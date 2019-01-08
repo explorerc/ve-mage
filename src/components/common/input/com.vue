@@ -344,6 +344,7 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     /*font-size: inherit;*/
+    font-family: -webkit-body;
     &.error {
       border-color: #fc5659;
     }

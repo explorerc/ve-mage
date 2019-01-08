@@ -20,7 +20,7 @@
               {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
-            优质用户 ({{uersInfo[1].centage}})
+            优质用户 ({{uersInfo[1].centage}})<ve-msg-tips class='user-tips' tip='近期经常参加您的直播活动，并且在直播中通过聊天、红包雨、调查问卷等互动方式与主持人进行互动，同时还分享了本次直播的用户'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -29,7 +29,7 @@
               {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
-            高价值用户 ({{uersInfo[2].centage}})
+            高价值用户 ({{uersInfo[2].centage}})<ve-msg-tips class='user-tips' tip='近期偶尔参加过您的直播活动，并且在直播中非常积极与主持人进行互动，同时还分享了本次直播的用户'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -38,7 +38,7 @@
               {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
-            一般用户 ({{uersInfo[3].centage}})
+            一般用户 ({{uersInfo[3].centage}})<ve-msg-tips class='user-tips' tip='近期偶尔参加过您的直播活动，在直播中几乎不予主持人进行互动'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -47,7 +47,7 @@
               {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜力用户 ({{uersInfo[4].centage}})
+            潜力用户 ({{uersInfo[4].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='近期偶尔参加过您的直播活动<br>在直播中偶尔与主持人的互动'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}})
+            流失用户 ({{uersInfo[5].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='很久没有参加过您的直播活动了<br>之前参与过直播，其活跃度也很低'></ve-msg-tips>
           </p>
         </li>
       </ol>
@@ -141,12 +141,16 @@
   </div>
 </template>
 <script>
+import VeMsgTips from 'src/components/ve-msg-tips'
 import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
 import groupService from 'src/api/user_group'
 import EventBus from 'src/utils/eventBus'
 export default {
+  components: {
+    VeMsgTips
+  },
   data () {
     return {
       info: {
@@ -392,12 +396,12 @@ export default {
         color: #222;
         &.active {
           color: #222;
-          background-color: #FDD43F;
+          background-color: #fdd43f;
           border: 1px solid #bbb;
         }
         &:hover {
           color: #222;
-          background-color: #FDD43F;
+          background-color: #fdd43f;
         }
         &:not(:first-child) {
           border-left: none;
@@ -465,6 +469,16 @@ export default {
           width: 13%;
         }
       }
+    }
+  }
+  .msg-tip-box.user-tips /deep/ {
+    margin-left: 10px;
+    position: absolute;
+    span {
+      display: none;
+    }
+    i:hover + span {
+      display: inline-block;
     }
   }
 }
