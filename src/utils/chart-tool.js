@@ -710,14 +710,14 @@ export function scatter (id, datas, gridData) {
   })
   let option = {
     legend: {
-      data: ['观看时长'],
+      data: ['观看人数'],
       right: 10,
       top: 30
     },
     tooltip: {
       position: 'top',
       formatter: function (params) {
-        return `${params.name}(${datas.yAxis[params.data[1]]})<br/>${params.seriesName}：${params.data[2]}秒`
+        return `${params.name}(${datas.yAxis[params.data[1]]})<br/>${params.seriesName}：${params.data[2]}人`
       }
     },
     grid: {
@@ -758,7 +758,7 @@ export function scatter (id, datas, gridData) {
       }
     },
     series: [{
-      name: '观看时长',
+      name: '观看人数',
       type: 'scatter',
       symbolSize: function (val) {
         return val[2] * 60 / maxValue
