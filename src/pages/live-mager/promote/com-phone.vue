@@ -1,6 +1,5 @@
 <template>
 <div class="overview-box">
-  <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
   <div class="msg-box-overview" v-if='isWx'>
     <div class="detail">
       <!-- <div class="msg-title-overview">{{titleValue}}</div> -->
@@ -20,6 +19,7 @@
     </div>
     <div class="footer">{{date}} 发送</div>
   </div>
+  <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
 </div>
 </template>
 
@@ -71,7 +71,7 @@ export default {
 @import '~assets/css/mixin.scss';
 .overview-box {
   position: absolute;
-  top: 180px;
+  top: 136px;
   right: 100px;
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
