@@ -249,7 +249,7 @@
       border: 1px solid #e2e2e2;
       border-radius: 4px;
       background-color: white;
-      min-height: 520px;
+      min-height: 550px;
       table thead tr th,
       table tbody tr td {
         border-color: #ebeef5;

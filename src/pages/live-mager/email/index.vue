@@ -83,7 +83,7 @@
             </div>
            </template>
       </div>
-      <div class="pagination-box" v-if='emailList.length'>
+      <div class="pagination-box" v-if='emailList.length > pageSize'>
         <div class="page-pagination">
           <ve-pagination :total="total"
                          :pageSize="pageSize"

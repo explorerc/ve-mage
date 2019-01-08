@@ -632,7 +632,7 @@
       }
     }
     .asset-list-table {
-      padding: 20px;
+      padding: 5px 20px 20px;
       background-color: #fff;
       .empty {
         text-align: center;

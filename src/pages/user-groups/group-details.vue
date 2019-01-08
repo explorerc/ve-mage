@@ -317,8 +317,11 @@
         margin-right: 10px;
         .el-input__inner {
           border-radius: 20px;
-          border-color: rgba(136, 136, 136, 1);
+          border-color: #cecece;
           height: 30px;
+          &:hover {
+            border-color: #888;
+          }
         }
       }
     }
