@@ -201,8 +201,7 @@
     span.item {
       display: inline-block;
       float: left;
-      margin: 0 20px;
-      margin-right: 10px;
+      margin-left: 20px;
       text-align: center;
       cursor: pointer;
       color: #555;
@@ -251,7 +250,7 @@
         background: url('~assets/image/list/live.svg') no-repeat center;
         background-size: contain;
         & ~ span {
-          padding-left: 10px;
+          padding-left: 5px;
           position: relative;
           bottom: 4px;
         }

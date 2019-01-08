@@ -68,8 +68,11 @@
         </div>
         <div class="add-brn orBtn" v-show="shadowOutD.length<10">
           <span class="add-brn-btn">OR</span>
-          <i @click="or" class="iconfont icon-tianjia"></i>
+          <!--<i @click="or" class="iconfont icon-tianjia"></i>-->
         </div>
+      </li>
+      <li class="add-brn or-btn">
+        <i @click="or" class="iconfont icon-tianjia"></i>
       </li>
     </ul>
   </div>
@@ -1282,7 +1285,7 @@
           }
           .iconfont{
             display: inline-block;
-            color: #555;
+            color: #888;
             font-size: 22px;
             vertical-align: middle;
             margin-left: 15px;
@@ -1325,6 +1328,16 @@
             }
           }
         }
+      }
+      .or-btn {
+        text-align: center;
+        .iconfont {
+          display: inline-block;
+          width: 50px;
+          font-size: 22px;
+          color: #888;
+        }
+
       }
     }
   }

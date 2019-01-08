@@ -674,7 +674,7 @@
       }
       .from-box {
         .input-box {
-          padding: 15px 0px 5px 0 !important;
+          padding: 15px 0 20px 0 !important;
           .from-title {
             padding-right: 30px !important;
           }
@@ -682,7 +682,7 @@
             margin-top: -10px;
             .money-sign {
               position: absolute;
-              top: 0;
+              top: 2px;
               right: 10px;
               color: #555;
             }
@@ -755,24 +755,23 @@
           width: 100% !important;
         }
       }
-      .ve-message-box__wrapper .ve-messagebox {
+      .ve-message-box__wrapper .ve-message-box {
         padding-bottom: 0;
         .ve-message-box__btns {
-          margin-top: 91px;
-          .button--primary {
-          }
+          margin-top: 75px;
         }
+      }
+      .com-input input {
+        height: 40px;
       }
     }
     .pay-money-msg /deep/ {
       .ve-message-box__btns {
-        border: 1px solid green;
         display: none !important;
       }
     }
     .paid-money-msg /deep/ {
       .ve-message-box__btns {
-        border: 1px solid green;
         display: none !important;
       }
     }
@@ -781,11 +780,14 @@
       .message-box-content {
         .from-box {
           .from-row {
-            line-height: 30px;
+            line-height: 38px;
+            &:nth-child(2) {
+              padding: 0 !important;
+            }
             .from-content {
               &.modify-box {
-                height: 34px;
-                line-height: 30px;
+                height: 40px;
+                line-height: 38px;
               }
               .title {
                 font-size: 0;
@@ -820,7 +822,6 @@
                 }
               }
               .black-box {
-                /*position: relative;*/
                 .com-input {
                   width: 60% !important;
                 }
