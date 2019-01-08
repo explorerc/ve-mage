@@ -712,7 +712,7 @@ export function scatter (id, datas, gridData) {
     legend: {
       data: ['观看时长'],
       right: 10,
-      top: -4
+      top: 30
     },
     tooltip: {
       position: 'top',
