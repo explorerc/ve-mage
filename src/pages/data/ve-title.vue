@@ -30,7 +30,7 @@
     display: inline-block;
     user-select: none;
     font-size: 14px;
-    color: #888 !important;
+    color: #222 !important;
     .ve-tip-box{
       position: relative;
       display: inline-block;

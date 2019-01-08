@@ -31,7 +31,7 @@
         <div class="from-row">
           <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M 建议尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
