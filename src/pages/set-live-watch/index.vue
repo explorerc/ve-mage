@@ -165,9 +165,9 @@
                     </template>
                   </div>
                 </div>
-                <img :src="avatarImg"
+                <!-- <img :src="avatarImg"
                      alt="头像"
-                     class="v-avatar pull-left">
+                     class="v-avatar pull-left"> -->
               </div>
               <p class="v-preview">预览</p>
               <!-- <div class="v-title">
@@ -700,28 +700,28 @@ export default {
     .v-show {
       width: 250px;
       height: 499px;
-      background: url('~assets/image/phone-wechat.png');
+      background: url('~assets/image/phone_chat.png');
       background-size: cover;
       background-position: center center;
       margin-left: 33px;
       position: relative;
       .v-share-friend {
         width: 173px;
-        height: 100px;
+        height: 84px;
         border: 1px solid #dadada;
         border-radius: 3px 3px 1px 1px;
         background-color: #fff;
-        margin: 65px 3px 0 25px;
+        margin: 75px 3px 0 25px;
         .v-share-title {
           text-align: left;
           width: 302px;
-          font-size: 22px;
+          font-size: 20px;
           min-height: 32px;
           transform: scale(0.5);
           -webkit-transform-origin: top left;
           margin: 5px 0 0 5px;
           word-break: break-all;
-          line-height: 22px;
+          // line-height: 22px;
         }
         .v-show-content {
           position: relative;
