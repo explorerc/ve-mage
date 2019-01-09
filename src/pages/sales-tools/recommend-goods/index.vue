@@ -37,8 +37,7 @@
             <td>{{row.title}}</td>
             <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
             <td>
-              <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
-              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
+              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':row.price}}</span><span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':row.price}}</span>
             </td>
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td style="width: 15%;min-width: 140px;">

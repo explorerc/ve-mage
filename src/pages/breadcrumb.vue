@@ -4,10 +4,10 @@
       <li v-for="(item,index) in breads"
           :key="index">
         <span v-if="!item.url"><span class="split"
-                v-if="index>0">></span>{{item.title}}</span>
+                v-if="index>0"></span>{{item.title}}</span>
         <router-link v-if="item.url"
                      :to="item.url"><span class="split"
-                v-if="index>0">></span>{{item.title}}</router-link>
+                v-if="index>0"></span>{{item.title}}</router-link>
       </li>
     </ul>
   </div>
@@ -81,7 +81,19 @@ export default {
       li {
         float: left;
         color: #888888;
+        span {
+          /*display: table-cell;*/
+          /*vertical-align: center;*/
+          position: relative;
+        }
         .split {
+          display: inline-block;
+          height: 14px;
+          width: 18px;
+          background-image: url("~assets/image/breadcrumb-arrow@2x.png");
+          background-size: 100% 100%;
+          position: relative;
+          top: 2px;
           padding: 0 2px;
         }
         &:last-child {
