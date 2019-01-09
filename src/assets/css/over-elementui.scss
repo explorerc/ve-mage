@@ -108,31 +108,26 @@ $color-ui-components:#4B5AFE;
 .el-button--text:active {
   color:$color-default;
 }
-.el-button--text,
-.el-button--text:hover,
-.el-time-panel__btn.confirm,
-.el-button.is-plain:focus,
-.el-button.is-plain:hover,
-.el-month-table td .cell:hover,
-.el-month-table td.current:not(.disabled) .cell {
-  //color:$color-default;
+.el-button--text,.el-button--text:hover,.el-time-panel__btn.confirm,.el-button.is-active,.el-button.is-plain:focus,.el-month-table td .cell:hover, .el-month-table td.current:not(.disabled) .cell {
+  color:$color-default;
+}
+.el-button.is-plain:hover {
   color: $color-font;
   background-color: $color-default-hover;
   border-color: $color-default-hover;
 }
-.el-button.is-active,
 .el-button.is-plain:active {
   color: $color-font;
   background-color: $color-default-active;
   border-color: $color-default-active;
 }
-.el-button.is-plain:focus, .el-button.is-plain:hover {
+.el-button.is-plain:focus {
   border-color:$color-default;
 }
 .el-button:focus, .el-button:hover{
-  color: black;
-  border-color:$color-default;
-  background-color:$color-default;
+  color: $color-font;
+  border-color:$color-default-hover;
+  background-color:$color-default-hover;
 }
 .el-button.el-button--text:hover,.el-button.el-button--text:focus,.el-button.el-button--text:active{
   background-color:transparent;
