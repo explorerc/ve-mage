@@ -761,19 +761,16 @@ export function scatter (id, datas, gridData) {
       name: '观看人数',
       type: 'scatter',
       symbolSize: function (val) {
-        return val[2] * 60 / maxValue
+        return val[2] * 50 / maxValue
       },
       itemStyle: {
         normal: {
           color: '#4B5AFE',
-          shadowBlur: 10,
+          shadowBlur: 6,
           shadowColor: '#333'
         }
       },
-      data: datas.data,
-      animationDelay: function (idx) {
-        return idx * 5
-      }
+      data: datas.data
     }]
   }
   let myChart = echarts.init(document.getElementById(id))

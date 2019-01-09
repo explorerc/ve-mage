@@ -68,7 +68,7 @@
             <p class="title">
               <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图"></ve-title>
             </p>
-            <div class="chart-item" id="chart03" style="height: 400px;margin-top: -40px;"></div>
+            <div class="chart-item" id="chart03" style="width: calc(100% + 20px);height: 400px;margin-top: -40px;"></div>
           </div>
         </div>
       </div>
@@ -837,19 +837,20 @@
             })
             serveDatas = {
               yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-              xAxis: Array.from(new Set(xAxis)),
+              // xAxis: Array.from(new Set(xAxis)),
+              xAxis: xAxis,
               data: sDatas
             }
           } else {
             serveDatas = {
               yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-              xAxis: Array.from(new Set([0])),
+              xAxis: [0],
               data: [[0, 0, 0]]
             }
           }
           this.playBackTimeChart = scatter('chart03', serveDatas, {
             left: 70,
-            right: 30,
+            right: 40,
             top: 60,
             bottom: 20
           })

@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="table-box">
-      <el-table :data="tableData"
+      <el-table :data="tableData" v-if="tableData.length"
                 class="el-table">
         <el-table-column label="群组名称">
           <template slot-scope="scope">
@@ -70,6 +70,10 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="empty" v-if="isNoDataShow">
+        <div class="img"></div>
+        <div class="txt">暂无数据</div>
+      </div>
       <VePagination class="VePagination"
                     v-show="total>10"
                     :pageSize="search.pageSize"
@@ -208,6 +212,7 @@
         dialogFixedOrIntel: false,
 
         tableData: [],
+        isNoDataShow: false,
         rules: {
           title: [
             {validator: valiRepeatName, trigger: 'blur'}
@@ -242,6 +247,11 @@
             this.total = Number.parseInt(res.data.count)
             this.errTitle = ''
             this.errDes = ''
+            if (!this.tableData.length) {
+              this.isNoDataShow = true
+            } else {
+              this.isNoDataShow = false
+            }
           })
       },
       repeatTitle (par) {
@@ -486,6 +496,7 @@
         border: 1px solid #e2e2e2;
         background-color: white;
         border-radius: 4px;
+        min-height: 550px;
         .el-table /deep/ {
           tbody {
             .el-table__row .cell {
