@@ -142,7 +142,7 @@ export default {
   },
   computed: {
     defaultImg () {
-      return this.userDate.img ? 'http://local.vhall.com' + this.userDate.img : ''
+      return this.userDate.img ? 'https://test.vhall.com/' + this.userDate.img : ''
     }
   },
   created () {
