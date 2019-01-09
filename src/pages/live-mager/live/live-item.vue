@@ -153,7 +153,8 @@
   }
   .live-img {
     cursor: pointer;
-    height: calc(100% - 94px);
+    /*height: calc(100% - 94px);*/
+    height: calc(100% - 100px);
     background-size: 100% 100%;
     border-bottom: 1px solid $color-bd;
     background-position: center center;
@@ -171,9 +172,9 @@
   }
   .live-md {
     cursor: pointer;
-    height: 60px;
-    padding: 5px 0;
-    cursor: pointer;
+    /*height: 60px;*/
+    height: 70px;
+    padding: 8px 0;
     span {
       display: inline-block;
       min-width: 60%;
@@ -226,13 +227,13 @@
         position: absolute;
         top: 33px;
         right: -1px;
-        width: 110px;
+        width: 130px;
         background-color: #fff;
         border: solid 1px #e5e5e5;
         box-sizing: content-box;
         z-index: 2;
         line-height: 30px;
-        border-radius: 6px;
+        border-radius: 4px;
         span {
           display: block;
           text-align: left;

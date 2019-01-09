@@ -45,7 +45,7 @@
         height: 14px;
         line-height: 14px;
         text-align: center;
-        border: solid 1px rgba(85,85,85,1);;
+        border: solid 1px rgba(85,85,85,1);
         border-radius: 50%;
         color: #555;
         font-style: normal;

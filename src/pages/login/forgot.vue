@@ -601,8 +601,9 @@ export default {
       margin-bottom: 15px;
     }
     #captcha {
-      width: 300px;
-      margin-bottom: 15px;
+      width: 450px;
+      height: 40px;
+      margin-bottom: 30px;
     }
     .primary-button {
       display: block;
@@ -618,6 +619,7 @@ export default {
         width: 450px;
         margin-bottom: 30px;
         input {
+          height: 40px;
           padding: 0 10px !important;
         }
       }
@@ -627,16 +629,16 @@ export default {
     }
     .v-getcode {
       position: absolute;
-      right: 0px;
-      top: 119px;
+      right: 2px;
+      top: 142px;
       background-color: #ffd021;
       display: inline-block;
       width: 115px;
-      height: 34px;
-      line-height: 34px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
       font-size: 13px;
-      color: #fff;
+      color: #222;
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {

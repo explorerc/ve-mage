@@ -202,7 +202,7 @@
                    :max-length="11"
                    :errorTips="errorTips.newPhone"
                    @focus="phoneFocus('newphone')"></com-input>
-        <div id="captcha" style="height: 40px;" gg
+        <div id="captcha" style="height: 40px;"
              :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode"
                    placeholder="输入验证码"
@@ -1292,14 +1292,14 @@ export default {
       background-color: #ffd021;
       display: block;
       width: 115px;
-      height: 34px;
-      line-height: 34px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
       font-size: 13px;
       color: #222;
       position: absolute;
-      top: 240px;
-      right: 33px;
+      top: 238.5px;
+      right: 32px;
       border-radius: 2px;
       text-decoration: none;
 
