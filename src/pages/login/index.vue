@@ -9,7 +9,7 @@
           <p class="v-subtitle">
             {{this.userDate.subname}}
           </p>
-          <a :href="this.userDate.btnUrl" class="v-user-btn" target="_blank">{{this.userDate.btnName}}</a>
+          <a :href="this.userDate.btnUrl" class="v-user-btn" target="_blank" v-if="userDate.btnName!==''">{{this.userDate.btnName}}</a>
         </div>
       </div>
     </div>
@@ -17,10 +17,10 @@
       <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
-          {{this.userDate.title}}
+          智能营销平台
         </p>
         <p class="v-subtitle">
-          {{this.userDate.subname}}
+          全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
         <img src="../../assets/image/login@2x.png" alt="">
       </div>
