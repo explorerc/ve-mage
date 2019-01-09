@@ -62,9 +62,9 @@
           <dd class='desc' v-if="desc.length>0">{{desc}}</dd>
           <dd class='desc' v-else>此处是卡片描述，最多可添加140个字</dd>
           <dd class='btn-dd' v-if="btnSwitch">
-            <router-link :to="btnLink" target="_blank">
+            <a :href="btnLink" target="_blank">
               <el-button class='primary-button btn'>{{btnTxt.length>0 ? btnTxt:'按钮'}}</el-button>
-            </router-link>
+            </a>
           </dd>
         </dl>
         <div class="tips">

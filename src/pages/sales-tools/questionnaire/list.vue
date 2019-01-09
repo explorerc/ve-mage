@@ -27,7 +27,7 @@
                 问题数量
               </td>
               <td>
-                是否推送
+                推送状态
               </td>
               <td>
                 修改时间
@@ -48,7 +48,7 @@
                   {{itemData.questionNum}}
                 </td>
                 <td>
-                  {{itemData.publish === 'Y' ? '是':'否'}}
+                  {{itemData.publish === 'Y' ? '已推送':'未推送'}}
                 </td>
                 <td>
                   {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
@@ -343,19 +343,18 @@ export default {
           }
         }
         &:hover {
-          border-color: #FDD43F;
-          background-color: #FDD43F;
+          border-color: #fdd43f;
+          background-color: #fdd43f;
         }
         &:active {
-          border-color: #EEC11A;
-          background-color: #EEC11A;
-
+          border-color: #eec11a;
+          background-color: #eec11a;
         }
       }
-      &.v-view{
+      &.v-view {
         &:hover {
-          background-color: #4B5AFE;
-          border-color: #4B5AFE;
+          background-color: #4b5afe;
+          border-color: #4b5afe;
           color: #fff;
         }
       }
@@ -380,13 +379,12 @@ export default {
       top: 50%;
       right: 80px;
       transform: translateY(-50%);
-
     }
     /*.default-button {*/
-      /*line-height: 40px;*/
-      /*&.back-btn-all {*/
-        /*height: 40px;*/
-      /*}*/
+    /*line-height: 40px;*/
+    /*&.back-btn-all {*/
+    /*height: 40px;*/
+    /*}*/
     /*}*/
   }
   .v-table {
