@@ -27,7 +27,7 @@
       <div class="chart-container">
         <div class="chart-box" style="width: 100%;">
           <p class="title">推广效果</p>
-          <div class="chart-item" id="chart01" style="height: 260px;"></div>
+          <div class="chart-item" id="chart01" style="height: 270px;"></div>
         </div>
       </div>
       <div class="chart-container">
@@ -384,7 +384,7 @@
               list: this.speadDatas.list
             }, {
               left: 34,
-              bottom: 36,
+              bottom: 52,
               top: 18,
               right: 20
             })

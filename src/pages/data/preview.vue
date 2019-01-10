@@ -188,7 +188,7 @@
             </span>
               <span>平均
               <i class="down" v-if="watchCoefficientData.extension.average < 0">▼</i>
-              <i v-else-if="watchCoefficientData.extension.average < 0">▲</i>
+              <i v-else-if="watchCoefficientData.extension.average === 0">▲</i>
               <i class="up" v-else>▲</i>
               {{Math.abs(watchCoefficientData.extension.average)}}%
             </span>

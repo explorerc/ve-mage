@@ -124,9 +124,9 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       }
     },
     legend: {
-      bottom: -5,
       right: 'center',
       ...legendGrid,
+      bottom: -5,
       data: data.legendData
     },
     color: COLORS,
