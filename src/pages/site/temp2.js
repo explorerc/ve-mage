@@ -10,13 +10,15 @@ export default function () {
         img: '',
         color: 'rgba(0,0,0,1)',
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       logo: {
         url: require('assets/image/tp_logo.png'),
         link: '',
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+        uploadImgErrorMsg: ''
       },
       nav: {
         enable: true,
@@ -64,7 +66,8 @@ export default function () {
         img: require('assets/image/tp_bg_2.jpg'),
         color: 'rgba(0, 0, 0, 1)',
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       panel2: {
         hideVideo: false,
@@ -73,7 +76,8 @@ export default function () {
         img: '',
         color: 'rgba(255, 255, 255, 1)',
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
 
       },
       panel3: {
@@ -83,7 +87,8 @@ export default function () {
         img: '',
         color: 'rgba(253,101,76,1)',
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -107,7 +112,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font1: {
         enable: true,
@@ -135,7 +141,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(253,101,76,1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -150,7 +157,8 @@ export default function () {
           img: require('assets/image/tp_icon1.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -158,7 +166,8 @@ export default function () {
           img: require('assets/image/tp_icon2.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -166,14 +175,16 @@ export default function () {
           img: require('assets/image/tp_icon3.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130',
+          uploadImgErrorMsg: ''
         }, {
           type: 'bottom',
           content: `<div style="text-align: center;"><span style="font-size: 60px;"><font color="#ffffff" style="font-size: 46px;">490</font></span></div><div style="text-align: center;"><font color="#ffffff"><span style="font-size: 22px;">主题演讲</span></font></div>`,
           img: require('assets/image/tp_icon4.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -181,7 +192,8 @@ export default function () {
           img: require('assets/image/tp_icon5.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸130*130',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -194,7 +206,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -205,7 +218,7 @@ export default function () {
         showBtn: true,
         list: [{
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head1.png'),
           btn: {
             enable: true,
@@ -221,7 +234,7 @@ export default function () {
         },
         {
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head2.png'),
           btn: {
             enable: true,
@@ -237,7 +250,7 @@ export default function () {
         },
         {
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head3.png'),
           btn: {
             enable: true,
@@ -253,7 +266,7 @@ export default function () {
         },
         {
           type: 'bottom',
-          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div><div style="text-align: center; line-height: 1.5;"><br></div>`,
+          content: `<div style="text-align: center;"><span style="font-size: 20px;"><br></span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 20px;">梁世瑶</span></div><div style="text-align: center; line-height: 1.5;"><span style="font-size: 16px;">品牌营销解决方案总监</span><br></div><div style="text-align: center; line-height: 1.5;"><br></div></div>`,
           img: require('assets/image/tp_head4.png'),
           btn: {
             enable: true,
@@ -278,7 +291,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(239,239,239,1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -301,7 +315,8 @@ export default function () {
           },
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'left',
@@ -316,7 +331,8 @@ export default function () {
           },
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'right',
@@ -331,7 +347,8 @@ export default function () {
           },
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -344,7 +361,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -359,7 +377,8 @@ export default function () {
           img: require('assets/image/tp_section5_1.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸346*200'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸346*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -367,7 +386,8 @@ export default function () {
           img: require('assets/image/tp_section5_2.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸346*200'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸346*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -375,7 +395,8 @@ export default function () {
           img: require('assets/image/tp_section5_3.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸346*200'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸346*200',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -388,7 +409,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -403,7 +425,8 @@ export default function () {
           img: require('assets/image/tp_logo1.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -411,7 +434,8 @@ export default function () {
           img: require('assets/image/tp_logo2.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -419,7 +443,8 @@ export default function () {
           img: require('assets/image/tp_logo3.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -427,7 +452,8 @@ export default function () {
           img: require('assets/image/tp_logo4.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -435,6 +461,7 @@ export default function () {
           img: require('assets/image/tp_logo5.png'),
           hrefType: '_define',
           target: '_self',
+          uploadImgErrorMsg: '',
           imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
         },
         {
@@ -443,7 +470,8 @@ export default function () {
           img: require('assets/image/tp_logo6.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -451,7 +479,8 @@ export default function () {
           img: require('assets/image/tp_logo7.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -459,7 +488,8 @@ export default function () {
           img: require('assets/image/tp_logo8.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -467,7 +497,8 @@ export default function () {
           img: require('assets/image/tp_logo9.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -475,7 +506,8 @@ export default function () {
           img: require('assets/image/tp_logo10.png'),
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -488,7 +520,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(253,101,76,1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,

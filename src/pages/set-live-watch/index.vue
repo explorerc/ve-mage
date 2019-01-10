@@ -4,6 +4,9 @@
       观看页
       <com-back></com-back>
     </p>
+    <div class="tips">
+      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现。
+    </div>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
         <com-tab label="品牌"
@@ -52,17 +55,16 @@
                 <div class="clearfix"
                      style="padding-left: 30px;position:relative;">
                   <template v-if="defaultLogoImg">
-                    <img :src="defaultLogoImg"
-                         alt="logo"
-                         class="v-logo pull-left">
+                    <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/logo_pc.png" alt="logo" class="v-logo pull-left">
                   </template>
                   <div class="pull-left">
                     <p class="v-live-title">
                       {{activityTitle}}
                     </p>
-                    <img src="../../assets/image/mac-icon@2x.png"
-                         alt=""
-                         class="v-pc-icon">
+                    <img src="../../assets/image/mac-icon@2x.png" alt="" class="v-pc-icon">
                   </div>
                 </div>
                 <div class="v-show-content">
@@ -72,7 +74,10 @@
             </div>
             <div class="v-show pull-right phone-mode" v-else>
               <div class="h5-header">
-                <img :src="defaultLogoImg" class="h5-logo" v-if="defaultLogoImg">
+                <div class="logo-box">
+                  <img :src="defaultLogoImg" class="h5-logo" v-if="defaultLogoImg">
+                  <img src="../../assets/image/logo_pc.png" class="h5-logo" v-else>
+                </div>
                 <div class="h5-header-content">
                   <p>{{activityTitle}}</p>
                   <p>
@@ -138,10 +143,11 @@
                   应用页面：
                 </p>
                 <p class="v-info pull-left"
-                   style="padding-top: 6px;">
+                   style="padding-top: 6px;position:relative;">
                   <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
                   <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
+                  <ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入5000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips>
                 </p>
               </div>
             </div>
@@ -162,9 +168,9 @@
                     </template>
                   </div>
                 </div>
-                <img :src="avatarImg"
+                <!-- <img :src="avatarImg"
                      alt="头像"
-                     class="v-avatar pull-left">
+                     class="v-avatar pull-left"> -->
               </div>
               <p class="v-preview">预览</p>
               <!-- <div class="v-title">
@@ -192,236 +198,238 @@
   </div>
 </template>
 <script>
-  import brandService from 'src/api/brand-service'
-  import VeUpload from 'src/components/ve-upload-image'
-  import userService from 'src/api/user-service'
-  import activityService from 'src/api/activity-service'
-  import {mapMutations, mapState} from 'vuex'
-  import * as types from 'src/store/mutation-types'
-  import EventBus from 'src/utils/eventBus'
+import veTips from 'src/components/ve-msg-tips'
+import brandService from 'src/api/brand-service'
+import VeUpload from 'src/components/ve-upload-image'
+import userService from 'src/api/user-service'
+import activityService from 'src/api/activity-service'
+import {mapMutations, mapState} from 'vuex'
+import * as types from 'src/store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 
-  export default {
-    data () {
-      return {
-        activityId: 0,
-        tabValue: 1, // 页签选择
-        bgImgUrl: '', // 背景图片
-        logoImgUrl: '', // logo图片
-        shareImgUrl: '', // 分享图标
-        shareTitle: '', // 分享标题
-        shareIntroduction: '', // 分享简介
-        isShowWatch: true, // 是否在直播观看页显示
-        isShowOfficialWebsite: true, // 是否在活动官网显示
-        isShowGuided: true, // 是否在直播引导页显示
-        uploadBgErrorMsg: '', // 上传图片错误提示
-        uploadLogoErrorMsg: '', // 上传图片错误提示
-        uploadShareErrorMsg: '', // 上传图片错误提示
-        avatar: '',
-        status: '', // 直播状态,
-        canPass: true,
-        activityTitle: '', // 活动标题
-        errorTips: '', // 错误提示
-        isPc: true
+export default {
+  data () {
+    return {
+      activityId: 0,
+      tabValue: 1, // 页签选择
+      bgImgUrl: '', // 背景图片
+      logoImgUrl: '', // logo图片
+      shareImgUrl: '', // 分享图标
+      shareTitle: '', // 分享标题
+      shareIntroduction: '', // 分享简介
+      isShowWatch: true, // 是否在直播观看页显示
+      isShowOfficialWebsite: true, // 是否在活动官网显示
+      isShowGuided: true, // 是否在直播引导页显示
+      uploadBgErrorMsg: '', // 上传图片错误提示
+      uploadLogoErrorMsg: '', // 上传图片错误提示
+      uploadShareErrorMsg: '', // 上传图片错误提示
+      avatar: '',
+      status: '', // 直播状态,
+      canPass: true,
+      activityTitle: '', // 活动标题
+      errorTips: '', // 错误提示
+      isPc: true
+    }
+  },
+  components: {
+    VeUpload, veTips
+  },
+  created () {
+    this.activityId = this.$route.params.id
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.activityId}`
+    }, {
+      title: '观看页'
+    }])
+    let data = {
+      'activityId': this.activityId
+    }
+    if (!this.activityId) {
+      this.$router.go(-1)
+      return
+    }
+    if (this.accountInfo && this.accountInfo.userName) {
+      this.name = this.accountInfo.name
+      this.avatar = this.accountInfo.avatar
+    } else {
+      this.$get(userService.GET_ACCOUNT).then((res) => {
+        this.name = res.data.name
+        this.avatar = res.data.avatar
+        this.setAccountInfo(res.data)
+      })
+    }
+    this.$get(activityService.GET_WEBINAR_INFO, {
+      id: this.activityId
+    }).then((res) => {
+      this.status = res.data.status
+      this.activityTitle = res.data.title ? res.data.title : ''
+    })
+    this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
+      if (res.data) {
+        this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
+        this.shareTitle = res.data.title ? res.data.title : ''
+        this.shareIntroduction = res.data.description ? res.data.description : ''
+        this.isShowWatch = res.data.page.indexOf('live_route') > -1
+        this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
+        this.isShowGuided = res.data.page.indexOf('guide_route') > -1
+        this.tabValue = 1
       }
+    })
+    this.$get(brandService.GET_LIVE_BRAND, data).then(res => {
+      if (res.data) {
+        this.bgImgUrl = res.data.backgroundUrl ? res.data.backgroundUrl : ''
+        this.logoImgUrl = res.data.logoUrl ? res.data.logoUrl : ''
+        this.tabValue = 1
+      }
+    })
+  },
+  computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    }),
+    defaultBgImg () {
+      return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
     },
-    components: {
-      VeUpload
+    defaultLogoImg () {
+      return this.logoImgUrl ? this.$imgHost + '/' + this.logoImgUrl : ''
     },
-    created () {
-      this.activityId = this.$route.params.id
-      EventBus.$emit('breads', [{
-        title: '活动管理'
-      }, {
-        title: '活动列表',
-        url: '/liveMager/list'
-      }, {
-        title: '活动详情',
-        url: `/liveMager/detail/${this.activityId}`
-      }, {
-        title: '观看页'
-      }])
+    defaultShareImg () {
+      return this.shareImgUrl ? this.$imgHost + '/' + this.shareImgUrl : ''
+    },
+    avatarImg: function () {
+      return this.avatar ? this.$imgHost + '/' + this.avatar : require('assets/image/avatar@2x.png')
+    }
+  },
+  mounted () {
+  },
+  watch: {},
+  /* 路由守卫，离开当前页面之前被调用 */
+  beforeRouteLeave (to, from, next) {
+    if (this.canPass) {
+      next(true)
+      return
+    }
+    this.$messageBox({
+      header: '提示',
+      width: '400px',
+      content: '是否放弃当前编辑？',
+      cancelText: '否',
+      confirmText: '是',
+      handleClick: (e) => {
+        if (e.action === 'confirm') {
+          next(true)
+        } else {
+          next(false)
+        }
+      }
+    })
+  },
+  methods: {
+    ...mapMutations('login', {
+      setAccountInfo: types.ACCOUNT_INFO
+    }),
+    uploadBgSuccess (data) {
+      this.canPass = false
+      this.bgImgUrl = data.name
+    },
+    uploadBgError (data) {
+      this.uploadBgErrorMsg = data.msg
+      this.bgImgUrl = ''
+    },
+    uploadLogoSuccess (data) {
+      this.canPass = false
+      this.logoImgUrl = data.name
+    },
+    uploadLogoError (data) {
+      this.uploadLogoErrorMsg = data.msg
+      this.logoImgUrl = ''
+    },
+    uploadShareSuccess (data) {
+      this.canPass = false
+      this.shareImgUrl = data.name
+    },
+    uploadShareError (data) {
+      this.uploadShareErrorMsg = data.msg
+      this.shareImgUrl = ''
+    },
+    brandClick () { // 品牌设置保存
       let data = {
-        'activityId': this.activityId
+        'activityId': this.activityId,
+        'backgroundUrl': this.bgImgUrl,
+        'logoUrl': this.logoImgUrl
       }
-      if (!this.activityId) {
-        this.$router.go(-1)
-        return
-      }
-      if (this.accountInfo && this.accountInfo.userName) {
-        this.name = this.accountInfo.name
-        this.avatar = this.accountInfo.avatar
-      } else {
-        this.$get(userService.GET_ACCOUNT).then((res) => {
-          this.name = res.data.name
-          this.avatar = res.data.avatar
-          this.setAccountInfo(res.data)
-        })
-      }
-      this.$get(activityService.GET_WEBINAR_INFO, {
-        id: this.activityId
-      }).then((res) => {
-        this.status = res.data.status
-        this.activityTitle = res.data.title ? res.data.title : ''
-      })
-      this.$get(brandService.GET_LIVE_SHARE, data).then(res => {
-        if (res.data) {
-          this.shareImgUrl = res.data.imgUrl ? res.data.imgUrl : ''
-          this.shareTitle = res.data.title ? res.data.title : ''
-          this.shareIntroduction = res.data.description ? res.data.description : ''
-          this.isShowWatch = res.data.page.indexOf('live_route') > -1
-          this.isShowOfficialWebsite = res.data.page.indexOf('officia_route') > -1
-          this.isShowGuided = res.data.page.indexOf('guide_route') > -1
-          this.tabValue = 1
-        }
-      })
-      this.$get(brandService.GET_LIVE_BRAND, data).then(res => {
-        if (res.data) {
-          this.bgImgUrl = res.data.backgroundUrl ? res.data.backgroundUrl : ''
-          this.logoImgUrl = res.data.logoUrl ? res.data.logoUrl : ''
-          this.tabValue = 1
-        }
-      })
-    },
-    computed: {
-      ...mapState('login', {
-        accountInfo: state => state.accountInfo
-      }),
-      defaultBgImg () {
-        return this.bgImgUrl ? this.$imgHost + '/' + this.bgImgUrl : ''
-      },
-      defaultLogoImg () {
-        return this.logoImgUrl ? this.$imgHost + '/' + this.logoImgUrl : ''
-      },
-      defaultShareImg () {
-        return this.shareImgUrl ? this.$imgHost + '/' + this.shareImgUrl : ''
-      },
-      avatarImg: function () {
-        return this.avatar ? this.$imgHost + '/' + this.avatar : require('assets/image/avatar@2x.png')
-      }
-    },
-    mounted () {
-    },
-    watch: {},
-    /* 路由守卫，离开当前页面之前被调用 */
-    beforeRouteLeave (to, from, next) {
-      if (this.canPass) {
-        next(true)
-        return
-      }
-      this.$messageBox({
-        header: '提示',
-        width: '400px',
-        content: '是否放弃当前编辑？',
-        cancelText: '否',
-        confirmText: '是',
-        handleClick: (e) => {
-          if (e.action === 'confirm') {
-            next(true)
-          } else {
-            next(false)
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+        this.canPass = true
+        // this.$toast({
+        //   content: '保存成功',
+        //   position: 'center'
+        // })
+        this.$router.push(`/liveMager/detail/${this.activityId}`)
+      }).catch((err) => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
           }
-        }
+        })
       })
     },
-    methods: {
-      ...mapMutations('login', {
-        setAccountInfo: types.ACCOUNT_INFO
-      }),
-      uploadBgSuccess (data) {
-        this.canPass = false
-        this.bgImgUrl = data.name
-      },
-      uploadBgError (data) {
-        this.uploadBgErrorMsg = data.msg
-        this.bgImgUrl = ''
-      },
-      uploadLogoSuccess (data) {
-        this.canPass = false
-        this.logoImgUrl = data.name
-      },
-      uploadLogoError (data) {
-        this.uploadLogoErrorMsg = data.msg
-        this.logoImgUrl = ''
-      },
-      uploadShareSuccess (data) {
-        this.canPass = false
-        this.shareImgUrl = data.name
-      },
-      uploadShareError (data) {
-        this.uploadShareErrorMsg = data.msg
-        this.shareImgUrl = ''
-      },
-      brandClick () { // 品牌设置保存
-        let data = {
-          'activityId': this.activityId,
-          'backgroundUrl': this.bgImgUrl,
-          'logoUrl': this.logoImgUrl
-        }
-        this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
-          this.canPass = true
-          // this.$toast({
-          //   content: '保存成功',
-          //   position: 'center'
-          // })
-          this.$router.push(`/liveMager/detail/${this.activityId}`)
-        }).catch((err) => {
-          this.$messageBox({
-            header: '提示',
-            content: err.msg,
-            confirmText: '确定',
-            handleClick: (e) => {
-              if (e.action === 'cancel') {
-              } else if (e.action === 'confirm') {
-              }
-            }
-          })
-        })
-      },
-      shareClick () { // 分享设置保存
-        if (!this.shareTitle) {
-          this.errorTips = '请填写标题'
-          return false
-        }
-        let data = {
-          'activityId': this.activityId,
-          'title': this.shareTitle,
-          'description': this.shareIntroduction,
-          'imgUrl': this.shareImgUrl,
-          'page': []
-        }
-        if (this.isShowWatch) {
-          data.page.push('live_route')
-        }
-        if (this.isShowOfficialWebsite) {
-          data.page.push('officia_route')
-        }
-        if (this.isShowGuided) {
-          data.page.push('guide_route')
-        }
-        this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
-          this.canPass = true
-          this.$toast({
-            content: '保存成功'
-          })
-        }).catch((err) => {
-          this.$messageBox({
-            header: '提示',
-            content: err.msg,
-            confirmText: '确定',
-            handleClick: (e) => {
-              if (e.action === 'cancel') {
-              } else if (e.action === 'confirm') {
-              }
-            }
-          })
-        })
-      },
-      shareTitleFocus () {
-        this.canPass = false
-        this.errorTips = ''
+    shareClick () { // 分享设置保存
+      if (!this.shareTitle) {
+        this.errorTips = '请填写标题'
+        return false
       }
+      let data = {
+        'activityId': this.activityId,
+        'title': this.shareTitle,
+        'description': this.shareIntroduction,
+        'imgUrl': this.shareImgUrl,
+        'page': []
+      }
+      if (this.isShowWatch) {
+        data.page.push('live_route')
+      }
+      if (this.isShowOfficialWebsite) {
+        data.page.push('officia_route')
+      }
+      if (this.isShowGuided) {
+        data.page.push('guide_route')
+      }
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+        this.canPass = true
+        // this.$toast({
+        //   content: '保存成功'
+        // })
+        this.$router.push(`/liveMager/detail/${this.activityId}`)
+      }).catch((err) => {
+        this.$messageBox({
+          header: '提示',
+          content: err.msg,
+          confirmText: '确定',
+          handleClick: (e) => {
+            if (e.action === 'cancel') {
+            } else if (e.action === 'confirm') {
+            }
+          }
+        })
+      })
+    },
+    shareTitleFocus () {
+      this.canPass = false
+      this.errorTips = ''
     }
   }
+}
 </script>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
@@ -476,11 +484,12 @@
           width: 100px;
           padding-top: 6px;
           margin-right: 17px;
+          text-align: right;
         }
         .v-notes {
           font-size: 12px;
           color: #888888;
-          padding-left: 215px;
+          padding-left: 119px;
           margin: 10px auto 0;
         }
       }
@@ -531,25 +540,35 @@
       margin-right: 70px;
       .h5-header {
         position: absolute;
-        top: 66px;
+        top: 71px;
         left: 20px;
         height: 30px;
         width: 214px;
+        .logo-box {
+          height: 100%;
+          float: left;
+          position: relative;
+          width: 50px;
+        }
         img.h5-logo {
-          height: 24px;
-          max-width: 100px;
+          max-width: 50px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
         .h5-header-content {
           display: inline-block;
           width: 60%;
           font-size: 14px;
-          transform: scale(0.5) translateX(-60px);
+          transform: scale(0.5) translate(-56px, -13px);
           p:nth-child(1) {
             font-weight: bold;
             width: 120px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            padding-left: 5px;
           }
           p:nth-child(2) {
             span:nth-child(1) {
@@ -609,13 +628,13 @@
     position: relative;
     .v-logo {
       display: block;
-      max-width: 40px;
-      height: 13px;
+      max-width: 60px;
+      height: 17px;
       margin-right: 6px;
       position: relative;
-      top: -50%;
       left: 0;
-      transform: translateY(50%);
+      top: 2px;
+      // transform: translateY(50%);
     }
     .v-live-title {
       font-size: 16px;
@@ -677,35 +696,35 @@
         height: 110px;
       }
       .limit {
-        right: 8px;
-        bottom: 8px;
+        right: 9px;
+        bottom: 11px;
       }
     }
     .v-show {
       width: 250px;
       height: 499px;
-      background: url('~assets/image/phone-wechat.png');
+      background: url('~assets/image/phone_chat.png');
       background-size: cover;
       background-position: center center;
       margin-left: 33px;
       position: relative;
       .v-share-friend {
         width: 173px;
-        height: 100px;
+        height: 84px;
         border: 1px solid #dadada;
         border-radius: 3px 3px 1px 1px;
         background-color: #fff;
-        margin: 65px 3px 0 25px;
+        margin: 75px 3px 0 25px;
         .v-share-title {
           text-align: left;
           width: 302px;
-          font-size: 22px;
+          font-size: 20px;
           min-height: 32px;
           transform: scale(0.5);
           -webkit-transform-origin: top left;
           margin: 5px 0 0 5px;
           word-break: break-all;
-          line-height: 22px;
+          // line-height: 22px;
         }
         .v-show-content {
           position: relative;
@@ -771,6 +790,38 @@
     color: #fc5659;
     padding: 4px 10px 0 0;
     vertical-align: middle;
+  }
+  .msg-tip-box /deep/ {
+    position: absolute;
+    right: -30px;
+    top: 4px;
+    span {
+      position: absolute;
+      width: 400px;
+      margin-top: -12px;
+      left: 30px;
+    }
+  }
+}
+.tips {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: rgba(233, 235, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(129, 140, 254, 1);
+  margin-bottom: 20px;
+  font-size: 14px;
+  i {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background: url('~assets/image/excal.svg') no-repeat;
+    position: relative;
+    top: 3px;
+    right: 4px;
+    background-size: cover;
   }
 }
 </style>

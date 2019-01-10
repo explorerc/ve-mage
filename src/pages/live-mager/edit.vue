@@ -9,14 +9,14 @@
         <com-back :url="`/liveMager/list`" v-else :class="'back-btn'"></com-back>
       </div>
       <div class="tips">
-        <i></i>注意：在预设直播时间或实际开播时间的48小时后，直播将视为过期。在有效期内，直播可反复发起。过期后将无法再发起直播。
+        <i></i>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播。
       </div>
       <div class="content from-box">
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
             <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="30" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
-            <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
+            <span class="error-tips" v-if='titleEmpty' style="display: block">请填写直播标题</span>
           </div>
         </div>
         <div class="from-row" >
@@ -24,14 +24,14 @@
           <div class="from-content" :class="{ 'error':dateEmpty }">
             <el-date-picker @focus='dateFocus()' v-model="date"  @change="canPaas=false" type="datetime" :clearable='false' placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultValue" >
             </el-date-picker>
-            <span class='tips-time'>在预设直播时间或实际开播时间的48小时后，直播将视为过期。<br>在有效期内，直播可反复发起。过期后将无法再发起直播。</span>
+            <span class='tips-time'>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播。</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M<br>建议尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
@@ -390,9 +390,11 @@ export default {
     showClooseTag () {
       this.$nextTick(() => {
         this.showChooseTag = true
+        this.tagEmpty = false
       })
     },
     addShowClooseTag () {
+      debugger
       this.canPaas = false
       this.showChooseTag = !this.showChooseTag
       this.$nextTick(() => {
@@ -820,6 +822,14 @@ export default {
     &.is-focus span.el-checkbox-button__inner {
       border-left: 1px solid #4b5afe;
       background-color: #4b5afe;
+      border: none;
+      box-shadow: none;
+      &:hover {
+        color: #fff;
+      }
+    }
+    .el-checkbox-button__inner:hover {
+      color: #4b5afe;
     }
   }
 }

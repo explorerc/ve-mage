@@ -1,25 +1,20 @@
 <template>
 <div class="overview-box">
-  <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
   <div class="msg-box-overview" v-if='isWx'>
     <div class="detail">
-      <!-- <div class="msg-title-overview">{{titleValue}}</div> -->
       <div class="msg-title-overview">预约成功通知</div>
-      <p class="time" v-html="date.substr(0,10)"></p>
-      <!-- <p class="tips">{{wxContent}}</p> -->
-      <p class="tips">{{wxContent}}</p>
-      <p>标题：<span>{{webinarName}}</span></p>
-      <p style='padding-bottom:20px;'>时间：<span>{{webinarTime}}</span></p>
-      <!-- <p style='padding-bottom:20px;'>内容：<span>{{wxContent}}</span></p> -->
+      <p class='time'>{{webinarTime.substr(0,10)}}</span></p>
+      <p class='content'><em>【{{webinarName}}】</em>{{wxContent}}</span></p>
       <div class="footer">详情</div>
     </div>
   </div>
   <div class="msg-box-overview msg-box-message" v-else>
-    <div class="detail">
-      <p class="">【{{msgTag}}】{{wxContent}}</p>
+    <div class="detail msg">
+      <p class="">{{wxContent}}<br><em v-show='msgTag.length'>【{{msgTag}}】</em></p>
     </div>
     <div class="footer">{{date}} 发送</div>
   </div>
+  <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
 </div>
 </template>
 
@@ -71,7 +66,7 @@ export default {
 @import '~assets/css/mixin.scss';
 .overview-box {
   position: absolute;
-  top: 180px;
+  top: 136px;
   right: 100px;
   /* 设备宽度小于 1600px */
   @media all and (max-width: 1600px) {
@@ -82,6 +77,7 @@ export default {
     color: $color-font-sub;
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 20px;
   }
   .footer {
     background: #fff;
@@ -102,8 +98,8 @@ export default {
   }
   .msg-box-overview {
     word-break: break-all;
-    width: 250px;
-    height: 517px;
+    width: 252px;
+    height: 500px;
     background: url('~assets/image/phone-wechat.png') no-repeat;
     background-size: contain;
     position: relative;
@@ -127,9 +123,14 @@ export default {
       span {
         color: $color-font;
       }
+      em {
+        position: relative;
+        right: 6px;
+      }
     }
     p.time {
-      color: $color-font-sub;
+      color: #888;
+      position: static;
     }
   }
   .msg-box-message {
@@ -140,20 +141,21 @@ export default {
       width: 10px;
       height: 10px;
       position: absolute;
-      top: 70px;
+      top: 127px;
       left: 18px;
-      background: #e2e2e2;
+      background: rgba(239, 239, 239, 1);
       transform: rotate(45deg);
     }
     .detail {
-      background: rgba(226, 226, 226, 1);
+      background: rgba(239, 239, 239, 1);
       padding: 8px 16px;
       height: auto;
     }
     .footer {
       position: absolute;
       height: 40px;
-      bottom: 65px;
+      bottom: 45px;
+      border-radius: 0 0 8px 8px;
       left: 13px;
       line-height: 40px;
       text-align: center;
@@ -162,19 +164,25 @@ export default {
       background: #f0f1fe;
       margin: 0;
       padding: 0;
-      width: 226px;
+      width: 228px;
     }
   }
   .detail {
     overflow: hidden;
     width: 210px;
-    height: 250px;
     background: rgba(255, 255, 255, 1);
     border-radius: 4px;
     position: absolute;
-    top: 54px;
+    top: 104px;
     left: 22px;
     padding: 18px 15px;
+    &.msg {
+      top: 114px;
+    }
+  }
+  .content {
+    padding-bottom: 20px;
+    line-height: 18px;
   }
 }
 </style>

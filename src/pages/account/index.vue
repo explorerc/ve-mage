@@ -202,7 +202,7 @@
                    :max-length="11"
                    :errorTips="errorTips.newPhone"
                    @focus="phoneFocus('newphone')"></com-input>
-        <div id="captcha" style="height: 40px;" gg
+        <div id="captcha" style="height: 40px;"
              :class="{isCaptchaShow: (messageBoxType === 'changeMobile' && (step === 'initialPhone' ||  step === 'newPhone'))}"></div>
         <com-input :value.sync="phoneCode"
                    placeholder="输入验证码"
@@ -305,6 +305,7 @@ import userService from 'src/api/user-service'
 import VeUploadTx from 'src/components/ve-upload-tx'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'
+import EventBus from 'src/utils/eventBus'
 // import EventBus from 'src/utils/eventBus'
 export default {
   data () {
@@ -448,6 +449,11 @@ export default {
     've-upload-tx': VeUploadTx
   },
   created () {
+    EventBus.$emit('breads', [{
+      title: '账户管理'
+    }, {
+      title: '账户设置'
+    }])
   },
   destroyed () {
     clearInterval(this.timerr)
@@ -1079,7 +1085,7 @@ export default {
   @media all and (max-width: 1600px) {
     width: 1019px;
     .v-info .v-editor {
-      width: 375px;
+      width: 380px;
     }
   }
   .pop-password {
@@ -1286,18 +1292,17 @@ export default {
       background-color: #ffd021;
       display: block;
       width: 115px;
-      height: 38px;
-      line-height: 38px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
       font-size: 13px;
       color: #222;
       position: absolute;
-      bottom: 0;
-      right: 0;
+      top: 238.5px;
+      right: 32px;
       border-radius: 2px;
       text-decoration: none;
-      top: 238px;
-      right: 30px;
+
       &.prohibit {
         background-color: #e2e2e2;
         opacity: 0.8;

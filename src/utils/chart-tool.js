@@ -124,9 +124,9 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       }
     },
     legend: {
-      bottom: -5,
       right: 'center',
       ...legendGrid,
+      bottom: -5,
       data: data.legendData
     },
     color: COLORS,
@@ -710,14 +710,14 @@ export function scatter (id, datas, gridData) {
   })
   let option = {
     legend: {
-      data: ['观看时长'],
+      data: ['观看人数'],
       right: 10,
-      top: -4
+      top: 30
     },
     tooltip: {
       position: 'top',
       formatter: function (params) {
-        return `${params.name}(${datas.yAxis[params.data[1]]})<br/>${params.seriesName}：${params.data[2]}秒`
+        return `${params.name}(${datas.yAxis[params.data[1]]})<br/>${params.seriesName}：${params.data[2]}人`
       }
     },
     grid: {
@@ -758,22 +758,19 @@ export function scatter (id, datas, gridData) {
       }
     },
     series: [{
-      name: '观看时长',
+      name: '观看人数',
       type: 'scatter',
       symbolSize: function (val) {
-        return val[2] * 60 / maxValue
+        return val[2] * 50 / maxValue
       },
       itemStyle: {
         normal: {
           color: '#4B5AFE',
-          shadowBlur: 10,
+          shadowBlur: 6,
           shadowColor: '#333'
         }
       },
-      data: datas.data,
-      animationDelay: function (idx) {
-        return idx * 5
-      }
+      data: datas.data
     }]
   }
   let myChart = echarts.init(document.getElementById(id))

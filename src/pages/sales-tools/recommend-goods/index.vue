@@ -20,7 +20,7 @@
           <th>商品状态</th>
           <th>原始价格</th>
           <th>优惠价格</th>
-          <th>操作</th>
+          <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
         <draggable element="tbody" v-model="tableData" :options="{handle:'.item'}">
@@ -37,11 +37,10 @@
             <td>{{row.title}}</td>
             <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
             <td>
-              <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
-              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
+              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':row.price}}</span><span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':row.price}}</span>
             </td>
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
-            <td>
+            <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row,ind)">编辑</el-button>
                 <el-button type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
@@ -249,7 +248,7 @@
       border: 1px solid #e2e2e2;
       border-radius: 4px;
       background-color: white;
-      min-height: 520px;
+      min-height: 550px;
       table thead tr th,
       table tbody tr td {
         border-color: #ebeef5;
@@ -270,7 +269,7 @@
           th,
           td {
             color: #222222;
-            padding-left: 10px;
+            padding-left: 20px;
             font-weight: 400;
             border-right-color: transparent !important;
             border-left-color: transparent !important;

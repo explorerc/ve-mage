@@ -374,7 +374,7 @@ export default {
       width: 1124px;
       .block1-item {
         width: 120px;
-        height: 120px;
+        min-height: 120px;
         margin-right: 80px;
         margin-bottom: 30px;
         &:nth-of-type(6) {
@@ -390,9 +390,10 @@ export default {
   }
   .section7 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
+      padding-bottom: 40px;
     }
     .font-content {
       margin-top: 70px;

@@ -725,12 +725,23 @@
           line-height: 40px;
           width: 200px;
           margin-right: 0;
-          .msg-tip-box span {
-            position: absolute;
-            max-width: 500px;
-            width: 270px;
-            top: 10px;
-            left: 30px;
+          .msg-tip-box{
+            top: 3px;
+            height: 14px;
+            span {
+              position: absolute;
+              max-width: 500px;
+              width: 270px;
+              top: 10px;
+              left: 30px;
+            }
+            i{
+              width: 14px;
+              height: 14px;
+              line-height: 14px;
+              color: #222;
+              font-size: 12px;
+            }
           }
           .require {
             margin-right: 25px;

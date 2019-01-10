@@ -96,6 +96,7 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-cascader
+          expand-trigger="hover"
           v-model="citySelect"
           :options="options"
           @change="handleAreaChange">
@@ -458,8 +459,8 @@
 <style lang="scss" scoped>
   .data-box {
     .export-btn {
-      height: 34px;
-      line-height: 34px;
+      height: 30px;
+      line-height: 28px;
       padding: 0 20px;
     }
     .data-pad {
@@ -477,7 +478,7 @@
     .search-total {
       height: 34px;
       line-height: 34px;
-      margin: 30px 0;
+      margin: 20px 0;
     }
     .search-item /deep/ {
       display: inline-block;
@@ -485,6 +486,10 @@
       line-height: 34px;
       .el-select {
         display: inline-block;
+      }
+      .com-input input {
+        height: 30px;
+        line-height: 28px;
       }
       .search-title {
         margin-right: 5px;
@@ -520,6 +525,7 @@
       position: relative;
       padding-top: 30px;
       padding-bottom: 20px;
+      min-height: 550px;
       .export-btn {
         position: absolute;
         top: -14px;

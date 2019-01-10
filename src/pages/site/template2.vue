@@ -465,7 +465,7 @@ export default {
       width: 1124px;
       .block1-item {
         width: 200px;
-        height: 100px;
+        min-height: 100px;
         margin-right: 30px;
         margin-bottom: 30px;
         border: 1px solid rgba(226, 226, 226, 1);
@@ -482,10 +482,11 @@ export default {
   }
   .section9 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
       padding-top: 70px;
+      padding-bottom: 40px;
     }
     .font-content {
       text-align: left;

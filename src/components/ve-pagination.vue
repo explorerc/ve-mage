@@ -42,5 +42,15 @@
 </script>
 
 <style lang="scss">
-
+  .pagination-box{
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+      background-color: #4B5AFE;
+      &:hover{
+        color: #fff;
+      }
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled):hover {
+      color: #4B5AFE;
+    }
+  }
 </style>

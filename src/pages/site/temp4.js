@@ -10,13 +10,15 @@ export default function () {
         color: 'rgba(4,4,4,1)',
         hideVideo: false,
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       logo: {
         url: require('assets/image/tp_logo.png'),
         link: '',
         enable: true,
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+        uploadImgErrorMsg: ''
       },
       nav: {
         enable: true,
@@ -71,7 +73,8 @@ export default function () {
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
           },
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -88,7 +91,8 @@ export default function () {
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
           },
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -105,7 +109,8 @@ export default function () {
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
           },
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -130,7 +135,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸395*320'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸395*320',
+          uploadImgErrorMsg: ''
         }]
       }
     },
@@ -142,7 +148,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(30,101,231,1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*820'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*820',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -151,7 +158,7 @@ export default function () {
       video: {
         videoType: 'upload',
         recordId: 'a534a675',
-        url: "<iframe src='http://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
+        url: "<iframe src='https://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
         enable: true
       }
     },
@@ -163,7 +170,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*515'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*515',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -184,7 +192,8 @@ export default function () {
             text: '了解详情',
             target: '_self'
           },
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸370*270'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸370*270',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -198,7 +207,8 @@ export default function () {
             text: '了解详情',
             target: '_self'
           },
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸370*270'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸370*270',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
@@ -212,7 +222,8 @@ export default function () {
             text: '了解详情',
             target: '_self'
           },
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸370*270'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸370*270',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -225,7 +236,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*385'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*385',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -241,7 +253,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -250,7 +263,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -259,7 +273,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -268,7 +283,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -277,7 +293,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -286,7 +303,8 @@ export default function () {
           btn: {},
           hrefType: '_define',
           target: '_self',
-          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120'
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸120*120',
+          uploadImgErrorMsg: ''
         }
         ]
       }
@@ -299,7 +317,8 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(7,29,71,1)',
-        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*330'
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*330',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,

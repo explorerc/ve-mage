@@ -18,7 +18,7 @@
       <div class="nav-blank-title">图组</div>
       <div class="add-nav-box">
         <span class='add-nav' @click="addBlock"><i class='iconfont icon-jiahao'></i>添加图组</span>
-        <span class='tips'>最多可添加{{max}}个图组</span>
+        <span class='tips' :class="{'error':outlen}">最多可添加{{max}}个图组</span>
       </div>
       <ul class="block1-edit-group">
         <li v-for="(item,index) in value.list" :key="'block1_edit_item'+index">
@@ -32,26 +32,16 @@
               <el-radio v-model="item.type" label="left">图片左</el-radio>
             </div>
             <div class='img-upload-box'>
-              <!-- <com-upload
-      accept="png|jpg|jpeg|bmp|gif"
-      uploadTxt="上传"
-      actionUrl="/api/upload/image"
-      inputName="file"
-      :fileSize="2048"
-      :exParams="{}"
-      @load="uploadLoad($event,index)"
-      >
-      </com-upload> -->
-           <label class='normal'>上传图片</label>
-            <ve-upload
-            :title="item.imgDesc"
-            accept="png|jpg|bmp|gif"
-            :fileSize="2048"
-            :errorMsg="item.uploadImgErrorMsg"
-            :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
-             @error="uploadError($event,index)"
-             @success="uploadImgSuccess($event,index)">
-             </ve-upload>
+              <label class='normal'>上传图片</label>
+              <ve-upload
+              :title="item.imgDesc"
+              accept="png|jpg|bmp|gif"
+              :fileSize="2048"
+              :errorMsg="item.uploadImgErrorMsg"
+              :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
+              @error="uploadError($event,index)"
+              @success="uploadImgSuccess($event,index)">
+              </ve-upload>
             </div>
             <!-- <span class="img-tips" v-html="item.imgDesc"></span> -->
             <label class='normal'>文字内容</label>
@@ -140,6 +130,7 @@ export default {
   },
   data () {
     return {
+      outlen: false,
       inpError: '',
       active: -1,
       newDesc: '',
@@ -181,6 +172,8 @@ export default {
           imgDesc: this.newDesc
         })
         this.active = len
+      } else {
+        this.outlen = true
       }
     },
     titleClick (index) {
@@ -192,6 +185,7 @@ export default {
     },
     removeClick (index) {
       if (this.value.list.length > this.min) {
+        this.outlen = false
         this.value.list.splice(index, 1)
       }
     },
@@ -202,7 +196,6 @@ export default {
       }
     },
     uploadImgSuccess (data, index) {
-      // debugger
       // let ret = JSON.parse(data.data)
       this.value.list[index].img = `${data.name}`
       // let ret = JSON.parse(data.data)
@@ -457,6 +450,9 @@ export default {
       padding-top: 8px;
       color: $color-gray;
       font-size: 14px;
+      &.error {
+        color:$color-error;
+      }
     }
     .add-nav {
       display: block;

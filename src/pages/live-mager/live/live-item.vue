@@ -32,8 +32,8 @@
         <transition name="slide-fade">
           <div class="live-more" v-show="showMore">
             <!--<span @click.stop="handleClick(action.role)">角色</span>-->
-            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众列表</span>
             <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.data)">活动数据</span>
+            <span :class="{disabled:(liveData.status==='PREPARE'||liveData.status==='LIVING'||!liveData.data_finish_time)}" @click.stop="handleClick(action.viewer)">观众列表</span>
             <span :class="{disabled:liveData.status==='LIVING'}" @click.stop="handleClick(action.delete)">删除</span>
           </div>
         </transition>
@@ -153,7 +153,8 @@
   }
   .live-img {
     cursor: pointer;
-    height: calc(100% - 94px);
+    /*height: calc(100% - 94px);*/
+    height: calc(100% - 100px);
     background-size: 100% 100%;
     border-bottom: 1px solid $color-bd;
     background-position: center center;
@@ -171,9 +172,9 @@
   }
   .live-md {
     cursor: pointer;
-    height: 60px;
-    padding: 5px 0;
-    cursor: pointer;
+    /*height: 60px;*/
+    height: 70px;
+    padding: 8px 0;
     span {
       display: inline-block;
       min-width: 60%;
@@ -201,8 +202,7 @@
     span.item {
       display: inline-block;
       float: left;
-      margin: 0 20px;
-      margin-right: 10px;
+      margin-left: 20px;
       text-align: center;
       cursor: pointer;
       color: #555;
@@ -236,7 +236,8 @@
         border-radius: 4px;
         span {
           display: block;
-          text-align: center;
+          text-align: left;
+          padding-left: 20px;
           height: 40px;
           line-height: 40px;
           &:hover {
@@ -251,7 +252,7 @@
         background: url('~assets/image/list/live.svg') no-repeat center;
         background-size: contain;
         & ~ span {
-          padding-left: 10px;
+          padding-left: 5px;
           position: relative;
           bottom: 4px;
         }

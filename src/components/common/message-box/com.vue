@@ -173,6 +173,7 @@
         .ve-message-box__header {
           height: 40px;
           line-height: 40px;
+          border-radius: 4px 4px 0 0;
           background-color: $color-default;
           button {
             color: #555;
@@ -274,7 +275,7 @@
         .button--cancel {
           padding: 0;
           &:hover {
-            color: $color-default;
+            color: #555;
             &[type='error'] {
               color: $color-red;
             }

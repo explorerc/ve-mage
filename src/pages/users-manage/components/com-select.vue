@@ -12,7 +12,7 @@
           :value="item.value">
         </el-option>
       </el-select>
-      <el-cascader v-else-if="type === 'double'"
+      <el-cascader expand-trigger="hover" v-else-if="type === 'double'"
       :options="selectValue"
     v-model="selectedOptions"
     @change="handleChange">

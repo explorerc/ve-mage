@@ -79,7 +79,7 @@
                 @mouseover="showQrcodeBox = true"
                 @mouseout="showQrcodeBox = false"><i></i>扫码观看
             <ul v-show='showQrcodeBox'>
-              <li v-if='dataBrand[0].switch'>
+        <li v-if='dataBrand[0].switch' class='fis'>
         <p>活动官网</p>
         <img
           :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}site/${activityId}`)}`">
@@ -105,7 +105,7 @@
         <p class="title"
            v-else-if="status === '直播'">直播已开始</p>
         <p class="title"
-           v-else-if="status === '预约' && countDownstatus">直播即将开始</p>
+           v-else-if="status === '预告' && countDownstatus">直播即将开始</p>
         <p class="title"
            v-else-if="status === '结束'">直播已结束</p>
         <div class="count-box"
@@ -470,7 +470,7 @@
                     <template v-if="dataPromote[0].switch === true">
                       <template v-if="dataPromote[0].desc === 'PREPARE'">
                         <template v-if="isAppoint">报名</template>
-                        <template v-else>预约</template>
+                        <template v-else>预告</template>
                       </template>
                       <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
                       <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
@@ -480,7 +480,7 @@
                       <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
                       <template v-if="dataPromote[0].desc === 'PREPARE'">
                         <template v-if="isAppoint">报名</template>
-                        <template v-else>预约</template>
+                        <template v-else>预告</template>
                       </template>
                       <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
                       <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
@@ -1142,7 +1142,7 @@
               this.statusClass = 'ended'
               break
             case ('PREPARE'):
-              this.status = '预约'
+              this.status = '预告'
               this.statusClass = 'preview'
               break
           }
@@ -1223,7 +1223,7 @@
       },
       getStep () { // 获取当前活动阶段
         switch (this.status) {
-          case '预约':
+          case '预告':
             if (this.isPublished) {
               this.currStep = 'isPublish'
               console.log('发布页面后，直播未开始')
@@ -1528,7 +1528,7 @@
       width: 100%;
       height: 36px;
       text-align: center;
-      line-height: 36px;
+      line-height: 35px;
       margin-top: 14px;
       background: rgba(239, 239, 239, 0.7);
       border-radius: 18px;
@@ -1740,6 +1740,12 @@
         }
       }
       .qrcode-box {
+        &:before {
+          right: -21px;
+        }
+        &:hover::before {
+          right: -21px !important;
+        }
         left: 15px;
         i {
           background-image: url('~assets/image/detail/qrcode.png');
@@ -1788,6 +1794,8 @@
           }
           li.sub {
             position: relative;
+          }
+          li.fis {
             &::before {
               content: '';
               top: 50%;
@@ -1797,7 +1805,7 @@
               height: 160px;
               background: rgba(226, 226, 226, 1);
               border-radius: 1px;
-              left: -3px;
+              right: -1px;
             }
           }
         }

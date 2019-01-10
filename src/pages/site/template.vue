@@ -239,31 +239,31 @@ export default {
       canPaas: true
     }
   },
-  /* 路由守卫，离开当前页面之前被调用 */
-  beforeRouteLeave (to, from, next) {
-    if (this.canPaas) {
-      next(true)
-      return false
-    }
-    if (!this.isPreview) {
-      this.$messageBox({
-        header: '提示',
-        width: '400px',
-        content: '是否放弃当前编辑？',
-        cancelText: '否',
-        confirmText: '是',
-        handleClick: (e) => {
-          if (e.action === 'confirm') {
-            next(true)
-          } else {
-            next(false)
-          }
-        }
-      })
-    } else {
-      next(true)
-    }
-  },
+  // /* 路由守卫，离开当前页面之前被调用 */
+  // beforeRouteLeave (to, from, next) {
+  //   if (this.canPaas) {
+  //     next(true)
+  //     return false
+  //   }
+  //   if (!this.isPreview) {
+  //     this.$messageBox({
+  //       header: '提示',
+  //       width: '400px',
+  //       content: '是否放弃当前编辑？',
+  //       cancelText: '否',
+  //       confirmText: '是',
+  //       handleClick: (e) => {
+  //         if (e.action === 'confirm') {
+  //           next(true)
+  //         } else {
+  //           next(false)
+  //         }
+  //       }
+  //     })
+  //   } else {
+  //     next(true)
+  //   }
+  // },
   mounted () {
     this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
     if (this.$route.path.indexOf('edit') === -1) {
@@ -279,7 +279,8 @@ export default {
   methods: {
     copyLink () {
       this.$toast({
-        content: '复制成功'
+        content: '复制成功',
+        position: 'center'
       })
       this.share.link.copyClipboard()
     },
@@ -731,7 +732,7 @@ export default {
               width: 160px;
               height: 160px;
               padding: 8px;
-              background-color: #F5F5F5;
+              background-color: #f5f5f5;
             }
             img {
               display: block;
@@ -761,21 +762,20 @@ export default {
                   border-right: none;
                 }
               }
-
             }
             .com-button {
               border: none;
-              background-color: #FFD021;
+              background-color: #ffd021;
               opacity: 1;
               color: #222;
               z-index: 2;
               border-radius: 0 4px 4px 0;
               font-size: 14px;
               &:hover {
-                background-color: #FDD43F;
+                background-color: #fdd43f;
               }
               &:active {
-                background-color: #EEC11A;
+                background-color: #eec11a;
               }
             }
           }
@@ -841,7 +841,7 @@ export default {
     background-color: #fff;
     .btn-group {
       float: right;
-      button{
+      button {
         vertical-align: middle;
       }
     }

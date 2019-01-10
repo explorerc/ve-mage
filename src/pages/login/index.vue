@@ -720,10 +720,10 @@ export default {
         }
       }
       &:hover {
-        background-color: #fdd43f;
+        background-color: #FDD43F;
       }
       &:active {
-        background-color: #eec11a;
+        background-color: #EEC11A;
       }
       .fr {
         margin-left: 6px;

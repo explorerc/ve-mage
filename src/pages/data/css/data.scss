@@ -59,6 +59,11 @@
       .item-title {
         display: block;
         font-size: 18px;
+        /deep/ {
+          .ve-tip-box i {
+            color: #888;
+          }
+        }
       }
 
       .item-mid {
@@ -88,7 +93,6 @@
           .down {
             color: #FC5659;
           }
-
           .up {
             color: #4B5AFE;
           }
@@ -216,18 +220,21 @@
 
   .msg-table-box {
     position: relative;
-    padding: 40px 0 10px 0;
-
+    padding: 0 0 10px 0;
+    &.msg-export-box {
+      padding: 40px 0 10px 0;
+    }
     .table-box {
       min-height: 100px;
       max-height: 384px;
       overflow-x: hidden;
       overflow-y: auto;
-      margin-top: 20px;
+      margin-top: 10px;
+      padding-right: 4px;
     }
     .export-btn {
       position: absolute;
-      top: 10px;
+      top: 4px;
       right: 0;
       height: 34px;
       line-height: 1;

@@ -122,6 +122,7 @@
         <el-menu-item-group>
           <el-menu-item index="/setAccount">账号设置</el-menu-item>
           <el-menu-item index="/assetMager/assetList">资产管理</el-menu-item>
+          <el-menu-item index="/wxserver/wxserve">微信服务号</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
