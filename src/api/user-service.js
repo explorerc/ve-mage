@@ -19,5 +19,6 @@ export default {
   GET_CUSTOMER_DETAIL: '/user/customer/detail', // 用户详情
   GET_SURVER_LIST: '/user/customer/survey-list', // 用户详情报名/问卷列表
   GET_BEHAVIOR_LIST: '/user/customer/behavior-list', // 用户详情足迹/行为列表
-  POST_CUSTOMER_UPDATE: '/user/customer/update' // 用户详情足迹/行为列表
+  POST_CUSTOMER_UPDATE: '/user/customer/update', // 用户详情足迹/行为列表
+  GET_LOGIN_DATE: 'https://www.vhall.com/index.php?r=home/login/getLoginBanner&app=zhike' // 用户详情足迹/行为列表
 }
