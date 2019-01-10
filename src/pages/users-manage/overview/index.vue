@@ -38,7 +38,7 @@
               {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜力用户 ({{uersInfo[4].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='近期偶尔参加过您的直播活动<br>在直播中偶尔与主持人的互动'></ve-msg-tips>
+            潜力用户 ({{uersInfo[4].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='近期偶尔参加过您的直播活动，<br>在直播中偶尔与主持人的互动'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -47,7 +47,7 @@
               {{uersInfo[3].val}}</a>
           </p>
           <p class="v-title">
-            一般用户 ({{uersInfo[3].centage}})<ve-msg-tips class='user-tips' tip='近期偶尔参加过您的直播活动，在直播中几乎不予主持人进行互动'></ve-msg-tips>
+            一般用户 ({{uersInfo[3].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='近期偶尔参加过您的直播活动，<br>在直播中几乎不予主持人进行互动'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='很久没有参加过您的直播活动了<br>之前参与过直播，其活跃度也很低'></ve-msg-tips>
+            流失用户 ({{uersInfo[5].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='很久没有参加过您的直播活动了，<br>之前参与过直播，其活跃度也很低'></ve-msg-tips>
           </p>
         </li>
       </ol>
