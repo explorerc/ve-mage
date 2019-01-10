@@ -1743,6 +1743,9 @@
         &:before {
           right: -21px;
         }
+        &:hover::before {
+          right: -21px !important;
+        }
         left: 15px;
         i {
           background-image: url('~assets/image/detail/qrcode.png');
