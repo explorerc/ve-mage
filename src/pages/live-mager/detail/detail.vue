@@ -79,7 +79,7 @@
                 @mouseover="showQrcodeBox = true"
                 @mouseout="showQrcodeBox = false"><i></i>扫码观看
             <ul v-show='showQrcodeBox'>
-              <li v-if='dataBrand[0].switch'>
+        <li v-if='dataBrand[0].switch' class='fis'>
         <p>活动官网</p>
         <img
           :src="`http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.PC_HOST}site/${activityId}`)}`">
@@ -1788,6 +1788,8 @@
           }
           li.sub {
             position: relative;
+          }
+          li.fis {
             &::before {
               content: '';
               top: 50%;
@@ -1797,7 +1799,7 @@
               height: 160px;
               background: rgba(226, 226, 226, 1);
               border-radius: 1px;
-              left: -3px;
+              right: -1px;
             }
           }
         }
