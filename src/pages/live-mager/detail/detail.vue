@@ -1740,6 +1740,9 @@
         }
       }
       .qrcode-box {
+        &:before {
+          right: -21px;
+        }
         left: 15px;
         i {
           background-image: url('~assets/image/detail/qrcode.png');
