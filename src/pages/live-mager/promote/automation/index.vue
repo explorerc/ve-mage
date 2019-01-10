@@ -408,6 +408,7 @@
     <com-test v-if='testModal'
               :imgUrl="qrImgurl"
               @closeTest='closeTest()'
+              @successTest='closeTest()'
               :type="testType"
               :isAuto='true'
               :noticeId="noticeTaskId"></com-test>
