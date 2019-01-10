@@ -558,9 +558,10 @@ export default {
         .v-center {
           position: absolute;
           top: 50%;
-          transform: translateY(-50%);
-          left: 100px;
+          transform: translate(-50%, -50%);
+          left: 50%;
           text-align: left;
+          word-break: break-all;
         }
         .v-title {
           font-size: 42px;
