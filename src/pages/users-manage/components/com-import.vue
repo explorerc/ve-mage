@@ -71,9 +71,9 @@
           </div>
         </div>
         <div class="item download">
-          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入1000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
+          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入5000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
         </div>
-        <el-button round class='default-button confirm' @click="addHandler" style='height:34px;line-height:34px;'>导入</el-button>
+        <el-button round class='default-button confirm' :disabled="importDisable" @click="addHandler" style='height:34px;line-height:34px;'>导入</el-button>
       </div>
       <div class="content import-success" v-else>
         <dl>
@@ -124,7 +124,8 @@ export default {
         id: '1',
         name: '黄金糕'
       }],
-      selval: ''
+      selval: '',
+      importDisable: false
     }
   },
   props: {
@@ -244,15 +245,18 @@ export default {
       }
     },
     groupImportData (res) {
+      this.importDisable = true
       this.$config({ handlers: true }).$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
         console.log(res)
         this.importSuccess = true
+        this.importDisable = false
         this.importSuccessData = {
           success: res.data.success,
           error: res.data.invalid,
           repeat: res.data.repeat
         }
       }).catch((res) => {
+        this.importDisable = false
         this.uploadStatus = 'beforeUpload'
         this.loading = false
         this.errorTxt = res.msg
