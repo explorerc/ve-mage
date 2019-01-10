@@ -525,6 +525,7 @@
       position: relative;
       padding-top: 30px;
       padding-bottom: 20px;
+      min-height: 550px;
       .export-btn {
         position: absolute;
         top: -14px;

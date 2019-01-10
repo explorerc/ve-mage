@@ -16,7 +16,7 @@
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
             <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="30" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
-            <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
+            <span class="error-tips" v-if='titleEmpty' style="display: block">请填写直播标题</span>
           </div>
         </div>
         <div class="from-row" >
@@ -390,9 +390,11 @@ export default {
     showClooseTag () {
       this.$nextTick(() => {
         this.showChooseTag = true
+        this.tagEmpty = false
       })
     },
     addShowClooseTag () {
+      debugger
       this.canPaas = false
       this.showChooseTag = !this.showChooseTag
       this.$nextTick(() => {
