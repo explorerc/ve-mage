@@ -11,7 +11,7 @@
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item label="原始价格：" prop="price">
+      <el-form-item label="原始价格：" prop="price"  class="is-required">
         <div class="a_unit">
           <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
