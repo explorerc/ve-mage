@@ -4,6 +4,9 @@
       观看页
       <com-back></com-back>
     </p>
+    <div class="tips">
+      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现。
+    </div>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
         <com-tab label="品牌"
@@ -798,6 +801,27 @@ export default {
       margin-top: -12px;
       left: 30px;
     }
+  }
+}
+.tips {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: rgba(233, 235, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(129, 140, 254, 1);
+  margin-bottom: 20px;
+  font-size: 14px;
+  i {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background: url('~assets/image/excal.svg') no-repeat;
+    position: relative;
+    top: 3px;
+    right: 4px;
+    background-size: cover;
   }
 }
 </style>
