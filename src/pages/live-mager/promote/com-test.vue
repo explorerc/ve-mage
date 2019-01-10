@@ -115,6 +115,7 @@ export default {
           this.phoneError = '手机号码不符合规范'
         }
       }
+      this.$emit('successTest')
     },
     getCount (type) {
       this.$get(noticeService.GET_MSG_LIMIT, {
