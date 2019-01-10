@@ -55,7 +55,7 @@
                     <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
                   </template>
                   <template v-else>
-                    <img src="../../assets/image/logo.png" alt="logo" class="v-logo pull-left">
+                    <img src="../../assets/image/logo_pc.png" alt="logo" class="v-logo pull-left">
                   </template>
                   <div class="pull-left">
                     <p class="v-live-title">
@@ -73,7 +73,7 @@
               <div class="h5-header">
                 <div class="logo-box">
                   <img :src="defaultLogoImg" class="h5-logo" v-if="defaultLogoImg">
-                  <img src="../../assets/image/logo.png" class="h5-logo" v-else>
+                  <img src="../../assets/image/logo_pc.png" class="h5-logo" v-else>
                 </div>
                 <div class="h5-header-content">
                   <p>{{activityTitle}}</p>
@@ -625,13 +625,13 @@ export default {
     position: relative;
     .v-logo {
       display: block;
-      max-width: 40px;
-      height: 13px;
+      max-width: 70px;
+      height: 17px;
       margin-right: 6px;
       position: relative;
-      top: -50%;
       left: 0;
-      transform: translateY(50%);
+      top: 2px;
+      // transform: translateY(50%);
     }
     .v-live-title {
       font-size: 16px;
