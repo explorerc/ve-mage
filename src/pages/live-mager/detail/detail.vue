@@ -105,7 +105,7 @@
         <p class="title"
            v-else-if="status === '直播'">直播已开始</p>
         <p class="title"
-           v-else-if="status === '预约' && countDownstatus">直播即将开始</p>
+           v-else-if="status === '预告' && countDownstatus">直播即将开始</p>
         <p class="title"
            v-else-if="status === '结束'">直播已结束</p>
         <div class="count-box"
@@ -241,7 +241,7 @@
         </div>
         <div>
           <template v-if="staticTime == '统计中...'">
-            <ol title='预约、直播中状态不能进入数据中心'>
+            <ol title='预告、直播中状态不能进入数据中心'>
               <li @click="linkTo($event,'/data/preview/')"
                   :class="'disabled'">活动数据
               </li>
@@ -470,7 +470,7 @@
                     <template v-if="dataPromote[0].switch === true">
                       <template v-if="dataPromote[0].desc === 'PREPARE'">
                         <template v-if="isAppoint">报名</template>
-                        <template v-else>预约</template>
+                        <template v-else>预告</template>
                       </template>
                       <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
                       <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
@@ -480,7 +480,7 @@
                       <template v-if="dataPromote[0].desc === 'NONE'">暂未设置</template>
                       <template v-if="dataPromote[0].desc === 'PREPARE'">
                         <template v-if="isAppoint">报名</template>
-                        <template v-else>预约</template>
+                        <template v-else>预告</template>
                       </template>
                       <template v-if="dataPromote[0].desc === 'LIVING'">直播中</template>
                       <template v-if="dataPromote[0].desc === 'PLAYBACK'">回放</template>
@@ -1142,7 +1142,7 @@
               this.statusClass = 'ended'
               break
             case ('PREPARE'):
-              this.status = '预约'
+              this.status = '预告'
               this.statusClass = 'preview'
               break
           }
@@ -1223,7 +1223,7 @@
       },
       getStep () { // 获取当前活动阶段
         switch (this.status) {
-          case '预约':
+          case '预告':
             if (this.isPublished) {
               this.currStep = 'isPublish'
               console.log('发布页面后，直播未开始')
