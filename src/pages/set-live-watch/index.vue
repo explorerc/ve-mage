@@ -625,7 +625,7 @@ export default {
     position: relative;
     .v-logo {
       display: block;
-      max-width: 70px;
+      max-width: 60px;
       height: 17px;
       margin-right: 6px;
       position: relative;
