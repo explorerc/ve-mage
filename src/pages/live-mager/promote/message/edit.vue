@@ -12,7 +12,7 @@
       <div class='mager-box border-box'>
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-title"><i class="star">*</i>邀约标题：</div>
             <div class="from-content">
               <com-input :value.sync="titleValue"
                          placeholder="请输入标题"
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="from-row">
-            <div class="from-title">接收人：</div>
+            <div class="from-title"><i class="star">*</i>接收人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver'
                          @click='chooseReceiver'>选择收信人</el-button>
@@ -51,6 +51,7 @@
                      @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
+              <div class="error-msg-bottom" v-if="errorData.sendPersonError">{{errorData.sendPersonError}}</div>
             </div>
           </div>
           <div class="from-row">
@@ -98,7 +99,7 @@
           </div>
           <div class="from-row"
                v-if='pickDate'>
-            <div class="from-title">选择时间：</div>
+            <div class="from-title"><i class="star">*</i>选择时间：</div>
             <div class="from-content">
               <el-date-picker v-model="date"
                               :editable="false"
@@ -110,6 +111,7 @@
                               :picker-options="pickerOptions"
                               @focus='dateFocus()'>
               </el-date-picker>
+              <div class="error-msg-bottom" v-if="errorData.awaitTimeError">{{errorData.awaitTimeError}}</div>
             </div>
           </div>
           <!-- <div class="from-row">
@@ -129,7 +131,7 @@
           <el-button class='default-button'
                      @click="test">测试发送</el-button>
           <el-button class='primary-button'
-                     @click="save" :disabled='saveDisabled'>保存</el-button>
+                     @click="save" :disabled='saveDisabled' v-html="sendSetting === 'SEND'? '立即发送' : '保存'"></el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -141,7 +143,6 @@
               @closeTest='closeTest'
               :msgTag="msgTag"
               :type="'SMS'"></com-test>
-  </div>
   </div>
 </template>
 
@@ -210,7 +211,9 @@ export default {
       errorData: {
         titleError: '',
         msgError: '',
-        tagError: ''
+        tagError: '',
+        sendPersonError: '',
+        awaitTimeError: ''
       },
       isValided: false,
       canPass: true,
@@ -298,7 +301,7 @@ export default {
       this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
-          content: '保存成功'
+          content: this.sendSetting === 'SEND' ? '发送成功' : '保存成功'
         })
         // 跳转到列表页面
         this.canPass = true
@@ -393,6 +396,7 @@ export default {
       this.selectedGroupListStr = str.substring(0, str.length - 1)
       this.selectedGroupList = arr
       this.groupIdStr = idStr
+      this.errorData.sendPersonError = ''
     },
     selectedTagListfn (arr, str, idStr) {
       this.selectedTagListStr = str.substring(0, str.length - 1)
@@ -450,6 +454,10 @@ export default {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.msgContent.length ? '' : '请输入短信内容'
       this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
+      this.errorData.sendPersonError = this.groupIdStr ? '' : '请选择收信人'
+      if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
+        this.errorData.awaitTimeError = '请选择定时发送时间'
+      }
       if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
         return true
@@ -479,6 +487,7 @@ export default {
     },
     dateFocus () {
       this.date = this.defaultValue
+      this.errorData.awaitTimeError = ''
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -506,7 +515,12 @@ export default {
     sendSetting: {
       handler (newValue) {
         this.canPass = true
-        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+        if (newValue === 'AWAIT') {
+          this.pickDate = true
+        } else {
+          this.pickDate = false
+          this.errorData.awaitTimeError = ''
+        }
       }
     }
     // groupList: {
@@ -577,6 +591,12 @@ export default {
   .com-input .limit.area {
     bottom: 37px;
     right: 7px;
+  }
+  .error-msg-bottom {
+    position: absolute;
+    bottom: -16px;
+    left: 10px;
+    color: #fc5659;
   }
   .href-box {
     position: absolute;

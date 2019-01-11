@@ -7,6 +7,7 @@
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信邀约</button></router-link>
         </div>
+        <span class="send-box fr" :class='{"spe":!tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
       </div>
       <div class="content table">
         <template v-if="tableData.length">
@@ -105,12 +106,15 @@ export default {
       delId: '',
       delIdx: '',
       type: '',
-      loading: false
+      loading: false,
+      balanceCount: 0,
+      totalCount: 0
     }
   },
   created () {
     this.queryList()
     this.queryInfo()
+    this.getLimit()
     EventBus.$emit('breads', [{
       title: '活动管理'
     }, {
@@ -160,6 +164,17 @@ export default {
           item.toolShow = false
         })
       }
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.$route.params.id,
+        type: 'SMS'
+      }).then((res) => {
+        console.log(res)
+        this.totalCount = res.data.total
+        this.balanceCount = res.data.balance
+      })
     },
     queryList () {
       this.$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
@@ -228,6 +243,16 @@ export default {
 @import '~assets/css/mixin.scss';
 
 .live-title {
+  .send-box {
+    display: inline-block;
+    color: #888;
+    font-size: 14px;
+    line-height: 67px;
+    margin-right: 14px;
+    &.spe {
+      margin-right: 84px;
+    }
+  }
   .right-box {
     float: right;
     margin-right: 80px;
@@ -236,7 +261,7 @@ export default {
       padding: 0 20px;
       /*width: 120px;*/
       height: 30px;
-      line-height: 30px;
+      line-height: 29px;
     }
   }
 }

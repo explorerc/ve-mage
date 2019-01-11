@@ -5,7 +5,7 @@
       <com-back></com-back>
     </p>
     <div class="tips">
-      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现。
+      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现
     </div>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
@@ -147,7 +147,7 @@
                   <el-checkbox v-model="isShowWatch">活动观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
                   <el-checkbox v-model="isShowGuided">活动引导页</el-checkbox>
-                  <ve-tips :tip="'选择分享设置应用的页面，其中包括活动引导页、活动官网、活动引导页三个页面。'" :tipType="'html'" ></ve-tips>
+                  <ve-tips :tip="'选择分享设置应用的页面，其中包括活动观看页、活动官网、活动引导页三个页面。'" :tipType="'html'" ></ve-tips>
                 </p>
               </div>
             </div>
@@ -307,6 +307,7 @@ export default {
     }
   },
   mounted () {
+    document.querySelector('.main-container').scrollTop = 0
   },
   watch: {},
   /* 路由守卫，离开当前页面之前被调用 */

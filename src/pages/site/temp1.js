@@ -264,6 +264,37 @@ export default function () {
         enable: true,
         target: '_self'
       }
+    },
+    section8Data: {
+      panel: {
+        bgType: 'color',
+        videoType: 'upload',
+        img: '',
+        color: 'rgba(0, 0, 0, 0)',
+        link: '',
+        hideVideo: false,
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
+      },
+      font: {
+        enable: true,
+        content: `<h1 style="text-align: center; line-height: 1.8;">
+        <font color="#ffffff" style="font-size: 42px;">2018第六届设计金鹰奖大展</font>
+        </h1><div style="text-align: center; line-height: 1.8;">
+        <font color="#ffffff"><span style="font-size: 18px;">2018年9月8日-9月11日，北京798艺术区</span><br></font>
+        </div><div style="text-align: center; line-height: 1.8;"><font color="#ffffff">
+        <span style="font-size: 18px;">第六届设计金鹰奖大展是由微吼直播主办，邀请业内知人士参与评审的年度盛会</span><br></font></div>`
+      },
+      btn: {
+        bgColor: 'rgba(255,208,33,1)',
+        fontColor: 'rgba(34,34,34,1)',
+        text: '活动报名',
+        link: '',
+        hrefType: '_define',
+        enable: true,
+        target: '_self'
+      }
     }
   }
 }
