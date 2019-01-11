@@ -394,6 +394,9 @@
       }
       .btn-dd {
         margin-top: 20px;
+        button {
+          cursor: default;
+        }
       }
     }
     .overview .tips {
