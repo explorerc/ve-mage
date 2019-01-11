@@ -19,12 +19,12 @@
         </div>
         <div class="from-row">
           <div class="from-title">收件人：</div>
-          <div class="from-content receiver" >
+          <div :class="{'from-content':true, receiver:true, 'send-detail':email.status=='SEND'}" >
             <template v-if="selectedGroupList.length || selectedTagList.length">
-              <div >
+              <div class="receiver-item" v-if="selectedGroupList.length">
                 <span v-for='(item,idx) in selectedGroupList'>{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></span>
               </div>
-              <div>
+              <div class="receiver-item" v-if="selectedTagList.length">
                 <span v-for='(item,idx) in selectedTagList'>{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></span>（合计{{email.expectNum}}人）
               </div>
               <el-button  class='send-detail default-button' @click='sendDetail = true' v-if="email.status=='SEND'">发送详情</el-button>
@@ -374,6 +374,9 @@ export default {
     position: relative;
     width: 710px;
     flex: inherit !important;
+    &.send-detail{
+      margin-top: -10px;
+    }
     .el-button {
       // position: absolute;
       // top: -10px;
@@ -387,6 +390,9 @@ export default {
         padding-bottom: 0px;
         margin-bottom: 10px;
       }
+    }
+    .receiver-item:last-child{
+      margin-bottom: -10px;
     }
   }
 }
