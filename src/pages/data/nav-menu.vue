@@ -39,7 +39,7 @@
     display: inline-block;
     text-align: center;
     height: 30px;
-    line-height: 30px;
+    line-height: 29px;
     font-size: 0;
     border-radius: 15px;
     border: solid 1px #BBBBBB;
