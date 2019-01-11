@@ -68,7 +68,7 @@
     </message-box>
     <div class="email-bottom">
       <button class="default-button fl"
-              @click="clickSendTestEmail">发送测试邮件
+              @click="clickSendTestEmail" style="width: auto;">发送测试邮件
       </button>
       <button class="primary-button fr"
               @click="nextEmail">下一步
@@ -467,6 +467,7 @@
       padding: 0 20px;
       background-color: #fff;
       button {
+        width: 120px;
         margin-top: 10px;
       }
       .margin-fl {
