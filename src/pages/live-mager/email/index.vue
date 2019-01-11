@@ -15,7 +15,7 @@
         通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
       </div>
       <div class="table-list-box"
-           style="padding-top: 20px;">
+           style="padding-top: 30px;">
            <template v-if='emailList.length'>
             <el-table :data="emailList"
                       style="width: 100%">
@@ -358,7 +358,7 @@ export default {
 .table-list-box {
   .empty {
     text-align: center;
-    margin: 100px 0;
+    margin: 100px 0 0;
     .txt {
       padding-top: 40px;
       font-size: 14px;
