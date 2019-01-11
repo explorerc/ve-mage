@@ -2,8 +2,8 @@
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="edit-wx-page live-mager" @keydown="canPass = false">
       <div class="live-title">
-        <span class="title" v-if="inviteId">编辑微信通知</span>
-        <span class="title" v-else>创建微信通知</span>
+        <span class="title" v-if="inviteId">编辑微信邀约</span>
+        <span class="title" v-else>创建微信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
@@ -34,7 +34,7 @@
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
               <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
-              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
+              <ve-tips tip="微信邀约只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -213,10 +213,10 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '微信通知',
+      title: '微信邀约',
       url: `/liveMager/promote/wechat/list/${this.activityId}`
     }, {
-      title: this.inviteId ? '编辑微信通知' : '新建微信通知'
+      title: this.inviteId ? '编辑微信邀约' : '新建微信邀约'
     }])
   },
   mounted () {

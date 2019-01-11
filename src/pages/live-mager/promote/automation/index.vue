@@ -1,14 +1,14 @@
 <template>
   <div class="content live-mager auto-page">
     <div class="live-title">
-      <span class="title">自动化通知</span>
+      <span class="title">自动化邀约</span>
       <el-switch v-model="isOpen"
                  inactive-color="#DEE1FF"
                  :width="32"
                  active-color="#FFD021"
                  @change='openSwitch'>
       </el-switch>
-      <!--<span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>-->
+      <!--<span class='tips'>开启自动化邀约，自动通知您的观众，提升活动服务体验</span>-->
       <com-back></com-back>
     </div>
     <div class='preview mager-box border-box clearfix switch-cover'  :class='{"close":!isOpen}'>
@@ -413,7 +413,7 @@
               :isAuto='true'
               :noticeId="noticeTaskId"></com-test>
 
-    <!-- <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
+    <!-- <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信邀约？" center class='del-modal'>
       <div class="del-footer" slot="footer">
         <com-button @click='delConfirm = false'>取消</com-button>
         <com-button type="primary" @click="deleteTask">确定</com-button>
@@ -598,7 +598,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '自动化通知'
+      title: '自动化邀约'
     }])
   },
   methods: {

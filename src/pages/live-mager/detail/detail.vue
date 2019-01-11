@@ -209,16 +209,16 @@
           <!-- <span>推广</span> -->
           <ol>
             <li v-show="dataPromote[0].switch"
-                @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化通知
+                @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">自动化邀约
             </li>
             <li v-show="dataPromote[1].switch"
                 @click="linkTo($event,'/liveMager/email/')">邮件邀约
             </li>
             <li v-show="dataPromote[2].switch"
-                @click="linkTo($event,'/liveMager/promote/msg/list/')">短信通知
+                @click="linkTo($event,'/liveMager/promote/msg/list/')">短信邀约
             </li>
             <li v-show="dataPromote[3].switch"
-                @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信通知
+                @click="linkTo($event,'/liveMager/promote/wechat/list/')">微信邀约
             </li>
           </ol>
         </div>
@@ -453,13 +453,13 @@
 
           <div class='item automaze'
                @click="linkTo($event,'/liveMager/promote/auto/preview/', dataPromote[0].switch)">
-            <!-- 自动化通知 -->
+            <!-- 自动化邀约 -->
             <div class="card">
               <div class='pic'>
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>自动化通知</span>
+                <span>自动化邀约</span>
                 <span class='des'>
                   <template v-if="isPublished">
                     <!-- 未开启 -->
@@ -534,11 +534,11 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>短信通知</span>
+                <span>短信邀约</span>
                 <span class='des'>
                   <!-- 已设置 -->
                   <template v-if="dataPromote[2].isSet">
-                    已设置短信通知
+                    已设置短信邀约
                   </template>
                   <!-- 未设置 -->
                   <template v-else>
@@ -559,11 +559,11 @@
                 <!-- <img :src="propImg"> -->
               </div>
               <div class='desc'>
-                <span>微信通知</span>
+                <span>微信邀约</span>
                 <span class='des'>
                   <!-- 已设置 -->
                   <template v-if="dataPromote[3].isSet">
-                    已设置微信通知
+                    已设置微信邀约
                   </template>
                   <!-- 未设置 -->
                   <template v-else>

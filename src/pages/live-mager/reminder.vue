@@ -105,8 +105,8 @@ export default {
   data () {
     return {
       reminderTypes: [
-        { value: '0', label: '短信通知' },
-        { value: '1', label: '微信通知' }
+        { value: '0', label: '短信邀约' },
+        { value: '1', label: '微信邀约' }
       ],
       reminderTimes: [
         { value: '0', label: '提前1天' },
