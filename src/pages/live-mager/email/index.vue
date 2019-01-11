@@ -318,7 +318,7 @@ export default {
   position: relative;
   .create-button {
     height: 30px;
-    line-height: 30px;
+    line-height: 29px;
     margin-right: 80px;
     margin-top: 17px;
     padding: 0 20px;
@@ -332,7 +332,7 @@ export default {
   display: inline-block;
   color: #888;
   font-size: 14px;
-  line-height: 63px;
+  line-height: 67px;
   margin-right: 10px;
 }
 
