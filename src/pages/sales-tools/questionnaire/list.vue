@@ -389,7 +389,7 @@ export default {
   }
   .v-table {
     width: 100%;
-    padding: 20px 20px 40px;
+    padding: 30px 20px 40px;
     border: 1px solid #e2e2e2;
     background-color: #fff;
     min-height: 550px;
@@ -444,7 +444,7 @@ export default {
       text-align: center;
       color: $color-font-sub;
       min-height: 400px;
-      padding: 95px 0;
+      padding: 100px 0 0;
       .img {
         width: 150px;
         height: 150px;
