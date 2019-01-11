@@ -5,7 +5,7 @@
       <com-back></com-back>
     </p>
     <div class="tips">
-      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现。
+      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现
     </div>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
