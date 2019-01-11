@@ -62,9 +62,7 @@
           <dd class='desc' v-if="desc.length>0">{{desc}}</dd>
           <dd class='desc' v-else>此处是卡片描述，最多可添加140个字</dd>
           <dd class='btn-dd' v-if="btnSwitch">
-            <a :href="btnLink" target="_blank">
-              <el-button class='primary-button btn'>{{btnTxt.length>0 ? btnTxt:'按钮'}}</el-button>
-            </a>
+            <el-button class='primary-button btn' >{{btnTxt.length>0 ? btnTxt:'按钮'}}</el-button>
           </dd>
         </dl>
         <div class="tips">
@@ -388,6 +386,11 @@
         height: 32px;
         line-height: 32px;
         text-align: center;
+        a {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
       }
       .btn-dd {
         margin-top: 20px;

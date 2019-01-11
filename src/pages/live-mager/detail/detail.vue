@@ -29,7 +29,7 @@
                      :width="32"
                      active-color="#FFD021"
                      @change="switchActive"></el-switch>
-          <ve-msg-tips v-if='!isPublished' class='user-tips' tip-type="html" tip='活动官网和活动引导页，只有在发布后，才能被访问。在开播前请点击页面进行发布'></ve-msg-tips>
+          <ve-msg-tips v-if='!isPublished' class='user-tips' tip-type="html" tip='活动官网和活动引导页，只有在发布后，才能被访问。在开播前请点击按钮进行发布'></ve-msg-tips>
           <span v-if="isPublished"
                 class='link-box'
                 @mouseover="showLinkBox = true"

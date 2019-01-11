@@ -86,6 +86,7 @@ export default {
       })
     },
     initVhallUpload () {
+      let _this = this
       window.vhallCloudDemandSDK(`#${this.uploadId}`, {
         params: {
           confirmBtn: `#${this.confirmId}`, // 保存按钮的ID
@@ -95,6 +96,8 @@ export default {
           app_id: this.vhallParams.appId
         },
         beforeUpload: (file) => {
+          const reg = /^[0-9a-zA-Z._\u4e00-\u9fa5]{1,30}$/
+          _this.fileName = file.name
           this.msgError = false
           this.uploadErrorMsg = '准备上传...'
           if (file.type !== 'video/mp4') {
@@ -103,6 +106,10 @@ export default {
             return false
           } else if (file.size / 1024 / 1024 > this.videoSize) {
             this.uploadErrorMsg = '视频大小请不要大于200MB'
+            this.msgError = true
+            return false
+          } else if (!reg.test(_this.fileName)) {
+            _this.uploadErrorMsg = '视频名称不能包含特殊字符，长度不能超过30个字'
             this.msgError = true
             return false
           }
