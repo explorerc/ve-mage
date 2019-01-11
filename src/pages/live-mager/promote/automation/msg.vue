@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <p>编辑微信通知2</p>
+    <p>编辑微信邀约2</p>
     <div class="from-box">
       <div class="from-row">
         <div class="from-title">短信模板：</div>

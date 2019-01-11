@@ -2,10 +2,10 @@
   <div class="content" @click.stop='closeAlltool' v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
-        <span class="title">微信通知</span>
+        <span class="title">微信邀约</span>
         <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
-          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信通知</button></router-link>
+          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信邀约</button></router-link>
         </div>
       </div>
       <div class="content table">
@@ -56,8 +56,8 @@
         <template v-else>
           <div class="empty">
             <div class="img"></div>
-            <div class="txt">您还没有添加微信通知，快去添加吧</div>
-            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信通知</el-button></router-link>
+            <div class="txt">您还没有添加微信邀约，快去添加吧</div>
+            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信邀约</el-button></router-link>
           </div>
         </template>
       </div>
@@ -120,7 +120,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.$route.params.id}`
     }, {
-      title: '微信通知'
+      title: '微信邀约'
     }])
   },
   methods: {

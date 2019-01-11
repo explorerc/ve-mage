@@ -4,7 +4,7 @@
        com-loading-text="拼命加载中">
     <div class="overview-wx-page live-mager">
       <div class="live-title">
-        <span class="title">短信通知</span>
+        <span class="title">短信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
@@ -109,7 +109,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '短信通知',
+      title: '短信邀约',
       url: `/liveMager/promote/msg/list/${this.activityId}`
     }, {
       title: '预览'

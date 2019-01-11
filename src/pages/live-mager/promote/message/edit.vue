@@ -5,8 +5,8 @@
     <div class="edit-msg-page live-mager"
          @keydown="canPass = false">
       <div class="live-title">
-        <span class="title" v-if="inviteId">编辑短信通知</span>
-        <span class="title" v-else>创建短信通知</span>
+        <span class="title" v-if="inviteId">编辑短信邀约</span>
+        <span class="title" v-else>创建短信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
@@ -238,10 +238,10 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activitId}`
     }, {
-      title: '短信通知',
+      title: '短信邀约',
       url: `/liveMager/promote/msg/list/${this.activitId}`
     }, {
-      title: this.inviteId ? '编辑短信通知' : '新建短信通知'
+      title: this.inviteId ? '编辑短信邀约' : '新建短信邀约'
     }])
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {
