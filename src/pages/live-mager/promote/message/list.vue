@@ -3,6 +3,7 @@
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
         <span class="title">短信邀约</span>
+        <span class="send-box fr">发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
         <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信邀约</button></router-link>
@@ -106,12 +107,15 @@ export default {
       delId: '',
       delIdx: '',
       type: '',
-      loading: false
+      loading: false,
+      balanceCount: 0,
+      totalCount: 0
     }
   },
   created () {
     this.queryList()
     this.queryInfo()
+    this.getLimit()
     EventBus.$emit('breads', [{
       title: '活动管理'
     }, {
@@ -171,6 +175,17 @@ export default {
           item.toolShow = false
         })
       }
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.$route.params.id,
+        type: 'SMS'
+      }).then((res) => {
+        console.log(res)
+        this.totalCount = res.data.total
+        this.balanceCount = res.data.balance
+      })
     },
     queryList () {
       this.$get(noticeService.GET_MSG_LIST, this.queryData).then((res) => {
@@ -239,12 +254,19 @@ export default {
 @import '~assets/css/mixin.scss';
 .live-title {
   position: relative;
+  .send-box {
+    display: inline-block;
+    color: #888;
+    font-size: 14px;
+    line-height: 67px;
+    margin-right: 214px;
+  }
   .right-box {
     float: right;
     height: 60px;
     .btn {
       height: 30px;
-      line-height: 30px;
+      line-height: 29px;
       position: absolute;
       top: 50%;
       right: 80px;
