@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="from-row" style='padding:4px 12px;'>
-            <div class="from-title">收信人：</div>
+            <div class="from-title"><i class="star">*</i>收信人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
               <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
@@ -59,6 +59,7 @@
                      @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
+              <div class="error-msg-bottom" v-if="errorData.sendPersonError">{{errorData.sendPersonError}}</div>
             </div>
           </div>
           <div class="from-row">
@@ -75,10 +76,11 @@
             </div>
           </div>
           <div class="from-row" v-if='pickDate'>
-            <div class="from-title">选择时间：</div>
+            <div class="from-title"><i class="star">*</i>选择时间：</div>
             <div class="from-content">
               <el-date-picker v-model="date" @focus='dateFocus()' :editable="false" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
+              <div class="error-msg-bottom" v-if="errorData.awaitTimeError">{{errorData.awaitTimeError}}</div>
             </div>
           </div>
           <!-- 模拟手机预览 -->
@@ -169,7 +171,9 @@ export default {
         hrefError: '',
         titleError: '',
         msgError: '',
-        tagError: ''
+        tagError: '',
+        sendPersonError: '',
+        awaitTimeError: ''
       },
       checkedData: [],
       isValided: false,
@@ -374,6 +378,7 @@ export default {
       this.selectedGroupListStr = str.substring(0, str.length - 1)
       this.selectedGroupList = arr
       this.groupIdStr = idStr
+      this.errorData.sendPersonError = ''
     },
     selectedTagListfn (arr, str, idStr) {
       this.selectedTagListStr = str.substring(0, str.length - 1)
@@ -431,6 +436,10 @@ export default {
     formValid () {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
+      this.errorData.sendPersonError = this.groupIdStr ? '' : '请选择收信人'
+      if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
+        this.errorData.awaitTimeError = '请选择定时发送时间'
+      }
       // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
       // if (this.hrefSetting === 'CUSTOM') {
       //   this.errorData.hrefError = this.hrefValue.length ? '' : '请输入链接'
@@ -523,6 +532,7 @@ export default {
     },
     dateFocus () {
       this.date = this.defaultValue
+      this.errorData.awaitTimeError = ''
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -550,7 +560,12 @@ export default {
     sendSetting: {
       handler (newValue) {
         this.canPass = true
-        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+        if (newValue === 'AWAIT') {
+          this.pickDate = true
+        } else {
+          this.pickDate = false
+          this.errorData.awaitTimeError = ''
+        }
       }
     }
   },
@@ -587,6 +602,12 @@ export default {
 @import '~assets/css/mixin.scss';
 
 .edit-wx-page /deep/ {
+  .error-msg-bottom{
+    position: absolute;
+    bottom: -16px;
+    left: 10px;
+    color: #FC5659;
+  }
   .com-input .limit.area {
     bottom: 7px;
     right: 7px;

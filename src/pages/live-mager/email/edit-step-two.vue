@@ -110,6 +110,7 @@
       <button class="default-button margin-fl fr"
               @click="saveEmail">保存草稿
       </button>
+      <button class="default-button margin-fl fr" @click="goBack">上一步</button>
     </div>
   </div>
 </template>
@@ -599,6 +600,7 @@
     padding: 0 20px;
     background-color: #fff;
     button {
+      width: 120px;
       margin-top: 10px;
     }
     .margin-fl {
