@@ -105,7 +105,7 @@
     </div>
     <div class="email-bottom">
       <button :class="{'primary-button':true, fr:true,disabled:disabledBtn}"
-              @click="send">确定
+              @click="send" v-html="sendType === 'AUTO'? '立即发送':'确定'">
       </button>
       <button class="default-button margin-fl fr"
               @click="saveEmail">保存草稿
