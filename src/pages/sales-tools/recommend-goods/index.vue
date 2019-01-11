@@ -37,10 +37,11 @@
             <td>{{row.title}}</td>
             <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
             <td>
-              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.price !== '0.00'">{{row.price}}</span>
-              <span v-show="row.price === '0.00'">免费</span>
+              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.preferential !== '0.00'">{{row.price}}</span>
+              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':row.price}}</span>
+              <!--<span v-show="row.price === '0.00'">免费</span>-->
             </td>
-            <td class="dis-prices">{{row.preferential === '0.00'?'免费':'￥'+row.preferential}}</td>
+            <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row,ind)">编辑</el-button>
