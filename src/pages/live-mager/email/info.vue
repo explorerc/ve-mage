@@ -221,7 +221,7 @@ export default {
     },
     checkEmail () {
       if (!this.email.content) return false
-      if (!this.email.groupIds) return false
+      if (!(this.email.groupIds || this.email.tagIds)) return false
       if (!this.email.senderName) return false
       if (this.email.status === 'AWAIT' && !this.email.planTime) return false
       return true
@@ -263,10 +263,12 @@ export default {
       })
     },
     reArrangeList (group, tag) {
+      this.email.expectNum = 0
       this.groupList.forEach((item, idx) => {
         group.forEach((ele, i) => {
           if (ele * 1 === item.id * 1) {
             // this.groupList[idx].isChecked = true
+            this.email.expectNum = this.email.expectNum + parseInt(item.count)
             this.selectedGroupList.push({
               count: item.count,
               id: item.id,
@@ -279,6 +281,7 @@ export default {
       this.tagList.forEach((item, idx) => {
         tag.forEach((ele, i) => {
           if (ele * 1 === item.id * 1) {
+            this.email.expectNum = this.email.expectNum + parseInt(item.count)
             // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
               count: item.count,
