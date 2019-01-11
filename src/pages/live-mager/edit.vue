@@ -9,7 +9,7 @@
         <com-back :url="`/liveMager/list`" v-else :class="'back-btn'"></com-back>
       </div>
       <div class="tips">
-        <i></i>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播。
+        <i></i>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播
       </div>
       <div class="content from-box">
         <div class="from-row">

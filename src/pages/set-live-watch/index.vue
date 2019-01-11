@@ -147,7 +147,7 @@
                   <el-checkbox v-model="isShowWatch">活动观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
                   <el-checkbox v-model="isShowGuided">活动引导页</el-checkbox>
-                  <ve-tips :tip="'选择分享设置应用的页面，其中包括活动引导页、活动官网、活动引导页三个页面。'" :tipType="'html'" ></ve-tips>
+                  <ve-tips :tip="'选择分享设置应用的页面，其中包括活动观看页、活动官网、活动引导页三个页面。'" :tipType="'html'" ></ve-tips>
                 </p>
               </div>
             </div>
