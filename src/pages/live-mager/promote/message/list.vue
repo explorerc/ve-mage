@@ -306,6 +306,7 @@ export default {
   .table {
     padding: 30px;
     background: #fff;
+    min-height: 550px;
     * {
       color: $color-font;
     }

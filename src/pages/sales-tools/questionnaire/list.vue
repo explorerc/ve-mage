@@ -444,7 +444,7 @@ export default {
       text-align: center;
       color: $color-font-sub;
       min-height: 400px;
-      padding: 100px 0;
+      padding: 95px 0;
       .img {
         width: 150px;
         height: 150px;
