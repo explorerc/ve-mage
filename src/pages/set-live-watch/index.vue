@@ -307,6 +307,7 @@ export default {
     }
   },
   mounted () {
+    document.querySelector('.main-container').scrollTop = 0
   },
   watch: {},
   /* 路由守卫，离开当前页面之前被调用 */

@@ -3,7 +3,7 @@
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
         <span class="title">短信邀约</span>
-        <span class="send-box fr" :class='{"spe":!tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
+        <span class="send-box fr" :class='{"spe":tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
         <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{ name:'msgCreate',params:{id:queryData.activityId} }"><button class="default-button btn fr" >新建短信邀约</button></router-link>
@@ -259,9 +259,9 @@ export default {
     color: #888;
     font-size: 14px;
     line-height: 67px;
-    margin-right: 14px;
+    margin-right: 84px;
     &.spe {
-      margin-right: 84px;
+      margin-right: 224px;
     }
   }
   .right-box {
