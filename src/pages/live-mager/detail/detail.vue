@@ -29,6 +29,7 @@
                      :width="32"
                      active-color="#FFD021"
                      @change="switchActive"></el-switch>
+          <ve-msg-tips v-if='!isPublished' class='user-tips' tip-type="html" tip='活动官网和活动引导页，只有在发布后，才能被访问。在开播前请点击页面进行发布'></ve-msg-tips>
           <span v-if="isPublished"
                 class='link-box'
                 @mouseover="showLinkBox = true"
@@ -796,6 +797,7 @@
 
 <script>
   // import http from 'src/api/activity-manger'
+  import VeMsgTips from 'src/components/ve-msg-tips'
   import EventBus from 'src/utils/eventBus'
   import {downloadIamge} from 'src/utils/dom-tool'
   import activityService from 'src/api/activity-service'
@@ -1261,7 +1263,8 @@
     },
     components: {
       processCard,
-      comCountdown
+      comCountdown,
+      VeMsgTips
     }
 
   }
@@ -1814,6 +1817,17 @@
         }
         &:hover ul li:hover {
           color: inherit;
+        }
+      }
+      .msg-tip-box.user-tips /deep/ {
+        top: 6px;
+        left: 10px;
+        span {
+          position: absolute;
+          left: 29px;
+          margin-top: -11px;
+          max-width: auto;
+          width: 400px;
         }
       }
     }
