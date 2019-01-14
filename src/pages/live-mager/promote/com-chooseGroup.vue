@@ -32,8 +32,8 @@
               <span v-if="!groupList.length">没有找到搜索结果</span>
               <ul>
                 <li v-for="(person,idx) in groupList"
-                    @click.stop="clickRowGroup(idx)"
-                    :class="{active:person.isChecked}"
+                    @click.stop="clickRowGroup(idx, person.count)"
+                    :class="{active:person.isChecked,disabled:person.count<=0}"
                     :key="person.id">
                   {{person.name}} ({{person.count}}人）
                   <el-checkbox v-model="person.isChecked"
@@ -56,8 +56,8 @@
             <div class="select-person-box" :class='{"search-empty":!tagList.length}' style='border:none;'>
               <ul>
                 <li v-for="(tag,idx) in tagList"
-                    @click.stop="clickRowTag(idx)"
-                    :class="{active:tag.isChecked}"
+                    @click.stop="clickRowTag(idx, tag.count)"
+                    :class="{active:tag.isChecked,disabled:tag.count<=0}"
                     :key="tag.id">
                   {{tag.name}} ({{tag.count}}人）
                   <el-checkbox v-model="tag.isChecked"
@@ -143,11 +143,17 @@ export default {
       this.$emit('searchEnter', this.searchPerson, flag)
     },
     /* 选中行 */
-    clickRowGroup (idx) {
+    clickRowGroup (idx, num) {
+      if (!num) {
+        return false
+      }
       this.groupList[idx].isChecked = !this.groupList[idx].isChecked
       this.isInit = false
     },
-    clickRowTag (idx) {
+    clickRowTag (idx, num) {
+      if (!num) {
+        return false
+      }
       this.tagList[idx].isChecked = !this.tagList[idx].isChecked
       this.isInit = false
     },
