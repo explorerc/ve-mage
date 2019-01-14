@@ -50,7 +50,7 @@
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;">
             <p class="title">
-              <ve-title width="200px" title="观众访问趋势图" tip="查看直播和回放过程中，观众人数随时间变化的趋势图"></ve-title>
+              <ve-title width="200px" title="观众访问趋势图" tip="查看直播和回放过程中，观众人数随时间变化的趋势图。"></ve-title>
               <span class="chart-menu">
              <nav-menu :menus="['直播', '回放']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
           </span></p>
@@ -60,13 +60,13 @@
         <div class="chart-container">
           <div class="chart-box" style="width: 50%;margin-top: 20px">
             <p class="title">
-              <ve-title width="200px" title="观看时长与观众分布图" tip="查看直播过程中，不同观看时段的观众数量"></ve-title>
+              <ve-title width="200px" title="观看时长与观众分布图" tip="查看直播过程中，不同观看时段的观众数量。"></ve-title>
             </p>
             <div class="chart-item" id="chart02" style="height: 360px;"></div>
           </div>
           <div class="chart-box" style="width: 50%;margin-top: 20px">
             <p class="title">
-              <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图"></ve-title>
+              <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图。"></ve-title>
             </p>
             <div class="chart-item" id="chart03" style="width: calc(100% + 20px);height: 400px;margin-top: -40px;"></div>
           </div>
@@ -163,7 +163,7 @@
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;position: relative;">
             <p class="title">
-              <ve-title width="200px" title="互动工具参与趋势图" tip="查看直播中主持人使用互动工具的情况以及观众的参与情况"></ve-title>
+              <ve-title width="200px" title="互动工具参与趋势图" tip="查看直播中主持人使用互动工具的情况以及观众的参与情况。"></ve-title>
             </p>
             <div class="lenge-box">
               <span>红包</span>
