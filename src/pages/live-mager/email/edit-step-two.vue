@@ -70,7 +70,7 @@
             </div>
           </div>
           <div class="from-row">
-            <div class="from-title">发送时间：</div>
+            <div class="from-title"><i class="star">*</i>发送时间：</div>
             <div :class="{'from-content':true,error:errorMsg.planTime}">
               <div class="send-type-box">
                 <el-radio v-model="sendType"
