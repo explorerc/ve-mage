@@ -270,7 +270,7 @@ export default function () {
         bgType: 'color',
         videoType: 'upload',
         img: '',
-        color: 'rgba(0, 0, 0, 0)',
+        color: 'rgba(0, 0, 0, 0.8)',
         link: '',
         hideVideo: false,
         enable: true,

@@ -182,7 +182,7 @@ export default {
   }
   .section2 {
     width: 100%;
-    height: 820px;
+    height: 500px;
     .panel {
       padding: 50px 0;
       text-align: center;
@@ -388,7 +388,6 @@ export default {
   }
   .section8 {
     width: 100%;
-    background-color: rgba(0, 0, 0, 1);
     .panel {
       padding: 0px 0;
       text-align: center;
@@ -398,7 +397,7 @@ export default {
       height: auto;
       padding-bottom: 40px;
       width: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      // background-color: rgba(0, 0, 0, 0.8);
     }
     .font-content {
       margin-top: 26px;
