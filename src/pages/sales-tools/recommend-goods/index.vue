@@ -37,7 +37,9 @@
             <td>{{row.title}}</td>
             <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
             <td>
-              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':row.price}}</span><span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':row.price}}</span>
+              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.preferential !== '0.00'">{{row.price}}</span>
+              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':row.price}}</span>
+              <!--<span v-show="row.price === '0.00'">免费</span>-->
             </td>
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
             <td style="width: 15%;min-width: 140px;">
@@ -53,7 +55,7 @@
         </draggable>
       </table>
     </div>
-    <div class="no-goods" v-else>
+    <div class="no-goods" v-if="isNoGoods">
       <img :src="require('assets/image/not-goodlist.png')" alt="">
       <p>全新直播购物模式，通过实时直播带动粉丝经济，<br>你甚至可以联合品牌商一起策划品牌内容，提升观众信任感</p>
       <el-button class="add-goods primary-button" @click="createGoods" round>添加商品</el-button>
@@ -90,7 +92,8 @@
         tableData: [],
         isInit: false,
         timerShelf: null,
-        isShowlive: null
+        isShowlive: null,
+        isNoGoods: false
       }
     },
     watch: {
@@ -114,6 +117,11 @@
             })
             this.tableData = res.data
             console.log(this.tableData)
+            if (this.tableData.length < 1) {
+              this.isNoGoods = true
+            } else {
+              this.isNoGoods = false
+            }
             setTimeout(() => {
               this.isInit = true
             }, 500)
@@ -202,7 +210,16 @@
 
 #goods-list {
   font-family: PingFangSC-Regular;
-  padding: 0px 100px 34px;
+  /*padding: 0px 100px 34px;*/
+  margin: 0 auto;
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
   /deep/ {
     header {
       position: relative;
@@ -363,10 +380,11 @@
       background-color: #ffffff;
       border-radius: 4px;
       border: 1px solid #e2e2e2;
+      min-height: 550px;
       img {
         width: 150px;
         height: 150px;
-        margin: 84px auto 27px auto;
+        margin: 130px auto 27px;
       }
 
       p {

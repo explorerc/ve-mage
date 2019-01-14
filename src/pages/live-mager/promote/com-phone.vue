@@ -3,8 +3,8 @@
   <div class="msg-box-overview" v-if='isWx'>
     <div class="detail">
       <div class="msg-title-overview">预约成功通知</div>
-      <p class='time'>{{webinarTime.substr(0,10)}}</span></p>
-      <p class='content'><em>【{{webinarName}}】</em>{{wxContent}}</span></p>
+      <p class='time'><span>{{webinarTime.substr(0,10)}}</span></p>
+      <p class='content'><span><em>【{{webinarName}}】</em>{{wxContent}}</span></p>
       <div class="footer">详情</div>
     </div>
   </div>
@@ -12,7 +12,7 @@
     <div class="detail msg">
       <p class="">{{wxContent}}<br><em v-show='msgTag.length'>【{{msgTag}}】</em></p>
     </div>
-    <div class="footer">{{date}} 发送</div>
+    <!--<div class="footer">{{date}} 发送</div>-->
   </div>
   <div class="header">{{ isWx ?  '微信预览' :'短信预览' }}</div>
 </div>

@@ -904,7 +904,7 @@ export default {
     text-align: center;
     color: $color-font-sub;
     min-height: 400px;
-    padding: 70px 0;
+    padding: 110px 0 0;
     .img {
       width: 150px;
       height: 150px;
@@ -940,6 +940,10 @@ export default {
       line-height: 40px;
       margin-top: 20px;
     }
+  }
+  .table-list-box {
+    min-height: 475px;
+    margin-top: 25px;
   }
 }
 

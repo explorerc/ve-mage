@@ -2,11 +2,12 @@
   <div class="content" @click.stop='closeAlltool' v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="form-row live-mager wechat-list-page">
       <div class="live-title">
-        <span class="title">微信通知</span>
+        <span class="title">微信邀约</span>
         <com-back  :url="`/liveMager/detail/${queryData.activityId}`"></com-back>
         <div class="right-box" v-if="tableData.length">
-          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信通知</button></router-link>
+          <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信邀约</button></router-link>
         </div>
+        <span class="send-box fr" :class='{"spe":!tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
       </div>
       <div class="content table">
         <template v-if="tableData.length">
@@ -56,8 +57,8 @@
         <template v-else>
           <div class="empty">
             <div class="img"></div>
-            <div class="txt">您还没有添加微信通知，快去添加吧</div>
-            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信通知</el-button></router-link>
+            <div class="txt">您还没有添加微信邀约，快去添加吧</div>
+            <router-link :to="{ name:'wechatCreate',params:{id:queryData.activityId} }"><el-button class='primary-button'>新建微信邀约</el-button></router-link>
           </div>
         </template>
       </div>
@@ -105,12 +106,15 @@ export default {
       delId: '',
       delIdx: '',
       type: '',
-      loading: false
+      loading: false,
+      balanceCount: 0,
+      totalCount: 0
     }
   },
   created () {
     this.queryList()
     this.queryInfo()
+    this.getLimit()
     EventBus.$emit('breads', [{
       title: '活动管理'
     }, {
@@ -120,7 +124,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.$route.params.id}`
     }, {
-      title: '微信通知'
+      title: '微信邀约'
     }])
   },
   methods: {
@@ -160,6 +164,17 @@ export default {
           item.toolShow = false
         })
       }
+    },
+    // 获取限额
+    getLimit () {
+      this.$get(activityService.GET_SEND_LIMIT, {
+        activityId: this.$route.params.id,
+        type: 'SMS'
+      }).then((res) => {
+        console.log(res)
+        this.totalCount = res.data.total
+        this.balanceCount = res.data.balance
+      })
     },
     queryList () {
       this.$get(noticeService.GET_WECHAT_LIST, this.queryData).then((res) => {
@@ -228,6 +243,16 @@ export default {
 @import '~assets/css/mixin.scss';
 
 .live-title {
+  .send-box {
+    display: inline-block;
+    color: #888;
+    font-size: 14px;
+    line-height: 67px;
+    margin-right: 14px;
+    &.spe {
+      margin-right: 84px;
+    }
+  }
   .right-box {
     float: right;
     margin-right: 80px;
@@ -236,7 +261,7 @@ export default {
       padding: 0 20px;
       /*width: 120px;*/
       height: 30px;
-      line-height: 30px;
+      line-height: 29px;
     }
   }
 }
@@ -293,6 +318,7 @@ export default {
   .table {
     padding: 30px;
     background: #fff;
+    min-height: 550px;
     * {
       color: $color-font;
     }

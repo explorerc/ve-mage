@@ -2,14 +2,14 @@
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="edit-wx-page live-mager" @keydown="canPass = false">
       <div class="live-title">
-        <span class="title" v-if="inviteId">编辑微信通知</span>
-        <span class="title" v-else>创建微信通知</span>
+        <span class="title" v-if="inviteId">编辑微信邀约</span>
+        <span class="title" v-else>创建微信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box ">
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-title"><i class="star">*</i>邀约标题：</div>
             <div class="from-content">
               <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="15" class='msg-title' :error-tips="errorData.titleError" @focus="errorData.titleError=''"></com-input>
             </div>
@@ -30,11 +30,11 @@
             </div>
           </div>
           <div class="from-row" style='padding:4px 12px;'>
-            <div class="from-title">收信人：</div>
+            <div class="from-title"><i class="star">*</i>收信人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
               <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
-              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
+              <ve-tips tip="微信邀约只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -59,6 +59,7 @@
                      @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
+              <div class="error-msg-bottom" v-if="errorData.sendPersonError">{{errorData.sendPersonError}}</div>
             </div>
           </div>
           <div class="from-row">
@@ -75,10 +76,11 @@
             </div>
           </div>
           <div class="from-row" v-if='pickDate'>
-            <div class="from-title">选择时间：</div>
+            <div class="from-title"><i class="star">*</i>选择时间：</div>
             <div class="from-content">
               <el-date-picker v-model="date" @focus='dateFocus()' :editable="false" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
+              <div class="error-msg-bottom" v-if="errorData.awaitTimeError">{{errorData.awaitTimeError}}</div>
             </div>
           </div>
           <!-- 模拟手机预览 -->
@@ -86,7 +88,7 @@
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
-          <el-button class='primary-button' @click="save" :disabled="saveDisabled">保存</el-button>
+          <el-button class='primary-button' @click="save" :disabled="saveDisabled"  v-html="sendSetting === 'SEND'? '立即发送' : '确定'">保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -169,7 +171,9 @@ export default {
         hrefError: '',
         titleError: '',
         msgError: '',
-        tagError: ''
+        tagError: '',
+        sendPersonError: '',
+        awaitTimeError: ''
       },
       checkedData: [],
       isValided: false,
@@ -213,10 +217,10 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '微信通知',
+      title: '微信邀约',
       url: `/liveMager/promote/wechat/list/${this.activityId}`
     }, {
-      title: this.inviteId ? '编辑微信通知' : '新建微信通知'
+      title: this.inviteId ? '编辑微信邀约' : '新建微信邀约'
     }])
   },
   mounted () {
@@ -278,7 +282,7 @@ export default {
         this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
-            content: '保存成功'
+            content: this.sendSetting === 'SEND' ? '发送成功' : '保存成功'
           })
           this.canPass = true
           // 跳转到列表页面
@@ -374,6 +378,7 @@ export default {
       this.selectedGroupListStr = str.substring(0, str.length - 1)
       this.selectedGroupList = arr
       this.groupIdStr = idStr
+      this.errorData.sendPersonError = ''
     },
     selectedTagListfn (arr, str, idStr) {
       this.selectedTagListStr = str.substring(0, str.length - 1)
@@ -431,6 +436,10 @@ export default {
     formValid () {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
+      this.errorData.sendPersonError = this.groupIdStr ? '' : '请选择收信人'
+      if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
+        this.errorData.awaitTimeError = '请选择定时发送时间'
+      }
       // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
       // if (this.hrefSetting === 'CUSTOM') {
       //   this.errorData.hrefError = this.hrefValue.length ? '' : '请输入链接'
@@ -442,7 +451,13 @@ export default {
       //     this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
       //   }
       // }
-      if (this.titleValue.length && this.wxContent.length) {
+      if (this.errorData.sendPersonError) {
+        this.isValided = false
+        return false
+      } else if (this.sendSetting.toLowerCase() === 'await' && !this.date && this.errorData.awaitTimeError) {
+        this.isValided = false
+        return false
+      } else if (this.titleValue.length && this.wxContent.length) {
         if (this.hrefSetting === 'CUSTOM') {
           const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
           // reg.test(this.hrefValue) ? this.errorData.hrefError = '' : this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
@@ -523,6 +538,7 @@ export default {
     },
     dateFocus () {
       this.date = this.defaultValue
+      this.errorData.awaitTimeError = ''
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -550,7 +566,12 @@ export default {
     sendSetting: {
       handler (newValue) {
         this.canPass = true
-        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+        if (newValue === 'AWAIT') {
+          this.pickDate = true
+        } else {
+          this.pickDate = false
+          this.errorData.awaitTimeError = ''
+        }
       }
     }
   },
@@ -587,6 +608,12 @@ export default {
 @import '~assets/css/mixin.scss';
 
 .edit-wx-page /deep/ {
+  .error-msg-bottom {
+    position: absolute;
+    bottom: -16px;
+    left: 10px;
+    color: #fc5659;
+  }
   .com-input .limit.area {
     bottom: 7px;
     right: 7px;

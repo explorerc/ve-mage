@@ -9,7 +9,7 @@
         <com-back :url="`/liveMager/list`" v-else :class="'back-btn'"></com-back>
       </div>
       <div class="tips">
-        <i></i>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播。
+        <i></i>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播
       </div>
       <div class="content from-box">
         <div class="from-row">
@@ -24,7 +24,7 @@
           <div class="from-content" :class="{ 'error':dateEmpty }">
             <el-date-picker @focus='dateFocus()' v-model="date"  @change="canPaas=false" type="datetime" :clearable='false' placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultValue" >
             </el-date-picker>
-            <span class='tips-time'>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播。</span>
+            <span class='tips-time'>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>

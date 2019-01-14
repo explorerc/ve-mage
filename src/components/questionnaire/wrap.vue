@@ -7,7 +7,7 @@
               class="v-red">*</span>
         <div class="v-tips"
              v-if="value.detail.format==='phone'">
-          <i class="iconfont icon-wenhao"></i><span>手机号默认为必填项，不可修改</span>
+          <i class="iconfont icon-wenhao"></i><span>手机号默认为必填项，不可修改。</span>
         </div>
       </div>
       <div class="q-edit"

@@ -5,7 +5,7 @@
       <com-back></com-back>
     </p>
     <div class="tips">
-      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现。
+      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现
     </div>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
@@ -116,7 +116,7 @@
                 </p>
                 <div class="v-info pull-left">
                   <com-input :value.sync="shareTitle"
-                             placeholder="标题"
+                             placeholder="请输入分享标题"
                              :max-length="30"
                              :errorTips="errorTips"
                              @focus="shareTitleFocus"></com-input>
@@ -143,11 +143,11 @@
                   应用页面：
                 </p>
                 <p class="v-info pull-left"
-                   style="padding-top: 6px;position:relative;">
-                  <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
+                   style="position:relative;">
+                  <el-checkbox v-model="isShowWatch">活动观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
-                  <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
-                  <ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入5000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips>
+                  <el-checkbox v-model="isShowGuided">活动引导页</el-checkbox>
+                  <ve-tips :tip="'选择分享设置应用的页面，其中包括活动观看页、活动官网、活动引导页三个页面。'" :tipType="'html'" ></ve-tips>
                 </p>
               </div>
             </div>
@@ -307,6 +307,7 @@ export default {
     }
   },
   mounted () {
+    document.querySelector('.main-container').scrollTop = 0
   },
   watch: {},
   /* 路由守卫，离开当前页面之前被调用 */
@@ -454,7 +455,7 @@ export default {
   .v-content {
     /*margin-top: 26px;*/
     width: 100%;
-    min-height: 835px;
+    /*min-height: 835px;*/
     background-color: #fff;
     border: 1px solid #e2e2e2;
     border-radius: 4px;
@@ -522,7 +523,7 @@ export default {
     .primary-button {
       width: 200px;
       display: block;
-      margin: 80px auto 40px;
+      margin: 80px auto 55px;
     }
   }
   .pull-left {
@@ -791,15 +792,16 @@ export default {
     padding: 4px 10px 0 0;
     vertical-align: middle;
   }
-  .msg-tip-box /deep/ {
-    position: absolute;
-    right: -30px;
+  .msg-tip-box {
     top: 4px;
-    span {
-      position: absolute;
-      width: 400px;
-      margin-top: -12px;
-      left: 30px;
+    left: 9px;
+    /deep/ {
+      span {
+        position: absolute;
+        width: 400px;
+        margin-top: -12px;
+        left: 30px;
+      }
     }
   }
 }

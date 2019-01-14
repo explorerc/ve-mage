@@ -15,7 +15,7 @@
         通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
       </div>
       <div class="table-list-box"
-           style="padding-top: 20px;">
+           style="padding-top: 30px;">
            <template v-if='emailList.length'>
             <el-table :data="emailList"
                       style="width: 100%">
@@ -318,7 +318,7 @@ export default {
   position: relative;
   .create-button {
     height: 30px;
-    line-height: 30px;
+    line-height: 29px;
     margin-right: 80px;
     margin-top: 17px;
     padding: 0 20px;
@@ -332,7 +332,7 @@ export default {
   display: inline-block;
   color: #888;
   font-size: 14px;
-  line-height: 63px;
+  line-height: 67px;
   margin-right: 10px;
 }
 
@@ -358,7 +358,7 @@ export default {
 .table-list-box {
   .empty {
     text-align: center;
-    margin: 100px 0;
+    margin: 100px 0 0;
     .txt {
       padding-top: 40px;
       font-size: 14px;
