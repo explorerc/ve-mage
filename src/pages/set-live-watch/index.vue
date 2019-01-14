@@ -116,7 +116,7 @@
                 </p>
                 <div class="v-info pull-left">
                   <com-input :value.sync="shareTitle"
-                             placeholder="标题"
+                             placeholder="请输入分享标题"
                              :max-length="30"
                              :errorTips="errorTips"
                              @focus="shareTitleFocus"></com-input>
@@ -455,7 +455,7 @@ export default {
   .v-content {
     /*margin-top: 26px;*/
     width: 100%;
-    min-height: 835px;
+    /*min-height: 835px;*/
     background-color: #fff;
     border: 1px solid #e2e2e2;
     border-radius: 4px;
@@ -523,7 +523,7 @@ export default {
     .primary-button {
       width: 200px;
       display: block;
-      margin: 80px auto 40px;
+      margin: 80px auto 55px;
     }
   }
   .pull-left {

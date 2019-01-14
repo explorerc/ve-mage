@@ -6,19 +6,19 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="180px" title="邮件发送数量" tip="使用邮件作为推广方式，发送的人数"></ve-title>
+              <ve-title width="180px" title="邮件发送数量" tip="使用邮件作为推广方式，发送的人数。"></ve-title>
             </div>
             <div class="item-mid">{{spreadChannelData.email}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="180px" title="微信发送数量" tip="使用微信作为推广方式，发送的人数"></ve-title>
+              <ve-title width="180px" title="微信发送数量" tip="使用微信作为推广方式，发送的人数。"></ve-title>
             </div>
             <div class="item-mid">{{spreadChannelData.weChat}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="180px" title="短信发送数量" tip="使用短信作为推广方式，发送的人数"></ve-title>
+              <ve-title width="180px" title="短信发送数量" tip="使用短信作为推广方式，发送的人数。"></ve-title>
             </div>
             <div class="item-mid">{{spreadChannelData.sms}}</div>
           </div>
@@ -63,19 +63,19 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问人数" tip="访问活动官网的人数"></ve-title>
+              <ve-title width="140px" title="页面访问人数" tip="访问活动官网的人数。"></ve-title>
             </div>
             <div class="item-mid">{{officialChannelData.nums}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="140px" title="页面访问次数" tip="访问活动官网的人次数"></ve-title>
+              <ve-title width="152px" title="页面访问次数" tip="访问活动官网的人次数。"></ve-title>
             </div>
             <div class="item-mid">{{officialChannelData.times}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="170px" title="人均停留时长" tip="在活动官网的平均停留时间"></ve-title>
+              <ve-title width="176px" title="人均停留时长" tip="在活动官网的平均停留时间。"></ve-title>
             </div>
             <div class="item-mid">{{officialChannelData.average|fmtTime}}</div>
           </div>
@@ -96,43 +96,43 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问人数" tip="访问活动引导页的人数"></ve-title>
+              <ve-title width="130px" title="页面访问人数" tip="访问活动引导页的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.nums}}</div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问次数" tip="访问活动引导页的人次数"></ve-title>
+              <ve-title width="130px" title="页面访问次数" tip="访问活动引导页的人次数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.times}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
-              <ve-title width="130px" title="预约人数" tip="直播开始前预约活动的人数"></ve-title>
+              <ve-title width="130px" title="预约人数" tip="直播开始前预约活动的人数。"></ve-title>
             </div>
             <div class="item-mid data-link" @click="goPreDataDetail">{{leadPageData.subscribe}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
-              <ve-title width="130px" title="报名人数" tip="报名活动的总人数"></ve-title>
+              <ve-title width="130px" title="报名人数" tip="报名活动的总人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.signUp}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
-              <ve-title width="130px" title="实到人数" tip="预约活动的人数中实际参加活动的人数"></ve-title>
+              <ve-title width="130px" title="实到人数" tip="预约活动的人数中实际参加活动的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.actual}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
-              <ve-title width="130px" title="开播前报名人数" tip="在直播开始前进行报名的人数"></ve-title>
+              <ve-title width="130px" title="开播前报名人数" tip="在直播开始前进行报名的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.beforeSignUp}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
-              <ve-title width="130px" title="预约参会率" tip="本次直播的预约参会率"></ve-title>
+              <ve-title width="130px" title="预约参会率" tip="本次直播的预约参会率。"></ve-title>
             </div>
             <div class="item-mid" v-if="leadPageData.subscribe">
               {{(leadPageData.actual*100/leadPageData.subscribe).toFixed(2)}}%
@@ -141,7 +141,7 @@
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
-              <ve-title width="130px" title="开播后报名人数" tip="在直播开始后进行报名的人数"></ve-title>
+              <ve-title width="130px" title="开播后报名人数" tip="在直播开始后进行报名的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.afterSignUp}}</div>
           </div>
