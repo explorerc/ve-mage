@@ -12,7 +12,7 @@
       <div class='mager-box border-box'>
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-title"><i class="star">*</i>邀约标题：</div>
             <div class="from-content">
               <com-input :value.sync="titleValue"
                          placeholder="请输入标题"
@@ -131,7 +131,7 @@
           <el-button class='default-button'
                      @click="test">测试发送</el-button>
           <el-button class='primary-button'
-                     @click="save" :disabled='saveDisabled'>保存</el-button>
+                     @click="save" :disabled='saveDisabled' v-html="sendSetting === 'SEND'? '立即发送' : '保存'"></el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -301,7 +301,7 @@ export default {
       this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
-          content: '保存成功'
+          content: this.sendSetting === 'SEND' ? '发送成功' : '保存成功'
         })
         // 跳转到列表页面
         this.canPass = true
@@ -592,11 +592,11 @@ export default {
     bottom: 37px;
     right: 7px;
   }
-  .error-msg-bottom{
+  .error-msg-bottom {
     position: absolute;
     bottom: -16px;
     left: 10px;
-    color: #FC5659;
+    color: #fc5659;
   }
   .href-box {
     position: absolute;

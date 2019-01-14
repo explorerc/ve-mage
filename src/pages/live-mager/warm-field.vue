@@ -12,7 +12,7 @@
       <!--<button class="primary-button fr" @click="goBack">返回</button>-->
     </div>
     <div class="tips">
-      <i></i>注意：设置暖场视频后，观众在开播前30分钟内进入观看页面，可观看暖场视频。
+      <i></i>注意：设置暖场视频后，观众在开播前30分钟内进入观看页面，可观看暖场视频
     </div>
     <div class="mager-box border-box">
       <div class="from-box">

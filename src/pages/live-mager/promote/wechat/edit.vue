@@ -9,7 +9,7 @@
       <div class='mager-box border-box'>
         <div class="from-box ">
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-title"><i class="star">*</i>邀约标题：</div>
             <div class="from-content">
               <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="15" class='msg-title' :error-tips="errorData.titleError" @focus="errorData.titleError=''"></com-input>
             </div>
@@ -88,7 +88,7 @@
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
-          <el-button class='primary-button' @click="save" :disabled="saveDisabled">保存</el-button>
+          <el-button class='primary-button' @click="save" :disabled="saveDisabled"  v-html="sendSetting === 'SEND'? '立即发送' : '保存'">保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -282,7 +282,7 @@ export default {
         this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
-            content: '保存成功'
+            content: this.sendSetting === 'SEND' ? '发送成功' : '保存成功'
           })
           this.canPass = true
           // 跳转到列表页面
@@ -602,11 +602,11 @@ export default {
 @import '~assets/css/mixin.scss';
 
 .edit-wx-page /deep/ {
-  .error-msg-bottom{
+  .error-msg-bottom {
     position: absolute;
     bottom: -16px;
     left: 10px;
-    color: #FC5659;
+    color: #fc5659;
   }
   .com-input .limit.area {
     bottom: 7px;

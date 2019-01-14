@@ -7,7 +7,7 @@
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信邀约</button></router-link>
         </div>
-        <span class="send-box fr">发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
+        <span class="send-box fr" :class='{"spe":!tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
       </div>
       <div class="content table">
         <template v-if="tableData.length">
@@ -249,6 +249,9 @@ export default {
     font-size: 14px;
     line-height: 67px;
     margin-right: 14px;
+    &.spe {
+      margin-right: 84px;
+    }
   }
   .right-box {
     float: right;
@@ -315,6 +318,7 @@ export default {
   .table {
     padding: 30px;
     background: #fff;
+    min-height: 550px;
     * {
       color: $color-font;
     }

@@ -386,6 +386,7 @@ export default {
       right: 30px;
       background-color: #fff;
       z-index: 1;
+      font-size: 14px;
       li {
         width: 97px;
         height: 30px;
