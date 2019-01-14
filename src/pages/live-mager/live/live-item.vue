@@ -227,7 +227,7 @@
         position: absolute;
         top: 33px;
         right: -1px;
-        width: 130px;
+        width: 110px;
         background-color: #fff;
         border: solid 1px #e5e5e5;
         box-sizing: content-box;
@@ -242,6 +242,7 @@
           line-height: 40px;
           &:hover {
             color: $color-font-hover;
+            background-color: #F0F1FE;
           }
         }
       }

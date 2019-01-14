@@ -131,7 +131,7 @@
           <el-button class='default-button'
                      @click="test">测试发送</el-button>
           <el-button class='primary-button'
-                     @click="save" :disabled='saveDisabled' v-html="sendSetting === 'SEND'? '立即发送' : '保存'"></el-button>
+                     @click="save" :disabled='saveDisabled' v-html="sendSetting === 'SEND'? '立即发送' : '确定'"></el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -458,7 +458,13 @@ export default {
       if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
         this.errorData.awaitTimeError = '请选择定时发送时间'
       }
-      if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
+      if (this.errorData.sendPersonError) {
+        this.isValided = false
+        return false
+      } else if (this.sendSetting.toLowerCase() === 'await' && !this.date && this.errorData.awaitTimeError) {
+        this.isValided = false
+        return false
+      } else if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
         return true
       } else {

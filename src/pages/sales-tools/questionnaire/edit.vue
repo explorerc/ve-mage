@@ -1063,10 +1063,10 @@
         bottom: 0;
         top: 0;
         overflow: auto;
-        border: 1px solid #e2e2e2;
+        /*border: 1px solid #e2e2e2;*/
         .ru {
           border: 1px solid #e2e2e2;
-          border-top: none;
+          /*border-top: none;*/
           background-color: #fff;
           border-radius: 4px;
           overflow: hidden;

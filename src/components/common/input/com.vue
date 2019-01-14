@@ -40,8 +40,7 @@
           v-if="maxLength&&type==='textarea'">
       <i class="length"
       :style="{color:limitColor}"
-         v-text="innerValue.gbLength()">0</i>/
-      <i>{{maxLength}}</i>
+         v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
           v-if="errorMsg">{{errorMsg}}</span>

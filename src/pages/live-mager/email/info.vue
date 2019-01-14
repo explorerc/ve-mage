@@ -201,6 +201,7 @@ export default {
                 emailInviteId: this.email.emailInviteId
               }).then(() => {
                 console.log('邮件发送成功')
+                this.$router.push(`/liveMager/email/${this.$route.params.id}`)
               })
             }
           }

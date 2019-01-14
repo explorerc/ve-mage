@@ -4,7 +4,7 @@
       <div class="data-pad">
         <div class="item-box vhall-item fl" style="margin-top: 12px;">
           <div class="item-title fzc">
-            <ve-title width="200px" title="微吼指数" tip="本场活动的综合效果，最高分100"></ve-title>
+            <ve-title width="209px" title="微吼指数" tip="本场活动的综合效果，最高分100。"></ve-title>
           </div>
           <div class="item-mid fzc" style="height: 130px;position: relative;">
             <span class="vhall-status" v-if="vhallRateData.value>=90">出色</span>
@@ -31,7 +31,7 @@
         <div class="item-box spread fl">
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
-              <ve-title width="300px" title="观众" tip="观众总数，用来衡量一场直播内容和吸引力的重要指标"></ve-title>
+              <ve-title width="320px" title="观众" tip="观众总数，用来衡量一场直播内容和吸引力的重要指标。"></ve-title>
             </div>
             <ve-circle style="margin-top: 10px;" d="110px" :tips="'观众得分='+activityScoreData.viewer+'分（满分100分）'"
                        :value="activityScoreData.viewer"></ve-circle>
@@ -39,7 +39,7 @@
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
               <ve-title width="300px" title="观看时长"
-                        tip="统计该场直播中所有观众的平均观看时长，反应观众在直播间内的平均停留时长。平均观看时长=所有观众观看时长之和/观众总数；注：观看时长包含直播和回放两部分。为了计算简便，系统假定回放"></ve-title>
+                        tip="统计该场直播中所有观众的平均观看时长，反应观众在直播间内的平均停留时长。平均观看时长=所有观众观看时长之和/观众总数；注：观看时长包含直播和回放两部分。"></ve-title>
             </div>
             <ve-circle style="margin-top: 10px;" d="110px" :tips="'观看得分='+activityScoreData.watchDuration+'分（满分100分）'"
                        :value="activityScoreData.watchDuration"></ve-circle>
@@ -47,21 +47,21 @@
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
               <ve-title width="300px" title="推广"
-                        tip="衡量一场直播在前期宣传推广的触达效果。推广方式包括推广中心中的邮件、短信、微信三种方式。推广效果=最终成为观众人数/推广渠道触达人数"></ve-title>
+                        tip="衡量一场直播在前期宣传推广的触达效果。推广方式包括推广中心中的邮件、短信、微信三种方式。推广效果=最终成为观众人数/推广渠道触达人数。"></ve-title>
             </div>
             <ve-circle style="margin-top: 10px;" d="110px" :tips="'推广得分='+activityScoreData.extension+'分（满分100分）'"
                        :value="activityScoreData.extension"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
-              <ve-title width="300px" title="传播" tip="衡量一场直播中，观众的自传播效果。展现观众在直播中分享拉新的效果"></ve-title>
+              <ve-title width="300px" title="传播" tip="衡量一场直播中，观众的自传播效果。展现观众在直播中分享拉新的效果。"></ve-title>
             </div>
             <ve-circle style="margin-top: 10px;" d="110px" :tips="'传播得分='+activityScoreData.spread+'分（满分100分）'"
                        :value="activityScoreData.spread"></ve-circle>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title fzc">
-              <ve-title width="180px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数"></ve-title>
+              <ve-title width="180px" title="互动" tip="根据直播中的互动行为，判断该场直播，观众主动参与互动的意向是否强烈。互动效果=观众的所有互动次数/观众总数。"></ve-title>
             </div>
             <ve-circle style="margin-top: 10px;" d="110px" :tips="'互动得分='+activityScoreData.interact+'分（满分100分）'"
                        :value="activityScoreData.interact"></ve-circle>
@@ -72,7 +72,7 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="220px" title="触达用户" tip="使用推广工具（短信、微信、邮件）触达的用户数量"></ve-title>
+              <ve-title width="220px" title="触达用户" tip="使用推广工具（短信、微信、邮件）触达的用户数量。"></ve-title>
             </div>
             <div class="item-mid">{{watcherCountData.watch.value}}</div>
             <div class="item-bottom">
@@ -92,7 +92,7 @@
           </div>
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="190px" title="观众总数" tip="观看了直播（包括回放）的人数"></ve-title>
+              <ve-title width="200px" title="观众总数" tip="观看了直播（包括回放）的人数。"></ve-title>
             </div>
             <div class="item-mid">{{watcherCountData.viewer.value}}</div>
             <div class="item-bottom">
@@ -112,7 +112,7 @@
           </div>
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="170px" title="新用户" tip="第一次观看直播的用户数量"></ve-title>
+              <ve-title width="180px" title="新用户" tip="第一次观看直播的用户数量。"></ve-title>
             </div>
             <div class="item-mid">{{watcherCountData.newUser.value}}</div>
             <div class="item-bottom">
@@ -132,7 +132,7 @@
           </div>
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="140px" title="新增优质用户" tip="观看后变为优质用户的数量"></ve-title>
+              <ve-title width="140px" title="新增优质用户" tip="观看后变为优质用户的数量。"></ve-title>
             </div>
             <div class="item-mid">{{watcherCountData.newGoodUser.value}}</div>
             <div class="item-bottom">
@@ -156,7 +156,7 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="160px" title="平均观看时长" tip="观众观看直播的平均时间"></ve-title>
+              <ve-title width="164px" title="平均观看时长" tip="观众观看直播的平均时间。"></ve-title>
             </div>
             <div class="item-mid">{{watchCoefficientData.watchTime.value|fmtTime}}</div>
             <div class="item-bottom">
@@ -176,7 +176,7 @@
           </div>
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="200px" title="推广效果" tip="根据活动的推广效果，评判您的推广途径是否有效"></ve-title>
+              <ve-title width="200px" title="推广效果" tip="根据活动的推广效果，评判您的推广途径是否有效。"></ve-title>
             </div>
             <div class="item-mid">{{watchCoefficientData.extension.value}}</div>
             <div class="item-bottom">
@@ -196,7 +196,7 @@
           </div>
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="200px" title="传播K因子" tip="根据活动中观众分享活动的有效次数，评判活动的吸引力"></ve-title>
+              <ve-title width="200px" title="传播K因子" tip="根据活动中观众分享活动的有效次数，评判活动的吸引力。"></ve-title>
             </div>
             <div class="item-mid">k={{watchCoefficientData.spread.value}}</div>
             <div class="item-bottom">
@@ -216,7 +216,7 @@
           </div>
           <div class="box fl" style="width: 25%;">
             <div class="item-title">
-              <ve-title width="140px" title="互动系数" tip="评判直播中观众的互动活跃度"></ve-title>
+              <ve-title width="140px" title="互动系数" tip="评判直播中观众的互动活跃度。"></ve-title>
             </div>
             <div class="item-mid">{{watchCoefficientData.interactint.value}}</div>
             <div class="item-bottom">
@@ -240,7 +240,7 @@
     <div class="data-pad">
       <div class="chart-box">
         <p class="title">
-          <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径"></ve-title>
+          <ve-title width="200px" title="用户旅途" tip="展现本次直播中所有观众在各个界面的用户路径。"></ve-title>
         </p>
         <div id="myChart" style="height: 500px;margin-bottom: 50px;" :class="{'v-nodata': tripNoneData}">
           <span v-if="tripNoneData" class="none-chart">
