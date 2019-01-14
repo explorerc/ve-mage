@@ -56,8 +56,8 @@
             <div class="select-person-box" :class='{"search-empty":!tagList.length}' style='border:none;'>
               <ul>
                 <li v-for="(tag,idx) in tagList"
-                    @click.stop="clickRowTag(idx)"
-                    :class="{active:tag.isChecked}"
+                    @click.stop="clickRowTag(idx, tag.count)"
+                    :class="{active:tag.isChecked,disabled:tag.count<=0}"
                     :key="tag.id">
                   {{tag.name}} ({{tag.count}}人）
                   <el-checkbox v-model="tag.isChecked"
@@ -150,7 +150,10 @@ export default {
       this.groupList[idx].isChecked = !this.groupList[idx].isChecked
       this.isInit = false
     },
-    clickRowTag (idx) {
+    clickRowTag (idx, num) {
+      if (!num) {
+        return false
+      }
       this.tagList[idx].isChecked = !this.tagList[idx].isChecked
       this.isInit = false
     },
