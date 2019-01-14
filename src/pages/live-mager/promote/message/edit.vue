@@ -458,7 +458,13 @@ export default {
       if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
         this.errorData.awaitTimeError = '请选择定时发送时间'
       }
-      if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
+      if (this.errorData.sendPersonError) {
+        this.isValided = false
+        return false
+      } else if (this.sendSetting.toLowerCase() === 'await' && !this.date && this.errorData.awaitTimeError) {
+        this.isValided = false
+        return false
+      } else if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
         return true
       } else {

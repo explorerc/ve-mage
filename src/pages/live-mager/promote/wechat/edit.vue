@@ -451,7 +451,13 @@ export default {
       //     this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
       //   }
       // }
-      if (this.titleValue.length && this.wxContent.length) {
+      if (this.errorData.sendPersonError) {
+        this.isValided = false
+        return false
+      } else if (this.sendSetting.toLowerCase() === 'await' && !this.date && this.errorData.awaitTimeError) {
+        this.isValided = false
+        return false
+      } else if (this.titleValue.length && this.wxContent.length) {
         if (this.hrefSetting === 'CUSTOM') {
           const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
           // reg.test(this.hrefValue) ? this.errorData.hrefError = '' : this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
