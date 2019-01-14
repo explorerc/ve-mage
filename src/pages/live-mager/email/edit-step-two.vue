@@ -339,7 +339,6 @@
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
             this.disabledBtn = false
           }).catch((e) => {
-            this.errorMsg.planTime = e.msg
             let st = setTimeout(() => {
               clearTimeout(st)
               this.disabledBtn = false
