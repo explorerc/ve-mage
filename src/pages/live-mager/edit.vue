@@ -403,7 +403,7 @@ export default {
     },
     dateFocus () {
       this.dateEmpty = false
-      this.date = this.defaultValue
+      this.date = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
