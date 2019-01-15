@@ -32,9 +32,10 @@
             >
             </com-upload> -->
             <ve-upload
-            title="图片支持jpg、png、bmp格式 大小不超过2M"
-            accept="png|jpg|bmp"
+            :title="value.imgDesc"
+             accept="png|jpg|bmp|gif"
             :fileSize="2048"
+            :defaultImg="value.img.indexOf('mp')===0?host+value.img:value.img"
             :errorMsg="uploadImgErrorMsg"
              @error="uploadError"
              @success="uploadImgSuccess">
@@ -146,6 +147,7 @@ export default {
       } else if ((data.bgType === 'img' && data.img) || data.delete) {
         this.$refs.target.style.cssText = `background-image:url(${data.img.indexOf('mp') === 0 ? this.host + data.img : data.img})`
       } else if (data.bgType === 'video' && data.video) {
+        this.$refs.target.style.cssText = ''
         if (data.videoType === 'upload') {
           if (!(/^(http|https|<iframe):\/\//.test(data.video))) {
             this.$refs.target.querySelector('.media-container video').setAttribute('src', `${data.video.indexOf('mp') === 0 ? this.host + data.video : data.video}`)

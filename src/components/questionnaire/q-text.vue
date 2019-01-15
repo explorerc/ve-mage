@@ -95,6 +95,7 @@ export default {
 <style scoped lang="scss">
 .q-edit-content {
   width: 90%;
+  position: relative;
   /deep/ {
     .com-input {
       &.code {
@@ -111,13 +112,22 @@ export default {
         width: 140px;
         margin-left: 1px;
         position: absolute;
-        bottom: 15px;
-        right: 35px;
-        height: 40px;
+        bottom: 2px;
+        right: 2px;
+        height: 36px;
         line-height: 39px;
         border-color: #ffd021;
         background-color: #ffd021;
         padding: 0;
+        color: #222;
+        &:hover {
+          background-color: #FDD43F;
+          border-color: #FDD43F;
+        }
+        &:active {
+          background-color: #EEC11A;
+          border-color: #EEC11A;
+        }
       }
     }
     .error-msg {

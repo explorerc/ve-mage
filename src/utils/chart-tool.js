@@ -34,8 +34,8 @@ const lineColor = '#e2e2e2'
 const grid = {
   left: '2%',
   right: 30,
-  bottom: '1%',
-  top: 20
+  bottom: '36',
+  top: 10
 }
 const AxisValue = {
   type: 'value',
@@ -49,8 +49,8 @@ const AxisValue = {
   },
   axisLabel: {
     textStyle: {
-      color: '#333',
-      fontSize: 10
+      color: '#888',
+      fontSize: 12
     }
   },
   axisTick: {
@@ -70,8 +70,8 @@ const AxisCategory = {
   },
   axisLabel: {
     textStyle: {
-      color: '#333',
-      fontSize: 10
+      color: '#888',
+      fontSize: 12
     }
   },
   axisTick: {
@@ -116,13 +116,17 @@ export function barPile (id, data, gridData, legendGrid, xName) {
         fontSize: '12'
       },
       axisPointer: {
-        type: 'shadow'
+        type: 'shadow',
+        shadowStyle: { // 阴影指示器样式设置
+          width: 'auto', // 阴影大小
+          color: 'rgba(150,150,150,0)' // 阴影颜色
+        }
       }
     },
     legend: {
-      top: -2,
-      right: 10,
+      right: 'center',
       ...legendGrid,
+      bottom: -5,
       data: data.legendData
     },
     color: COLORS,
@@ -148,7 +152,7 @@ export function barPile (id, data, gridData, legendGrid, xName) {
       },
       axisLabel: {
         textStyle: {
-          color: '#333',
+          color: '#888',
           fontSize: 12
         }
       },
@@ -208,8 +212,8 @@ export function lines (id, data, colorParam, gridData) {
     },
     legend: {
       data: legendData,
-      right: 10,
-      top: -2,
+      right: 'center',
+      bottom: -5,
       itemHeight: 10
     },
     grid: {
@@ -237,6 +241,9 @@ export function lines (id, data, colorParam, gridData) {
     },
     yAxis: {
       ...AxisValue,
+      max: (value) => {
+        return value.max || 100
+      },
       splitArea: {
         show: false
         // ,
@@ -268,9 +275,13 @@ export function lines (id, data, colorParam, gridData) {
  * @returns {Promise<Response>}
  */
 export function pie (id, data) {
+  let sColor = ['#40C5FF', '#FEC400', '#FF8419', '#5189EE', '#666666', '#E2E2E2', '#b6a2de', '#2ec7c9', '#5ab1ef', '#ffb980']
   data = (data && data.length > 0) ? data : [
     {name: '暂无数据', value: 0}
   ]
+  if (data.length === 1 && data[0].value === 0) {
+    sColor.unshift('#E2E2E2')
+  }
   let option = {
     tooltip: {
       trigger: 'item',
@@ -285,7 +296,7 @@ export function pie (id, data) {
         }
       }
     },
-    color: ['#40C5FF', '#FEC400', '#FF8419', '#5189EE', '#666666', '#E2E2E2', '#b6a2de', '#2ec7c9', '#5ab1ef', '#ffb980'],
+    color: sColor,
     series: {
       name: '所占比例',
       type: 'pie',
@@ -294,14 +305,7 @@ export function pie (id, data) {
       label: {
         normal: {
           formatter: '{b}\n\n{d}%',
-          color: '#333'
-        }
-      },
-      labelLine: {
-        normal: {
-          lineStyle: {
-            color: '#666'
-          }
+          color: '#888'
         }
       },
       data: data
@@ -342,7 +346,7 @@ export function pieOne (id, percent) {
             formatter: '{d}',
             textStyle: {
               fontSize: 30,
-              color: '#333'
+              color: '#888'
             }
           }
         }
@@ -375,28 +379,25 @@ export function pieOne (id, percent) {
 export function barRadius (id, data) {
   let xAxisData = []
   let barData = []
-  let maxVal = 0
+  // let maxVal = 0
   data.forEach(item => {
     xAxisData.push(item.name)
     barData.push(item.value)
-    maxVal = maxVal > item.value ? maxVal : item.value
+    // maxVal = maxVal > item.value ? maxVal : item.value
   })
-  maxVal = intCount(maxVal)
-  let dataShadow = []
-  for (let i = 0; i < data.length; i++) {
-    dataShadow.push(maxVal)
-  }
+  // maxVal = intCount(maxVal)
+  // let dataShadow = []
+  // for (let i = 0; i < data.length; i++) {
+  //   dataShadow.push(maxVal)
+  // }
   let option = {
     tooltip: {
       trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      },
       textStyle: {
         fontSize: 12
       },
       formatter: (item) => {
-        return `${item[1].name}：${item[1].value}`
+        return `${item[0].name}：${item[0].value}`
       }
     },
     label: {
@@ -424,8 +425,8 @@ export function barRadius (id, data) {
       },
       axisLabel: {
         rotate: 45,
-        fontSize: 10,
-        color: '#333'
+        fontSize: 12,
+        color: '#888'
       },
       data: xAxisData
     },
@@ -446,21 +447,6 @@ export function barRadius (id, data) {
       type: 'inside'
     }],
     series: [{
-      type: 'bar',
-      name: '',
-      itemStyle: {
-        normal: {
-          barBorderRadius: [10, 10, 10, 10],
-          color: 'rgba(0,0,0,0.05)'
-        }
-      },
-      barGap: '-100%',
-      barWidth: '20',
-      barCategoryGap: '20',
-      data: dataShadow,
-      animation: false
-    },
-    {
       type: 'bar',
       barWidth: '20',
       itemStyle: {
@@ -659,8 +645,8 @@ export function barAndLine (id, data, gridData) {
       }
     },
     legend: {
-      top: -16,
-      right: 10,
+      right: 'center',
+      bottom: -5,
       data: legendData
     },
     grid: {
@@ -685,6 +671,9 @@ export function barAndLine (id, data, gridData) {
     }],
     yAxis: {
       ...AxisValue,
+      max: (value) => {
+        return value.max || 100
+      },
       splitArea: {
         show: false
         // , areaStyle: {
@@ -721,14 +710,14 @@ export function scatter (id, datas, gridData) {
   })
   let option = {
     legend: {
-      data: ['观看时长'],
+      data: ['观看人数'],
       right: 10,
-      top: -4
+      top: 30
     },
     tooltip: {
       position: 'top',
       formatter: function (params) {
-        return `${params.name}(${datas.yAxis[params.data[1]]})<br/>${params.seriesName}：${params.data[2]}秒`
+        return `${params.name}(${datas.yAxis[params.data[1]]})<br/>${params.seriesName}：${params.data[2]}人`
       }
     },
     grid: {
@@ -769,22 +758,19 @@ export function scatter (id, datas, gridData) {
       }
     },
     series: [{
-      name: '观看时长',
+      name: '观看人数',
       type: 'scatter',
       symbolSize: function (val) {
-        return val[2] * 60 / maxValue
+        return val[2] * 50 / maxValue
       },
       itemStyle: {
         normal: {
           color: '#4B5AFE',
-          shadowBlur: 10,
+          shadowBlur: 6,
           shadowColor: '#333'
         }
       },
-      data: datas.data,
-      animationDelay: function (idx) {
-        return idx * 5
-      }
+      data: datas.data
     }]
   }
   let myChart = echarts.init(document.getElementById(id))

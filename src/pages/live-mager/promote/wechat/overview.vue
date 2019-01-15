@@ -4,7 +4,7 @@
        com-loading-text="拼命加载中">
     <div class="overview-wx-page live-mager">
       <div class="live-title">
-        <span class="title">微信通知</span>
+        <span class="title">微信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
@@ -17,7 +17,7 @@
           </div>
           <div class="from-row">
             <div class="from-title">收件人：</div>
-            <div class="from-content">
+            <div class="from-content spe">
               <template v-for="(item,idx) in selectedGroupList">{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></template><br>
               <template v-for="(item,idx) in selectedTagList">{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></template> （合计{{expectNum}}人）
               <el-button v-if="status === 'SEND'" class='send-detail default-button' @click='sendDetail = true'>发送详情</el-button>
@@ -127,7 +127,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '微信通知',
+      title: '微信邀约',
       url: `/liveMager/promote/wechat/list/${this.activityId}`
     }, {
       title: '预览'
@@ -139,8 +139,7 @@ export default {
         inviteId: this.id
       }).then((res) => {
         this.$toast({
-          content: '发送成功',
-          position: 'center'
+          content: '发送成功'
         })
         this.status = 'SEND'
         this.date = formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
@@ -269,6 +268,11 @@ export default {
         top: 3px;
         margin-right: 5px;
       }
+    }
+    &.spe {
+      width: 500px;
+      flex: inherit !important;
+      text-align: justify;
     }
   }
   .btn-group {

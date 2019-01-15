@@ -38,6 +38,7 @@
           <div>
             <com-input class="link-input" :rows="6" type="textarea" placeholder="请输入嵌入视频url: <iframe src='https://cnstatic01.e.vhall.com/static/bg.mp4' frameborder=0 'allowfullscreen'></iframe>" v-model="value.url"></com-input>
           </div>
+          <span class='video-tips'>视频链接需要以https://协议开头</span>
         </com-tab>
       </com-tabs>
     </com-edit>
@@ -56,6 +57,7 @@ export default {
   },
   data () {
     return {
+      isInit: true,
       uploadId: `vid_upload_${Math.floor(Math.random() * 10000)}`,
       videoId: `vid_${Math.floor(Math.random() * 10000)}`,
       confirmId: `vid_confirm_${Math.floor(Math.random() * 10000)}`,
@@ -63,7 +65,8 @@ export default {
       vhallParams: {},
       percentVideo: 0,
       uploadErrorMsg: '视频仅支持mp4格式，文件大小不超过200M',
-      msgError: false
+      msgError: false,
+      videoSize: 200
     }
   },
   methods: {
@@ -83,6 +86,7 @@ export default {
       })
     },
     initVhallUpload () {
+      let _this = this
       window.vhallCloudDemandSDK(`#${this.uploadId}`, {
         params: {
           confirmBtn: `#${this.confirmId}`, // 保存按钮的ID
@@ -92,6 +96,8 @@ export default {
           app_id: this.vhallParams.appId
         },
         beforeUpload: (file) => {
+          const reg = /^[0-9a-zA-Z._\u4e00-\u9fa5]{1,30}$/
+          _this.fileName = file.name
           this.msgError = false
           this.uploadErrorMsg = '准备上传...'
           if (file.type !== 'video/mp4') {
@@ -99,7 +105,11 @@ export default {
             this.msgError = true
             return false
           } else if (file.size / 1024 / 1024 > this.videoSize) {
-            this.uploadErrorMsg = '视频太大，请不要大于200M'
+            this.uploadErrorMsg = '视频大小请不要大于200MB'
+            this.msgError = true
+            return false
+          } else if (!reg.test(_this.fileName)) {
+            _this.uploadErrorMsg = '视频名称不能包含特殊字符，长度不能超过30个字'
             this.msgError = true
             return false
           }
@@ -111,7 +121,8 @@ export default {
           this.percentVideo = parseFloat(percent.replace('%', ''))
         },
         uploadSuccess: () => {
-          this.uploadErrorMsg = '上传成功!'
+          this.uploadErrorMsg = '上传成功！等待转码...'
+          this.isInit = false
           this.$refs.confirmUpload.click()
         },
         saveSuccess: (res) => {
@@ -141,7 +152,9 @@ export default {
             // window.VhallPlayer.play()
           },
           fail: (msg) => {
-            this.uploadErrorMsg = `${msg}...,稍后刷新页面即可看到预览视频`
+            console.log(msg)
+            // this.uploadErrorMsg = `${msg}...,稍后刷新页面即可看到预览视频`
+            this.uploadErrorMsg = `转码中...${this.isInit ? '转码完成后' : '保存后等待转码完成 '}刷新页面即可看到预览视频`
           }
         })
       })
@@ -206,6 +219,13 @@ export default {
     .com-input textarea {
       width: 300px;
       margin: 0 auto;
+    }
+    .video-tips {
+      font-size: 14px;
+      display: block;
+      text-align: left;
+      padding-left: 27px;
+      padding-top: 5px;
     }
   }
   .video-js .vjs-big-play-button {

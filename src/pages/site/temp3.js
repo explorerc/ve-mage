@@ -1,7 +1,7 @@
 export default function () {
   return {
     tid: '0478322',
-    tplName: '模板名称3',
+    tplName: '商品展示',
     section1Data: {
       panel: {
         hideVideo: false,
@@ -10,12 +10,16 @@ export default function () {
         img: '',
         link: '',
         color: 'rgba(255, 255, 255, 1)',
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500',
+        uploadImgErrorMsg: ''
       },
       logo: {
         url: require('assets/image/tp_logo.png'),
         link: '',
-        enable: true
+        enable: true,
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*100',
+        uploadImgErrorMsg: ''
       },
       nav: {
         enable: true,
@@ -24,26 +28,31 @@ export default function () {
           list: [{
             text: '首页',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '大会简介',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '参会嘉宾',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '合作伙伴',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           },
           {
             text: '联系我们',
             type: '_blank',
+            hrefType: '_define',
             link: ''
           }
           ]
@@ -52,12 +61,15 @@ export default function () {
     },
     section2Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(30,101,231,1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       block1: {
         enable: true,
@@ -71,22 +83,29 @@ export default function () {
             fontColor: 'rgba(255,255,255,1)',
             text: '立即了解',
             link: '',
+            hrefType: '_define',
             enable: true,
             target: '_self'
           },
+          hrefType: '_define',
           target: '_self',
-          link: ''
+          link: '',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500',
+          uploadImgErrorMsg: ''
         }]
       }
     },
     section3Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(239,239,239,1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       block1: {
         enable: true,
@@ -100,10 +119,14 @@ export default function () {
             text: '',
             bgColor: '',
             fontColor: '',
+            hrefType: '_define',
             link: ''
           },
+          hrefType: '_define',
           target: '_self',
-          link: ''
+          link: '',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸500*500',
+          uploadImgErrorMsg: ''
         }]
       }
     },
@@ -117,38 +140,44 @@ export default function () {
           video: {
             videoType: 'upload',
             recordId: 'a534a675',
-            url: "<iframe src='http://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
+            url: "<iframe src='https://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
             enable: true,
             font: {
               enable: true,
               content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 14px;">Photography我的第一堂摄影课</span></div>`
             }
-          }
+          },
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸394*222',
+          uploadImgErrorMsg: ''
         },
         {
           video: {
             videoType: 'upload',
             recordId: 'a534a675',
-            url: "<iframe src='http://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
+            url: "<iframe src='https://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
             enable: true,
 
             font: {
               enable: true,
               content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 14px;">Photography我的第一堂摄影课</span></div>`
             }
-          }
+          },
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸394*222',
+          uploadImgErrorMsg: ''
         },
         {
           video: {
             videoType: 'upload',
             recordId: 'a534a675',
-            url: "<iframe src='http://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
+            url: "<iframe src='https://player.youku.com/embed/XMzYwODAwMjI2NA==' frameborder=0 'allowfullscreen'></iframe>",
             enable: true,
             font: {
               enable: true,
               content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 14px;">Photography我的第一堂摄影课</span></div>`
             }
-          }
+          },
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸394*222',
+          uploadImgErrorMsg: ''
         }
       ]
       // video: {
@@ -166,7 +195,9 @@ export default function () {
         videoType: 'upload',
         color: 'RGBA(0, 157, 181, 1)',
         link: '',
-        img: require('assets/image/tp_bg5.jpg')
+        img: require('assets/image/tp_bg5.jpg'),
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*330',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -177,18 +208,22 @@ export default function () {
         fontColor: 'RGBA(34, 34, 34, 1)',
         text: '立刻报名',
         link: '',
+        hrefType: '_define',
         enable: true,
         target: '_self'
       }
     },
     section6Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: true,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -202,72 +237,99 @@ export default function () {
           content: ``,
           img: require('assets/image/tp_logo1.png'),
           btn: {
+            hrefType: '_define',
             link: ''
           },
           link: '',
-          target: '_self'
+          hrefType: '_define',
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo2.png'),
           btn: {
+            hrefType: '_define',
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo3.png'),
           btn: {
+            hrefType: '_define',
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo4.png'),
           btn: {
+            hrefType: '_define',
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo5.png'),
           btn: {
+            hrefType: '_define',
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'top',
           content: ``,
           img: require('assets/image/tp_logo6.png'),
           btn: {
+            hrefType: '_define',
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸200*200',
+          uploadImgErrorMsg: ''
         }
         ]
       }
     },
     section7Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: true,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(19,16,49,1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸1920*300',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
@@ -279,22 +341,26 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '立即了解',
         link: '',
+        hrefType: '_define',
         enable: true,
         target: '_self'
       }
     },
     section8Data: {
       panel: {
+        img: '',
         enable: true,
         hideVideo: false,
         bgType: 'color',
         videoType: 'upload',
         color: 'rgba(255, 255, 255, 1)',
-        link: ''
+        link: '',
+        imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议最大尺寸1920*820 最小尺寸1366*583',
+        uploadImgErrorMsg: ''
       },
       font: {
         enable: true,
-        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">合作伙伴</span></div>`
+        content: `<div style="text-align: center;"><span style="background-color: transparent; font-size: 32px;">参会嘉宾</span></div>`
       },
       block1: {
         enable: true,
@@ -306,8 +372,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -316,8 +385,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -326,8 +398,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -336,8 +411,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -346,8 +424,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -356,8 +437,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -366,8 +450,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         },
         {
           type: 'bottom',
@@ -376,8 +463,11 @@ export default function () {
           btn: {
             link: ''
           },
+          hrefType: '_define',
           link: '',
-          target: '_self'
+          target: '_self',
+          imgDesc: '图片支持jpg、png、bmp、gif格式<br>大小不超过2M<br>建议尺寸120*120',
+          uploadImgErrorMsg: ''
         }
         ]
       }

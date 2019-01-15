@@ -35,20 +35,22 @@ export default {
   POST_SEND_WECHAT: '/expand/wechat-invite/send',
   // 获取短信条数
   GET_MSG_LIMIT: '/common/message/limit-num',
-  // 自动化通知获取模板变量
+  // 自动化邀约获取模板变量
   GET_AUTO_PARAMS: '/expand/notice/template-params',
-  // 自动化通知获取时间颗粒
+  // 自动化邀约获取时间颗粒
   GET_AUTO_CONFIG: '/expand/notice/find-config',
-  // 自动化通知保存时间颗粒
+  // 自动化邀约保存时间颗粒
   POST_AUTO_SAVE_CONFIG: '/expand/notice/save-config',
-  // 自动化通知获取通知列表
+  // 自动化邀约获取通知列表
   GET_AUTO_LIST: '/expand/notice/task-list',
-  // 自动化通知修改通知
+  // 自动化邀约修改通知
   POST_AUTO_SAVE_TASK: '/expand/notice/saveTask',
-  // 自动化通知保存通知
+  // 自动化邀约保存通知
   POST_AUTO_FIND_TASK: '/expand/notice/find-task',
-  // 自动化通知删除通知
+  // 自动化邀约删除通知
   POST_DELETE_AUTO_TASK: '/expand/notice/delete-task',
-  // 自动化通知发送测试短信
-  POST_AUTO_SEND_TEST: '/expand/notice/test-send'
+  // 自动化邀约发送测试短信
+  POST_AUTO_SEND_TEST: '/expand/notice/test-send',
+  // 添加短链接
+  GET_SHOR_URL: '/common/wechat/short-url'
 }

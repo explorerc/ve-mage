@@ -25,7 +25,9 @@
                 v-model="search.keyword" @keyup.enter.native="onSearch" @blur="onSearch" clearable></el-input>
     </div>
     <div class="table_box">
-      <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" class="el-table"
+      <el-table ref="multipleTable" :data="tableData"
+                tooltip-effect="dark" class="el-table"
+                v-if="tableData.length"
                 @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" v-if="type === 2"></el-table-column>
         <el-table-column label="用户信息">
@@ -49,7 +51,7 @@
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button class="btns" type="text" size="mini" @click="handleDetails(scope.row.business_consumer_uid)">详情
+            <el-button class="btns" type="text" @click="handleDetails(scope.row.business_consumer_uid)">详情
             </el-button>
             <el-button v-if="type == 2 " class="btns" type="text" size="mini"
                        @click="handleDelete(scope.row.business_consumer_uid ,scope.$index)">删除
@@ -57,6 +59,10 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="empty" v-if="isNoDataShow">
+        <div class="img"></div>
+        <div class="txt">暂无数据</div>
+      </div>
       <VePagination class="VePagination" v-show="total>10" :pageSize="search.pageSize" @changePage="changePage" :total="total"/>
     </div>
   </div>
@@ -109,7 +115,9 @@
           page: 1,
           pageSize: 10
         },
-        total: 0
+        total: 0,
+        // 控制空白页的显示
+        isNoDataShow: false
       }
     },
     methods: {
@@ -146,6 +154,11 @@
               item.user_level = level
             })
             this.tableData = res.data.list
+            if (this.tableData.length) {
+              this.isNoDataShow = false
+            } else {
+              this.isNoDataShow = true
+            }
           })
       },
       changePage (nowPage) {
@@ -196,8 +209,7 @@
           handleClick: (e) => {
             if (e.action === 'cancel') {
               this.$toast({
-                content: '已取消删除!',
-                position: 'center'
+                content: '已取消删除!'
               })
             } else if (e.action === 'confirm') {
               this.$post(groupService.DEL_GROUP_USER, {
@@ -210,8 +222,7 @@
                     this.onSearch()
                   }, 0)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -227,7 +238,7 @@
 
 <style lang="scss" scoped>
 #groupDetails {
-  padding: 50px 100px;
+  padding: 48px 100px;
   font-family: PingFangSC-Regular;
   /deep/ {
     header {
@@ -242,27 +253,75 @@
       overflow: hidden;
       .opBtns {
         float: left;
+        button {
+          margin-right: 5px;
+          &:last-child {
+            margin-left: 0px;
+          }
+        }
       }
+      /*.el-button {*/
+      /*color: #555555;*/
+      /*width: 120px;*/
+      /*height: 34px;*/
+      /*border-radius: 16px;*/
+      /*border: 1px solid #888888;*/
+      /*margin-left: 20px;*/
+      /*&:hover,*/
+      /*&:focus {*/
+      /*background-color: #FDD43F;*/
+      /*border-color: #FDD43F;*/
+      /*color: #222;*/
+      /*}*/
+      /*&:active {*/
+      /*background-color: #EEC11A;*/
+      /*border-color: #EEC11A;*/
+      /*color: #222;*/
+      /*}*/
+      /*&:disabled {*/
+      /*color: #555;*/
+      /*border:1px solid #e2e2e2;*/
+      /*&:hover,*/
+      /*&:focus,*/
+      /*&:active {*/
+      /*background-color: transparent;*/
+      /*border-color: #888;*/
+      /*}*/
+      /*}*/
+      /*}*/
       .el-button {
-        color: #555555;
-        width: 120px;
-        height: 34px;
-        border-radius: 16px;
-        border: 1px solid #888888;
-        margin-left: 20px;
-        &:hover,&:focus {
-          background-color:#ffd021 ;
-          border-color: #ffd021;
-          color: black;
+        border-color: #888;
+        color: #555;
+        height: 30px;
+        padding: 0 20px;
+        &:focus,
+        &:hover {
+          background-color: #fdd43f;
+          border-color: #fdd43f;
+          color: #222;
+        }
+        &:active {
+          background-color: #eec11a;
+          border-color: #eec11a;
+          color: #222;
+        }
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
         }
       }
       .search {
         float: right;
         display: inline-block;
         width: 220px;
+        margin-right: 10px;
         .el-input__inner {
           border-radius: 20px;
-          border-color: rgba(136, 136, 136, 1);
+          border-color: #cecece;
+          height: 30px;
+          &:hover {
+            border-color: #888;
+          }
         }
       }
     }
@@ -272,6 +331,22 @@
       margin: 20px auto;
       padding: 30px;
       min-height: 550px;
+      .empty {
+        text-align: center;
+        margin: 145px 0;
+        .txt {
+          padding-top: 20px;
+          font-size: 14px;
+          color: #555;
+        }
+        .img {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+          background: url('~assets/image/nodata@2x.png') no-repeat center;
+          background-size: contain;
+        }
+      }
       th.el-table_1_column_1 span.el-checkbox__inner {
         background-color: transparent;
         border: none;
@@ -283,7 +358,7 @@
         border: none;
       }
       tr {
-        span{
+        span {
           color: rgba(34, 34, 34, 1);
         }
       }

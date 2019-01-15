@@ -5,9 +5,15 @@
       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
     </com-panel>
     <com-panel class="section2" :edit="editAble" v-model="data.section2Data.panel">
-      <div class="mask">
+      <!-- <div class="mask">
         <com-font :edit="editAble" v-model="data.section2Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
+      </div> -->
+    </com-panel>
+    <com-panel class="section8" :edit="editAble" v-model="data.section8Data.panel">
+      <div class="mask">
+        <com-font :edit="editAble" v-model="data.section8Data.font"></com-font>
+        <com-btn class="btn" :edit="editAble" v-model="data.section8Data.btn"></com-btn>
       </div>
     </com-panel>
     <com-panel class="section3" :edit="editAble" v-model="data.section3Data.panel">
@@ -29,7 +35,7 @@
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
-    <div class="support">微吼直播提供技术支持</div>
+    <div class="support">微吼知客提供技术支持</div>
   </div>
 </template>
 
@@ -85,6 +91,9 @@ export default {
   .section1 {
     position: relative;
   }
+  .support {
+    margin-bottom: 53px;
+  }
 }
 .template1-container /deep/ {
   .panel-container {
@@ -109,10 +118,10 @@ export default {
       cursor: pointer;
       display: inline-block;
       background-color: #ffd021;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background-image: url('~assets/image/site/edit.svg');
-      background-size: 32px;
+      background-size: 28px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
@@ -173,7 +182,7 @@ export default {
   }
   .section2 {
     width: 100%;
-    height: 820px;
+    height: 500px;
     .panel {
       padding: 50px 0;
       text-align: center;
@@ -308,6 +317,11 @@ export default {
           }
         }
       }
+      &.width4 {
+        .block1-item {
+          width: 350px;
+        }
+      }
       .block1-item {
         width: 540px;
         margin-right: 40px;
@@ -355,6 +369,48 @@ export default {
       margin-top: 70px;
       text-align: left;
       width: 650px;
+      min-height: 100px;
+    }
+    .btn {
+      display: block;
+      margin-top: 24px;
+      .btn-content {
+        display: inline-block;
+        position: relative;
+      }
+      .com-button {
+        min-width: 200px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 16px;
+      }
+    }
+  }
+  .section8 {
+    width: 100%;
+    .panel {
+      padding: 0px 0;
+      text-align: center;
+    }
+    .mask {
+      // height: 260px;
+      height: auto;
+      padding-bottom: 40px;
+      width: 100%;
+      // background-color: rgba(0, 0, 0, 0.8);
+    }
+    .font-content {
+      margin-top: 26px;
+      text-align: left;
+      width: 650px;
+      min-height: 100px;
+    }
+    .font-editer {
+      height: 400px;
+      background-color: #dadada;
+    }
+    .font-content {
+      width: 100%;
       min-height: 100px;
     }
     .btn {

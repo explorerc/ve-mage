@@ -20,7 +20,7 @@
               {{uersInfo[1].val}}</a>
           </p>
           <p class="v-title">
-            优质用户 ({{uersInfo[1].centage}})
+            优质用户 ({{uersInfo[1].centage}})<ve-msg-tips class='user-tips' tip='近期经常参加您的直播活动，并且在直播中通过聊天、红包雨、调查问卷等互动方式与主持人进行互动，同时还分享了本次直播的用户'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -29,16 +29,7 @@
               {{uersInfo[2].val}}</a>
           </p>
           <p class="v-title">
-            高价值用户 ({{uersInfo[2].centage}})
-          </p>
-        </li>
-        <li>
-          <p class="v-data">
-            <a :href="'/userManage/userGroupsDetails/'+url.general+'/1'">
-              {{uersInfo[3].val}}</a>
-          </p>
-          <p class="v-title">
-            一般用户 ({{uersInfo[3].centage}})
+            高价值用户 ({{uersInfo[2].centage}})<ve-msg-tips class='user-tips' tip='近期偶尔参加过您的直播活动，并且在直播中非常积极与主持人进行互动，同时还分享了本次直播的用户'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -47,7 +38,16 @@
               {{uersInfo[4].val}}</a>
           </p>
           <p class="v-title">
-            潜力用户 ({{uersInfo[4].centage}})
+            潜力用户 ({{uersInfo[4].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='近期偶尔参加过您的直播活动，<br>在直播中偶尔与主持人的互动'></ve-msg-tips>
+          </p>
+        </li>
+        <li>
+          <p class="v-data">
+            <a :href="'/userManage/userGroupsDetails/'+url.general+'/1'">
+              {{uersInfo[3].val}}</a>
+          </p>
+          <p class="v-title">
+            一般用户 ({{uersInfo[3].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='近期偶尔参加过您的直播活动，<br>在直播中几乎不予主持人进行互动'></ve-msg-tips>
           </p>
         </li>
         <li>
@@ -56,7 +56,7 @@
               {{uersInfo[5].val}}</a>
           </p>
           <p class="v-title">
-            流失用户 ({{uersInfo[5].centage}})
+            流失用户 ({{uersInfo[5].centage}})<ve-msg-tips class='user-tips' tip-type="html" tip='很久没有参加过您的直播活动了，<br>之前参与过直播，其活跃度也很低'></ve-msg-tips>
           </p>
         </li>
       </ol>
@@ -141,12 +141,16 @@
   </div>
 </template>
 <script>
+import VeMsgTips from 'src/components/ve-msg-tips'
 import userService from 'src/api/user-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
 import groupService from 'src/api/user_group'
 import EventBus from 'src/utils/eventBus'
 export default {
+  components: {
+    VeMsgTips
+  },
   data () {
     return {
       info: {
@@ -325,7 +329,7 @@ export default {
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
     height: 60px;
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 5px;
     span.title {
       display: inline-block;
@@ -382,21 +386,23 @@ export default {
       right: 30px;
       background-color: #fff;
       z-index: 1;
+      font-size: 14px;
       li {
-        width: 80px;
+        width: 97px;
         height: 30px;
         line-height: 28px;
         border: 1px solid #bbb;
         float: left;
         text-align: center;
-        color: #888;
+        color: #222;
         &.active {
           color: #222;
-          background-color: #ffd021;
-          border-color: #ffd021;
+          background-color: #fdd43f;
+          border: 1px solid #bbb;
         }
         &:hover {
           color: #222;
+          background-color: #fdd43f;
         }
         &:not(:first-child) {
           border-left: none;
@@ -420,6 +426,7 @@ export default {
     border-radius: 4px;
     padding: 30px 32px;
     margin-top: 20px;
+    font-size: 14px;
     .v-title {
       font-size: 20px;
       margin-bottom: 20px;
@@ -463,6 +470,16 @@ export default {
           width: 13%;
         }
       }
+    }
+  }
+  .msg-tip-box.user-tips /deep/ {
+    margin-left: 10px;
+    position: absolute;
+    span {
+      display: none;
+    }
+    i:hover + span {
+      display: inline-block;
     }
   }
 }

@@ -153,7 +153,7 @@
       border-radius: 4px;
       font-size: 16px;
       overflow: hidden;
-      min-width: 400px;
+      min-width: 404px;
       z-index: 1006;
       &:before {
         display: block;
@@ -173,6 +173,7 @@
         .ve-message-box__header {
           height: 40px;
           line-height: 40px;
+          border-radius: 4px 4px 0 0;
           background-color: $color-default;
           button {
             color: #555;
@@ -200,7 +201,7 @@
       .ve-message-box__header {
         position: relative;
         padding: 0 20px;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
         text-align: left;
         button {
           position: absolute;
@@ -244,7 +245,7 @@
           -webkit-user-select: none;
           -ms-user-select: none;
           padding: 0 40px;
-          margin: 0 20px;
+          margin: 0 15px;
           border-radius: 19px;
           color: #222222;
           background: transparent;
@@ -272,9 +273,9 @@
           }
         }
         .button--cancel {
-          padding: 0 20px 0 0;
+          padding: 0;
           &:hover {
-            color: $color-default;
+            color: #555;
             &[type='error'] {
               color: $color-red;
             }

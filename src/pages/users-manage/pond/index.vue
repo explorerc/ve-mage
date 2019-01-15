@@ -16,17 +16,21 @@
               <el-dropdown-item command='checkAll'>列表所有数据</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown> -->
-          <el-dropdown @command="handleCommandk">
+          <div class="fl">
+            <el-button round disabled v-if="!multipleSelection.length" style="margin-right: 10px">批量操作</el-button>
+            <el-dropdown @command="handleCommandk" v-else>
             <span class="el-dropdown-link">
-              <el-button round :disabled="multipleSelection.length <= 0">批量操作</el-button>
+              <el-button round>批量操作</el-button>
             </span>
-            <el-dropdown-menu slot="dropdown">
-              <!-- <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item> -->
-              <el-dropdown-item command='addGroup' :disabled="multipleSelection.length <= 0">添加到群组</el-dropdown-item>
-              <el-dropdown-item command='del' :disabled="multipleSelection.length <= 0">删除</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <el-button round @click='exportAll()'>全部导出</el-button>
+              <el-dropdown-menu slot="dropdown">
+                <!-- <el-dropdown-item command='export' :disabled="multipleSelection.length <= 0">导出</el-dropdown-item> -->
+                <el-dropdown-item command='addGroup'>添加到群组</el-dropdown-item>
+                <el-dropdown-item command='del'>删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+
+          <el-button round @click='exportAll()' :disabled='!usersListData.length'>全部导出</el-button>
           <!-- <el-button round @click='addGroupAll()'>全部添加到群组</el-button> -->
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
@@ -55,7 +59,7 @@
           </div>
           <div class="condition">
             <span class="label">来源</span>
-            <el-select v-model="filterCondition.source" placeholder="请选择">
+            <el-select v-model="filterCondition.source" placeholder="请选择" style="width:200px;">
               <el-option
                 v-for="item in sources"
                 :key="item.value"
@@ -66,8 +70,10 @@
           </div>
           <div class="condition">
             <span class="label">参与场次</span>
-            <com-input :value.sync="filterCondition.join_count" placeholder="请输入至少参与活动的次数"
-                       :type="'number'"></com-input>
+            <com-input :value.sync="filterCondition.join_count"
+                       placeholder="请输入至少参与活动的次数"
+                       type="mobile"
+                       ></com-input>
           </div>
         </div>
         <div class='filter-item'>
@@ -108,7 +114,7 @@
           </div>
           <div class="condition">
             <span class="label">性别</span>
-            <el-select v-model="filterCondition.sex" placeholder="请选择">
+            <el-select v-model="filterCondition.sex" placeholder="请选择" style="width: 200px">
               <el-option
                 v-for="item in sexs"
                 :key="item.value"
@@ -119,7 +125,7 @@
           </div>
           <div class="condition">
             <span class="label">所属行业</span>
-            <el-select v-model="filterCondition.industry" placeholder="请选择">
+            <el-select v-model="filterCondition.industry" placeholder="请选择" style="width: 200px">
               <el-option
                 v-for="item in industrys"
                 :key="item.value"
@@ -201,88 +207,96 @@
         </div>
       </div>
       <div class="users-list page-bg table_box " :class='{"has-page":total>filterCondition.page_size}'>
-        <el-table
-          ref="multipleTable"
-          :data="usersListData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange">
-          <el-table-column
-            type="selection"
-            width="55">
-          </el-table-column>
-          <el-table-column
-            label="用户信息"
-            width="200">
-            <template slot-scope="scope">
-              <dl class="users-info clearfix">
-                <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
-                <dt v-else class='avatar-empty'><span class='img'></span></dt>
-                <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span>
-                </dd>
-                <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
-                <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
-                <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
-                <dd class='protential' v-if="scope.row.level === 4">潜力用户</dd>
-                <dd class='' v-if="scope.row.level === 5">流失用户</dd>
-                <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
-                <dd class="name" :class="scope.row.level | filterLevelclass">{{scope.row.level | filterLevel}}</dd>
-              </dl>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号"
-            width="140"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="mail"
-            width="180"
-            label="邮箱"
-            show-overflow-tooltip>
-            <!-- <template slot-scope="scope">
-              <el-popover trigger="hover" placement="bottom">
-                <p class='mail-tooltips' v-for="(item,idx) in scope.row.mail">
-                  <span>{{item.value}}</span>
-                  <span>{{item.type}}</span>
-                </p>
-                <div slot="reference" class="name-wrapper">
-                  {{ scope.row.mail[1].value }}
-                </div>
-              </el-popover>
-            </template> -->
-          </el-table-column>
-          <el-table-column
-            prop="count"
-            label="参与(次)"
-            width="90">
-          </el-table-column>
-          <el-table-column
-            prop="lastActive"
-            label="最后活跃"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="comment"
-            label="备注"
-            show-overflow-tooltip>
-          </el-table-column>
-          <el-table-column
-            prop="count"
-            label="操作"
-            width="80">
-            <template slot-scope="scope">
-              <router-link :to="`/userManage/info/${scope.row.business_consumer_uid}`">
-                <el-button class='detail'
-                           type="text">
-                  详情
-                </el-button>
-              </router-link>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="total">共 <span>{{total}}</span> 条数据</div>
+        <template v-if="usersListData.length">
+          <el-table
+            ref="multipleTable"
+            :data="usersListData"
+            tooltip-effect="dark"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="55">
+            </el-table-column>
+            <el-table-column
+              label="用户信息"
+              width="200">
+              <template slot-scope="scope">
+                <dl class="users-info clearfix">
+                  <dt v-if="scope.row.avatar.length"><img class='img' :src="scope.row.avatar"></dt>
+                  <dt v-else class='avatar-empty'><span class='img'></span></dt>
+                  <dd><span class='name'>{{ scope.row.name }}</span> <span class='gender'>{{ scope.row.gender }}</span>
+                  </dd>
+                  <!-- <dd class='high ' v-if="scope.row.level === 1">优质客户</dd>
+                  <dd class='good ' v-if="scope.row.level === 2">高价值用户</dd>
+                  <dd class='common ' v-if="scope.row.level === 3">一般用户</dd>
+                  <dd class='protential' v-if="scope.row.level === 4">潜力用户</dd>
+                  <dd class='' v-if="scope.row.level === 5">流失用户</dd>
+                  <dd class='' v-if="scope.row.level === 0">没有评级</dd> -->
+                  <dd class="name" :class="scope.row.level | filterLevelclass">{{scope.row.level | filterLevel}}</dd>
+                </dl>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="phone"
+              label="手机号"
+              width="140"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+              prop="mail"
+              width="180"
+              label="邮箱"
+              show-overflow-tooltip>
+              <!-- <template slot-scope="scope">
+                <el-popover trigger="hover" placement="bottom">
+                  <p class='mail-tooltips' v-for="(item,idx) in scope.row.mail">
+                    <span>{{item.value}}</span>
+                    <span>{{item.type}}</span>
+                  </p>
+                  <div slot="reference" class="name-wrapper">
+                    {{ scope.row.mail[1].value }}
+                  </div>
+                </el-popover>
+              </template> -->
+            </el-table-column>
+            <el-table-column
+              prop="count"
+              label="参与(次)"
+              width="90">
+            </el-table-column>
+            <el-table-column
+              prop="lastActive"
+              label="最后活跃"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+              prop="comment"
+              label="备注"
+              show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+              prop="count"
+              label="操作"
+              width="80">
+              <template slot-scope="scope">
+                <router-link :to="`/userManage/info/${scope.row.business_consumer_uid}`">
+                  <el-button class='detail'
+                             type="text">
+                    详情
+                  </el-button>
+                </router-link>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="total">共 <span>{{total}}</span> 条数据</div>
+        </template>
+        <template v-if="isNoDataShow">
+          <div class="empty">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
+        </template>
         <div class="pagination-box" v-if="total>filterCondition.page_size">
           <div class="page-pagination">
             <ve-pagination
@@ -504,7 +518,9 @@
           page_size: 100 // 每页显示条数 默认不传为每页显示10条
         },
         exportStr: '', // 导出数据的拼接str
-        imgHost: process.env.IMGHOST + '/'
+        imgHost: process.env.IMGHOST + '/',
+        isNoDataShow: false, // 空白页的展示，并防止先加载空白页
+        isElDropwnShow: true // 批量操作按钮禁用，下拉菜单不显示
       }
     },
     created () {
@@ -620,8 +636,7 @@
         this.$post(userManage.POST_ADD_TO_GROUP, data).then((res) => {
           this.showAddgroup = false
           this.$toast({
-            'content': '导入成功',
-            'position': 'center'
+            'content': '导入成功'
           })
           this.checkedArr = []
           this.$refs.multipleTable.clearSelection()
@@ -632,23 +647,23 @@
       // },
       delUsers () {
         const data = {}
-        const tempArr = []
+        // const tempArr = []
         Object.assign(data, {
           'business_consumer_uids': this.checkedArr.toString()
         })
-        this.usersListData.forEach((item, idx) => {
-          if (this.checkedArr.indexOf(item.business_consumer_uid) === -1) {
-            tempArr.push(item)
-          }
-        })
-        this.usersListData = tempArr
+        // this.usersListData.forEach((item, idx) => {
+        //   if (this.checkedArr.indexOf(item.business_consumer_uid) === -1) {
+        //     tempArr.push(item)
+        //   }
+        // })
+        // this.usersListData = tempArr
         this.$post(userManage.POST_DEL_USERS, data).then((res) => {
           this.$toast({
-            'content': '删除成功',
-            'position': 'center'
+            'content': '删除成功'
           })
           setTimeout((res) => {
-            this.queryTotal(this.filterCondition)
+            // this.queryTotal(this.filterCondition)
+            this.queryUserPool(this.filterCondition)
           }, 1000)
         })
       },
@@ -682,7 +697,7 @@
               'business_consumer_uid': item.business_consumer_uid,
               'avatar': item.avatar ? `${this.$imgHost}/${item.avatar}` : '',
               'name': item.real_name.length > 0 ? (item.real_name.length <= 5 ? item.real_name : item.real_name.substr(0, 5) + '...') : (item.nickname.length <= 5 ? item.nickname : item.nickname.substr(0, 5) + '...'),
-              'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '未知',
+              'gender': item.sex ? (item.sex === 'M' ? '男' : '女') : '',
               'phone': item.phone,
               'mail': item.email,
               'lastActive': item.last_visited_at,
@@ -692,6 +707,11 @@
             })
           })
           this.usersListData = arr
+          if (!this.usersListData.length) {
+            this.isNoDataShow = true
+          } else {
+            this.isNoDataShow = false
+          }
         })
       },
       queryTotal (data) {
@@ -715,10 +735,12 @@
         }
         this.$get(userManage.GET_USERS_POOL, data).then((res) => {
           this.total = res.data.count
+          // this.usersListData
         })
       },
       doFilter () {
         this.queryUserPool(this.filterCondition)
+        this.showFilter = false
       },
       handleCommandk (type) {
         switch (type) {
@@ -860,351 +882,403 @@
 </script>
 
 <style lang='scss' scoped>
-  @import '~assets/css/mixin.scss';
+@import '~assets/css/mixin.scss';
 
-  .pond-page {
-    border-radius: 5px;
-    overflow: hidden;
-    padding-bottom: 30px;
-    margin: 0 auto;
-    color: #222;
-    .total {
-      float: left;
-      height: 30px;
-      line-height: 30px;
-      margin-top: 20px;
-      padding-left: 15px;
-      span {
-        color: $color-error;
-      }
-    }
-    /* 设备宽度大于 1600 */
-    @media all and (min-width: 1600px) {
-      width: 1366px;
-    }
-    /* 设备宽度小于 1600px */
-    @media all and (max-width: 1600px) {
-      width: 1019px;
-      .content .handle-filter .selected {
-        max-width: 880px !important;
-      }
-    }
-    .pond-title {
-      // border-bottom: 1px solid $color-bd;
-      line-height: 60px;
-      margin-top: 10px;
-      margin-bottom: 5px;
-      span.title {
-        display: inline-block;
-        font-size: 24px;
-        /*padding-top: 32px;*/
-      }
-    }
-    .content /deep/ {
-      font-size: 14px;
-      width: 100%;
-      // padding: 40px 80px;
-      // background: rgba(255, 255, 255, 1);
-      // border-radius: 4px;
-      // border: 1px solid rgba(226, 226, 226, 1);
-      .handle-bar {
-        .left {
-          display: inline-block;
-          .el-dropdown {
-            margin-right: 10px;
-          }
-        }
-        .right {
-          float: right;
-          .com-input {
-            margin-right: 10px;
-            width: 206px;
-          }
-          .com-input input {
-            padding-right: 10px;
-            padding-left: 15px;
-            border-radius: 17px;
-          }
-          span {
-            cursor: pointer;
-            position: relative;
-            color: $color-blue;
-            padding-right: 18px;
-            .el-submenu__icon-arrow {
-              right: 0px;
-              margin-top: -6px;
-              -webkit-transition: -webkit-transform 0.3s;
-              transition: -webkit-transform 0.3s;
-              transition: transform 0.3s;
-              transition: transform 0.3s, -webkit-transform 0.3s;
-              font-size: 12px;
-              &.is-open {
-                -webkit-transform: rotateZ(180deg);
-                transform: rotateZ(180deg);
-              }
-            }
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-      }
-      .page-bg {
-        padding: 30px;
-        background: rgba(255, 255, 255, 1);
-        border-radius: 4px;
-        border: 1px solid rgba(226, 226, 226, 1);
-        margin-top: 20px;
-        padding-bottom: 30px;
-        &.has-page {
-          padding-bottom: 30px;
-        }
-      }
-      .handle-filter {
-        .label {
-          color: $color-font-sub;
-          padding-right: 10px;
-          float: left;
-          height: 34px;
-          line-height: 34px;
-        }
-        .filter-item {
-          margin-bottom: 20px;
-          .el-button {
-            border: 1px dotted #dcdfe6;
-          }
-        }
-        .filter-confirm {
-          text-align: center;
-        }
-        .condition {
-          display: inline-block;
-          margin-right: 60px;
-          &:nth-last-child(1) {
-            margin-right: 0;
-          }
-        }
-        .selected {
-          display: inline-block;
-          max-width: 1200px;
-          .added {
-            cursor: pointer;
-            display: inline-block;
-            border-radius: 100px;
-            width: 19px;
-            height: 19px;
-            padding: 0;
-            margin: 0;
-            border: 1px solid rgba(136, 136, 136, 1);
-            background: url('~assets/image/add_icon.svg') no-repeat;
-            background-position: center;
-            background-size: contain;
-            position: relative;
-            top: 4px;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-        .tag-box {
-          display: inline-block;
-          li {
-            display: inline-block;
-            padding: 6px 12px;
-            background: rgba(240, 241, 254, 1);
-            border-radius: 20px;
-            border: 1px solid rgba(240, 241, 254, 1);
-            margin-right: 10px;
-            margin-bottom: 10px;
-            .close {
-              cursor: pointer;
-              display: inline-block;
-              position: relative;
-              top: 2px;
-              background: url('~assets/image/close.svg') no-repeat;
-              background-position: center;
-              background-size: 6px;
-              width: 14px;
-              height: 14px;
-              line-height: 14px;
-              border-radius: 100px;
-              color: $color-blue;
-              border: 1px solid $color-blue;
-              &:hover {
-                opacity: 0.8;
-              }
-            }
-          }
-        }
-        .condition.area .el-select {
-          width: 99px;
-        }
-      }
-      .users-list {
-        overflow: hidden;
-        .el-table {
-          .users-info {
-            width: 170px;
-            .img {
-              display: inline-block;
-              width: 32px;
-              height: 32px;
-              border-radius: 500px;
-            }
-            dt {
-              float: left;
-              margin-right: 10px;
-              margin-top: 7px;
-              &.avatar-empty .img {
-                background: url('~assets/image/avatar@2x.png') no-repeat;
-                background-size: contain;
-              }
-            }
-            dd {
-              float: left;
-              &:nth-of-type(1) {
-                color: $color-font;
-                height: 23px;
-              }
-              &:nth-of-type(2) {
-                color: $color-gray;
-                &.protential {
-                  color: $color-red;
-                }
-                &.common {
-                  color: $color-default;
-                }
-                &.good {
-                  color: $color-success;
-                }
-                &.high {
-                  color: #714cea;
-                }
-              }
-              span {
-                overflow: hidden;
-                display: inline-block;
-                min-width: 37px;
-              }
-              .name {
-                // width: 50px;
-                // text-overflow: ellipsis;
-                // white-space: nowrap;
-              }
-            }
-          }
-          .detail {
-            color: #4b5afe;
-          }
-        }
-        .pagination-box {
-          text-align: center;
-          margin-top: 20px;
-        }
-      }
-      /* reset element ui */
-      .el-select {
-        // border: 1px solid RGBA(226, 226, 226, 1);
-        .el-input__inner {
-          padding: 0 15px;
-          height: 34px;
-          line-height: 34px;
-          text-overflow: ellipsis;
-          color: #222222;
-        }
-        .el-icon-arrow-up:before {
-          color: #222222;
-        }
-        .el-input.is-focus .el-input__inner {
-          border-color: $color-gray;
-        }
-        &:hover .el-input__inner {
-          border-color: $color-gray;
-        }
-      }
-      .el-cascader {
-        width: 202px;
-        height: 34px;
-        line-height: 34px;
-        .el-input__suffix {
-          top: -2px;
-        }
-        &.is-opened .el-input__suffix {
-          top: 2px;
-        }
-        .el-input__inner {
-          height: 34px;
-          line-height: 34px;
-        }
-      }
-      .el-date-editor {
-        .el-range-input {
-          height: 60%;
-          width: 45%;
-          font-size: 14px;
-          position: relative;
-          bottom: 1px;
-        }
-        .el-range__close-icon {
-          display: none;
-        }
-        &.el-input__inner {
-          height: 34px;
-          line-height: 34px;
-          padding: 0 8px;
-          width: 310px;
-        }
-        .el-range__icon {
-          display: none;
-        }
-        .el-range-separator {
-          width: 10%;
-        }
-      }
-      .com-input input {
-        height: 34px;
-        line-height: 34px;
-        // border-radius: 17px;
-      }
-      .el-table tr {
-        height: 70px;
-      }
-      .el-table .cell {
-        color: $color-font;
-      }
+.pond-page {
+  border-radius: 5px;
+  overflow: hidden;
+  padding-bottom: 30px;
+  margin: 0 auto;
+  color: #222;
+  .total {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+    padding-left: 15px;
+    span {
+      color: $color-error;
     }
   }
-
-  .el-date-range-picker__editors-wrap /deep/ {
-    background: red;
-    .el-date-range-picker__time-picker-wrap {
-      width: 100%;
-      &:nth-of-type(2) {
+  /* 设备宽度大于 1600 */
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+    .content .handle-filter .selected {
+      max-width: 880px !important;
+    }
+  }
+  .pond-title {
+    // border-bottom: 1px solid $color-bd;
+    line-height: 60px;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    span.title {
+      display: inline-block;
+      font-size: 24px;
+      /*padding-top: 32px;*/
+    }
+  }
+  .content /deep/ {
+    font-size: 14px;
+    width: 100%;
+    // padding: 40px 80px;
+    // background: rgba(255, 255, 255, 1);
+    // border-radius: 4px;
+    // border: 1px solid rgba(226, 226, 226, 1);
+    .handle-bar {
+      .left {
+        display: inline-block;
+        .el-dropdown {
+          margin-right: 10px;
+        }
+        .el-button {
+          border-color: #888;
+          color: #555;
+          height: 30px;
+          padding: 0 20px;
+          line-height: 28px;
+          &:focus {
+            border-color: #888;
+            color: #555;
+            background-color: transparent;
+          }
+          &:hover {
+            background-color: #fdd43f;
+            border-color: #fdd43f;
+            color: #222;
+          }
+          &:active {
+            background-color: #eec11a;
+            border-color: #eec11a;
+            color: #222;
+          }
+          &:disabled {
+            &:hover,
+            &:focus,
+            &:active {
+              opacity: 0.5;
+              background-color: transparent;
+              border-color: #888;
+              color: #555;
+            }
+          }
+        }
+        .el-button:nth-child(3) {
+          margin-left: 6px;
+        }
+      }
+      .right {
+        float: right;
+        .com-input {
+          margin-right: 10px;
+          width: 206px;
+        }
+        .com-input input {
+          padding-right: 10px;
+          padding-left: 15px;
+          border-radius: 17px;
+          height: 30px;
+          background-color: transparent;
+        }
+        span {
+          cursor: pointer;
+          position: relative;
+          color: $color-blue;
+          padding-right: 18px;
+          .el-submenu__icon-arrow {
+            right: 0px;
+            margin-top: -6px;
+            -webkit-transition: -webkit-transform 0.3s;
+            transition: -webkit-transform 0.3s;
+            transition: transform 0.3s;
+            transition: transform 0.3s, -webkit-transform 0.3s;
+            font-size: 12px;
+            &.is-open {
+              -webkit-transform: rotateZ(180deg);
+              transform: rotateZ(180deg);
+            }
+          }
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+    .page-bg {
+      padding: 30px;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 4px;
+      border: 1px solid rgba(226, 226, 226, 1);
+      margin-top: 20px;
+      padding-bottom: 30px;
+      &.has-page {
+        padding-bottom: 30px;
+      }
+      .empty {
+        text-align: center;
+        margin: 29px 0;
+        .txt {
+          padding-top: 20px;
+          font-size: 16px;
+          color: #8e9198;
+        }
+        .img {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+          background: url('~assets/image/nodata@2x.png') no-repeat center;
+          background-size: contain;
+        }
+      }
+    }
+    .handle-filter {
+      .label {
+        color: $color-font-sub;
+        padding-right: 10px;
+        float: left;
+        height: 34px;
+        line-height: 34px;
+      }
+      .filter-item {
+        margin-bottom: 20px;
+        .el-button {
+          border: 1px dotted #dcdfe6;
+        }
+      }
+      .filter-confirm {
+        text-align: center;
+      }
+      .condition {
+        display: inline-block;
+        margin-right: 60px;
+        &:nth-last-child(1) {
+          margin-right: 0;
+        }
+      }
+      .selected {
+        display: inline-block;
+        max-width: 1200px;
+        .added {
+          cursor: pointer;
+          display: inline-block;
+          border-radius: 100px;
+          width: 19px;
+          height: 19px;
+          padding: 0;
+          margin: 0;
+          border: 1px solid rgba(136, 136, 136, 1);
+          background: url('~assets/image/add_icon.svg') no-repeat;
+          background-position: center;
+          background-size: contain;
+          position: relative;
+          top: 4px;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+      .tag-box {
+        display: inline-block;
+        li {
+          display: inline-block;
+          padding: 6px 12px;
+          background: rgba(240, 241, 254, 1);
+          border-radius: 20px;
+          border: 1px solid rgba(240, 241, 254, 1);
+          margin-right: 10px;
+          margin-bottom: 10px;
+          .close {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            top: 2px;
+            background: url('~assets/image/close1.svg') no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 14px;
+            height: 14px;
+            line-height: 26px;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+      .condition.area .el-select {
+        width: 99px;
+      }
+    }
+    .users-list {
+      overflow: hidden;
+      .el-table {
+        .users-info {
+          width: 170px;
+          .img {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 500px;
+          }
+          dt {
+            float: left;
+            margin-right: 10px;
+            margin-top: 7px;
+            &.avatar-empty .img {
+              background: url('~assets/image/avatar@2x.png') no-repeat;
+              background-size: contain;
+            }
+          }
+          dd {
+            float: left;
+            &:nth-of-type(1) {
+              color: $color-font;
+              height: 23px;
+            }
+            &:nth-of-type(2) {
+              color: $color-gray;
+              &.protential {
+                color: $color-red;
+              }
+              &.common {
+                color: $color-default;
+              }
+              &.good {
+                color: $color-success;
+              }
+              &.high {
+                color: #714cea;
+              }
+            }
+            span {
+              overflow: hidden;
+              display: inline-block;
+              min-width: 37px;
+            }
+            .name {
+              // width: 50px;
+              // text-overflow: ellipsis;
+              // white-space: nowrap;
+            }
+          }
+        }
+        .detail {
+          color: #222;
+          &:hover {
+            color: $color-blue-hover;
+          }
+        }
+      }
+      .pagination-box {
+        text-align: center;
+        margin-top: 20px;
+      }
+    }
+    /* reset element ui */
+    .el-select {
+      // border: 1px solid RGBA(226, 226, 226, 1);
+      .el-input__inner {
+        padding: 0 15px;
+        height: 34px;
+        line-height: 34px;
+        text-overflow: ellipsis;
+        color: #222222;
+      }
+      .el-icon-arrow-up:before {
+        color: #222222;
+      }
+      .el-input.is-focus .el-input__inner {
+        border-color: $color-gray;
+      }
+      &:hover .el-input__inner {
+        border-color: $color-gray;
+      }
+    }
+    .el-cascader {
+      width: 202px;
+      height: 34px;
+      line-height: 34px;
+      .el-input__suffix {
+        top: -2px;
+      }
+      &.is-opened .el-input__suffix {
+        top: 2px;
+      }
+      .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+      }
+    }
+    .el-date-editor {
+      .el-range-input {
+        height: 60%;
+        width: 45%;
+        font-size: 14px;
+        position: relative;
+        bottom: 1px;
+      }
+      .el-range__close-icon {
         display: none;
       }
-    }
-  }
-
-  .mail-tooltips {
-    width: 280px;
-    padding: 10px 13px;
-    span:nth-of-type(2) {
-      float: right;
-      width: 60px;
-      text-align: left;
-    }
-  }
-  /deep/ {
-    .el-button {
-      background-color: transparent;
+      &.el-input__inner {
+        height: 34px;
+        line-height: 34px;
+        padding: 0 8px;
+        width: 310px;
+      }
+      .el-range__icon {
+        display: none;
+      }
+      .el-range-separator {
+        width: 10%;
+      }
     }
     .com-input input {
-      background-color: transparent;
+      height: 34px;
+      line-height: 34px;
+      // border-radius: 17px;
     }
-    // 去掉复选框背景色
-    .el-checkbox__inner {
-      background-color: transparent;
+    .el-table tr {
+      height: 70px;
+    }
+    .el-table .cell {
+      color: $color-font;
     }
   }
+}
 
+.el-date-range-picker__editors-wrap /deep/ {
+  background: red;
+  .el-date-range-picker__time-picker-wrap {
+    width: 100%;
+    &:nth-of-type(2) {
+      display: none;
+    }
+  }
+}
+
+.mail-tooltips {
+  width: 280px;
+  padding: 10px 13px;
+  span:nth-of-type(2) {
+    float: right;
+    width: 60px;
+    text-align: left;
+  }
+}
+/*/deep/ {*/
+/*.el-button {*/
+/*background-color: transparent;*/
+/*}*/
+/*.com-input input {*/
+/*background-color: transparent;*/
+/*}*/
+/*// 去掉复选框背景色*/
+/*.el-checkbox__inner {*/
+/*background-color: transparent;*/
+/*}*/
+/*}*/
 </style>

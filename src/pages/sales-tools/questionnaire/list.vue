@@ -2,8 +2,8 @@
   <div class="v-list">
     <div class="v-list-title clearfix">
       <span class="title">问卷</span>
-      <com-back :url="`/liveMager/detail/${activityId}`" style='line-height: 30px;'></com-back>
-      <template v-if="tableData.length">
+      <com-back :url="`/liveMager/detail/${activityId}`" ></com-back>
+      <div v-if="tableData.length" class="btn-box">
         <router-link class="v-add"
                      :class="{disabled: isAdd}"
                      :to="{ name: 'questionnaire', params: { activityId: activityId }}">新建问卷</router-link>
@@ -13,7 +13,7 @@
         <router-link class="v-view"
                      :class="{disabled: !hasData}"
                      :to="`/data/live/${this.activityId}#questions`">查看数据</router-link>
-      </template>
+      </div>
     </div>
     <div class="v-table">
       <template v-if="tableData.length">
@@ -27,7 +27,7 @@
                 问题数量
               </td>
               <td>
-                是否推送
+                推送状态
               </td>
               <td>
                 修改时间
@@ -48,7 +48,7 @@
                   {{itemData.questionNum}}
                 </td>
                 <td>
-                  {{itemData.publish === 'Y' ? '是':'否'}}
+                  {{itemData.publish === 'Y' ? '已推送':'未推送'}}
                 </td>
                 <td>
                   {{itemData.update_time?itemData.update_time.substr(0,10):'-'}}
@@ -86,7 +86,6 @@
       <template v-else>
         <div class="empty-box">
           <p class="img"></p>
-          <p class='title'>问卷</p>
           <p class='desc'>您可以通过创建问卷收集活动中的用户信息<br>以获得商机或者改善您的服务。</p>
           <router-link :to="{ name: 'questionnaire', params: { activityId: activityId }}">
             <el-button class='primary-button'>新建问卷</el-button>
@@ -207,8 +206,7 @@ export default {
     jumpEdit (isPublish, naireId) {
       if (isPublish === 'Y') {
         this.$toast({
-          content: '已推送问卷无法再次编辑',
-          position: 'center'
+          content: '已推送问卷无法再次编辑'
         })
       } else {
         this.$router.replace('/salesTools/questionnaire/edit/' + this.activityId + '/' + naireId)
@@ -313,29 +311,27 @@ export default {
     position: relative;
     // border-bottom: 1px solid $color-bd;
     line-height: 60px;
-    margin: 10px 0 5px;
+    margin: 30px 0 5px;
     span.title {
       display: inline-block;
       font-size: 24px;
     }
     a {
       float: right;
-      width: 120px;
-      height: 40px;
+      /*width: 120px;*/
+      padding: 0 20px;
       border: 1px solid #4b5afe;
-      line-height: 38px;
+      line-height: 28px;
       border-radius: 20px;
       background-color: rgba(0, 0, 0, 0);
       font-size: 14px;
       color: #4b5afe;
       text-align: center;
-      margin-top: 10px;
       &.v-add {
         border-color: #ffd021;
         background-color: #ffd021;
         color: #222;
         margin-left: 10px;
-        margin-right: 100px;
         &.disabled {
           border-color: #ddd;
           background-color: #ddd;
@@ -346,11 +342,21 @@ export default {
             color: #999;
           }
         }
+        &:hover {
+          border-color: #fdd43f;
+          background-color: #fdd43f;
+        }
+        &:active {
+          border-color: #eec11a;
+          background-color: #eec11a;
+        }
       }
-      &:hover {
-        background-color: #fdd43f;
-        border-color: #fdd43f;
-        color: #222;
+      &.v-view {
+        &:hover {
+          background-color: #4b5afe;
+          border-color: #4b5afe;
+          color: #fff;
+        }
       }
       &:active {
         background-color: #eec11a;
@@ -359,7 +365,7 @@ export default {
       }
       &.disabled {
         border-color: #ddd;
-        background-color: #ddd;
+        /*background-color: #ddd;*/
         color: #999;
         &:hover {
           border-color: #ddd;
@@ -368,21 +374,28 @@ export default {
         }
       }
     }
-    .default-button {
-      line-height: 40px;
-      &.back-btn-all {
-        height: 40px;
-      }
+    .btn-box {
+      position: absolute;
+      top: 50%;
+      right: 80px;
+      transform: translateY(-50%);
     }
+    /*.default-button {*/
+    /*line-height: 40px;*/
+    /*&.back-btn-all {*/
+    /*height: 40px;*/
+    /*}*/
+    /*}*/
   }
   .v-table {
     width: 100%;
-    padding: 20px 20px 40px;
+    padding: 30px 20px 40px;
     border: 1px solid #e2e2e2;
     background-color: #fff;
     min-height: 550px;
     border-radius: 4px;
     overflow: hidden;
+    font-size: 14px;
     table {
       width: 100%;
       border-radius: 4px 4px 0 0;
@@ -431,11 +444,11 @@ export default {
       text-align: center;
       color: $color-font-sub;
       min-height: 400px;
-      padding: 100px 0;
+      padding: 100px 0 0;
       .img {
         width: 150px;
         height: 150px;
-        margin: 0 auto;
+        margin: 0 auto 17px;
         border-radius: 500px;
         // background:rgba(245,245,245,1);
         box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.02);
@@ -465,7 +478,7 @@ export default {
         height: 40px;
         text-align: center;
         line-height: 40px;
-        margin-top: 20px;
+        margin-top: 10px;
       }
     }
   }

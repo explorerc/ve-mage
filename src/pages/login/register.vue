@@ -269,6 +269,7 @@ export default {
       } else if (e.action === 'confirm') {
         this.closeTime = 0
         this.show = false
+        window.open('//www.vhall.com/zhike')
       }
     },
     checkForm: function (e) {
@@ -441,7 +442,7 @@ export default {
     }
     .v-login {
       font-size: 16px;
-      color: #666;
+      color: #999;
       margin-top: 15px;
       display: block;
     }

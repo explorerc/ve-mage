@@ -71,10 +71,10 @@ export default {
 .com-notification /deep/ {
   display: inline-block;
   position: relative;
-  line-height: 1.2;
-  padding: 16px 20px;
-  border-radius: 4px;
-  width: 280px;
+  line-height: 1;
+  padding: 16px 50px 16px 20px;
+  border-radius: 24px;
+  min-width: 160px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-size: 14px;
   z-index: 3000;
@@ -90,7 +90,7 @@ export default {
     .icon-close {
       position: absolute;
       cursor: pointer;
-      top: 14px;
+      top: 15px;
       right: 20px;
       color: #fff;
     }

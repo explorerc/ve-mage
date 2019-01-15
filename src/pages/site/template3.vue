@@ -38,7 +38,7 @@
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
       <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
-    <div class="support">微吼直播提供技术支持</div>
+    <div class="support">微吼知客提供技术支持</div>
   </div>
 </template>
 
@@ -91,6 +91,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.template1-container.isEdit {
+  .support {
+    margin-bottom: 60px;
+  }
+}
 .template1-container /deep/ {
   .panel-container {
     i {
@@ -115,10 +120,10 @@ export default {
       cursor: pointer;
       display: inline-block;
       background-color: #ffd021;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background-image: url('~assets/image/site/edit.svg');
-      background-size: 32px;
+      background-size: 28px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
@@ -369,7 +374,7 @@ export default {
       width: 1124px;
       .block1-item {
         width: 120px;
-        height: 120px;
+        min-height: 120px;
         margin-right: 80px;
         margin-bottom: 30px;
         &:nth-of-type(6) {
@@ -385,9 +390,10 @@ export default {
   }
   .section7 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
+      padding-bottom: 40px;
     }
     .font-content {
       margin-top: 70px;

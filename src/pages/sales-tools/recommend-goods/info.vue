@@ -11,7 +11,7 @@
           </template>
         </el-input>
       </el-form-item>
-      <el-form-item label="原始价格：" prop="price">
+      <el-form-item label="原始价格：" prop="price"  class="is-required">
         <div class="a_unit">
           <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
@@ -28,7 +28,7 @@
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
-                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 600"
+                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 800"
                        accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
                        :fileSize="2048"
                        :errorMsg="ite.errMsg"
@@ -38,8 +38,9 @@
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
       </el-form-item>
-      <el-form-item label="商品链接：" prop="url" class="url">
+      <el-form-item label="商品链接：" prop="url" class="url is-required">
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
+        <span class="tips" v-if="tipsShow">链接需要附带http://或https://头协议</span>
       </el-form-item>
       <el-form-item label="商品描述：" >
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
@@ -190,7 +191,17 @@
           return callback(new Error('请上传图片'))
         }
       }
+      let vailUrl = (rule, value, callback) => {
+        if (value.startsWith('http://') || value.startsWith('https://')) {
+          this.tipsShow = true
+          return callback()
+        } else {
+          this.tipsShow = false
+          return callback(new Error('请输入有效的链接以http://或https://开头'))
+        }
+      }
       return {
+        tipsShow: true,
         Breadcrumb: '',
         isShowMsgB: false,
         errTitle: '',
@@ -215,9 +226,12 @@
           preferential: [
             { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
           ],
+          // url: [
+          //   { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur', minlength: 0, maxlength: 300 },
+          //   { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
+          // ],
           url: [
-            { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur', minlength: 0, maxlength: 300 },
-            { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
+            { validator: vailUrl, trigger: 'blur' }
           ],
           imageList: [
             { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
@@ -274,10 +288,9 @@
               this.goodsData.image = JSON.stringify(imgList)
               this.$post(_url, this.goodsData)
                 .then(res => {
-                  this.$toast({
-                    content: '操作成功!',
-                    position: 'center'
-                  })
+                  // this.$toast({
+                  //   content: '操作成功!'
+                  // })
                   this.$router.go(-1)
                   this.isShowMsgB = false
                 })
@@ -339,9 +352,9 @@
   }
 </script>
 <style lang="scss">
-  .el-form-item__error{
-    top: 90%;
-  }
+.el-form-item__error {
+  top: 90%;
+}
 </style>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
@@ -349,13 +362,20 @@
   padding: 50px 100px;
   font-family: PingFangSC-Regular;
   /deep/ {
+    .el-form-item .tips {
+      display: block;
+      color: #606266;
+      height: 20px;
+      line-height: 20px;
+      font-size: 14px;
+    }
     header {
       height: 26px;
       font-size: 24px;
       font-weight: 400;
       color: rgba(34, 34, 34, 1);
       line-height: 26px;
-      margin-bottom: 35px;
+      margin-bottom: 25px;
       position: relative;
     }
     .el-form {
@@ -465,7 +485,7 @@
           .upload-file-box {
             width: 100%;
             .upload-icon {
-              margin: 10px auto 5px auto;
+              margin: 10px auto 0px auto;
             }
             span {
               display: inline-block;

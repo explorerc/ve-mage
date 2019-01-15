@@ -7,16 +7,17 @@
         <span>有效期 {{billInfo.serviceStartTime}} ~ {{billInfo.serviceExpireTime}}</span>
       </div>
       <div class="asset-header-item">
-        <span>可用金额（元）
-          <!--<span class="add-money fr" @click="addMoney()">充值</span>-->
-        </span>
+      <span>可用金额（元）
+        <span class="add-money fr" @click="addMoney()">充值</span>
+      </span>
         <img width="100" height="60" src="../../assets/image/zhichu@2x.png">
-        <span class="mid">{{billInfo.balance}}</span>
+        <span class="mid" v-if="billInfo.balance === '0.00' || !billInfo.balance" style="color: #555;">{{parseFloat(billInfo.balance).toFixed(2)}}</span>
+        <span class="mid" v-else>{{parseFloat(billInfo.balance).toFixed(2)}}</span>
       </div>
       <div class="asset-header-item">
         <span>今日支出（元）</span>
         <img width="100" height="60" src="../../assets/image/qianbao@2x.png">
-        <span class="mid-zhichu">{{billInfo.payToday}}</span>
+        <span class="mid-zhichu">{{parseFloat(billInfo.payToday).toFixed(2)}}</span>
       </div>
     </div>
     <div class="asset-list-box">
@@ -26,24 +27,14 @@
           <button class="default-button export-btn fr" @click="exportTable">导出</button>
           <div class="search-item flm fr">
             <span class="search-title">时间</span>
-            <el-date-picker
-              v-model="searchParams.date"
-              @change="queryList"
-              type="date"
-              value-format="yyyy-MM-dd"
-              placeholder="选择日期">
+            <el-date-picker v-model="searchParams.date" @change="queryList" type="date" value-format="yyyy-MM-dd"
+                            placeholder="选择日期">
             </el-date-picker>
           </div>
           <div class="search-item fr">
             <span class="search-title">流水类型</span>
-            <el-select v-model="searchParams.type"
-                       @change="queryListType"
-                       ref="search"
-                       placeholder="渠道来源">
-              <el-option v-for="item in liuTypeList"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
+            <el-select v-model="searchParams.type" @change="queryListType" ref="search" placeholder="流水类型">
+              <el-option v-for="item in liuTypeList" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </div>
@@ -69,16 +60,16 @@
           <div class="page-pagination" v-if="total > searchParams.pageSize">
             <ve-pagination :total="total"
                            :pageSize="searchParams.pageSize"
+                           v-if="iscurrentPage"
                            :currentPage="currentPage"
                            @changePage="changePage"/>
           </div>
         </template>
-        <template v-else>
-          <div class="empty">
-            <div class="img"></div>
-            <div class="txt">{{searchLabel}}</div>
-          </div>
-        </template>
+        <div class="empty" v-if="isNoDataShow">
+          <div class="img"></div>
+          <div class="txt" v-if="searchLabel">{{searchLabel}}</div>
+          <div class="txt" v-else>暂无数据</div>
+        </div>
       </div>
     </div>
     <div class="money-box-wrap">
@@ -87,7 +78,7 @@
                    class="add-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
+                   header="充值"
                    confirmText="下一步"
                    @handleClick="payMoney">
 
@@ -96,7 +87,7 @@
             <div class="from-row input-box">
               <div class="from-title">当前余额</div>
               <div class="from-content">
-                <span style="line-height: 20px">¥ {{billInfo.balance}}</span>
+                <span style="line-height: 20px">¥ {{(billInfo.balance * 1).toFixed(2)}}</span>
               </div>
 
             </div>
@@ -105,7 +96,7 @@
               <div class="from-content">
                 <div class="black-box">
                   <com-input style=""
-                             type="mobile"
+                             type="float"
                              v-model="amount"
                              placeholder="10～20000"
                              :value.sync="amount"
@@ -123,9 +114,8 @@
                    class="pay-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
                    @handleClick="paidMoney"
-                   header="">
+                   header="充值">
         <div class="mager-box message-box-content">
           <div class="from-box">
             <div class="from-row input-box">
@@ -137,7 +127,7 @@
               <div class="from-content" v-else>
                 <div class="black-box" style="margin-top: 0px;">
                   <com-input style=""
-                             type="mobile"
+                             type="float"
                              :value.sync="amount"
                              :errorTips="amountError"
                   ></com-input>
@@ -179,15 +169,14 @@
                    class="paid-money-msg"
                    width="464px"
                    type="prompt"
-                   :header="dialogTitle"
-                   @handleClick="finishMoney"
-                   header="">
+                   header="充值"
+                   @handleClick="finishMoney">
         <div class="message-box-content">
           <div class="success-img">
             <img src="../../assets/image/success@2x.png" alt="">
           </div>
           <p class="paid-success-text">充值成功</p>
-          <div class="paid-balance">当前账户余额 ¥{{billInfo.balance}}</div>
+          <div class="paid-balance">当前账户余额 ¥{{( billInfo.balance *1).toFixed(2)}}</div>
         </div>
       </message-box>
     </div>
@@ -198,21 +187,39 @@
 <script>
   import assetService from 'src/api/asset-service'
   import VePagination from 'src/components/ve-pagination'
-  import {mapState} from 'vuex'
+  import {
+    mapState
+  } from 'vuex'
   import ChatService from '../../components/chat/ChatService'
   import ChatConfig from 'src/api/chat-config'
+  import comWithdraw from './components/com-withdraw'
+  import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'asset-list',
-    components: {VePagination},
+    components: {
+      VePagination,
+      comWithdraw
+    },
     data () {
       return {
         total: 0,
-        liuTypeList: [
-          {value: '', label: '全部'},
-          {value: 'RECHARGE', label: '账户充值'},
-          {value: 'RED_PACK', label: '红包消费'},
-          {value: 'RE_RED_PACK', label: '红包返回'}
+        liuTypeList: [{
+          value: '',
+          label: '全部'
+        },
+        {
+          value: 'RECHARGE',
+          label: '账户充值'
+        },
+        {
+          value: 'RED_PACK',
+          label: '红包消费'
+        },
+        {
+          value: 'RE_RED_PACK',
+          label: '红包返回'
+        }
         ],
         viewerList: [],
         billInfo: {
@@ -243,7 +250,10 @@
         codeSrc: '', // 二维码的src
         alDisabled: false, // 支付宝按钮不禁用
         wxDisabled: false, // 微信按钮不禁用
-        dialogTitle: '充值'
+        dialogTitle: '充值',
+        iscurrentPage: true, // 刷新分页组件
+        isNoDataShow: false,
+        showWithdraw: false
       }
     },
     filters: {
@@ -267,6 +277,11 @@
     created () {
       this.queryAccountInfo()
       this.queryList()
+      EventBus.$emit('breads', [{
+        title: '账户管理'
+      }, {
+        title: '资产管理'
+      }])
     },
     methods: {
       changePage (page) {
@@ -288,7 +303,12 @@
             if (res.code === 200) {
               this.total = res.data.total
               this.viewerList = res.data.list
-              console.log(this.viewerList)
+              console.log(this.viewerList.length)
+              if (this.viewerList.length) {
+                this.isNoDataShow = false
+              } else {
+                this.isNoDataShow = true
+              }
             }
           })
         })
@@ -297,10 +317,12 @@
         this.searchParams.page = 1
         this.currentPage = 1
         this.queryList()
-        console.log(this.$refs.search)
       },
       exportTable () {
-        let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date}`
+        if (!this.searchParams.date) {
+          this.searchParams.date = ''
+        }
+        let paramStr = `?type=${this.searchParams.type}&date=${this.searchParams.date ? this.searchParams.date : ''}`
         const url = process.env.API_PATH + assetService.GET_ASSET_LIST_EXPORT + paramStr
         window.open(encodeURI(encodeURI(url)))
       },
@@ -311,7 +333,6 @@
       // 支付框显示
       async payMoney (e) {
         if (e.action === 'confirm') {
-          console.log('金额2' + this.amount)
           if (!this.amount) {
             this.amountError = '请输入10～20000之间的数字'
             return
@@ -352,7 +373,7 @@
       // 检查输入的金额
       checkAmount () {
         const newAmount = this.amount
-        if (newAmount < 10 || newAmount > 20000) {
+        if (newAmount === '' || newAmount < 10 || newAmount > 20000) {
           this.amountError = '请输入10～20000之间的数字'
           return false
         } else {
@@ -388,8 +409,8 @@
         })
         /* 监听支付消息1 */
         ChatService.OBJ.regHandler(ChatConfig.charge, (msg) => {
-          console.log('---------支付消息---------')
-          console.log(msg)
+          // console.log('---------支付消息---------')
+          // console.log(msg)
           this.payMoneyShow = false
           this.successMoneyShow = true
           this.queryAccountInfo()
@@ -450,19 +471,33 @@
         this.modifyMoneyShow = true
         this.payway = '支付宝'
         this.payType = 'ALIPAY'
+      },
+      // 刷新分页组件
+      currentPageReset () {
+        this.iscurrentPage = false
+        this.$nextTick(() => {
+          this.iscurrentPage = true
+        })
       }
+      // withdrawClose (res) {
+      //   debugger
+      // }
     },
     watch: {
-      searchParams: {
+      'searchParams.type': {
         handler (val, oldValue) {
-          if (val.type === 'RECHARGE') {
+          if (val === 'RECHARGE') {
             this.searchLabel = '很抱歉，没有搜索到账户充值的结果'
-          } else if (val.type === 'RED_PACK') {
+            this.currentPageReset()
+          } else if (val === 'RED_PACK') {
             this.searchLabel = '很抱歉，没有搜索到红包消费的结果'
-          } else if (val.type === 'RE_RED_PACK') {
+            this.currentPageReset()
+          } else if (val === 'RE_RED_PACK') {
             this.searchLabel = '很抱歉，没有搜索到红包返回的结果'
+            this.currentPageReset()
           } else {
-            this.searchLabel = '很抱歉，暂无数据'
+            this.searchLabel = '暂无数据'
+            this.currentPageReset()
           }
         },
         deep: true
@@ -475,7 +510,16 @@
   @import 'assets/css/mixin.scss';
 
   .asset-box {
-    margin: 30px;
+    margin: 0 auto;
+    /* 设备宽度大于 1600 */
+    @media all and (min-width: 1600px) {
+      width: 1366px;
+    }
+    /* 设备宽度小于 1600px */
+    @media all and (max-width: 1600px) {
+      width: 1019px;
+    }
+    /*margin: 30px;*/
     .asset-header {
       font-size: 0;
       height: 170px;
@@ -501,7 +545,6 @@
           font-size: 18px;
           text-align: center;
           vertical-align: middle;
-
           &:nth-child(1) {
             margin-top: 20px;
             font-size: 14px;
@@ -539,7 +582,7 @@
             text-align: center;
             height: 30px;
             border-radius: 20px;
-            line-height: 30px;
+            line-height: 28px;
             font-size: 14px;
             color: #4b5afe;
             cursor: pointer;
@@ -589,7 +632,7 @@
       }
     }
     .asset-list-table {
-      padding: 20px;
+      padding: 5px 20px 20px;
       background-color: #fff;
       .empty {
         text-align: center;
@@ -597,7 +640,7 @@
         .txt {
           padding-top: 20px;
           font-size: 16px;
-          color: $color-font;
+          color: #8e9198;
         }
         .img {
           width: 150px;
@@ -618,7 +661,7 @@
         color: #43d2c2;
       }
     }
-    /*三个盒子的统一样式*/
+    /*三个盒⼦的统⼀样式*/
     .message-box-content {
       position: relative;
       font-size: 14px;
@@ -631,7 +674,7 @@
       }
       .from-box {
         .input-box {
-          padding: 15px 0px 15px 0 !important;
+          padding: 15px 0 20px 0 !important;
           .from-title {
             padding-right: 30px !important;
           }
@@ -639,7 +682,7 @@
             margin-top: -10px;
             .money-sign {
               position: absolute;
-              top: 0;
+              top: 2px;
               right: 10px;
               color: #555;
             }
@@ -666,7 +709,6 @@
             .el-input__inner {
               border: 1px solid $color-red;
             }
-
             .default-button {
               border: 1px solid $color-red;
             }
@@ -716,34 +758,36 @@
       .ve-message-box__wrapper .ve-message-box {
         padding-bottom: 0;
         .ve-message-box__btns {
-          margin-top: 91px;
-          .button--primary {
-          }
+          margin-top: 75px;
         }
+      }
+      .com-input input {
+        height: 40px;
       }
     }
     .pay-money-msg /deep/ {
       .ve-message-box__btns {
-        border: 1px solid green;
         display: none !important;
       }
     }
     .paid-money-msg /deep/ {
       .ve-message-box__btns {
-        border: 1px solid green;
         display: none !important;
       }
     }
-    /* paymoney 盒子的样式*/
+    /* paymoney 盒⼦的样式*/
     .pay-money-msg {
       .message-box-content {
         .from-box {
           .from-row {
-            line-height: 30px;
+            line-height: 38px;
+            &:nth-child(2) {
+              padding: 0 !important;
+            }
             .from-content {
               &.modify-box {
-                height: 34px;
-                line-height: 30px;
+                height: 40px;
+                line-height: 38px;
               }
               .title {
                 font-size: 0;
@@ -778,7 +822,6 @@
                 }
               }
               .black-box {
-                /*position: relative;*/
                 .com-input {
                   width: 60% !important;
                 }
@@ -797,13 +840,14 @@
           }
           .pay-img-box {
             text-align: center;
+            margin-top: 15px;
             .payImg {
               border: 1px solid #e2e2e2;
               display: inline-block;
               /*margin: 20px 0 0 57px;*/
               vertical-align: auto;
               height: 120px;
-              width: 120px;
+              width: 122px;
               overflow: hidden;
               img {
                 width: 120px;
@@ -812,11 +856,11 @@
               }
             }
             .pay-des {
+              margin-top: 10px;
               font-size: 14px;
               color: #555555;
             }
           }
-
         }
       }
     }

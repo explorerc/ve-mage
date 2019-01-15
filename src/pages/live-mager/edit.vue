@@ -1,7 +1,7 @@
 <!--新建/编辑活动-->
 <template>
-  <div @keydown="canPaas = false">
-    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)">
+  <div>
+    <div class='edit-page live-mager' v-if='!createdSuccess' @click="clooseTagClose($event)"  @keydown="canPaas = false">
       <div class="edit-title">
         <span class="title" v-if="activityId">编辑活动</span>
         <span class="title" v-else>新建活动</span>
@@ -9,29 +9,29 @@
         <com-back :url="`/liveMager/list`" v-else :class="'back-btn'"></com-back>
       </div>
       <div class="tips">
-        <i></i>注意：活动在直播有效期内可发起直播，过期后将无法发起直播
+        <i></i>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播
       </div>
       <div class="content from-box">
         <div class="from-row">
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
             <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="30" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
-            <span class="error-tips" v-if='titleEmpty'>直播标题不能为空</span>
+            <span class="error-tips" v-if='titleEmpty' style="display: block">请填写直播标题</span>
           </div>
         </div>
         <div class="from-row" >
           <div class="from-title"><i class="star">*</i>直播时间：</div>
           <div class="from-content" :class="{ 'error':dateEmpty }">
-            <el-date-picker @focus='dateEmpty=false' v-model="date" @change="canPaas=false" type="datetime" placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" :popper-class="'datePicker'" default-time="10:00:00">
+            <el-date-picker @focus='dateFocus()' v-model="date"  @change="canPaas=false" type="datetime" :clearable='false' placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultValue" >
             </el-date-picker>
-            <span class='tips-time'>直播有效期为直播时间后的48小时之内（或开始直播后的48小时之内）</span>
+            <span class='tips-time'>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播</span>
             <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M<br>建议尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
           </div>
         </div>
         <div class="from-row">
@@ -40,7 +40,7 @@
             <el-button  round v-if='!tagArray.length' @click='showClooseTag' class='choose-tag'>选择标签</el-button>
             <ol class='tag-list clearfix' v-else>
               <li v-for="(item,idx) in tagArray" :key="idx" class="tag">{{item.name}} <span @click="handleDel(idx,'tagArray')"></span></li>
-            <li v-if="tagArray.length<3" class="add-tag"  @click='addShowClooseTag'><span></span></li>
+            <li v-if="tagArray.length<3" class="add-tag"  @click.stop='addShowClooseTag'><span></span></li>
             </ol>
             <!-- <el-button @click='showChooseTag=true,tagEmpty = false' round class="add-tag">+</el-button> -->
             <div class="tag-modal" v-show='showChooseTag' @click.stop="">
@@ -67,10 +67,11 @@
             <span class="error-tips" v-if="outRange">直播简介不能超过1000个字符</span>
           </div>
         </div>
-        <div class="from-row" v-if="status === 'PREPARE' || !activityId">
+        <div class="from-row" v-if="validStatus === 'Y' || !activityId">
           <div class="from-title"></div>
           <div class="from-content">
-            <button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">
+            <!--<button @click='comfirm' class='create-btn' :disabled="outRange || saveStatus">-->
+            <button @click='comfirm' class='create-btn'>
               <template v-if="activityId">保存</template>
               <template v-else>创建</template>
             </button>
@@ -84,8 +85,8 @@
             <dt></dt>
             <dd>直播已{{successTxt}}，您可以</dd>
             <dd>
-              <span class='finish-button detail'  @click='toDetail'>活动详情</span>
-              <span class='finish-button list' @click='toList'>活动列表</span>
+              <span class='finish-button detail'  @click='toDetail'>更多活动设置</span>
+              <span class='finish-button list' @click='toList'>返回活动列表</span>
             </dd>
           </dl>
       </div>
@@ -94,6 +95,7 @@
 </template>
 
 <script>
+import { formatDate } from 'src/assets/js/date'
 import VeUpload from 'src/components/ve-upload-image'
 import VeEditer from 'src/components/ve-html5-editer'
 // import http from 'src/api/activity-manger'
@@ -135,7 +137,9 @@ export default {
         }
       },
       successTxt: '',
-      canPaas: true
+      canPaas: true,
+      validStatus: '',
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm')
     }
   },
   created () {
@@ -212,6 +216,7 @@ export default {
         this.editorContent = res.data.description
         this.tagArray = res.data.tags
         this.status = res.data.status
+        this.validStatus = res.data.validStatus
         this.restoreTag(this.tagArray)
       })
     },
@@ -385,14 +390,20 @@ export default {
     showClooseTag () {
       this.$nextTick(() => {
         this.showChooseTag = true
+        this.tagEmpty = false
       })
     },
     addShowClooseTag () {
+      debugger
       this.canPaas = false
-      this.showClooseTag()
+      this.showChooseTag = !this.showChooseTag
       this.$nextTick(() => {
         this.tagEmpty = false
       })
+    },
+    dateFocus () {
+      this.dateEmpty = false
+      this.date = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -460,7 +471,7 @@ export default {
     }
   }
   .edit-title {
-    margin-top: 10px;
+    margin-top: 30px;
     margin-bottom: 5px;
     position: relative;
     // border-bottom: 1px solid $color-bd;
@@ -533,6 +544,10 @@ export default {
       margin: 0 auto;
       @include primary-button;
       width: 200px;
+      /*&:disabled {*/
+      /*opacity: 1;*/
+      /*cursor: pointer;*/
+      /*}*/
     }
     .add-tag {
       cursor: pointer;
@@ -742,7 +757,6 @@ export default {
     &:hover {
       span {
         width: 14px;
-        border: 1px solid rgba(75, 90, 254, 1);
       }
     }
     span {
@@ -750,17 +764,20 @@ export default {
       display: inline-block;
       position: relative;
       top: 2px;
-      background: url('~assets/image/close.svg') no-repeat;
+      background: url('~assets/image/close1.svg') no-repeat;
       background-position: center;
-      background-size: 6px;
-      width: 0px;
-      transition: width 0.5s;
+      background-size: cover;
+      width: 0;
+      transition: width 0.2s;
       height: 14px;
-      /*line-height: 26px;*/
-      border-radius: 100px;
+      line-height: 26px;
+      /*border-radius: 100px;*/
       /*border: 1px solid rgba(255, 2, 254, 1);*/
       &:hover {
-        opacity: 0.8;
+        /*opacity: 0.8;*/
+        background: url('~assets/image/close1_hover.svg') no-repeat;
+        background-position: center;
+        background-size: cover;
       }
     }
   }
@@ -803,7 +820,16 @@ export default {
     }
     &.is-checked span.el-checkbox-button__inner,
     &.is-focus span.el-checkbox-button__inner {
-      border-left: 1px solid #409eff;
+      border-left: 1px solid #4b5afe;
+      background-color: #4b5afe;
+      border: none;
+      box-shadow: none;
+      &:hover {
+        color: #fff;
+      }
+    }
+    .el-checkbox-button__inner:hover {
+      color: #4b5afe;
     }
   }
 }

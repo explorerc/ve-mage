@@ -4,7 +4,7 @@
       <p>商品推荐</p>
       <com-back :url="`/liveMager/detail/${activity_id}`"></com-back>
       <div v-if="tableData.length>=1" class='btn-box'>
-        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看活动数据</com-button>
+        <com-button @click="check" class="default-button" round :disabled="!isShowlive" style='line-height:29px;'>查看数据</com-button>
         <com-button class="add-goods primary-button" @click="createGoods" :disabled="tableData.length>=20" round>
           新建商品（{{tableData.length}} / 20）
         </com-button>
@@ -17,9 +17,10 @@
           <th>序号</th>
           <th>封面图</th>
           <th>商品名称</th>
+          <th>商品状态</th>
           <th>原始价格</th>
           <th>优惠价格</th>
-          <th>操作</th>
+          <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
         <draggable element="tbody" v-model="tableData" :options="{handle:'.item'}">
@@ -34,27 +35,28 @@
               </div>
             </td>
             <td>{{row.title}}</td>
+            <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
             <td>
-              <del v-show="row.preferential !== '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</del>
-              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':'￥'+row.price}}</span>
+              <template v-if="row.price !== '0.00'">￥</template><span class="del-line" v-show="row.preferential !== '0.00'">{{row.price}}</span>
+              <span v-show="row.preferential === '0.00'">{{row.price === '0.00'?'免费':row.price}}</span>
+              <!--<span v-show="row.price === '0.00'">免费</span>-->
             </td>
             <td class="dis-prices">{{row.price === '0.00'?'免费':'￥'+row.preferential}}</td>
-            <td>
-              <div>
+            <td style="width: 15%;min-width: 140px;">
+              <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row,ind)">编辑</el-button>
                 <el-button type="text" @click="handleShelf(row,ind)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button class="item" type="text">移动</el-button>
                 <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button class="item move-btn" size="mini" type="text" title='拖拽可调整商品排序'>移动</el-button>
               </div>
             </td>
           </tr>
         </draggable>
       </table>
     </div>
-    <div class="no-goods" v-else>
+    <div class="no-goods" v-if="isNoGoods">
       <img :src="require('assets/image/not-goodlist.png')" alt="">
-      <p>暂时没有商品哦~</p>
       <p>全新直播购物模式，通过实时直播带动粉丝经济，<br>你甚至可以联合品牌商一起策划品牌内容，提升观众信任感</p>
       <el-button class="add-goods primary-button" @click="createGoods" round>添加商品</el-button>
     </div>
@@ -88,15 +90,19 @@
       return {
         activity_id: this.$route.params.activity_id,
         tableData: [],
+        isInit: false,
         timerShelf: null,
-        isShowlive: null
+        isShowlive: null,
+        isNoGoods: false
       }
     },
     watch: {
       tableData: {
         handler (val, oldVal) {
           if (val.length >= 1) {
-            this.sortGoods()
+            if (this.isInit) {
+              this.sortGoods()
+            }
           }
         },
         deep: true
@@ -111,6 +117,14 @@
             })
             this.tableData = res.data
             console.log(this.tableData)
+            if (this.tableData.length < 1) {
+              this.isNoGoods = true
+            } else {
+              this.isNoGoods = false
+            }
+            setTimeout(() => {
+              this.isInit = true
+            }, 500)
           })
           .catch(() => {
             this.tableData = []
@@ -124,7 +138,7 @@
         let goods = this.tableData.map((ite, ind) => {
           return ite.goods_id
         })
-        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() })
+        this.$post(goodsServer.SORT_GOODS, { activity_id: this.activity_id, goods_ids: goods.join() }).then()
       },
       check () {
         if (this.isShowlive) {
@@ -149,8 +163,7 @@
                 this.getList()
               }, 500)
               this.$toast({
-                content: '操作成功!',
-                position: 'center'
+                content: '操作成功!'
               })
             })
         }, 1000)
@@ -182,8 +195,7 @@
                     this.getList()
                   }, 1000)
                   this.$toast({
-                    content: '删除成功!',
-                    position: 'center'
+                    content: '删除成功!'
                   })
                 })
             }
@@ -198,7 +210,16 @@
 
 #goods-list {
   font-family: PingFangSC-Regular;
-  padding: 0px 100px 34px;
+  /*padding: 0px 100px 34px;*/
+  margin: 0 auto;
+  @media all and (min-width: 1600px) {
+    width: 1366px;
+  }
+
+  /* 设备宽度小于 1600px */
+  @media all and (max-width: 1600px) {
+    width: 1019px;
+  }
   /deep/ {
     header {
       position: relative;
@@ -206,7 +227,7 @@
       text-align: right;
       line-height: 60px;
       margin-bottom: 7px;
-      margin-top: 12px;
+      margin-top: 32px;
       p {
         float: left;
         height: 60px;
@@ -221,15 +242,25 @@
         height: 30px;
         line-height: 30px;
       }
+
       .btn-box {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        right: 97px;
+        right: 80px;
+        .com-button {
+          padding: 0 20px;
+        }
+        .add-goods {
+          /*width: 130px;*/
+          padding-left: 20px;
+          margin-left: 6px;
+          padding-right: 10px;
+        }
       }
     }
     .table-box {
-      margin-top: 22px;
+      /*margin-top: 22px;*/
       padding: 30px;
       border: 1px solid #e2e2e2;
       border-radius: 4px;
@@ -255,12 +286,15 @@
           th,
           td {
             color: #222222;
-            padding-left: 10px;
+            padding-left: 20px;
             font-weight: 400;
             border-right-color: transparent !important;
             border-left-color: transparent !important;
+            .btn-box {
+              position: relative;
+            }
             &:nth-of-type(1) {
-              width: 5%;
+              width: 7%;
             }
             &:nth-of-type(2) {
               width: 10%;
@@ -270,14 +304,34 @@
             }
             &:nth-of-type(4),
             &:nth-of-type(5) {
-              width: 15%;
+              width: 10%;
             }
             &:nth-of-type(6) {
+              width: 15%;
+            }
+            &:nth-of-type(7) {
               width: 25%;
               button {
                 color: #222222;
                 &:hover {
                   color: #2878ff;
+                }
+              }
+            }
+            .move-btn {
+              span {
+                position: absolute;
+                top: 50%;
+                left: 140px;
+                transform: translate(-50%, -50%);
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                color: transparent;
+                background: url('~assets/image/move-icon.svg') no-repeat center;
+                background-size: contain;
+                &:hover {
+                  opacity: 0.8;
                 }
               }
             }
@@ -304,6 +358,11 @@
           tr:hover {
             background-color: #f5f7fa;
           }
+          tr:last-child {
+            td {
+              border: none;
+            }
+          }
         }
         /* thead {
             width: calc(100% - 100px);
@@ -321,22 +380,18 @@
       background-color: #ffffff;
       border-radius: 4px;
       border: 1px solid #e2e2e2;
+      min-height: 550px;
       img {
         width: 150px;
         height: 150px;
-        margin: 84px auto 40px auto;
+        margin: 130px auto 27px;
       }
-      p:nth-of-type(1) {
-        font-size: 16px;
-        font-weight: 400;
-        color: rgba(34, 34, 34, 1);
-        line-height: 22px;
-      }
-      p:nth-of-type(2) {
+
+      p {
         font-size: 14px;
         font-weight: 400;
         color: rgba(85, 85, 85, 1);
-        margin: 10px auto 30px auto;
+        margin: 0 auto 30px;
       }
       button {
         margin-bottom: 90px;

@@ -2,14 +2,14 @@
   <div class="content" v-ComLoading="loading" com-loading-text="拼命加载中">
     <div class="edit-wx-page live-mager" @keydown="canPass = false">
       <div class="live-title">
-        <span class="title" v-if="inviteId">编辑微信通知</span>
-        <span class="title" v-else>创建微信通知</span>
+        <span class="title" v-if="inviteId">编辑微信邀约</span>
+        <span class="title" v-else>创建微信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box ">
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-title"><i class="star">*</i>邀约标题：</div>
             <div class="from-content">
               <com-input :value.sync="titleValue" placeholder="请输入标题" :max-length="15" class='msg-title' :error-tips="errorData.titleError" @focus="errorData.titleError=''"></com-input>
             </div>
@@ -20,12 +20,21 @@
               <com-input type="textarea" class="msg-content" :value.sync="wxContent" placeholder="请输入微信内容" :max-length="100" :error-tips="errorData.msgError" ></com-input>
             </div>
           </div>
+          <div class="from-row">
+            <div class="from-title"><i class="star"></i>详情跳转：</div>
+            <div class="from-content" >
+                <el-radio v-model="hrefSetting"  label="GUIDE">活动引导页</el-radio>
+                <el-radio v-model="hrefSetting"  label="WEB" v-show='siteOpen'>活动官网</el-radio>
+                <el-radio v-model="hrefSetting"  label="CUSTOM">自定义</el-radio>
+                <com-input v-if="hrefSetting === 'CUSTOM'" :value.sync="hrefValue" placeholder="请输入有效的链接以http://或https://开头"  class='href-box' :error-tips="errorData.hrefError" @focus="errorData.hrefError=''"></com-input>
+            </div>
+          </div>
           <div class="from-row" style='padding:4px 12px;'>
-            <div class="from-title">收信人：</div>
+            <div class="from-title"><i class="star">*</i>收信人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver' @click='chooseReceiver'>选择收信人</el-button>
               <span class="send-span">发送限额：{{sendBalance}}/{{countBalance}}</span>
-              <ve-tips tip="微信通知只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'"></ve-tips>
+              <ve-tips tip="微信邀约只能发送给关注该公众号或服务号的人群，已选收件人中没有关注微信的，将无法收到该通知。" :tipType="'html'" :class='"msg-tips"'></ve-tips>
               <!-- 分组 -->
               <transition-group name="list"
                                 class="edit-groups"
@@ -50,6 +59,7 @@
                      @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
+              <div class="error-msg-bottom" v-if="errorData.sendPersonError">{{errorData.sendPersonError}}</div>
             </div>
           </div>
           <div class="from-row">
@@ -66,10 +76,11 @@
             </div>
           </div>
           <div class="from-row" v-if='pickDate'>
-            <div class="from-title">选择时间：</div>
+            <div class="from-title"><i class="star">*</i>选择时间：</div>
             <div class="from-content">
-              <el-date-picker v-model="date" :editable="false" format='yyyy-MM-dd HH:mm:ss' value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions">
+              <el-date-picker v-model="date" @focus='dateFocus()' :editable="false" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" type="datetime" placeholder="选择日期时间" :picker-options="pickerOptions" :default-value="defaultValue">
               </el-date-picker>
+              <div class="error-msg-bottom" v-if="errorData.awaitTimeError">{{errorData.awaitTimeError}}</div>
             </div>
           </div>
           <!-- 模拟手机预览 -->
@@ -77,7 +88,7 @@
         </div>
         <div class="btn-group">
           <el-button class='default-button' @click="testSend">测试发送</el-button>
-          <el-button class='primary-button' @click="save" :disabled="saveDisabled">保存</el-button>
+          <el-button class='primary-button' @click="save" :disabled="saveDisabled"  v-html="sendSetting === 'SEND'? '立即发送' : '确定'">保存</el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -89,6 +100,8 @@
 </template>
 
 <script>
+import { formatDate } from 'src/assets/js/date'
+import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import userService from 'src/api/user-service'
 import chooseGroup from '../com-chooseGroup'
@@ -112,6 +125,7 @@ export default {
       tabValue: 1,
       searchTitle: '',
       titleValue: '',
+      hrefValue: '',
       groupIdx: 0,
       tagIdx: 0,
       tplOptions: [{
@@ -133,6 +147,7 @@ export default {
       // }],
       // sendValue: '',
       sendSetting: 'SEND',
+      hrefSetting: 'GUIDE',
       wxContent: '',
       qrImgurl: '',
       pickDate: false,
@@ -142,6 +157,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7
         }
       },
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm'),
       loading: false,
       searchPerson: '',
       groupList: [],
@@ -152,9 +168,12 @@ export default {
       selectedTagListStr: '',
       selectPersonShow: false,
       errorData: {
+        hrefError: '',
         titleError: '',
         msgError: '',
-        tagError: ''
+        tagError: '',
+        sendPersonError: '',
+        awaitTimeError: ''
       },
       checkedData: [],
       isValided: false,
@@ -167,7 +186,8 @@ export default {
       changed: 0,
       countBalance: 0,
       sendBalance: 0,
-      clicked: false
+      clicked: false,
+      siteOpen: false
     }
   },
   created () {
@@ -197,13 +217,14 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '微信通知',
+      title: '微信邀约',
       url: `/liveMager/promote/wechat/list/${this.activityId}`
     }, {
-      title: this.inviteId ? '编辑微信通知' : '新建微信通知'
+      title: this.inviteId ? '编辑微信邀约' : '新建微信邀约'
     }])
   },
   mounted () {
+    this.initSite()
     if (!this.accountInfo.businessUserId) {
       this.storeJoininfo().then(() => {
         this.initSdk()
@@ -249,7 +270,9 @@ export default {
         tagId: this.tagIdStr,
         status: this.sendSetting.toLowerCase(),
         desc: this.wxContent,
-        planTime: this.date
+        planTime: this.date,
+        urlType: this.hrefSetting,
+        customUrl: this.hrefSetting === 'CUSTOM' ? this.hrefValue : ''
       }
       if (!this.formValid()) {
         return false
@@ -259,8 +282,7 @@ export default {
         this.$post(noticeService.POST_SAVE_WECHAT, data).then((res) => {
           // console.log(res)
           this.$toast({
-            content: '保存成功',
-            position: 'center'
+            content: this.sendSetting === 'SEND' ? '发送成功' : '保存成功'
           })
           this.canPass = true
           // 跳转到列表页面
@@ -339,7 +361,7 @@ export default {
       this.$get(userManage.GET_TAG_LIST, {
         keyword: keyword
       }).then((res) => {
-        console.log(res.data.list)
+        // console.log(res.data.list)
         let temArray = []
         res.data.list.forEach((item) => {
           temArray.push({
@@ -356,6 +378,7 @@ export default {
       this.selectedGroupListStr = str.substring(0, str.length - 1)
       this.selectedGroupList = arr
       this.groupIdStr = idStr
+      this.errorData.sendPersonError = ''
     },
     selectedTagListfn (arr, str, idStr) {
       this.selectedTagListStr = str.substring(0, str.length - 1)
@@ -396,7 +419,7 @@ export default {
         activityId: this.activityId,
         type: 'WECHAT'
       }).then((res) => {
-        console.log(res)
+        // console.log(res)
         this.countBalance = res.data.balance
       })
     },
@@ -413,17 +436,51 @@ export default {
     formValid () {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.wxContent.length ? '' : '请输入微信内容'
+      this.errorData.sendPersonError = this.groupIdStr ? '' : '请选择收信人'
+      if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
+        this.errorData.awaitTimeError = '请选择定时发送时间'
+      }
       // this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
-      if (this.titleValue.length && this.wxContent.length) {
-        this.isValided = true
-        return true
+      // if (this.hrefSetting === 'CUSTOM') {
+      //   this.errorData.hrefError = this.hrefValue.length ? '' : '请输入链接'
+      //   const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+      //   // reg.test(this.hrefValue) ? this.errorData.hrefError = '' : this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+      //   if (reg.test(this.hrefValue)) {
+      //     this.errorData.hrefError = ''
+      //   } else {
+      //     this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+      //   }
+      // }
+      if (this.errorData.sendPersonError) {
+        this.isValided = false
+        return false
+      } else if (this.sendSetting.toLowerCase() === 'await' && !this.date && this.errorData.awaitTimeError) {
+        this.isValided = false
+        return false
+      } else if (this.titleValue.length && this.wxContent.length) {
+        if (this.hrefSetting === 'CUSTOM') {
+          const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+          // reg.test(this.hrefValue) ? this.errorData.hrefError = '' : this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+          if (reg.test(this.hrefValue)) {
+            this.errorData.hrefError = ''
+            this.isValided = true
+            return true
+          } else {
+            this.errorData.hrefError = '请输入有效的链接以http://或https://开头'
+            this.isValided = false
+            return false
+          }
+        } else {
+          this.isValided = true
+          return true
+        }
       } else {
         this.isValided = false
         return false
       }
     },
     listenMsg (msg) {
-      console.log(msg)
+      // console.log(msg)
     },
     initSdk () {
       /* 获取pass信息 */
@@ -459,7 +516,7 @@ export default {
       })
       /* 监听微信测试发送成功消息 */
       ChatService.OBJ.regHandler(ChatConfig.wechat_msg, (msg) => {
-        console.log(msg)
+        // console.log(msg)
         this.deliverd = true
       })
     },
@@ -467,6 +524,21 @@ export default {
       await this.$get(userService.GET_ACCOUNT).then((res) => {
         this.setAccountInfo(res.data)
       })
+    },
+    initSite () {
+      this.$get(brandService.GET_SITE_DATA, {
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.siteOpen = true
+        } else {
+          this.siteOpen = false
+        }
+      })
+    },
+    dateFocus () {
+      this.date = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
+      this.errorData.awaitTimeError = ''
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -494,7 +566,12 @@ export default {
     sendSetting: {
       handler (newValue) {
         this.canPass = true
-        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+        if (newValue === 'AWAIT') {
+          this.pickDate = true
+        } else {
+          this.pickDate = false
+          this.errorData.awaitTimeError = ''
+        }
       }
     }
   },
@@ -531,9 +608,19 @@ export default {
 @import '~assets/css/mixin.scss';
 
 .edit-wx-page /deep/ {
+  .error-msg-bottom {
+    position: absolute;
+    bottom: -16px;
+    left: 10px;
+    color: #fc5659;
+  }
   .com-input .limit.area {
     bottom: 7px;
     right: 7px;
+  }
+  .msg-tips {
+    top: 4px;
+    left: 5px;
   }
   // height: 730px;
   position: relative;
@@ -599,6 +686,12 @@ export default {
         }
       }
     }
+  }
+  .href-box {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    width: 440px;
   }
 }
 

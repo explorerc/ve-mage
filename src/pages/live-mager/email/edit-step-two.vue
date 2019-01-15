@@ -38,7 +38,7 @@
                         @click="chooseGroup">选择分组
                 </button>
                 <span class="send-span">发送限额：{{totalCountStr ? totalCountStr : 0}}/{{countBalance}}</span>
-                <ve-msg-tips tip-type="html"
+                <ve-msg-tips :class='"msg-tips"' tip-type="html"
                              tip="1.每天最多可发送5000封邮件 <br/> 2.发送限额：当前已选中人数/剩余可发送数量<br/>3.在邮件发送前，如果分组内人员发生变化，收件人也会随之改变"></ve-msg-tips>
                 <span class="error-msg"
                       v-if="errorMsg.groupIds">{{errorMsg.groupIds}}</span>
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div class="from-row">
-            <div class="from-title">发送时间：</div>
+            <div class="from-title"><i class="star">*</i>发送时间：</div>
             <div :class="{'from-content':true,error:errorMsg.planTime}">
               <div class="send-type-box">
                 <el-radio v-model="sendType"
@@ -85,8 +85,11 @@
                               type="datetime"
                               placeholder="选择日期时间"
                               align="center"
+                              :default-value="defaultValue"
+                              :picker-options="pickerOptions"
                               format="yyyy-MM-dd HH:mm"
-                              value-format="yyyy-MM-dd HH:mm">
+                              value-format="yyyy-MM-dd HH:mm"
+                              @focus='dateFocus()'>
               </el-date-picker>
               <span class="error-msg"
                     v-if="errorMsg.planTime">{{errorMsg.planTime}}</span>
@@ -102,11 +105,12 @@
     </div>
     <div class="email-bottom">
       <button :class="{'primary-button':true, fr:true,disabled:disabledBtn}"
-              @click="send">发送
+              @click="send" v-html="sendType === 'AUTO'? '立即发送':'确定'">
       </button>
-      <button class="primary-button margin-fl fr"
+      <button class="default-button margin-fl fr"
               @click="saveEmail">保存草稿
       </button>
+      <button class="default-button margin-fl fr" @click="goBack">上一步</button>
     </div>
   </div>
 </template>
@@ -117,12 +121,12 @@
   import VeMsgTips from 'src/components/ve-msg-tips'
   import chooseGroup from '../promote/com-chooseGroup'
   import activityService from 'src/api/activity-service'
-  import { mapState, mapMutations } from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
   import * as types from '../../../store/mutation-types'
 
   export default {
     name: 'edit-step-two',
-    components: { VeMsgTips, chooseGroup },
+    components: {VeMsgTips, chooseGroup},
     data () {
       return {
         outValue: '',
@@ -143,6 +147,12 @@
           senderName: '',
           planTime: '',
           groupIds: ''
+        },
+        defaultValue: new Date(),
+        pickerOptions: {
+          disabledDate (time) {
+            return time.getTime() < Date.now() - 8.64e7
+          }
         },
         email: {
           activityId: '',
@@ -176,7 +186,7 @@
     watch: {
       emailInfo: {
         handler (newVal) {
-          this.email = { ...this.email, ...newVal }
+          this.email = {...this.email, ...newVal}
           this.sendType = this.email.planTime ? 'ONCE' : 'AUTO'
         },
         immediate: true
@@ -186,6 +196,13 @@
           this.clearError()
         },
         deep: true
+      },
+      sendType (newVal) {
+        this.errorMsg.planTime = ''
+        this.email.planTime = ''
+        if (newVal === 'ONCE') {
+          this.defaultValue = new Date(new Date().getTime() + 30 * 60 * 1000)
+        }
       }
     },
     created () {
@@ -288,21 +305,21 @@
       saveEmail () {
         if (this.totalCountStr > this.countBalance) {
           this.$toast({
-            content: '收件人数量超出限额',
-            position: 'center'
+            content: '收件人数量超出限额'
           })
           return false
         }
         this.canPass = true
         this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
         this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
-          this.email = { ...this.email, ...res.data }
-          this.storeEmailInfo(this.email)
-          this.$router.replace(`/liveMager/emailEditTwo/${this.email.activityId}?email=${this.email.emailInviteId}`)
-          this.$toast({
-            content: '保存草稿成功',
-            position: 'center'
-          })
+          // this.email = {...this.email, ...res.data}
+          // this.storeEmailInfo(this.email)
+          // this.$router.replace(`/liveMager/emailEditTwo/${this.email.activityId}?email=${this.email.emailInviteId}`)
+          // this.$toast({
+          //   content: '保存草稿成功',
+          //   position: 'center'
+          // })
+          this.$router.push(`/liveMager/email/${this.email.activityId}`)
         })
       },
       sendEmail () {
@@ -318,9 +335,14 @@
         }
         this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}watch/${this.email.activityId}`)
         if (this.isTimer) { // 发送定时邮件
-          this.$post(activityService.POST_SEND_TIMER_EMAIL_INFO, this.email).then((res) => {
+          this.$config({handlers: true}).$post(activityService.POST_SEND_TIMER_EMAIL_INFO, this.email).then((res) => {
             this.$router.push(`/liveMager/email/${this.email.activityId}`)
             this.disabledBtn = false
+          }).catch((e) => {
+            let st = setTimeout(() => {
+              clearTimeout(st)
+              this.disabledBtn = false
+            }, 2000)
           })
         } else { // 保存并发送
           this.$post(activityService.POST_SAVE_SEND_EMAIL, this.email).then((res) => {
@@ -332,8 +354,7 @@
       send () {
         if (this.totalCountStr > this.countBalance) {
           this.$toast({
-            content: '收件人数量超出限额',
-            position: 'center'
+            content: '收件人数量超出限额'
           })
           return false
         }
@@ -492,6 +513,9 @@
           console.log(res)
           this.countBalance = res.data.balance
         })
+      },
+      dateFocus () {
+        this.email.planTime = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */
@@ -520,6 +544,9 @@
 <style lang="scss" scoped src="../css/live.scss"></style>
 <style lang="scss" scoped>
 .edit-step-box {
+  .msg-tips {
+    top: 4px;
+  }
   background-color: #f5f5f5;
   .send-span {
     display: inline-block;
@@ -572,6 +599,7 @@
     padding: 0 20px;
     background-color: #fff;
     button {
+      width: 120px;
       margin-top: 10px;
     }
     .margin-fl {

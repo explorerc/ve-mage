@@ -1,13 +1,14 @@
 <template>
   <div class="data-box search-box">
     <div class="search-total">
-      <button class="default-button export-btn fl" @click="exportData">导出</button>
+      <button class="default-button export-btn fl" @click="exportData" :disabled="isNoDataShow">导出</button>
       <div class="search-item fr">
         <com-input type="search"
                    style="width: 220px;"
                    class="search-com"
                    :value.sync="searchParams.keyword"
                    :maxLength="30"
+                   @focus="isHigh=false"
                    @keyup.native.enter="searchEnter"
                    placeholder="输入姓名/手机号/邮箱"></com-input>
         <span class="data-link" style="font-size: 14px;margin-left: 6px;" @click="isHigh=!isHigh">高级筛选
@@ -95,6 +96,7 @@
       <div class="search-item flm">
         <span class="search-title">所属地域</span>
         <el-cascader
+          expand-trigger="hover"
           v-model="citySelect"
           :options="options"
           @change="handleAreaChange">
@@ -130,7 +132,7 @@
       </div>
     </div>
     <div class="table-list-box data-pad">
-      <el-table :data="viewerList" :default-sort="{prop: 'score', order: 'descending'}" style="width: 100%">
+      <el-table v-if="viewerList.length" :data="viewerList" :default-sort="{prop: 'score', order: 'descending'}" style="width: 100%">
         <el-table-column label="姓名">
           <template slot-scope="scope">
             <div class="user-info">
@@ -180,6 +182,10 @@
         <!--</template>-->
         <!--</el-table-column>-->
       </el-table>
+      <div class="empty" v-if="isNoDataShow">
+        <div class="img"></div>
+        <div class="txt">暂无数据</div>
+      </div>
       <div class="page-pagination" v-if="total>searchParams.pageSize">
         <ve-pagination :total="total"
                        :pageSize="searchParams.pageSize"
@@ -268,7 +274,8 @@
           {value: '', label: '全部'},
           {value: 0, label: '老用户'},
           {value: 1, label: '新用户'}
-        ]
+        ],
+        isNoDataShow: false
       }
     },
     filters: {
@@ -413,6 +420,11 @@
             if (res.data) {
               this.viewerList = res.data.list
               this.total = res.data.total
+              if (this.viewerList.length) {
+                this.isNoDataShow = false
+              } else {
+                this.isNoDataShow = true
+              }
             }
           }
         })
@@ -447,8 +459,8 @@
 <style lang="scss" scoped>
   .data-box {
     .export-btn {
-      height: 34px;
-      line-height: 34px;
+      height: 30px;
+      line-height: 28px;
       padding: 0 20px;
     }
     .data-pad {
@@ -466,7 +478,7 @@
     .search-total {
       height: 34px;
       line-height: 34px;
-      margin: 30px 0;
+      margin: 20px 0;
     }
     .search-item /deep/ {
       display: inline-block;
@@ -475,15 +487,26 @@
       .el-select {
         display: inline-block;
       }
+      .com-input input {
+        height: 30px;
+        line-height: 28px;
+      }
       .search-title {
         margin-right: 5px;
         font-size: 14px;
       }
+      .search-com input{
+        border-radius: 20px;
+        background-color: transparent;
+      }
       .iconfont {
         display: inline-block;
         font-size: 12px;
-        color: #4B5AFE;
+
         transition: transform .2s;
+        &.icon-up {
+          color: #4B5AFE;
+        }
         &.icon-down {
           transform: rotate(180deg);
         }
@@ -502,6 +525,7 @@
       position: relative;
       padding-top: 30px;
       padding-bottom: 20px;
+      min-height: 550px;
       .export-btn {
         position: absolute;
         top: -14px;
@@ -512,6 +536,22 @@
       .page-pagination {
         margin-top: 20px;
         float: right;
+      }
+      .empty {
+        text-align: center;
+        margin: 128px 0;
+        .txt {
+          padding-top: 20px;
+          font-size: 16px;
+          color: #222;
+        }
+        .img {
+          width: 150px;
+          height: 150px;
+          margin: 0 auto;
+          background: url('~assets/image/nodata@2x.png') no-repeat center;
+          background-size: contain;
+        }
       }
     }
     .flm {

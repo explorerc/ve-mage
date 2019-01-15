@@ -83,8 +83,8 @@ export default {
       })
     },
     currentChange (res) {
-      // this.getList(res, this.$route.query.id, this._type)
       this.currPage = res
+      this.getList(res, this.$route.query.id, this._type)
     },
     getList (page, id, _type) {
       this.$get(activityService.GET_SEND_LIST, {

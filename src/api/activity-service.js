@@ -126,6 +126,8 @@ const ActivityManger = {
   /* 查询发送详情 */
   GET_SEND_LIST: '/expand/invite-record/list',
   /* 发送限额已占用数量 */
-  GET_SEND_LIMIT: '/expand/invite-record/num'
+  GET_SEND_LIMIT: '/expand/invite-record/num',
+  /* 活动官网是否开启 */
+  GET_SITE_DATA: '/manage/template-manage/get'
 }
 export default ActivityManger

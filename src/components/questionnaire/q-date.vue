@@ -72,6 +72,9 @@ export default {
       line-height: 20px;
       font-size: 12px;
     }
+    .el-input__inner {
+      height: 40px;
+    }
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="template1-container">
+  <div class="template1-container" :class="{isEdit:editAble}">
     <com-panel class="section1" :edit="editAble" v-model="data.section1Data.panel">
       <com-logo class="logo" :edit="editAble" v-model="data.section1Data.logo"></com-logo>
       <com-nav class="nav" :edit="editAble" v-model="data.section1Data.nav"></com-nav>
@@ -43,7 +43,7 @@
       <com-font :edit="editAble" v-model="data.section9Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section9Data.btn"></com-btn>
     </com-panel>
-    <div class="support">微吼直播提供技术支持</div>
+    <div class="support">微吼知客提供技术支持</div>
   </div>
 </template>
 
@@ -95,6 +95,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.template1-container.isEdit {
+  .support {
+    margin-bottom: 60px;
+  }
+}
 .template1-container /deep/ {
   .panel-container {
     i {
@@ -119,10 +124,10 @@ export default {
       cursor: pointer;
       display: inline-block;
       background-color: #ffd021;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background-image: url('~assets/image/site/edit.svg');
-      background-size: 32px;
+      background-size: 28px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
@@ -352,14 +357,22 @@ export default {
       min-height: 85px;
     }
     .block1-group {
+      height: 340px;
       .block1-item {
         border: 1px solid rgba(226, 226, 226, 1);
         width: 250px;
-        height: 340px;
+        height: 320px;
         img {
           width: 100%;
           height: 160px;
         }
+      }
+    }
+    .btn-container {
+      position: relative;
+      .com-button {
+        width: 120px;
+        /*margin-top: 20px;*/
       }
     }
   }
@@ -452,7 +465,7 @@ export default {
       width: 1124px;
       .block1-item {
         width: 200px;
-        height: 100px;
+        min-height: 100px;
         margin-right: 30px;
         margin-bottom: 30px;
         border: 1px solid rgba(226, 226, 226, 1);
@@ -469,10 +482,11 @@ export default {
   }
   .section9 {
     width: 100%;
-    height: 300px;
+    // height: 300px;
     .panel {
       text-align: center;
       padding-top: 70px;
+      padding-bottom: 40px;
     }
     .font-content {
       text-align: left;

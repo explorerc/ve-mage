@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <p>编辑微信通知2</p>
+    <p>编辑微信邀约2</p>
     <div class="from-box">
       <div class="from-row">
         <div class="from-title">微信模板：</div>
@@ -121,8 +121,7 @@ export default {
       }
       this.$post(noticeService.POST_AUTO_SAVE_TASK, data).then((res) => {
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: '保存成功'
         })
         // 跳转到列表页面
         this.$router.push({ name: 'auto', params: { id: this.activityId } })

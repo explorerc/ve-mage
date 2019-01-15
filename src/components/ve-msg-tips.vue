@@ -1,6 +1,6 @@
 <template>
   <div class="msg-tip-box" :class='type'>
-    <i>？</i>
+    <i></i>
     <span v-if="tipType!=='html'">{{tip}}</span>
     <span v-else v-html="tip"></span>
   </div>
@@ -40,12 +40,10 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    line-height: 20px;
     text-align: center;
-    border: solid 1px rgba(85, 85, 85, 1);
-    border-radius: 50%;
-    color: #555;
     font-style: normal;
+    background: url('~assets/image/excal-icon.svg') no-repeat center;
+    background-size: contain;
     &:hover {
       cursor: pointer;
       opacity: 0.8;

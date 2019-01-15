@@ -15,7 +15,7 @@
         通过邮件邀约，定制邀约邮件，邀请特定客户群参加直播活动
       </div>
       <div class="table-list-box"
-           style="padding-top: 20px;">
+           style="padding-top: 30px;">
            <template v-if='emailList.length'>
             <el-table :data="emailList"
                       style="width: 100%">
@@ -83,7 +83,7 @@
             </div>
            </template>
       </div>
-      <div class="pagination-box" v-if='emailList.length'>
+      <div class="pagination-box" v-if='emailList.length > pageSize'>
         <div class="page-pagination">
           <ve-pagination :total="total"
                          :pageSize="pageSize"
@@ -315,19 +315,25 @@ export default {
   font-size: 14px;
 }
 .live-title {
+  position: relative;
   .create-button {
     height: 30px;
-    line-height: 30px;
-    margin-right: 110px;
+    line-height: 29px;
+    margin-right: 80px;
     margin-top: 17px;
+    padding: 0 20px;
+    /*<!--position: relative;-->*/
+    /*<!--top: 50%;-->*/
+    /*<!--right: 110px;-->*/
+    /*<!--transform: translateY(-50%);-->*/
   }
 }
 .send-box {
   display: inline-block;
   color: #888;
   font-size: 14px;
-  line-height: 60px;
-  margin-right: 20px;
+  line-height: 67px;
+  margin-right: 10px;
 }
 
 .cg-status {
@@ -352,11 +358,11 @@ export default {
 .table-list-box {
   .empty {
     text-align: center;
-    margin: 100px 0;
+    margin: 100px 0 0;
     .txt {
-      padding-top: 20px;
-      font-size: 16px;
-      color: $color-font;
+      padding-top: 40px;
+      font-size: 14px;
+      color: $color-font-sub;
     }
     .img {
       width: 150px;
@@ -371,7 +377,7 @@ export default {
       height: 40px;
       text-align: center;
       line-height: 40px;
-      margin-top: 20px;
+      margin-top: 30px;
     }
   }
 }

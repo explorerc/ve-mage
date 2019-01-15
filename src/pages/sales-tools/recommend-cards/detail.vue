@@ -42,6 +42,7 @@
         <div class="from-title"><i class="star">*</i>按钮链接：</div>
         <div class="from-content">
           <com-input :value.sync="btnLink" placeholder="请输入按钮链接" :error-tips="btnLinkError" @focus="btnLinkError = ''" :max-length="300"></com-input>
+          <span class="tips" v-if="btnLinkError.length <= 0">链接需要附带http://或https://头协议</span>
         </div>
       </div>
       <div class="from-row">
@@ -61,9 +62,7 @@
           <dd class='desc' v-if="desc.length>0">{{desc}}</dd>
           <dd class='desc' v-else>此处是卡片描述，最多可添加140个字</dd>
           <dd class='btn-dd' v-if="btnSwitch">
-            <router-link :to="btnLink" target="_blank">
-              <el-button class='primary-button btn'>{{btnTxt.length>0 ? btnTxt:'按钮'}}</el-button>
-            </router-link>
+            <el-button class='primary-button btn' >{{btnTxt.length>0 ? btnTxt:'按钮'}}</el-button>
           </dd>
         </dl>
         <div class="tips">
@@ -170,8 +169,7 @@
       updateCard () {
         this.$post(cardService.POST_UPDATE_CARD, this.saveData).then((res) => {
           this.$toast({
-            content: '更新成功',
-            position: 'center'
+            content: '更新成功'
           })
           this.canPaas = true
           setTimeout(() => {
@@ -186,7 +184,7 @@
         this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
         if (this.btnSwitch) {
           this.btnTxt.length ? this.btnTxtError = '' : this.btnTxtError = '请输入按钮文案'
-          reg.test(this.btnLink) ? this.btnLinkError = '' : this.btnLinkError = '请输入有效的按钮链接以http或https开头'
+          reg.test(this.btnLink) ? this.btnLinkError = '' : this.btnLinkError = '请输入有效的链接以http://或https://开头'
         } else {
           this.canSave = false
         }
@@ -282,6 +280,11 @@
     .from-content {
       position: relative;
       flex: 1;
+      .tips {
+        display: block;
+        padding-top: 5px;
+        color: #555;
+      }
       .error-msg {
         display: block;
         color: $color-red;
@@ -365,7 +368,7 @@
         border-radius: 4px;
         margin: 0 auto;
       }
-      .cov_img{
+      .cov_img {
         background: no-repeat center;
         background-size: cover;
       }
@@ -383,9 +386,17 @@
         height: 32px;
         line-height: 32px;
         text-align: center;
+        a {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
       }
       .btn-dd {
         margin-top: 20px;
+        button {
+          cursor: default;
+        }
       }
     }
     .overview .tips {

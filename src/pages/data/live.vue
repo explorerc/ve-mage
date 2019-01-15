@@ -50,7 +50,7 @@
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;">
             <p class="title">
-              <ve-title width="200px" title="观众访问趋势图" tip="查看直播和回放过程中，观众人数随时间变化的趋势图"></ve-title>
+              <ve-title width="200px" title="观众访问趋势图" tip="查看直播和回放过程中，观众人数随时间变化的趋势图。"></ve-title>
               <span class="chart-menu">
              <nav-menu :menus="['直播', '回放']" :currentMenu="watchType" @changeMenu="changeMenu"></nav-menu>
           </span></p>
@@ -60,15 +60,15 @@
         <div class="chart-container">
           <div class="chart-box" style="width: 50%;margin-top: 20px">
             <p class="title">
-              <ve-title width="200px" title="观看时长与观众分布图" tip="查看直播过程中，不同观看时段的观众数量"></ve-title>
+              <ve-title width="200px" title="观看时长与观众分布图" tip="查看直播过程中，不同观看时段的观众数量。"></ve-title>
             </p>
             <div class="chart-item" id="chart02" style="height: 360px;"></div>
           </div>
           <div class="chart-box" style="width: 50%;margin-top: 20px">
             <p class="title">
-              <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图"></ve-title>
+              <ve-title width="200px" title="观看回放规律图" tip="查看直播结束后一个月内，每天的观看回放时间点与观众人数的规律变化图。"></ve-title>
             </p>
-            <div class="chart-item" id="chart03" style="height: 360px;"></div>
+            <div class="chart-item" id="chart03" style="width: calc(100% + 20px);height: 400px;margin-top: -40px;"></div>
           </div>
         </div>
       </div>
@@ -163,7 +163,7 @@
         <div class="chart-container">
           <div class="chart-box" style="width: 100%;position: relative;">
             <p class="title">
-              <ve-title width="200px" title="互动工具参与趋势图" tip="查看直播中主持人使用互动工具的情况以及观众的参与情况"></ve-title>
+              <ve-title width="200px" title="互动工具参与趋势图" tip="查看直播中主持人使用互动工具的情况以及观众的参与情况。"></ve-title>
             </p>
             <div class="lenge-box">
               <span>红包</span>
@@ -180,13 +180,13 @@
     <message-box
       v-show="preDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="预约数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box">
+      <div class="msg-table-box msg-export-box">
         <button class="primary-button export-btn fr">导出</button>
         <div class="table-box">
-          <el-table :data="preDataList" style="width: 100%">
+          <el-table :data="preDataList" style="width: 100%" v-if="preDataList.length">
             <el-table-column label="序号">
               <template slot-scope="scope">
                 {{scope.$index}}
@@ -200,30 +200,38 @@
             <el-table-column prop="preDate" label="预约时间"></el-table-column>
             <el-table-column prop="joinDate" label="参会时间"></el-table-column>
           </el-table>
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
         </div>
       </div>
     </message-box>
     <!-- 聊天 -->
     <message-box
       v-show="chatDataDetail"
-      width="60%"
-      type="none"
+      width="50%"
+      type="prompt"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" v-ComLoading="loading">
-        <button class="primary-button export-btn fr" @click="exportFile('chart')">导出</button>
+      <div class="msg-table-box msg-export-box" v-ComLoading="loading">
+        <button class="export-btn" @click="exportFile('chart')" v-if="total">导出</button>
         <div class="table-box">
-          <el-table :data="chatDataList" style="width: 100%">
-            <el-table-column label="序号">
+          <el-table :data="chatDataList" style="width: 100%" v-if="total">
+            <el-table-column label="序号" width="80px">
               <template slot-scope="scope">
                 {{ (page-1)*pageSize + scope.$index + 1}}
               </template>
             </el-table-column>
-            <el-table-column prop="nickname" label="姓名"></el-table-column>
-            <el-table-column prop="phone" label="手机号"></el-table-column>
-            <el-table-column prop="message" label="聊天内容"></el-table-column>
-            <el-table-column prop="time" label="聊天时间"></el-table-column>
+            <el-table-column prop="nickname" label="姓名" max-width="100px"></el-table-column>
+            <el-table-column prop="phone" label="手机号" max-width="120px"></el-table-column>
+            <el-table-column prop="message" label="聊天内容" min-width="120px"></el-table-column>
+            <el-table-column prop="time" label="聊天时间" min-width="120px"></el-table-column>
           </el-table>
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
         </div>
         <div class="page-pagination" v-if="total>pageSize">
           <ve-pagination :total="total"
@@ -236,12 +244,12 @@
     <message-box
       v-show="prizeDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="聊天数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
-          <el-table :data="prizeDataList" style="width: 100%">
+          <el-table :data="prizeDataList" style="width: 100%" v-if="prizeDataList.length">
             <el-table-column label="序号">
               <template slot-scope="scope">
                 {{scope.$index}}
@@ -259,6 +267,10 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
         </div>
       </div>
     </message-box>
@@ -266,12 +278,13 @@
     <message-box
       v-show="pagerDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="问卷数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
-          <el-table :data="pagerDataList" style="width: 100%">
+
+          <el-table :data="pagerDataList" style="width: 100%" v-if="pagerDataList.length">
             <el-table-column label="序号">
               <template slot-scope="scope">
                 {{scope.$index+1}}
@@ -288,6 +301,11 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
+
         </div>
       </div>
     </message-box>
@@ -295,13 +313,13 @@
     <message-box
       v-show="cardDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="卡片数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
-          <el-table :data="cardDataList" style="width: 100%">
-            <el-table-column label="序号" type="index">
+          <el-table :data="cardDataList" style="width: 100%" v-if="cardDataList.length">
+            <el-table-column label="序号" type="index" width="60pz">
             </el-table-column>
             <el-table-column prop="title" label="卡片名称"></el-table-column>
             <el-table-column label="是否设置链接">
@@ -320,6 +338,10 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
         </div>
       </div>
     </message-box>
@@ -327,46 +349,44 @@
     <message-box
       v-show="redBagDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="红包-数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
-          <template v-if="redBagDataList.length">
-            <el-table :data="redBagDataList" style="width: 100%">
-              <el-table-column width="50" label="序号">
-                <template slot-scope="scope">
-                  {{ (page-1)*pageSize + scope.$index + 1}}
-                </template>
-              </el-table-column>
-              <el-table-column prop="start_time" label="推送时间" width="140"></el-table-column>
-              <el-table-column label="参与条件">
-                <template slot-scope="scope">
-                  <span v-if="scope.row.condition==0">无限制参与</span>
-                  <span v-else-if="scope.row.condition==1">分享参与</span>
-                  <span v-else-if="scope.row.condition==2">口令参与</span>
-                  <span v-else-if="scope.row.condition==3">填写问卷参与</span>
-                </template>
-              </el-table-column>
-              <el-table-column prop="amount" label="红包总金额"></el-table-column>
-              <el-table-column prop="number" label="红包数量"></el-table-column>
-              <el-table-column prop="online_user_count" label="在线人数"></el-table-column>
-              <el-table-column prop="joined_user_count" label="参与人数"></el-table-column>
-              <el-table-column prop="get_user_count" label="领取人数"></el-table-column>
-              <el-table-column prop="get_amount" label="领取金额"></el-table-column>
-              <el-table-column label="领取明细" width="80">
-                <template slot-scope="scope">
-                  <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </template>
-          <template v-else>
-            <div class="empty">
-              <div class="img"></div>
-              <div class="txt">暂无数据</div>
-            </div>
-          </template>
+          <el-table :data="redBagDataList" style="width: 100%" v-if="redBagDataList.length">
+            <el-table-column width="58" label="序号">
+              <template slot-scope="scope">
+                {{ (page-1)*pageSize + scope.$index + 1}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="start_time" label="推送时间" width="138"></el-table-column>
+            <el-table-column label="参与条件">
+              <template slot-scope="scope">
+                <span v-if="scope.row.condition==0">无限制参与</span>
+                <span v-else-if="scope.row.condition==1">分享参与</span>
+                <span v-else-if="scope.row.condition==2">口令参与</span>
+                <span v-else-if="scope.row.condition==3">填写问卷参与</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="amount" label="红包总金额"></el-table-column>
+            <el-table-column prop="number" label="红包数量"></el-table-column>
+            <el-table-column prop="online_user_count" label="在线人数"></el-table-column>
+            <el-table-column prop="joined_user_count" label="参与人数"></el-table-column>
+            <el-table-column prop="get_user_count" label="领取人数"></el-table-column>
+            <el-table-column prop="get_amount" label="领取金额"></el-table-column>
+            <el-table-column label="领取明细" width="90">
+              <template slot-scope="scope">
+                <span class="data-link" @click="downLoadExport(scope.row.red_packet_uuid)">下载</span>
+              </template>
+            </el-table-column>
+          </el-table>
+
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
+
 
         </div>
         <div class="page-pagination" v-if="total>pageSize">
@@ -380,13 +400,13 @@
     <message-box
       v-show="goodsDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       header="商品数据详情"
       @handleClick="closeMesssageBox">
-      <div class="msg-table-box" style="padding-top: 20px;">
+      <div class="msg-table-box">
         <div class="table-box">
-          <el-table :data="goodsDataList" style="width: 100%">
-            <el-table-column type="index" label="序号" width="50"></el-table-column>
+          <el-table :data="goodsDataList" style="width: 100%" v-if="goodsDataList.length">
+            <el-table-column type="index" label="序号" width="60"></el-table-column>
             <el-table-column prop="title" label="商品名称"></el-table-column>
             <el-table-column prop="push" label="推送次数"></el-table-column>
             <el-table-column prop="pv" label="商品详情浏览次数"></el-table-column>
@@ -397,6 +417,10 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="empty" v-if="isNoDataShow">
+            <div class="img"></div>
+            <div class="txt">暂无数据</div>
+          </div>
         </div>
       </div>
     </message-box>
@@ -509,7 +533,9 @@
         redBagDataList: [],
         page: 1,
         pageSize: 20,
-        total: 0
+        total: 0,
+        // 防止空白页在数据出现之前闪烁
+        isNoDataShow: false
       }
     },
     beforeDestroy () {
@@ -637,7 +663,7 @@
         }).then((res) => {
           if (res.code === 200 && res.data.length !== 0) {
             this.interactCountData = res.data
-            console.log(this.interactCountData, '999999999999')
+            // console.log(this.interactCountData, '999999999999')
           }
         })
       },
@@ -647,6 +673,9 @@
         }).then((res) => {
           if (res.code === 200 && res.data.length !== 0) {
             this.watcherLineData = res.data
+            // this.watcherLineData.live.xAxis.map(item => {
+            //   return item.length >= 16 ? item.substring(0, 10) + '\n' + item.substring(10, item.length) : item
+            // })
             this.$nextTick(() => {
               // 观众趋势图（PV、UV）
               this.watcherChart = lines('chart01', {
@@ -679,6 +708,11 @@
           if (res.code === 200 && res.data.length !== 0) {
             this.chatDataList = res.data.list
             this.total = res.data.total
+            if (this.total) {
+              this.isNoDataShow = false
+            } else {
+              this.isNoDataShow = true
+            }
           }
         })
       },
@@ -688,8 +722,12 @@
           .then((res) => {
             if (res && res.code === 200) {
               this.pagerDataList = res.data
+              if (this.pagerDataList.length) {
+                this.isNoDataShow = false
+              } else {
+                this.isNoDataShow = true
+              }
             }
-            console.log(this.pagerDataList)
           })
       },
       goCardDataDetail () {
@@ -704,6 +742,11 @@
         }).then((res) => {
           console.log(res)
           this.cardDataList = res.data.list
+          if (this.cardDataList.length) {
+            this.isNoDataShow = false
+          } else {
+            this.isNoDataShow = true
+          }
         })
       },
       downLoadExport (id) {
@@ -727,6 +770,11 @@
           if (res.code === 200) {
             this.total = res.data.count
             this.redBagDataList = res.data.list
+            if (this.redBagDataList.length) {
+              this.isNoDataShow = false
+            } else {
+              this.isNoDataShow = true
+            }
           }
         })
       },
@@ -736,6 +784,11 @@
           .then((res) => {
             if (res && res.code === 200) {
               this.goodsDataList = res.data
+              if (this.goodsDataList.length) {
+                this.isNoDataShow = false
+              } else {
+                this.isNoDataShow = true
+              }
             }
             console.log(this.goodsDataList)
           })
@@ -778,26 +831,27 @@
             if (!res.data.list) return
             let xAxis = []
             let sDatas = []
-            res.data.list.forEach(item => {
+            res.data.list.forEach((item, idx) => {
               xAxis.push(item.time)
-              sDatas.push([item.time, item.week, item.value])
+              sDatas.push([idx, parseInt(item.week), item.value])
             })
             serveDatas = {
               yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-              xAxis: Array.from(new Set(xAxis)),
+              // xAxis: Array.from(new Set(xAxis)),
+              xAxis: xAxis,
               data: sDatas
             }
           } else {
             serveDatas = {
               yAxis: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
-              xAxis: Array.from(new Set([0])),
+              xAxis: [0],
               data: [[0, 0, 0]]
             }
           }
           this.playBackTimeChart = scatter('chart03', serveDatas, {
             left: 70,
-            right: 10,
-            top: 20,
+            right: 40,
+            top: 60,
             bottom: 20
           })
         })
@@ -809,7 +863,7 @@
           let chartDatas = null
           if (res.code === 200 && res.data.length !== 0) {
             res.data.xAxis = res.data.xAxis || ['']
-            res.data.interact = res.data.interact || []
+            res.data.interact = res.data.interact.length > 0 ? res.data.interact : [0]
             let serveDatas = []
             serveDatas.push({
               name: '',
@@ -829,12 +883,12 @@
             // 互动工具参与趋势图（PV、UV）
             this.hdChart = barAndLine('chart04', chartDatas, {
               left: 48,
-              top: 20,
-              bottom: 20
+              top: 10,
+              bottom: 30
             })
           } else {
             this.hdChart = barAndLine('chart04', {
-              xAxis: ['0'],
+              xAxis: [''],
               list: [{
                 name: '',
                 type: 'bar',
@@ -871,6 +925,7 @@
             this.page = 1
             this.pageSize = 10
             this.total = 0
+            this.isNoDataShow = false
           })
         }, 1000)
       },
@@ -964,8 +1019,9 @@
     }
     .lenge-box {
       position: absolute;
-      top: 54px;
-      right: 22px;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
       span {
         display: inline-block;
         color: #555;
@@ -994,5 +1050,11 @@
         }
       }
     }
+    /deep/ {
+      .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
+        display: none;
+      }
+    }
   }
+
 </style>

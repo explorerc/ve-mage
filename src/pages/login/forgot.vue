@@ -136,7 +136,7 @@
                  confirmText='现在申请'
                  cancelText='知道了'
                  @handleClick="sqHandler">
-      <div style="text-align: center;padding: 20px 0;">
+      <div style="padding: 20px 0;">
         <span style="display: block;">您尚未开通产品试用资格</span>
         <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
       </div>
@@ -145,7 +145,7 @@
                  header='提示'
                  cancelText='知道了'
                  @handleClick="shenHeiShow=false">
-      <div style="text-align: center;padding: 20px 0;">
+      <div style="padding: 20px 0;">
         <span style="display: block;">您的申请正在审核中，请耐心等待</span>
         <span style="display: block;">如有问题请拨打400-888-9970客服热线</span>
       </div>
@@ -601,8 +601,9 @@ export default {
       margin-bottom: 15px;
     }
     #captcha {
-      width: 300px;
-      margin-bottom: 15px;
+      width: 450px;
+      height: 40px;
+      margin-bottom: 30px;
     }
     .primary-button {
       display: block;
@@ -618,6 +619,7 @@ export default {
         width: 450px;
         margin-bottom: 30px;
         input {
+          height: 40px;
           padding: 0 10px !important;
         }
       }
@@ -627,16 +629,16 @@ export default {
     }
     .v-getcode {
       position: absolute;
-      right: 0px;
-      top: 119px;
+      right: 2px;
+      top: 142px;
       background-color: #ffd021;
       display: inline-block;
       width: 115px;
-      height: 34px;
-      line-height: 34px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
       font-size: 13px;
-      color: #fff;
+      color: #222;
       border-radius: 2px;
       text-decoration: none;
       &.prohibit {

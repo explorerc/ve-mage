@@ -107,7 +107,7 @@
                  confirmText='现在申请'
                  cancelText='知道了'
                  @handleClick="sqHandler">
-      <div style="text-align: center;padding: 20px 0;">
+      <div style="padding: 20px 0;">
         <span style="display: block;">您尚未开通产品试用资格</span>
         <span style="display: block;">请在线申请试用或联系客服400-888-9970</span>
       </div>
@@ -116,7 +116,7 @@
                  header='提示'
                  cancelText='知道了'
                  @handleClick="shenHeiShow=false">
-      <div style="text-align: center;padding: 20px 0;">
+      <div style="padding: 20px 0;">
         <span style="display: block;">您的申请正在审核中，请耐心等待</span>
         <span style="display: block;">如有问题请拨打400-888-9970客服热线</span>
       </div>
@@ -544,7 +544,7 @@ export default {
     }
     .v-register {
       font-size: 16px;
-      color: #666;
+      color: #999;
       margin-top: 15px;
       display: block;
     }
@@ -617,17 +617,19 @@ export default {
     .v-getcode {
       background-color: #ffd021;
       display: block;
-      width: 115px;
+      width: 125px;
       height: 34px;
       line-height: 34px;
       text-align: center;
-      font-size: 13px;
-      color: #fff;
+      /*font-size: 13px;*/
+      /*color: #fff;*/
       position: absolute;
       bottom: 22px;
       right: 0;
       border-radius: 2px;
       text-decoration: none;
+      color: #222;
+      font-size: 14px;
       &.prohibit {
         background-color: #e2e2e2;
         opacity: 0.8;
@@ -637,10 +639,10 @@ export default {
         }
       }
       &:hover {
-        background-color: #fdd43f;
+        background-color: #FDD43F;
       }
       &:active {
-        background-color: #eec11a;
+        background-color: #EEC11A;
       }
       .fr {
         margin-left: 6px;

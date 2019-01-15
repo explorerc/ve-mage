@@ -42,10 +42,13 @@
             </div>
             <div class="right">
               <span>微信扫码分享：</span>
-              <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+              <div class="img-bg">
+                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+              </div>
+
             </div>
               <div class="bottom">
-                <div class="label">页面地址:</div>
+                <div class="label">观看地址</div>
                 <com-input class="page-url"
                            :value="`${this.protocol+this.pcHOST}site/${this.tid}`"
                            disabled></com-input>
@@ -54,7 +57,7 @@
             </div>
           </div>
         </div>
-        <a @click="doReset"
+        <!-- <a @click="doReset"
            class="reset"
            v-if="!isPreview&&!ptid&&cType==='tp'">重置</a>
         <a @click="doSave"
@@ -62,94 +65,101 @@
            v-if="!isPreview&&!ptid&&cType==='tp'">下一步</a>
         <a @click="doSaveTDK"
            class="save"
-           v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a>
+           v-if="!isPreview&&!ptid&&cType==='tdk'">保存</a> -->
+    </div>
+    <div class="template-content"
+          v-show="cType==='tp'">
+      <component v-if="platform==='PC'"
+                  :editAble="!isPreview"
+                  v-model="data"
+                  v-bind:is="com"
+                  :shareData='share'></component>
+      <div v-if="platform==='H5'"
+            class="h5-wrap">
+            <div class="qrcode-box">
+            <img :src="qrcodeImg" class='qrcode' >
+            <p>请扫码预览</p>
+            </div>
+        <!-- <iframe :src="`${this.mobileHost}site/${this.tid}`"
+                frameborder="0"
+                class="h5-preview"></iframe> -->
       </div>
-      <div class="template-content"
-           v-show="cType==='tp'">
-        <component v-if="platform==='PC'"
-                   :editAble="!isPreview"
-                   v-model="data"
-                   v-bind:is="com"
-                   :shareData='share'></component>
-        <div v-if="platform==='H5'"
-             class="h5-wrap">
-             <div class="qrcode-box">
-              <img :src="qrcodeImg" class='qrcode' >
-              <p>请扫码预览</p>
-             </div>
-          <!-- <iframe :src="`${this.mobileHost}site/${this.tid}`"
-                  frameborder="0"
-                  class="h5-preview"></iframe> -->
-        </div>
-      </div>
-      <div class="template-content"
-           v-show="cType==='tdk'">
-        <div class="content from-box">
-          <div class="from-row">
-            <div class="from-title">
-              <i class="star">*</i>官网标题:</div>
-            <div class="from-content">
-              <com-input ref="siteRef"
-                         :value.sync="siteTitle"
-                         placeholder="请输入官网标题"
-                         :max-length="30"
-                         class='inp'
-                         :errorTips="siteTitleError"
-                         @change="canPaas=false"
-                         @focus='siteTitleError = ""'
-                         @blur="()=>{
-              if(this.siteTitle.length===0){
-                this.siteTitleError='必须填写官网标题'
-              }
-              }"></com-input>
-            </div>
-          </div>
-          <div class="from-row">
-            <div class="from-title">
-              <i class="star">*</i>推广关键字:</div>
-            <div class="from-content">
-              <com-input :value.sync="keyWords"
-                         placeholder="请输入推广关键字,以空格分割"
-                         :max-length="30"
-                         class='inp'
-                         :errorTips="keyWordsError"
-                         @change="canPaas=false"
-                         @focus='keyWordsError = ""'
-                         @blur="()=>{
-              if(this.keyWords.trim().length===0){
-                this.keyWordsError='必须填写推广关键字'
-              }
-              }"></com-input>
-            </div>
-          </div>
-          <div class="from-row">
-            <div class="from-title">收藏图标:</div>
-            <div class="from-content">
-              <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
-                         accept="png|jpg|bmp"
-                         :defaultImg="defaultImg"
-                         :fileSize="500"
-                         :errorMsg="uploadErrorMsg"
-                         @error="uploadError"
-                         @success="uploadImgSuccess"></ve-upload>
-            </div>
-          </div>
-          <div class="from-row">
-            <div class="from-title">网页描述:</div>
-            <div class="from-content editor-content"
-                 style='position:relative;'>
-              <com-input type="textarea"
-                         :value.sync="siteDes"
-                         :rows="5"
-                         placeholder="请输入网页描述信息"
-                         :max-length="60"
-                         class='inp'
-                         @change="canPaas=false"
-                         style="height: 100px;"></com-input>
-            </div>
+    </div>
+    <div class="template-content"
+          v-show="cType==='tdk'">
+      <div class="content from-box">
+        <div class="from-row">
+          <div class="from-title">
+            <i class="star">*</i>官网标题:</div>
+          <div class="from-content">
+            <com-input ref="siteRef"
+                        :value.sync="siteTitle"
+                        placeholder="请输入官网标题"
+                        :max-length="30"
+                        class='inp'
+                        :errorTips="siteTitleError"
+                        @change="canPaas=false"
+                        @focus='siteTitleError = ""'
+                        @blur="()=>{
+            if(this.siteTitle.length===0){
+              this.siteTitleError='必须填写官网标题'
+            }
+            }"></com-input>
           </div>
         </div>
+        <div class="from-row">
+          <div class="from-title">
+            <i class="star">*</i>推广关键字:</div>
+          <div class="from-content">
+            <com-input :value.sync="keyWords"
+                        placeholder="请输入推广关键字,以空格分割"
+                        :max-length="30"
+                        class='inp'
+                        :errorTips="keyWordsError"
+                        @change="canPaas=false"
+                        @focus='keyWordsError = ""'
+                        @blur="()=>{
+            if(this.keyWords.trim().length===0){
+              this.keyWordsError='必须填写推广关键字'
+            }
+            }"></com-input>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">收藏图标:</div>
+          <div class="from-content">
+            <ve-upload title="图片支持jpg、png、bmp格式，建议比例48*48，大小不超过500k"
+                        accept="png|jpg|bmp"
+                        :defaultImg="defaultImg"
+                        :fileSize="500"
+                        :errorMsg="uploadErrorMsg"
+                        @error="uploadError"
+                        @success="uploadImgSuccess"></ve-upload>
+          </div>
+        </div>
+        <div class="from-row">
+          <div class="from-title">网页描述:</div>
+          <div class="from-content editor-content"
+                style='position:relative;'>
+            <com-input type="textarea"
+                        :value.sync="siteDes"
+                        :rows="5"
+                        placeholder="请输入网页描述信息"
+                        :max-length="60"
+                        class='inp'
+                        @change="canPaas=false"
+                        style="height: 100px;"></com-input>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="bottom-fix" v-if='editStatus'>
+      <div class="btn-group">
+        <button @click="doReset" class='default-button' v-if="!isPreview&&!ptid&&cType==='tp'">重置</button>
+        <button @click="doSave" class='primary-button' v-if="!isPreview&&!ptid&&cType==='tp'">下一步</button>
+        <button @click="doSaveTDK" class='primary-button' v-if="!isPreview&&!ptid&&cType==='tdk'">保存</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -185,6 +195,7 @@ export default {
       keyWordsError: '',
       siteDes: '',
       icon: '',
+      editStatus: false,
       0: '',
       uploadErrorMsg: '',
       options: [
@@ -228,38 +239,48 @@ export default {
       canPaas: true
     }
   },
-  /* 路由守卫，离开当前页面之前被调用 */
-  beforeRouteLeave (to, from, next) {
-    if (this.canPaas) {
-      next(true)
-      return false
-    }
-    this.$messageBox({
-      header: '提示',
-      width: '400px',
-      content: '是否放弃当前编辑？',
-      cancelText: '否',
-      confirmText: '是',
-      handleClick: (e) => {
-        if (e.action === 'confirm') {
-          next(true)
-        } else {
-          next(false)
-        }
-      }
-    })
-  },
+  // /* 路由守卫，离开当前页面之前被调用 */
+  // beforeRouteLeave (to, from, next) {
+  //   if (this.canPaas) {
+  //     next(true)
+  //     return false
+  //   }
+  //   if (!this.isPreview) {
+  //     this.$messageBox({
+  //       header: '提示',
+  //       width: '400px',
+  //       content: '是否放弃当前编辑？',
+  //       cancelText: '否',
+  //       confirmText: '是',
+  //       handleClick: (e) => {
+  //         if (e.action === 'confirm') {
+  //           next(true)
+  //         } else {
+  //           next(false)
+  //         }
+  //       }
+  //     })
+  //   } else {
+  //     next(true)
+  //   }
+  // },
   mounted () {
     this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
     if (this.$route.path.indexOf('edit') === -1) {
       this.isPreview = true
     }
     this.init()
+    setTimeout(() => {
+      if (document.getElementsByClassName('isEdit').length) {
+        this.editStatus = true
+      }
+    }, 1000)
   },
   methods: {
     copyLink () {
       this.$toast({
-        content: '复制成功'
+        content: '复制成功',
+        position: 'center'
       })
       this.share.link.copyClipboard()
     },
@@ -506,6 +527,7 @@ export default {
 
 <style scoped lang="scss">
 @import 'assets/css/variable.scss';
+@import 'assets/css/mixin.scss';
 
 .el-select /deep/ {
   input {
@@ -580,7 +602,7 @@ export default {
       left: 20px;
       margin-top: -20px;
       padding: 0 15px;
-      // background-color: #ffda51;
+      background-color: #ffda51;
       line-height: 40px;
       border-radius: 4px;
       font-size: 18px;
@@ -607,7 +629,8 @@ export default {
       background: none;
       .el-input__inner {
         border: none !important;
-        background-color: #ffda51 !important;
+        background-color: transparent !important;
+        padding-left: 6px;
       }
     }
     .save {
@@ -644,8 +667,8 @@ export default {
       // border-left: 1px solid #999;
 
       .share-box {
-        width: 446px;
-        height: 290px;
+        /*width: 446px;*/
+        /*height: 290px;*/
         position: absolute;
         right: 0;
         top: 60px;
@@ -662,13 +685,14 @@ export default {
         }
         .share-content {
           padding: 0 25px 25px;
-          height: 250px;
+          /*height: 250px;*/
+          /*width: 520px;*/
           text-align: left;
           font-size: 14px;
           line-height: normal;
           .left {
             float: left;
-            width: 240px;
+            /*width: 302px;*/
             span {
               display: inline-block;
               margin-bottom: 10px;
@@ -679,42 +703,80 @@ export default {
               height: 56px;
               background-repeat: no-repeat;
               background-position: center center;
-              background-size: 48px 48px;
+              background-size: 50px 50px;
               text-align: center;
               line-height: 130px;
               cursor: pointer;
             }
             .share-sina {
               background-image: url('~assets/image/sina.png');
+              margin-right: 30px;
             }
             .share-qq {
               background-image: url('~assets/image/qq.png');
+              margin-right: 30px;
             }
             .share-qq-space {
               background-image: url('~assets/image/qq_space.png');
+              margin-right: 50px;
             }
           }
           .right {
-            margin-left: 240px;
+            margin-left: 286px;
             margin-bottom: 20px;
             span {
               display: inline-block;
               margin-bottom: 10px;
             }
+            .img-bg {
+              width: 160px;
+              height: 160px;
+              padding: 8px;
+              background-color: #f5f5f5;
+            }
             img {
               display: block;
-              width: 100px;
-              height: 100px;
+              width: 144px;
+              height: 144px;
             }
           }
           .bottom {
             text-align: left;
+            font-size: 0;
             .label {
+              display: inline-block;
               margin-bottom: 10px;
+              margin-right: 10px;
+              font-size: 14px;
             }
             .page-url {
-              width: 290px;
-              margin-right: 10px;
+              width: 310px;
+              font-size: 14px;
+              /deep/ {
+                input {
+                  height: 38px;
+                  border-right: none;
+                  background-color: transparent;
+                  padding-right: 20px;
+                  border-radius: 4px 0 0 4px;
+                  border-right: none;
+                }
+              }
+            }
+            .com-button {
+              border: none;
+              background-color: #ffd021;
+              opacity: 1;
+              color: #222;
+              z-index: 2;
+              border-radius: 0 4px 4px 0;
+              font-size: 14px;
+              &:hover {
+                background-color: #fdd43f;
+              }
+              &:active {
+                background-color: #eec11a;
+              }
             }
           }
         }
@@ -761,6 +823,27 @@ export default {
       margin: auto;
       border: 0;
       border-radius: 4px;
+    }
+  }
+  .bottom-fix {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 60px;
+    line-height: 60px;
+    border-top: 1px solid #e2e2e2;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
+    background-color: #fff;
+    .btn-group {
+      float: right;
+      button {
+        vertical-align: middle;
+      }
     }
   }
 }

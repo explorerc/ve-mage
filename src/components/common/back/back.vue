@@ -42,11 +42,12 @@ export default {
       color: #222 !important;
     }
     height: 30px;
-    line-height: 30px;
+    line-height: 28px;
     position: absolute;
     top: 50%;
-    right: 0%;
+    right: 0;
     transform: translateY(-50%);
+    padding: 0 20px;
   }
 }
 </style>

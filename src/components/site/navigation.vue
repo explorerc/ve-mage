@@ -3,7 +3,7 @@
     <div ref="target" class="navigation-content">
       <ul class="nav-group">
         <li class="nav-item" v-for="(item,index) in value.data.list" :key="index">
-          <a :style="{color:value.data.fontColor}" :target="item.type" :href="item.link | voidLink">{{item.text}}</a>
+          <a :style="{color:value.data.fontColor}" :target="item.type" :href="item.hrefType === '_sub' ? `https:${PC_HOST}subscribe/${id}` : item.link | voidLink" >{{item.text}}</a>
         </li>
       </ul>
     </div>
@@ -12,7 +12,7 @@
       <!-- <com-button class="add-btn" @click="addNav">添加导航</com-button> -->
       <div class="add-nav-box">
         <span class='add-nav' @click="addNav"><i class='iconfont icon-jiahao'></i>添加栏目</span>
-        <span class='tips'>最多可添加8个栏目</span>
+        <span class='tips' :class="{'error':outlen}">最多可添加8个栏目</span>
       </div>
       <ul class="nav-edit-group">
         <li v-for="(item,index) in value.data.list" :key="'a'+index">
@@ -20,17 +20,24 @@
           <div class="nav-content" :class="{active:active===index}">
             <div>
               <label>栏目名称</label>
-              <com-input placeholder="输入栏目名称" :value.sync="item.text" :max-length="10"></com-input>
+              <com-input placeholder="输入栏目名称" :value.sync="item.text" :max-length="8" :error-tips="item.text.length <= 0 ? '请输入栏目名称' : ''"></com-input>
             </div>
             <div>
               <label>跳转链接</label>
-              <com-input placeholder="输入跳转链接" :value.sync="item.link"></com-input>
-              <label class='tips'>链接需要附带http头协议</label>
+              <div class="radio-box">
+                <el-radio v-model="item.hrefType" label="_sub">活动引导页链接</el-radio>
+                <el-radio v-model="item.hrefType" label="_define">自定义链接</el-radio>
+              </div>
+              <com-input placeholder="输入跳转链接" :value="`https:${PC_HOST}subscribe/${id}`" :disabled="true" v-if="item.hrefType === '_sub'"></com-input>
+              <com-input placeholder="输入跳转链接" @focus="inpError = ''" @blur="inpBlur(item.link)" :error-tips="inpError" :value.sync="item.link" v-else></com-input>
+              <label class='tips ' :class="{'errorTips':inpError.length > 0}">链接需要附带http头协议</label>
             </div>
             <div>
               <span style="margin-right:20px;margin-left:5px;">打开方式</span>
-              <el-radio v-model="item.type" label="_blank">新窗口</el-radio>
-              <el-radio v-model="item.type" label="_self">当前窗口</el-radio>
+              <div class="radio-box" style='margin-top:10px;'>
+                <el-radio v-model="item.type" label="_blank">新窗口</el-radio>
+                <el-radio v-model="item.type" label="_self">当前窗口</el-radio>
+              </div>
             </div>
           </div>
         </li>
@@ -53,10 +60,22 @@ export default {
   },
   data () {
     return {
-      active: -1
+      outlen: false,
+      id: this.$route.params.id,
+      PC_HOST: process.env.PC_HOST,
+      active: -1,
+      inpError: ''
     }
   },
   methods: {
+    inpBlur (val) {
+      if (val.length <= 0) {
+        this.inpError = '请输入跳转链接'
+      } else {
+        const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
+        reg.test(val) ? this.inpError = '' : this.inpError = '请输入有效的链接以http://或https://开头'
+      }
+    },
     addNav () {
       let len = this.value.data.list.length
       if (len < 8) {
@@ -66,6 +85,9 @@ export default {
           link: ''
         })
         this.active = len
+        this.outlen = false
+      } else {
+        this.outlen = true
       }
     },
     titleClick (index) {
@@ -77,6 +99,7 @@ export default {
     },
     removeClick (index) {
       if (this.value.data.list.length > 1) {
+        this.outlen = false
         this.value.data.list.splice(index, 1)
       }
     }
@@ -116,6 +139,9 @@ export default {
         padding-top: 8px;
         color: $color-gray;
         font-size: 14px;
+        &.error {
+          color: $color-error;
+        }
       }
     }
     .add-nav {
@@ -210,6 +236,10 @@ export default {
           color: $color-gray;
           position: relative;
           bottom: 13px;
+          &.errorTips {
+            position: relative;
+            bottom: 0;
+          }
         }
       }
       .com-input {

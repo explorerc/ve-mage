@@ -11,7 +11,7 @@
     <div class="section3" >
       <com-panel :edit="editAble" v-model="data.section3Data.panel">
       </com-panel>
-      <com-block1 :edit="editAble" :max="3" v-model="data.section3Data.block1"></com-block1>
+      <com-block1 :edit="editAble" :max="3" :min='1' v-model="data.section3Data.block1"></com-block1>
     </div>
     <com-panel class="section4" :edit="editAble" v-model="data.section4Data.panel">
       <div class="bg"></div>
@@ -30,7 +30,7 @@
       <com-font :edit="editAble" v-model="data.section7Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section7Data.btn"></com-btn>
     </com-panel>
-    <div class="support">微吼直播提供技术支持</div>
+    <div class="support">微吼知客提供技术支持</div>
   </div>
 </template>
 
@@ -87,6 +87,9 @@ export default {
   .section1 {
     position: relative;
   }
+  .support {
+    margin-bottom: 60px;
+  }
 }
 .template1-container /deep/ {
   .panel-container {
@@ -111,10 +114,10 @@ export default {
       cursor: pointer;
       display: inline-block;
       background-color: #ffd021;
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
       background-image: url('~assets/image/site/edit.svg');
-      background-size: 32px;
+      background-size: 28px;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 2px;
@@ -245,7 +248,8 @@ export default {
       .block1-item {
         max-width: 1280px;
         margin: 0;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        display: block;
         &.left {
           .content {
             padding-right: 510px;
@@ -351,6 +355,13 @@ export default {
           position: absolute;
           bottom: 65px;
           left: 83px;
+          .com-button {
+            line-height: 13px;
+          }
+        }
+        &.top .content {
+          position: absolute;
+          top: 0;
         }
       }
     }
@@ -372,7 +383,7 @@ export default {
       width: 1124px;
       .block1-item {
         width: 100px;
-        height: 100px;
+        min-height: 100px;
         margin-right: 90px;
         margin-bottom: 30px;
         &:nth-of-type(6) {
@@ -388,9 +399,10 @@ export default {
   }
   .section7 {
     width: 100%;
-    height: 330px;
+    // height: 330px;
     .panel {
       text-align: center;
+      padding-bottom: 40px;
     }
     .font-content {
       margin-top: 70px;

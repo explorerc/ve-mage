@@ -11,6 +11,9 @@
       <!--<span class="msg-tip">关闭后，直播观看页将不显示开场内容</span>-->
       <!--<button class="primary-button fr" @click="goBack">返回</button>-->
     </div>
+    <div class="tips">
+      <i></i>注意：设置暖场视频后，观众在开播前30分钟内进入观看页面，可观看暖场视频
+    </div>
     <div class="mager-box border-box">
       <div class="from-box">
         <div class="from-row">
@@ -109,7 +112,8 @@ export default {
       uploadVideoErrorMsg: '', // 视频上传错误信息
       playMsg: '',
       canPass: true,
-      progress: 0
+      progress: 0,
+      isOverdue: false
     }
   },
   computed: {
@@ -177,6 +181,11 @@ export default {
       })
     },
     initPage () {
+      this.$get(activityService.GET_WEBINAR_INFO, {
+        id: this.$route.params.id
+      }).then((res) => {
+        this.isOverdue = res.data.validStatus === 'N'
+      })
       this.$get(activityService.GET_WRAM_INFO, {
         activityId: this.$route.params.id
       }).then((res) => {
@@ -262,8 +271,7 @@ export default {
     checkoutParams () {
       if (this.progress !== 0 && this.progress !== 100) {
         this.$toast({
-          content: '请等待视频上传完成后保存',
-          position: 'center'
+          content: '请等待视频上传完成后保存'
         })
         let st = setTimeout(() => {
           clearTimeout(st)
@@ -273,8 +281,7 @@ export default {
       }
       if (!this.warm.recordId) {
         this.$toast({
-          content: '请上传暖场视频',
-          position: 'center'
+          content: '请上传暖场视频'
         })
         let st = setTimeout(() => {
           clearTimeout(st)
@@ -380,6 +387,16 @@ export default {
       this.warm.playCover = ''
     },
     openSwitch (type) {
+      if (this.isOverdue) {
+        this.$messageBox({
+          header: '提示',
+          autoClose: 10,
+          confirmText: '知道了',
+          content: '活动已过期，无法对活动进行编辑'
+        })
+        this.isSwitch = !this.isSwitch
+        return false
+      }
       const data = {
         activityId: this.$route.params.id,
         submodule: 'WARMUP',
@@ -428,5 +445,26 @@ export default {
 .el-switch {
   position: relative;
   bottom: 4px;
+}
+.tips {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: rgba(233, 235, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(129, 140, 254, 1);
+  margin-bottom: 20px;
+  font-size: 14px;
+  i {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background: url('~assets/image/excal.svg') no-repeat;
+    position: relative;
+    top: 3px;
+    right: 4px;
+    background-size: cover;
+  }
 }
 </style>

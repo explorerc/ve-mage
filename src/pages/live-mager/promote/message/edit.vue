@@ -5,14 +5,14 @@
     <div class="edit-msg-page live-mager"
          @keydown="canPass = false">
       <div class="live-title">
-        <span class="title" v-if="inviteId">编辑短信通知</span>
-        <span class="title" v-else>创建短信通知</span>
+        <span class="title" v-if="inviteId">编辑短信邀约</span>
+        <span class="title" v-else>创建短信邀约</span>
         <com-back :class='"back-btn"'></com-back>
       </div>
       <div class='mager-box border-box'>
         <div class="from-box">
           <div class="from-row">
-            <div class="from-title"><i class="star">*</i>通知标题：</div>
+            <div class="from-title"><i class="star">*</i>邀约标题：</div>
             <div class="from-content">
               <com-input :value.sync="titleValue"
                          placeholder="请输入标题"
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="from-row">
-            <div class="from-title">接收人：</div>
+            <div class="from-title"><i class="star">*</i>接收人：</div>
             <div class="from-content">
               <el-button class='default-button select-receiver'
                          @click='chooseReceiver'>选择收信人</el-button>
@@ -51,6 +51,7 @@
                      @click="delTagPerson(idx)"></i>
                 </span>
               </transition-group>
+              <div class="error-msg-bottom" v-if="errorData.sendPersonError">{{errorData.sendPersonError}}</div>
             </div>
           </div>
           <div class="from-row">
@@ -63,6 +64,9 @@
                          placeholder="请输入短信内容"
                          :max-length="100"
                          :error-tips='errorData.msgError'></com-input>
+                         <div class="href-box" :class="{'siteClose':!siteOpen}">
+                          <span class='add-href' @click='addHref(`https:${PC_HOST}site/${activitId}?refer=2`)'>添加活动官网链接</span><span class='add-href' @click='addHref(`https:${PC_HOST}subscribe/${activitId}?refer=2`)'>添加活动引导页链接</span>
+                         </div>
             </div>
           </div>
           <div class="from-row">
@@ -95,16 +99,19 @@
           </div>
           <div class="from-row"
                v-if='pickDate'>
-            <div class="from-title">选择时间：</div>
+            <div class="from-title"><i class="star">*</i>选择时间：</div>
             <div class="from-content">
               <el-date-picker v-model="date"
                               :editable="false"
-                              format='yyyy-MM-dd HH:mm:ss'
-                              value-format="yyyy-MM-dd HH:mm:ss"
+                              format='yyyy-MM-dd HH:mm'
+                              value-format="yyyy-MM-dd HH:mm"
                               type="datetime"
                               placeholder="选择日期时间"
-                              :picker-options="pickerOptions">
+                              :default-value="defaultValue"
+                              :picker-options="pickerOptions"
+                              @focus='dateFocus()'>
               </el-date-picker>
+              <div class="error-msg-bottom" v-if="errorData.awaitTimeError">{{errorData.awaitTimeError}}</div>
             </div>
           </div>
           <!-- <div class="from-row">
@@ -124,7 +131,7 @@
           <el-button class='default-button'
                      @click="test">测试发送</el-button>
           <el-button class='primary-button'
-                     @click="save" :disabled='saveDisabled'>保存</el-button>
+                     @click="save" :disabled='saveDisabled' v-html="sendSetting === 'SEND'? '立即发送' : '确定'"></el-button>
         </div>
       </div>
       <!-- 选择收件人 -->
@@ -137,10 +144,11 @@
               :msgTag="msgTag"
               :type="'SMS'"></com-test>
   </div>
-  </div>
 </template>
 
 <script>
+import { formatDate } from 'src/assets/js/date'
+import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
 import noticeService from 'src/api/notice-service'
 import activityService from 'src/api/activity-service'
@@ -160,6 +168,7 @@ export default {
       titleValue: '',
       groupIdx: 0,
       tagIdx: 0,
+      PC_HOST: process.env.PC_HOST,
       tplOptions: [{
         value: 1,
         label: '活动邀请'
@@ -188,6 +197,7 @@ export default {
           return time.getTime() < Date.now() - 8.64e7
         }
       },
+      defaultValue: formatDate(new Date(new Date().getTime() + 1800000), 'yyyy-MM-dd hh:mm'),
       loading: false,
       searchPerson: '',
       groupList: [],
@@ -201,7 +211,9 @@ export default {
       errorData: {
         titleError: '',
         msgError: '',
-        tagError: ''
+        tagError: '',
+        sendPersonError: '',
+        awaitTimeError: ''
       },
       isValided: false,
       canPass: true,
@@ -211,13 +223,15 @@ export default {
       changed: 0,
       countBalance: 0,
       sendBalance: 0,
-      clicked: false
+      clicked: false,
+      siteOpen: false
     }
   },
   created () {
     this.getLimit()
     this.queryGroupList()
     this.queryTagList()
+    this.initSite()
     EventBus.$emit('breads', [{
       title: '活动管理'
     }, {
@@ -227,10 +241,10 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activitId}`
     }, {
-      title: '短信通知',
+      title: '短信邀约',
       url: `/liveMager/promote/msg/list/${this.activitId}`
     }, {
-      title: this.inviteId ? '编辑短信通知' : '新建短信通知'
+      title: this.inviteId ? '编辑短信邀约' : '新建短信邀约'
     }])
     if (this.inviteId) {
       this.$get(noticeService.GET_QUERY_MSG, {
@@ -287,8 +301,7 @@ export default {
       this.$config({handlers: true}).$post(noticeService.POST_SAVE_MSG, data).then((res) => {
         // console.log(res)
         this.$toast({
-          content: '保存成功',
-          position: 'center'
+          content: this.sendSetting === 'SEND' ? '发送成功' : '保存成功'
         })
         // 跳转到列表页面
         this.canPass = true
@@ -383,6 +396,7 @@ export default {
       this.selectedGroupListStr = str.substring(0, str.length - 1)
       this.selectedGroupList = arr
       this.groupIdStr = idStr
+      this.errorData.sendPersonError = ''
     },
     selectedTagListfn (arr, str, idStr) {
       this.selectedTagListStr = str.substring(0, str.length - 1)
@@ -440,13 +454,46 @@ export default {
       this.errorData.titleError = this.titleValue.length ? '' : '请输入通知标题'
       this.errorData.msgError = this.msgContent.length ? '' : '请输入短信内容'
       this.errorData.tagError = this.msgTag.length ? '' : '请输入短信标签'
-      if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
+      this.errorData.sendPersonError = this.groupIdStr ? '' : '请选择收信人'
+      if (this.sendSetting.toLowerCase() === 'await' && !this.date) {
+        this.errorData.awaitTimeError = '请选择定时发送时间'
+      }
+      if (this.errorData.sendPersonError) {
+        this.isValided = false
+        return false
+      } else if (this.sendSetting.toLowerCase() === 'await' && !this.date && this.errorData.awaitTimeError) {
+        this.isValided = false
+        return false
+      } else if (this.titleValue.length && this.msgTag.length && this.msgContent.length) {
         this.isValided = true
         return true
       } else {
         this.isValided = false
         return false
       }
+    },
+    addHref (url) {
+      this.$post(noticeService.GET_SHOR_URL, {
+        url: url
+      }).then((res) => {
+        console.log(res)
+        this.msgContent += ' ' + res.data.shortUrl + ' '
+      })
+    },
+    initSite () {
+      this.$get(brandService.GET_SITE_DATA, {
+        activityId: this.$route.params.id
+      }).then(res => {
+        if (res.data.enabled === 'Y') {
+          this.siteOpen = true
+        } else {
+          this.siteOpen = false
+        }
+      })
+    },
+    dateFocus () {
+      this.date = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
+      this.errorData.awaitTimeError = ''
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -474,7 +521,12 @@ export default {
     sendSetting: {
       handler (newValue) {
         this.canPass = true
-        newValue === 'AWAIT' ? this.pickDate = true : this.pickDate = false
+        if (newValue === 'AWAIT') {
+          this.pickDate = true
+        } else {
+          this.pickDate = false
+          this.errorData.awaitTimeError = ''
+        }
       }
     }
     // groupList: {
@@ -543,8 +595,49 @@ export default {
 
 .edit-msg-page /deep/ {
   .com-input .limit.area {
-    bottom: 7px;
+    bottom: 37px;
     right: 7px;
+  }
+  .error-msg-bottom {
+    position: absolute;
+    bottom: -16px;
+    left: 10px;
+    color: #fc5659;
+  }
+  .href-box {
+    position: absolute;
+    bottom: 4px;
+    left: 1px;
+  }
+  .add-href {
+    display: inline-block;
+    width: 219px;
+    height: 30px;
+    line-height: 30px;
+    cursor: pointer;
+    background: rgba(249, 249, 249, 1);
+    border-radius: 0px 0px 4px 4px;
+    border: 1px solid rgba(226, 226, 226, 1);
+    border-right: none;
+    border-bottom: none;
+    &:nth-of-type(1) {
+      border-left: none;
+    }
+    text-align: center;
+    &:hover {
+      color: #4b5afe;
+    }
+  }
+  .href-box.siteClose {
+    .add-href {
+      &:nth-of-type(1) {
+        display: none;
+      }
+      &:nth-of-type(2) {
+        width: 438px;
+        border-left: none;
+      }
+    }
   }
   // min-height: 730px;
   position: relative;
@@ -671,7 +764,7 @@ export default {
   width: 440px;
 }
 .msg-content {
-  height: 90px;
+  height: 180px;
 }
 .modal-box {
   width: 700px;

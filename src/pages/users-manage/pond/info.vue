@@ -180,7 +180,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.first_visited_at?user.first_visited_at.substring(0,11):'-'}}
+                    {{user.first_visited_at?user.first_visited_at.substring(0,11).replace(/-/g,'.'):'-'}}
                   </p>
                   <p class="v-title">
                     首次参会
@@ -188,7 +188,7 @@
                 </li>
                 <li>
                   <p class="v-data">
-                    {{user.last_visited_at?user.last_visited_at.substring(0,11):'-'}}
+                    {{user.last_visited_at?user.last_visited_at.substring(0,11).replace(/-/g,'.'):'-'}}
                   </p>
                   <p class="v-title">
                     最近参会
@@ -440,13 +440,11 @@ export default {
         this.user.group_list.push(addData)
         this.showAddgroup = false
         this.$toast({
-          'content': '导入成功',
-          'position': 'center'
+          'content': '导入成功'
         })
       }).catch(err => {
         this.$toast({
-          'content': err.msg,
-          'position': 'center'
+          'content': err.msg
         })
       })
     }
@@ -473,6 +471,8 @@ export default {
   }
   .pond-title {
     // border-bottom: 1px solid $color-bd;
+    margin-top: 30px;
+    margin-bottom: 5px;
     line-height: 60px;
     span.title {
       display: inline-block;
@@ -616,7 +616,7 @@ export default {
             &::after {
               display: block;
               position: absolute;
-              content: "";
+              content: '';
               height: 0px;
               width: 0px;
               top: -5px;
@@ -654,7 +654,7 @@ export default {
           font-size: 14px;
           .v-title {
             color: #888;
-            line-height: 20px;
+            line-height: 34px;
             display: inline-block;
             vertical-align: top;
           }
@@ -662,7 +662,7 @@ export default {
             color: #222;
             word-break: break-all;
             max-width: 165px;
-            line-height: 20px;
+            line-height: 34px;
             display: inline-block;
             vertical-align: top;
             &:hover {
@@ -710,7 +710,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: "";
+                content: '';
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -725,7 +725,7 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #EFEFEF;
+            background-color: #efefef;
             border-radius: 50px;
             overflow: hidden;
             margin: 15px 5px 0 0;
@@ -745,7 +745,7 @@ export default {
           width: 100%;
           .v-item {
             position: relative;
-            height: 50px;
+            /*height: 50px;*/
             &:hover {
               .v-description {
                 display: block;
@@ -767,7 +767,7 @@ export default {
               &::after {
                 display: block;
                 position: absolute;
-                content: "";
+                content: '';
                 height: 0px;
                 width: 0px;
                 top: 22px;
@@ -782,10 +782,10 @@ export default {
           span {
             display: inline-block;
             padding: 5px 12px;
-            background-color: #F0F1FE;
+            background-color: #f0f1fe;
             border-radius: 50px;
             overflow: hidden;
-            margin: 15px 5px 0 0;
+            margin: 10px 5px 0 0;
             word-break: break-all;
             &:last-child {
               margin-right: 0;
@@ -884,9 +884,14 @@ export default {
                   text-align: center;
                   margin-left: 20px;
                   &:hover {
-                    border-color: #888;
-                    background-color: #888888;
-                    color: #fff;
+                    border-color: #FDD43F;
+                    background-color: #FDD43F;
+                    color: #222222;
+                  }
+                  &:active {
+                    border-color: #EEC11A;
+                    background-color: #EEC11A;
+                    color: #222222;
                   }
                 }
                 .iconfont {
@@ -946,11 +951,14 @@ export default {
     }
     .v-step {
       position: relative;
-      padding: 20px 40px;
+      padding: 15px 40px 0;
       &:last-child {
         .v-border {
           display: none;
         }
+      }
+      &:first-child {
+        padding: 20px 40px 0;
       }
       .v-content {
         width: 350px;
@@ -959,6 +967,7 @@ export default {
         border-radius: 4px;
         .v-content-time {
           color: #888;
+          margin-bottom: 5px;
         }
       }
       .iconfont {

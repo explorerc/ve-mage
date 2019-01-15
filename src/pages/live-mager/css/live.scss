@@ -42,8 +42,8 @@
     position: relative;
     //border-bottom: 1px solid $color-bd;
     line-height: 60px;
-    padding-top: 10px;
-    padding-bottom: 5px;
+    margin-top: 30px;
+    margin-bottom: 5px;
 
     span.title {
       display: inline-block;
@@ -90,14 +90,15 @@
       @include primary-button();
       height: 30px;
       line-height: 30px;
+      padding: 0 20px;
     }
 
     .el-select:nth-child(1) {
-      width: 88px;
+      width: 91px;
     }
 
     .el-select:nth-child(2) {
-      width: 174px;
+      width: 147px;
     }
 
     .search-com /deep/ {
@@ -250,6 +251,7 @@
     padding: 0 20px 50px 20px;
     background-color: #fff;
     border-radius: 4px;
+    min-height: 550px;
 
     .play-back-cover {
       position: relative;

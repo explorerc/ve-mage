@@ -1,14 +1,14 @@
 <template>
   <div class="content live-mager auto-page">
     <div class="live-title">
-      <span class="title">自动化通知</span>
+      <span class="title">自动化邀约</span>
       <el-switch v-model="isOpen"
                  inactive-color="#DEE1FF"
                  :width="32"
                  active-color="#FFD021"
                  @change='openSwitch'>
       </el-switch>
-      <!--<span class='tips'>开启自动化通知，自动通知您的观众，提升活动服务体验</span>-->
+      <!--<span class='tips'>开启自动化邀约，自动通知您的观众，提升活动服务体验</span>-->
       <com-back></com-back>
     </div>
     <div class='preview mager-box border-box clearfix switch-cover'  :class='{"close":!isOpen}'>
@@ -408,11 +408,12 @@
     <com-test v-if='testModal'
               :imgUrl="qrImgurl"
               @closeTest='closeTest()'
+              @successTest='closeTest()'
               :type="testType"
               :isAuto='true'
               :noticeId="noticeTaskId"></com-test>
 
-    <!-- <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信通知？" center class='del-modal'>
+    <!-- <com-dialog :visible.sync="delConfirm" header="提示" content="您确定要删除此条自动化短信邀约？" center class='del-modal'>
       <div class="del-footer" slot="footer">
         <com-button @click='delConfirm = false'>取消</com-button>
         <com-button type="primary" @click="deleteTask">确定</com-button>
@@ -597,7 +598,7 @@ export default {
       title: '活动详情',
       url: `/liveMager/detail/${this.activityId}`
     }, {
-      title: '自动化通知'
+      title: '自动化邀约'
     }])
   },
   methods: {
@@ -791,8 +792,7 @@ export default {
       }
       this.$config({ handlers: true }).$get(noticeService.POST_AUTO_SAVE_CONFIG, data).then((res) => {
         this.$toast({
-          content: '设置成功',
-          position: 'center'
+          content: '设置成功'
         })
         if (type === 'hour') {
           this.hourValue = this.selhourValue
@@ -833,15 +833,15 @@ export default {
         // })
       }).catch((res) => {
         console.log(res)
-        if (res.code === 60706) {
-          this.isOpen = !type
-          this.$messageBox({
-            header: '提示',
-            content: res.msg,
-            autoClose: 10,
-            confirmText: '知道了'
-          })
-        }
+        // if (res.code === 60706) {
+        this.isOpen = !type
+        this.$messageBox({
+          header: '提示',
+          content: res.msg,
+          autoClose: 10,
+          confirmText: '知道了'
+        })
+        // }
       })
       // http.detailSwitch(data).then((res) => {
       //   if (res.code === 200) {
@@ -987,7 +987,7 @@ export default {
     .time-line {
       position: relative;
       width: 40px;
-      height: 870px;
+      height: 920px;
       margin-right: 15px;
       &:before {
         content: '';
@@ -1147,6 +1147,7 @@ export default {
       height: 40px;
       line-height: 40px;
       padding: 0px 18px;
+      border-radius: 4px 4px 0 0;
       background-color: $color-default;
       position: relative;
       .close {

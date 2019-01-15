@@ -4,6 +4,9 @@
       观看页
       <com-back></com-back>
     </p>
+    <div class="tips">
+      <i></i>设置观看页的页面样式、LOGO展示以及分享至微信后的样式展现
+    </div>
     <div class="v-content">
       <com-tabs :value.sync="tabValue">
         <com-tab label="品牌"
@@ -30,15 +33,16 @@
                   logo图片：
                 </p>
                 <ve-upload title="建议图片不小于140*50<br/>支持jpg、jpeg、png格式，文件大小不超过2M"
-                           accept="png|jpg|jpeg"
+                           accept="png|jpg|jpeg|gif"
                            :defaultImg="defaultLogoImg"
                            :fileSize="2048"
+                           bg-size="contain"
                            :errorMsg="uploadLogoErrorMsg"
                            @error="uploadLogoError"
                            @success="uploadLogoSuccess"></ve-upload>
-                <p class="v-notes">
-                  注：logo图片，只对PC页面生效
-                </p>
+                <!-- <p class="v-notes">
+                  注：背景图片，只对电脑页面生效
+                </p> -->
               </div>
             </div>
             <div class="pull-right-menu">
@@ -46,32 +50,34 @@
               <span :class="{active:!isPc}" @click="isPc=false">手机预览</span>
             </div>
             <div class="v-show pull-right" v-if="isPc">
-                <div class="v-pc"
-                     :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
-                  <div class="clearfix"
-                       style="padding-left: 30px;position:relative;">
-                    <template v-if="defaultLogoImg">
-                      <img :src="defaultLogoImg"
-                           alt="logo"
-                           class="v-logo pull-left">
-                    </template>
-                    <div class="pull-left">
-                      <p class="v-live-title">
-                        {{activityTitle}}
-                      </p>
-                      <img src="../../assets/image/mac-icon@2x.png"
-                           alt=""
-                           class="v-pc-icon">
-                    </div>
-                  </div>
-                  <div class="v-show-content">
+              <div class="v-pc"
+                   :style="{ backgroundImage: 'url(' + defaultBgImg + ')'}">
+                <div class="clearfix"
+                     style="padding-left: 30px;position:relative;">
+                  <template v-if="defaultLogoImg">
+                    <img :src="defaultLogoImg" alt="logo" class="v-logo pull-left">
+                  </template>
+                  <template v-else>
+                    <img src="../../assets/image/logo_pc.png" alt="logo" class="v-logo pull-left">
+                  </template>
+                  <div class="pull-left">
+                    <p class="v-live-title">
+                      {{activityTitle}}
+                    </p>
+                    <img src="../../assets/image/mac-icon@2x.png" alt="" class="v-pc-icon">
                   </div>
                 </div>
-                <p class="v-preview">品牌预览</p>
+                <div class="v-show-content">
+                </div>
+              </div>
+              <p class="v-preview">品牌预览</p>
             </div>
             <div class="v-show pull-right phone-mode" v-else>
               <div class="h5-header">
-                <img v-if="defaultLogoImg" :src="defaultLogoImg" class="h5-logo">
+                <div class="logo-box">
+                  <img :src="defaultLogoImg" class="h5-logo" v-if="defaultLogoImg">
+                  <img src="../../assets/image/logo_pc.png" class="h5-logo" v-else>
+                </div>
                 <div class="h5-header-content">
                   <p>{{activityTitle}}</p>
                   <p>
@@ -110,7 +116,7 @@
                 </p>
                 <div class="v-info pull-left">
                   <com-input :value.sync="shareTitle"
-                             placeholder="标题"
+                             placeholder="请输入分享标题"
                              :max-length="30"
                              :errorTips="errorTips"
                              @focus="shareTitleFocus"></com-input>
@@ -137,10 +143,11 @@
                   应用页面：
                 </p>
                 <p class="v-info pull-left"
-                   style="padding-top: 6px;">
-                  <el-checkbox v-model="isShowWatch">直播观看页</el-checkbox>
+                   style="position:relative;">
+                  <el-checkbox v-model="isShowWatch">活动观看页</el-checkbox>
                   <el-checkbox v-model="isShowOfficialWebsite">活动官网</el-checkbox>
-                  <el-checkbox v-model="isShowGuided">直播引导页</el-checkbox>
+                  <el-checkbox v-model="isShowGuided">活动引导页</el-checkbox>
+                  <ve-tips :tip="'选择分享设置应用的页面，其中包括活动观看页、活动官网、活动引导页三个页面。'" :tipType="'html'" ></ve-tips>
                 </p>
               </div>
             </div>
@@ -161,9 +168,9 @@
                     </template>
                   </div>
                 </div>
-                <img :src="avatarImg"
+                <!-- <img :src="avatarImg"
                      alt="头像"
-                     class="v-avatar pull-left">
+                     class="v-avatar pull-left"> -->
               </div>
               <p class="v-preview">预览</p>
               <!-- <div class="v-title">
@@ -191,11 +198,12 @@
   </div>
 </template>
 <script>
+import veTips from 'src/components/ve-msg-tips'
 import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
 import userService from 'src/api/user-service'
 import activityService from 'src/api/activity-service'
-import { mapMutations, mapState } from 'vuex'
+import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'
 import EventBus from 'src/utils/eventBus'
 
@@ -224,7 +232,7 @@ export default {
     }
   },
   components: {
-    VeUpload
+    VeUpload, veTips
   },
   created () {
     this.activityId = this.$route.params.id
@@ -299,9 +307,9 @@ export default {
     }
   },
   mounted () {
+    document.querySelector('.main-container').scrollTop = 0
   },
-  watch: {
-  },
+  watch: {},
   /* 路由守卫，离开当前页面之前被调用 */
   beforeRouteLeave (to, from, next) {
     if (this.canPass) {
@@ -357,7 +365,7 @@ export default {
         'backgroundUrl': this.bgImgUrl,
         'logoUrl': this.logoImgUrl
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_BRAND, data).then(res => {
         this.canPass = true
         // this.$toast({
         //   content: '保存成功',
@@ -398,11 +406,12 @@ export default {
       if (this.isShowGuided) {
         data.page.push('guide_route')
       }
-      this.$config({ handlers: true }).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
+      this.$config({handlers: true}).$post(brandService.POST_SET_LIVE_SHARE, data).then(res => {
         this.canPass = true
-        this.$toast({
-          content: '保存成功'
-        })
+        // this.$toast({
+        //   content: '保存成功'
+        // })
+        this.$router.push(`/liveMager/detail/${this.activityId}`)
       }).catch((err) => {
         this.$messageBox({
           header: '提示',
@@ -425,6 +434,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '~assets/css/mixin.scss';
+
 .set-live-watch-container /deep/ {
   /* 设备宽度大于 1600 */
   @media all and (min-width: 1600px) {
@@ -438,14 +448,14 @@ export default {
   .v-title {
     position: relative;
     line-height: 60px;
-    margin: 12px 0 7px;
+    margin: 32px 0 7px;
     font-size: 24px;
     color: #222;
   }
   .v-content {
     /*margin-top: 26px;*/
     width: 100%;
-    min-height: 835px;
+    /*min-height: 835px;*/
     background-color: #fff;
     border: 1px solid #e2e2e2;
     border-radius: 4px;
@@ -475,11 +485,12 @@ export default {
           width: 100px;
           padding-top: 6px;
           margin-right: 17px;
+          text-align: right;
         }
         .v-notes {
           font-size: 12px;
           color: #888888;
-          padding-left: 215px;
+          padding-left: 119px;
           margin: 10px auto 0;
         }
       }
@@ -512,7 +523,7 @@ export default {
     .primary-button {
       width: 200px;
       display: block;
-      margin: 80px auto 40px;
+      margin: 80px auto 55px;
     }
   }
   .pull-left {
@@ -520,7 +531,7 @@ export default {
   }
   .pull-right {
     float: right;
-    &.phone-mode{
+    &.phone-mode {
       position: relative;
       width: 250px;
       height: 499px;
@@ -528,67 +539,83 @@ export default {
       background-size: cover;
       background-position: center center;
       margin-right: 70px;
-      .h5-header{
+      .h5-header {
         position: absolute;
-        top: 64px;
+        top: 71px;
         left: 20px;
         height: 30px;
         width: 214px;
-        img.h5-logo{
-          height: 24px;
-          max-width: 100px;
+        .logo-box {
+          height: 100%;
+          float: left;
+          position: relative;
+          width: 50px;
         }
-        .h5-header-content{
+        img.h5-logo {
+          max-width: 50px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        .h5-header-content {
           display: inline-block;
           width: 60%;
           font-size: 14px;
-          transform: scale(0.5) translateX(-60px);
-          p:nth-child(1){
+          transform: scale(0.5) translate(-56px, -13px);
+          p:nth-child(1) {
             font-weight: bold;
+            width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: 5px;
           }
-          p:nth-child(2){
-            span:nth-child(1){
+          p:nth-child(2) {
+            span:nth-child(1) {
               display: inline-block;
               padding: 4px 10px;
               margin-right: 10px;
               border-radius: 16px;
               color: #fff;
               font-size: 12px;
-              background-color: rgba(0, 0, 0, .7);
+              background-color: rgba(0, 0, 0, 0.7);
               line-height: 18px;
             }
-            span:nth-child(2){
+            span:nth-child(2) {
               color: #666;
               font-size: 12px;
             }
           }
         }
       }
-      .h5-logo-img{
+      .h5-logo-img {
         width: 229px;
-        height: 410px;
+        height: 409px;
         margin-top: 14px;
         margin-left: 12px;
-        background-image: url('~assets/image/h5-logo@2x.jpg');
+        background-image: url('~assets/image/h5-logo1@2x.jpg');
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 100% 100%;
         background-position: center;
+        border-radius: 8px;
       }
     }
   }
-  .pull-right-menu{
+  .pull-right-menu {
     float: left;
     width: 40%;
     margin-left: 40px;
     margin-bottom: 20px;
-    span{
+    span {
       display: inline-block;
       line-height: 30px;
       padding: 0 20px;
       font-size: 14px;
-      &:hover,&.active{
+      &:hover,
+      &.active {
         cursor: pointer;
-        color: #2878FF;
+        color: #2878ff;
       }
     }
   }
@@ -602,13 +629,13 @@ export default {
     position: relative;
     .v-logo {
       display: block;
-      width: 27px;
-      height: 13px;
+      max-width: 60px;
+      height: 17px;
       margin-right: 6px;
       position: relative;
-      top: -50%;
       left: 0;
-      transform: translateY(50%);
+      top: 2px;
+      // transform: translateY(50%);
     }
     .v-live-title {
       font-size: 16px;
@@ -616,7 +643,8 @@ export default {
       transform-origin: top left;
       color: #333;
       max-height: 12px;
-      width: 247px;
+      width: 300px;
+      white-space: nowrap;
     }
     .v-pc-icon {
       display: block;
@@ -625,7 +653,7 @@ export default {
     .v-pc {
       width: 438px;
       height: 250px;
-      background-position: center;
+      background-position: 50%;
       background-size: cover;
       padding-top: 10px;
       margin-left: 12px;
@@ -633,8 +661,8 @@ export default {
         width: 376px;
         height: 199px;
         margin: 6px auto 0;
-        background: url('~assets/image/viewarea@2x.jpg');
-        background-size: cover;
+        background-image: url('~assets/image/viewarea1@2x.png');
+        background-size: 100% 100%;
         position: relative;
       }
     }
@@ -669,35 +697,35 @@ export default {
         height: 110px;
       }
       .limit {
-        right: 8px;
-        bottom: 8px;
+        right: 9px;
+        bottom: 11px;
       }
     }
     .v-show {
       width: 250px;
       height: 499px;
-      background: url('~assets/image/phone-wechat.png');
+      background: url('~assets/image/phone_chat.png');
       background-size: cover;
       background-position: center center;
       margin-left: 33px;
       position: relative;
       .v-share-friend {
         width: 173px;
-        height: 100px;
+        height: 84px;
         border: 1px solid #dadada;
         border-radius: 3px 3px 1px 1px;
         background-color: #fff;
-        margin: 65px 3px 0 25px;
+        margin: 75px 3px 0 25px;
         .v-share-title {
           text-align: left;
           width: 302px;
-          font-size: 22px;
+          font-size: 20px;
           min-height: 32px;
           transform: scale(0.5);
           -webkit-transform-origin: top left;
           margin: 5px 0 0 5px;
           word-break: break-all;
-          line-height: 22px;
+          // line-height: 22px;
         }
         .v-show-content {
           position: relative;
@@ -763,6 +791,39 @@ export default {
     color: #fc5659;
     padding: 4px 10px 0 0;
     vertical-align: middle;
+  }
+  .msg-tip-box {
+    top: 4px;
+    left: 9px;
+    /deep/ {
+      span {
+        position: absolute;
+        width: 400px;
+        margin-top: -12px;
+        left: 30px;
+      }
+    }
+  }
+}
+.tips {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: rgba(233, 235, 255, 1);
+  border-radius: 4px;
+  border: 1px solid rgba(129, 140, 254, 1);
+  margin-bottom: 20px;
+  font-size: 14px;
+  i {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    background: url('~assets/image/excal.svg') no-repeat;
+    position: relative;
+    top: 3px;
+    right: 4px;
+    background-size: cover;
   }
 }
 </style>

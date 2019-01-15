@@ -9,9 +9,21 @@
       <span>步骤1 邮件内容</span>
     </header>
     <div class="border-box">
+      <div class="add-email-link">
+        【进入活动】按钮链接：
+        <el-radio v-if="siteEnabled=='Y'" v-model="urlType" label="WEB">活动官网</el-radio>
+        <el-radio v-model="urlType" label="GUIDE">活动引导页</el-radio>
+        <div class="tip-box">
+          <i>?</i>
+          <div class="msg">
+            <p>1.收件人在点击【进入活动】按钮后，可跳转至活动官网或活动引导页。实现向指定页面引流。</p>
+            <p>2.如果您没有开启活动官网功能，在此处只显示活动引导页选项。</p>
+          </div>
+        </div>
+      </div>
       <div class="edit-content clearfix">
         <div class="edit-content-box fl">
-          <ve-html5-editer v-model="email.content"></ve-html5-editer>
+          <ve-html5-editer v-model="email.content" :img-edit="true" :pull-msg="isPull"></ve-html5-editer>
         </div>
         <div class="edit-content-temp fr">
           <div class="temp-title">
@@ -56,7 +68,7 @@
     </message-box>
     <div class="email-bottom">
       <button class="default-button fl"
-              @click="clickSendTestEmail">发送测试邮件
+              @click="clickSendTestEmail" style="width: auto;">发送测试邮件
       </button>
       <button class="primary-button fr"
               @click="nextEmail">下一步
@@ -70,8 +82,10 @@
 </template>
 
 <script>
+  import veMsgTips from 'src/components/ve-msg-tips'
   import activityService from 'src/api/activity-service'
   import VeHtml5Editer from 'src/components/ve-html5-editer'
+  import emailTempList from './email-template/email-temp-list'
   import {
     mapState,
     mapMutations
@@ -80,6 +94,7 @@
 
   export default {
     name: 'edit-step-one',
+    components: {VeHtml5Editer, veMsgTips},
     data () {
       return {
         testEmailShow: false,
@@ -88,6 +103,8 @@
         emailError: '',
         emailList: [],
         isHistory: false,
+        urlType: '',
+        isPull: false,
         email: {
           activityId: '',
           emailInviteId: '',
@@ -95,15 +112,14 @@
           title: '',
           content: '',
           desc: '',
+          urlType: '',
           senderName: ''
         },
         isDisabled: false,
         canPass: true,
+        siteEnabled: false,
         PC_HOST: location.protocol + process.env.PC_HOST
       }
-    },
-    components: {
-      VeHtml5Editer
     },
     computed: {
       ...mapState('liveMager', {
@@ -152,6 +168,10 @@
         },
         immediate: true
       },
+      urlType (newVal) {
+        this.email.urlType = newVal
+        this.dealWithEmailUrl()
+      },
       testEmailAddress () {
         this.emailError = ''
       }
@@ -163,8 +183,15 @@
         storeEmailInfo: types.EMAIL_INFO
       }),
       initPage () {
+        this.querySite()
         if (this.isHistory && this.emailInfo.content) {
-          this.email = this.emailInfo
+          // 异步执行，触发组件props更新
+          let st = setTimeout(() => {
+            clearTimeout(st)
+            this.email = {
+              ...this.emailInfo
+            }
+          }, 0)
           return
         }
         const queryId = this.$route.params.id
@@ -174,14 +201,10 @@
         }
         const emailId = this.$route.query.email
         if (emailId) { // 编辑
-          // 如果vuex可以取到值就return
-          if (this.email.emailInviteId) {
-            this.queryEmailTemp()
-            return
-          }
           this.email.emailInviteId = emailId
           this.queryEmailInfo()
         } else { // 新增
+          this.urlType = 'GUIDE'
           this.email = {
             activityId: queryId,
             emailInviteId: '',
@@ -189,11 +212,19 @@
             title: '',
             content: '',
             desc: '',
-            senderName: ''
+            senderName: '',
+            urlType: this.urlType
           }
           this.storeEmailInfo(this.email)
         }
         this.queryEmailTemp()
+      },
+      querySite () {
+        this.$post(activityService.GET_SITE_DATA, {
+          activityId: this.$route.params.id
+        }).then((res) => {
+          this.siteEnabled = res.data.enabled
+        })
       },
       clickSendTestEmail () {
         this.testEmailShow = true
@@ -209,6 +240,16 @@
           this.testEmailShow = false
         }
       },
+      dealWithEmailUrl () {
+        let joinLink = this.urlType === 'WEB' ? `${this.PC_HOST}site/${this.email.activityId}?refer=0` : `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`
+        this.$nextTick(() => {
+          let dom = document.getElementById('joinLinkId')
+          if (dom) {
+            dom.href = joinLink
+            this.isPull = !this.isPull
+          }
+        })
+      },
       /* 查询邮件详情 */
       queryEmailInfo () {
         // 如果不是编辑页面就return
@@ -217,15 +258,27 @@
           emailInviteId: this.email.emailInviteId
         }).then((res) => {
           this.email = res.data
+          this.urlType = this.email.urlType
           this.storeEmailInfo(this.email)
         })
       },
       queryEmailTemp () {
-        this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
-          if (!res.data.list) return
-          this.emailList = res.data.list
+        // this.$get(activityService.GET_EMAIL_TPL_LIST).then((res) => {
+        //   if (!res.data.list) return
+        //   this.emailList = res.data.list
+        //   if (!this.email.emailInviteId) { // 如果不是编辑
+        //     // this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+        //     this.email.content = this.emailList[0].content
+        //     this.dealWithEmailUrl()
+        //   }
+        // })
+        // 增加$nextTick异步，防止vue报错
+        this.$nextTick(() => {
+          this.emailList = emailTempList
           if (!this.email.emailInviteId) { // 如果不是编辑
-            this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+            // this.email.content = this.emailList[0].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+            this.email.content = this.emailList[0].content
+            this.dealWithEmailUrl()
           }
         })
       },
@@ -250,15 +303,14 @@
           return
         }
         this.testEmailShow = false
-        this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+        // this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
         this.$post(activityService.POST_SEND_TEST_EMAIL_INFO, {
           content: this.email.content,
           receiverEmail: this.testEmailAddress
         }).then((res) => {
           this.canPass = true
           this.$toast({
-            content: '发送成功，请稍后查收邮件',
-            position: 'center'
+            content: '发送成功，请稍后查收邮件'
           })
         })
         // LiveHttp.sendTestEmailInfo({
@@ -279,7 +331,7 @@
       saveEmail () {
         this.isDisabled = true
         this.canPass = true
-        this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+        // this.email.content = this.email.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
         this.$post(activityService.POST_SAVE_EMAIL_INFO, this.email).then((res) => {
           // 回写邮件id
           if (!this.email.emailInviteId) {
@@ -293,10 +345,11 @@
           this.email.title = res.data.title
           // 把信息保存到vuex
           this.storeEmailInfo(this.email)
-          this.$toast({
-            content: '保存草稿成功',
-            position: 'center'
-          })
+          // this.$toast({
+          //   content: '保存草稿成功',
+          //   position: 'center'
+          // })
+          this.$router.push(`/liveMager/email/${this.email.activityId}`)
         })
         let st = setTimeout(() => {
           clearTimeout(st)
@@ -336,7 +389,9 @@
           handleClick: (e) => {
             if (e.action === 'confirm') {
               this.email.emailTemplateId = this.emailList[idx].emailTemplateId
-              this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+              // this.email.content = this.emailList[idx].content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+              this.email.content = this.emailList[idx].content
+              this.dealWithEmailUrl()
             }
           }
         })
@@ -354,7 +409,9 @@
               for (let i = 0; i < this.emailList.length; i++) {
                 const emailObj = this.emailList[i]
                 if (emailObj.emailTemplateId === this.email.emailTemplateId) {
-                  this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+                  // this.email.content = emailObj.content.replace('$$activity$$', `${this.PC_HOST}subscribe/${this.email.activityId}?refer=0`)
+                  this.email.content = emailObj.content
+                  this.dealWithEmailUrl()
                   break
                 }
               }
@@ -370,169 +427,241 @@
 </style>
 
 <style lang="scss" scoped>
-@import 'assets/css/mixin.scss';
+  @import 'assets/css/mixin.scss';
 
-.edit-step-box {
-  min-width: 1366px;
-  background-color: #fff;
-  color: #222;
-  .email-header {
-    height: 60px;
-    line-height: 60px;
-    background-color: #ffd021;
-    .icon-jiantou {
-      font-size: 22px;
-      vertical-align: -2px;
-    }
-    .back-btn-email {
-      display: inline-block;
-      padding: 0 15px;
-      background-color: #ffda51;
-      line-height: 40px;
-      border-radius: 4px;
-      font-size: 18px;
-      text-align: center;
-      margin-left: 20px;
-      margin-right: 10px;
-      &:hover {
-        cursor: pointer;
-        opacity: 0.9;
-        color: #4b5afe;
-      }
-    }
-  }
-  .email-bottom {
-    height: 60px;
-    line-height: 60px;
-    border-top: 1px solid #e2e2e2;
-    box-sizing: border-box;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-    padding: 0 20px;
+  .edit-step-box {
+    min-width: 1366px;
     background-color: #fff;
-    button {
-      margin-top: 10px;
-    }
-    .margin-fl {
-      margin-right: 10px;
-    }
-  }
-  .border-box /deep/ {
-    height: calc(100vh - 120px);
-    .html-editer {
-      height: 100%;
-      .vue-html5-editor .content {
-        background-color: #f5f5f5;
+    color: #222;
+    .email-header {
+      height: 60px;
+      line-height: 60px;
+      background-color: #ffd021;
+      .icon-jiantou {
+        font-size: 22px;
+        vertical-align: -2px;
       }
-    }
-  }
-  .step-btns {
-    margin: 30px 30px 100px 30px;
-    .margin-fl {
-      margin: 0 20px;
-    }
-  }
-  .edit-content {
-    height: 100%;
-    margin: 0 0 20px 0;
-    .edit-content-temp {
-      height: calc(100% - 36px);
-      width: 356px;
-      margin-top: 36px;
-      padding: 0 1.8%;
-      box-sizing: border-box;
-      overflow-y: scroll;
-      .temp-title {
-        span {
-          line-height: 44px;
-          color: #555;
+      .back-btn-email {
+        display: inline-block;
+        padding: 0 15px;
+        background-color: #ffda51;
+        line-height: 40px;
+        border-radius: 4px;
+        font-size: 18px;
+        text-align: center;
+        margin-left: 20px;
+        margin-right: 10px;
+        &:hover {
+          cursor: pointer;
+          opacity: 0.9;
+          color: #4b5afe;
         }
       }
-      .temp-boxs {
-        margin-top: 20px;
-        .temp-item {
-          width: 124px;
-          margin: 10px 15px;
-          text-align: center;
-          &:nth-child(2n) {
-            margin-right: 0;
-          }
-          &:nth-child(2n + 1) {
-            margin-left: 0;
-          }
-          .temp-item-box {
-            height: 196px;
-            box-sizing: border-box;
-            border: solid 1px #e5e5e5;
-            border-radius: 4px;
-            background-size: cover;
+    }
+    .email-bottom {
+      height: 60px;
+      line-height: 60px;
+      border-top: 1px solid #e2e2e2;
+      box-sizing: border-box;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+      padding: 0 20px;
+      background-color: #fff;
+      button {
+        width: 120px;
+        margin-top: 10px;
+      }
+      .margin-fl {
+        margin-right: 10px;
+      }
+    }
+    .border-box /deep/ {
+      position: relative;
+      height: calc(100vh - 120px);
+      .add-email-link {
+        position: absolute;
+        top: 0;
+        right: 400px;
+        height: 38px;
+        line-height: 38px;
+        font-size: 14px;
+        color: #606266;
+        z-index: 1003;
+        .tip-box {
+          position: relative;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          margin-left: 10px;
+          i {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            border: solid 1px rgba(85, 85, 85, 1);
+            border-radius: 50%;
+            color: #555;
+            font-style: normal;
+            font-size: 12px;
             &:hover {
               cursor: pointer;
-              border-color: #4b5afe;
-              transition: border-color 0.2s;
+              opacity: 0.8;
             }
           }
-          .temp-item-title {
+          .msg {
+            position: absolute;
+            display: none;
+            width: 380px;
+            top: 50%;
+            left: 26px;
+            transform: translateY(-50%);
+            padding: 6px 10px 4px 10px;
+            border-radius: 3px;
+            color: #fff;
+            word-wrap: break-word;
+            word-break: break-all;
+            z-index: 10;
+            background-color: rgba(49, 49, 49, 1);
+            box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.4);
+            line-height: 20px;
+            font-size: 10px;
+            &:after {
+              display: block;
+              position: absolute;
+              content: '';
+              height: 0px;
+              width: 0px;
+              top: 50%;
+              left: -4px;
+              -webkit-transform: translateY(-50%);
+              transform: translateY(-50%);
+              border-top: 4px solid transparent;
+              border-right: 4px solid #313131;
+              border-bottom: 5px solid transparent;
+            }
+            z-index: 100;
+          }
+          i:hover + .msg {
             display: block;
-            padding-top: 5px;
-            font-size: 14px;
-            color: #555555;
-          }
-          &:nth-child(1) .temp-item-box {
-            background-image: url('../../../assets/image/email-01.jpg');
-          }
-          &:nth-child(2) .temp-item-box {
-            background-image: url('../../../assets/image/email-02.jpg');
-          }
-          &:nth-child(3) .temp-item-box {
-            background-image: url('../../../assets/image/email-03.jpg');
-          }
-          &:nth-child(4) .temp-item-box {
-            background-image: url('../../../assets/image/email-04.jpg');
-          }
-        }
-        .active {
-          .temp-item-box {
-            border-color: #4b5afe;
           }
         }
       }
-    }
-    .edit-content-box /deep/ {
-      width: calc(100% - 356px);
-      height: 100%;
-      .vue-html5-editor {
+      .html-editer {
         height: 100%;
-        border: none;
-        border-right: solid 1px #e5e5e5;
-        border-radius: 0;
-        .content {
-          height: calc(100% - 37px);
-          max-height: calc(100% - 37px);
-          padding: 0;
+        .vue-html5-editor .content {
+          background-color: #f5f5f5;
         }
       }
     }
-  }
-  .email-box {
-    width: 100%;
-    margin: 15px 10px;
-    .test-tip {
-      font-size: 14px;
-      color: #4b5afe;
-      line-height: 40px;
+    .step-btns {
+      margin: 30px 30px 100px 30px;
+      .margin-fl {
+        margin: 0 20px;
+      }
     }
-    .com-input {
-      width: 390px;
+    .edit-content {
+      height: 100%;
+      margin: 0 0 20px 0;
+      .edit-content-temp {
+        height: calc(100% - 36px);
+        width: 356px;
+        margin-top: 36px;
+        padding: 0 36px;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        .temp-title {
+          span {
+            line-height: 44px;
+            color: #555;
+          }
+        }
+        .temp-boxs {
+          margin-top: 20px;
+          .temp-item {
+            width: 124px;
+            margin: 10px 15px;
+            text-align: center;
+            &:nth-child(2n) {
+              margin-right: 0;
+            }
+            &:nth-child(2n + 1) {
+              margin-left: 0;
+            }
+            .temp-item-box {
+              height: 196px;
+              box-sizing: border-box;
+              border: solid 1px #e5e5e5;
+              border-radius: 4px;
+              background-size: cover;
+              &:hover {
+                cursor: pointer;
+                border-color: #4b5afe;
+                transition: border-color 0.2s;
+              }
+            }
+            .temp-item-title {
+              display: block;
+              padding-top: 5px;
+              font-size: 14px;
+              color: #555555;
+            }
+            &:nth-child(1) .temp-item-box {
+              background-image: url('../../../assets/image/email-01.jpg');
+            }
+            &:nth-child(2) .temp-item-box {
+              background-image: url('../../../assets/image/email-02.jpg');
+            }
+            &:nth-child(3) .temp-item-box {
+              background-image: url('../../../assets/image/email-03.jpg');
+            }
+            &:nth-child(4) .temp-item-box {
+              background-image: url('../../../assets/image/email-04.jpg');
+            }
+          }
+          .active {
+            .temp-item-box {
+              border-color: #4b5afe;
+            }
+          }
+        }
+      }
+      .edit-content-box /deep/ {
+        width: calc(100% - 356px);
+        height: 100%;
+        .vue-html5-editor {
+          height: 100%;
+          border: none;
+          border-right: solid 1px #e5e5e5;
+          border-radius: 0;
+          .content {
+            height: calc(100% - 37px);
+            max-height: calc(100% - 37px);
+            padding: 0;
+          }
+        }
+      }
+    }
+    .email-box {
+      width: 100%;
+      margin: 15px 10px;
+      .test-tip {
+        font-size: 14px;
+        color: #4b5afe;
+        line-height: 40px;
+      }
+      .com-input {
+        width: 390px;
+      }
+    }
+    .step-one-btns {
+      margin: 40px 10px -10px 10px;
+      span {
+        float: left;
+        line-height: 45px;
+        font-size: 14px;
+        color: #888;
+      }
     }
   }
-  .step-one-btns {
-    margin: 40px 10px -10px 10px;
-    span {
-      float: left;
-      line-height: 45px;
-      font-size: 14px;
-      color: #888;
-    }
-  }
-}
 </style>

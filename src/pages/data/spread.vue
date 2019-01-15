@@ -6,19 +6,19 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="180px" title="邮件发送数量" tip="使用邮件作为推广方式，发送的人数"></ve-title>
+              <ve-title width="180px" title="邮件发送数量" tip="使用邮件作为推广方式，发送的人数。"></ve-title>
             </div>
             <div class="item-mid">{{spreadChannelData.email}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="180px" title="微信发送数量" tip="使用微信作为推广方式，发送的人数"></ve-title>
+              <ve-title width="180px" title="微信发送数量" tip="使用微信作为推广方式，发送的人数。"></ve-title>
             </div>
             <div class="item-mid">{{spreadChannelData.weChat}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="180px" title="短信发送数量" tip="使用短信作为推广方式，发送的人数"></ve-title>
+              <ve-title width="180px" title="短信发送数量" tip="使用短信作为推广方式，发送的人数。"></ve-title>
             </div>
             <div class="item-mid">{{spreadChannelData.sms}}</div>
           </div>
@@ -27,7 +27,7 @@
       <div class="chart-container">
         <div class="chart-box" style="width: 100%;">
           <p class="title">推广效果</p>
-          <div class="chart-item" id="chart01" style="height: 260px;"></div>
+          <div class="chart-item" id="chart01" style="height: 270px;"></div>
         </div>
       </div>
       <div class="chart-container">
@@ -63,19 +63,19 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问人数" tip="访问活动官网的人数"></ve-title>
+              <ve-title width="140px" title="页面访问人数" tip="访问活动官网的人数。"></ve-title>
             </div>
             <div class="item-mid">{{officialChannelData.nums}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="140px" title="页面访问次数" tip="访问活动官网的人次数"></ve-title>
+              <ve-title width="152px" title="页面访问次数" tip="访问活动官网的人次数。"></ve-title>
             </div>
             <div class="item-mid">{{officialChannelData.times}}</div>
           </div>
           <div class="box fl" style="width: 33.3333%;">
             <div class="item-title">
-              <ve-title width="170px" title="人均停留时长" tip="在活动官网的平均停留时间"></ve-title>
+              <ve-title width="176px" title="人均停留时长" tip="在活动官网的平均停留时间。"></ve-title>
             </div>
             <div class="item-mid">{{officialChannelData.average|fmtTime}}</div>
           </div>
@@ -96,43 +96,43 @@
         <div class="item-box fl">
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问人数" tip="访问活动引导页的人数"></ve-title>
+              <ve-title width="130px" title="页面访问人数" tip="访问活动引导页的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.nums}}</div>
           </div>
           <div class="box fl" style="width: 20%;">
             <div class="item-title">
-              <ve-title width="130px" title="页面访问次数" tip="访问活动引导页的人次数"></ve-title>
+              <ve-title width="130px" title="页面访问次数" tip="访问活动引导页的人次数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.times}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
-              <ve-title width="130px" title="预约人数" tip="直播开始前预约活动的人数"></ve-title>
+              <ve-title width="130px" title="预约人数" tip="直播开始前预约活动的人数。"></ve-title>
             </div>
             <div class="item-mid data-link" @click="goPreDataDetail">{{leadPageData.subscribe}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
-              <ve-title width="130px" title="报名人数" tip="报名活动的总人数"></ve-title>
+              <ve-title width="130px" title="报名人数" tip="报名活动的总人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.signUp}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
-              <ve-title width="130px" title="实到人数" tip="预约活动的人数中实际参加活动的人数"></ve-title>
+              <ve-title width="130px" title="实到人数" tip="预约活动的人数中实际参加活动的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.actual}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
-              <ve-title width="130px" title="开播前报名人数" tip="在直播开始前进行报名的人数"></ve-title>
+              <ve-title width="130px" title="开播前报名人数" tip="在直播开始前进行报名的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.beforeSignUp}}</div>
           </div>
           <div class="box fl" style="width: 20%;" v-if="leadPageData.isSubscribe!=='APPOINT'">
             <div class="item-title">
-              <ve-title width="130px" title="预约参会率" tip="本次直播的预约参会率"></ve-title>
+              <ve-title width="130px" title="预约参会率" tip="本次直播的预约参会率。"></ve-title>
             </div>
             <div class="item-mid" v-if="leadPageData.subscribe">
               {{(leadPageData.actual*100/leadPageData.subscribe).toFixed(2)}}%
@@ -141,7 +141,7 @@
           </div>
           <div class="box fl" style="width: 20%;" v-else>
             <div class="item-title">
-              <ve-title width="130px" title="开播后报名人数" tip="在直播开始后进行报名的人数"></ve-title>
+              <ve-title width="130px" title="开播后报名人数" tip="在直播开始后进行报名的人数。"></ve-title>
             </div>
             <div class="item-mid">{{leadPageData.afterSignUp}}</div>
           </div>
@@ -161,25 +161,33 @@
     <message-box
       v-show="preDataDetail"
       width="60%"
-      type="none"
+      type="prompt"
       :header="header"
       @handleClick="closeMesssageBox">
       <div class="msg-table-box">
-        <button class="primary-button export-btn fr" @click="exportDataList">导出</button>
+        <button class="primary-button export-btn fr" @click="exportDataList"  v-if="preDataList.length">导出</button>
         <div class="table-box">
-          <el-table :data="preDataList" style="width: 100%">
-            <el-table-column label="序号">
-              <template slot-scope="scope">
-                {{scope.$index}}
-              </template>
-            </el-table-column>
-            <el-table-column prop="nickname" label="姓名"></el-table-column>
-            <el-table-column prop="phone" label="手机号"></el-table-column>
-            <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
-            <el-table-column prop="guide_page_leave_at" label="离开引导页时间（最后一次）"></el-table-column>
-            <el-table-column prop="appointment_time" label="预约时间"></el-table-column>
-            <el-table-column prop="first_join_at" label="参会时间"></el-table-column>
-          </el-table>
+          <template v-if="preDataList.length">
+            <el-table :data="preDataList" style="width: 100%">
+              <el-table-column label="序号">
+                <template slot-scope="scope">
+                  {{scope.$index}}
+                </template>
+              </el-table-column>
+              <el-table-column prop="nickname" label="姓名"></el-table-column>
+              <el-table-column prop="phone" label="手机号"></el-table-column>
+              <el-table-column prop="guide_page_join_at" label="进入引导页时间（第一次）"></el-table-column>
+              <el-table-column prop="guide_page_leave_at" label="离开引导页时间（最后一次）"></el-table-column>
+              <el-table-column prop="appointment_time" label="预约时间"></el-table-column>
+              <el-table-column prop="first_join_at" label="参会时间"></el-table-column>
+            </el-table>
+          </template>
+          <template v-else>
+            <div class="empty">
+              <div class="img"></div>
+              <div class="txt">暂无数据</div>
+            </div>
+          </template>
         </div>
       </div>
     </message-box>
@@ -360,6 +368,8 @@
         lines('chart06', {
           xAxisData: this.pageLinkDatas.xAxisData,
           datas: this.pageLinkDatas.lineObj[typeAttr]
+        }, null, {
+          left: 0
         })
       },
       promotionEffect () {
@@ -374,8 +384,8 @@
               list: this.speadDatas.list
             }, {
               left: 34,
-              bottom: 30,
-              top: 20,
+              bottom: 52,
+              top: 18,
               right: 20
             })
           }
@@ -408,6 +418,28 @@
                 { name: '活跃人数', data: ratioDataList.sms.nums }
               ]
             }, ['rgba(82,219,237,1)'])
+          } else {
+            /* 邮件活跃 */
+            this.emailChart = lines('chart02', {
+              xAxisData: [],
+              datas: [
+                { name: '活跃人数', data: [0] }
+              ]
+            }, ['rgba(77,132,255,1)'])
+            /* 微信活跃 */
+            this.weChatChart = lines('chart03', {
+              xAxisData: [],
+              datas: [
+                { name: '活跃人数', data: [0] }
+              ]
+            }, ['rgba(253,133,25,1)'])
+            /* 短信活跃 */
+            this.smsChart = lines('chart04', {
+              xAxisData: [],
+              datas: [
+                { name: '活跃人数', data: [0] }
+              ]
+            }, ['rgba(82,219,237,1)'])
           }
         })
       },
@@ -420,8 +452,8 @@
             this.webChart = lines('chart05', {
               xAxisData: res.data.xAxis || [],
               datas: [
-                { name: 'UV', data: res.data.nums },
-                { name: 'PV', data: res.data.times }
+                { name: 'UV', data: res.data.nums.length > 0 ? res.data.nums : [0] },
+                { name: 'PV', data: res.data.times.length > 0 ? res.data.nums : [0] }
               ]
             }, null, {
               left: 0
@@ -441,16 +473,16 @@
                 pv: []
               }
             }
-            pageLinkDatas.lineObj.uv.push({ name: '全部', data: res.data.all.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '全部', data: res.data.all.times })
-            pageLinkDatas.lineObj.uv.push({ name: '邮件', data: res.data.email.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '邮件', data: res.data.email.times })
-            pageLinkDatas.lineObj.uv.push({ name: '短信', data: res.data.sms.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '短信', data: res.data.sms.times })
-            pageLinkDatas.lineObj.uv.push({ name: '微信', data: res.data.weChat.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '微信', data: res.data.weChat.times })
-            pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums })
-            pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times })
+            pageLinkDatas.lineObj.uv.push({ name: '全部', data: res.data.all.nums.length > 0 ? res.data.all.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '全部', data: res.data.all.times.length > 0 ? res.data.all.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '邮件', data: res.data.email.nums.length > 0 ? res.data.email.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '邮件', data: res.data.email.times.length > 0 ? res.data.email.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '短信', data: res.data.sms.nums.length > 0 ? res.data.sms.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '短信', data: res.data.sms.times.length > 0 ? res.data.sms.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '微信', data: res.data.weChat.nums.length > 0 ? res.data.weChat.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '微信', data: res.data.weChat.times.length > 0 ? res.data.weChat.times : [0] })
+            pageLinkDatas.lineObj.uv.push({ name: '其他', data: res.data.other.nums.length > 0 ? res.data.other.nums : [0] })
+            pageLinkDatas.lineObj.pv.push({ name: '其他', data: res.data.other.times.length > 0 ? res.data.other.times : [0] })
             this.pageLinkDatas = pageLinkDatas
             this.linkChart = lines('chart06', {
               xAxisData: this.pageLinkDatas.xAxisData,
@@ -468,3 +500,20 @@
   }
 </script>
 <style lang="scss" scoped src="./css/data.scss"></style>
+<style lang="scss" scoped>
+  .spread {
+    /deep/ {
+      .ve-message-box__wrapper .ve-message-box .ve-message-box__btns {
+        display: none;
+      }
+      #chart01 {
+        div {
+          &:nth-child(2) {
+            /*background-color: transparent;*/
+          }
+        }
+      }
+    }
+
+  }
+</style>

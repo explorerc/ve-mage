@@ -15,16 +15,16 @@
         </div>
         <div class="from-row">
           <div class="from-title">发件人：</div>
-          <div class="from-content">{{email.senderName}}</div>
+          <div class="from-content">{{email.senderName | isEmpty('-')}}</div>
         </div>
         <div class="from-row">
           <div class="from-title">收件人：</div>
-          <div class="from-content receiver" >
+          <div :class="{'from-content':true, receiver:true, 'send-detail':email.status=='SEND'}" >
             <template v-if="selectedGroupList.length || selectedTagList.length">
-              <div >
+              <div class="receiver-item" v-if="selectedGroupList.length">
                 <span v-for='(item,idx) in selectedGroupList'>{{item.name}}<template v-if="idx + 1< selectedGroupList.length">、</template></span>
               </div>
-              <div>
+              <div class="receiver-item" v-if="selectedTagList.length">
                 <span v-for='(item,idx) in selectedTagList'>{{item.name}}<template v-if="idx + 1< selectedTagList.length">、</template></span>（合计{{email.expectNum}}人）
               </div>
               <el-button  class='send-detail default-button' @click='sendDetail = true' v-if="email.status=='SEND'">发送详情</el-button>
@@ -55,13 +55,7 @@
         </div>
         <div class="from-row">
           <div class="from-title">发件时间：</div>
-          <div class="from-content">{{email.sendTime}}</div>
-        </div>
-        <div class="from-row">
-          <div class="from-title">邮件摘要：</div>
-          <div class="from-content">
-            <div>{{email.desc}}</div>
-          </div>
+          <div class="from-content">{{email.sendTime | isEmpty('-')}}</div>
         </div>
         <div class="from-row">
           <!--<div class="from-title">邮件内容：</div>-->
@@ -70,13 +64,11 @@
                v-html="email.content"></div>
           <!--</div>-->
         </div>
-        <div class="step-btns">
+        <div class="step-btns" v-if="email.status!=='SEND'">
           <!--<button class="primary-button fr" @click="prePage">返回上级</button>-->
-          <button v-if="email.status!=='SEND'"
-                  class="default-button margin-fl"
+          <button class="default-button margin-fl"
                   @click="editEmail">编辑邮件</button>
-          <button v-if="email.status=='AWAIT'"
-                  class="primary-button"
+          <button class="primary-button"
                   @click="sendEmail">立即发送</button>
         </div>
       </div>
@@ -140,20 +132,6 @@ export default {
     }
   },
   created () {
-    EventBus.$emit('breads', [{
-      title: '活动管理'
-    }, {
-      title: '活动列表',
-      url: '/liveMager/list'
-    }, {
-      title: '活动详情',
-      url: `/liveMager/detail/${this.email.activityId}`
-    }, {
-      title: '邮件邀约',
-      url: `/liveMager/email/${this.email.activityId}`
-    }, {
-      title: '预览'
-    }])
     // 如果vuex可以取到值就return
     // if (this.email.emailInviteId) {
     //   debugger
@@ -176,6 +154,22 @@ export default {
     this.email.emailInviteId = this.$route.query.email
     this.queryTagList().then(this.queryGroupList()).then(this.queryEmailInfo())
   },
+  mounted () {
+    EventBus.$emit('breads', [{
+      title: '活动管理'
+    }, {
+      title: '活动列表',
+      url: '/liveMager/list'
+    }, {
+      title: '活动详情',
+      url: `/liveMager/detail/${this.$route.params.id}`
+    }, {
+      title: '邮件邀约',
+      url: `/liveMager/email/${this.$route.params.id}`
+    }, {
+      title: '预览'
+    }])
+  },
   methods: {
     ...mapMutations('liveMager', {
       storeEmailInfo: types.EMAIL_INFO
@@ -189,18 +183,49 @@ export default {
         res.data.statusName = statusType[res.data.status]
         this.email = res.data
         setTimeout(() => {
-          this.reArrangeList(res.data.groupIds.split(','), res.data.tagIds.split(','))
+          this.reArrangeList(res.data.groupIds ? res.data.groupIds.split(',') : [], res.data.tagIds ? res.data.tagIds.split(',') : [])
         }, 500)
         this.storeEmailInfo(this.email)
       })
     },
     sendEmail () {
-      this.$post(activityService.POST_SEND_EMAIL_INFO, {
-        emailInviteId: this.email.emailInviteId
-      }).then((res) => {
-        console.log('邮件发送成功')
-        console.log(res)
-      })
+      if (this.checkEmail()) {
+        this.$messageBox({
+          header: '提示',
+          content: '是否立即发送此邮件？',
+          confirmText: '确定',
+          cancelText: '取消',
+          handleClick: (e) => {
+            if (e.action === 'confirm') {
+              this.$post(activityService.POST_SEND_EMAIL_INFO, {
+                emailInviteId: this.email.emailInviteId
+              }).then(() => {
+                console.log('邮件发送成功')
+                this.$router.push(`/liveMager/email/${this.$route.params.id}`)
+              })
+            }
+          }
+        })
+      } else {
+        this.$messageBox({
+          header: '提示',
+          content: '邮件未编辑完成，无法发送邮件！',
+          confirmText: '立即编辑',
+          cancelText: '取消',
+          handleClick: (e) => {
+            if (e.action === 'confirm') {
+              this.editEmail()
+            }
+          }
+        })
+      }
+    },
+    checkEmail () {
+      if (!this.email.content) return false
+      if (!(this.email.groupIds || this.email.tagIds)) return false
+      if (!this.email.senderName) return false
+      if (this.email.status === 'AWAIT' && !this.email.planTime) return false
+      return true
     },
     editEmail () {
       this.$router.push(`/liveMager/emailEditOne/${this.email.activityId}?email=${this.email.emailInviteId}`)
@@ -239,10 +264,12 @@ export default {
       })
     },
     reArrangeList (group, tag) {
+      this.email.expectNum = 0
       this.groupList.forEach((item, idx) => {
         group.forEach((ele, i) => {
           if (ele * 1 === item.id * 1) {
             // this.groupList[idx].isChecked = true
+            this.email.expectNum = this.email.expectNum + parseInt(item.count)
             this.selectedGroupList.push({
               count: item.count,
               id: item.id,
@@ -255,6 +282,7 @@ export default {
       this.tagList.forEach((item, idx) => {
         tag.forEach((ele, i) => {
           if (ele * 1 === item.id * 1) {
+            this.email.expectNum = this.email.expectNum + parseInt(item.count)
             // this.tagList[idx].isChecked = true
             this.selectedTagList.push({
               count: item.count,
@@ -345,19 +373,27 @@ export default {
   }
   .receiver {
     position: relative;
+    width: 710px;
+    flex: inherit !important;
+    &.send-detail{
+      margin-top: -10px;
+    }
     .el-button {
-      position: absolute;
-      top: -10px;
-      margin-left: 10px;
+      // position: absolute;
+      // top: -10px;
+      // margin-left: 10px;
     }
     div {
       display: inline-block;
-
       span {
         display: inline-block;
         padding: 0 5px 10px 5px;
         padding-bottom: 0px;
+        margin-bottom: 10px;
       }
+    }
+    .receiver-item:last-child{
+      margin-bottom: -10px;
     }
   }
 }
