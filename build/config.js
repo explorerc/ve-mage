@@ -22,10 +22,10 @@ const config = {
     BUILD_ENV: 'dev',
     API_PATH: '/api',
     SUB_DIR: 'static',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//test-zhike.vhall.com/',
-    MOBILE_HOST: '//test-zhike.vhall.com/m/',
-    PC_HOST: '//test-zhike.vhall.com/webinar/'
+    IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
+    PUBLIC_PATH: '//dev-zhike.vhall.com/',
+    MOBILE_HOST: '//dev-zhike.vhall.com/m/',
+    PC_HOST: '//dev-zhike.vhall.com/webinar/'
   },
   test: {
     BUILD_ENV: 'test',
