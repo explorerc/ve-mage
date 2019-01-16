@@ -318,13 +318,13 @@
             strType = `共进行了${data.count}次分享`
             break
           case 'STAY_ACTIVITY_WEBSITE_TIME':
-            strType = `在活动官网浏览了${data.time / 60}分钟`
+            strType = `在活动官网浏览了${(data.time / 60).toFixed(2)}分钟`
             break
           case 'STAY_ACTIVITY_TIME':
-            strType = `观看了${data.time / 60}分钟直播`
+            strType = `观看了${(data.time / 60).toFixed(2)}分钟直播`
             break
           case 'STAY_VOD_ACTIVITY_TIME':
-            strType = `观看了${data.time / 60}分钟回放`
+            strType = `观看了${(data.time / 60).toFixed(2)}分钟回放`
             break
           case 'SEND_CHAT_COUNT':
             strType = `共发送了${data.count}条聊天内容`
