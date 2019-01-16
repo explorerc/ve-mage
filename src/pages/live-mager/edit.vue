@@ -822,7 +822,7 @@ export default {
     &.is-focus span.el-checkbox-button__inner {
       border-left: 1px solid #4b5afe;
       background-color: #4b5afe;
-      border: none;
+      border-color: #4b5afe;
       box-shadow: none;
       &:hover {
         color: #fff;

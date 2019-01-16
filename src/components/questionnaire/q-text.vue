@@ -116,18 +116,18 @@ export default {
         right: 2px;
         height: 36px;
         line-height: 39px;
-        border-color: #ffd021;
-        background-color: #ffd021;
+        border-color: #e2e2e2;
+        background-color: #e2e2e2;
         padding: 0;
         color: #222;
-        &:hover {
-          background-color: #FDD43F;
-          border-color: #FDD43F;
-        }
-        &:active {
-          background-color: #EEC11A;
-          border-color: #EEC11A;
-        }
+        /*&:hover {*/
+          /*background-color: #FDD43F;*/
+          /*border-color: #FDD43F;*/
+        /*}*/
+        /*&:active {*/
+          /*background-color: #EEC11A;*/
+          /*border-color: #EEC11A;*/
+        /*}*/
       }
     }
     .error-msg {
