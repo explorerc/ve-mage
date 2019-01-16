@@ -405,7 +405,7 @@ export default {
         td {
           height: 60px;
           line-height: 61px;
-          padding: 0 30px;
+          padding: 0 20px;
         }
       }
       tbody {
@@ -414,7 +414,7 @@ export default {
           line-height: 50px;
           border-bottom: 1px solid #e2e2e2;
           td {
-            padding: 0 30px;
+            padding: 0 20px;
             a {
               &:hover {
                 color: #4b5afe;

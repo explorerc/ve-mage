@@ -234,6 +234,7 @@
         z-index: 2;
         line-height: 30px;
         border-radius: 4px;
+        padding: 6px 0;
         span {
           display: block;
           text-align: left;
