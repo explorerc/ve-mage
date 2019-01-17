@@ -541,13 +541,13 @@ export default {
         }
       }
       .box2 {
-        padding: 20px 0;
+        padding: 10px 0;
         border-bottom: 1px solid #e2e2e2;
         font-size: 14px;
         .v-info {
           position: relative;
           min-height: 40px;
-          line-height: 40px;
+          /*line-height: 40px;*/
           span {
             display: inline-block;
           }
@@ -557,12 +557,19 @@ export default {
             position: absolute;
             top: 0;
             left: 0;
+            line-height: 40px;
           }
           .v-content {
+            display: inline-block;
             color: #222;
             word-break: break-all;
             max-width: 225px;
             padding-left: 55px;
+            line-height: 40px;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow:ellipsis;
           }
           .v-email-info {
             position: relative;

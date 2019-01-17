@@ -1292,13 +1292,13 @@ export default {
       background-color: #ffd021;
       display: block;
       width: 115px;
-      height: 36px;
-      line-height: 36px;
+      height: 34.5px;
+      line-height: 34.5px;
       text-align: center;
       font-size: 13px;
       color: #222;
       position: absolute;
-      top: 238.5px;
+      top: 240px;
       right: 32px;
       border-radius: 2px;
       text-decoration: none;

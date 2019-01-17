@@ -585,6 +585,9 @@ export default {
         }
       }
     }
+    #captcha {
+      height: 40px;
+    }
     .yidun.yidun--light {
       width: 100% !important;
       margin-top: 38px !important;
@@ -618,13 +621,13 @@ export default {
       background-color: #ffd021;
       display: block;
       width: 125px;
-      height: 34px;
-      line-height: 34px;
+      height: 36px;
+      line-height: 36px;
       text-align: center;
       /*font-size: 13px;*/
       /*color: #fff;*/
       position: absolute;
-      bottom: 22px;
+      bottom: 20px;
       right: 0;
       border-radius: 2px;
       text-decoration: none;
