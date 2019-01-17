@@ -3,11 +3,12 @@
        @click="changeState">
     <div class="v-info"
          id="toggler-div">
-      <img :src="avatarImg"
+      <span class="v-avatar" id="toggler-img" :style="bgObj" @avatarChange="avatarChange($event)"></span>
+      <!-- <img :src="avatarImg"
            alt=""
            class="v-avatar"
            id="toggler-img"
-           @avatarChange="avatarChange($event)">
+           @avatarChange="avatarChange($event)"> -->
       <span class="v-name"
             id="toggler-span">{{name}}</span>
     </div>
@@ -43,7 +44,8 @@ export default {
     return {
       name: '',
       avatar: '',
-      mobileHost: process.env.MOBILE_HOST
+      mobileHost: process.env.MOBILE_HOST,
+      bgObj: {}
     }
   },
   components: {
@@ -77,6 +79,9 @@ export default {
   },
   mounted () {
     // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+    this.bgObj = {
+      backgroundImage: `url(${this.avatarImg})`
+    }
   },
   methods: {
     ...mapMutations('login', {
@@ -123,6 +128,9 @@ export default {
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 10px;
+    background: url('~assets/image/avatar@2x.png') no-repeat;
+    background-size: cover;
+    background-position: center center;
   }
   .v-select {
     width: 200px;

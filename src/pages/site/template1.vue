@@ -10,7 +10,7 @@
         <com-btn class="btn" :edit="editAble" v-model="data.section2Data.btn"></com-btn>
       </div> -->
     </com-panel>
-    <com-panel class="section8" :edit="editAble" v-model="data.section8Data.panel">
+    <com-panel v-if='data.section8Data' class="section8" :edit="editAble" v-model="data.section8Data.panel">
       <div class="mask">
         <com-font :edit="editAble" v-model="data.section8Data.font"></com-font>
         <com-btn class="btn" :edit="editAble" v-model="data.section8Data.btn"></com-btn>

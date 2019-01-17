@@ -120,12 +120,8 @@
                              :max-length="30"
                              :errorTips="errorTips"
                              @focus="shareTitleFocus"></com-input>
-                  <p class="v-notes"
-                     style="margin-top: 0;">
-                    注：为了您的内容获得有效传播，建议标题长度不要超过
-                    <span class="v-blue">14</span>个字
-                  </p>
                 </div>
+                <p class="v-notes" style="margin-top: 0;" :class='{"error":errorTips.length}'>注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字</p>
               </div>
               <div class="input-form v-label clearfix v-shareIntroduction">
                 <p class="v-info-label pull-left">
@@ -492,6 +488,12 @@ export default {
           color: #888888;
           padding-left: 119px;
           margin: 10px auto 0;
+          &.error {
+            margin-top: 6px !important;
+          }
+          .v-blue {
+            color:#4b5afe;
+          }
         }
       }
     }
@@ -615,7 +617,7 @@ export default {
       &:hover,
       &.active {
         cursor: pointer;
-        color: #2878ff;
+        color: #4b5afe;
       }
     }
   }
