@@ -492,7 +492,7 @@ export default {
             margin-top: 6px !important;
           }
           .v-blue {
-            color:#4b5afe;
+            color: #4b5afe;
           }
         }
       }

@@ -67,7 +67,7 @@
                     {{itemData.generated_at}}
                   </p>
                   <p class="v-content-title">
-                    {{event(itemData.event,itemData.data)}}
+                    {{event(itemData)}}
                   </p>
                 </div>
               </li>
@@ -221,16 +221,7 @@
           this.dataInfoList = []
         }
         this.$config({handlers: true}).$get(userService.GET_BEHAVIOR_LIST, this.searchInfoParams).then((res) => {
-          res.data.list.forEach(element => {
-            if (element.event === 'STAY_ACTIVITY_WEBSITE_TIME' || element.event === 'STAY_ACTIVITY_TIME') {
-              if (element.data.time > 0) {
-                element.data.time = element.data.time > 1 ? Math.round(element.data.time / 60) : 1
-              } else {
-                element.data.time = 0
-              }
-            }
-            this.dataInfoList.push(element)
-          })
+          this.dataInfoList = res.data.list
           this.infoTotal = res.data.total
           this.searchInfoParams.total = res.data.total
           this.searchInfoParams.totalPage = Math.ceil(res.data.total / res.data.page_size)
@@ -275,7 +266,9 @@
           })
         })
       },
-      event (type, data) {
+      event (item) {
+        let type = item.event
+        let data = item.data
         let strType = ''
         switch (type) {
           case 'JOIN_ACTIVITY_WEBSITE':
@@ -297,7 +290,13 @@
             strType = '报名活动'
             break
           case 'JOIN_ACTIVITY':
-            strType = '进入了活动'
+            if (data.service_names === '1') {
+              strType = '进入了直播'
+            } else if (data.service_names === '2') {
+              strType = '进入了回放'
+            } else {
+              strType = '进入了活动'
+            }
             break
           case 'FIRST_CHAT':
             strType = '开始了聊天'
@@ -312,10 +311,13 @@
             strType = `共进行了${data.count}次分享`
             break
           case 'STAY_ACTIVITY_WEBSITE_TIME':
-            strType = `在活动官网浏览了${data.time}分钟`
+            strType = `在活动官网浏览了${(data.time / 60).toFixed(2)}分钟`
             break
           case 'STAY_ACTIVITY_TIME':
-            strType = `观看了${data.time}分钟`
+            strType = `观看了${(data.time / 60).toFixed(2)}分钟直播`
+            break
+          case 'STAY_VOD_ACTIVITY_TIME':
+            strType = `观看了${(data.time / 60).toFixed(2)}分钟回放`
             break
           case 'SEND_CHAT_COUNT':
             strType = `共发送了${data.count}条聊天内容`

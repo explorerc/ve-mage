@@ -515,7 +515,7 @@
         })
       },
       dateFocus () {
-        this.email.planTime = this.defaultValue
+        this.email.planTime = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
       }
     },
     /* 路由守卫，离开当前页面之前被调用 */

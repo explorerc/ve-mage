@@ -537,7 +537,7 @@ export default {
       })
     },
     dateFocus () {
-      this.date = this.defaultValue
+      this.date = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
       this.errorData.awaitTimeError = ''
     }
   },
