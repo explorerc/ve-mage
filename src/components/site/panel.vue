@@ -129,6 +129,9 @@ export default {
             this.analysisData(this.value)
           })
         }
+        if (data.link) {
+          this.value.link = this.value.link.replace('http://', location.protocol + '//')
+        }
       },
       deep: true
     },

@@ -403,7 +403,7 @@ export default {
     },
     dateFocus () {
       this.dateEmpty = false
-      this.date = this.defaultValue
+      this.date = new Date(this.defaultValue).format('yyyy-MM-dd hh:mm')
     }
   },
   /* 路由守卫，离开当前页面之前被调用 */
@@ -822,7 +822,7 @@ export default {
     &.is-focus span.el-checkbox-button__inner {
       border-left: 1px solid #4b5afe;
       background-color: #4b5afe;
-      border: none;
+      border-color: #4b5afe;
       box-shadow: none;
       &:hover {
         color: #fff;
