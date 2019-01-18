@@ -85,9 +85,9 @@
           <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
           <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
         </div>
-        <ul>
-          <li v-for="item in importSuccessData.repeat" :key="item">{{item}}、</li>
-        </ul>
+        <div class="phone-content">
+          <span v-for="item in importSuccessData.repeat" :key="item">{{item}}、</span>
+        </div>
       </div>
     </div>
   </div>
@@ -97,6 +97,10 @@
 import veTips from 'src/components/ve-msg-tips'
 import ComUpload from 'src/components/common/upload/com'
 import userManage from 'src/api/userManage-service'
+import playbackService from 'src/api/playback-service'
+import ChatConfig from 'src/api/chat-config'
+import ChatService from 'components/chat/ChatService.js'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -112,7 +116,7 @@ export default {
       importSuccessData: {
         success: 0,
         error: 0,
-        repeat: [123, 123, 334334]
+        repeat: []
       },
       uploadStatus: 'beforeUpload',
       percentImg: 0,
@@ -142,6 +146,11 @@ export default {
       default: false
     }
   },
+  computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    })
+  },
   mounted () {
     this.initGrouplist()
     if (this.groupId) {
@@ -150,8 +159,33 @@ export default {
     if (this.isFixed) {
       this.radio = this.isFixed
     }
+    this.initMsgServe()
   },
   methods: {
+    async initMsgServe () {
+      // const loginInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+      const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
+        thirdUserId: this.accountInfo.businessUserId,
+        channel: this.accountInfo.channelRoom
+      }).then(res => {
+        return res.data
+      })
+      ChatService.OBJ.init({
+        accountId: roomInfo.accountId,
+        token: roomInfo.token,
+        appId: roomInfo.appId,
+        channelId: roomInfo.channelRoom
+      })
+      /* 监听下载消息 */
+      ChatService.OBJ.regHandler(ChatConfig.userImport, (msg) => {
+        this.importSuccessData = {
+          success: msg.success,
+          error: msg.invalid,
+          repeat: msg.repeat
+        }
+        this.$emit('importResult', msg)
+      })
+    },
     close () {
       this.$emit('handleClick', {
         action: 'cancel'
@@ -250,11 +284,12 @@ export default {
         console.log(res)
         this.importSuccess = true
         this.importDisable = false
-        this.importSuccessData = {
-          success: res.data.success,
-          error: res.data.invalid,
-          repeat: res.data.repeat
-        }
+        this.$emit('importSuccess', 'success')
+        // this.importSuccessData = {
+        //   success: res.data.success,
+        //   error: res.data.invalid,
+        //   repeat: res.data.repeat
+        // }
       }).catch((res) => {
         this.importDisable = false
         this.uploadStatus = 'beforeUpload'
@@ -394,16 +429,13 @@ export default {
         }
       }
     }
-    ul {
+    .phone-content {
       background: rgba(245, 245, 245, 1);
       border-radius: 2px;
       padding: 10px;
       height: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
-      li {
-        display: inline-block;
-      }
     }
   }
   .com-input {

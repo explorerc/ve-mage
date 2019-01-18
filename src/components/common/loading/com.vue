@@ -52,7 +52,6 @@ export default {
     transform: translate(-50%, -50%);
     text-align: center;
     font-size: 14px;
-    opacity: 0.9;
     .iconfont {
       display: inline-block;
       animation: com-rotating 1s linear infinite;
