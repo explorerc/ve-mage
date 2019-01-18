@@ -324,8 +324,8 @@
       <com-choose @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray' :max='10'
                   @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
     </transition>
-    <transition name='fade' mode='out-in'>
-      <div v-show="showImport">
+    <transition name='fade' mode='out-in' v-if="showImport">
+      <div v-show="importShowHide">
         <com-import @importSuccess="importSuccess" @importResult="importResult" @handleClick="handleClickImport"></com-import>
       </div>
     </transition>
@@ -496,6 +496,7 @@
         showChooseTag: false,
         showChooseGroup: false,
         showImport: false,
+        importShowHide: true,
         chooseType: '活动',
         provinceId: '',
         cityId: '',
@@ -591,10 +592,10 @@
       },
       importResult () {
         this.$loading(false)
-        this.showImport = true
+        this.importShowHide = true
       },
       importSuccess () {
-        this.showImport = false
+        this.importShowHide = false
         this.$nextTick(() => {
           this.$loading({loadingText: '正在上传数据，由于数据量较大，请耐心等待'})
         })
