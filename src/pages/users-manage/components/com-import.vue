@@ -436,6 +436,7 @@ export default {
       height: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
+      text-align: justify;
     }
   }
   .com-input {
