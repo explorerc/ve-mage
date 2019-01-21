@@ -212,6 +212,9 @@ export default {
       }).then((res) => {
         res.data.list.map((dataItem) => {
           dataItem.statusName = statusType[dataItem.status]
+          if (dataItem.status === 'SEND' && parseInt(dataItem.sendCount) === 0) {
+            dataItem.statusName = '发送中...'
+          }
           dataItem.sendTime = dataItem.sendTime || '--'
           dataItem.title = dataItem.title || '--'
           return dataItem

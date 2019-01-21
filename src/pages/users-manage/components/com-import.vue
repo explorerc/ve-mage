@@ -83,7 +83,7 @@
         <div class='tips'>
           <span>成功导入<i> {{importSuccessData.success}} </i>位 </span>
           <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
-          <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
+          <span>重复数据<i><em> {{importSuccessData.repeatCount}} </em></i>位</span>
         </div>
         <div class="phone-content">
           <span v-for="item in importSuccessData.repeat" :key="item">{{item}}、</span>
@@ -116,6 +116,7 @@ export default {
       importSuccessData: {
         success: 0,
         error: 0,
+        repeatCount: 0,
         repeat: []
       },
       uploadStatus: 'beforeUpload',
@@ -181,6 +182,7 @@ export default {
         this.importSuccessData = {
           success: msg.success,
           error: msg.invalid,
+          repeatCount: msg.repeatNum,
           repeat: msg.repeat
         }
         this.$emit('importResult', msg)
@@ -437,6 +439,10 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       text-align: justify;
+      display: -webkit-box;
+      -webkit-line-clamp: 11;
+      line-clamp: 11;
+      -webkit-box-orient: vertical;
     }
   }
   .com-input {
