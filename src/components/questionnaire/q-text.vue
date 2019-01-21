@@ -4,7 +4,7 @@
                @focus="focus"
                :type="value.detail.format==='phone'?'mobile':value.style"
                :max-length="value.detail.max?value.detail.max:0"
-               placeholder="请输入"
+               :placeholder="value.placeholder||'请输入'"
                :value.sync="value.value"></com-input>
     <com-input v-if="!edit&&value.verification==='Y'"
                class="code"
