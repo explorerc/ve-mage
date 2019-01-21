@@ -103,13 +103,8 @@
       <div class="text">预览</div>
       <div class="v-content">
         <div class="v-hearder">
-          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}">
-
-          </div>
-          <!-- <img :src="defaultImg"
-               alt=""
-               v-if="defaultImg"
-               class="v-question-img"> -->
+          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}"></div>
+          <div v-else class="v-question-img"></div>
           <p class="v-title">
             {{this.title}}
           </p>
@@ -538,6 +533,8 @@ export default {
       height: 124px;
       background-position: center;
       background-size: cover;
+      background-repeat: no-repeat;
+      background-image: url("../../../assets/image/question-header.jpg");
     }
     .v-title {
       max-width: 500px;
