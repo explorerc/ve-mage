@@ -502,6 +502,15 @@
         color: #999999;
       }
     }
+    .btns_box {
+      .add-goods {
+
+      }
+      .el-button.is-round {
+        width: 140px;
+        height: 40px !important;
+      }
+    }
   }
 }
 </style>
