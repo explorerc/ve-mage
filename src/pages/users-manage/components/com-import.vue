@@ -1,7 +1,7 @@
 <template>
   <div class="com-import-box-wrap">
-    <div class="com-modal"></div>
-    <div class="com-import-box">
+    <div class="com-modal" @click="close"></div>
+    <div class="com-import-box" :class="{'import-result':importSuccess}">
       <div class="header">
         <span class="title">批量导入</span>
         <button @click='close'><i class="iconfont icon-close"></i></button>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="item download">
-          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入1000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
+          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入5000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
         </div>
         <el-button round class='default-button confirm' :disabled="importDisable" @click="addHandler" style='height:34px;line-height:34px;'>导入</el-button>
       </div>
@@ -83,7 +83,7 @@
         <div class='tips'>
           <span>成功导入<i> {{importSuccessData.success}} </i>位 </span>
           <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
-          <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
+          <span>重复数据<i><em> {{importSuccessData.repeatCount}} </em></i>位</span>
         </div>
         <div class="phone-content">
           <span v-for="item in importSuccessData.repeat" :key="item">{{item}}、</span>
@@ -116,6 +116,7 @@ export default {
       importSuccessData: {
         success: 0,
         error: 0,
+        repeatCount: 0,
         repeat: []
       },
       uploadStatus: 'beforeUpload',
@@ -181,6 +182,7 @@ export default {
         this.importSuccessData = {
           success: msg.success,
           error: msg.invalid,
+          repeatCount: msg.repeatNum,
           repeat: msg.repeat
         }
         this.$emit('importResult', msg)
@@ -429,15 +431,6 @@ export default {
         }
       }
     }
-    .phone-content {
-      background: rgba(245, 245, 245, 1);
-      border-radius: 2px;
-      padding: 10px;
-      height: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: justify;
-    }
   }
   .com-input {
     width: 400px;
@@ -565,6 +558,22 @@ export default {
         color: #fff;
       }
     }
+  }
+}
+.import-result{
+  width: 596px;
+  height: 426px;
+  .phone-content {
+    background: rgba(245, 245, 245, 1);
+    border-radius: 2px;
+    padding: 10px;
+    height: 128px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
   }
 }
 </style>

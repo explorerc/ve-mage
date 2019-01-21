@@ -324,11 +324,11 @@
       <com-choose @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray' :max='10'
                   @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
     </transition>
-    <transition name='fade' mode='out-in' v-if="showImport">
+    <template v-if="showImport">
       <div v-show="importShowHide">
         <com-import @importSuccess="importSuccess" @importResult="importResult" @handleClick="handleClickImport"></com-import>
       </div>
-    </transition>
+    </template>
   </div>
 </template>
 
