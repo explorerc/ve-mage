@@ -1,6 +1,6 @@
 <template>
   <div class="com-import-box-wrap">
-    <div class="com-modal"></div>
+    <div class="com-modal" @click="close"></div>
     <div class="com-import-box" :class="{'import-result':importSuccess}">
       <div class="header">
         <span class="title">批量导入</span>
