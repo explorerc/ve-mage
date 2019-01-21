@@ -12,12 +12,12 @@
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
         <el-button size="small" round @click="exportFile" :disabled="!tableData.length>0">全部导出</el-button>
-        <transition name='fade' mode='out-in' v-if="dialogImport">
+        <template v-if="dialogImport">
           <div v-show="importShowHide">
             <com-import @importSuccess="importSuccess" @importResult="importResult" @handleClick="handleClick" :isFixed="'0'" :isDis=true
                         :groupId="Number.parseInt(search.group_id)"></com-import>
           </div>
-        </transition>
+        </template>
       </div>
       <el-button size="small"
                  round
