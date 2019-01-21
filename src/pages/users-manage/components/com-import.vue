@@ -1,7 +1,7 @@
 <template>
   <div class="com-import-box-wrap">
     <div class="com-modal"></div>
-    <div class="com-import-box">
+    <div class="com-import-box" :class="{'import-result':importSuccess}">
       <div class="header">
         <span class="title">批量导入</span>
         <button @click='close'><i class="iconfont icon-close"></i></button>
@@ -431,19 +431,6 @@ export default {
         }
       }
     }
-    .phone-content {
-      background: rgba(245, 245, 245, 1);
-      border-radius: 2px;
-      padding: 10px;
-      height: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-align: justify;
-      display: -webkit-box;
-      -webkit-line-clamp: 11;
-      line-clamp: 11;
-      -webkit-box-orient: vertical;
-    }
   }
   .com-input {
     width: 400px;
@@ -571,6 +558,22 @@ export default {
         color: #fff;
       }
     }
+  }
+}
+.import-result{
+  width: 596px;
+  height: 426px;
+  .phone-content {
+    background: rgba(245, 245, 245, 1);
+    border-radius: 2px;
+    padding: 10px;
+    height: 128px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
   }
 }
 </style>
