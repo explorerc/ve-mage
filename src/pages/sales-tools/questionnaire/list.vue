@@ -121,6 +121,7 @@
           <questions :dragData="dragData"
                      :phoneData="phoneData"
                      :isView="true"></questions>
+          <button class="primary-button questions-btn">提交</button>
         </div>
       </div>
     </message-box>
@@ -553,5 +554,11 @@ export default {
       margin: 18px auto 0;
     }
   }
+}
+.questions-btn{
+  display: block;
+  width:220px;
+  height:40px;
+  margin: 50px auto 20px auto;
 }
 </style>
