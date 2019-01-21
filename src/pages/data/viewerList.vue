@@ -265,10 +265,10 @@
         ],
         scoreTypeList: [
           {value: '', label: '全部'},
-          {value: 1, label: '100>得分>90'},
-          {value: 2, label: '90>得分>80'},
-          {value: 3, label: '80>得分>60'},
-          {value: 4, label: '60>得分'}
+          {value: 1, label: '10>得分>9'},
+          {value: 2, label: '9>得分>8'},
+          {value: 3, label: '8>得分>6'},
+          {value: 4, label: '6>得分'}
         ],
         userTypeList: [
           {value: '', label: '全部'},

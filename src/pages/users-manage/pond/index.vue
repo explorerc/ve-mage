@@ -325,7 +325,9 @@
                   @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
     </transition>
     <transition name='fade' mode='out-in' v-if="showImport">
-      <com-import @handleClick="handleClickImport"></com-import>
+      <div v-show="importShowHide">
+        <com-import @importSuccess="importSuccess" @importResult="importResult" @handleClick="handleClickImport"></com-import>
+      </div>
     </transition>
   </div>
 </template>
@@ -339,7 +341,6 @@
   import province from 'src/components/province'
   import city from 'src/components/city'
   import EventBus from 'src/utils/eventBus'
-
   export default {
     data () {
       return {
@@ -495,6 +496,7 @@
         showChooseTag: false,
         showChooseGroup: false,
         showImport: false,
+        importShowHide: true,
         chooseType: '活动',
         provinceId: '',
         cityId: '',
@@ -587,6 +589,16 @@
           this.showChooseTag = false
           this.showChooseGroup = false
         }
+      },
+      importResult () {
+        this.$loading(false)
+        this.importShowHide = true
+      },
+      importSuccess () {
+        this.importShowHide = false
+        this.$nextTick(() => {
+          this.$loading({loadingText: '正在上传数据，由于数据量较大，请耐心等待'})
+        })
       },
       handleClickImport (e) {
         this.showImport = false

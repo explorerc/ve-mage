@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[50],{523:function(t,e,n){"use strict";n.r(e);var s=function(){var t=this.$createElement;return(this._self._c||t)("div",[this._v("红包雨")])};s._withStripped=!0;var i={},r=(n(918),n(1)),a=Object(r.a)(i,s,[],!1,null,null,null);a.options.__file="src/pages/sales-tools/redpack/index.vue";e.default=a.exports},707:function(t,e,n){},918:function(t,e,n){"use strict";var s=n(707);n.n(s).a}}]);
-//# sourceMappingURL=50.32127312.js.map
