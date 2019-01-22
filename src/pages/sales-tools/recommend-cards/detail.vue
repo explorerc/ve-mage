@@ -422,7 +422,7 @@
     }
     .save-btn {
       padding: 0;
-      width: 160px;
+      width: 140px;
       height: 40px;
       line-height: 40px;
       text-align: center;
