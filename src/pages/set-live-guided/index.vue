@@ -24,7 +24,7 @@
                @click="canPass = false">
               <com-input :value.sync="title"
                          placeholder="标题"
-                         :max-length="20"></com-input>
+                         :max-length="30"></com-input>
             </p>
           </div>
           <div class="input-form v-label clearfix">

@@ -307,7 +307,7 @@
               width: 10%;
             }
             &:nth-of-type(6) {
-              width: 15%;
+              width: 8%;
             }
             &:nth-of-type(7) {
               width: 25%;

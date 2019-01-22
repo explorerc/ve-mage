@@ -132,7 +132,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    z-index: 1005;
+    z-index: 2001;
     .ve-modal {
       position: fixed;
       left: 0;
