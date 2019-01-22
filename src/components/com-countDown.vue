@@ -12,10 +12,10 @@
       return {
         // content: '',
         showTime: {
-          day: 0,
-          hour: 0,
-          minute: 0,
-          second: 0
+          day: '00',
+          hour: '00',
+          minute: '00',
+          second: '00'
         },
         timer: null
       }
