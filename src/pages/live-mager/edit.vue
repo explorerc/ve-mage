@@ -507,7 +507,7 @@ export default {
       margin: 15px 0;
     }
     font-size: 14px;
-    padding: 40px 80px;
+    padding: 40px 80px 35px;
     width: 100%;
     // height: 860px;
     background: rgba(255, 255, 255, 1);
@@ -541,7 +541,7 @@ export default {
     }
     .create-btn {
       display: block;
-      margin: 0 auto;
+      margin: 10px auto 0;
       @include primary-button;
       width: 200px;
       /*&:disabled {*/

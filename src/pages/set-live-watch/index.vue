@@ -505,6 +505,7 @@ export default {
     .v-brand {
       width: 920px;
       margin: 60px auto 0;
+      min-height: 549px;
       .input-form {
         .v-info-label {
           width: 70px;
@@ -530,7 +531,7 @@ export default {
     .primary-button {
       width: 200px;
       display: block;
-      margin: 80px auto 55px;
+      margin: 40px auto 50px;
     }
   }
   .pull-left {
@@ -682,7 +683,8 @@ export default {
   }
   .v-share {
     width: 850px;
-    margin: 60px auto;
+    margin: 60px auto 0;
+    min-height: 536px;
     .com-input {
       width: 440px;
     }

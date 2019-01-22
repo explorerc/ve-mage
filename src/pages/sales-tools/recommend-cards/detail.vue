@@ -320,6 +320,8 @@
       }
       &.btn-box {
         text-align: center;
+        margin-top: 16px;
+        margin-bottom: 8px;
       }
       .ve-upload-box {
         width: 140px;

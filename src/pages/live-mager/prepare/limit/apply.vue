@@ -658,7 +658,7 @@
       width: 320px;
     }
     .set-info {
-      margin: 20px 32px 32px 32px;
+      margin: 20px 32px 50px 32px;
     }
   }
   .set-select {

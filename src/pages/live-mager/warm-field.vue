@@ -439,7 +439,7 @@ export default {
   text-align: center;
   button {
     width: 200px;
-    margin: 60px auto 50px auto;
+    margin: 8px auto 50px auto;
   }
 }
 .el-switch {
