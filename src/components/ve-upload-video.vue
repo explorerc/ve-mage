@@ -9,7 +9,7 @@
               v-else-if="!isConvert&&percentVideo!=100&&percentVideo!=0">{{(fileRealSize*percentVideo/100).toFixed(2)}}M/{{fileRealSize}}M</span>
         <span class="file-size"
               v-else-if="!isConvert&&(percentVideo==100||percentVideo==0)">{{fileRealSize}}M</span>
-        <span class="file-convert" v-else="isConvert">文件已上传成功，正在转码中。关闭页面不会中断转码。</span>
+        <span class="file-convert" v-else="isConvert">文件已上传成功，正在转码中。关闭页面不会中断转码</span>
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
         </div>
