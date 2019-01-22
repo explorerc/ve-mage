@@ -30,7 +30,7 @@
             </el-dropdown>
           </div>
 
-          <el-button round @click='exportAll()' :disabled='!usersListData.length'>全部导出</el-button>
+          <el-button round @click='exportAll()' :disabled='!usersListData.length||allExportDisabled'>全部导出</el-button>
           <!-- <el-button round @click='addGroupAll()'>全部添加到群组</el-button> -->
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
@@ -474,6 +474,7 @@
           'id': [],
           'name': []
         },
+        allExportDisabled: false,
         usersListData: [
           // {
           //   avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
@@ -809,6 +810,11 @@
             }
           }
         }
+        this.allExportDisabled = true
+        let st = setTimeout(() => {
+          clearTimeout(st)
+          this.allExportDisabled = false
+        }, 3000)
         window.location.href = `/api/user/customer/export${this.exportStr}`
       },
       reset () {

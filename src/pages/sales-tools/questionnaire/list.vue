@@ -103,13 +103,8 @@
       <div class="text">预览</div>
       <div class="v-content">
         <div class="v-hearder">
-          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}">
-
-          </div>
-          <!-- <img :src="defaultImg"
-               alt=""
-               v-if="defaultImg"
-               class="v-question-img"> -->
+          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}"></div>
+          <div v-else class="v-question-img"></div>
           <p class="v-title">
             {{this.title}}
           </p>
@@ -121,6 +116,7 @@
           <questions :dragData="dragData"
                      :phoneData="phoneData"
                      :isView="true"></questions>
+          <button class="primary-button questions-btn">提交</button>
         </div>
       </div>
     </message-box>
@@ -537,6 +533,8 @@ export default {
       height: 124px;
       background-position: center;
       background-size: cover;
+      background-repeat: no-repeat;
+      background-image: url("../../../assets/image/question-header.jpg");
     }
     .v-title {
       max-width: 500px;
@@ -553,5 +551,11 @@ export default {
       margin: 18px auto 0;
     }
   }
+}
+.questions-btn{
+  display: block;
+  width:220px;
+  height:40px;
+  margin: 50px auto 20px auto;
 }
 </style>
