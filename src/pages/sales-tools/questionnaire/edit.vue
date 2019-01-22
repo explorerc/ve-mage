@@ -64,7 +64,7 @@
               <span class="v-title">
                 问卷头图
               </span>
-              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140 大小不超过2M"
+              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140<br>大小不超过2M"
                          accept="png|jpg|jpeg|bmp"
                          :fileSize="2048"
                          :defaultImg="defaultImg"
