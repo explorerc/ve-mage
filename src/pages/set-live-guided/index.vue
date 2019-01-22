@@ -320,13 +320,14 @@ export default {
   .v-content {
     /*margin-top: 26px;*/
     width: 100%;
-    min-height: 835px;
+    /*min-height: 835px;*/
     background-color: #fff;
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     .v-set {
       width: 920px;
       margin: 60px auto 0;
+      min-height: 545px;
     }
   }
   .v-edit {
@@ -385,14 +386,21 @@ export default {
     }
   }
   .primary-button {
-    margin: 50px auto;
+    margin: 50px auto 50px;
     display: block;
     width: 200px;
   }
   .v-show {
     width: 462px;
-    .com-tabs {
+    .com-tabs /deep/{
       height: 554px;
+      .tab-header {
+        margin-bottom: 20px;
+      }
+      .tab-item {
+        height: 26px;
+        line-height: 30px;
+      }
     }
     .v-phone {
       width: 250px;

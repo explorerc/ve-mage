@@ -503,6 +503,8 @@
       }
     }
     .btns_box {
+      margin-bottom: 10px;
+      margin-top: -6px;
       .add-goods {
 
       }
