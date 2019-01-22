@@ -392,7 +392,7 @@ export default {
   }
   .v-show {
     width: 462px;
-    .com-tabs /deep/{
+    .com-tabs /deep/ {
       height: 554px;
       .tab-header {
         margin-bottom: 20px;
@@ -440,7 +440,7 @@ export default {
         padding-top: 20px;
         .v-phone-title {
           color: #222;
-          font-size: 16px;
+          font-size: 14px;
           text-align: center;
           word-break: break-all;
         }
@@ -531,7 +531,7 @@ export default {
         background-color: #fff;
         .v-pc-title {
           color: #222;
-          font-size: 13px;
+          font-size: 14px;
           text-align: center;
           margin-top: 55px;
           padding: 0 10px;
