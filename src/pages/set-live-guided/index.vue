@@ -517,7 +517,7 @@ export default {
       }
       .v-pc-info {
         width: 50%;
-        height: 259px;
+        height: 249px;
         border-radius: 0 7px 7px 0;
         overflow: hidden;
         background-color: #fff;
@@ -526,6 +526,7 @@ export default {
           font-size: 13px;
           text-align: center;
           margin-top: 55px;
+          padding: 0 10px;
         }
         .v-pc-description {
           color: #555;
