@@ -541,7 +541,7 @@ export default {
     }
     .create-btn {
       display: block;
-      margin: 0 auto;
+      margin: 10px auto 0;
       @include primary-button;
       width: 200px;
       /*&:disabled {*/
