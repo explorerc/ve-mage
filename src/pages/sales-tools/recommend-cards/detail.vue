@@ -288,7 +288,7 @@
       .error-msg {
         display: block;
         color: $color-red;
-        margin-left: 10px;
+        padding-left: 0;
       }
       .input-box {
         width: 400px;
@@ -320,6 +320,8 @@
       }
       &.btn-box {
         text-align: center;
+        margin-top: 16px;
+        margin-bottom: 8px;
       }
       .ve-upload-box {
         width: 140px;
@@ -438,13 +440,15 @@
     border-radius: 4px;
     border: 1px solid rgba(129, 140, 254, 1);
     margin-bottom: 20px;
+    font-size: 14px;
     i {
-      width: 20px;
-      height: 20px;
+      width: 14px;
+      height: 14px;
       display: inline-block;
       background: url('~assets/image/excal.svg') no-repeat;
+      background-size: cover;
       position: relative;
-      top: 4px;
+      top: 2px;
       right: 4px;
     }
   }

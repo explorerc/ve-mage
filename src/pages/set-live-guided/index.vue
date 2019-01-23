@@ -24,7 +24,7 @@
                @click="canPass = false">
               <com-input :value.sync="title"
                          placeholder="标题"
-                         :max-length="20"></com-input>
+                         :max-length="30"></com-input>
             </p>
           </div>
           <div class="input-form v-label clearfix">
@@ -320,13 +320,14 @@ export default {
   .v-content {
     /*margin-top: 26px;*/
     width: 100%;
-    min-height: 835px;
+    /*min-height: 835px;*/
     background-color: #fff;
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     .v-set {
       width: 920px;
       margin: 60px auto 0;
+      min-height: 545px;
     }
   }
   .v-edit {
@@ -385,14 +386,21 @@ export default {
     }
   }
   .primary-button {
-    margin: 50px auto;
+    margin: 50px auto 50px;
     display: block;
     width: 200px;
   }
   .v-show {
     width: 462px;
-    .com-tabs {
+    .com-tabs /deep/{
       height: 554px;
+      .tab-header {
+        margin-bottom: 20px;
+      }
+      .tab-item {
+        height: 26px;
+        line-height: 30px;
+      }
     }
     .v-phone {
       width: 250px;
@@ -404,7 +412,7 @@ export default {
       margin-right: 75px;
       .v-img {
         width: 229px;
-        height: 266px;
+        height: 193px;
         margin-left: 11px;
         margin-top: 45px;
         border-radius: 5px 5px 0 0;
@@ -424,13 +432,14 @@ export default {
         }
       }
       .v-phone-info {
-        width: 230px;
-        height: 143px;
+        width: 229px;
+        height: 217px;
         margin-left: 11px;
         background-color: #fff;
-        border-radius: 0 0 5px 5px;
-        padding-top: 10px;
+        border-radius: 0 0 10px 10px;
+        padding-top: 20px;
         .v-phone-title {
+          color: #222;
           font-size: 16px;
           text-align: center;
           word-break: break-all;
@@ -440,11 +449,12 @@ export default {
           border-radius: 0 0 5px 5px;
         }
         .v-phone-description {
+          color: #555;
           word-break: break-all;
           width: 210px;
           font-size: 12px;
           text-align: center;
-          margin: 0 auto 23px;
+          margin: 15px auto 23px;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -473,16 +483,16 @@ export default {
         }
         .v-phone-enroll {
           display: block;
-          width: 140px;
-          height: 26px;
-          line-height: 26px;
+          width: 130px;
+          height: 28px;
+          line-height: 28px;
           background-color: #ffd021;
           border-radius: 50px;
           margin: 10px auto;
           text-decoration: none;
           text-align: center;
           color: #222;
-          font-size: 12px;
+          font-size: 14px;
         }
       }
     }
@@ -493,16 +503,16 @@ export default {
       background-position: center center;
       background-size: cover;
       position: relative;
-      padding: 16px 0 0 12px;
+      padding: 32px 0 0 12px;
       .v-img {
-        width: 50%;
-        height: 266px;
+        width: 207px;
+        height: 250px;
         border-radius: 1px 0 0 1px;
         overflow: hidden;
         .img-bg {
           width: 100%;
           height: 100%;
-          border-radius: 7px 0 0 7px;
+          // border-radius: 7px 0 0 7px;
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
@@ -514,17 +524,19 @@ export default {
         }
       }
       .v-pc-info {
-        width: 47%;
-        height: 266px;
+        width: 50%;
+        height: 259px;
         border-radius: 0 7px 7px 0;
         overflow: hidden;
         background-color: #fff;
         .v-pc-title {
-          font-size: 16px;
+          color: #222;
+          font-size: 13px;
           text-align: center;
           margin-top: 55px;
         }
         .v-pc-description {
+          color: #555;
           font-size: 12px;
           text-align: center;
           padding-top: 10px;
@@ -551,14 +563,15 @@ export default {
         }
         .v-pc-enroll {
           display: block;
-          width: 160px;
-          height: 35px;
-          line-height: 35px;
+          width: 130px;
+          height: 28px;
+          line-height: 28px;
           background-color: #ffd021;
           border-radius: 50px;
           margin: 30px auto 0;
           text-decoration: none;
           text-align: center;
+          font-size: 14px;
         }
       }
     }

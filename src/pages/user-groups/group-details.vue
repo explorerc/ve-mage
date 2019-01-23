@@ -12,8 +12,12 @@
         </el-dropdown>
         <el-button size="small" round v-if="type === 2" @click="batchImport">批量导入</el-button>
         <el-button size="small" round @click="exportFile" :disabled="!tableData.length>0">全部导出</el-button>
-        <com-import v-if="dialogImport" @handleClick="handleClick" :isFixed="'0'" :isDis=true
-                    :groupId="Number.parseInt(search.group_id)"></com-import>
+        <template v-if="dialogImport">
+          <div v-show="importShowHide">
+            <com-import @importSuccess="importSuccess" @importResult="importResult" @handleClick="handleClick" :isFixed="'0'" :isDis=true
+                        :groupId="Number.parseInt(search.group_id)"></com-import>
+          </div>
+        </template>
       </div>
       <el-button size="small"
                  round
@@ -102,6 +106,7 @@
         tableData: [],
         dialogTitle: '',
         dialogImport: false,
+        importShowHide: true,
         Group: {
           name: '',
           description: '',
@@ -121,6 +126,16 @@
       }
     },
     methods: {
+      importResult () {
+        this.$loading(false)
+        this.importShowHide = true
+      },
+      importSuccess () {
+        this.importShowHide = false
+        this.$nextTick(() => {
+          this.$loading({loadingText: '正在上传数据，由于数据量较大，请耐心等待'})
+        })
+      },
       handleClick () {
         this.dialogImport = false
         this.onSearch()

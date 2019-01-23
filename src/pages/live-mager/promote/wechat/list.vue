@@ -7,7 +7,7 @@
         <div class="right-box" v-if="tableData.length">
           <router-link :to="{name:'wechatCreate', params:{id:queryData.activityId}}"><button class="default-button btn fr" >新建微信邀约</button></router-link>
         </div>
-        <span class="send-box fr" :class='{"spe":!tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
+        <span v-if='tableData.length' class="send-box fr" :class='{"spe":!tableData.length}'>发送限额：{{totalCount - balanceCount}}/{{totalCount}}</span>
       </div>
       <div class="content table">
         <template v-if="tableData.length">
@@ -169,7 +169,7 @@ export default {
     getLimit () {
       this.$get(activityService.GET_SEND_LIMIT, {
         activityId: this.$route.params.id,
-        type: 'SMS'
+        type: 'WECHAT'
       }).then((res) => {
         console.log(res)
         this.totalCount = res.data.total

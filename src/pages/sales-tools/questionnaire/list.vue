@@ -55,9 +55,10 @@
                 </td>
                 <td>
                   <a href="javascript:;"
-                     @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
+                     @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a>
                   <a href="javascript:;"
-                     @click="view(itemData.naireId)">预览</a><span>|</span>
+                     class="v-td-view"
+                     @click="view(itemData.naireId)">预览</a>
                   <a href="javascript:;"
                      class="v-del"
                      @click="confirmDel(itemData)">删除</a>
@@ -103,13 +104,8 @@
       <div class="text">预览</div>
       <div class="v-content">
         <div class="v-hearder">
-          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}">
-
-          </div>
-          <!-- <img :src="defaultImg"
-               alt=""
-               v-if="defaultImg"
-               class="v-question-img"> -->
+          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}"></div>
+          <div v-else class="v-question-img"></div>
           <p class="v-title">
             {{this.title}}
           </p>
@@ -121,6 +117,7 @@
           <questions :dragData="dragData"
                      :phoneData="phoneData"
                      :isView="true"></questions>
+          <button class="primary-button questions-btn">提交</button>
         </div>
       </div>
     </message-box>
@@ -405,7 +402,7 @@ export default {
         td {
           height: 60px;
           line-height: 61px;
-          padding: 0 30px;
+          padding: 0 20px;
         }
       }
       tbody {
@@ -414,12 +411,15 @@ export default {
           line-height: 50px;
           border-bottom: 1px solid #e2e2e2;
           td {
-            padding: 0 30px;
+            padding: 0 20px;
             a {
+              display: inline-block;
+              margin-right: 10px;
               &:hover {
+
                 color: #4b5afe;
                 &.v-del {
-                  color: #fc5659;
+                  /*color: #fc5659;*/
                 }
               }
             }
@@ -429,7 +429,7 @@ export default {
             }
           }
           &:hover {
-            background-color: #e9ebff;
+            background-color: #f0f1fe;
           }
           &.v-nodata {
             text-align: center;
@@ -537,6 +537,8 @@ export default {
       height: 124px;
       background-position: center;
       background-size: cover;
+      background-repeat: no-repeat;
+      background-image: url("../../../assets/image/question-header.jpg");
     }
     .v-title {
       max-width: 500px;
@@ -553,5 +555,11 @@ export default {
       margin: 18px auto 0;
     }
   }
+}
+.questions-btn{
+  display: block;
+  width:220px;
+  height:40px;
+  margin: 50px auto 20px auto;
 }
 </style>

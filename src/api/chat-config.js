@@ -10,5 +10,6 @@ export default {
   download: 'DOWNLOAD', // 回放下载
   wechat_msg: 'WECHAT_INVITE_TEST', // 微信测试发送成功
   MARKET_TOOL: 'MARKET_TOOL', // 营销工具 消息 具体详细类型由里面的type区分
-  charge: 'RECHARGE_SUCCESS' // 支付
+  charge: 'RECHARGE_SUCCESS', // 支付
+  userImport: 'USER_IMPORT' // 批量导入用户数据
 }

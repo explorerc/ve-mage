@@ -32,6 +32,10 @@ export default (options = {}) => {
   } else {
     if (instance) {
       instance.vm.visible = state
+      if (!state) {
+        instance = null
+        return null
+      }
     }
   }
 

@@ -1830,6 +1830,14 @@
           width: 400px;
         }
       }
+      /deep/{
+        .msg-tip-box span{
+          display: none;
+        }
+        .msg-tip-box i:hover + span{
+          display: block;
+        }
+      }
     }
     .overdue-tag {
       margin-left: 10px;

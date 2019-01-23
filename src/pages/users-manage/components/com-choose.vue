@@ -12,12 +12,12 @@
         </div>
         <el-checkbox-group v-model="restoreData.id" :max="max" :class='"data-list"'>
 
-          <template v-if="!dataList.length">
+          <template v-if="dataList.length">
             <el-checkbox v-for="(item,idx) in dataList" :label="item.id" :key="idx" :checked="item.checked"
                          @change='selectCheck($event,item.id)'>{{item.name}}
             </el-checkbox>
           </template>
-          <div class="empty" v-if="!isNoDataShow">
+          <div class="empty" v-if="isNoDataShow">
             <div class="img"></div>
             <div class="txt">暂无数据</div>
           </div>

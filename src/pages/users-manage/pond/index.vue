@@ -30,7 +30,7 @@
             </el-dropdown>
           </div>
 
-          <el-button round @click='exportAll()' :disabled='!usersListData.length'>全部导出</el-button>
+          <el-button round @click='exportAll()' :disabled='!usersListData.length||allExportDisabled'>全部导出</el-button>
           <!-- <el-button round @click='addGroupAll()'>全部添加到群组</el-button> -->
           <el-button round @click='showImport = true'>批量导入</el-button>
         </div>
@@ -324,9 +324,11 @@
       <com-choose @handleClick="handleClick" @selectComConfirm='selectGroupConfirm' :checkedData='groupArray' :max='10'
                   @searchHandler='searchHandler' :name="'固定群组'"></com-choose>
     </transition>
-    <transition name='fade' mode='out-in' v-if="showImport">
-      <com-import @handleClick="handleClickImport"></com-import>
-    </transition>
+    <template v-if="showImport">
+      <div v-show="importShowHide">
+        <com-import @importSuccess="importSuccess" @importResult="importResult" @handleClick="handleClickImport"></com-import>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -339,7 +341,6 @@
   import province from 'src/components/province'
   import city from 'src/components/city'
   import EventBus from 'src/utils/eventBus'
-
   export default {
     data () {
       return {
@@ -473,6 +474,7 @@
           'id': [],
           'name': []
         },
+        allExportDisabled: false,
         usersListData: [
           // {
           //   avatar: '//cnstatic01.e.vhall.com/static/img/v35-webinar.png',
@@ -495,6 +497,7 @@
         showChooseTag: false,
         showChooseGroup: false,
         showImport: false,
+        importShowHide: true,
         chooseType: '活动',
         provinceId: '',
         cityId: '',
@@ -587,6 +590,16 @@
           this.showChooseTag = false
           this.showChooseGroup = false
         }
+      },
+      importResult () {
+        this.$loading(false)
+        this.importShowHide = true
+      },
+      importSuccess () {
+        this.importShowHide = false
+        this.$nextTick(() => {
+          this.$loading({loadingText: '正在上传数据，由于数据量较大，请耐心等待'})
+        })
       },
       handleClickImport (e) {
         this.showImport = false
@@ -797,6 +810,11 @@
             }
           }
         }
+        this.allExportDisabled = true
+        let st = setTimeout(() => {
+          clearTimeout(st)
+          this.allExportDisabled = false
+        }, 3000)
         window.location.href = `/api/user/customer/export${this.exportStr}`
       },
       reset () {

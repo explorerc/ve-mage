@@ -4,7 +4,7 @@
                @focus="focus"
                :type="value.detail.format==='phone'?'mobile':value.style"
                :max-length="value.detail.max?value.detail.max:0"
-               placeholder="请输入"
+               :placeholder="value.placeholder||'请输入'"
                :value.sync="value.value"></com-input>
     <com-input v-if="!edit&&value.verification==='Y'"
                class="code"
@@ -116,18 +116,18 @@ export default {
         right: 2px;
         height: 36px;
         line-height: 39px;
-        border-color: #ffd021;
-        background-color: #ffd021;
+        border-color: #e2e2e2;
+        background-color: #e2e2e2;
         padding: 0;
         color: #222;
-        &:hover {
-          background-color: #FDD43F;
-          border-color: #FDD43F;
-        }
-        &:active {
-          background-color: #EEC11A;
-          border-color: #EEC11A;
-        }
+        /*&:hover {*/
+          /*background-color: #FDD43F;*/
+          /*border-color: #FDD43F;*/
+        /*}*/
+        /*&:active {*/
+          /*background-color: #EEC11A;*/
+          /*border-color: #EEC11A;*/
+        /*}*/
       }
     }
     .error-msg {

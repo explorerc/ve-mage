@@ -21,41 +21,43 @@
            v-if="isPreview&&!ptid">
         <a @click="platform='PC'">电脑版</a>
         <a @click="platform='H5'">手机版</a>
-        <a @click="editShare=true">分享</a>
-        <div v-show="editShare"
+        <a @mouseenter="editShare=true" @mouseleave="editShare=false" class="preview-share">分享
+          <div v-show="editShare"
              class="share-box">
-          <div class="share-box-title">
-            <i class="iconfont icon-close"
-               @click="editShare=false"></i>
-          </div>
           <div class="share-content">
             <div class="left">
-              <span>分享到:</span>
-              <div>
-                <div class="icon share-sina"
-                     @click="doSina">微博</div>
-                <div class="icon share-qq"
-                     @click="doQQ">QQ</div>
-                <div class="icon share-qq-space"
-                     @click="doQQSpace">QQ空间</div>
-              </div>
-            </div>
-            <div class="right">
-              <span>微信扫码分享：</span>
-              <div class="img-bg">
-                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
-              </div>
-
-            </div>
-              <div class="bottom">
-                <div class="label">观看地址</div>
+              <span>分享链接</span>
+              <div class="url-box">
                 <com-input class="page-url"
                            :value="`${this.protocol+this.pcHOST}site/${this.tid}`"
                            disabled></com-input>
                 <com-button @click="copyLink">复制</com-button>
               </div>
+              <div>
+                <div class="icon share-qq"
+                     @click="doQQ"></div>
+                <div class="icon share-sina"
+                     @click="doSina"></div>
+
+              </div>
+            </div>
+            <div class="right">
+              <span>手机扫码 继续观看</span>
+              <div class="img-bg">
+                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+              </div>
+
+            </div>
+              <!--<div class="bottom">-->
+                <!--<div class="label">观看地址</div>-->
+                <!--<com-input class="page-url"-->
+                           <!--:value="`${this.protocol+this.pcHOST}site/${this.tid}`"-->
+                           <!--disabled></com-input>-->
+                <!--<com-button @click="copyLink">复制</com-button>-->
+              <!--</div>-->
             </div>
           </div>
+        </a>
         </div>
         <!-- <a @click="doReset"
            class="reset"
@@ -665,7 +667,9 @@ export default {
       right: 0;
       height: 100%;
       // border-left: 1px solid #999;
-
+      .preview-share {
+        cursor: default;
+      }
       .share-box {
         /*width: 446px;*/
         /*height: 290px;*/
@@ -673,18 +677,31 @@ export default {
         right: 0;
         top: 60px;
         background-color: white;
-        border: 1px solid #999;
+        border: 1px solid #E2E2E2;
         border-top: 0;
-        .share-box-title {
-          height: 40px;
-          .icon-close {
-            cursor: pointer;
-            float: right;
-            margin-right: 15px;
-          }
+        border-radius: 4px;
+        &:before {
+          content: '';
+          /*width: 20px;*/
+          position: absolute;
+          top: -12px;
+          right: 24px;
+          border: 6px #fff solid;
+          border-top-color: transparent;
+          border-left-color: transparent;
+          border-right-color: transparent;
+
         }
+        /*.share-box-title {*/
+          /*height: 40px;*/
+          /*.icon-close {*/
+            /*cursor: pointer;*/
+            /*float: right;*/
+            /*margin-right: 15px;*/
+          /*}*/
+        /*}*/
         .share-content {
-          padding: 0 25px 25px;
+          padding: 30px 20px 30px;
           /*height: 250px;*/
           /*width: 520px;*/
           text-align: left;
@@ -697,47 +714,82 @@ export default {
               display: inline-block;
               margin-bottom: 10px;
             }
+            .url-box /deep/{
+              /*display: inline-block;*/
+              height: 40px;
+              border: 1px solid #E2E2E2;
+              width: 220px;
+              margin-bottom: 20px;
+              border-radius: 4px;
+              /*margin-right: 43px;*/
+              .com-input {
+                width: 154px;
+                height: 100%;
+                input {
+                  padding-right: 5px;
+                  border-color: transparent;
+                  &:hover {
+                    border-color: transparent !important;
+                  }
+                }
+              }
+
+              button {
+                border: none;
+                height: 100%;
+                padding: 10px 16px;
+                border-radius: 0 4px 4px 0;
+                background-color: #E2E2E2;
+                color: #222;
+                &:hover {
+                  background-color: #FDD43F;
+                }
+                &:active {
+                  background-color: #EEC11A;
+                }
+              }
+            }
             .icon {
               display: inline-block;
-              width: 56px;
-              height: 56px;
+              width: 42px;
+              height: 42px;
+              margin-right: 10px;
               background-repeat: no-repeat;
               background-position: center center;
-              background-size: 50px 50px;
+              background-size: 42px 42px;
               text-align: center;
               line-height: 130px;
               cursor: pointer;
             }
             .share-sina {
-              background-image: url('~assets/image/sina.png');
-              margin-right: 30px;
+              background-image: url('~assets/image/sina@2x.png');
             }
             .share-qq {
-              background-image: url('~assets/image/qq.png');
-              margin-right: 30px;
+              background-image: url('~assets/image/qq@2x.png');
             }
-            .share-qq-space {
-              background-image: url('~assets/image/qq_space.png');
-              margin-right: 50px;
+            .share-wechat-space {
+              background-image: url('~assets/image/wechatf@2x.png');
             }
           }
           .right {
-            margin-left: 286px;
-            margin-bottom: 20px;
+            margin-left: 256px;
+            /*margin-bottom: 20px;*/
             span {
               display: inline-block;
               margin-bottom: 10px;
+              width: 100%;
+              text-align: center;
             }
             .img-bg {
-              width: 160px;
-              height: 160px;
-              padding: 8px;
-              background-color: #f5f5f5;
+              width: 138px;
+              height: 138px;
+              padding: 7px;
+              border: 1px solid #E2E2E2;
             }
             img {
               display: block;
-              width: 144px;
-              height: 144px;
+              width: 124px;
+              height: 124px;
             }
           }
           .bottom {

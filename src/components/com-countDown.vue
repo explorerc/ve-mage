@@ -53,7 +53,7 @@
     },
     methods: {
       fomatDate (sec) {
-        this.showTime.day = sec / 3600 / 24 >> 0
+        this.showTime.day = ((sec / 3600 / 24 >> 0) + '').padStart(2, 0)
         this.showTime.hour = ((sec / 3600 % 24 >> 0) + '').padStart(2, 0)
         this.showTime.minute = ((sec / 60 % 60 >> 0) + '').padStart(2, 0)
         this.showTime.second = ((sec % 60 >> 0) + '').padStart(2, 0)

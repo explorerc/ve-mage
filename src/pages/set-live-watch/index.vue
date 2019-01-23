@@ -120,12 +120,8 @@
                              :max-length="30"
                              :errorTips="errorTips"
                              @focus="shareTitleFocus"></com-input>
-                  <p class="v-notes"
-                     style="margin-top: 0;">
-                    注：为了您的内容获得有效传播，建议标题长度不要超过
-                    <span class="v-blue">14</span>个字
-                  </p>
                 </div>
+                <p class="v-notes" style="margin-top: -5px;" :class='{"error":errorTips.length}'>注：为了您的内容获得有效传播，建议标题长度不要超过<span class="v-blue">14</span>个字</p>
               </div>
               <div class="input-form v-label clearfix v-shareIntroduction">
                 <p class="v-info-label pull-left">
@@ -488,16 +484,28 @@ export default {
           text-align: right;
         }
         .v-notes {
-          font-size: 12px;
+          font-size: 14px;
           color: #888888;
           padding-left: 119px;
           margin: 10px auto 0;
+          &.error {
+            margin-top: 6px !important;
+          }
+          .v-blue {
+            color: #4b5afe;
+          }
+        }
+        /deep/ {
+          .el-checkbox+.el-checkbox {
+            margin-left: 20px;
+          }
         }
       }
     }
     .v-brand {
       width: 920px;
       margin: 60px auto 0;
+      min-height: 549px;
       .input-form {
         .v-info-label {
           width: 70px;
@@ -523,7 +531,7 @@ export default {
     .primary-button {
       width: 200px;
       display: block;
-      margin: 80px auto 55px;
+      margin: 40px auto 50px;
     }
   }
   .pull-left {
@@ -615,7 +623,7 @@ export default {
       &:hover,
       &.active {
         cursor: pointer;
-        color: #2878ff;
+        color: #4b5afe;
       }
     }
   }
@@ -675,7 +683,8 @@ export default {
   }
   .v-share {
     width: 850px;
-    margin: 60px auto;
+    margin: 60px auto 0;
+    min-height: 536px;
     .com-input {
       width: 440px;
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="com-import-box-wrap">
-    <div class="com-modal"></div>
-    <div class="com-import-box">
+    <div class="com-modal" @click="close"></div>
+    <div class="com-import-box" :class="{'import-result':importSuccess}">
       <div class="header">
         <span class="title">批量导入</span>
         <button @click='close'><i class="iconfont icon-close"></i></button>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="item download">
-          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入1000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
+          <el-button class='default-button'><router-link to="//static.vhallyun.com/public/template/import.csv" target="_blank">下载模板</router-link></el-button><p class='tips-box'><ve-tips :tip="'导入用户数据时，手机号码为必填项，如果单行用户数据未输入手机号码，该行数据将被忽略。模板每次最多导入5000条数据，超出后将无法导入。'" :tipType="'html'" ></ve-tips></p>
         </div>
         <el-button round class='default-button confirm' :disabled="importDisable" @click="addHandler" style='height:34px;line-height:34px;'>导入</el-button>
       </div>
@@ -83,11 +83,11 @@
         <div class='tips'>
           <span>成功导入<i> {{importSuccessData.success}} </i>位 </span>
           <span>错误用户<i> {{importSuccessData.error}} </i>位 </span>
-          <span>重复数据<i><em> {{importSuccessData.repeat.length}} </em></i>位</span>
+          <span>重复数据<i><em> {{importSuccessData.repeatCount}} </em></i>位</span>
         </div>
-        <ul>
-          <li v-for="item in importSuccessData.repeat" :key="item">{{item}}、</li>
-        </ul>
+        <div class="phone-content">
+          <span v-for="item in importSuccessData.repeat" :key="item">{{item}}、</span>
+        </div>
       </div>
     </div>
   </div>
@@ -97,6 +97,10 @@
 import veTips from 'src/components/ve-msg-tips'
 import ComUpload from 'src/components/common/upload/com'
 import userManage from 'src/api/userManage-service'
+import playbackService from 'src/api/playback-service'
+import ChatConfig from 'src/api/chat-config'
+import ChatService from 'components/chat/ChatService.js'
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -112,7 +116,8 @@ export default {
       importSuccessData: {
         success: 0,
         error: 0,
-        repeat: [123, 123, 334334]
+        repeatCount: 0,
+        repeat: []
       },
       uploadStatus: 'beforeUpload',
       percentImg: 0,
@@ -142,6 +147,11 @@ export default {
       default: false
     }
   },
+  computed: {
+    ...mapState('login', {
+      accountInfo: state => state.accountInfo
+    })
+  },
   mounted () {
     this.initGrouplist()
     if (this.groupId) {
@@ -150,8 +160,34 @@ export default {
     if (this.isFixed) {
       this.radio = this.isFixed
     }
+    this.initMsgServe()
   },
   methods: {
+    async initMsgServe () {
+      // const loginInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+      const roomInfo = await this.$get(playbackService.GET_REG_SDK_INFO, {
+        thirdUserId: this.accountInfo.businessUserId,
+        channel: this.accountInfo.channelRoom
+      }).then(res => {
+        return res.data
+      })
+      ChatService.OBJ.init({
+        accountId: roomInfo.accountId,
+        token: roomInfo.token,
+        appId: roomInfo.appId,
+        channelId: roomInfo.channelRoom
+      })
+      /* 监听下载消息 */
+      ChatService.OBJ.regHandler(ChatConfig.userImport, (msg) => {
+        this.importSuccessData = {
+          success: msg.success,
+          error: msg.invalid,
+          repeatCount: msg.repeatNum,
+          repeat: msg.repeat
+        }
+        this.$emit('importResult', msg)
+      })
+    },
     close () {
       this.$emit('handleClick', {
         action: 'cancel'
@@ -250,11 +286,12 @@ export default {
         console.log(res)
         this.importSuccess = true
         this.importDisable = false
-        this.importSuccessData = {
-          success: res.data.success,
-          error: res.data.invalid,
-          repeat: res.data.repeat
-        }
+        this.$emit('importSuccess', 'success')
+        // this.importSuccessData = {
+        //   success: res.data.success,
+        //   error: res.data.invalid,
+        //   repeat: res.data.repeat
+        // }
       }).catch((res) => {
         this.importDisable = false
         this.uploadStatus = 'beforeUpload'
@@ -394,17 +431,6 @@ export default {
         }
       }
     }
-    ul {
-      background: rgba(245, 245, 245, 1);
-      border-radius: 2px;
-      padding: 10px;
-      height: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      li {
-        display: inline-block;
-      }
-    }
   }
   .com-input {
     width: 400px;
@@ -532,6 +558,22 @@ export default {
         color: #fff;
       }
     }
+  }
+}
+.import-result{
+  width: 596px;
+  height: 426px;
+  .phone-content {
+    background: rgba(245, 245, 245, 1);
+    border-radius: 2px;
+    padding: 10px;
+    height: 128px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
   }
 }
 </style>

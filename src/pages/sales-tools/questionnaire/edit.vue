@@ -62,12 +62,9 @@
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
-                <span class="v-red">
-                  *
-                </span>
                 问卷头图
               </span>
-              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140 大小不超过2M"
+              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140<br>大小不超过2M"
                          accept="png|jpg|jpeg|bmp"
                          :fileSize="2048"
                          :defaultImg="defaultImg"
@@ -158,13 +155,8 @@
       <div class="text">预览</div>
       <div class="v-content">
         <div class="v-hearder">
-          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}">
-
-          </div>
-          <!-- <img :src="defaultImg"
-               alt=""
-               v-if="defaultImg"
-               class="v-question-img"> -->
+          <div v-if="defaultImg" class="v-question-img" :style="{'background-image': `url(${defaultImg})`}"></div>
+          <div v-else class="v-question-img"></div>
           <p class="v-title">
             {{this.title}}
           </p>
@@ -175,6 +167,7 @@
         <questions :dragData="dragData"
                    :phoneData="phoneData"
                    :isView="true"></questions>
+        <button class="primary-button questions-btn">提交</button>
       </div>
     </message-box>
   </div>
@@ -213,8 +206,8 @@
         isSaveDisabled: false,
         questionId: this.$route.params.id,
         activityId: this.$route.params.activityId,
-        title: '',
-        description: '',
+        title: '调查问卷',
+        description: '请您仔细填写下面的信息！',
         imgUrl: '',
         error: {
           titleError: '',
@@ -294,6 +287,7 @@
           style: 'text',
           type: QTypes.TEXT,
           required: 'Y',
+          placeholder: '请输入手机号',
           detail: {
             format: 'phone',
             max: 11
@@ -417,6 +411,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'Y',
+              placeholder: '请输入手机号',
               detail: {
                 format: 'phone',
                 max: 11
@@ -722,11 +717,7 @@
       save () {
         let data = []
         let result = true
-        if (!this.imgUrl) {
-          result = false
-          this.error.uploadErrorMsg = '请上传图片'
-          document.querySelector('.tt .right').scrollTop = 0
-        } else if (!this.title) {
+        if (!this.title) {
           result = false
           this.error.titleError = '请填写问卷标题'
         } else if (!this.description) {
@@ -1092,7 +1083,7 @@
               flex: 1;
               textarea {
                 height: 70px;
-                padding: 2px 60px 2px 10px;
+                padding: 2px 10px 2px 10px;
                 & + .limit {
                   bottom: 10px;
                   right: 8px;
@@ -1218,6 +1209,8 @@
           height: 124px;
           background-position: center;
           background-size: cover;
+          background-repeat: no-repeat;
+          background-image: url("../../../assets/image/question-header.jpg");
         }
         .v-title {
           max-width: 500px;
@@ -1256,5 +1249,11 @@
         }
       }
     }
+  }
+  .questions-btn{
+    display: block;
+    width:220px;
+    height:40px;
+    margin: 50px auto 20px auto;
   }
 </style>

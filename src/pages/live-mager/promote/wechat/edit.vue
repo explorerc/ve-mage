@@ -656,7 +656,7 @@ export default {
   }
   .btn-group {
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 50px;
     width: 295px;
     button {
       padding: 0px;
