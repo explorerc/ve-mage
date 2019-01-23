@@ -88,6 +88,7 @@
       })
     },
     mounted () {
+      document.querySelector('.main-container').scrollTop = 0
       EventBus.$emit('breads', [{
         title: '活动管理'
       }, {
@@ -506,7 +507,6 @@
       margin-bottom: 10px;
       margin-top: -6px;
       .add-goods {
-
       }
       .el-button.is-round {
         width: 140px;
