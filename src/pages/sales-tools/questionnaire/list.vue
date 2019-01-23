@@ -116,7 +116,7 @@
           <questions :dragData="dragData"
                      :phoneData="phoneData"
                      :isView="true"></questions>
-          <button class="primary-button questions-btn">提交</button>
+          <button class="primary-button questions-btn" @click="showToast">提交</button>
         </div>
       </div>
     </message-box>
@@ -188,6 +188,12 @@ export default {
     }
   },
   methods: {
+    showToast () {
+      this.$toast({
+        content: '预览中无法提交问卷数据',
+        position: 'center'
+      })
+    },
     getDataList () {
       this.$post(questionService.GET_QUESTION_LIST, {
         activityId: this.activityId
