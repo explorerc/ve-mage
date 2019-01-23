@@ -458,7 +458,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
-              placeholder: '请输入性别',
+              placeholder: '请选择性别',
               detail: {
                 list: [
                   {
