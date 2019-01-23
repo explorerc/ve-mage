@@ -133,7 +133,7 @@
       importSuccess () {
         this.importShowHide = false
         this.$nextTick(() => {
-          this.$loading({loadingText: '正在上传数据，由于数据量较大，请耐心等待'})
+          this.$loading({type: 'model', loadingText: '<span>正在上传数据，</span><br/><span>由于数据量较大，请耐心等待</span>'})
         })
       },
       handleClick () {

@@ -179,13 +179,14 @@ export default {
       })
       /* 监听下载消息 */
       ChatService.OBJ.regHandler(ChatConfig.userImport, (msg) => {
+        this.$emit('importResult', msg)
         this.importSuccessData = {
           success: msg.success,
           error: msg.invalid,
           repeatCount: msg.repeatNum,
           repeat: msg.repeat
         }
-        this.$emit('importResult', msg)
+        this.importSuccess = true
       })
     },
     close () {
@@ -284,7 +285,7 @@ export default {
       this.importDisable = true
       this.$config({ handlers: true }).$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
         console.log(res)
-        this.importSuccess = true
+        // this.importSuccess = true
         this.importDisable = false
         this.$emit('importSuccess', 'success')
         // this.importSuccessData = {
@@ -338,15 +339,14 @@ export default {
   height: 100%;
   opacity: 0.7;
   background: #000;
-  z-index: 2001;
+  z-index: 1001;
 }
 .com-import-box /deep/ {
-  z-index: 2002;
-  position: absolute;
+  z-index: 1002;
+  position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -256px;
-  margin-left: -286.5px;
+  transform: translate(-50%, -50%);
   width: 573px;
   height: 512px;
   background: rgba(255, 255, 255, 1);
