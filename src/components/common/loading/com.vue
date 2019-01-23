@@ -26,7 +26,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'model'
+      default: ''
     },
     loadingText: {
       type: String,
