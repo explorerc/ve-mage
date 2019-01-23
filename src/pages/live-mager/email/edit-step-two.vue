@@ -305,7 +305,7 @@
       saveEmail () {
         if (this.totalCountStr > this.countBalance) {
           this.$toast({
-            content: '收件人数量超出限额'
+            content: '邮件可发送数量已超出发送限额'
           })
           return false
         }
@@ -354,7 +354,7 @@
       send () {
         if (this.totalCountStr > this.countBalance) {
           this.$toast({
-            content: '收件人数量超出限额'
+            content: '邮件可发送数量已超出发送限额'
           })
           return false
         }
