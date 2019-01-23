@@ -167,7 +167,7 @@
         <questions :dragData="dragData"
                    :phoneData="phoneData"
                    :isView="true"></questions>
-        <button class="primary-button questions-btn">提交</button>
+        <button class="primary-button questions-btn" @click="showToast">提交</button>
       </div>
     </message-box>
   </div>
@@ -321,6 +321,12 @@
       }
     },
     methods: {
+      showToast () {
+        this.$toast({
+          content: '预览中无法提交问卷数据',
+          position: 'center'
+        })
+      },
       getQuestions () {
         this.$get(questionService.GET_QUESTION, {
           activityId: this.activityId,
@@ -393,6 +399,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入姓名',
               detail: {
                 max: ''
               },
@@ -432,6 +439,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入邮箱',
               detail: {
                 format: 'email',
                 max: ''
@@ -450,6 +458,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
+              placeholder: '请输入性别',
               detail: {
                 list: [
                   {
@@ -475,6 +484,7 @@
               errorTip: '',
               type: QTypes.DATE,
               required: 'N',
+              placeholder: '请输入生日',
               detail: {
                 format: 'Y-m-d'
               },
@@ -492,6 +502,7 @@
               errorTip: '',
               type: QTypes.AREA,
               required: 'N',
+              placeholder: '请输入地域',
               detail: {
                 level: 'address'
               },
@@ -509,6 +520,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
+              placeholder: '请选择行业',
               detail: {
                 list: [
                   {
@@ -570,6 +582,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入职位',
               detail: {
                 max: ''
               },
@@ -587,6 +600,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
+              placeholder: '请选择教育水平',
               detail: {
                 list: [
                   {
@@ -701,6 +715,7 @@
               style: 'textarea',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入答案',
               detail: {
                 max: ''
               },
