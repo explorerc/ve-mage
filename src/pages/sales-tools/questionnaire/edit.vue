@@ -62,19 +62,6 @@
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
-                问卷头图
-              </span>
-              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140<br>大小不超过2M"
-                         accept="png|jpg|jpeg|bmp"
-                         :fileSize="2048"
-                         :defaultImg="defaultImg"
-                         :errorMsg="error.uploadErrorMsg"
-                         @error="uploadError($event)"
-                         @success="uploadImgSuccess($event)">
-              </ve-upload>
-            </div>
-            <div class="v-form">
-              <span class="v-title">
                 <span class="v-red">
                   *
                 </span>
@@ -103,6 +90,22 @@
                          @change="canPaas=false"
                          :errorTips="error.descriptionError"
                          @focus="focus('descriptionError')"></com-input>
+            </div>
+            <div class="v-form">
+              <span class="v-title">
+                <span class="v-red" style="visibility: hidden;">
+                  *
+                </span>
+                问卷头图
+              </span>
+              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140<br>大小不超过2M"
+                         accept="png|jpg|jpeg|bmp"
+                         :fileSize="2048"
+                         :defaultImg="defaultImg"
+                         :errorMsg="error.uploadErrorMsg"
+                         @error="uploadError($event)"
+                         @success="uploadImgSuccess($event)">
+              </ve-upload>
             </div>
           </div>
           <div class="rb">
