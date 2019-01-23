@@ -287,11 +287,6 @@ export default {
         this.importSuccess = true
         this.importDisable = false
         this.$emit('importSuccess', 'success')
-        // this.importSuccessData = {
-        //   success: res.data.success,
-        //   error: res.data.invalid,
-        //   repeat: res.data.repeat
-        // }
       }).catch((res) => {
         this.importDisable = false
         this.uploadStatus = 'beforeUpload'
@@ -338,15 +333,14 @@ export default {
   height: 100%;
   opacity: 0.7;
   background: #000;
-  z-index: 2001;
+  z-index: 1001;
 }
 .com-import-box /deep/ {
-  z-index: 2002;
-  position: absolute;
+  z-index: 1002;
+  position: fixed;
   top: 50%;
   left: 50%;
-  margin-top: -256px;
-  margin-left: -286.5px;
+  transform: translate(-50%, -50%);
   width: 573px;
   height: 512px;
   background: rgba(255, 255, 255, 1);
