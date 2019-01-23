@@ -128,10 +128,10 @@
     methods: {
       importResult () {
         this.$loading(false)
-        this.importShowHide = true
+        // this.importShowHide = true
       },
       importSuccess () {
-        this.importShowHide = false
+        // this.importShowHide = false
         this.$nextTick(() => {
           this.$loading({type: 'model', loadingText: '<span>正在上传数据，</span><br/><span>由于数据量较大，请耐心等待</span>'})
         })

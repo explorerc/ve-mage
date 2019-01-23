@@ -108,6 +108,7 @@ export default {
     font-size: 14px;
     border-radius:4px;
     opacity:0.95;
+    box-shadow:0px 0 6px rgba(0,0,0,0.4);
     .model-content{
       position: absolute;
       top: 50%;
