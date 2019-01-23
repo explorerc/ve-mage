@@ -1083,7 +1083,7 @@
               flex: 1;
               textarea {
                 height: 70px;
-                padding: 2px 60px 2px 10px;
+                padding: 2px 10px 2px 10px;
                 & + .limit {
                   bottom: 10px;
                   right: 8px;
