@@ -179,14 +179,13 @@ export default {
       })
       /* 监听下载消息 */
       ChatService.OBJ.regHandler(ChatConfig.userImport, (msg) => {
-        this.$emit('importResult', msg)
         this.importSuccessData = {
           success: msg.success,
           error: msg.invalid,
           repeatCount: msg.repeatNum,
           repeat: msg.repeat
         }
-        this.importSuccess = true
+        this.$emit('importResult', msg)
       })
     },
     close () {
@@ -285,14 +284,9 @@ export default {
       this.importDisable = true
       this.$config({ handlers: true }).$post(userManage.POST_GROUP_IMPORT, res).then((res) => {
         console.log(res)
-        // this.importSuccess = true
+        this.importSuccess = true
         this.importDisable = false
         this.$emit('importSuccess', 'success')
-        // this.importSuccessData = {
-        //   success: res.data.success,
-        //   error: res.data.invalid,
-        //   repeat: res.data.repeat
-        // }
       }).catch((res) => {
         this.importDisable = false
         this.uploadStatus = 'beforeUpload'
