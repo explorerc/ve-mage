@@ -513,7 +513,7 @@
               span {
                 display: inline-block;
                 /*margin: auto 5px;*/
-                color: #cccccc;
+                /*color: #cccccc;*/
                 font-size: 12px;
               }
             }
