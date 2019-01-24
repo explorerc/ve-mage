@@ -589,7 +589,7 @@ export default {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 99999;
+    z-index: 1000;
     background-color: $color-default;
     .title {
       font-size: 16px;

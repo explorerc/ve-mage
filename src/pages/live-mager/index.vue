@@ -6,7 +6,8 @@
       <span class="title">活动列表</span>
       <div class="search-box fr" v-if="tableList.length || isSearch">
         <el-select v-model="searchParams.status" @change='statusChange'
-                   placeholder="直播状态" popper-class='webinar-list-select'>
+                   placeholder="
+                   this.searchParams.page = 1直播状态" popper-class='webinar-list-select'>
           <el-option v-for="item in optionsStates"
                      :key="item.value"
                      :label="item.label"
@@ -14,7 +15,7 @@
           </el-option>
         </el-select>
         <el-select v-model="searchParams.sortBy"
-                   placeholder="请选择" popper-class='webinar-list-select'>
+                   placeholder="请选择" popper-class='webinar-list-select' @change='statusChange'>
           <el-option v-for="item in optionsOrder"
                      :key="item.value"
                      :label="item.label"
@@ -296,7 +297,7 @@
       },
       searchEnter () {
         this.isSearch = true
-        this.queryList()
+        this.queryList('search')
       },
       createLive () {
         this.$router.push('/liveMager/create')
@@ -308,8 +309,11 @@
           this.queryList()
         })
       },
-      queryList () {
-        this.$config().$get(activityService.GET_ACTIVITY_LIST, Object.assign(this.searchParams, {page: 1})).then((res) => {
+      queryList (arg) {
+        if (arg) {
+          Object.assign(this.searchParams, {page: 1})
+        }
+        this.$config().$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
           res.data.list.map((item, indx) => {
             if (item.imgUrl) {
               item.imgUrl = this.$imgHost + '/' + item.imgUrl
@@ -331,7 +335,11 @@
         })
       },
       statusChange (res) {
+        this.searchParams.page = 1
         this.isSearch = true
+      },
+      statusChangeTime (res) {
+        this.searchParams.page = 1
       }
     }
   }

@@ -810,6 +810,7 @@ export default {
               this.recordId = ''
               this.sdkParam.fileName = ''
               this.sdkParam.fileSize = ''
+              this.recordIdError = ''
             }
           }
         })
