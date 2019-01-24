@@ -119,18 +119,18 @@
           clearTimeout(this.timerVail)
           this.timerVail = null
           if (value) {
-            // if (value.gbLength() < rule.min) {
-            // return callback(new Error('商品名称过短'))
-            // } else if (value.gbLength() > rule.max) {
-            for (let attr in this[rule.obj]) {
-              if (attr === rule.field) {
-                this[rule.obj][attr] = value.slice(0, value.gbIndex(rule.max) + 1)
-                return callback()
+            if (value.gbLength() < rule.min) {
+              return callback(new Error('商品名称过短'))
+            } else if (value.gbLength() > rule.max) {
+              for (let attr in this[rule.obj]) {
+                if (attr === rule.field) {
+                  this[rule.obj][attr] = value.slice(0, value.gbIndex(rule.max) + 1)
+                  return callback()
+                }
               }
+            } else {
+              callback()
             }
-            // } else {
-            // callback()
-            // }
           } else {
             return callback(new Error('商品名称不能为空'))
           }
