@@ -248,6 +248,7 @@
         top: 50%;
         transform: translateY(-50%);
         right: 80px;
+        line-height: 30px;
         .com-button {
           padding: 0 20px;
         }

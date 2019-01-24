@@ -29,7 +29,7 @@
               <span>分享链接</span>
               <div class="url-box">
                 <com-input class="page-url"
-                           :value="`${this.protocol+this.pcHOST}site/${this.tid}`"
+                           :value="share_link"
                            disabled></com-input>
                 <com-button @click="copyLink">复制</com-button>
               </div>
@@ -44,7 +44,7 @@
             <div class="right">
               <span>手机扫码 继续观看</span>
               <div class="img-bg">
-                <img :src="`http://aliqr.e.vhall.com/qr.png?t=${this.mobileHost}site/${this.tid}`">
+                <img :src="qrcodeImg">
               </div>
 
             </div>
@@ -238,7 +238,8 @@ export default {
       hasData: false,
       isFirst: false,
       qrcodeImg: '',
-      canPaas: true
+      canPaas: true,
+      share_link: ''
     }
   },
   // /* 路由守卫，离开当前页面之前被调用 */
@@ -267,7 +268,8 @@ export default {
   //   }
   // },
   mounted () {
-    this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`http:${this.mobileHost}site/${this.tid}`)}`
+    this.share_link = `${this.protocol + this.pcHOST}site/${this.tid}`
+    this.qrcodeImg = `http://aliqr.e.vhall.com/qr.png?t=${encodeURIComponent(`https:${this.mobileHost}site/${this.tid}`)}`
     if (this.$route.path.indexOf('edit') === -1) {
       this.isPreview = true
     }
@@ -284,7 +286,7 @@ export default {
         content: '复制成功',
         position: 'center'
       })
-      this.share.link.copyClipboard()
+      this.share_link.copyClipboard()
     },
     uploadImgSuccess (data) {
       this.icon = data.name
@@ -677,7 +679,7 @@ export default {
         right: 0;
         top: 60px;
         background-color: white;
-        border: 1px solid #E2E2E2;
+        border: 1px solid #e2e2e2;
         border-top: 0;
         border-radius: 4px;
         &:before {
@@ -690,15 +692,14 @@ export default {
           border-top-color: transparent;
           border-left-color: transparent;
           border-right-color: transparent;
-
         }
         /*.share-box-title {*/
-          /*height: 40px;*/
-          /*.icon-close {*/
-            /*cursor: pointer;*/
-            /*float: right;*/
-            /*margin-right: 15px;*/
-          /*}*/
+        /*height: 40px;*/
+        /*.icon-close {*/
+        /*cursor: pointer;*/
+        /*float: right;*/
+        /*margin-right: 15px;*/
+        /*}*/
         /*}*/
         .share-content {
           padding: 30px 20px 30px;
@@ -714,10 +715,10 @@ export default {
               display: inline-block;
               margin-bottom: 10px;
             }
-            .url-box /deep/{
+            .url-box /deep/ {
               /*display: inline-block;*/
               height: 40px;
-              border: 1px solid #E2E2E2;
+              border: 1px solid #e2e2e2;
               width: 220px;
               margin-bottom: 20px;
               border-radius: 4px;
@@ -739,13 +740,13 @@ export default {
                 height: 100%;
                 padding: 10px 16px;
                 border-radius: 0 4px 4px 0;
-                background-color: #E2E2E2;
+                background-color: #e2e2e2;
                 color: #222;
                 &:hover {
-                  background-color: #FDD43F;
+                  background-color: #fdd43f;
                 }
                 &:active {
-                  background-color: #EEC11A;
+                  background-color: #eec11a;
                 }
               }
             }
@@ -784,7 +785,7 @@ export default {
               width: 138px;
               height: 138px;
               padding: 7px;
-              border: 1px solid #E2E2E2;
+              border: 1px solid #e2e2e2;
             }
             img {
               display: block;

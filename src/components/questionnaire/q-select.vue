@@ -22,7 +22,7 @@
     <el-select v-if="!edit"
                v-model="value.value"
                @change="change"
-               placeholder="请选择">
+               :placeholder="value.placeholder||'请选择'">
       <el-option v-for="(item,index) in value.detail.list"
                  :label="item.value"
                  :value="index"

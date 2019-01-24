@@ -9,7 +9,7 @@
               v-else-if="!isConvert&&percentVideo!=100&&percentVideo!=0">{{(fileRealSize*percentVideo/100).toFixed(2)}}M/{{fileRealSize}}M</span>
         <span class="file-size"
               v-else-if="!isConvert&&(percentVideo==100||percentVideo==0)">{{fileRealSize}}M</span>
-        <span class="file-convert" v-else="isConvert">文件已上传成功，正在转码中。关闭页面不会中断转码。</span>
+        <span class="file-convert" v-else="isConvert">文件已上传成功，正在转码中。关闭页面不会中断转码</span>
         <div class="percent-box" v-if="percentVideo">
           <span :style="{width:percentVideo+'%'}"></span>
         </div>
@@ -99,6 +99,9 @@
         handler (newVal) {
           if (!newVal.sign) return
           this.fileName = newVal.fileName
+          if (!this.fileName) {
+            this.errorTxt = ''
+          }
           this.fileRealSize = (newVal.fileSize / 1024).toFixed(2)
           this.isConvert = !newVal.transcode_status
           if (!this.tempSign) {
@@ -137,6 +140,7 @@
         this.percentVideo = 0
         this.errorTxt = ''
         let _this = this
+        let temFile = null
         this.$nextTick(() => {
           window.vhallCloudDemandSDK(`#${_this.uploadId}`, {
             params: {
@@ -147,7 +151,7 @@
               app_id: _this.sdk.app_id
             },
             beforeUpload: (file) => {
-              const reg = /^[0-9a-zA-Z._\u4e00-\u9fa5]{1,30}$/
+              temFile = file
               _this.fileName = file.name
               _this.fileRealSize = file.size / 1024 / 1024
               if (file.type !== 'video/mp4') {
@@ -159,10 +163,6 @@
                 const mSize = parseInt(_this.fileSize / 1024)
                 let fSize = gSize > 1 ? `${gSize}G` : `${mSize}M`
                 _this.errorTxt = '您上传的视频文件过大，请上传不超过' + fSize + '的视频文件'
-                _this.$emit('error', _this.errorTxt, file)
-                return false
-              } else if (!reg.test(_this.fileName)) {
-                _this.errorTxt = '视频名称不能包含特殊字符，长度不能超过30个字'
                 _this.$emit('error', _this.errorTxt, file)
                 return false
               } else {
@@ -189,10 +189,10 @@
               _this.isConvert = true
               _this.$emit('success', _this.record_id, _this.fileName, _this.fileRealSize * 1024)
             },
-            error: (msg, file, e) => {
+            error: (msg) => {
               _this.loading = false
-              _this.errorTxt = msg
-              _this.$emit('error', msg, file)
+              _this.errorTxt = msg === '视频名称不符合规范' ? '视频名称不能包含特殊字符，长度不能超过30个字' : msg
+              _this.$emit('error', _this.errorTxt, temFile)
             }
           })
         })

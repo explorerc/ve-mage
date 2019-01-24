@@ -62,19 +62,6 @@
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
-                问卷头图
-              </span>
-              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140<br>大小不超过2M"
-                         accept="png|jpg|jpeg|bmp"
-                         :fileSize="2048"
-                         :defaultImg="defaultImg"
-                         :errorMsg="error.uploadErrorMsg"
-                         @error="uploadError($event)"
-                         @success="uploadImgSuccess($event)">
-              </ve-upload>
-            </div>
-            <div class="v-form">
-              <span class="v-title">
                 <span class="v-red">
                   *
                 </span>
@@ -103,6 +90,22 @@
                          @change="canPaas=false"
                          :errorTips="error.descriptionError"
                          @focus="focus('descriptionError')"></com-input>
+            </div>
+            <div class="v-form">
+              <span class="v-title">
+                <span class="v-red" style="visibility: hidden;">
+                  *
+                </span>
+                问卷头图
+              </span>
+              <ve-upload title="头图图片支持jpg、png、bmp格式，推荐尺寸为：700*140<br>大小不超过2M"
+                         accept="png|jpg|jpeg|bmp"
+                         :fileSize="2048"
+                         :defaultImg="defaultImg"
+                         :errorMsg="error.uploadErrorMsg"
+                         @error="uploadError($event)"
+                         @success="uploadImgSuccess($event)">
+              </ve-upload>
             </div>
           </div>
           <div class="rb">
@@ -167,7 +170,7 @@
         <questions :dragData="dragData"
                    :phoneData="phoneData"
                    :isView="true"></questions>
-        <button class="primary-button questions-btn">提交</button>
+        <button class="primary-button questions-btn" @click="showToast">提交</button>
       </div>
     </message-box>
   </div>
@@ -321,6 +324,12 @@
       }
     },
     methods: {
+      showToast () {
+        this.$toast({
+          content: '预览中无法提交问卷数据',
+          position: 'center'
+        })
+      },
       getQuestions () {
         this.$get(questionService.GET_QUESTION, {
           activityId: this.activityId,
@@ -393,6 +402,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入姓名',
               detail: {
                 max: ''
               },
@@ -432,6 +442,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入邮箱',
               detail: {
                 format: 'email',
                 max: ''
@@ -450,6 +461,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
+              placeholder: '请选择性别',
               detail: {
                 list: [
                   {
@@ -475,6 +487,7 @@
               errorTip: '',
               type: QTypes.DATE,
               required: 'N',
+              placeholder: '请输入生日',
               detail: {
                 format: 'Y-m-d'
               },
@@ -492,6 +505,7 @@
               errorTip: '',
               type: QTypes.AREA,
               required: 'N',
+              placeholder: '请输入地域',
               detail: {
                 level: 'address'
               },
@@ -509,6 +523,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
+              placeholder: '请选择行业',
               detail: {
                 list: [
                   {
@@ -570,6 +585,7 @@
               style: 'text',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入职位',
               detail: {
                 max: ''
               },
@@ -587,6 +603,7 @@
               errorTip: '',
               type: QTypes.SELECT,
               required: 'N',
+              placeholder: '请选择教育水平',
               detail: {
                 list: [
                   {
@@ -701,6 +718,7 @@
               style: 'textarea',
               type: QTypes.TEXT,
               required: 'N',
+              placeholder: '请输入答案',
               detail: {
                 max: ''
               },
