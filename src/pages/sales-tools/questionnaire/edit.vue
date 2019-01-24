@@ -62,7 +62,7 @@
           <div class="ru">
             <div class="v-form">
               <span class="v-title">
-                <span class="v-red">
+                <span class="v-red" style="visibility: hidden;">
                   *
                 </span>
                 问卷标题
@@ -77,14 +77,14 @@
             </div>
             <div class="v-form">
               <span class="v-title">
-                <span class="v-red">
+                <span class="v-red" style="visibility: hidden;">
                   *
                 </span>
                 问卷简介
               </span>
               <com-input placeholder="问卷简介"
                          :max-length="300"
-                         class="q-title"
+                         class="q-title  que-intro"
                          type="textarea"
                          :value.sync="description"
                          @change="canPaas=false"
@@ -1080,6 +1080,13 @@
           border-radius: 4px;
           overflow: hidden;
           padding: 32px 56px 32px 30px;
+          /deep/ {
+            .que-intro {
+              textarea {
+                text-align: justify !important;
+              }
+            }
+          }
           .v-form /deep/ {
             width: 100%;
             display: flex;
@@ -1101,7 +1108,7 @@
               flex: 1;
               textarea {
                 height: 70px;
-                padding: 2px 60px 2px 10px;
+                padding: 2px 10px 2px 10px;
                 & + .limit {
                   bottom: 10px;
                   right: 8px;

@@ -6,12 +6,12 @@
     <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="商品名称：" prop="title">
         <el-input v-model="goodsData.title" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
-          <template slot="append" class="slot"><span v-text="goodsData.title.gbLength()" style="color: #2878FF"></span>
-            / 20
-          </template>
+          <template slot="append" class="slot">
+            <span v-text="goodsData.title.gbLength()" style="color: #4b5afe" v-if="goodsData.title.gbLength()>0"></span><span v-text="goodsData.title.gbLength()" style="color: #999" v-if="goodsData.title.gbLength()==0">
+            </span>/20</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="原始价格：" prop="price"  class="is-required">
+      <el-form-item label="原始价格：" prop="price" class="is-required">
         <div class="a_unit">
           <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
           <span>元</span>
@@ -24,16 +24,17 @@
           <span>元</span>
         </div>
       </el-form-item>
-      <el-form-item label="商品图片：" prop="imageList" style="margin-bottom:10px;">
+      <el-form-item label="商品图片：" prop="imageList" style="margin-bottom:15px;" class="image-list">
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
-                       title="图片小于2MB &nbsp;&nbsp;(jpg、png、bmp)&nbsp;&nbsp; 最佳尺寸：600 x 800"
+                       title="图片支持jpg、png、bmp&nbsp;&nbsp;小于不超过2MB &nbsp;&nbsp; 最佳尺寸：600 x 800"
                        accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
                        :fileSize="2048"
                        :errorMsg="ite.errMsg"
                        @error="uploadError($event, ite)" :initImg="ite.name"
                        @success="uploadImgSuccess"></ve-upload>
+            <!--<span v-if="ite.errMsg" class="error-msg img-error">{{ite.errMsg}}</span>-->
           </template>
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
@@ -42,7 +43,7 @@
         <el-input class="inupt_text" v-model="goodsData.url" type="url" placeholder="请输入商品链接"></el-input>
         <span class="tips" v-if="tipsShow">链接需要附带http://或https://头协议</span>
       </el-form-item>
-      <el-form-item label="商品描述：" >
+      <el-form-item label="商品描述：">
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
                    placeholder="请输入商品描述"></com-input>
       </el-form-item>
@@ -210,7 +211,7 @@
           price: '', // 价格
           preferential: '', // 优惠价格
           url: '', // 商品链接
-          imageList: [{ errMsg: '' }, { errMsg: '' }, { errMsg: '' }, { errMsg: '' }],
+          imageList: [{errMsg: ''}, {errMsg: ''}, {errMsg: ''}, {errMsg: ''}],
           describe: '', // 商品描述
           tao: ''
         },
@@ -218,38 +219,38 @@
         timer: null,
         rules: {
           title: [
-            { required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData' }
+            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData'}
           ],
           price: [
-            { validator: price, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
+            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
           ],
           preferential: [
-            { validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'blur', obj: 'goodsData' }
+            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
           ],
           // url: [
           //   { required: true, type: 'url', message: '请输入有效的链接以http://或https://开头', trigger: 'blur', minlength: 0, maxlength: 300 },
           //   { min: 0, max: 300, type: 'url', message: '商品链接应大于0小于300', trigger: 'blur' }
           // ],
           url: [
-            { validator: vailUrl, trigger: 'blur' }
+            {validator: vailUrl, trigger: 'blur'}
           ],
           imageList: [
-            { required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData' }
+            {required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData'}
           ]
         }
       }
     },
     methods: {
       add_upload () {
-        this.goodsData.imageList.push({ errMsg: '' })
+        this.goodsData.imageList.push({errMsg: ''})
       },
       getGoodsDetail () {
-        this.$post(goodsServer.GOODS_DETAIL, { goods_id: this.$route.params.id })
+        this.$post(goodsServer.GOODS_DETAIL, {goods_id: this.$route.params.id})
           .then(res => {
             res.data.image = JSON.parse(res.data.image)
             let imgLen = res.data.image.length
             for (let i = 0; i < 4 - imgLen; i++) {
-              res.data.image.push({ errMsg: '' })
+              res.data.image.push({errMsg: ''})
             }
             res.data.price = Number.parseInt(res.data.price)
             res.data.preferential = Number.parseInt(res.data.preferential);
@@ -352,166 +353,193 @@
   }
 </script>
 <style lang="scss">
-.el-form-item__error {
-  top: 90%;
-}
+  .el-form-item__error {
+    top: 90%;
+  }
 </style>
 <style lang="scss" scoped>
-@import '~assets/css/mixin.scss';
-#goods-info {
-  padding: 50px 100px;
-  font-family: PingFangSC-Regular;
-  /deep/ {
-    .el-form-item .tips {
-      display: block;
-      color: #606266;
-      height: 20px;
-      line-height: 20px;
-      font-size: 14px;
-    }
-    header {
-      height: 26px;
-      font-size: 24px;
-      font-weight: 400;
-      color: rgba(34, 34, 34, 1);
-      line-height: 26px;
-      margin-bottom: 25px;
-      position: relative;
-    }
-    .el-form {
-      padding: 40px 80px;
-      border: 1px solid #eee;
-      background-color: white;
-      .el-form-item:nth-of-type(1) {
-        .el-form-item__content {
-          width: 460px;
-        }
+  @import '~assets/css/mixin.scss';
+
+  #goods-info {
+    padding: 50px 100px;
+    font-family: PingFangSC-Regular;
+    /deep/ {
+      .el-form-item .tips {
+        display: block;
+        color: #888;
+        height: 20px;
+        line-height: 20px;
+        font-size: 14px;
       }
-      .el-form-item:nth-of-type(2),
-      .el-form-item:nth-of-type(3) {
-        width: 400px;
+      header {
+        height: 26px;
+        font-size: 24px;
+        font-weight: 400;
+        color: rgba(34, 34, 34, 1);
+        line-height: 26px;
+        margin-bottom: 25px;
+        position: relative;
       }
-      /*.el-form-item:last-of-type {*/
-      /*text-align: center;*/
-      /*}*/
-      .inupt_textarea {
-        width: 100%;
-        height: 120px;
-        .limit.area {
-          right: 12px;
-          bottom: 10px;
-        }
-      }
-      .inupt_text {
-        width: 440px;
-      }
-      .a_unit {
-        overflow: hidden;
-        width: 250px;
-        .el-input {
-          width: 200px;
-          float: left;
-        }
-        span {
-          display: inline-block;
-          width: 40px;
-          float: right;
-          text-align: left;
-        }
-      }
-      .slot_inp_b {
-        .el-input__inner {
-          padding-right: 60px;
-          border-radius: 4px;
-        }
-      }
-      .el-input-group__append {
-        width: 60px;
-        transform: translateX(-61px);
-        text-align: center;
-        border: transparent;
-        background-color: transparent;
-        padding: 0;
-      }
-      .el-input__inner,
-      .el-input.el-input__inner,
-      .el-input__inner {
-        border-color: #cecece !important;
-      }
-      .el-input__inner:hover,
-      .el-input.is-active .el-input__inner,
-      .el-input__inner:focus {
-        border-color: #888888 !important;
-      }
-      .el-form-item.url {
-        margin-bottom: 24px;
-      }
-      .el-form-item.textarea-box {
-        transform: translateY(-8px);
-      }
-      .el-form-item:last-child {
-        text-align: center;
-      }
-    }
-    .upload_box {
-      position: relative;
-      &::before {
-        content: '';
-        width: 32px;
-        height: 35px;
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        background-image: url('~assets/image/index01.svg');
-        background-size: cover;
-      }
-      .ve-upload-box {
-        width: 140px;
-        height: 140px;
-        margin: auto 10px auto 0;
-        display: inline-block;
-        .upload-img-box {
-          width: 140px;
-          height: 140px;
-        }
-        .over-upload {
-          width: 140px;
-        }
-        .com-upload {
-          width: 100%;
-          height: 140px;
-          .upload-file-box {
-            width: 100%;
-            .upload-icon {
-              margin: 10px auto 0px auto;
-            }
-            span {
-              display: inline-block;
-              /*margin: auto 5px;*/
-              color: #cccccc;
-              font-size: 12px;
+      .el-form {
+        padding: 40px 80px;
+        border: 1px solid #eee;
+        background-color: white;
+        .el-form-item {
+          margin-bottom: 27px;
+          &.image-list {
+            .el-form-item__error {
+              top: calc(100% - 17px);
             }
           }
         }
+        .el-form-item:nth-of-type(1) {
+          .el-form-item__content {
+            width: 460px;
+          }
+        }
+        .el-form-item:nth-of-type(2),
+        .el-form-item:nth-of-type(3) {
+          width: 400px;
+        }
+        /*.el-form-item:last-of-type {*/
+        /*text-align: center;*/
+        /*}*/
+        .inupt_textarea {
+          width: 100%;
+          height: 120px;
+          .limit.area {
+            right: 12px;
+            bottom: 10px;
+          }
+        }
+        .inupt_text {
+          width: 440px;
+        }
+        .a_unit {
+          overflow: hidden;
+          width: 250px;
+          .el-input {
+            width: 200px;
+            float: left;
+          }
+          span {
+            display: inline-block;
+            width: 40px;
+            float: right;
+            text-align: left;
+          }
+        }
+        .slot_inp_b {
+          .el-input__inner {
+            padding-right: 60px;
+            padding-left: 10px;
+            border-radius: 4px;
+          }
+        }
+        .el-input__inner {
+          padding-left: 10px;
+        }
+        .el-input-group__append {
+          width: 60px;
+          transform: translateX(-61px);
+          text-align: center;
+          border: transparent;
+          background-color: transparent;
+          padding: 0;
+        }
+        .el-input__inner,
+        .el-input.el-input__inner,
+        .el-input__inner {
+          border-color: #cecece !important;
+        }
+        .el-input__inner:hover,
+        .el-input.is-active .el-input__inner,
+        .el-input__inner:focus {
+          border-color: #888888 !important;
+        }
+        .el-form-item.url {
+          margin-bottom: 30px;
+        }
+        .el-form-item.textarea-box {
+          transform: translateY(-8px);
+        }
+        .el-form-item:last-child {
+          text-align: center;
+        }
+        .is-error input {
+          border-color: #FC5659 !important;
+        }
       }
-      > span {
-        font-size: 30px;
-        transform: translateY(-60px);
-        color: #999999;
+      .upload_box {
+        position: relative;
+        &::before {
+          content: '';
+          width: 32px;
+          height: 35px;
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 100;
+          background-image: url('~assets/image/index01.svg');
+          background-size: cover;
+        }
+        .ve-upload-box {
+          width: 140px;
+          height: 140px;
+          margin: auto 10px auto 0;
+          display: inline-block;
+          .upload-img-box {
+            width: 140px;
+            height: 140px;
+          }
+          .over-upload {
+            width: 140px;
+          }
+          .com-upload {
+            width: 100%;
+            height: 140px;
+            .upload-file-box {
+              position: relative;
+              width: 100%;
+              .upload-icon {
+                margin: 10px auto 0px auto;
+              }
+              .error-msg {
+                /*position: absolute;*/
+                /*top: 0;*/
+                /*left: 0;*/
+              }
+              span {
+                display: inline-block;
+                /*margin: auto 5px;*/
+                /*color: #cccccc;*/
+                font-size: 12px;
+              }
+            }
+          }
+        }
+        > span {
+          font-size: 30px;
+          transform: translateY(-60px);
+          color: #999999;
+        }
       }
-    }
-    .btns_box {
-      margin-bottom: 10px;
-      margin-top: -6px;
-      .add-goods {
+      .btns_box {
+        margin-bottom: 10px;
+        margin-top: -6px;
+        .add-goods {
+
+        }
+        .el-button.is-round {
+          width: 140px;
+          height: 40px !important;
+        }
       }
-      .el-button.is-round {
-        width: 140px;
-        height: 40px !important;
+      .el-form-item__error {
+        font-size: 14px;
       }
+
     }
   }
-}
 </style>

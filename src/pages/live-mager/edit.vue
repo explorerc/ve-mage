@@ -16,7 +16,7 @@
           <div class="from-title"><i class="star">*</i>直播标题：</div>
           <div class="from-content">
             <com-input :value.sync="title" placeholder="请输入直播标题" :max-length="30" class='inp' :class="{ 'error':titleEmpty }" @focus='titleEmpty = false'></com-input>
-            <span class="error-tips" v-if='titleEmpty' style="display: block">请填写直播标题</span>
+            <span class="error-tips title-error" v-if='titleEmpty'>请填写直播标题</span>
           </div>
         </div>
         <div class="from-row" >
@@ -24,14 +24,16 @@
           <div class="from-content" :class="{ 'error':dateEmpty }">
             <el-date-picker @focus='dateFocus()' v-model="date"  @change="canPaas=false" type="datetime" :clearable='false' placeholder="选择日期时间" :editable="false" :picker-options="pickerOptions" format='yyyy-MM-dd HH:mm' value-format="yyyy-MM-dd HH:mm" :popper-class="'datePicker'" :default-value="defaultValue" >
             </el-date-picker>
-            <span class='tips-time'>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播</span>
-            <span class="error-tips" v-if='dateEmpty'>请选择直播时间</span>
+            <!--<span class='tips-time'>注意：活动在开始直播的48小时之内可重复发起，48小时之后将无法再次发起直播</span>-->
+            <span class="error-tips time-error" v-if='dateEmpty'>请选择直播时间</span>
           </div>
         </div>
         <div class="from-row">
           <div class="from-title"><i class="star"></i>直播封面：</div>
           <div class="from-content">
-            <ve-upload title="图片支持jpg、png、bmp格式，建议比例16:9，大小不超过2M<br>建议尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <!--<ve-upload title="图片支持jpg、png、bmp格式，大小不超过2M<br>尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>-->
+            <ve-upload title="图片支持jpg、png、bmp格式，大小不超过2M<br>尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+            <span v-if="uploadImgErrorMsg" class="error-tips img-error">{{uploadImgErrorMsg}}</span>
           </div>
         </div>
         <div class="from-row">
@@ -394,7 +396,6 @@ export default {
       })
     },
     addShowClooseTag () {
-      debugger
       this.canPaas = false
       this.showChooseTag = !this.showChooseTag
       this.$nextTick(() => {
@@ -576,8 +577,8 @@ export default {
     }
     .content-count {
       position: absolute;
-      bottom: 20px;
-      right: 20px;
+      top: 270px;
+      right: 23px;
       color: #999;
       i {
         color: #999;
@@ -588,6 +589,9 @@ export default {
     }
     .html-editer .content {
       width: 100%;
+      height: 240px;
+      overflow-y: auto;
+      text-align: justify;
     }
     .from-content.editor-content:not(.error):hover .vue-html5-editor {
       border-color: $color-gray-hover;
@@ -659,6 +663,20 @@ export default {
 }
 .error-tips {
   color: $color-error;
+  &.img-error {
+    position: absolute;
+    top: 100%;
+  }
+  &.title-error {
+    position: absolute;
+    top: 36px;
+    left: 0;
+  }
+  &.time-error {
+    position: absolute;
+    top: 34px;
+    left: 0;
+  }
 }
 // .modal-cover {
 //   position: fixed;
@@ -852,9 +870,11 @@ export default {
     }
     .from-content {
       flex: 1;
+      position: relative;
       .input-box {
         width: 400px;
       }
+
     }
   }
 }

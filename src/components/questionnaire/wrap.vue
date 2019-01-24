@@ -1,7 +1,8 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index">{{index}}</div>
+      <div class="index phone-index" v-if="value.detail.format==='phone'">{{index}}</div>
+      <div class="index" v-else>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}<span v-if="value._required"
               class="v-red">*</span>
@@ -223,6 +224,9 @@ export default {
       margin-right: 15px;
       padding-left: 10px;
       font-size: 14px;
+      &.phone-index {
+        margin-top: 8px;
+      }
     }
     .v-red {
       display: inline-block;
