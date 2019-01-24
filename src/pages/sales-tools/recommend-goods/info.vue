@@ -24,7 +24,7 @@
           <span>元</span>
         </div>
       </el-form-item>
-      <el-form-item label="商品图片：" prop="imageList" style="margin-bottom:15px;">
+      <el-form-item label="商品图片：" prop="imageList" style="margin-bottom:15px;" class="image-list">
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
             <ve-upload :key="ind"
@@ -386,6 +386,11 @@
         background-color: white;
         .el-form-item {
           margin-bottom: 27px;
+          &.image-list {
+            .el-form-item__error {
+              top: calc(100% - 17px);
+            }
+          }
         }
         .el-form-item:nth-of-type(1) {
           .el-form-item__content {
