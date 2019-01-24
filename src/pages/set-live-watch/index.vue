@@ -557,10 +557,13 @@ export default {
           height: 100%;
           float: left;
           position: relative;
-          width: 50px;
+          max-height: 120px;
+          min-width: 20px;
+          max-width: 50px;
         }
         img.h5-logo {
-          max-width: 50px;
+          max-width: 100%;
+          max-height: 100%;
           position: absolute;
           top: 50%;
           left: 50%;
