@@ -576,8 +576,8 @@ export default {
     }
     .content-count {
       position: absolute;
-      bottom: 20px;
-      right: 20px;
+      bottom: 14px;
+      right: 23px;
       color: #999;
       i {
         color: #999;
@@ -588,6 +588,9 @@ export default {
     }
     .html-editer .content {
       width: 100%;
+      height: 240px;
+      overflow-y: auto;
+      text-align: justify;
     }
     .from-content.editor-content:not(.error):hover .vue-html5-editor {
       border-color: $color-gray-hover;
