@@ -68,7 +68,7 @@ export default function () {
             enable: true,
             text: '活动报名',
             link: '',
-            hrefType: '_define',
+            hrefType: '_sub',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -86,7 +86,7 @@ export default function () {
             enable: true,
             text: '活动报名',
             link: '',
-            hrefType: '_define',
+            hrefType: '_sub',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'
@@ -104,7 +104,7 @@ export default function () {
             enable: true,
             text: '活动报名',
             link: '',
-            hrefType: '_define',
+            hrefType: '_sub',
             fontColor: 'rgba(255,255,255,1)',
             bgColor: 'rgba(30,101,231,1)',
             target: '_self'

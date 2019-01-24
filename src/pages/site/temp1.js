@@ -79,7 +79,7 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '活动报名',
         link: '',
-        hrefType: '_define',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
@@ -291,7 +291,7 @@ export default function () {
         fontColor: 'rgba(34,34,34,1)',
         text: '活动报名',
         link: '',
-        hrefType: '_define',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
