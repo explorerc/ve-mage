@@ -151,6 +151,7 @@
               app_id: _this.sdk.app_id
             },
             beforeUpload: (file) => {
+              const reg = /^[0-9a-zA-Z._\u4e00-\u9fa5]{1,30}$/
               temFile = file
               _this.fileName = file.name
               _this.fileRealSize = file.size / 1024 / 1024
@@ -163,6 +164,10 @@
                 const mSize = parseInt(_this.fileSize / 1024)
                 let fSize = gSize > 1 ? `${gSize}G` : `${mSize}M`
                 _this.errorTxt = '您上传的视频文件过大，请上传不超过' + fSize + '的视频文件'
+                _this.$emit('error', _this.errorTxt, file)
+                return false
+              } else if (!reg.test(_this.fileName)) {
+                _this.errorTxt = '视频名称不能包含特殊字符，长度不能超过30个'
                 _this.$emit('error', _this.errorTxt, file)
                 return false
               } else {

@@ -86,6 +86,8 @@
         url: `/salesTools/recommendGoodsList/${this.$route.params.activity_id}`
       }])
     },
+    mounted () {
+    },
     data () {
       return {
         activity_id: this.$route.params.activity_id,

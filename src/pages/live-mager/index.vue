@@ -296,7 +296,7 @@
       },
       searchEnter () {
         this.isSearch = true
-        this.queryList()
+        this.queryList('search')
       },
       createLive () {
         this.$router.push('/liveMager/create')
@@ -308,8 +308,11 @@
           this.queryList()
         })
       },
-      queryList () {
-        this.$config().$get(activityService.GET_ACTIVITY_LIST, Object.assign(this.searchParams, {page: 1})).then((res) => {
+      queryList (arg) {
+        if (arg) {
+          Object.assign(this.searchParams, {page: 1})
+        }
+        this.$config().$get(activityService.GET_ACTIVITY_LIST, this.searchParams).then((res) => {
           res.data.list.map((item, indx) => {
             if (item.imgUrl) {
               item.imgUrl = this.$imgHost + '/' + item.imgUrl
