@@ -295,15 +295,17 @@
               position: relative;
             }
             &:nth-of-type(1) {
-              width: 7%;
+              width: 5%;
             }
             &:nth-of-type(2) {
-              width: 10%;
+              width: 8%;
             }
             &:nth-of-type(3) {
-              width: 20%;
+              width: 26%;
             }
-            &:nth-of-type(4),
+            &:nth-of-type(4) {
+              width: 8%;
+            }
             &:nth-of-type(5) {
               width: 10%;
             }
@@ -315,7 +317,7 @@
               button {
                 color: #222222;
                 &:hover {
-                  color: #2878ff;
+                  color: #4B5AFE;
                 }
               }
             }
@@ -357,12 +359,7 @@
               table-layout: fixed;
             }*/
           tr:hover {
-            background-color: #f5f7fa;
-          }
-          tr:last-child {
-            td {
-              border: none;
-            }
+            background-color: #f0f1fe;
           }
         }
         /* thead {

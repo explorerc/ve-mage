@@ -43,8 +43,7 @@
           <el-table-column label="操作">
             <template slot-scope="scope">
               <span class='edit'><router-link
-                :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.recommend_card_id}`">编辑</router-link></span><em
-              class='blank'>|</em>
+                :to="`/salesTools/recommendCardsDetails/${activityId}?cardId=${scope.row.recommend_card_id}`">编辑</router-link></span>
               <span class='delete' @click='del(scope.row.recommend_card_id,scope.row.title,scope.row.index)'>删除</span>
             </template>
           </el-table-column>
@@ -182,13 +181,21 @@
       }
     }
     .from-box {
-      .edit:hover a {
-        color: $color-blue;
+      .edit,.delete {
+        margin-right: 10px;
+        color: #222222;
+        &:hover a {
+          color: $color-blue;
+        }
       }
-      .delete:hover {
-        cursor: pointer;
-        color: $color-error;
+      .delete {
+        &:hover {
+          cursor: pointer;
+          /*<!--color: $color-error;-->*/
+          color: $color-blue;
+        }
       }
+
       .blank {
         display: inline-block;
         width: 20px;
@@ -215,13 +222,13 @@
         .el-table::before {
           height: 0;
         }
-        .el-table {
+        /*.el-table {
           tr:last-child {
             td {
               border: none;
             }
           }
-        }
+        }*/
       }
     }
 

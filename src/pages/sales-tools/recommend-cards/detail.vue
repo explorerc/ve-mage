@@ -288,7 +288,7 @@
       .error-msg {
         display: block;
         color: $color-red;
-        margin-left: 10px;
+        padding-left: 0;
       }
       .input-box {
         width: 400px;

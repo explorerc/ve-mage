@@ -55,9 +55,10 @@
                 </td>
                 <td>
                   <a href="javascript:;"
-                     @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a><span>|</span>
+                     @click="jumpEdit(itemData.publish,itemData.naireId)">编辑</a>
                   <a href="javascript:;"
-                     @click="view(itemData.naireId)">预览</a><span>|</span>
+                     class="v-td-view"
+                     @click="view(itemData.naireId)">预览</a>
                   <a href="javascript:;"
                      class="v-del"
                      @click="confirmDel(itemData)">删除</a>
@@ -418,10 +419,13 @@ export default {
           td {
             padding: 0 20px;
             a {
+              display: inline-block;
+              margin-right: 10px;
               &:hover {
+
                 color: #4b5afe;
                 &.v-del {
-                  color: #fc5659;
+                  /*color: #fc5659;*/
                 }
               }
             }
@@ -431,7 +435,7 @@ export default {
             }
           }
           &:hover {
-            background-color: #e9ebff;
+            background-color: #f0f1fe;
           }
           &.v-nodata {
             text-align: center;
