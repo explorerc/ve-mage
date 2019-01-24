@@ -89,7 +89,6 @@
       })
     },
     mounted () {
-      document.querySelector('.main-container').scrollTop = 0
       EventBus.$emit('breads', [{
         title: '活动管理'
       }, {

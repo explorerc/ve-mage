@@ -87,8 +87,8 @@ router.afterEach((to, from) => {
   if (router.app) {
     setTimeout(() => {
       if (document.querySelector('.main-container') && to.meta.scrollTop) {
-        document.querySelector('.main-container').scrollTop =
-          to.meta.scrollTop || 0
+        document.querySelector('.main-container').scrollTop = 0
+        // to.meta.scrollTop || 0
       }
     }, 1000)
   }
