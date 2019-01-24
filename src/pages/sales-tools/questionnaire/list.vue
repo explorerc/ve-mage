@@ -20,7 +20,7 @@
         <table>
           <thead>
             <tr>
-              <td>
+              <td style="width: 48%">
                 问卷名称
               </td>
               <td>

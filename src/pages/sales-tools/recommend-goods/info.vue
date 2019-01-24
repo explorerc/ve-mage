@@ -34,6 +34,7 @@
                        :errorMsg="ite.errMsg"
                        @error="uploadError($event, ite)" :initImg="ite.name"
                        @success="uploadImgSuccess"></ve-upload>
+            <!--<span v-if="ite.errMsg" class="error-msg img-error">{{ite.errMsg}}</span>-->
           </template>
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
@@ -366,7 +367,7 @@
     /deep/ {
       .el-form-item .tips {
         display: block;
-        color: #606266;
+        color: #888;
         height: 20px;
         line-height: 20px;
         font-size: 14px;

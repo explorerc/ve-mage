@@ -17,7 +17,9 @@
       <div class="from-row">
         <div class="from-title"><i class="star">*</i>卡片图片：</div>
         <div class="from-content">
-          <ve-upload title="gif、jpg、png、bmp<br>大小不超过2M" accept="gif|png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          <!--<ve-upload title="gif、jpg、png、bmp<br>大小不超过2M" accept="gif|png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" :errorMsg="uploadImgErrorMsg" @error="uploadError" @success="uploadImgSuccess"></ve-upload>-->
+          <ve-upload title="gif、jpg、png、bmp<br>大小不超过2M" accept="gif|png|jpg|bmp" :defaultImg="defaultImg" :fileSize="2048" @error="uploadError" @success="uploadImgSuccess"></ve-upload>
+          <span v-if="uploadImgErrorMsg" class="error-msg img-error">{{uploadImgErrorMsg}}</span>
         </div>
       </div>
       <div class="from-row">
@@ -181,7 +183,7 @@
         // const reg = new RegExp(/(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/) // eslint-disable-line
         const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/ // eslint-disable-line
         this.title.length ? this.titleError = '' : this.titleError = '请输入卡片名称'
-        this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传卡片图片'
+        this.poster.length ? this.uploadImgErrorMsg = '' : this.uploadImgErrorMsg = '请上传图片'
         if (this.btnSwitch) {
           this.btnTxt.length ? this.btnTxtError = '' : this.btnTxtError = '请输入按钮文案'
           reg.test(this.btnLink) ? this.btnLinkError = '' : this.btnLinkError = '请输入有效的链接以http://或https://开头'
@@ -289,6 +291,10 @@
         display: block;
         color: $color-red;
         padding-left: 0;
+        &.img-error {
+          position: absolute;
+          top: 100%;
+        }
       }
       .input-box {
         width: 400px;
