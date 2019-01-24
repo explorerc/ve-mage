@@ -286,6 +286,7 @@ export default {
             &.wx {
               background-color: #07b906;
               background-image: url('~assets/image/wx_s.png');
+              background-size: 28px 24px;
             }
             &.wx-space {
               background-color: #07b906;
