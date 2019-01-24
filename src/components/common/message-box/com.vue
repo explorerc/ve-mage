@@ -142,12 +142,17 @@
       opacity: .7;
       background: #000;
     }
+    &:after{
+      display: inline-block;
+      content: '';
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+    }
     .ve-message-box {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      display: inline-block;
+      position: relative;
+      vertical-align: middle;
       padding-bottom: 10px;
       background-color: #fff;
       border-radius: 4px;
