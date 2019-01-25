@@ -208,7 +208,7 @@ export default function () {
         fontColor: 'RGBA(34, 34, 34, 1)',
         text: '立刻报名',
         link: '',
-        hrefType: '_define',
+        hrefType: '_sub',
         enable: true,
         target: '_self'
       }
