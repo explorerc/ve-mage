@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-  import userService from 'src/api/user-service'
+  import userService from 'src/api/mage-service'
   import BScroll from 'better-scroll'
 
   export default {

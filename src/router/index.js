@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routes'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 import store from '../store/index'
 import EventBus from 'src/utils/eventBus'
 

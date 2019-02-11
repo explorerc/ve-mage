@@ -301,7 +301,7 @@
 <script>
 import Editor from './info-editor'
 import SelectEditor from './info-select'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 import VeUploadTx from 'src/components/ve-upload-tx'
 import { mapMutations, mapState } from 'vuex'
 import * as types from 'src/store/mutation-types'

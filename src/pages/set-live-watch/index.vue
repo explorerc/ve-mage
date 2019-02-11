@@ -197,7 +197,7 @@
 import veTips from 'src/components/ve-msg-tips'
 import brandService from 'src/api/brand-service'
 import VeUpload from 'src/components/ve-upload-image'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 import activityService from 'src/api/activity-service'
 import {mapMutations, mapState} from 'vuex'
 import * as types from 'src/store/mutation-types'

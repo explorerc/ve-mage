@@ -23,7 +23,7 @@
 <script>
   import {mapMutations, mapState} from 'vuex'
   import * as types from 'src/store/mutation-types'
-  import userService from 'src/api/user-service'
+  import userService from 'src/api/mage-service'
   import EventBus from 'src/utils/eventBus'
 
   export default {

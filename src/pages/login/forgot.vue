@@ -153,7 +153,7 @@
   </div>
 </template>
 <script>
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 
 export default {
   data () {

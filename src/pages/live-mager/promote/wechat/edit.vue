@@ -103,7 +103,7 @@
 import { formatDate } from 'src/assets/js/date'
 import brandService from 'src/api/brand-service'
 import userManage from 'src/api/userManage-service'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 import chooseGroup from '../com-chooseGroup'
 import ChatService from 'components/chat/ChatService.js'
 import activityService from 'src/api/activity-service'

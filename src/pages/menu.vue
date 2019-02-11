@@ -1,7 +1,7 @@
 <template>
   <section class="menu-container" :class="{close:close}">
     <section class="menu-logo">
-      <span class="menu-title" :class="{close:close}">微吼知客</span>
+      <span class="menu-title" :class="{close:close}">净菜销售</span>
       <span class="menu-anchor" :class="{close:close}">
         <!-- <i class="iconfont icon-nav-open"></i> -->
         <div class="fence" :class="{closed:!menuState,close:close}" @click="toggleMenu">

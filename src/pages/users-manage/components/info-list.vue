@@ -86,7 +86,7 @@
 <script>
   // import { MessageBox } from 'components/common/message-box'
   import VePagination from 'src/components/ve-pagination'
-  import userService from 'src/api/user-service'
+  import userService from 'src/api/mage-service'
   import questionsDetail from './question-detail'
   import questionService from 'src/api/questionnaire-service'
 

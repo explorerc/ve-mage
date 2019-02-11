@@ -27,14 +27,23 @@
       <el-form-item label="商品图片：" prop="imageList" style="margin-bottom:15px;" class="image-list">
         <div class="upload_box">
           <template v-for="(ite,ind) in goodsData.imageList">
-            <ve-upload :key="ind"
-                       title="图片支持jpg、png、bmp&nbsp;&nbsp;小于不超过2MB &nbsp;&nbsp; 最佳尺寸：600 x 800"
-                       accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
-                       :fileSize="2048"
-                       :errorMsg="ite.errMsg"
-                       @error="uploadError($event, ite)" :initImg="ite.name"
-                       @success="uploadImgSuccess"></ve-upload>
-            <!--<span v-if="ite.errMsg" class="error-msg img-error">{{ite.errMsg}}</span>-->
+            <div style="display: inline-block">
+              <ve-upload :key="ind"
+                         title="图片支持jpg、png、bmp&nbsp;&nbsp;不超过2MB <br> 最佳尺寸：600 x 800"
+                         accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
+                         :fileSize="2048"
+                         @error="uploadError($event, ite)" :initImg="ite.name"
+                         @success="uploadImgSuccess(ite)"></ve-upload>
+              <span v-if="ite.errMsg && !imgEmptyMsg" class="error-msg img-error error12">{{ite.errMsg}}</span>
+              <span v-if="ind===0" class="error-msg img-error">{{imgEmptyMsg}}</span>
+            </div>
+            <!--<ve-upload :key="ind"-->
+                       <!--title="图片支持jpg、png、bmp&nbsp;&nbsp;小于不超过2MB &nbsp;&nbsp; 最佳尺寸：600 x 800"-->
+                       <!--accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"-->
+                       <!--:fileSize="2048"-->
+                       <!--:errorMsg="ite.errMsg"-->
+                       <!--@error="uploadError($event, ite)" :initImg="ite.name"-->
+                       <!--@success="uploadImgSuccess"></ve-upload>-->
           </template>
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
@@ -186,9 +195,11 @@
           if (value[0].name) {
             return callback()
           } else {
+            this.imgEmptyMsg = '请上传封面图'
             return callback(new Error('请上传封面图'))
           }
         } else {
+          this.imgEmptyMsg = '请上传图片'
           return callback(new Error('请上传图片'))
         }
       }
@@ -217,6 +228,7 @@
         },
         timerVail: null,
         timer: null,
+        imgEmptyMsg: '',
         rules: {
           title: [
             {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData'}
@@ -264,6 +276,7 @@
               url: this.goodsData.url,
               tao: this.goodsData.tao
             } = res.data)
+            console.log(this.goodsData.imageList)
           })
       },
       onSubmit (formName) {
@@ -323,9 +336,11 @@
         // })
       },
       uploadImgSuccess (data) {
+        data.errMsg = ''
         this.goodsData.imageList[data.nowIndex].name = data.name
       },
-      uploadError (data, item) {
+      uploadError (data, item, index) {
+        this.imgEmptyMsg = ''
         item.errMsg = data.msg
         // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
       }
@@ -388,9 +403,19 @@
           margin-bottom: 27px;
           &.image-list {
             .el-form-item__error {
+              display: none;
               top: calc(100% - 17px);
             }
+            div {
+              position: relative;
+            }
+            .error-msg {
+              color: #f56c6c;
+              position: absolute;
+              top: 83%;
+            }
           }
+
         }
         .el-form-item:nth-of-type(1) {
           .el-form-item__content {

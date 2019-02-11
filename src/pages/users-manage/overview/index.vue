@@ -142,7 +142,7 @@
 </template>
 <script>
 import VeMsgTips from 'src/components/ve-msg-tips'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 import dataService from 'src/api/data-service'
 import { barPile } from 'src/utils/chart-tool'
 import groupService from 'src/api/user_group'

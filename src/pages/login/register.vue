@@ -104,7 +104,7 @@
 </template>
 <script>
 import MyInput from './login-input'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 
 export default {
   data () {
