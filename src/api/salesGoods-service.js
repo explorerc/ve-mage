@@ -1,6 +1,6 @@
 export default {
   // 推荐商品列表
-  GOODS_LISTS: '/manage/goods/lists',
+  GOODS_LISTS: '/goods/getAll',
   // 新建推荐商品
   CREATE_GOODS: '/manage/goods/create',
   // 编辑推荐商品

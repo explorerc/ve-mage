@@ -1,7 +1,7 @@
 export default {
   POST_REGISTER: '/user/business-user/reg',
   POST_LOGIN_PHONE: '/user/business-user/mobile-login',
-  POST_LOGIN_ACCOUNT: '/user/business-user/account-login',
+  POST_LOGIN_ACCOUNT: '/user/login', // 用户登录
   POST_LOGOUT: '/user/business-user/signout',
   GET_ACCOUNT: '/user/business-user/info',
   POST_CHANGE_PASSWORD: '/user/business-user/update-password',

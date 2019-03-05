@@ -1,9 +1,12 @@
 import axios from 'axios'
+import Vue from 'vue'
 import qs from 'qs'
 import { Loading } from 'components/common/loading'
 import { MessageBox } from 'components/common/message-box'
 
 const BASE_URL = process.env.API_PATH
+
+Vue.prototype.$http = axios
 
 const defaultOptions = {
   timeout: 20000,

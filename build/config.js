@@ -4,7 +4,7 @@ const config = {
     BUILD_ENV: 'local',
     API_PATH: '/api',
     SUB_DIR: '',
-    PUBLIC_PATH: '//localhost:8888/',
+    PUBLIC_PATH: '//localhost:6699/',
     // IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
     // MOBILE_HOST: '//localhost:8866/m/',
     // PC_HOST: '//localhost:6688/webinar/',

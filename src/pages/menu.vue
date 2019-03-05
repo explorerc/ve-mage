@@ -1,7 +1,7 @@
 <template>
   <section class="menu-container" :class="{close:close}">
     <section class="menu-logo">
-      <span class="menu-title" :class="{close:close}">净菜销售</span>
+      <span class="menu-title" :class="{close:close}">销售管理</span>
       <span class="menu-anchor" :class="{close:close}">
         <!-- <i class="iconfont icon-nav-open"></i> -->
         <div class="fence" :class="{closed:!menuState,close:close}" @click="toggleMenu">
@@ -25,104 +25,25 @@
       background-color="#212221"
       text-color="#fff"
       active-text-color="#fff" >
-      <!-- <el-submenu index="1">
-        <template slot="title">
-          <i class="menu-icon icon_console"></i>
-          <span>控制台</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="">点点滴滴</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu> -->
       <el-submenu index="1">
         <template slot="title">
           <i class="menu-icon icon_activity"></i>
-          <span>活动管理</span>
+          <span>商品管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/liveMager/list">活动列表</el-menu-item>
-          <el-menu-item index="/liveMager/create">新建活动</el-menu-item>
+          <el-menu-item index="/goodMager/list">商品列表</el-menu-item>
+          <el-menu-item index="/goodMager/edit/create">新建商品</el-menu-item>
+          <el-menu-item index="/kindMager/list">商品分类</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <!-- <el-submenu index="3">
-        <template slot="title">
-          <i class="menu-icon icon_marketing"></i>
-          <span>营销管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/site">活动官网</el-menu-item>
-          <el-menu-item index="">直播引导页</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu> -->
-      <!-- <el-submenu index="4">
-        <template slot="title">
-          <i class="menu-icon icon_spread"></i>
-          <span>推广中心</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/setAccount">账户信息</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu> -->
-      <!-- <el-submenu index="5">
-        <template slot="title">
-          <i class="menu-icon icon_crm"></i>
-          <span>客户管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/setAccount">账户信息</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu> -->
-      <!-- <el-submenu index="6">
-        <template slot="title">
-          <i class="menu-icon icon_data"></i>
-          <span>数据中心</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/setAccount">账户信息</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu> -->
-     <!-- <el-submenu index="2">
-        <template slot="title">
-          <i class="menu-icon icon_marketing"></i>
-          <span>营销管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/4">用户总览</el-menu-item>
-          <el-menu-item index="/5">用户池</el-menu-item>
-          <el-menu-item index="/6">用户群组</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>-->
       <el-submenu index="3">
         <template slot="title">
           <i class="menu-icon icon_crm"></i>
-          <span>用户管理</span>
+          <span>销售管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/userManage/overview">用户总览</el-menu-item>
-          <el-menu-item index="/userManage/pond">用户池</el-menu-item>
-          <el-menu-item index="/userManage/userGroupsIndex">用户群组</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      <!-- <el-submenu index="4">
-        <template slot="title">
-          <i class="menu-icon icon_data"></i>
-          <span>数据中心</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/7">用户总览</el-menu-item>
-          <el-menu-item index="/8">用户池</el-menu-item>
-          <el-menu-item index="/9">用户群组</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu> -->
-       <el-submenu index="5">
-        <template slot="title">
-          <i class="menu-icon icon_account"></i>
-          <span>账户管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/setAccount">账号设置</el-menu-item>
-          <el-menu-item index="/assetMager/assetList">资产管理</el-menu-item>
-          <el-menu-item index="/wxserver/wxserve">微信服务号</el-menu-item>
+          <el-menu-item index="/orderMager/list">订单管理</el-menu-item>
+          <el-menu-item index="/orderMager/edit/create">销售分析</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

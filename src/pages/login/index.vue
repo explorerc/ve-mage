@@ -130,8 +130,8 @@ export default {
         return false
       }
       let data = {
-        'account': this.userName,
-        'password': this.passWord,
+        'name': this.userName,
+        'pwd': this.passWord,
         'remember': this.remember ? 1 : 0
       }
       this.$config({ handlers: true }).$post(mageService.POST_LOGIN_ACCOUNT, data).then((res) => {
