@@ -12,7 +12,7 @@
       <!-- <com-button class="add-btn" @click="addNav">添加导航</com-button> -->
       <div class="add-nav-box">
         <span class='add-nav' @click="addNav"><i class='iconfont icon-jiahao'></i>添加栏目</span>
-        <span class='tips'>最多可添加8个栏目</span>
+        <span class='tips' :class="{'error':outlen}">最多可添加8个栏目</span>
       </div>
       <ul class="nav-edit-group">
         <li v-for="(item,index) in value.data.list" :key="'a'+index">
@@ -60,6 +60,7 @@ export default {
   },
   data () {
     return {
+      outlen: false,
       id: this.$route.params.id,
       PC_HOST: process.env.PC_HOST,
       active: -1,
@@ -84,6 +85,9 @@ export default {
           link: ''
         })
         this.active = len
+        this.outlen = false
+      } else {
+        this.outlen = true
       }
     },
     titleClick (index) {
@@ -95,6 +99,7 @@ export default {
     },
     removeClick (index) {
       if (this.value.data.list.length > 1) {
+        this.outlen = false
         this.value.data.list.splice(index, 1)
       }
     }
@@ -134,6 +139,9 @@ export default {
         padding-top: 8px;
         color: $color-gray;
         font-size: 14px;
+        &.error {
+          color: $color-error;
+        }
       }
     }
     .add-nav {

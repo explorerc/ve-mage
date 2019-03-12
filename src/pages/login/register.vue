@@ -1,6 +1,19 @@
 <template>
   <div class="clearfix register-container">
-    <div class="v-left">
+    <div class="v-left" v-if="defaultImg">
+      <div class="v-content v-user" :style="`background-image:url(${defaultImg})`">
+        <div class="v-center">
+          <p class="v-title">
+            {{this.userDate.title}}
+          </p>
+          <p class="v-subtitle">
+            {{this.userDate.subname}}
+          </p>
+          <a :href="this.userDate.btnUrl" class="v-user-btn" target="_blank" v-if="userDate.btnName!==''">{{this.userDate.btnName}}</a>
+        </div>
+      </div>
+    </div>
+    <div class="v-left v-bg" v-else>
       <img  class="v-logo" src="../../assets/image/logo.png">
       <div class="v-content">
         <p class="v-title">
@@ -91,7 +104,7 @@
 </template>
 <script>
 import MyInput from './login-input'
-import userService from 'src/api/user-service'
+import userService from 'src/api/mage-service'
 
 export default {
   data () {
@@ -114,11 +127,23 @@ export default {
       opacity: 0,
       error: '',
       show: false,
-      closeTime: 0
+      closeTime: 0,
+      userDate: {
+        img: '',
+        title: '',
+        subname: '',
+        btnName: '',
+        btnUrl: ''
+      }
     }
   },
   components: {
     'com-input': MyInput
+  },
+  computed: {
+    defaultImg () {
+      return this.userDate.img ? 'https://www.vhall.com/' + this.userDate.img : ''
+    }
   },
   created () {
     this.$config({ handlers: true }).$get(userService.GET_CAPTCHA_ID).then((res) => {
@@ -144,6 +169,16 @@ export default {
       }, function onload (instance) {
         _self.cap = instance
       })
+    }).catch(err => {
+      console.log(err.msg)
+    })
+
+    this.$config({ handlers: true }).$get(userService.GET_LOGIN_DATE).then((res) => {
+      this.userDate.img = res.data.image
+      this.userDate.title = res.data.title
+      this.userDate.subname = res.data.description
+      this.userDate.btnName = res.data.subname
+      this.userDate.btnUrl = res.data.urlname
     }).catch(err => {
       console.log(err.msg)
     })
@@ -269,6 +304,7 @@ export default {
       } else if (e.action === 'confirm') {
         this.closeTime = 0
         this.show = false
+        window.open('//www.vhall.com/zhike')
       }
     },
     checkForm: function (e) {
@@ -328,10 +364,12 @@ export default {
     float: left;
     width: 50%;
     height: 100%;
-    background: url('~assets/image/login_bg.png') no-repeat;
-    background-position: center center;
-    background-size: cover;
     position: relative;
+    &.v-bg {
+      background: url('~assets/image/login_bg.png') no-repeat;
+      background-position: center center;
+      background-size: cover;
+    }
     .v-logo {
       position: absolute;
       top: 20px;
@@ -358,6 +396,48 @@ export default {
       img {
         width: 62%;
         margin: 30px 0 0 0;
+      }
+      &.v-user {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: 0;
+        background-position: center;
+        background-size: cover;
+        .v-center {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 100px;
+          text-align: left;
+        }
+        .v-title {
+          font-size: 42px;
+          color: #fff;
+          text-shadow: 5px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .v-subtitle {
+          font-size: 20px;
+          color: #fff;
+          margin-top: 12px;
+          text-shadow: 5px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .v-user-btn {
+          display: block;
+          text-align: center;
+          margin: 30px 0 0;
+          width: 120px;
+          height: 36px;
+          line-height: 34px;
+          background-color: rgba(0, 0, 0, 0);
+          border: 1px solid #fff;
+          border-radius: 4px;
+          color: #fff;
+          &:hover {
+            background-color: #fff;
+            color: #000;
+          }
+        }
       }
     }
   }
@@ -441,7 +521,7 @@ export default {
     }
     .v-login {
       font-size: 16px;
-      color: #666;
+      color: #999;
       margin-top: 15px;
       display: block;
     }

@@ -11,6 +11,7 @@
         <com-input v-model="item.value"
                    :class="{error:item.error}"
                    @focus="itemFocus(item)"
+                   @blur="itemBlur(item)"
                    :disabled="value.ext.fixedness?true:false"
                    :max-length="value.ext.fixedness?0:30"></com-input>
         <span class="remove"
@@ -21,7 +22,7 @@
     <el-select v-if="!edit"
                v-model="value.value"
                @change="change"
-               placeholder="请选择">
+               :placeholder="value.placeholder||'请选择'">
       <el-option v-for="(item,index) in value.detail.list"
                  :label="item.value"
                  :value="index"
@@ -64,6 +65,14 @@ export default {
       if (item.error) {
         item.error = false
         item.value = ''
+      }
+      if (item.value === '选项') {
+        item.value = ''
+      }
+    },
+    itemBlur (item) {
+      if (!item.value) {
+        item.value = '选项'
       }
     },
     validate () {
@@ -145,6 +154,9 @@ export default {
         cursor: pointer;
         font-size: 12px;
       }
+    }
+    .el-input__inner {
+      height: 40px;
     }
   }
 }

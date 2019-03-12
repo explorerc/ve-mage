@@ -16,6 +16,7 @@ export default (options = {}) => {
   if (!instance && state) {
     instance = new ComConstructor({
       propsData: {
+        type: options.type === undefined ? '' : options.type,
         loadingText: loadingText === undefined ? 'Loading' : loadingText,
         relative: !!target
       }
@@ -32,6 +33,10 @@ export default (options = {}) => {
   } else {
     if (instance) {
       instance.vm.visible = state
+      if (!state) {
+        instance = null
+        return null
+      }
     }
   }
 

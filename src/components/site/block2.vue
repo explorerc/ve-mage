@@ -18,7 +18,7 @@
       <div class="nav-blank-title">轮播图</div>
       <div class="add-nav-box">
         <span class='add-nav' @click="addBlock"><i class='iconfont icon-jiahao'></i>添加栏目</span>
-        <span class='tips'>最多可添加5个栏目</span>
+        <span class='tips' :class="{'error':outlen}">最多可添加5个栏目</span>
       </div>
       <ul class="block2-edit-group">
         <li v-for="(item,index) in value.list" :key="'block2_edit_item'+index">
@@ -39,8 +39,8 @@
               <div class="img-upload-box">
                 <label class='normal'>上传图片</label>
                 <ve-upload
-                title="图片支持jpg、png、bmp格式 大小不超过2M"
-                accept="png|jpg|bmp"
+                :title="item.imgDesc"
+                accept="png|jpg|bmp|gif"
                 :fileSize="2048"
                 :errorMsg="uploadImgErrorMsg"
                 :defaultImg="item.img.indexOf('mp')===0?host+item.img:item.img"
@@ -135,14 +135,19 @@ export default {
   },
   data () {
     return {
+      outlen: false,
       inpError: '',
       active: -1,
+      newDesc: '',
       id: this.$route.params.id,
       PC_HOST: process.env.PC_HOST,
       host: process.env.IMGHOST + '/',
       uploadImgErrorMsg: '', // 上传图片错误提示
       autoplay: false
     }
+  },
+  mounted () {
+    this.newDesc = this.value.list[0].imgDesc
   },
   methods: {
     inpBlur (val) {
@@ -163,10 +168,13 @@ export default {
           img: '',
           link: '',
           type: 'top',
-          target: '_self'
+          target: '_self',
+          imgDesc: this.newDesc
         }
         this.value.list.push(obj)
         this.active = len
+      } else {
+        this.outlen = true
       }
     },
     titleClick (index) {
@@ -178,6 +186,7 @@ export default {
     },
     removeClick (index) {
       if (this.value.list.length > this.min) {
+        this.outlen = false
         this.value.list.splice(index, 1)
       }
     },
@@ -425,6 +434,9 @@ export default {
       padding-top: 8px;
       color: $color-gray;
       font-size: 14px;
+      &.error {
+        color: $color-error;
+      }
     }
     .add-nav {
       display: block;

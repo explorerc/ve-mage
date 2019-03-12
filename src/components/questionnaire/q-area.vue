@@ -218,11 +218,14 @@ export default {
 <style scoped lang="scss">
 .q-edit-content {
   /deep/ {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
     .q-edit-select {
       display: block;
       width: 100%;
       margin-bottom: 14px;
+      &:last-child {
+        margin-bottom: 0;
+      }
       &.v-disabled {
         .com-input {
           input {
@@ -265,6 +268,9 @@ export default {
       font-size: 12px;
     }
     .q-select-item {
+      height: 40px;
+    }
+    .el-input__inner {
       height: 40px;
     }
   }

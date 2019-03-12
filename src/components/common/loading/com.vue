@@ -1,8 +1,14 @@
 <template>
-  <div v-show="visible" class="com-notification" :style="style">
+  <div v-show="visible" class="com-notification" :class="{'notification-model':type=='model'}" :style="style">
     <div class="inner-wrap">
-      <i class="iconfont icon-Loading"></i>
+      <i class="loading-icon"></i>
       <span class="loading-txt">{{loadingText}}</span>
+    </div>
+    <div class="model-wrap">
+      <div class="model-content">
+        <i class="loading-icon"></i>
+        <p v-html="loadingText"></p>
+      </div>
     </div>
   </div>
 </template>
@@ -11,6 +17,10 @@
 export default {
   name: 'ComLoading',
   props: {
+    type: {
+      type: String,
+      default: ''
+    },
     loadingText: {
       type: String,
       default: 'Loading'
@@ -37,14 +47,14 @@ export default {
 <style lang="scss" scoped>
 .com-notification /deep/ {
   position: fixed;
-  z-index: 1000;
+  z-index: 1100;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.6);
   .inner-wrap {
-    color: #fff;
+    color: #F7F7F7;
     display: inline-block;
     position: absolute;
     top: 50%;
@@ -52,17 +62,24 @@ export default {
     transform: translate(-50%, -50%);
     text-align: center;
     font-size: 14px;
-    opacity: 0.9;
-    .iconfont {
-      display: inline-block;
-      animation: com-rotating 1s linear infinite;
-    }
     .loading-txt {
-      margin-top: 3px;
+      margin-top: 10px;
       display: block;
     }
   }
-
+  .loading-icon{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url("../../../assets/image/loading-icon.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    animation:gogogo 1s infinite linear;
+  }
+  .model-wrap{
+    display: none;
+  }
   @keyframes com-rotating {
     from {
       transform: rotate(0deg);
@@ -70,6 +87,55 @@ export default {
     to {
       transform: rotate(360deg);
     }
+  }
+}
+.notification-model{
+  background-color: rgba(0, 0, 0, 0);
+  .inner-wrap{
+    display: none;
+  }
+  .model-wrap{
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 160px;
+    height: 160px;
+    background-color: #313131;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 14px;
+    border-radius:4px;
+    opacity:0.95;
+    box-shadow:0px 0 6px rgba(0,0,0,0.4);
+    .model-content{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      p{
+        font-size: 14px;
+        display: block;
+        margin: 10px 20px 0 20px;
+        color: #F7F7F7;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+}
+@-webkit-keyframes gogogo {
+  0%{
+    transform: rotate(0deg);
+  }
+  50%{
+    transform: rotate(180deg);
+  }
+  100%{
+    transform: rotate(360deg);
   }
 }
 </style>

@@ -132,7 +132,7 @@
     left: 0;
     right: 0;
     text-align: center;
-    z-index: 1005;
+    z-index: 2001;
     .ve-modal {
       position: fixed;
       left: 0;
@@ -142,18 +142,23 @@
       opacity: .7;
       background: #000;
     }
+    &:after{
+      display: inline-block;
+      content: '';
+      width: 0;
+      height: 100%;
+      vertical-align: middle;
+    }
     .ve-message-box {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      display: inline-block;
+      position: relative;
+      vertical-align: middle;
       padding-bottom: 10px;
       background-color: #fff;
       border-radius: 4px;
       font-size: 16px;
       overflow: hidden;
-      min-width: 400px;
+      min-width: 404px;
       z-index: 1006;
       &:before {
         display: block;
@@ -173,6 +178,7 @@
         .ve-message-box__header {
           height: 40px;
           line-height: 40px;
+          border-radius: 4px 4px 0 0;
           background-color: $color-default;
           button {
             color: #555;
@@ -274,7 +280,7 @@
         .button--cancel {
           padding: 0;
           &:hover {
-            color: $color-default;
+            color: #555;
             &[type='error'] {
               color: $color-red;
             }

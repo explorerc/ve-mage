@@ -4,13 +4,13 @@ const config = {
     BUILD_ENV: 'local',
     API_PATH: '/api',
     SUB_DIR: '',
-    PUBLIC_PATH: '//localhost:2333/',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    MOBILE_HOST: '//localhost:8866/m/',
-    PC_HOST: '//localhost:6688/webinar/',
+    PUBLIC_PATH: '//localhost:6699/',
+    // IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
+    // MOBILE_HOST: '//localhost:8866/m/',
+    // PC_HOST: '//localhost:6688/webinar/',
     proxyTable: {
       '/api': {
-        target: 'http://test-api-zhike.vhall.com',
+        target: 'http:localhost/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

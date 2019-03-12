@@ -10,6 +10,7 @@
       <com-input v-if="edit"
                  :class="{error:item.error}"
                  @focus="itemFocus(item)"
+                 @blur="itemBlur(item)"
                  v-model="item.value"
                  :max-length="30"></com-input>
       <div v-if="!edit"
@@ -55,6 +56,14 @@ export default {
       if (item.error) {
         item.error = false
         item.value = ''
+      }
+      if (item.value === '选项') {
+        item.value = ''
+      }
+    },
+    itemBlur (item) {
+      if (!item.value) {
+        item.value = '选项'
       }
     },
     validate () {

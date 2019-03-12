@@ -1,13 +1,14 @@
 <template>
   <div class="single-select-wrap">
     <div class="question-content">
-      <div class="index">{{index}}</div>
+      <div class="index phone-index" v-if="value.detail.format==='phone'">{{index}}</div>
+      <div class="index" v-else>{{index}}</div>
       <div v-if="edit"
            class="q-des">{{value.ext.name}}<span v-if="value._required"
               class="v-red">*</span>
         <div class="v-tips"
              v-if="value.detail.format==='phone'">
-          <i class="iconfont icon-wenhao"></i><span>手机号默认为必填项，不可修改</span>
+          <i class="iconfont icon-wenhao"></i><span>手机号默认为必填项，不可修改。</span>
         </div>
       </div>
       <div class="q-edit"
@@ -16,8 +17,9 @@
         <com-input v-if="edit"
                    class="q-subject"
                    @focus="focusTitle"
+                   @blur="blurTitle"
                    :class="{error:value.error}"
-                   v-model="value.title"
+                   v-model.async="value.title"
                    :max-length="30"></com-input>
         <div v-if="!edit"
              class="q-subject">{{value.title}}<span v-if="value._required"
@@ -121,9 +123,17 @@ export default {
       return this.$refs.content.check()
     },
     focusTitle () {
+      if (this.value.title === this.value.ext.name) {
+        this.value.title = ''
+      }
       if (this.value.error) {
         this.value.error = false
         this.value.title = ''
+      }
+    },
+    blurTitle () {
+      if (!this.value.title) {
+        this.value.title = this.value.ext.name
       }
     },
     addItem () {
@@ -214,6 +224,9 @@ export default {
       margin-right: 15px;
       padding-left: 10px;
       font-size: 14px;
+      &.phone-index {
+        margin-top: 8px;
+      }
     }
     .v-red {
       display: inline-block;
@@ -239,6 +252,7 @@ export default {
         .q-subject {
           margin-bottom: 14px;
           word-break: break-all;
+          font-size: 14px;
           &.error {
             input {
               border-color: #fc5659;
@@ -253,18 +267,49 @@ export default {
       .v-tips {
         display: inline-block;
         margin-left: 8px;
+        position: relative;
         i {
           vertical-align: middle;
           margin-right: 3px;
           &:hover {
             & + span {
-              display: inline-block;
+              opacity: 1;
             }
           }
         }
         span {
-          display: none;
-          color: #555;
+          /*position: absolute;*/
+          display: inline-block;
+          /*max-width: 400px;*/
+          /*top: 50%;
+          left: 26px;
+          transform: translateY(-50%);*/
+          position: relative;
+          padding: 6px 10px 4px 10px;
+          border-radius: 3px;
+          color: #fff;
+          opacity: 0;
+          word-wrap: break-word;
+          word-break: break-all;
+          z-index: 10;
+          background-color: #313131;
+          box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, .4);
+          line-height: 20px;
+          font-size: 10px;
+          margin-left: 4px;
+          &:after {
+            display: block;
+            position: absolute;
+            content: '';
+            height: 0px;
+            width: 0px;
+            top: 50%;
+            left: -4px;
+            transform: translateY(-50%);
+            border-top: 4px solid transparent;
+            border-right: 4px solid #313131;
+            border-bottom: 5px solid transparent;
+          }
         }
       }
       .q-operate {

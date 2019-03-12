@@ -40,8 +40,7 @@
           v-if="maxLength&&type==='textarea'">
       <i class="length"
       :style="{color:limitColor}"
-         v-text="innerValue.gbLength()">0</i>/
-      <i>{{maxLength}}</i>
+         v-text="innerValue.gbLength()">0</i>/<i>{{maxLength}}</i>
     </span>
     <span class="error-msg"
           v-if="errorMsg">{{errorMsg}}</span>
@@ -153,6 +152,13 @@ export default {
         if (this.maxLength && value.length > this.maxLength) {
           this.innerValue = value.substring(0, this.maxLength)
         }
+      } else if (this.type === 'float') {
+        let match = value.match(/\d{1,8}(\.\d{0,2})?/)
+        let _value = match ? match[0] : ''
+        if (this.max && _value - 0 > this.max - 0) {
+          _value = this.max
+        }
+        this.innerValue = _value
       } else if (this.isMobile) {
         this.innerValue = value.replace(/\D/g, '')
         if (this.maxLength && value.length > this.maxLength) {
@@ -337,6 +343,7 @@ export default {
     border-radius: 4px;
     transition: all 0.3s;
     /*font-size: inherit;*/
+    font-family: -webkit-body;
     &.error {
       border-color: #fc5659;
     }

@@ -12,10 +12,10 @@
       return {
         // content: '',
         showTime: {
-          day: 0,
-          hour: 0,
-          minute: 0,
-          second: 0
+          day: '00',
+          hour: '00',
+          minute: '00',
+          second: '00'
         },
         timer: null
       }
@@ -53,7 +53,7 @@
     },
     methods: {
       fomatDate (sec) {
-        this.showTime.day = sec / 3600 / 24 >> 0
+        this.showTime.day = ((sec / 3600 / 24 >> 0) + '').padStart(2, 0)
         this.showTime.hour = ((sec / 3600 % 24 >> 0) + '').padStart(2, 0)
         this.showTime.minute = ((sec / 60 % 60 >> 0) + '').padStart(2, 0)
         this.showTime.second = ((sec % 60 >> 0) + '').padStart(2, 0)
