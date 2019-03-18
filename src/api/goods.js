@@ -1,10 +1,11 @@
 export default {
-  // 推荐商品列表
-  GOODS_LISTS: '/goods/getAll',
+  // 获取所有产品信息
+  GET_GOODS_INFO: '/goods/getAll',
+  GET_GOOD_BYID: '/goods/id', // 根据id获取商品信息
   // 新建推荐商品
-  CREATE_GOODS: '/manage/goods/create',
+  CREATE_GOODS: '/goods/add',
   // 编辑推荐商品
-  UPDATE_GOODS: '/manage/goods/update',
+  UPDATE_GOODS: '/goods/update',
   // 删除商品
   GOODS_DELETE: '/manage/goods/delete',
   // 商品详情
