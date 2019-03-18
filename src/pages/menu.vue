@@ -95,7 +95,7 @@ export default {
     height: 70px;
     line-height: 70px;
     font-size: 0;
-    background-color: #ffd021;
+    background-color: #409EFF;
     color: #1a1a1a;
     .menu-title {
       font-size: 24px;
@@ -222,12 +222,12 @@ export default {
     }
     .is-active {
       .el-submenu__title {
-        color: #ffd021 !important;
+        color: #409EFF !important;
         .icon_console {
           background-image: url(../assets/image/icon_console_hover.png);
         }
         .icon_activity {
-          background-image: url(../assets/image/icon_activity_hover.png);
+          background-image: url(../assets/image/icon_activity_hover_copy@2x.png);
         }
         .icon_marketing {
           background-image: url(../assets/image/icon_marketing_hover.png);
@@ -246,10 +246,10 @@ export default {
         }
       }
       .el-menu-item.is-active {
-        color: #ffd021 !important;
+        color: #409EFF !important;
       }
       .el-submenu__icon-arrow {
-        color: #ffd021 !important;
+        color: #409EFF !important;
       }
     }
     .el-submenu__title {
@@ -314,7 +314,7 @@ export default {
         /*border-left: 4px solid #ffd021;*/
         padding-left: 64px !important;
         &:before{
-          background-color: #ffd021;
+          background-color: #409EFF;
         }
       }
     }

@@ -52,7 +52,7 @@
 
 <script>
   import draggable from 'vuedraggable'
-  // import goodsServer from 'src/api/salesGoods-service'
+  import goodsServer from 'src/api/goods'
   import EventBus from 'src/utils/eventBus'
 
   export default {
@@ -101,23 +101,23 @@
       }
     },
     methods: {
-      // getList () {
-      //   this.$get(goodsServer.GOODS_LISTS, {})
-      //     .then(res => {
-      //       if (res.status === 200) {
-      //         this.tableData = res.data
-      //         console.log(this.tableData)
-      //         if (this.tableData.length < 1) {
-      //           this.isNoGoods = true
-      //         } else {
-      //           this.isNoGoods = false
-      //         }
-      //       }
-      //     })
-      //     .catch(() => {
-      //       this.tableData = []
-      //     })
-      // }
+      getList () {
+        this.$get(goodsServer.GET_GOODS_INFO, {})
+          .then(res => {
+            if (res.status === 200) {
+              this.tableData = res.data
+              console.log(this.tableData)
+              if (this.tableData.length < 1) {
+                this.isNoGoods = true
+              } else {
+                this.isNoGoods = false
+              }
+            }
+          })
+          .catch(() => {
+            this.tableData = []
+          })
+      },
       createGoods () {
         this.$router.push('/goodMager/edit/create')
       },

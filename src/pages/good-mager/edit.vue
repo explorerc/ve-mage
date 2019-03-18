@@ -76,7 +76,7 @@
 
 <script>
   import VeUpload from 'src/components/ve-upload-goods'
-  import goodsServer from 'src/api/salesGoods-service'
+  import goodsServer from 'src/api/goods'
   import EventBus from 'src/utils/eventBus'
 
   export default {
@@ -224,6 +224,7 @@
         isShowMsgB: false,
         errTitle: '',
         imgEmptyMsg: '',
+        goodId: this.$route.params.id,
         goodsData: {
           name: '',
           price: '',
@@ -254,6 +255,15 @@
     },
     methods: {
       getGoodsDetail () {
+        let data = {
+          goodId: this.goodId
+        }
+        this.$get(goodsServer.GET_GOOD_BYID, data).then(res => {
+          if (res.code === 200) {
+            this.goodsData = res.data
+          }
+        })
+        console.log(this.goodId)
       },
       onSubmit (formName) {
         if (this.timer) return
@@ -296,20 +306,6 @@
       },
       resetForm (formName) {
         this.$router.go(-1)
-        // this.$messageBox({
-        //   header: '',
-        //   content: '是否放弃当前编辑内容',
-        //   cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
-        //   confirmText: '确定',
-        //   handleClick: (e) => {
-        //     if (e.action === 'cancel') {
-        //     } else if (e.action === 'confirm') {
-        //       this.$refs[formName].resetFields()
-        //       this.isShowMsgB = false
-        //       this.$router.go(-1)
-        //     }
-        //   }
-        // })
       },
       uploadImgSuccess (data) {
         data.errMsg = ''
