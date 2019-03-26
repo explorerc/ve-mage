@@ -102,7 +102,9 @@
     },
     methods: {
       getList () {
-        this.$get(goodsServer.GET_GOODS_INFO, {})
+        // this.$http.get(goodsServer.GET_GOODS_INFO)
+        // this.$http.get('http://localhost' + goodsServer.GET_GOODS_INFO)
+        this.$get('http://localhost' + goodsServer.GET_GOODS_INFO)
           .then(res => {
             if (res.status === 200) {
               this.tableData = res.data

@@ -13,8 +13,8 @@ const GoodMager = () => import('src/pages/good-mager/list')
 const goodEdit = () => import('src/pages/good-mager/edit')
 const OrderMager = () => import('src/pages/sale-mager/list')
 const OrderEdit = () => import('src/pages/good-mager/edit')
-const KindMager = () => import('src/pages/sale-mager/list')
-const KindEdit = () => import('src/pages/good-mager/edit')
+const KindMager = () => import('src/pages/kind-mager/list')
+// const KindEdit = () => import('src/pages/kind-mager/edit')
 
 export default [{
   path: '/login',
@@ -93,16 +93,6 @@ export default [{
       name: 'kind',
       component: KindMager
       // redirect: '/orderMager/list/isPay',
-    },
-    {
-      path: '/kindMager/edit/:type',
-      name: 'kindCreate',
-      component: KindEdit
-    },
-    {
-      path: '/kindMager/edit/:id/:type',
-      name: 'kindEdit',
-      component: KindEdit
     }
   ]
 }

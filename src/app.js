@@ -7,8 +7,9 @@ import 'assets/css/index.scss'
 import 'assets/fonts/iconfont.scss'
 import './components/common'
 import Ajax from './utils/_ajax'
+import axios from 'axios'
 Vue.use(Ajax)
-
+Vue.prototype.$http = axios
 console.log(process.env.NODE_ENV)
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'
