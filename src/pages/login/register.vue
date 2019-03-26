@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="v-left v-bg" v-else>
-      <img  class="v-logo" src="../../assets/image/logo.png">
+      <!--<img  class="v-logo" src="../../assets/image/logo.png">-->
       <div class="v-content">
         <p class="v-title">
           智能营销平台
@@ -22,7 +22,7 @@
         <p class="v-subtitle">
           全渠道精准引流 直播实时互动 用户智能化管理 数据驱动增长
         </p>
-        <img src="../../assets/image/login@2x.png" alt="">
+        <!--<img src="../../assets/image/login@2x.png" alt="">-->
       </div>
     </div>
     <div class="v-right">
@@ -366,7 +366,7 @@ export default {
     height: 100%;
     position: relative;
     &.v-bg {
-      background: url('~assets/image/login_bg.png') no-repeat;
+      /*background: url('~assets/image/login_bg.png') no-repeat;*/
       background-position: center center;
       background-size: cover;
     }

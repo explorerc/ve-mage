@@ -7,7 +7,7 @@ import Loading from './loading'
 import Dialog from './dialog'
 import Button from './button'
 import Tabs from './tabs'
-import PlayVideo from './play-video'
+// import PlayVideo from './play-video'
 import Checkbox from './checkbox'
 import Drag from './drag'
 import comBack from './back'
@@ -21,7 +21,6 @@ const components = [
   Dialog,
   Button,
   Tabs,
-  PlayVideo,
   Checkbox,
   Drag,
   comBack

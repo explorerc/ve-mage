@@ -32,6 +32,7 @@
         </draggable>
       </table>
     </div>
+    <!--<MessageBox></MessageBox>-->
   </div>
 </template>
 
