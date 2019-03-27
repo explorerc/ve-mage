@@ -4,7 +4,7 @@
       <p>分类管理</p>
       <div class='btn-box'>
         <!--<span>共{{tableData.length}}件商品</span>-->
-        <com-button class="add-goods primary-button" round  @click="createGoods" >
+        <com-button class="add-goods primary-button" round  @click="handleEdit" >
           新建分类
         </com-button>
       </div>
@@ -33,6 +33,31 @@
       </table>
     </div>
     <!--<MessageBox></MessageBox>-->
+    <message-box v-if="isEditShow"
+                 class="kind-edit"
+                 width="464px"
+                 type="prompt"
+                 :header="editTitle"
+                 @handleClick="editKind">
+
+      <div class="mager-box message-box-content">
+        <div class="from-box">
+          <div class="from-row">
+            <span class="from-title">分类id:</span><span style="line-height: 20px">{{kindInfo.id}}</span>
+          </div>
+          <div class="from-row">
+            <span class="from-title">分类名称:</span>
+            <com-input style=""
+                       type="text"
+                       v-model="kindInfo.name"
+                       placeholder="请输入分类名称"
+                       :value.sync="kindInfo.name"
+                       :errorTips="kindError"
+            ></com-input>
+          </div>
+        </div>
+      </div>
+    </message-box>
   </div>
 </template>
 
@@ -56,10 +81,13 @@
             'number': 2
           }],
         isInit: false,
-        timerShelf: null,
-        isShowlive: null,
+        // timerShelf: null,
+        // isShowlive: null,
         isNoGoods: false,
-        isCreateGood: false
+        isEditShow: false,
+        editTitle: '',
+        kindInfo: {},
+        kindError: ''
       }
     },
     created () {
@@ -105,11 +133,14 @@
         //     this.tableData = []
         //   })
       },
-      createGoods () {
-        this.$router.push('/orderMager/edit/create')
-      },
+      editKind () {},
       handleEdit (id) {
-        this.$router.push(`/orderMager/edit/${id}/update`)
+        if (id) {
+          this.editTitle = '编辑分类'
+        } else {
+          this.editTitle = '新建分类'
+        }
+        this.isEditShow = true
       },
       changeTitle (id) {
         this.titleId = id
@@ -283,7 +314,6 @@
                       }*/
                 }
             }
-
             .no-goods {
                 text-align: center;
                 background-color: #ffffff;
@@ -306,6 +336,17 @@
                     margin-bottom: 90px;
                     span {
                         margin: auto 40px;
+                    }
+                }
+            }
+            .kind-edit {
+                .from-row {
+                    margin-top: 10px;
+                    .from-title {
+                        display: inline-block;
+                        width: 60px;
+                        text-align: right;
+                        margin-right: 8px;
                     }
                 }
             }
