@@ -46,6 +46,12 @@
           </tr>
         </draggable>
       </table>
+      <div class="page-pagination" v-if="total > searchParams.pageSize">
+        <ve-pagination :total="total"
+                       :pageSize="searchParams.pageSize"
+                       :currentPage="currentPage"
+                       @changePage="changePage"/>
+      </div>
     </div>
   </div>
 </template>
@@ -54,9 +60,10 @@
   import draggable from 'vuedraggable'
   import goodsServer from 'src/api/goods'
   import EventBus from 'src/utils/eventBus'
+  import VePagination from 'src/components/ve-pagination'
 
   export default {
-    components: { draggable },
+    components: { draggable, VePagination },
     created () {
       // this.getList()
       // this.isShowLiveData()
@@ -68,7 +75,8 @@
       }])
     },
     mounted () {
-      this.getList()
+      // this.getList()
+      this.queryList()
     },
     data () {
       return {
@@ -85,7 +93,15 @@
         isInit: false,
         timerShelf: null,
         isShowlive: null,
-        isNoGoods: false
+        isNoGoods: false,
+        searchParams: {
+          type: '',
+          date: '',
+          page: 1,
+          pageSize: 16
+        },
+        total: null,
+        currentPage: 1
       }
     },
     watch: {
@@ -103,8 +119,8 @@
     methods: {
       getList () {
         // this.$http.get(goodsServer.GET_GOODS_INFO)
-        // this.$http.get('http://localhost' + goodsServer.GET_GOODS_INFO)
-        this.$get('http://localhost' + goodsServer.GET_GOODS_INFO)
+        this.$http.get(this.$baseUrl + goodsServer.GET_GOODS_INFO)
+        // this.$get('http://localhost' + goodsServer.GET_GOODS_INFO)
           .then(res => {
             if (res.status === 200) {
               this.tableData = res.data
@@ -119,6 +135,25 @@
           .catch(() => {
             this.tableData = []
           })
+      },
+      changePage (page) {
+        this.searchParams.page = page
+        this.queryList()
+      },
+      queryList () {
+        this.$nextTick(() => {
+          this.$get(this.$baseUrl + goodsServer.GET_GOODS_PAGE, {
+            ...this.searchParams
+          }).then((res) => {
+            console.log(12313)
+            console.log(res)
+            this.total = res.total
+            this.tableData = res.info
+            if (res.status === 200) {
+
+            }
+          })
+        })
       },
       createGoods () {
         this.$router.push('/goodMager/edit/create')

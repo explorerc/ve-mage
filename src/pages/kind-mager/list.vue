@@ -25,7 +25,7 @@
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
-                <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button type="text" @click="handleDelete(row)">删除</el-button>
               </div>
             </td>
           </tr>
@@ -58,6 +58,15 @@
         </div>
       </div>
     </message-box>
+    <message-box v-if="isDelShow"
+                   class="kind-edit"
+                   width="464px"
+                   type="error"
+                   @handleClick="handleDelShow">
+          <div class="mager-box message-box-content">
+              删除该分类后，将无法再找回，请问要删除吗？
+          </div>
+      </message-box>
   </div>
 </template>
 
@@ -85,6 +94,7 @@
         // isShowlive: null,
         isNoGoods: false,
         isEditShow: false,
+        isDelShow: false,
         editTitle: '',
         kindInfo: {},
         kindError: ''
@@ -133,7 +143,13 @@
         //     this.tableData = []
         //   })
       },
-      editKind () {},
+      editKind (e) {
+        if (e.action === 'confirm') {
+        // 发送请求
+        } else {
+          this.isEditShow = false
+        }
+      },
       handleEdit (id) {
         if (id) {
           this.editTitle = '编辑分类'
@@ -144,6 +160,18 @@
       },
       changeTitle (id) {
         this.titleId = id
+      },
+      handleDelete (item) {
+        this.isDelShow = true
+        this.kindInfo = item
+      },
+      // DEL - BOX
+      handleDelShow (e) {
+        if (e.action === 'cancel') {
+          this.isDelShow = false
+        } else {
+        // 请求接口
+        }
       }
     }
   }

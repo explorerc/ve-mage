@@ -10,6 +10,7 @@ import Ajax from './utils/_ajax'
 import axios from 'axios'
 Vue.use(Ajax)
 Vue.prototype.$http = axios
+Vue.prototype.$baseUrl = 'http://localhost'
 console.log(process.env.NODE_ENV)
 Vue.config.debug = process.env.NODE_ENV !== 'production'
 Vue.config.devtools = process.env.NODE_ENV !== 'production'

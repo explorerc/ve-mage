@@ -1,6 +1,9 @@
 export default {
   // 获取所有产品信息
   GET_GOODS_INFO: '/goods/getAll',
+  // 分页
+  GET_GOODS_PAGE: '/goods/page',
+  // GET_GOODS_INFO: '/goods',
   GET_GOOD_BYID: '/goods/id', // 根据id获取商品信息
   // 新建推荐商品
   CREATE_GOODS: '/goods/add',
