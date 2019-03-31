@@ -4,7 +4,7 @@
       <p>分类管理</p>
       <div class='btn-box'>
         <!--<span>共{{tableData.length}}件商品</span>-->
-        <com-button class="add-goods primary-button" round  @click="handleEdit" >
+        <com-button class="add-goods primary-button" round  @click="handleEdit(null)" >
           新建分类
         </com-button>
       </div>
@@ -24,13 +24,19 @@
             <td>{{row.name}}</td>
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
-                <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
+                <el-button type="text" @click="handleEdit(row)">编辑</el-button>
                 <el-button type="text" @click="handleDelete(row)">删除</el-button>
               </div>
             </td>
           </tr>
         </draggable>
       </table>
+      <div class="page-pagination" v-if="total > searchParams.pageSize">
+        <ve-pagination :total="total"
+                       :pageSize="searchParams.pageSize"
+                       :currentPage="currentPage"
+                       @changePage="changePage"/>
+      </div>
     </div>
     <!--<MessageBox></MessageBox>-->
     <message-box v-if="isEditShow"
@@ -42,7 +48,7 @@
 
       <div class="mager-box message-box-content">
         <div class="from-box">
-          <div class="from-row">
+          <div class="from-row" v-if="kindInfo.id">
             <span class="from-title">分类id:</span><span style="line-height: 20px">{{kindInfo.id}}</span>
           </div>
           <div class="from-row">
@@ -72,22 +78,17 @@
 
 <script>
   import draggable from 'vuedraggable'
-  // import goodsServer from 'src/api/salesGoods-service'
+  import kindServer from 'src/api/kind'
   import EventBus from 'src/utils/eventBus'
+  import VePagination from 'src/components/ve-pagination'
 
   export default {
-    components: { draggable },
+    components: { draggable, VePagination },
     data () {
       return {
         tableData: [
           { 'id': 1,
-            'userId': 2,
-            'goodId': 888,
-            'isPayed': 3,
-            'isSend': 0,
-            'logistics': '',
-            'isRecieved': 0,
-            'number': 2
+            'name': ''
           }],
         isInit: false,
         // timerShelf: null,
@@ -96,12 +97,23 @@
         isEditShow: false,
         isDelShow: false,
         editTitle: '',
-        kindInfo: {},
-        kindError: ''
+        kindInfo: {
+          id: null,
+          name: ''
+        },
+        kindError: '',
+        searchParams: {
+          type: '',
+          date: '',
+          page: 1,
+          pageSize: 10
+        },
+        total: null,
+        currentPage: 1
       }
     },
     created () {
-      this.getList()
+      this.queryList()
       // this.isShowLiveData()
       EventBus.$emit('breads', [{
         title: '分类管理'
@@ -111,7 +123,7 @@
       }])
     },
     mounted () {
-      this.getList()
+      // this.getList()
     },
     watch: {
       tableData: {
@@ -126,33 +138,54 @@
       }
     },
     methods: {
-      getList () {
-        // this.$get(goodsServer.GOODS_LISTS, {})
-        //   .then(res => {
-        //     if (res.status === 200) {
-        //       this.tableData = res.data
-        //       console.log(this.tableData)
-        //       if (this.tableData.length < 1) {
-        //         this.isNoGoods = true
-        //       } else {
-        //         this.isNoGoods = false
-        //       }
-        //     }
-        //   })
-        //   .catch(() => {
-        //     this.tableData = []
-        //   })
+      queryList () {
+        this.$get(this.$baseUrl + kindServer.GET_KIND_PAGE, {...this.searchParams})
+          .then(res => {
+            if (res.code === 200) {
+              this.tableData = res.data.info
+              this.total = res.data.total
+              if (this.tableData.length < 1) {
+                this.isNoGoods = true
+              } else {
+                this.isNoGoods = false
+              }
+            }
+          })
+          .catch(() => {
+            this.tableData = []
+          })
       },
       editKind (e) {
         if (e.action === 'confirm') {
-        // 发送请求
+        // 发送请求GET_KIND_UPDATE
+          let _url
+          if (this.kindInfo.id) {
+            _url = this.$baseUrl + kindServer.GET_KIND_UPDATE
+          } else {
+            _url = this.$baseUrl + kindServer.GET_KIND_ADD
+          }
+          this.$get(_url, {...this.kindInfo})
+            .then(res => {
+              if (res.code === 200) {
+                this.queryList()
+                this.isEditShow = false
+                this.kindInfo.id = null
+                this.kindInfo.name = ''
+              }
+            })
+            .catch(() => {
+              this.tableData = []
+            })
         } else {
           this.isEditShow = false
         }
       },
-      handleEdit (id) {
-        if (id) {
+      handleEdit (row) {
+        debugger
+        if (row) {
           this.editTitle = '编辑分类'
+          this.kindInfo.id = row.id
+          this.kindInfo.name = row.name
         } else {
           this.editTitle = '新建分类'
         }
@@ -172,6 +205,10 @@
         } else {
         // 请求接口
         }
+      },
+      changePage (page) {
+        this.searchParams.page = page
+        this.queryList()
       }
     }
   }

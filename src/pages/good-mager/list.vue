@@ -64,20 +64,6 @@
 
   export default {
     components: { draggable, VePagination },
-    created () {
-      // this.getList()
-      // this.isShowLiveData()
-      EventBus.$emit('breads', [{
-        title: '商品管理'
-      }, {
-        title: '商品列表',
-        url: `/goodMager/list/`
-      }])
-    },
-    mounted () {
-      // this.getList()
-      this.queryList()
-    },
     data () {
       return {
         tableData: [
@@ -98,11 +84,25 @@
           type: '',
           date: '',
           page: 1,
-          pageSize: 16
+          pageSize: 10
         },
         total: null,
         currentPage: 1
       }
+    },
+    created () {
+      // this.getList()
+      // this.isShowLiveData()
+      EventBus.$emit('breads', [{
+        title: '商品管理'
+      }, {
+        title: '商品列表',
+        url: `/goodMager/list/`
+      }])
+    },
+    mounted () {
+      // this.getList()
+      this.queryList()
     },
     watch: {
       tableData: {
