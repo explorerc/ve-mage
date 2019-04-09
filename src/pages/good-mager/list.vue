@@ -117,25 +117,23 @@
       }
     },
     methods: {
-      getList () {
-        // this.$http.get(goodsServer.GET_GOODS_INFO)
-        this.$http.get(this.$baseUrl + goodsServer.GET_GOODS_INFO)
-        // this.$get('http://localhost' + goodsServer.GET_GOODS_INFO)
-          .then(res => {
-            if (res.status === 200) {
-              this.tableData = res.data
-              console.log(this.tableData)
-              if (this.tableData.length < 1) {
-                this.isNoGoods = true
-              } else {
-                this.isNoGoods = false
-              }
-            }
-          })
-          .catch(() => {
-            this.tableData = []
-          })
-      },
+      // getList () {
+      //   this.$http.get(this.$baseUrl + goodsServer.GET_GOODS_INFO)
+      //     .then(res => {
+      //       if (res.status === 200) {
+      //         this.tableData = res.data
+      //         console.log(this.tableData)
+      //         if (this.tableData.length < 1) {
+      //           this.isNoGoods = true
+      //         } else {
+      //           this.isNoGoods = false
+      //         }
+      //       }
+      //     })
+      //     .catch(() => {
+      //       this.tableData = []
+      //     })
+      // },
       changePage (page) {
         this.searchParams.page = page
         this.queryList()
@@ -145,12 +143,9 @@
           this.$get(this.$baseUrl + goodsServer.GET_GOODS_PAGE, {
             ...this.searchParams
           }).then((res) => {
-            console.log(12313)
-            console.log(res)
             this.total = res.total
             this.tableData = res.info
             if (res.status === 200) {
-
             }
           })
         })

@@ -14,7 +14,10 @@ const goodEdit = () => import('src/pages/good-mager/edit')
 const OrderMager = () => import('src/pages/sale-mager/list')
 const OrderEdit = () => import('src/pages/good-mager/edit')
 const KindMager = () => import('src/pages/kind-mager/list')
-// const KindEdit = () => import('src/pages/kind-mager/edit')
+/* 联系卖家 */
+const Chat = () => import('src/pages/user-mager/chat')
+/* 用户管理 */
+const UserList = () => import('src/pages/user-mager/user-list')
 
 export default [{
   path: '/login',
@@ -92,6 +95,18 @@ export default [{
       path: '/kindMager/list',
       name: 'kind',
       component: KindMager
+      // redirect: '/orderMager/list/isPay',
+    },
+    {
+      path: '/userMager/chat',
+      name: 'chat',
+      component: Chat
+      // redirect: '/orderMager/list/isPay',
+    },
+    {
+      path: '/userMager/list',
+      name: 'userList',
+      component: UserList
       // redirect: '/orderMager/list/isPay',
     }
   ]

@@ -36,7 +36,7 @@
           <el-menu-item index="/kindMager/list">商品分类</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="3">
+      <el-submenu index="2">
         <template slot="title">
           <i class="menu-icon icon_crm"></i>
           <span>销售管理</span>
@@ -44,6 +44,16 @@
         <el-menu-item-group>
           <el-menu-item index="/orderMager/list">订单管理</el-menu-item>
           <el-menu-item index="/orderMager/edit/create">销售分析</el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="3">
+        <template slot="title">
+          <i class="menu-icon icon_crm"></i>
+          <span>用户管理</span>
+        </template>
+        <el-menu-item-group>
+          <el-menu-item index="/userMager/list">粉丝管理</el-menu-item>
+          <el-menu-item index="/userMager/chat">聊天管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
