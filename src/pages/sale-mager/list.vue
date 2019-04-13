@@ -32,10 +32,12 @@
           <th>用户id</th>
           <th>商品id</th>
           <th>商品数量</th>
-          <th>是否付款</th>
-          <th>是否发货</th>
+          <!--<th>是否付款</th>-->
+          <!--<th>是否发货</th>-->
           <th>物流单号</th>
-          <th>是否收获</th>
+          <th>状态</th>
+          <th>创建时间</th>
+          <td>更新时间</td>
           <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
@@ -45,10 +47,14 @@
             <td>{{row.userId}}</td>
             <td>{{row.goodId}}</td>
             <td>{{row.number}}</td>
-            <td>{{row.isPayed === 1 ? '已付款':'未付款'}}</td>
-            <td>{{row.isSend === 1 ? '已发货':'未发货'}}</td>
             <td>{{row.logistics}}</td>
-            <td>{{row.isRecieved === 1 ? '已收获':'未收货'}}</td>
+            <td v-if="row.status===0">未付款</td>
+            <td v-else-if="row.status===1">未发货</td>
+            <td v-else-if="row.status===2">未收货</td>
+            <td v-else-if="row.status===3">已关闭</td>
+            <td v-else-if="row.status===4"> </td>
+            <td>{{row.create_time}}</td>
+            <td>{{row.update_time}}</td>
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
@@ -59,6 +65,12 @@
           </tr>
         </draggable>
       </table>
+    </div>
+    <div class="page-pagination" v-if="total > searchParams.pageSize">
+        <ve-pagination :total="total"
+                       :pageSize="searchParams.pageSize"
+                       :currentPage="currentPage"
+                       @changePage="changePage"/>
     </div>
   </div>
 </template>
@@ -76,11 +88,11 @@
           { 'id': 1,
             'userId': 2,
             'goodId': 8,
-            'isPayed': 1,
-            'isSend': 0,
+            'status': 1,
             'logistics': '',
-            'isRecieved': 0,
-            'number': 2
+            'number': 2,
+            'create_time': null,
+            'update_time': null
           }],
         isInit: false,
         timerShelf: null,
@@ -88,12 +100,21 @@
         isNoGoods: false,
         titleId: 1,
         titleList: [
-          {id: 1, type: 'isPayed', name: '未付款订单'},
-          {id: 2, type: 'isSend', name: '未发货订单'},
-          {id: 3, type: 'isReceived', name: '未收获订单'},
-          {id: 0, type: 'all', name: '全部订单'}
+          {id: 0, type: 'isPayed', name: '未付款订单'},
+          {id: 1, type: 'isSend', name: '未发货订单'},
+          {id: 2, type: 'isReceived', name: '未收获订单'},
+          {id: 3, type: 'close', name: '已关闭订单'},
+          {id: 4, type: 'all', name: '全部订单'}
         ],
-        activeName: 'first'
+        activeName: 'first',
+        searchParams: {
+          status: 0,
+          date: '',
+          page: 1,
+          pageSize: 10
+        },
+        total: null,
+        currentPage: 1
       }
     },
     created () {
@@ -106,27 +127,15 @@
         url: `/goodMager/list/`
       }])
     },
-    mounted () {
-      this.getList()
-    },
-    watch: {
-      tableData: {
-        handler (val, oldVal) {
-          if (val.length >= 1) {
-            if (this.isInit) {
-              // this.sortGoods()
-            }
-          }
-        },
-        deep: true
-      }
-    },
     methods: {
       getList () {
-        this.$get(this.$baseUrl + orderServer.GET_ORDER_ALL, {})
+        this.$get(this.$baseUrl + orderServer.GET_ORDER_ALL, {
+          ...this.searchParams
+        })
           .then(res => {
             if (res.status === 200) {
-              this.tableData = res.data
+              this.tableData = res.data.info
+              this.total = res.data.total
               console.log(this.tableData)
               if (this.tableData.length < 1) {
                 this.isNoGoods = true
@@ -150,6 +159,13 @@
       },
       handleTabClick (tab) {
         console.log(tab.index)
+        this.searchParams.status = tab.index
+        this.searchParams.page = 1
+        this.getList()
+      },
+      changePage (page) {
+        this.searchParams.page = page
+        this.getList()
       }
     }
   }
