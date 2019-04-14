@@ -43,6 +43,7 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="/orderMager/list">订单管理</el-menu-item>
+          <el-menu-item index="/saleMager/coupon">优惠券</el-menu-item>
           <el-menu-item index="/orderMager/edit/create">销售分析</el-menu-item>
         </el-menu-item-group>
       </el-submenu>

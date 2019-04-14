@@ -18,6 +18,8 @@ const KindMager = () => import('src/pages/kind-mager/list')
 const Chat = () => import('src/pages/user-mager/chat')
 /* 用户管理 */
 const UserList = () => import('src/pages/user-mager/user-list')
+/* 优惠券管理 */
+const Coupon = () => import('src/pages/sale-mager/coupon')
 
 export default [{
   path: '/login',
@@ -107,7 +109,13 @@ export default [{
       path: '/userMager/list',
       name: 'userList',
       component: UserList
-      // redirect: '/orderMager/list/isPay',
+      // redirect: '/orderMager/list/isPay',CouponList
+    },
+    {
+      path: '/saleMager/coupon',
+      name: 'Coupon',
+      component: Coupon
+      // redirect: '/orderMager/list/isPay',CouponList
     }
   ]
 }
