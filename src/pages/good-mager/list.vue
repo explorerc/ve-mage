@@ -29,7 +29,7 @@
               <img class="cover_img" :src="row.imgUrl">
             </td>
             <td>{{row.name}}</td>
-            <td>{{row.added === '1' ? '已上架':'已下架'}}</td>
+            <td>{{row.added === '0' ? '已下架':'已上架'}}</td>
             <td>
               {{row.price}}
             </td>
@@ -140,12 +140,12 @@
       },
       queryList () {
         this.$nextTick(() => {
-          this.$get(this.$baseUrl + goodsServer.GET_GOODS_PAGE, {
+          this.$get(goodsServer.GET_GOODS_PAGE, {
             ...this.searchParams
           }).then((res) => {
-            this.total = res.total
-            this.tableData = res.info
-            if (res.status === 200) {
+            if (res.code === 200) {
+              this.total = res.data.total
+              this.tableData = res.data.info
             }
           })
         })

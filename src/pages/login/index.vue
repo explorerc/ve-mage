@@ -31,9 +31,6 @@
                style="margin-top: 5px;">
             <a href="/forgot"
                class="fr clickTag">忘记密码</a>
-            <template>
-              <el-checkbox v-model="remember">自动登录</el-checkbox>
-            </template>
           </div>
           <button class="primary-button"
                   @click="accountSubmit">提交
@@ -50,17 +47,12 @@
 <script>
 import MyInput from './login-input'
 import mageService from 'src/api/mage-service'
-import { mapMutations, mapState } from 'vuex'
-import * as types from 'src/store/mutation-types'
 
 export default {
   data () {
     return {
-      isAccount: false,
       userName: '',
       passWord: '',
-      phone: '',
-      phoneStatus: false,
       code: '',
       type: 'password',
       key: '', // ?
@@ -68,46 +60,15 @@ export default {
       isSend: false,
       second: 60,
       timerr: '', // ?
-      phoneKey: '',
-      isImg: false,
-      cap: null,
-      accountOpacity: 0, // ??
-      mobileOpacity: 0,
       accountError: '',
       mobileError: '',
-      remember: false,
       isActive: false,
       isGoMaster: false,
-      shenQingShow: false,
-      shenHeiShow: false,
-      userDate: {
-        img: '',
-        title: '',
-        subname: '',
-        btnName: '',
-        btnUrl: ''
-      }
+      accountOpacity: 0
     }
   },
   components: {
     'com-input': MyInput
-  },
-  computed: {
-    ...mapState('login', {
-      isLogin: state => state.isLogin,
-      accountInfo: state => state.accountInfo
-    })
-  },
-  created () {
-    this.$config({ handlers: true }).$get(mageService.GET_LOGIN_DATE).then((res) => {
-      this.userDate.img = res.data.image
-      this.userDate.title = res.data.title
-      this.userDate.subname = res.data.description
-      this.userDate.btnName = res.data.subname
-      this.userDate.btnUrl = res.data.urlname
-    }).catch(err => {
-      console.log(err.msg)
-    })
   },
   destroyed () {
     clearInterval(this.timerr)
@@ -117,10 +78,6 @@ export default {
   watch: {
   },
   methods: {
-    ...mapMutations('login', {
-      setIsLogin: types.UPDATE_IS_LOGIN,
-      setAccountInfo: types.ACCOUNT_INFO
-    }),
     change (type) {
       this.type = type // ?
     },
@@ -131,64 +88,23 @@ export default {
       }
       let data = {
         'name': this.userName,
-        'pwd': this.passWord,
-        'remember': this.remember ? 1 : 0
+        'pwd': this.passWord
       }
       this.$config({ handlers: true }).$post(mageService.POST_LOGIN_ACCOUNT, data).then((res) => {
-        sessionStorage.setItem('isLogin', true)
-        this.$get(mageService.GET_ACCOUNT).then((res) => {
-          this.setAccountInfo(res.data)
-        })
-        this.setIsLogin(1)
-        let isGoMaster = sessionStorage.getItem('isGoMaster')
-        if (isGoMaster) {
-          this.$router.go(-1)
-        } else {
-          sessionStorage.removeItem('isGoMaster')
-          this.$router.replace('/liveMager/list')
+        console.log(res)
+        if (res.code === 200) {
+          this.$store.commit('login', true)
+          this.$post(mageService.GET_ACCOUNT).then((result) => {
+            sessionStorage.setItem('userInfo', JSON.stringify(result.data))
+            let userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
+            console.log(userInfo)
+          })
+          this.$router.replace('/')
         }
       }).catch((err) => {
-        if (err.code === 10013) { // 未注册
-          this.shenQingShow = true
-        } else if (err.code === 10014) { // 注册未通过审核
-          this.shenHeiShow = true
-        } else {
-          this.accountError = err.msg
-        }
-        if (!this.isAccount) {
-          this.isSend = true
-          this.isProhibit = true
-          clearInterval(this.timerr)
-          this.timerr = setInterval(() => {
-            this.second--
-            if (this.second <= 0) {
-              clearInterval(this.timerr)
-              this.isSend = false
-              this.isProhibit = true
-              this.second = 60
-              this.isImg = false
-              this.phoneKey = ''
-              this.cap.refresh()
-            }
-          }, 1000)
-        }
+        this.accountError = err.msg
         this.accountOpacity = 1
       })
-    },
-    sqHandler (e) {
-      this.shenQingShow = false
-      if (e.action === 'confirm') {
-        this.$router.push('/register')
-      }
-    },
-    checkPhone (param) {
-      debugger
-      let reg = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-      if (reg.test(parseInt(param))) {
-        this.phoneStatus = true
-      } else {
-        this.phoneStatus = false
-      }
     },
     checkAccountForm: function (e) {
       if (!this.userName) {
@@ -209,10 +125,6 @@ export default {
       this.accountOpacity = 0
       this.mobileError = ''
       this.mobileOpacity = 0
-    },
-    validPhone: function (phone) {
-      var re = /^1[3|4|5|6|7|8|9][0-9]\d{8}$/
-      return re.test(phone)
     }
   }
 }
@@ -287,18 +199,6 @@ export default {
       font-size: 32px;
       color: #333333;
       text-align: center;
-    }
-    #captcha {
-      height: 40px;
-      margin-top: 10px;
-    }
-    .yidun.yidun--light {
-      width: 100% !important;
-      margin-top: 38px !important;
-      .yidun_control {
-        background-color: #fff !important;
-        border: 1px solid #c4c4c4 !important;
-      }
     }
     .input-form {
       position: relative;

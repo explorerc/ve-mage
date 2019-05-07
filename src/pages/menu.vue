@@ -53,7 +53,8 @@
           <span>用户管理</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/userMager/list">粉丝管理</el-menu-item>
+          <el-menu-item index="/userMager/list">粉丝列表</el-menu-item>
+          <!--<el-menu-item index="/userMager/edit">粉丝编辑</el-menu-item>-->
           <el-menu-item index="/userMager/chat">聊天管理</el-menu-item>
         </el-menu-item-group>
       </el-submenu>

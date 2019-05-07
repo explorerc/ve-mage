@@ -18,103 +18,132 @@ const KindMager = () => import('src/pages/kind-mager/list')
 const Chat = () => import('src/pages/user-mager/chat')
 /* 用户管理 */
 const UserList = () => import('src/pages/user-mager/user-list')
+/* 用户管理 */
+const UserEdit = () => import('src/pages/user-mager/edit')
 /* 优惠券管理 */
 const Coupon = () => import('src/pages/sale-mager/coupon')
 
 export default [{
   path: '/login',
   name: 'login',
-  component: Login,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
+  component: Login
 },
 {
   path: '/register',
   name: 'register',
-  component: Register,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
+  component: Register
 },
 {
   path: '/setPassword',
   name: 'setPassword',
-  component: SetPassword,
-  meta: {
-    noAuth: true,
-    noLogin: true
-  }
+  component: SetPassword
 },
 {
   path: '/forgot',
   name: 'forgot',
-  component: Forgot,
-  meta: {
-    noAuth: true
-  }
+  component: Forgot
 },
 {
   path: '/',
   name: 'Layout',
   component: Layout,
   redirect: '/goodMager/list',
+  meta: {
+    isAuth: true
+  },
   children: [
     {
       path: '/goodMager/list',
       name: 'GoodMager',
-      component: GoodMager
+      component: GoodMager,
+      meta: {
+        isAuth: true
+      }
     },
     {
       path: '/goodMager/edit/:type',
       name: 'goodCreate',
-      component: goodEdit
+      component: goodEdit,
+      meta: {
+        isAuth: true
+      }
     },
     {
       path: '/goodMager/edit/:id/:type',
       name: 'goodEdit',
-      component: goodEdit
+      component: goodEdit,
+      meta: {
+        isAuth: true
+      }
     },
     {
       path: '/orderMager/list',
       name: 'Order',
-      component: OrderMager
+      component: OrderMager,
+      meta: {
+        isAuth: true
+      }
       // redirect: '/orderMager/list/isPay',
     },
     {
       path: '/orderMager/edit/:type',
       name: 'orderCreate',
-      component: OrderEdit
+      component: OrderEdit,
+      meta: {
+        isAuth: true
+      }
     },
     {
       path: '/orderMager/edit/:id/:type',
       name: 'orderEdit',
-      component: OrderEdit
+      component: OrderEdit,
+      meta: {
+        isAuth: true
+      }
     },
     {
       path: '/kindMager/list',
       name: 'kind',
-      component: KindMager
+      component: KindMager,
+      meta: {
+        isAuth: true
+      }
       // redirect: '/orderMager/list/isPay',
     },
     {
       path: '/userMager/chat',
       name: 'chat',
-      component: Chat
+      component: Chat,
+      meta: {
+        isAuth: true
+      }
       // redirect: '/orderMager/list/isPay',
     },
     {
       path: '/userMager/list',
       name: 'userList',
-      component: UserList
+      component: UserList,
+      meta: {
+        isAuth: true
+      }
+      // redirect: '/orderMager/list/isPay',CouponList
+    },
+    {
+      path: '/userMager/edit',
+      name: 'userEdit',
+      component: UserEdit,
+      meta: {
+        isAuth: true
+      }
       // redirect: '/orderMager/list/isPay',CouponList
     },
     {
       path: '/saleMager/coupon',
       name: 'Coupon',
-      component: Coupon
+      component: Coupon,
+      meta: {
+        isAuth: true
+      }
       // redirect: '/orderMager/list/isPay',CouponList
     }
   ]

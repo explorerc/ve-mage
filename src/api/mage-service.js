@@ -1,9 +1,9 @@
 export default {
   POST_REGISTER: '/user/business-user/reg',
   POST_LOGIN_PHONE: '/user/business-user/mobile-login',
-  POST_LOGIN_ACCOUNT: '/user/login', // 用户登录
-  POST_LOGOUT: '/user/business-user/signout',
-  GET_ACCOUNT: '/user/business-user/info',
+  POST_LOGIN_ACCOUNT: '/mage/login', // 用户登录
+  POST_LOGOUT: '/mage/signout',
+  GET_ACCOUNT: '/mage/info',
   POST_CHANGE_PASSWORD: '/user/business-user/update-password',
   POST_SET_PASSWORD: '/user/business-user/first-set-password',
   POST_SET_COMPANY: '/user/business-user/update',

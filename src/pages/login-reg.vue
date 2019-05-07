@@ -11,23 +11,23 @@
            @avatarChange="avatarChange($event)"> -->
       <!--<span class="v-name" id="toggler-span">{{name}}</span>-->
     </div>
-    <!--<ul class="v-select" v-show="isShow">-->
-      <!--<li>-->
-        <!--<a href="/setAccount"><i class="iconfont icon-shezhi21"></i>账号设置</a>-->
-      <!--</li>-->
-      <!--<li>-->
-        <!--<a href="javascript:;"-->
-           <!--@click="logOff()"><i class="iconfont icon-tuichu1"></i>退出</a>-->
-      <!--</li>-->
-    <!--</ul>-->
+    <ul class="v-select" v-show="isShow">
+      <li>
+        <a href="/setAccount"><i class="iconfont icon-shezhi21"></i>账号设置</a>
+      </li>
+      <li>
+        <a href="javascript:;"
+           @click="logOff()"><i class="iconfont icon-tuichu1"></i>退出</a>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
-// import userService from 'src/api/user-service.js'
+import mageService from 'src/api/mage-service.js'
 // import { mapMutations } from 'vuex'
 // import { mapMutations, mapState } from 'vuex'
 // import * as types from 'src/store/mutation-types'
-// import EventBus from 'src/utils/eventBus'
+import EventBus from 'src/utils/eventBus'
 export default {
   props: {
     isShow: { // 头像下拉是否显示
@@ -43,8 +43,6 @@ export default {
       bgObj: {}
     }
   },
-  components: {
-  }
   // computed: {
   //   ...mapState('login', {
   //     isLogin: state => state.isLogin,
@@ -54,49 +52,48 @@ export default {
   //     return this.avatar ? this.$imgHost + '/' + this.avatar : 'https:' + require('assets/image/avatar@2x.png')
   //   }
   // },
-  // created () {
-  //   EventBus.$on('avatarChange', (val) => {
-  //     this.avatar = val
-  //   })
-  //   if (this.accountInfo && this.accountInfo.userName) {
-  //     this.name = this.accountInfo.name
-  //     this.avatar = this.accountInfo.avatar
-  //   }
-  // },
-  // watch: {
-  //   'accountInfo.userName': {// 观看端 是否已登陆
-  //     handler (newValue) {
-  //       this.name = this.accountInfo.name
-  //       this.avatar = this.accountInfo.avatar
-  //     },
-  //     deep: true
-  //   }
-  // },
-  // mounted () {
-  //   // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
-  //   this.bgObj = {
-  //     backgroundImage: `url(${this.avatarImg})`
-  //   }
-  // },
-  // methods: {
-  //   ...mapMutations('login', {
-  //     setIsLogin: types.UPDATE_IS_LOGIN,
-  //     setAccountInfo: types.ACCOUNT_INFO
-  //   }),
-  //   changeState (event) {
-  //     if (event.target.id === 'preventClick') return false
-  //     this.$emit('changeState')
-  //   },
-  //   logOff () {
-  //     this.$post(userService.POST_LOGOUT).then((res) => {
-  //       sessionStorage.removeItem('isLogin')
-  //       // sessionStorage.removeItem('accountInfo')
-  //       // sessionStorage.removeItem('contactInfo')
-  //       this.setIsLogin(0)
-  //       this.$router.replace('/login')
-  //     })
-  //   }
-  // }
+  created () {
+    EventBus.$on('avatarChange', (val) => {
+      this.avatar = val
+    })
+    if (this.accountInfo && this.accountInfo.userName) {
+      this.name = this.accountInfo.name
+      this.avatar = this.accountInfo.avatar
+    }
+  },
+  watch: {
+    'accountInfo.userName': {// 观看端 是否已登陆
+      handler (newValue) {
+        this.name = this.accountInfo.name
+        this.avatar = this.accountInfo.avatar
+      },
+      deep: true
+    }
+  },
+  mounted () {
+    // let accountInfo = JSON.parse(sessionStorage.getItem('accountInfo'))
+    this.bgObj = {
+      backgroundImage: `url(${this.avatarImg})`
+    }
+  },
+  methods: {
+    // ...mapMutations('login', {
+    //   setIsLogin: types.UPDATE_IS_LOGIN,
+    //   setAccountInfo: types.ACCOUNT_INFO
+    // }),
+    changeState (event) {
+      if (event.target.id === 'preventClick') return false
+      this.$emit('changeState')
+    },
+    logOff () {
+      this.$post(mageService.POST_LOGOUT).then((res) => {
+        this.$store.commit('login', false)
+        // sessionStorage.remove('userInfo')
+        this.$router.push('/login')
+        console.log('退出登录')
+      })
+    }
+  }
 }
 </script>
 <style  scoped lang="scss">

@@ -15,74 +15,29 @@ const router = new Router({
       : 0
   }
 })
-// const vue = new Vue()
-// router.beforeEach((to, from, next) => {
-//   EventBus.$emit('breads', [])
-//   if (to.meta.noLogin) {
-//     // 不需要登录
-//     let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
-//     if (to.name === 'login') {
-//       if (isLogin) {
-//         next('/liveMager/list')
-//       } else {
-//         vue
-//           .$config({
-//             loading: true,
-//             handlers: true
-//           })
-//           .$get(userService.GET_ACCOUNT)
-//           .then(res => {
-//             store.commit('login/ACCOUNT_INFO', res.data)
-//             sessionStorage.setItem('isLogin', true)
-//             next('/liveMager/list')
-//           })
-//           .catch(() => {
-//             next()
-//           })
-//       }
-//     }
-//     next()
-//     return false
-//   } else {
-//     if (to.meta.noAuth) {
-//       // 不需要验证是否这只密码
-//       next()
-//       return false
-//     } else {
-//       let isLogin = JSON.parse(sessionStorage.getItem('isLogin'))
-//       let accountInfo = store.getters['login/accountInfo']
-//       if (isLogin && accountInfo && accountInfo.userName) {
-//         if (accountInfo.hasPassword) {
-//           next()
-//           return false
-//         }
-//         next('/setPassword')
-//         return false
-//       } else {
-//         vue
-//           .$config({
-//             loading: true,
-//             handlers: true
-//           })
-//           .$get(userService.GET_ACCOUNT)
-//           .then(res => {
-//             if (res.data.hasPassword) {
-//               // sessionStorage.setItem('accountInfo', JSON.stringify(res.data))
-//               store.commit('login/ACCOUNT_INFO', res.data)
-//               sessionStorage.setItem('isLogin', true)
-//               next()
-//             } else {
-//               next('/setPassword')
-//             }
-//           })
-//           .catch(() => {
-//             sessionStorage.setItem('isLogin', false)
-//             to.name === 'login' ? next() : next('/login')
-//           })
-//       }
-//     }
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.isAuth) { // 判断该路由是否需要登录权限
+    if (JSON.parse(localStorage.getItem('isLogin'))) { // 判断本地是否存在access_token
+      next()
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+  } else {
+    next()
+  }
+  /* 如果本地 存在 token 则 不允许直接跳转到 登录页面 */
+  if (to.fullPath === '/login') {
+    if (JSON.parse(localStorage.getItem('isLogin'))) {
+      next({
+        path: from.fullPath
+      })
+    } else {
+      next()
+    }
+  }
+})
 router.afterEach((to, from) => {
   if (router.app) {
     setTimeout(() => {
