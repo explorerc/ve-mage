@@ -2,10 +2,12 @@
   <div class="ve-upload-box" v-ComLoading="loading">
     <div class="upload-img-box" v-if="fileSrc||(!fileSrc && coverImg)">
       <transition name="fade">
-        <div class="temp-img" v-if="fileSrc"
-             :style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>
-        <div class="temp-img" v-if="!fileSrc && coverImg"
-             :style="{backgroundImage:'url('+coverImg+')'}"></div>
+        <!--<div class="temp-img" v-if="fileSrc"-->
+             <!--:style="{backgroundImage:'url('+imgHost+'/'+fileSrc+')'}"></div>-->
+        <!--<div class="temp-img" v-if="!fileSrc && coverImg"-->
+             <!--:style="{backgroundImage:'url('+coverImg+')'}"></div>-->
+        <div class="temp-img"
+        :style="{backgroundImage:'url('+coverImg+')'}"></div>
       </transition>
       <div class="over-upload">
         <span @click.stop="deleteImage">

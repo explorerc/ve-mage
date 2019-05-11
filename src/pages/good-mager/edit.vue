@@ -26,25 +26,18 @@
       </el-form-item>
       <el-form-item label="商品图片：" prop="imgUrl" style="margin-bottom:15px;" class="image-list">
         <div class="upload_box">
-          <template v-for="(ite,ind) in goodsData.imgUrl">
+          <!--<template v-for="(ite,ind) in imgUrl">-->
             <div style="display: inline-block">
-              <ve-upload :key="ind"
+              <ve-upload
                          title="图片支持jpg、png、bmp&nbsp;&nbsp;不超过2MB <br> 最佳尺寸：600 x 800"
-                         accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
+                         accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg"
                          :fileSize="2048"
-                         @error="uploadError($event, ite)" :initImg="ite.name"
-                         @success="uploadImgSuccess(ite)"></ve-upload>
-              <span v-if="ite.errMsg && !imgEmptyMsg" class="error-msg img-error error12">{{ite.errMsg}}</span>
-              <span v-if="ind===0" class="error-msg img-error">{{imgEmptyMsg}}</span>
+                         @error="uploadError" :initImg="goodsData.imgUrl"
+                         @success="uploadImgSuccess"></ve-upload>
+              <!--<ve-upload title="图片支持jpg、png、bmp格式，大小不超过2M<br>尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" @error="uploadError" @success="uploadImgSuccess"></ve-upload>-->
+              <span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>
             </div>
-            <!--<ve-upload :key="ind"-->
-                       <!--title="图片支持jpg、png、bmp&nbsp;&nbsp;小于不超过2MB &nbsp;&nbsp; 最佳尺寸：600 x 800"-->
-                       <!--accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"-->
-                       <!--:fileSize="2048"-->
-                       <!--:errorMsg="ite.errMsg"-->
-                       <!--@error="uploadError($event, ite)" :initImg="ite.name"-->
-                       <!--@success="uploadImgSuccess"></ve-upload>-->
-          </template>
+          <!--</template>-->
           <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
       </el-form-item>
@@ -61,7 +54,7 @@
       </el-form-item>
       <el-form-item label="是否上架：" prop="inventory" class="is-required">
         <div class="">
-          <el-radio v-model="goodsData.added" label="1" :class="[goodsData.added===0]">上架</el-radio>
+          <el-radio v-model="goodsData.added" label="1" :class="[goodsData.added!==0]">上架</el-radio>
           <el-radio v-model="goodsData.added" label="0">下架</el-radio>
         </div>
       </el-form-item>
@@ -185,22 +178,11 @@
         }
       }
       let valiUpload = (rule, value, callback) => {
-        let num = 0
-        this[rule.obj].imgUrl.map((item) => {
-          if (item.name) {
-            num += 1
-          }
-        })
-        if (num > 0) {
-          if (value[0].name) {
-            return callback()
-          } else {
-            this.imgEmptyMsg = '请上传封面图'
-            return callback(new Error('请上传封面图'))
-          }
+        if (value) {
+          return callback()
         } else {
-          this.imgEmptyMsg = '请上传图片'
-          return callback(new Error('请上传图片'))
+          this.imgEmptyMsg = '请上传图'
+          return callback(new Error('请上传图'))
         }
       }
       let inventory = (rule, value, callback) => {
@@ -228,11 +210,11 @@
         goodsData: {
           name: '',
           price: '',
-          imgUrl: [{errMsg: ''}],
           disprice: '',
           describe: '',
           inventory: null,
-          added: '1'
+          added: '1',
+          imgUrl: ''
         },
         rules: {
           name: [
@@ -279,24 +261,17 @@
                 this.goodsData.goods_id = this.$route.params.id
                 _url = goodsServer.UPDATE_GOODS
               }
-              let imgList = this.goodsData.imgUrl.filter((ite, ind) => {
-                if (ite.name) {
-                  return ite
-                }
-              })
-              this.goodsData.image = JSON.stringify(imgList)
-              console.log(_url)
-              // this.$post(_url, this.goodsData)
-              //   .then(res => {
-              //     // this.$toast({
-              //     //   content: '操作成功!'
-              //     // })
-              //     this.$router.go(-1)
-              //     this.isShowMsgB = false
-              //   })
-              //   .catch(err => {
-              //     console.log(err)
-              //   })
+              this.$post(_url, this.goodsData)
+                .then(res => {
+                  // this.$toast({
+                  //   content: '操作成功!'
+                  // })
+                  this.$router.go(-1)
+                  this.isShowMsgB = false
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             } else {
               console.log('error submit!!')
               return false
@@ -309,7 +284,7 @@
       },
       uploadImgSuccess (data) {
         data.errMsg = ''
-        this.goodsData.imgUrl[data.nowIndex].name = data.name
+        this.goodsData.imgUrl = data.name
       },
       uploadError (data, item, index) {
         this.imgEmptyMsg = ''

@@ -7,43 +7,19 @@ const SetPassword = () => import('src/pages/login/set-password')
 const Register = () => import('src/pages/login/register')
 /* 忘记密码 */
 const Forgot = () => import('src/pages/login/forgot')
+/* 联系卖家 */
+const Chat = () => import('src/pages/user-mager/chat')
 const Layout = () => import('src/pages/layout')
 const GoodMager = () => import('src/pages/good-mager/list')
-/* 创建 编辑 活动 */
-const goodEdit = () => import('src/pages/good-mager/edit')
+
+const goodEdit = () => import('src/pages/good-mager/edit')/* 创建 编辑 商品 */
 const OrderMager = () => import('src/pages/sale-mager/list')
 const OrderEdit = () => import('src/pages/good-mager/edit')
 const KindMager = () => import('src/pages/kind-mager/list')
-/* 联系卖家 */
-const Chat = () => import('src/pages/user-mager/chat')
-/* 用户管理 */
-const UserList = () => import('src/pages/user-mager/user-list')
-/* 用户管理 */
-const UserEdit = () => import('src/pages/user-mager/edit')
-/* 优惠券管理 */
-const Coupon = () => import('src/pages/sale-mager/coupon')
-
+const UserList = () => import('src/pages/user-mager/user-list')/* 用户管理 */
+const UserEdit = () => import('src/pages/user-mager/edit')/* 用户管理 */
+const Coupon = () => import('src/pages/sale-mager/coupon')/* 优惠券管理 */
 export default [{
-  path: '/login',
-  name: 'login',
-  component: Login
-},
-{
-  path: '/register',
-  name: 'register',
-  component: Register
-},
-{
-  path: '/setPassword',
-  name: 'setPassword',
-  component: SetPassword
-},
-{
-  path: '/forgot',
-  name: 'forgot',
-  component: Forgot
-},
-{
   path: '/',
   name: 'Layout',
   component: Layout,
@@ -147,5 +123,25 @@ export default [{
       // redirect: '/orderMager/list/isPay',CouponList
     }
   ]
+},
+{
+  path: '/login',
+  name: 'login',
+  component: Login
+},
+{
+  path: '/register',
+  name: 'register',
+  component: Register
+},
+{
+  path: '/setPassword',
+  name: 'setPassword',
+  component: SetPassword
+},
+{
+  path: '/forgot',
+  name: 'forgot',
+  component: Forgot
 }
 ]

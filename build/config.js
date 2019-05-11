@@ -5,9 +5,9 @@ const config = {
         API_PATH: '/api',
         SUB_DIR: 'static',
         PUBLIC_PATH: '/',
-        // IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-        // MOBILE_HOST: '//172.16.11.28:8866/m/',
-        MOBILE_HOST: 'http://localhost:80/m/',
+        IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
+        MOBILE_HOST: '//172.16.11.28:8866/m/',
+        // MOBILE_HOST: 'http://localhost:80/m/',
         proxyTable: {
             '/api': {
                 target: 'http://localhost:80/',

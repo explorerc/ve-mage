@@ -3,7 +3,7 @@
     <header>
       <p>商品列表</p>
       <div class='btn-box'>
-        <span>共{{tableData.length}}件商品</span>
+        <span>共{{total}}件商品</span>
         <com-button class="add-goods primary-button" round  @click="createGoods" >
           新建商品
         </com-button>
@@ -22,7 +22,7 @@
           <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
-        <draggable element="tbody">
+        <tbody>
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{row.id<10?`0${row.id}`:row.id}}</td>
             <td>
@@ -40,11 +40,10 @@
                 <el-button type="text" @click="handleShelf(row.added)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
                 <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
-                <el-button class="item move-btn" size="mini" type="text" title='拖拽可调整商品排序'>移动</el-button>
               </div>
             </td>
           </tr>
-        </draggable>
+        </tbody>
       </table>
       <div class="page-pagination" v-if="total > searchParams.pageSize">
         <ve-pagination :total="total"
