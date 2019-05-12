@@ -23,7 +23,7 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//dev-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//dev-zhike.vhall.com/',
+    PUBLIC_PATH: './',
     // MOBILE_HOST: '//dev-zhike.vhall.com/m/',
     PC_HOST: '//dev-zhike.vhall.com/webinar/',
     MOBILE_HOST: 'http://locahost:80'
@@ -33,7 +33,7 @@ const config = {
     API_PATH: '/api',
     SUB_DIR: 'static',
     IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: '//test-zhike.vhall.com/',
+    PUBLIC_PATH: './',
     MOBILE_HOST: '//test-zhike.vhall.com/m/',
     PC_HOST: '//test-zhike.vhall.com/webinar/'
   },

@@ -1,13 +1,13 @@
 <template>
-  <div id="kind-list">
+  <div id="mage-list">
     <header>
-      <p>粉丝列表</p>
-      <!--<div class='btn-box'>-->
-        <!--&lt;!&ndash;<span>共{{tableData.length}}件商品</span>&ndash;&gt;-->
-        <!--<com-button class="add-goods primary-button" round  @click="handleEdit(null)" >-->
-          <!--新建粉丝-->
-        <!--</com-button>-->
-      <!--</div>-->
+      <p>管理员列表</p>
+      <div class='btn-box'>
+        <span>共{{tableData.length}}位管理员</span>
+        <com-button class="add-goods primary-button" round  @click="handleEdit(null)" >
+          新建管理员
+        </com-button>
+      </div>
     </header>
     <div class="table-box">
       <table border="1">
@@ -15,12 +15,8 @@
         <tr>
           <th>id</th>
           <th>名字</th>
-          <th>openId</th>
-          <th>昵称</th>
-          <th>地址</th>
           <th>电话</th>
-          <th>postCode</th>
-          <th>生日</th>
+          <th>密码</th>
           <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
@@ -28,12 +24,7 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{row.id<10?`0${row.id}`:row.id}}</td>
             <td>{{row.name}}</td>
-            <td>{{row.openId}}</td>
-            <td>{{row.nickname}}</td>
-            <td>{{row.address}}</td>
-            <td>{{row.tel}}</td>
-            <td>{{row.postCode}}</td>
-            <td>{{row.birth}}</td>
+            <td>{{row.phone}}</td>
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
@@ -52,7 +43,7 @@
     </div>
     <!--<MessageBox></MessageBox>-->
     <message-box v-if="isDelShow"
-                   class="kind-edit"
+                   class="mage-edit"
                    width="464px"
                    type="error"
                    @handleClick="handleDelShow">
@@ -68,7 +59,6 @@
   import userServer from 'src/api/user-service'
   import EventBus from 'src/utils/eventBus'
   import VePagination from 'src/components/ve-pagination'
-
   export default {
     components: { draggable, VePagination },
     data () {
@@ -84,11 +74,11 @@
         isEditShow: false,
         isDelShow: false,
         editTitle: '',
-        kindInfo: {
+        mageInfo: {
           id: null,
           name: ''
         },
-        kindError: '',
+        mageError: '',
         searchParams: {
           type: '',
           date: '',
@@ -96,7 +86,8 @@
           pageSize: 10
         },
         total: null,
-        currentPage: 1
+        currentPage: 1,
+        status: null
       }
     },
     created () {
@@ -147,7 +138,7 @@
       },
       handleDelete (item) {
         this.isDelShow = true
-        this.kindInfo = item
+        this.mageInfo = item
       },
       // DEL - BOX
       handleDelShow (e) {
@@ -167,7 +158,7 @@
 <style lang="scss" scoped>
     @import '~assets/css/mixin.scss';
 
-    #kind-list {
+    #mage-list {
         font-family: PingFangSC-Regular;
         /*padding: 0px 100px 34px;*/
         margin: 0 auto;
@@ -355,7 +346,7 @@
                     }
                 }
             }
-            .kind-edit {
+            .mage-edit {
                 .from-row {
                     margin-top: 10px;
                     .from-title {
