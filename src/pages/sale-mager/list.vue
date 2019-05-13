@@ -59,7 +59,6 @@
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
                 <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
-                <el-button class="item move-btn" size="mini" type="text" title='拖拽可调整商品排序'>移动</el-button>
               </div>
             </td>
           </tr>
