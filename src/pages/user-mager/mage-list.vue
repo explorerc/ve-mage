@@ -4,7 +4,7 @@
       <p>管理员列表</p>
       <div class='btn-box'>
         <span>共{{tableData.length}}位管理员</span>
-        <com-button class="add-goods primary-button" round  @click="handleEdit(null)" >
+        <com-button class="add-goods primary-button" round  @click="handleEditShow(null)" >
           新建管理员
         </com-button>
       </div>
@@ -16,7 +16,8 @@
           <th>id</th>
           <th>名字</th>
           <th>电话</th>
-          <th>密码</th>
+          <th v-if="status === 1">密码</th>
+          <!--<th style="width: 15%;min-width: 140px;" v-if="status === 1">操作</th>-->
           <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
@@ -25,30 +26,70 @@
             <td>{{row.id<10?`0${row.id}`:row.id}}</td>
             <td>{{row.name}}</td>
             <td>{{row.phone}}</td>
-            <td style="width: 15%;min-width: 140px;">
+            <td v-if="status === 1">{{row.password}}</td>
+            <!--<td style="width: 15%;min-width: 140px;"  v-if="status === 1">-->
+            <td style="width: 15%;min-width: 140px;"  v-if="">
               <div class='btn-box'>
-                <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
-                <el-button type="text" @click="handleDelete(row)">删除</el-button>
+                <el-button type="text" @click="handleEditShow(row)">编辑</el-button>
+                <el-button type="text" @click="handleDelShow(row)">删除</el-button>
               </div>
             </td>
           </tr>
         </draggable>
       </table>
-      <div class="page-pagination" v-if="total > searchParams.pageSize">
-        <ve-pagination :total="total"
-                       :pageSize="searchParams.pageSize"
-                       :currentPage="currentPage"
-                       @changePage="changePage"/>
-      </div>
     </div>
-    <!--<MessageBox></MessageBox>-->
+    <message-box v-if="isEditShow"
+                 class="mage-edit"
+                 width="464px"
+                 type="prompt"
+                 :header="editTitle"
+                 @handleClick="editMage">
+
+      <div class="mager-box message-box-content">
+        <div class="from-box">
+          <div class="from-row" v-if="mageInfo.id">
+            <span class="from-title">管理员id:</span><span style="line-height: 20px">{{mageInfo.id}}</span>
+          </div>
+          <div class="from-row">
+            <span class="from-title">管理员名称:</span>
+            <com-input style=""
+                       type="text"
+                       v-model="mageInfo.name"
+                       placeholder="请输入管理员名称"
+                       :value.sync="mageInfo.name"
+                       :errorTips="mageError"
+            ></com-input>
+          </div>
+          <div class="from-row">
+            <span class="from-title">手机号:</span>
+            <com-input style=""
+                       type="text"
+                       v-model="mageInfo.phone"
+                       placeholder="请输入手机号"
+                       :value.sync="mageInfo.phone"
+                       :errorTips="mageError"
+            ></com-input>
+          </div>
+          <div class="from-row">
+            <span class="from-title">密码:</span>
+            <com-input style=""
+                       type="text"
+                       v-model="mageInfo.password"
+                       placeholder="请输入密码"
+                       :value.sync="mageInfo.password"
+                       :errorTips="mageError"
+            ></com-input>
+          </div>
+        </div>
+      </div>
+    </message-box>
     <message-box v-if="isDelShow"
                    class="mage-edit"
                    width="464px"
                    type="error"
-                   @handleClick="handleDelShow">
+                   @handleClick="handleDelete">
           <div class="mager-box message-box-content">
-              删除该粉丝后，将无法再找回，请问要删除吗？
+              删除该管理员后，将无法再找回，请问要删除吗？
           </div>
       </message-box>
   </div>
@@ -56,37 +97,27 @@
 
 <script>
   import draggable from 'vuedraggable'
-  import userServer from 'src/api/user-service'
+  import mageServer from 'src/api/mage-service'
   import EventBus from 'src/utils/eventBus'
   import VePagination from 'src/components/ve-pagination'
   export default {
     components: { draggable, VePagination },
     data () {
       return {
-        tableData: [
-          { 'id': 1,
-            'name': ''
-          }],
+        tableData: [],
         isInit: false,
-        // timerShelf: null,
-        // isShowlive: null,
         isNoGoods: false,
         isEditShow: false,
         isDelShow: false,
         editTitle: '',
         mageInfo: {
           id: null,
-          name: ''
+          name: '',
+          phone: '',
+          password: '',
+          status: null
         },
         mageError: '',
-        searchParams: {
-          type: '',
-          date: '',
-          page: 1,
-          pageSize: 10
-        },
-        total: null,
-        currentPage: 1,
         status: null
       }
     },
@@ -96,12 +127,9 @@
       EventBus.$emit('breads', [{
         title: '用户管理'
       }, {
-        title: '粉丝管理',
-        url: `/goodMager/list/`
+        title: '管理列表',
+        url: `/goodMager/mage/`
       }])
-    },
-    mounted () {
-      // this.getList()
     },
     watch: {
       tableData: {
@@ -117,11 +145,11 @@
     },
     methods: {
       queryList () {
-        this.$get(userServer.GET_CONSUMERINFO_PAGE, {...this.searchParams})
+        this.$get(mageServer.GET_MAGE_INFO)
           .then(res => {
             if (res.code === 200) {
               this.tableData = res.data.info
-              this.total = res.data.total
+              this.status = res.data.status
               if (this.tableData.length < 1) {
                 this.isNoGoods = true
               } else {
@@ -133,24 +161,57 @@
             this.tableData = []
           })
       },
-      handleEdit (id) {
-        // this.isEditShow = true
+      handleEditShow (row) {
+        if (row) {
+          this.mageInfo.id = row.id
+          this.mageInfo.password = row.password
+          this.mageInfo.status = row.status
+          this.mageInfo.name = row.name
+          this.mageInfo.phone = row.phone
+          this.editTitle = '编辑管理员'
+        } else {
+          this.editTitle = '新增管理员'
+        }
+        this.isEditShow = true
       },
-      handleDelete (item) {
-        this.isDelShow = true
-        this.mageInfo = item
+      editMage (e) {
+        if (e.action === 'cancel') {
+          this.isEditShow = false
+          this.mageInfo.id = null
+        } else {
+          var _url
+          if (!this.mageInfo.id) {
+            _url = mageServer.GET_MAGE_UPDATE
+          } else {
+            _url = mageServer.GET_MAGE_ADD
+          }
+          this.$get(_url, ...this.mageInfo)
+            .then(res => {
+              if (res.code === 200) {
+                this.isEditShow = false
+              }
+            })
+        }
       },
-      // DEL - BOX
-      handleDelShow (e) {
+      handleDelete (e) {
         if (e.action === 'cancel') {
           this.isDelShow = false
         } else {
-        // 请求接口
+          let data = {
+            id: this.mageInfo.id
+          }
+          this.$get(mageServer.GET_MAGE_DELETE, data)
+            .then(res => {
+              if (res.code === 200) {
+                this.isEditShow = false
+              }
+            })
         }
       },
-      changePage (page) {
-        this.searchParams.page = page
-        this.queryList()
+      // DEL - BOX
+      handleDelShow (item) {
+        this.isDelShow = true
+        this.mageInfo = item
       }
     }
   }
@@ -243,25 +304,25 @@
                             .btn-box {
                                 position: relative;
                             }
-                            &:nth-of-type(1) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(2) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(3) {
-                                width: 26%;
-                            }
-                            &:nth-of-type(4) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(5) {
-                                width: 10%;
-                            }
-                            &:nth-of-type(6) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(7) {
+                            /*&:nth-of-type(1) {*/
+                                /*width: 8%;*/
+                            /*}*/
+                            /*&:nth-of-type(2) {*/
+                                /*width: 8%;*/
+                            /*}*/
+                            /*&:nth-of-type(3) {*/
+                                /*width: 26%;*/
+                            /*}*/
+                            /*&:nth-of-type(4) {*/
+                                /*width: 8%;*/
+                            /*}*/
+                            /*&:nth-of-type(5) {*/
+                                /*width: 10%;*/
+                            /*}*/
+                            /*&:nth-of-type(6) {*/
+                                /*width: 8%;*/
+                            /*}*/
+                            .btn-box {
                                 width: 25%;
                                 button {
                                     color: #222222;
@@ -351,7 +412,7 @@
                     margin-top: 10px;
                     .from-title {
                         display: inline-block;
-                        width: 60px;
+                        width: 75px;
                         text-align: right;
                         margin-right: 8px;
                     }

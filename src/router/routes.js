@@ -8,7 +8,7 @@ const Register = () => import('src/pages/login/register')
 /* 忘记密码 */
 const Forgot = () => import('src/pages/login/forgot')
 /* 联系卖家 */
-const Chat = () => import('src/pages/user-mager/chat')
+// const Chat = () => import('src/pages/user-mager/chat')
 const Layout = () => import('src/pages/layout')
 const GoodMager = () => import('src/pages/good-mager/list')
 
@@ -18,6 +18,7 @@ const OrderEdit = () => import('src/pages/good-mager/edit')
 const KindMager = () => import('src/pages/kind-mager/list')
 const UserList = () => import('src/pages/user-mager/user-list')/* 用户管理 */
 const UserEdit = () => import('src/pages/user-mager/edit')/* 用户管理 */
+const MageList = () => import('src/pages/user-mager/mage-list')/* 用户管理 */
 const Coupon = () => import('src/pages/sale-mager/coupon')/* 优惠券管理 */
 export default [{
   path: '/',
@@ -86,19 +87,28 @@ export default [{
       }
       // redirect: '/orderMager/list/isPay',
     },
-    {
-      path: '/userMager/chat',
-      name: 'chat',
-      component: Chat,
-      meta: {
-        isAuth: true
-      }
-      // redirect: '/orderMager/list/isPay',
-    },
+    // {
+    //   path: '/userMager/chat',
+    //   name: 'chat',
+    //   component: Chat,
+    //   meta: {
+    //     isAuth: true
+    //   }
+    //   // redirect: '/orderMager/list/isPay',
+    // },
     {
       path: '/userMager/list',
       name: 'userList',
       component: UserList,
+      meta: {
+        isAuth: true
+      }
+      // redirect: '/orderMager/list/isPay',CouponList
+    },
+    {
+      path: '/userMager/mage',
+      name: 'mageist',
+      component: MageList,
       meta: {
         isAuth: true
       }
