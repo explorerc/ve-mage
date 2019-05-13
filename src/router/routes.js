@@ -87,15 +87,6 @@ export default [{
       }
       // redirect: '/orderMager/list/isPay',
     },
-    // {
-    //   path: '/userMager/chat',
-    //   name: 'chat',
-    //   component: Chat,
-    //   meta: {
-    //     isAuth: true
-    //   }
-    //   // redirect: '/orderMager/list/isPay',
-    // },
     {
       path: '/userMager/list',
       name: 'userList',
@@ -115,7 +106,7 @@ export default [{
       // redirect: '/orderMager/list/isPay',CouponList
     },
     {
-      path: '/userMager/edit',
+      path: '/userMager/edit/:id',
       name: 'userEdit',
       component: UserEdit,
       meta: {

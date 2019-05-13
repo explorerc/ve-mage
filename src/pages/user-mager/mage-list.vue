@@ -196,6 +196,7 @@
       handleDelete (e) {
         if (e.action === 'cancel') {
           this.isDelShow = false
+          this.mageInfo.id = null
         } else {
           let data = {
             id: this.mageInfo.id

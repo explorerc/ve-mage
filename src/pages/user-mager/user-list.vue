@@ -2,12 +2,6 @@
   <div id="kind-list">
     <header>
       <p>粉丝列表</p>
-      <!--<div class='btn-box'>-->
-        <!--&lt;!&ndash;<span>共{{tableData.length}}件商品</span>&ndash;&gt;-->
-        <!--<com-button class="add-goods primary-button" round  @click="handleEdit(null)" >-->
-          <!--新建粉丝-->
-        <!--</com-button>-->
-      <!--</div>-->
     </header>
     <div class="table-box">
       <table border="1">
@@ -37,7 +31,6 @@
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
-                <el-button type="text" @click="handleDelete(row)">删除</el-button>
               </div>
             </td>
           </tr>
@@ -50,12 +43,11 @@
                        @changePage="changePage"/>
       </div>
     </div>
-    <!--<MessageBox></MessageBox>-->
     <message-box v-if="isDelShow"
                    class="kind-edit"
                    width="464px"
                    type="error"
-                   @handleClick="handleDelShow">
+                   @handleClick="handleDelete">
           <div class="mager-box message-box-content">
               删除该粉丝后，将无法再找回，请问要删除吗？
           </div>
@@ -78,8 +70,6 @@
             'name': ''
           }],
         isInit: false,
-        // timerShelf: null,
-        // isShowlive: null,
         isNoGoods: false,
         isEditShow: false,
         isDelShow: false,
@@ -143,19 +133,7 @@
           })
       },
       handleEdit (id) {
-        // this.isEditShow = true
-      },
-      handleDelete (item) {
-        this.isDelShow = true
-        this.kindInfo = item
-      },
-      // DEL - BOX
-      handleDelShow (e) {
-        if (e.action === 'cancel') {
-          this.isDelShow = false
-        } else {
-        // 请求接口
-        }
+        this.$router.push(`/userMager/edit/${id}`)
       },
       changePage (page) {
         this.searchParams.page = page
@@ -251,71 +229,17 @@
                             border-left-color: transparent !important;
                             .btn-box {
                                 position: relative;
-                            }
-                            &:nth-of-type(1) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(2) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(3) {
-                                width: 26%;
-                            }
-                            &:nth-of-type(4) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(5) {
-                                width: 10%;
-                            }
-                            &:nth-of-type(6) {
-                                width: 8%;
-                            }
-                            &:nth-of-type(7) {
-                                width: 25%;
-                                button {
-                                    color: #222222;
-                                    &:hover {
-                                        color: #4B5AFE;
-                                    }
+                              button {
+                                color: #222222;
+                                &:hover {
+                                  color: #4B5AFE;
                                 }
-                            }
-                            .move-btn {
-                                span {
-                                    position: absolute;
-                                    top: 50%;
-                                    left: 140px;
-                                    transform: translate(-50%, -50%);
-                                    display: inline-block;
-                                    width: 20px;
-                                    height: 20px;
-                                    color: transparent;
-                                    background: url('~assets/image/move-icon.svg') no-repeat center;
-                                    background-size: contain;
-                                    &:hover {
-                                        opacity: 0.8;
-                                    }
-                                }
-                            }
-                            .cover_img {
-                                margin: 10px auto 10px 0;
-                                background: no-repeat center;
-                                background-size: contain;
-                                width: 60px;
-                                height: 60px;
-                                img {
-                                    width: 60px;
-                                    height: 60px;
-                                }
+                              }
                             }
                         }
                         td.dis-prices {
                             color: #fc5659;
                         }
-                        /*  tr {
-                            display: table;
-                            width: 100%;
-                            table-layout: fixed;
-                          }*/
                         tr:hover {
                             background-color: #f0f1fe;
                         }

@@ -5,17 +5,15 @@
     </header>
     <el-form :model="userData" ref="userData" :rules="rules" label-width="120px" class="demo-ruleForm">
       <el-form-item label="用户ID：" prop="id">
-        <el-input v-model="userData.id" class="slot_inp_b" disabled="disabled"></el-input>
+        <el-input v-model="userData.id" disabled="disabled"></el-input>
       </el-form-item>
-      <el-form-item label="粉丝姓名：" prop="name">
-        <el-input v-model="userData.name" class="slot_inp_b">
-          <template slot="append" class="slot">
-            <span v-text="userData.name.gbLength()" style="color: #4b5afe" v-if="userData.name.gbLength()>0"></span><span v-text="userData.name.gbLength()" style="color: #999" v-if="userData.name.gbLength()==0">
-            </span>/20</template>
-        </el-input>
+      <el-form-item label="粉丝名称：" prop="name">
+        <div class="a_unit">
+          <el-input v-model.number="userData.name" placeholder="请输入粉丝方式"></el-input>
+        </div>
       </el-form-item>
       <el-form-item label="openID：" prop="openId">
-        <el-input v-model="userData.openId" class="slot_inp_b" disabled="disabled"></el-input>
+        <el-input v-model="userData.openId" disabled="disabled"></el-input>
       </el-form-item>
       <el-form-item label="粉丝昵称：" prop="nickname" class="">
         <div class="a_unit">
@@ -27,15 +25,23 @@
           <el-input v-model.number="userData.address" placeholder="请输入地址"></el-input>
         </div>
       </el-form-item>
-      <el-form-item label="联系：" prop="address">
+      <el-form-item label="电话：" prop="tel">
         <div class="a_unit">
           <el-input v-model.number="userData.tel" placeholder="请输入联系方式"></el-input>
         </div>
       </el-form-item>
-      <el-form-item label="postCode：" prop="inventory" disabled>
+      <el-form-item label="postCode：" prop="postCode" disabled>
         <div class="a_unit">
-          <el-input v-model.number="userData.podtCode" disabled="true"></el-input>
-          <span>件</span>
+          <el-input v-model.number="userData.postCode" disabled="true"></el-input>
+        </div>
+      </el-form-item>
+      <el-form-item label="生日：" prop="birth" disabled>
+        <div class="a_unit">
+          <el-date-picker
+            v-model="userData.birth"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
         </div>
       </el-form-item>
       <el-form-item class="btns_box">
@@ -47,8 +53,7 @@
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-goods'
-  import goodsServer from 'src/api/goods'
+  import userServer from 'src/api/user-service'
   import EventBus from 'src/utils/eventBus'
 
   export default {
@@ -64,130 +69,23 @@
       }
     },
     created () {
-      if (this.$route.params.type === 'update') {
-        this.getGoodsDetail()
-        this.Breadcrumb = '编辑商品'
-      } else {
-        this.Breadcrumb = '新建商品'
-      }
+      this.getUserDetail()
+      this.Breadcrumb = '编辑粉丝'
       this.$nextTick(() => {
         this.initReady = true
       })
     },
     mounted () {
       EventBus.$emit('breads', [{
-        title: '商品管理'
+        title: '用户管理'
       }, {
-        title: '商品列表',
+        title: '粉丝列表',
         url: '/goodMager/list'
       }, {
-        title: this.Breadcrumb,
-        url: `/goodMager/edit/${this.$route.params.type}`
+        title: '编辑粉丝'
       }])
     },
-    components: {
-      VeUpload
-    },
-    computed: {
-      defaultImg () {
-        return this.poster ? `${this.$imgHost}/${this.poster}` : ''
-      }
-    },
     data () {
-      let valiName = (rule, value, callback) => {
-        console.log(value)
-        if (this.timerVail) return
-        this.timerVail = setTimeout(() => {
-          clearTimeout(this.timerVail)
-          this.timerVail = null
-          if (value) {
-            if (value.gbLength() < rule.min) {
-              return callback(new Error('商品名称过短'))
-            } else if (value.gbLength() > rule.max) {
-              for (let attr in this[rule.obj]) {
-                if (attr === rule.field) {
-                  this[rule.obj][attr] = value.slice(0, value.gbIndex(rule.max) + 1)
-                  return callback()
-                }
-              }
-            } else {
-              callback()
-            }
-          } else {
-            return callback(new Error('商品名称不能为空'))
-          }
-        }, 500)
-      }
-      let price = (rule, value, callback) => {
-        if (typeof value === 'number' && (value || value === 0)) {
-          if (value < 0 || value >= 999999) {
-            return callback(new Error('原始价格应大于0小于999999'))
-          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-            return callback(new Error('价格最多为小数点后两位'))
-          } else {
-            return callback()
-          }
-        } else {
-          return callback(new Error('请输入原始价格'))
-        }
-      }
-      let preferential = (rule, value, callback) => {
-        // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-        //   value = String(value).slice(0, String(value).indexOf('.') + 3)
-        // }
-        if (value) {
-          if (typeof value === 'number') {
-            let maxV = this[rule.obj].price
-            if (value && value < 0) {
-              return callback(new Error('优惠价格不能小于0'))
-            } else if (value && maxV && value >= maxV) {
-              return callback(new Error('优惠价格需小于原始价格'))
-            } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-              return callback(new Error('优惠价格最多为小数点后两位'))
-            } else if (value && !maxV) {
-              return callback(new Error('请先填写原始价格'))
-            } else {
-              return callback()
-            }
-          } else {
-            return callback(new Error('请输入优惠价格'))
-          }
-        } else {
-          return callback()
-        }
-      }
-      let valiUpload = (rule, value, callback) => {
-        let num = 0
-        this[rule.obj].imgUrl.map((item) => {
-          if (item.name) {
-            num += 1
-          }
-        })
-        if (num > 0) {
-          if (value[0].name) {
-            return callback()
-          } else {
-            this.imgEmptyMsg = '请上传封面图'
-            return callback(new Error('请上传封面图'))
-          }
-        } else {
-          this.imgEmptyMsg = '请上传图片'
-          return callback(new Error('请上传图片'))
-        }
-      }
-      let inventory = (rule, value, callback) => {
-        if (typeof value === 'number' && (value || value === 0)) {
-          if (value < 0 || value >= 999999) {
-            return callback(new Error('现有库存应大于0小于999999'))
-          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length >= 1) {
-            return callback(new Error('库存量应为整数'))
-          } else {
-            return callback()
-          }
-        } else {
-          return callback(new Error('请输入现有库存'))
-        }
-      }
       return {
         timerVail: null,
         timer: null,
@@ -196,46 +94,37 @@
         isShowMsgB: false,
         errTitle: '',
         imgEmptyMsg: '',
-        goodId: this.$route.params.id,
-        goodsData: {
+        userData: {
+          id: this.$route.params.id,
           name: '',
-          price: '',
-          imgUrl: [{errMsg: ''}],
-          disprice: '',
-          describe: '',
-          inventory: null,
-          added: '1'
+          tel: '',
+          address: '',
+          postId: '',
+          postCode: '',
+          nickname: null,
+          birth: null
         },
         rules: {
           name: [
-            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData'}
+            { required: true, message: '请输粉丝名称', trigger: 'blur', obj: 'userData' },
+            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur', obj: 'userData' }
           ],
-          price: [
-            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
-          ],
-          preferential: [
-            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
-          ],
-          inventory: [
-            {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
-          ],
-          imgUrl: [
-            {required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData'}
+          tel: [
+            { max: 11, min: 6, message: '请输入正确的联系方式', trigger: 'blur', obj: 'userData' }
           ]
         }
       }
     },
     methods: {
-      getGoodsDetail () {
+      getUserDetail () {
         let data = {
-          goodId: this.goodId
+          id: this.userData.id
         }
-        this.$get(goodsServer.GET_GOOD_BYID, data).then(res => {
+        this.$get(userServer.GET_GOOD_BYID, data).then(res => {
           if (res.code === 200) {
-            this.goodsData = res.data
+            this.userData = {...res.data}
           }
         })
-        console.log(this.goodId)
       },
       onSubmit (formName) {
         if (this.timer) return
@@ -244,31 +133,15 @@
           this.timer = null
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              let _url
-              if (this.$route.params.type === 'create') {
-                _url = goodsServer.CREATE_GOODS
-              } else {
-                this.goodsData.goods_id = this.$route.params.id
-                _url = goodsServer.UPDATE_GOODS
-              }
-              let imgList = this.goodsData.imgUrl.filter((ite, ind) => {
-                if (ite.name) {
-                  return ite
-                }
-              })
-              this.goodsData.image = JSON.stringify(imgList)
-              console.log(_url)
-              // this.$post(_url, this.goodsData)
-              //   .then(res => {
-              //     // this.$toast({
-              //     //   content: '操作成功!'
-              //     // })
-              //     this.$router.go(-1)
-              //     this.isShowMsgB = false
-              //   })
-              //   .catch(err => {
-              //     console.log(err)
-              //   })
+              let _url = userServer.GET_USER_UPDATE
+              this.$post(_url, this.userData)
+                .then(res => {
+                  this.$router.go(-1)
+                  this.isShowMsgB = false
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             } else {
               console.log('error submit!!')
               return false
@@ -278,15 +151,6 @@
       },
       resetForm (formName) {
         this.$router.go(-1)
-      },
-      uploadImgSuccess (data) {
-        data.errMsg = ''
-        this.goodsData.imgUrl[data.nowIndex].name = data.name
-      },
-      uploadError (data, item, index) {
-        this.imgEmptyMsg = ''
-        item.errMsg = data.msg
-        // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -361,14 +225,10 @@
           }
 
         }
-        .el-form-item:nth-of-type(1) {
+        .el-form-item {
           .el-form-item__content {
             width: 460px;
           }
-        }
-        .el-form-item:nth-of-type(2),
-        .el-form-item:nth-of-type(3) {
-          width: 400px;
         }
         /*.el-form-item:last-of-type {*/
         /*text-align: center;*/
@@ -386,9 +246,9 @@
         }
         .a_unit {
           overflow: hidden;
-          width: 250px;
+          width: 100%;
           .el-input {
-            width: 200px;
+            width: 100%;
             float: left;
           }
           span {
