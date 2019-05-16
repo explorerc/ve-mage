@@ -1,88 +1,66 @@
 <template>
   <div id="goods-info">
-    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息
+    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}订单信息
       <com-back></com-back>
     </header>
-    <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
-      <el-form-item label="商品名称：" prop="name">
-        <el-input v-model="goodsData.name" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
-          <template slot="append" class="slot">
-            <span v-text="goodsData.name.gbLength()" style="color: #4b5afe" v-if="goodsData.name.gbLength()>0"></span><span v-text="goodsData.name.gbLength()" style="color: #999" v-if="goodsData.name.gbLength()==0">
-            </span>/20</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="原始价格：" prop="price" class="is-required">
+    <el-form :model="order" ref="order" :rules="rules" label-width="120px" class="demo-ruleForm">
+      <el-form-item label="订单id：" prop="id" class="is-required" v-if="order.id">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
-          <span>元</span>
+          <el-input v-model.number="order.id" disabled></el-input>
         </div>
       </el-form-item>
-      <el-form-item label="优惠价格：" prop="disprice">
+      <el-form-item label="用户id：" prop="userId">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.preferential" :disabled="!!!goodsData.price"
-                    placeholder="请输入价格"></el-input>
-          <span>元</span>
+          <el-input v-model.number="order.userId" :disabled="!!!order.userId"
+                    placeholder="请输入用户id"></el-input>
         </div>
       </el-form-item>
-      <el-form-item label="商品图片：" prop="imgUrl" style="margin-bottom:15px;" class="image-list">
-        <div class="upload_box">
-          <template v-for="(ite,ind) in goodsData.imgUrl">
-            <div style="display: inline-block">
-              <ve-upload :key="ind"
-                         title="图片支持jpg、png、bmp&nbsp;&nbsp;不超过2MB <br> 最佳尺寸：600 x 800"
-                         accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"
-                         :fileSize="2048"
-                         @error="uploadError($event, ite)" :initImg="ite.name"
-                         @success="uploadImgSuccess(ite)"></ve-upload>
-              <span v-if="ite.errMsg && !imgEmptyMsg" class="error-msg img-error error12">{{ite.errMsg}}</span>
-              <span v-if="ind===0" class="error-msg img-error">{{imgEmptyMsg}}</span>
-            </div>
-            <!--<ve-upload :key="ind"-->
-                       <!--title="图片支持jpg、png、bmp&nbsp;&nbsp;小于不超过2MB &nbsp;&nbsp; 最佳尺寸：600 x 800"-->
-                       <!--accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg" :nowIndex="ind|| 0"-->
-                       <!--:fileSize="2048"-->
-                       <!--:errorMsg="ite.errMsg"-->
-                       <!--@error="uploadError($event, ite)" :initImg="ite.name"-->
-                       <!--@success="uploadImgSuccess"></ve-upload>-->
-          </template>
-          <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
-        </div>
-      </el-form-item>
-      <el-form-item label="现有库存：" prop="inventory" class="is-required">
+      <el-form-item label="商品id：" prop="goodId">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.inventory" min="0" max="999999" placeholder="请输库存"></el-input>
-          <span>件</span>
+          <el-input v-model.number="order.goodId" :disabled="!!!order.goodId"
+                    placeholder="请输入商品id"></el-input>
         </div>
       </el-form-item>
-
-      <el-form-item label="商品描述：">
-        <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
-                   placeholder="请输入商品描述"></com-input>
-      </el-form-item>
-      <el-form-item label="是否上架：" prop="inventory" class="is-required">
-        <div class="">
-          <el-radio v-model="goodsData.added" label="1" :class="[goodsData.added===0]">上架</el-radio>
-          <el-radio v-model="goodsData.added" label="0">下架</el-radio>
+      <el-form-item label="商品数量：" prop="goodId">
+        <div class="a_unit">
+          <el-input v-model.number="order.number" min="0" max="100"
+                    placeholder="请输入商品数量"></el-input>
         </div>
       </el-form-item>
-
+      <el-form-item label="物流单号：" prop="logistics">
+        <div class="a_unit">
+          <el-input v-model.number="order.logistics"
+                    placeholder="请输入物流单号"></el-input>
+        </div>
+      </el-form-item>
+      <el-form-item label="订单状态：" prop="status">
+        <el-select v-model="order.status" placeholder="请选择分类">
+          <el-option
+                  v-for="item in statusOption"
+                  :key="item.value"
+                  :label="item.name"
+                  :value="item.value">
+            <span style="float: left">{{ item.name }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item class="btns_box">
-        <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
-        <el-button @click="resetForm('goodsData')" round>取消</el-button>
+        <el-button class="add-goods primary-button" type="primary" @click="onSubmit('order')" round>保存</el-button>
+        <el-button @click="resetForm('order')" round>取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-goods'
   import goodsServer from 'src/api/salesGoods-service'
   import EventBus from 'src/utils/eventBus'
 
   export default {
     name: 'info',
     watch: {
-      goodsData: {
+      order: {
         handler () {
           if (this.initReady) {
             this.isShowMsgB = true
@@ -94,9 +72,9 @@
     created () {
       if (this.$route.params.type === 'update') {
         this.getGoodsDetail()
-        this.Breadcrumb = '编辑商品'
+        this.Breadcrumb = '编辑订单'
       } else {
-        this.Breadcrumb = '新建商品'
+        this.Breadcrumb = '新建订单'
       }
       this.$nextTick(() => {
         this.initReady = true
@@ -104,17 +82,14 @@
     },
     mounted () {
       EventBus.$emit('breads', [{
-        title: '商品管理'
+        title: '销售管理'
       }, {
         title: '商品列表',
-        url: '/goodMager/list'
+        url: '/orderMager/list'
       }, {
         title: this.Breadcrumb,
-        url: `/goodMager/edit/${this.$route.params.type}`
+        url: `/orderMager/edit/${this.$route.params.type}`
       }])
-    },
-    components: {
-      VeUpload
     },
     computed: {
       defaultImg () {
@@ -184,25 +159,6 @@
           return callback()
         }
       }
-      let valiUpload = (rule, value, callback) => {
-        let num = 0
-        this[rule.obj].imgUrl.map((item) => {
-          if (item.name) {
-            num += 1
-          }
-        })
-        if (num > 0) {
-          if (value[0].name) {
-            return callback()
-          } else {
-            this.imgEmptyMsg = '请上传封面图'
-            return callback(new Error('请上传封面图'))
-          }
-        } else {
-          this.imgEmptyMsg = '请上传图片'
-          return callback(new Error('请上传图片'))
-        }
-      }
       let inventory = (rule, value, callback) => {
         if (typeof value === 'number' && (value || value === 0)) {
           if (value < 0 || value >= 999999) {
@@ -224,36 +180,42 @@
         isShowMsgB: false,
         errTitle: '',
         imgEmptyMsg: '',
-        goodsData: {
-          name: '',
-          price: '',
-          imgUrl: [{errMsg: ''}],
-          disprice: '',
-          describe: '',
-          inventory: null,
-          added: '1'
+        order: {
+          id: '',
+          userId: '',
+          goodId: null,
+          number: '',
+          logistics: '',
+          status: null
         },
+        statusOption: [
+          {value: 0, name: '未付款'},
+          {value: 1, name: '未发货'},
+          {value: 2, name: '未收货'},
+          {value: 4, name: '已完成'},
+          {value: 3, name: '已关闭订单'}
+        ],
         rules: {
-          name: [
-            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData'}
+          userId: [
+            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'order'}
           ],
-          price: [
-            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+          id: [
+            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
-          preferential: [
-            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+          goodId: [
+            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
-          inventory: [
-            {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+          number: [
+            {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
-          imgUrl: [
-            {required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData'}
+          status: [
+            {required: true, validator: '', trigger: 'blur', obj: 'order'}
           ]
         }
       }
     },
     methods: {
-      getGoodsDetail () {
+      getOrderDetail () {
       },
       onSubmit (formName) {
         if (this.timer) return

@@ -3,25 +3,16 @@
     <header>
       <p>订单列表</p>
       <div class='btn-box'>
-        <span>共{{tableData.length}}件商品</span>
         <com-button class="add-goods primary-button" round  @click="createGoods" >
           新建订单
         </com-button>
       </div>
     </header>
-    <!--<div class="title">-->
-      <!--<div class="item" v-for="item in titleList">-->
-        <!--<div class="content" :class="{'titleActive':titleId===item.id}" @click="changeTitle(item.id)">-->
-          <!--<span>{{item.name}}</span>-->
-        <!--</div><span class="iconfont icon-icon-test" v-if="item.id!==0"></span>-->
-      <!--</div>-->
-    <!--</div>-->
     <el-tabs v-model="activeName" type="card" @tab-click="handleTabClick">
       <el-tab-pane label="未付款订单" name="first"></el-tab-pane>
       <el-tab-pane label="未发货订单" name="second"></el-tab-pane>
       <el-tab-pane label="未收获订单" name="third"></el-tab-pane>
       <el-tab-pane label="全部订单" name="fourth">
-
       </el-tab-pane>
     </el-tabs>
     <div class="table-box">
@@ -37,7 +28,7 @@
           <th>物流单号</th>
           <th>状态</th>
           <th>创建时间</th>
-          <td>更新时间</td>
+          <th>更新时间</th>
           <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
         </thead>
@@ -129,14 +120,13 @@
     },
     methods: {
       getList () {
-        this.$get(this.$baseUrl + orderServer.GET_ORDER_ALL, {
+        this.$get(orderServer.GET_ORDER_ALL, {
           ...this.searchParams
         })
           .then(res => {
-            if (res.status === 200) {
+            if (res.code === 200) {
               this.tableData = res.data.info
               this.total = res.data.total
-              console.log(this.tableData)
               if (this.tableData.length < 1) {
                 this.isNoGoods = true
               } else {
@@ -259,29 +249,7 @@
             .btn-box {
               position: relative;
             }
-            &:nth-of-type(1) {
-              width: 8%;
-            }
-            &:nth-of-type(2) {
-              width: 8%;
-            }
-            &:nth-of-type(3) {
-              width: 8%;
-            }
-            &:nth-of-type(4) {
-              width: 10%;
-            }
-            &:nth-of-type(5) {
-              width: 10%;
-            }
-            &:nth-of-type(6) {
-              width: 15%;
-            }
-            &:nth-of-type(7) {
-              width: 18%;
-            }
-            &:nth-of-type(9) {
-              width: 25%;
+            .btn-box {
               button {
                 color: #222222;
                 &:hover {

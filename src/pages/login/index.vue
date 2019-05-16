@@ -37,9 +37,6 @@
           </button>
         </div>
       </div>
-      <div class="v-info">
-        <a href="http://e.vhall.com/home/vhallapi/serviceterms">服务条款</a> | <a href="http://e.vhall.com/home/vhallapi/copyright">版权信息</a> | <a href="">京ICP备13004264号-4 京网文[2016] 2506-288号</a>
-      </div>
     </div>
   </div>
 </template>
@@ -94,11 +91,13 @@ export default {
         console.log(res)
         if (res.code === 200) {
           this.$store.commit('login', true)
-          this.$post(mageService.GET_ACCOUNT).then((result) => {
+          // this.$store.commit('mageId', res.data)
+          this.$post(mageService.GET_ACCOUNT, {mageId: res.data}).then((result) => {
             sessionStorage.setItem('userInfo', JSON.stringify(result.data))
             let userInfo = JSON.parse(sessionStorage.getItem('userInfo'))
             console.log(userInfo)
           })
+          debugger
           this.$router.replace('/')
         }
       }).catch((err) => {

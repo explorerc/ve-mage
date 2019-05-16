@@ -37,9 +37,9 @@
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
-                <el-button type="text" @click="handleShelf(row.added)">{{row.added === '0' ?'上架':'下架'}}
+                <el-button type="text" @click="handleShelf(row.id, row.added)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button type="text" @click="handleDelete(row.id)">删除</el-button>
               </div>
             </td>
           </tr>
@@ -116,23 +116,6 @@
       }
     },
     methods: {
-      // getList () {
-      //   this.$http.get(this.$baseUrl + goodsServer.GET_GOODS_INFO)
-      //     .then(res => {
-      //       if (res.status === 200) {
-      //         this.tableData = res.data
-      //         console.log(this.tableData)
-      //         if (this.tableData.length < 1) {
-      //           this.isNoGoods = true
-      //         } else {
-      //           this.isNoGoods = false
-      //         }
-      //       }
-      //     })
-      //     .catch(() => {
-      //       this.tableData = []
-      //     })
-      // },
       changePage (page) {
         this.searchParams.page = page
         this.queryList()
@@ -154,6 +137,23 @@
       },
       handleEdit (id) {
         this.$router.push(`/goodMager/edit/${id}/update`)
+      },
+      handleShelf (id, added) {
+        this.$get(goodsServer.GOODS_SHELF, {
+          id: id,
+          added: added ? 1 : 0
+        }).then(res => {
+          if (res.code === 200) {
+            this.queryList()
+          }
+        })
+      },
+      handleDelete (id) {
+        this.$get(goodsServer.GOODS_DELETE, {id: id}).then(res => {
+          if (res.code === 200) {
+            this.queryList()
+          }
+        })
       }
     }
   }

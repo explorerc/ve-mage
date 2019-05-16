@@ -25,7 +25,7 @@
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-                <el-button type="text" @click="handleDelete(row)">删除</el-button>
+                <el-button type="text" @click="handleDelShow(row)">删除</el-button>
               </div>
             </td>
           </tr>
@@ -68,7 +68,7 @@
                    class="kind-edit"
                    width="464px"
                    type="error"
-                   @handleClick="handleDelShow">
+                   @handleClick="handleDelete">
           <div class="mager-box message-box-content">
               删除该分类后，将无法再找回，请问要删除吗？
           </div>
@@ -139,7 +139,7 @@
     },
     methods: {
       queryList () {
-        this.$get(this.$baseUrl + kindServer.GET_KIND_PAGE, {...this.searchParams})
+        this.$get(kindServer.GET_KIND_PAGE, {...this.searchParams})
           .then(res => {
             if (res.code === 200) {
               this.tableData = res.data.info
@@ -160,9 +160,9 @@
         // 发送请求GET_KIND_UPDATE
           let _url
           if (this.kindInfo.id) {
-            _url = this.$baseUrl + kindServer.GET_KIND_UPDATE
+            _url = kindServer.GET_KIND_UPDATE
           } else {
-            _url = this.$baseUrl + kindServer.GET_KIND_ADD
+            _url = kindServer.GET_KIND_ADD
           }
           this.$get(_url, {...this.kindInfo})
             .then(res => {
@@ -178,10 +178,11 @@
             })
         } else {
           this.isEditShow = false
+          this.kindInfo.id = null
+          this.kindInfo.name = ''
         }
       },
       handleEdit (row) {
-        debugger
         if (row) {
           this.editTitle = '编辑分类'
           this.kindInfo.id = row.id
@@ -191,20 +192,31 @@
         }
         this.isEditShow = true
       },
-      changeTitle (id) {
-        this.titleId = id
-      },
-      handleDelete (item) {
-        this.isDelShow = true
-        this.kindInfo = item
-      },
-      // DEL - BOX
-      handleDelShow (e) {
+      handleDelete (e) {
         if (e.action === 'cancel') {
           this.isDelShow = false
+          this.kindInfo = {
+            id: null,
+            name: ''
+          }
         } else {
-        // 请求接口
+          this.$get(kindServer.GET_KIND_DELETE, {id: this.kindInfo.id}).then(res => {
+            if (res.code === 200) {
+              debugger
+              this.isDelShow = false
+              this.kindInfo = {
+                id: null,
+                name: ''
+              }
+              this.queryList()
+            }
+          })
         }
+      },
+      // DEL - BOX
+      handleDelShow (item) {
+        this.isDelShow = true
+        this.kindInfo = {...item}
       },
       changePage (page) {
         this.searchParams.page = page

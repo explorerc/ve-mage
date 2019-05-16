@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="优惠价格：" prop="disprice">
         <div class="a_unit">
-          <el-input v-model.number="goodsData.preferential" :disabled="!!!goodsData.price"
+          <el-input v-model.number="goodsData.disprice" :disabled="!!!goodsData.price"
                     placeholder="请输入价格"></el-input>
           <span>元</span>
         </div>
@@ -34,11 +34,8 @@
                          :fileSize="2048"
                          @error="uploadError" :initImg="goodsData.imgUrl"
                          @success="uploadImgSuccess"></ve-upload>
-              <!--<ve-upload title="图片支持jpg、png、bmp格式，大小不超过2M<br>尺寸不超过1600*900" accept="png|jpg|jpeg|bmp" :defaultImg="defaultImg" :fileSize="2048" @error="uploadError" @success="uploadImgSuccess"></ve-upload>-->
-              <span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>
+             <span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>
             </div>
-          <!--</template>-->
-          <!--:errorMsg="ind=== 0?uploadImgErrorMsg0:ind=== 1?uploadImgErrorMsg1:ind=== 2?uploadImgErrorMsg2:ind=== 3?uploadImgErrorMsg3:''"-->
         </div>
       </el-form-item>
       <el-form-item label="现有库存：" prop="inventory" class="is-required">
@@ -48,7 +45,7 @@
         </div>
       </el-form-item>
 
-      <el-form-item label="商品描述：">
+      <el-form-item label="商品描述：" prop="inventory">
         <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
                    placeholder="请输入商品描述"></com-input>
       </el-form-item>
@@ -58,7 +55,18 @@
           <el-radio v-model="goodsData.added" label="0">下架</el-radio>
         </div>
       </el-form-item>
-
+      <el-form-item label="蔬菜分类：" prop="kindId">
+        <el-select v-model="goodsData.kindId" placeholder="请选择分类">
+          <el-option
+                  v-for="item in kindInfo"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id">
+            <span style="float: left">{{ item.name }}</span>
+            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item class="btns_box">
         <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
         <el-button @click="resetForm('goodsData')" round>取消</el-button>
@@ -71,6 +79,7 @@
   import VeUpload from 'src/components/ve-upload-goods'
   import goodsServer from 'src/api/goods'
   import EventBus from 'src/utils/eventBus'
+  import kindServer from 'src/api/kind'
 
   export default {
     name: 'info',
@@ -94,6 +103,7 @@
       this.$nextTick(() => {
         this.initReady = true
       })
+      this.queryKind()
     },
     mounted () {
       EventBus.$emit('breads', [{
@@ -152,7 +162,7 @@
           return callback(new Error('请输入原始价格'))
         }
       }
-      let preferential = (rule, value, callback) => {
+      let disprice = (rule, value, callback) => {
         // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
         //   value = String(value).slice(0, String(value).indexOf('.') + 3)
         // }
@@ -216,6 +226,7 @@
           added: '1',
           imgUrl: ''
         },
+        kindInfo: [],
         rules: {
           name: [
             {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData'}
@@ -224,7 +235,7 @@
             {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
           ],
           preferential: [
-            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+            {validator: disprice, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
           ],
           inventory: [
             {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
@@ -247,6 +258,14 @@
         })
         console.log(this.goodId)
       },
+      queryKind () {
+        this.$get(kindServer.GET_KIND)
+          .then(res => {
+            if (res.code === 200) {
+              this.kindInfo = res.data
+            }
+          })
+      },
       onSubmit (formName) {
         if (this.timer) return
         this.timer = setTimeout(() => {
@@ -263,9 +282,6 @@
               }
               this.$post(_url, this.goodsData)
                 .then(res => {
-                  // this.$toast({
-                  //   content: '操作成功!'
-                  // })
                   this.$router.go(-1)
                   this.isShowMsgB = false
                 })

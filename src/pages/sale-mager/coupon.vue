@@ -199,7 +199,7 @@
     },
     methods: {
       queryList () {
-        this.$get(this.$baseUrl + couponServer.GET_COUPON_INFO, {})
+        this.$get(couponServer.GET_COUPON_INFO, {})
           .then(res => {
             if (res.code === 200) {
               this.tableData = res.data
@@ -225,9 +225,9 @@
             end_time: this.timeValue[1]
           }
           if (this.couponInfo.id) {
-            _url = this.$baseUrl + couponServer.POST_COUPON_UPDATE
+            _url = couponServer.POST_COUPON_UPDATE
           } else {
-            _url = this.$baseUrl + couponServer.POST_COUPON_ADD
+            _url = couponServer.POST_COUPON_ADD
           }
           this.$post(_url, _data)
             .then(res => {
@@ -282,7 +282,7 @@
         if (e.action === 'cancel') {
           this.isDelShow = false
         } else {
-          this.$get(this.$baseUrl + couponServer.GET_COUPON_DEL, {...this.couponInfo})
+          this.$get(couponServer.GET_COUPON_DEL, {...this.couponInfo})
             .then(res => {
               if (res.code === 200) {
                 this.queryList()

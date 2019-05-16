@@ -49,13 +49,13 @@
       </el-submenu>
       <el-submenu index="3">
         <template slot="title">
-          <i class="menu-icon icon_crm"></i>
+          <i class="menu-icon icon_account"></i>
           <span>用户管理</span>
         </template>
         <el-menu-item-group>
           <el-menu-item index="/userMager/list">粉丝列表</el-menu-item>
-          <!--<el-menu-item index="/userMager/edit">粉丝编辑</el-menu-item>-->
           <el-menu-item index="/userMager/mage">管理列表</el-menu-item>
+          <el-menu-item index="/userMager/personal">账户设置</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
     </el-menu>

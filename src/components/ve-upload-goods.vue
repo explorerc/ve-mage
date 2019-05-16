@@ -33,7 +33,7 @@
     </div>
     <com-upload
       :accept="accept"
-      actionUrl="/api/upload/image"
+      actionUrl="http://mg.vegetable.umcoder.com/public/upload/image"
       inputName="file"
       :fileSize="fileSize"
       @error="uploadError"
