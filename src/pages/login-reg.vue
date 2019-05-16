@@ -9,7 +9,7 @@
            class="v-avatar"
            id="toggler-img"
            @avatarChange="avatarChange($event)"> -->
-      <!--<span class="v-name" id="toggler-span">{{name}}</span>-->
+      <span class="v-name" id="toggler-span">{{name}}</span>
     </div>
     <ul class="v-select" v-show="isShow">
       <li>
@@ -60,6 +60,7 @@ export default {
       this.name = this.accountInfo.name
       this.avatar = this.accountInfo.avatar
     }
+    this.name = JSON.parse(sessionStorage.getItem('userInfo'))[0]['name']
   },
   watch: {
     'accountInfo.userName': {// 观看端 是否已登陆
@@ -88,7 +89,7 @@ export default {
     logOff () {
       this.$post(mageService.POST_LOGOUT).then((res) => {
         this.$store.commit('login', false)
-        // sessionStorage.remove('userInfo')
+        sessionStorage.removeItem('userInfo')
         this.$router.push('/login')
         console.log('退出登录')
       })

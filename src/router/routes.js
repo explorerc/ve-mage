@@ -14,12 +14,13 @@ const GoodMager = () => import('src/pages/good-mager/list')
 
 const goodEdit = () => import('src/pages/good-mager/edit')/* 创建 编辑 商品 */
 const OrderMager = () => import('src/pages/sale-mager/list')
-const OrderEdit = () => import('src/pages/good-mager/edit')
+const OrderEdit = () => import('src/pages/sale-mager/edit')
 const KindMager = () => import('src/pages/kind-mager/list')
 const UserList = () => import('src/pages/user-mager/user-list')/* 用户管理 */
 const UserEdit = () => import('src/pages/user-mager/edit')/* 用户管理 */
 const MageList = () => import('src/pages/user-mager/mage-list')/* 用户管理 */
 const Coupon = () => import('src/pages/sale-mager/coupon')/* 优惠券管理 */
+const Personal = () => import('src/pages/user-mager/personal-info')/* 管理员管理自己信息 */
 export default [{
   path: '/',
   name: 'Layout',
@@ -72,7 +73,7 @@ export default [{
     },
     {
       path: '/orderMager/edit/:id/:type',
-      name: 'orderEdit',
+      name: 'OrderUpdate',
       component: OrderEdit,
       meta: {
         isAuth: true
@@ -122,6 +123,14 @@ export default [{
         isAuth: true
       }
       // redirect: '/orderMager/list/isPay',CouponList
+    },
+    {
+      path: '/userMager/personal',
+      name: 'Personal',
+      component: Personal,
+      meta: {
+        isAuth: true
+      }
     }
   ]
 },

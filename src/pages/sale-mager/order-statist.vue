@@ -1,90 +1,19 @@
 <template>
   <div id="goods-info">
-    <header>{{this.$route.params.type === 'create'?'新建':'编辑'}}商品信息
+    <header>订单统计
       <com-back></com-back>
     </header>
-    <el-form :model="goodsData" ref="goodsData" :rules="rules" label-width="120px" class="demo-ruleForm">
-      <el-form-item label="商品名称：" prop="name">
-        <el-input v-model="goodsData.name" class="slot_inp_b" placeholder="请输入商品名称（不少于3个字）">
-          <template slot="append" class="slot">
-            <span v-text="goodsData.name.gbLength()" style="color: #4b5afe" v-if="goodsData.name.gbLength()>0"></span><span v-text="goodsData.name.gbLength()" style="color: #999" v-if="goodsData.name.gbLength()==0">
-            </span>/20</template>
-        </el-input>
-      </el-form-item>
-      <el-form-item label="原始价格：" prop="price" class="is-required">
-        <div class="a_unit">
-          <el-input v-model.number="goodsData.price" min="0" max="999999" placeholder="请输入价格"></el-input>
-          <span>元</span>
-        </div>
-      </el-form-item>
-      <el-form-item label="优惠价格：" prop="disprice">
-        <div class="a_unit">
-          <el-input v-model.number="goodsData.disprice" :disabled="!!!goodsData.price"
-                    placeholder="请输入价格"></el-input>
-          <span>元</span>
-        </div>
-      </el-form-item>
-      <el-form-item label="商品图片：" prop="imgUrl" style="margin-bottom:15px;" class="image-list">
-        <div class="upload_box">
-          <!--<template v-for="(ite,ind) in imgUrl">-->
-            <div style="display: inline-block">
-              <ve-upload
-                         title="图片支持jpg、png、bmp&nbsp;&nbsp;不超过2MB <br> 最佳尺寸：600 x 800"
-                         accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg"
-                         :fileSize="2048"
-                         @error="uploadError" :initImg="goodsData.imgUrl"
-                         @success="uploadImgSuccess"></ve-upload>
-             <span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>
-            </div>
-        </div>
-      </el-form-item>
-      <el-form-item label="现有库存：" prop="inventory" class="is-required">
-        <div class="a_unit">
-          <el-input v-model.number="goodsData.inventory" min="0" max="999999" placeholder="请输库存"></el-input>
-          <span>件</span>
-        </div>
-      </el-form-item>
-
-      <el-form-item label="商品描述：" prop="inventory">
-        <com-input class="inupt_textarea" :max-length=140 type="textarea" v-model.trim="goodsData.describe"
-                   placeholder="请输入商品描述"></com-input>
-      </el-form-item>
-      <el-form-item label="是否上架：" prop="inventory" class="is-required">
-        <div class="">
-          <el-radio v-model="goodsData.added" label="1" :class="[goodsData.added!==0]">上架</el-radio>
-          <el-radio v-model="goodsData.added" label="0">下架</el-radio>
-        </div>
-      </el-form-item>
-      <el-form-item label="蔬菜分类：" prop="kindId">
-        <el-select v-model="goodsData.kindId" placeholder="请选择分类">
-          <el-option
-                  v-for="item in kindInfo"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-            <span style="float: left">{{ item.name }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.id }}</span>
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item class="btns_box">
-        <el-button class="add-goods primary-button" type="primary" @click="onSubmit('goodsData')" round>保存</el-button>
-        <el-button @click="resetForm('goodsData')" round>取消</el-button>
-      </el-form-item>
-    </el-form>
   </div>
 </template>
 
 <script>
-  import VeUpload from 'src/components/ve-upload-goods'
   import goodsServer from 'src/api/goods'
   import EventBus from 'src/utils/eventBus'
-  import kindServer from 'src/api/kind'
 
   export default {
     name: 'info',
     watch: {
-      goodsData: {
+      order: {
         handler () {
           if (this.initReady) {
             this.isShowMsgB = true
@@ -96,28 +25,24 @@
     created () {
       if (this.$route.params.type === 'update') {
         this.getGoodsDetail()
-        this.Breadcrumb = '编辑商品'
+        this.Breadcrumb = '编辑订单'
       } else {
-        this.Breadcrumb = '新建商品'
+        this.Breadcrumb = '新建订单'
       }
       this.$nextTick(() => {
         this.initReady = true
       })
-      this.queryKind()
     },
     mounted () {
       EventBus.$emit('breads', [{
-        title: '商品管理'
+        title: '销售管理'
       }, {
         title: '商品列表',
-        url: '/goodMager/list'
+        url: '/orderMager/list'
       }, {
         title: this.Breadcrumb,
-        url: `/goodMager/edit/${this.$route.params.type}`
+        url: `/orderMager/edit/${this.$route.params.type}`
       }])
-    },
-    components: {
-      VeUpload
     },
     computed: {
       defaultImg () {
@@ -162,7 +87,7 @@
           return callback(new Error('请输入原始价格'))
         }
       }
-      let disprice = (rule, value, callback) => {
+      let preferential = (rule, value, callback) => {
         // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
         //   value = String(value).slice(0, String(value).indexOf('.') + 3)
         // }
@@ -187,14 +112,6 @@
           return callback()
         }
       }
-      let valiUpload = (rule, value, callback) => {
-        if (value) {
-          return callback()
-        } else {
-          this.imgEmptyMsg = '请上传图'
-          return callback(new Error('请上传图'))
-        }
-      }
       let inventory = (rule, value, callback) => {
         if (typeof value === 'number' && (value || value === 0)) {
           if (value < 0 || value >= 999999) {
@@ -216,55 +133,43 @@
         isShowMsgB: false,
         errTitle: '',
         imgEmptyMsg: '',
-        goodId: this.$route.params.id,
-        goodsData: {
+        order: {
           name: '',
           price: '',
+          imgUrl: [{errMsg: ''}],
           disprice: '',
           describe: '',
           inventory: null,
-          added: '1',
-          imgUrl: ''
+          added: '1'
         },
-        kindInfo: [],
+        statusOption: [
+          {value: 0, name: '未付款'},
+          {value: 1, name: '未发货'},
+          {value: 2, name: '未收货'},
+          {value: 4, name: '已完成'},
+          {value: 3, name: '已关闭订单'}
+        ],
         rules: {
           name: [
-            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'goodsData'}
+            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'order'}
           ],
           price: [
-            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
           preferential: [
-            {validator: disprice, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
           inventory: [
-            {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'goodsData'}
+            {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
           imgUrl: [
-            {required: true, validator: valiUpload, trigger: 'blur', obj: 'goodsData'}
+            {required: true, validator: valiUpload, trigger: 'blur', obj: 'order'}
           ]
         }
       }
     },
     methods: {
-      getGoodsDetail () {
-        let data = {
-          goodId: this.goodId
-        }
-        this.$get(goodsServer.GET_GOOD_BYID, data).then(res => {
-          if (res.code === 200) {
-            this.goodsData = res.data
-          }
-        })
-        console.log(this.goodId)
-      },
-      queryKind () {
-        this.$get(kindServer.GET_KIND)
-          .then(res => {
-            if (res.code === 200) {
-              this.kindInfo = res.data
-            }
-          })
+      getOrderDetail () {
       },
       onSubmit (formName) {
         if (this.timer) return
@@ -280,14 +185,24 @@
                 this.goodsData.goods_id = this.$route.params.id
                 _url = goodsServer.UPDATE_GOODS
               }
-              this.$post(_url, this.goodsData)
-                .then(res => {
-                  this.$router.go(-1)
-                  this.isShowMsgB = false
-                })
-                .catch(err => {
-                  console.log(err)
-                })
+              let imgList = this.goodsData.imgUrl.filter((ite, ind) => {
+                if (ite.name) {
+                  return ite
+                }
+              })
+              this.goodsData.image = JSON.stringify(imgList)
+              console.log(_url)
+              // this.$post(_url, this.goodsData)
+              //   .then(res => {
+              //     // this.$toast({
+              //     //   content: '操作成功!'
+              //     // })
+              //     this.$router.go(-1)
+              //     this.isShowMsgB = false
+              //   })
+              //   .catch(err => {
+              //     console.log(err)
+              //   })
             } else {
               console.log('error submit!!')
               return false
@@ -297,10 +212,24 @@
       },
       resetForm (formName) {
         this.$router.go(-1)
+        // this.$messageBox({
+        //   header: '',
+        //   content: '是否放弃当前编辑内容',
+        //   cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
+        //   confirmText: '确定',
+        //   handleClick: (e) => {
+        //     if (e.action === 'cancel') {
+        //     } else if (e.action === 'confirm') {
+        //       this.$refs[formName].resetFields()
+        //       this.isShowMsgB = false
+        //       this.$router.go(-1)
+        //     }
+        //   }
+        // })
       },
       uploadImgSuccess (data) {
         data.errMsg = ''
-        this.goodsData.imgUrl = data.name
+        this.goodsData.imgUrl[data.nowIndex].name = data.name
       },
       uploadError (data, item, index) {
         this.imgEmptyMsg = ''

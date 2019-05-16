@@ -80,6 +80,13 @@
                        :errorTips="mageError"
             ></com-input>
           </div>
+          <div class="from-row">
+            <span class="from-title">超级管理员:</span>
+            <div class="">
+              <el-radio v-model="mageInfo.status" label="1" :class="[goodsData.added!==0]">上架</el-radio>
+              <el-radio v-model="mageInfo.status" label="0">下架</el-radio>
+            </div>
+          </div>
         </div>
       </div>
     </message-box>
@@ -305,26 +312,8 @@
                             .btn-box {
                                 position: relative;
                             }
-                            /*&:nth-of-type(1) {*/
-                                /*width: 8%;*/
-                            /*}*/
-                            /*&:nth-of-type(2) {*/
-                                /*width: 8%;*/
-                            /*}*/
-                            /*&:nth-of-type(3) {*/
-                                /*width: 26%;*/
-                            /*}*/
-                            /*&:nth-of-type(4) {*/
-                                /*width: 8%;*/
-                            /*}*/
-                            /*&:nth-of-type(5) {*/
-                                /*width: 10%;*/
-                            /*}*/
-                            /*&:nth-of-type(6) {*/
-                                /*width: 8%;*/
-                            /*}*/
                             .btn-box {
-                                width: 25%;
+                                /*width: 25%;*/
                                 button {
                                     color: #222222;
                                     &:hover {

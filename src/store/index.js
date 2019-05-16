@@ -46,7 +46,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     // 是否登录判断
-    isLogin: ''
+    isLogin: '',
+    mageId: null
   },
   mutations: {
     login: (state, n) => {
@@ -55,6 +56,13 @@ export default new Vuex.Store({
       localStorage.setItem('isLogin', JSON.stringify(isLogin))
       console.log(isLogin)
       state.islogin = isLogin
+    },
+    mageId: (state, n) => {
+      // 传入登录状态islogin
+      let mage = JSON.parse(n)
+      localStorage.setItem('mageId', JSON.stringify(mage))
+      console.log(mage)
+      state.mageId = mage
     }
   }
 })

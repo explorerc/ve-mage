@@ -1,29 +1,15 @@
 export default {
-  POST_REGISTER: '/user/business-user/reg',
-  POST_LOGIN_PHONE: '/user/business-user/mobile-login',
-  POST_LOGIN_ACCOUNT: '/mage/login', // 管理员登录
-  POST_LOGOUT: '/mage/signout',
-  GET_ACCdOUNT: '/mage/info',
-  GET_MAGE_INFO: '/mage', // 所有管理员信息
-  GET_MAGE_UPDATE: '/mage/update', // 更新管理员信息
-  GET_MAGE_ADD: '/mage/add', // 新增管理员信息
-  GET_MAGE_DELETE: '/mage/delete', // 新增管理员信息
+  POST_REGISTER: 'http://mg.vegetable.umcoder.com/public/user/business-user/reg',
+  POST_LOGIN_PHONE: 'http://mg.vegetable.umcoder.com/public/user/business-user/mobile-login',
+  POST_LOGIN_ACCOUNT: 'http://mg.vegetable.umcoder.com/public/mage/login', // 管理员登录
+  POST_LOGOUT: 'http://mg.vegetable.umcoder.com/public/mage/signout',
+  GET_ACCOUNT: 'http://mg.vegetable.umcoder.com/public/mage/info',
+  GET_MAGE_INFO: 'http://mg.vegetable.umcoder.com/public/mage', // 所有管理员信息
+  GET_MAGE_UPDATE: 'http://mg.vegetable.umcoder.com/public/mage/update', // 更新管理员信息
+  GET_MAGE_ADD: 'http://mg.vegetable.umcoder.com/public/mage/add', // 新增管理员信息
+  GET_MAGE_DELETE: 'http://mg.vegetable.umcoder.com/public/mage/delete', // 删除管理员
+  POST_MAGE_NAME: 'http://mg.vegetable.umcoder.com/public/mage/name', // 新增管理员信息
+  POST_MAGE_PASSWORD: 'http://mg.vegetable.umcoder.com/public/mage/password', // 删除管理员
   POST_CHANGE_PASSWORD: '/user/business-user/update-password',
-  POST_SET_PASSWORD: '/user/business-user/first-set-password',
-  POST_SET_COMPANY: '/user/business-user/update',
-  POST_SET_USER: '/user/business-user/update-linkman',
-  GET_USERINFO: '/user/business-user/linkman-info',
-  POST_VERIFY_MOBILE: '/common/message/verify-code',
-  POST_UPDATE_MOBILE: '/user/business-user/update-mobile',
-  POST_BACK_PASSWORD: '/user/business-user/update-password-by-code-token',
-  GET_INDUSTRIES: '/common/user/industry-list',
-  GET_CODE: '/common/message/send-code',
-  GET_CAPTCHA_ID: '/common/message/get-captchaid',
-  GET_CUSTOMER_OVERVIEW: '/user/customer/overview', // 用户总览
-  GET_CUSTOMER_DETAIL: '/user/customer/detail', // 用户详情
-  GET_SURVER_LIST: '/user/customer/survey-list', // 用户详情报名/问卷列表
-  GET_BEHAVIOR_LIST: '/user/customer/behavior-list', // 用户详情足迹/行为列表
-  POST_CUSTOMER_UPDATE: '/user/customer/update', // 用户详情足迹/行为列表
-  GET_LOGIN_DATE: 'https://www.vhall.com/index.php?r=home/login/getLoginBanner&app=zhike', // 用户详情足迹/行为列表
-  GET_WX_SUBSCRIBE: '/user/business-user/switch-wechat-subscribe' // 设置是否微信号订阅
+  POST_SET_PASSWORD: '/user/business-user/first-set-password'
 }

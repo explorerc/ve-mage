@@ -37,9 +37,9 @@
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
-                <el-button type="text" @click="handleShelf(row)">{{row.added === '0' ?'上架':'下架'}}
+                <el-button type="text" @click="handleShelf(row.id, row.added)">{{row.added === '0' ?'上架':'下架'}}
                 </el-button>
-                <el-button type="text" @click="handleDelete(row,ind)">删除</el-button>
+                <el-button type="text" @click="handleDelete(row.id)">删除</el-button>
               </div>
             </td>
           </tr>
@@ -135,11 +135,18 @@
       handleEdit (id) {
         this.$router.push(`/goodMager/edit/${id}/update`)
       },
-      handleShelf (row) {
+      handleShelf (id, added) {
         this.$get(goodsServer.GOODS_SHELF, {
-          added: row.added ? row.added : 0,
-          id: row.id
-        }).then((res) => {
+          id: id,
+          added: added ? 1 : 0
+        }).then(res => {
+          if (res.code === 200) {
+            this.queryList()
+          }
+        })
+      },
+      handleDelete (id) {
+        this.$get(goodsServer.GOODS_DELETE, {id: id}).then(res => {
           if (res.code === 200) {
             this.queryList()
           }

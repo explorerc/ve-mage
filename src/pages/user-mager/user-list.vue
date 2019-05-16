@@ -13,7 +13,7 @@
           <th>昵称</th>
           <th>地址</th>
           <th>电话</th>
-          <th>postCode</th>
+          <!--<th>postCode</th>-->
           <th>生日</th>
           <th style="width: 15%;min-width: 140px;">操作</th>
         </tr>
@@ -22,11 +22,11 @@
           <tr v-for="(row,ind) in tableData" :key="ind">
             <td>{{row.id<10?`0${row.id}`:row.id}}</td>
             <td>{{row.name}}</td>
-            <td>{{row.openId}}</td>
+            <td>{{row.openid}}</td>
             <td>{{row.nickname}}</td>
             <td>{{row.address}}</td>
             <td>{{row.tel}}</td>
-            <td>{{row.postCode}}</td>
+            <!--<td>{{row.postCode}}</td>-->
             <td>{{row.birth}}</td>
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>

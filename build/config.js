@@ -30,12 +30,12 @@ const config = {
   },
   test: {
     BUILD_ENV: 'test',
-    API_PATH: '/api',
+    API_PATH: '//mg.vegetable.umcoder.com/public',
     SUB_DIR: 'static',
-    IMGHOST: '//test-zhike.oss-cn-beijing.aliyuncs.com',
-    PUBLIC_PATH: './',
-    MOBILE_HOST: '//test-zhike.vhall.com/m/',
-    PC_HOST: '//test-zhike.vhall.com/webinar/'
+    IMGHOST: 'http://mg.vegetable.umcoder.com/uploads/',
+    PUBLIC_PATH: '//vegetable.umcoder.com/',
+    MOBILE_HOST: '',
+    PC_HOST: ''
   },
   prod: {
     BUILD_ENV: 'prod',
