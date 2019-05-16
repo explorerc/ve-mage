@@ -15,6 +15,7 @@ const GoodMager = () => import('src/pages/good-mager/list')
 const goodEdit = () => import('src/pages/good-mager/edit')/* 创建 编辑 商品 */
 const OrderMager = () => import('src/pages/sale-mager/list')
 const OrderEdit = () => import('src/pages/sale-mager/edit')
+const OrderStatis = () => import('src/pages/sale-mager/order-statist')
 const KindMager = () => import('src/pages/kind-mager/list')
 const UserList = () => import('src/pages/user-mager/user-list')/* 用户管理 */
 const UserEdit = () => import('src/pages/user-mager/edit')/* 用户管理 */
@@ -128,6 +129,14 @@ export default [{
       path: '/userMager/personal',
       name: 'Personal',
       component: Personal,
+      meta: {
+        isAuth: true
+      }
+    },
+    {
+      path: '/saleMager/orderStatist',
+      name: 'OrderStatis',
+      component: OrderStatis,
       meta: {
         isAuth: true
       }
