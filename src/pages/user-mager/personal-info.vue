@@ -39,11 +39,11 @@
             <span v-if="oldPwdErr" class="errMsg">{{oldPwdErr}}</span>
           </el-form-item>
           <el-form-item label="新密码：" prop="team_id">
-            <el-input v-model="updatePwd.pwd" class="slot_inp_b" placeholder="请输入新密码"></el-input>
+            <el-input v-model="updatePwd.pwd" class="slot_inp_b" placeholder="请输入新密码" type="password"></el-input>
             <span v-if="newPwdErr" class="errMsg">{{newPwdErr}}</span>
           </el-form-item>
           <el-form-item label="验证密码：" prop="team_id">
-            <el-input v-model="updatePwd.comfirmPwd" class="slot_inp_b" placeholder="请输再次输入新密码"></el-input>
+            <el-input v-model="updatePwd.comfirmPwd" class="slot_inp_b" placeholder="请输再次输入新密码" type="password"></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -74,7 +74,7 @@
       saveName () {
         this.$post(mageServer.POST_MAGE_NAME, {
           id: this.userInfo.id,
-          name: this.userInfo.id
+          name: this.userInfo.name
         }).then(res => {
           if (res.code === 200) {
             this.isNameUpdate = false
@@ -86,14 +86,15 @@
         if (e.action === 'cancel') {
           this.isPwdUpdate = false
         } else {
-          if (!this.checkPwd()) return
+          if (this.checkPwd()) return
           this.$post(mageServer.POST_MAGE_PASSWORD, {
             id: this.userInfo.id,
-            password: this.updatePwd.pwd
+            password: this.updatePwd.pwd,
+            oldPwd: this.updatePwd.oldPwd
           }).then(res => {
-            if (res.code === 200) {
+            if (res.msg === 'success') {
               this.isPwdUpdate = false
-            } else if (res.code === 205) {
+            } else if (res.msg === '旧密码不正确') {
               this.oldPwdErr = res.msg
             }
           })
@@ -102,15 +103,15 @@
       checkPwd () {
         if (!this.updatePwd.oldPwd) {
           this.oldPwdErr = '请输入旧密码'
-          return false
+          return true
         }
         if (!this.updatePwd.pwd) {
           this.newPwdErr = '请输入新密码'
-          return false
+          return true
         }
         if (this.updatePwd.pwd !== this.updatePwd.comfirmPwd) {
           this.newPwdErr = '两次密码不一致'
-          return false
+          return true
         }
       }
     },
@@ -207,6 +208,7 @@
     position: absolute;
     top: 70%;
     left: 0;
+    color: red;
   }
 }
 </style>

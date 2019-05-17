@@ -182,7 +182,6 @@
       uploadError (data, item, index) {
         this.imgEmptyMsg = ''
         item.errMsg = data.msg
-        // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
       }
     },
     beforeRouteLeave (to, from, next) {

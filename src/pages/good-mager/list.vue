@@ -29,7 +29,7 @@
               <img class="cover_img" :src="row.imgUrl">
             </td>
             <td>{{row.name}}</td>
-            <td>{{row.added === '0' ? '已下架':'已上架'}}</td>
+            <td>{{row.isBuy === 0 ? '已下架':'已上架'}}</td>
             <td>
               {{row.price}}
             </td>
@@ -37,7 +37,7 @@
             <td style="width: 15%;min-width: 140px;">
               <div class='btn-box'>
                 <el-button type="text" @click="handleEdit(row.id)">编辑</el-button>
-                <el-button type="text" @click="handleShelf(row.id, row.added)">{{row.added === '0' ?'上架':'下架'}}
+                <el-button type="text" @click="handleShelf(row.id, row.isBuy)">{{row.isBuy === 0 ?'上架':'下架'}}
                 </el-button>
                 <el-button type="text" @click="handleDelete(row.id)">删除</el-button>
               </div>
@@ -136,9 +136,14 @@
         this.$router.push(`/goodMager/edit/${id}/update`)
       },
       handleShelf (id, added) {
+        if (added) {
+          added = 0
+        } else {
+          added = 1
+        }
         this.$get(goodsServer.GOODS_SHELF, {
           id: id,
-          added: added ? 1 : 0
+          added: added
         }).then(res => {
           if (res.code === 200) {
             this.queryList()

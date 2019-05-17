@@ -26,6 +26,15 @@
       </el-form-item>
       <el-form-item label="商品图片：" prop="imgUrl" style="margin-bottom:15px;" class="image-list">
         <div class="upload_box">
+          <el-upload
+            class="avatar-uploader"
+            action="http://mg.vegetable.umcoder.com/public/upload/image"
+            :show-file-list="false"
+            :on-success="handleImageSuccess"
+            :before-upload="beforeImageUpload">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
           <!--<template v-for="(ite,ind) in imgUrl">-->
             <!--<div style="display: inline-block">-->
               <!--<ve-upload-->
@@ -36,7 +45,7 @@
                          <!--@success="uploadImgSuccess"></ve-upload>-->
              <!--<span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>-->
             <!--</div>-->
-          <input type="file" name="file" id="uploadImg" value="上传" accept="image/png,image/gif,image/jpg,image/jpeg" @change="uploadImage"  ref="upload">
+          <!--<input type="file" name="file" id="uploadImg" value="上传" accept="image/png,image/gif,image/jpg,image/jpeg" @change="uploadImage"  ref="upload">-->
         </div>
       </el-form-item>
       <el-form-item label="现有库存：" prop="inventory" class="is-required">
@@ -52,8 +61,8 @@
       </el-form-item>
       <el-form-item label="是否上架：" prop="inventory" class="is-required">
         <div class="">
-          <el-radio v-model="goodsData.added" label="1" :class="[goodsData.added!==0]">上架</el-radio>
-          <el-radio v-model="goodsData.added" label="0">下架</el-radio>
+          <el-radio v-model="goodsData.isBuy" label="1">上架</el-radio>
+          <el-radio v-model="goodsData.isBuy" label="0">下架</el-radio>
         </div>
       </el-form-item>
       <el-form-item label="蔬菜分类：" prop="kindId">
@@ -151,6 +160,7 @@
         }, 500)
       }
       let price = (rule, value, callback) => {
+        value = parseFloat(value)
         if (typeof value === 'number' && (value || value === 0)) {
           if (value < 0 || value >= 999999) {
             return callback(new Error('原始价格应大于0小于999999'))
@@ -218,6 +228,7 @@
         errTitle: '',
         imgEmptyMsg: '',
         goodId: this.$route.params.id,
+        imageUrl: '',
         goodsData: {
           name: '',
           price: '',
@@ -311,7 +322,7 @@
       },
       uploadImage () {
         debugger
-        let file = this.$refs.upload.files
+        let file = document.getElementById('uploadImg').value
         console.log(file)
         let fileData = new FormData()
         fileData.append('file', file)
@@ -320,6 +331,21 @@
             console.log(res)
           }
         })
+      },
+      handleImageSuccess (res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw)
+      },
+      beforeImageUpload (file) {
+        // const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 < 2
+
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!')
+        // }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isLt2M
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -542,6 +568,29 @@
         font-size: 14px;
       }
 
+    }
+    .avatar-uploader .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 178px;
+      height: 178px;
+      line-height: 178px;
+      text-align: center;
+    }
+    .avatar {
+      width: 178px;
+      height: 178px;
+      display: block;
     }
   }
 </style>
