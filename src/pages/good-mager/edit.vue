@@ -27,15 +27,16 @@
       <el-form-item label="商品图片：" prop="imgUrl" style="margin-bottom:15px;" class="image-list">
         <div class="upload_box">
           <!--<template v-for="(ite,ind) in imgUrl">-->
-            <div style="display: inline-block">
-              <ve-upload
-                         title="图片支持jpg、png、bmp&nbsp;&nbsp;不超过2MB <br> 最佳尺寸：600 x 800"
-                         accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg"
-                         :fileSize="2048"
-                         @error="uploadError" :initImg="goodsData.imgUrl"
-                         @success="uploadImgSuccess"></ve-upload>
-             <span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>
-            </div>
+            <!--<div style="display: inline-block">-->
+              <!--<ve-upload-->
+                         <!--title="图片支持jpg、png、bmp&nbsp;&nbsp;不超过2MB <br> 最佳尺寸：600 x 800"-->
+                         <!--accept="png|jpg|jpeg|bmp|gif" :defaultImg="defaultImg"-->
+                         <!--:fileSize="2048"-->
+                         <!--@error="uploadError" :initImg="goodsData.imgUrl"-->
+                         <!--@success="uploadImgSuccess"></ve-upload>-->
+             <!--<span v-if="imgEmptyMsg" class="error-msg img-error error12">{{imgEmptyMsg}}</span>-->
+            <!--</div>-->
+          <input type="file" name="file" id="uploadImg" value="上传" accept="image/png,image/gif,image/jpg,image/jpeg" @change="uploadImage"  ref="upload">
         </div>
       </el-form-item>
       <el-form-item label="现有库存：" prop="inventory" class="is-required">
@@ -226,6 +227,7 @@
           added: '1',
           imgUrl: ''
         },
+        fileValue: '',
         kindInfo: [],
         rules: {
           name: [
@@ -306,6 +308,18 @@
         this.imgEmptyMsg = ''
         item.errMsg = data.msg
         // this.goodsData.imageList[data.nowIndex].errMsg = data.msg
+      },
+      uploadImage () {
+        debugger
+        let file = this.$refs.upload.files
+        console.log(file)
+        let fileData = new FormData()
+        fileData.append('file', file)
+        this.$post(goodsServer.UPLOAD_IMAG, fileData).then(res => {
+          if (res.code === 200) {
+            console.log(res)
+          }
+        })
       }
     },
     beforeRouteLeave (to, from, next) {

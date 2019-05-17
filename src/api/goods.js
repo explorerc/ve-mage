@@ -17,6 +17,8 @@ export default {
   GOODS_SHELF: 'http://mg.vegetable.umcoder.com/public/goods/shelf',
   // 商品排序
   SORT_GOODS: 'http://mg.vegetable.umcoder.com/public/goods/sort',
+  // 商品排序
+  UPLOAD_IMAG: 'http://mg.vegetable.umcoder.com/public/upload/image',
   // 详情页面获取活动信息
   GET_DETAILS: 'http://mg.vegetable.umcoder.com/public/manage/activity-detail/index'
 }
