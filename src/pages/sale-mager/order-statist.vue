@@ -40,8 +40,7 @@
         title: '商品列表',
         url: '/orderMager/list'
       }, {
-        title: this.Breadcrumb,
-        url: `/orderMager/edit/${this.$route.params.type}`
+        title: this.Breadcrumb
       }])
     },
     computed: {
@@ -163,13 +162,14 @@
             {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
           ],
           imgUrl: [
-            {required: true, validator: valiUpload, trigger: 'blur', obj: 'order'}
+            // {required: true, validator: valiUpload, trigger: 'blur', obj: 'order'}
           ]
         }
       }
     },
     methods: {
       getOrderDetail () {
+        this.$get()
       },
       onSubmit (formName) {
         if (this.timer) return

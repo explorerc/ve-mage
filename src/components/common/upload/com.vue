@@ -163,6 +163,7 @@ export default {
     },
     doUpload (formData) {
       const xhr = new XMLHttpRequest()
+      // xhr.open('post', this.actionUrl)
       xhr.open('post', this.actionUrl)
       // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
       xhr.timeout = this.timeout

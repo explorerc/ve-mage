@@ -11,13 +11,13 @@
       </el-form-item>
       <el-form-item label="用户id：" prop="userId">
         <div class="a_unit">
-          <el-input v-model.number="order.userId" :disabled="!!!order.userId"
+          <el-input v-model.number="order.userId" :disabled="!!order.id"
                     placeholder="请输入用户id"></el-input>
         </div>
       </el-form-item>
       <el-form-item label="商品id：" prop="goodId">
         <div class="a_unit">
-          <el-input v-model.number="order.goodId" :disabled="!!!order.goodId"
+          <el-input v-model.number="order.goodId" :disabled="!!order.id"
                     placeholder="请输入商品id"></el-input>
         </div>
       </el-form-item>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import goodsServer from 'src/api/salesGoods-service'
+  import orderServer from 'src/api/orders'
   import EventBus from 'src/utils/eventBus'
 
   export default {
@@ -71,7 +71,7 @@
     },
     created () {
       if (this.$route.params.type === 'update') {
-        this.getGoodsDetail()
+        this.getOrderDetail()
         this.Breadcrumb = '编辑订单'
       } else {
         this.Breadcrumb = '新建订单'
@@ -97,81 +97,6 @@
       }
     },
     data () {
-      let valiName = (rule, value, callback) => {
-        console.log(value)
-        if (this.timerVail) return
-        this.timerVail = setTimeout(() => {
-          clearTimeout(this.timerVail)
-          this.timerVail = null
-          if (value) {
-            if (value.gbLength() < rule.min) {
-              return callback(new Error('商品名称过短'))
-            } else if (value.gbLength() > rule.max) {
-              for (let attr in this[rule.obj]) {
-                if (attr === rule.field) {
-                  this[rule.obj][attr] = value.slice(0, value.gbIndex(rule.max) + 1)
-                  return callback()
-                }
-              }
-            } else {
-              callback()
-            }
-          } else {
-            return callback(new Error('商品名称不能为空'))
-          }
-        }, 500)
-      }
-      let price = (rule, value, callback) => {
-        if (typeof value === 'number' && (value || value === 0)) {
-          if (value < 0 || value >= 999999) {
-            return callback(new Error('原始价格应大于0小于999999'))
-          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-            return callback(new Error('价格最多为小数点后两位'))
-          } else {
-            return callback()
-          }
-        } else {
-          return callback(new Error('请输入原始价格'))
-        }
-      }
-      let preferential = (rule, value, callback) => {
-        // if (String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-        //   value = String(value).slice(0, String(value).indexOf('.') + 3)
-        // }
-        if (value) {
-          if (typeof value === 'number') {
-            let maxV = this[rule.obj].price
-            if (value && value < 0) {
-              return callback(new Error('优惠价格不能小于0'))
-            } else if (value && maxV && value >= maxV) {
-              return callback(new Error('优惠价格需小于原始价格'))
-            } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length > 2) {
-              return callback(new Error('优惠价格最多为小数点后两位'))
-            } else if (value && !maxV) {
-              return callback(new Error('请先填写原始价格'))
-            } else {
-              return callback()
-            }
-          } else {
-            return callback(new Error('请输入优惠价格'))
-          }
-        } else {
-          return callback()
-        }
-      }
-      let inventory = (rule, value, callback) => {
-        if (typeof value === 'number' && (value || value === 0)) {
-          if (value < 0 || value >= 999999) {
-            return callback(new Error('现有库存应大于0小于999999'))
-          } else if (String(value).indexOf('.') > -1 && String(value).slice(String(value).indexOf('.') + 1).length >= 1) {
-            return callback(new Error('库存量应为整数'))
-          } else {
-            return callback()
-          }
-        } else {
-          return callback(new Error('请输入现有库存'))
-        }
-      }
       return {
         timerVail: null,
         timer: null,
@@ -181,7 +106,7 @@
         errTitle: '',
         imgEmptyMsg: '',
         order: {
-          id: '',
+          id: this.$route.params.id,
           userId: '',
           goodId: null,
           number: '',
@@ -197,25 +122,27 @@
         ],
         rules: {
           userId: [
-            {required: true, validator: valiName, min: 3, max: 20, trigger: 'change', obj: 'order'}
-          ],
-          id: [
-            {validator: price, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
+            { required: true, message: '请输入用户id', trigger: 'blur' }
           ],
           goodId: [
-            {validator: preferential, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
+            { required: true, message: '请输入商品', trigger: 'blur' }
           ],
           number: [
-            {validator: inventory, type: 'number', min: 0, max: 999999, trigger: 'change', obj: 'order'}
+            { required: true, message: '请输入商品数量', trigger: 'blur' }
           ],
           status: [
-            {required: true, validator: '', trigger: 'blur', obj: 'order'}
+            { required: true, message: '请输入订单状态', trigger: 'blur' }
           ]
         }
       }
     },
     methods: {
       getOrderDetail () {
+        this.$get(orderServer.GET_ORDER_ID, {id: this.order.id}).then(res => {
+          this.order = {
+            ...res.data
+          }
+        })
       },
       onSubmit (formName) {
         if (this.timer) return
@@ -226,29 +153,18 @@
             if (valid) {
               let _url
               if (this.$route.params.type === 'create') {
-                _url = goodsServer.CREATE_GOODS
+                _url = orderServer.GET_ORDER_ADD
               } else {
-                this.goodsData.goods_id = this.$route.params.id
-                _url = goodsServer.UPDATE_GOODS
+                _url = orderServer.GET_ORDER_UPDATE
               }
-              let imgList = this.goodsData.imgUrl.filter((ite, ind) => {
-                if (ite.name) {
-                  return ite
-                }
-              })
-              this.goodsData.image = JSON.stringify(imgList)
-              console.log(_url)
-              // this.$post(_url, this.goodsData)
-              //   .then(res => {
-              //     // this.$toast({
-              //     //   content: '操作成功!'
-              //     // })
-              //     this.$router.go(-1)
-              //     this.isShowMsgB = false
-              //   })
-              //   .catch(err => {
-              //     console.log(err)
-              //   })
+              this.$get(_url, {...this.order})
+                .then(res => {
+                  this.$router.go(-1)
+                  this.isShowMsgB = false
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             } else {
               console.log('error submit!!')
               return false
@@ -258,20 +174,6 @@
       },
       resetForm (formName) {
         this.$router.go(-1)
-        // this.$messageBox({
-        //   header: '',
-        //   content: '是否放弃当前编辑内容',
-        //   cancelText: '暂不', // 不传递cancelText将只有一个确定按钮
-        //   confirmText: '确定',
-        //   handleClick: (e) => {
-        //     if (e.action === 'cancel') {
-        //     } else if (e.action === 'confirm') {
-        //       this.$refs[formName].resetFields()
-        //       this.isShowMsgB = false
-        //       this.$router.go(-1)
-        //     }
-        //   }
-        // })
       },
       uploadImgSuccess (data) {
         data.errMsg = ''
@@ -337,6 +239,9 @@
         padding: 40px 80px;
         border: 1px solid #eee;
         background-color: white;
+        .el-select {
+          width: 94%;
+        }
         .el-form-item {
           margin-bottom: 27px;
           &.image-list {
@@ -355,18 +260,6 @@
           }
 
         }
-        .el-form-item:nth-of-type(1) {
-          .el-form-item__content {
-            width: 460px;
-          }
-        }
-        .el-form-item:nth-of-type(2),
-        .el-form-item:nth-of-type(3) {
-          width: 400px;
-        }
-        /*.el-form-item:last-of-type {*/
-        /*text-align: center;*/
-        /*}*/
         .inupt_textarea {
           width: 100%;
           height: 120px;
@@ -380,11 +273,12 @@
         }
         .a_unit {
           overflow: hidden;
-          width: 250px;
+          width: 94%;
           .el-input {
-            width: 200px;
+            width: 100%;
             float: left;
           }
+
           span {
             display: inline-block;
             width: 40px;

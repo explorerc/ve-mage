@@ -44,7 +44,6 @@
                  type="prompt"
                  :header="editTitle"
                  @handleClick="editMage">
-
       <div class="mager-box message-box-content">
         <div class="from-box">
           <div class="from-row" v-if="mageInfo.id">
@@ -82,9 +81,9 @@
           </div>
           <div class="from-row">
             <span class="from-title">超级管理员:</span>
-            <div class="">
-              <el-radio v-model="mageInfo.status" label="1" :class="[goodsData.added!==0]">上架</el-radio>
-              <el-radio v-model="mageInfo.status" label="0">下架</el-radio>
+            <div class="" style="display: inline-block">
+              <el-radio v-model="mageInfo.status" label="1">是</el-radio>
+              <el-radio v-model="mageInfo.status" label="0" :class="[mageInfo.status!==1]">否</el-radio>
             </div>
           </div>
         </div>
@@ -117,13 +116,7 @@
         isEditShow: false,
         isDelShow: false,
         editTitle: '',
-        mageInfo: {
-          id: null,
-          name: '',
-          phone: '',
-          password: '',
-          status: null
-        },
+        mageInfo: JSON.parse(sessionStorage.getItem('userInfo'))[0],
         mageError: '',
         status: null
       }
@@ -152,7 +145,7 @@
     },
     methods: {
       queryList () {
-        this.$get(mageServer.GET_MAGE_INFO)
+        this.$post(mageServer.GET_MAGE_INFO, {mageId: this.mageInfo.id})
           .then(res => {
             if (res.code === 200) {
               this.tableData = res.data.info
@@ -169,6 +162,7 @@
           })
       },
       handleEditShow (row) {
+        debugger
         if (row) {
           this.mageInfo.id = row.id
           this.mageInfo.password = row.password
@@ -192,7 +186,7 @@
           } else {
             _url = mageServer.GET_MAGE_ADD
           }
-          this.$get(_url, ...this.mageInfo)
+          this.$post(_url, ...this.mageInfo)
             .then(res => {
               if (res.code === 200) {
                 this.isEditShow = false
@@ -208,7 +202,7 @@
           let data = {
             id: this.mageInfo.id
           }
-          this.$get(mageServer.GET_MAGE_DELETE, data)
+          this.$post(mageServer.GET_MAGE_DELETE, data)
             .then(res => {
               if (res.code === 200) {
                 this.isEditShow = false

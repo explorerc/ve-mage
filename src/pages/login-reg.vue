@@ -13,7 +13,7 @@
     </div>
     <ul class="v-select" v-show="isShow">
       <li>
-        <a href="/setAccount"><i class="iconfont icon-shezhi21"></i>账号设置</a>
+        <a href="/userMager/personal"><i class="iconfont icon-shezhi21"></i>账号设置</a>
       </li>
       <li>
         <a href="javascript:;"
@@ -60,7 +60,9 @@ export default {
       this.name = this.accountInfo.name
       this.avatar = this.accountInfo.avatar
     }
-    this.name = JSON.parse(sessionStorage.getItem('userInfo'))[0]['name']
+    setTimeout(() => {
+      this.name = JSON.parse(sessionStorage.getItem('userInfo'))[0]['name']
+    }, 400)
   },
   watch: {
     'accountInfo.userName': {// 观看端 是否已登陆
